@@ -649,6 +649,49 @@ export const DISPUTED_PROPERTIES: Record<string, { family: string; property: str
     family: 'square-oauth-application-secret', property: 'the width of an OAuth application secret other than sq0csp- + 43 or 44 and sandbox-sq0csb- + 43 (Square disclaims length validation and its examples disagree on 43 vs 44; ruling Q8)',
     ids: ['production-42', 'production-45', 'sandbox-42', 'sandbox-44'].map(c => `beta8-583a--square-oauth-application-secret-${c}-twin`),
   },
+  // #583 second wave (slices b-h): the shapes whose expectation rests on an open ruling question (Q1 checksum post-check, Q7 floors,
+  // Q9 and Q10) or on a single provider source stay unclaimed: the corpus asserts neither detection nor silence on them. The prefix,
+  // alphabet and boundary twins of the same corpora stay asserted.
+  'xata-crc32-checksum': {
+    family: 'xata-api-key', property: 'whether a lexically valid xau_/xao_ value whose CRC32 (little-endian, bit-packed base62) does not verify is a key (ruling question Q1, open: a post-check that can only reject is deferred)',
+    ids: ['crc-data-byte', 'crc-stored-byte'].map(c => `beta8-583b--xata-api-key-${c}-twin`),
+  },
+  'sourcegraph-token-unclaimed-shapes': {
+    family: 'sourcegraph-token', property: 'an instance identifier longer than 32 bytes (detector policy cap; the 2025 validator accepts any length), the sgph_ prefix (accepted by both validators, no known issuer) and the sgd_ + 64 hex Cody Gateway key (one provider source)',
+    ids: ['identifier-33', 'sgph-prefix', 'sgd-64'].map(c => `beta8-583c--sourcegraph-token-${c}-twin`),
+  },
+  'unkey-checksum-post-check': {
+    family: 'unkey-root-key', property: 'whether a lexically valid version 1 root key whose CRC-32C checksum does not verify is a key (ruling question Q1, open)',
+    ids: ['checksum-mismatch-bearer', 'checksum-mismatch-json'].map(c => `beta8-583d--unkey-root-key-${c}-twin`),
+  },
+  'unkey-customer-prefixed-v1': {
+    family: 'unkey-root-key', property: 'a customer-prefixed version 1 key (ruling question Q10, open)',
+    ids: ['customer-prefixed-v1'].map(c => `beta8-583d--unkey-root-key-${c}-twin`),
+  },
+  'unkey-go-form': {
+    family: 'unkey-root-key', property: 'the deprecated Go form, unkey_ + 21 or 22 base58 without the 3Z lead (no shipped root-key source)',
+    ids: ['go-form-21', 'go-form-22'].map(c => `beta8-583d--unkey-root-key-${c}-twin`),
+  },
+  'buildkite-unclaimed-shapes': {
+    family: 'buildkite-token', property: 'the span of a 2049-byte or dot-terminated body and the unsourced bka_, bare-hex and identifier shapes',
+    ids: ['body-2049', 'trailing-dot', 'third-party-bka-prefix', 'legacy-bare-hex', 'snake-case-identifier'].map(c => `beta8-583e--buildkite-token-${c}-twin`),
+  },
+  'pydantic-logfire-open-shapes': {
+    family: 'pydantic-logfire-token', property: 'the Q7 body floor of 20 (bodies under it, early non-alphanumeric breaks) and the shapes the provider regex leaves open (- or _ in a non-UUID body, region over 16, version over 3 digits)',
+    ids: ['body-19', 'read-body-19', 'uuid-body-19', 'plus-in-body', 'slash-in-body', 'dash-in-body', 'underscore-in-body', 'region-over-16', 'version-four-digits'].map(c => `beta8-583f--pydantic-logfire-token-${c}-twin`),
+  },
+  'mapbox-payload-floor': {
+    family: 'mapbox-token', property: 'the payload floor of eyJ + 20, derived from provider code (ruling question Q7)',
+    ids: ['payload-below-floor-22'].map(c => `beta8-583g--mapbox-token-${c}-twin`),
+  },
+  'mapbox-tk-temporary': {
+    family: 'mapbox-token', property: 'the tk. temporary token (ruling question Q9)',
+    ids: ['temporary-tk-prefix'].map(c => `beta8-583g--mapbox-token-${c}-twin`),
+  },
+  'fly-unclaimed-shapes': {
+    family: 'fly-token', property: 'a standalone fo1_ token (ruling question Q9) and a three-character padding count (unresolved)',
+    ids: ['fo1-standalone-43', 'padding-3'].map(c => `beta8-583h--fly-token-${c}-twin`),
+  },
   'mailchimp-datacenter-literal': {
     family: 'mailchimp-api-key', property: 'whether a data-center suffix other than us<N> (such as eu6) is ever issued',
     ids: ['bare', 'quoted', 'unicode-crlf'].map(c => `detector-coverage--mailchimp-api-key-single-digit-datacenter-${c}-twin`),

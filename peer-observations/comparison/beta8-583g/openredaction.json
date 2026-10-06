@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583g",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "5c9b65f65fa535528184fde9053786bdf05c8d3b612bef9875880c4e70dafbc0",
+    "fixtureCount": 40,
+    "fixturesDigest": "0faea19ce1e7f8a8a091305a8d62169d214901346109461d84c0a50b1f44d637",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 20,
+      "end": 26
+    },
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 27,
+      "end": 31
+    },
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 32,
+      "end": 38
+    },
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 45,
+      "end": 52
+    },
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 55,
+      "end": 59
+    },
+    {
+      "path": "cases/mapbox-token-angle-brackets-placeholder.env",
+      "start": 60,
+      "end": 69
+    },
+    {
+      "path": "cases/mapbox-token-api-url-query.sh",
+      "start": 76,
+      "end": 352
+    },
+    {
+      "path": "cases/mapbox-token-bare-prose.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/mapbox-token-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/mapbox-token-bearer-header.http",
+      "start": 67,
+      "end": 160,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mapbox-token-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/mapbox-token-dash-separator-twin.http",
+      "start": 55,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mapbox-token-dash-separator-twin.http",
+      "start": 125,
+      "end": 148
+    },
+    {
+      "path": "cases/mapbox-token-dash-separator-twin.http",
+      "start": 149,
+      "end": 156
+    },
+    {
+      "path": "cases/mapbox-token-dash-separator-twin.http",
+      "start": 163,
+      "end": 174
+    },
+    {
+      "path": "cases/mapbox-token-dash-separator-twin.http",
+      "start": 175,
+      "end": 179
+    },
+    {
+      "path": "cases/mapbox-token-dotenv.env",
+      "start": 40,
+      "end": 80,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/mapbox-token-export.sh",
+      "start": 40,
+      "end": 80,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/mapbox-token-export.sh",
+      "start": 98,
+      "end": 121
+    },
+    {
+      "path": "cases/mapbox-token-jwt-with-mapbox-claims-encoded-value.log",
+      "start": 58,
+      "end": 206,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/mapbox-token-jwt-with-mapbox-claims-encoded-value.log",
+      "start": 219,
+      "end": 226
+    },
+    {
+      "path": "cases/mapbox-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/mapbox-token-missing-second-dot-twin.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/mapbox-token-netrc.txt",
+      "start": 29,
+      "end": 35
+    },
+    {
+      "path": "cases/mapbox-token-netrc.txt",
+      "start": 45,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mapbox-token-pk-in-prose-public-id.md",
+      "start": 0,
+      "end": 24
+    },
+    {
+      "path": "cases/mapbox-token-prefix-only-near-miss.md",
+      "start": 0,
+      "end": 31
+    },
+    {
+      "path": "cases/mapbox-token-prefix-only-near-miss.md",
+      "start": 109,
+      "end": 127
+    },
+    {
+      "path": "cases/mapbox-token-public-pk-same-shape-twin.sh",
+      "start": 40,
+      "end": 80,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/mapbox-token-public-pk-same-shape-twin.sh",
+      "start": 98,
+      "end": 121
+    },
+    {
+      "path": "cases/mapbox-token-signature-23-twin.json",
+      "start": 86,
+      "end": 110
+    },
+    {
+      "path": "cases/mapbox-token-signature-23-twin.json",
+      "start": 116,
+      "end": 123
+    },
+    {
+      "path": "cases/mapbox-token-token-guidance-prose.md",
+      "start": 48,
+      "end": 54
+    },
+    {
+      "path": "cases/mapbox-token-underscore-separator-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/mapbox-token-underscore-separator-twin.http",
+      "start": 67,
+      "end": 160,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mapbox-token-uppercase-prefix-twin.env",
+      "start": 40,
+      "end": 80,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/mapbox-token-x-api-key-header.http",
+      "start": 125,
+      "end": 148
+    },
+    {
+      "path": "cases/mapbox-token-x-api-key-header.http",
+      "start": 149,
+      "end": 156
+    },
+    {
+      "path": "cases/mapbox-token-x-api-key-header.http",
+      "start": 163,
+      "end": 174
+    },
+    {
+      "path": "cases/mapbox-token-x-api-key-header.http",
+      "start": 175,
+      "end": 179
+    }
+  ],
+  "digest": "b2a3025280d45d8e38b909bb4f7e682ff6a5663215367423db8247076ac234af"
+}

@@ -2,8 +2,8 @@ import { splitGraduated as split434 } from './434-sources.ts';
 import { researchTable, RULINGS_R1_R3, RULINGS_R2_R8, R1014, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
 
 // Shared citations for the Beta.12 #583 slices: the benchmarks side of the #1014 second wave (Xata, Sourcegraph, Unkey,
-// Buildkite, Pydantic Logfire, Square, Mapbox, Fly, Ory siblings). Only Square (583a) carries a contract and a corpus so
-// far; the other registered detectors have a pending contract (583p) until their slices land.
+// Buildkite, Pydantic Logfire, Square, Mapbox, Fly, Ory siblings). Square (583a) and the seven other registered detectors
+// (583b to 583h) carry a contract and a corpus; 583p is empty and records any registered detector still without a slice.
 //
 // The Square contract is authored from the step-3 handoff docs/audits/evidence/1014/square.md, frozen in the product
 // repository at SQUARE_HANDOFF_REVISION, and from the provider pages it cites. It is not read from, or checked against, the

@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "ce7d61186c11dc79574f776dbb310d04c9bf622df41f3cc855659f2c165ffc54",
+    "fixtureCount": 46,
+    "fixturesDigest": "17b8dfa49a4bd00ee9cc14236837529988cf88413cd9efec724d6dcd9454e502",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 21,
+      "end": 26
+    },
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 36,
+      "end": 39
+    },
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 43,
+      "end": 46
+    },
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 47,
+      "end": 60
+    },
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 69,
+      "end": 72
+    },
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 84,
+      "end": 96
+    },
+    {
+      "path": "cases/xata-api-key-bare-prose.md",
+      "start": 0,
+      "end": 27
+    },
+    {
+      "path": "cases/xata-api-key-bearer-header.http",
+      "start": 57,
+      "end": 63
+    },
+    {
+      "path": "cases/xata-api-key-bearer-header.http",
+      "start": 64,
+      "end": 102,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xata-api-key-body-31-twin.http",
+      "start": 52,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-body-37-twin.txt",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/xata-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 21,
+      "end": 26
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 36,
+      "end": 39
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 43,
+      "end": 46
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 47,
+      "end": 60
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 69,
+      "end": 72
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 84,
+      "end": 96
+    },
+    {
+      "path": "cases/xata-api-key-curl-bearer.sh",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/xata-api-key-curl-bearer.sh",
+      "start": 68,
+      "end": 105,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xata-api-key-dotenv-org.env",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/xata-api-key-dotenv-org.env",
+      "start": 114,
+      "end": 120
+    },
+    {
+      "path": "cases/xata-api-key-k8s-secret.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-key-guidance-prose.md",
+      "start": 51,
+      "end": 54
+    },
+    {
+      "path": "cases/xata-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 27
+    },
+    {
+      "path": "cases/xata-api-key-prefix-only-near-miss.md",
+      "start": 10,
+      "end": 14
+    },
+    {
+      "path": "cases/xata-api-key-project-id-public-id.ts",
+      "start": 52,
+      "end": 62
+    },
+    {
+      "path": "cases/xata-api-key-trailing-hyphen-glue-twin.sh",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/xata-api-key-trailing-hyphen-glue-twin.sh",
+      "start": 68,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xata-api-key-x-api-key-header.http",
+      "start": 52,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-xat-prefix-twin.http",
+      "start": 57,
+      "end": 63
+    },
+    {
+      "path": "cases/xata-api-key-xat-prefix-twin.http",
+      "start": 64,
+      "end": 102,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "74adb440a8c1b26998bd9b2d870d45f498c43521b42d534be9e3a94cddbfcca1"
+}

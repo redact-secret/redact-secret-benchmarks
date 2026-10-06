@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "2b19aac5f27837741a321932d39ecea43ce3d8e7b6e4608f56e38c10fff04580",
+    "fixtureCount": 38,
+    "fixturesDigest": "8e8d3e7b6d7235d7a692cc2ae64245a90b158efd991415af795ca0e03d32526d",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/sourcegraph-token-actions-env.yml",
+      "start": 118,
+      "end": 162
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 78,
+      "end": 139
+    },
+    {
+      "path": "cases/sourcegraph-token-bare-prose.md",
+      "start": 65,
+      "end": 126
+    },
+    {
+      "path": "cases/sourcegraph-token-bearer-header.http",
+      "start": 76,
+      "end": 120
+    },
+    {
+      "path": "cases/sourcegraph-token-dotenv.env",
+      "start": 24,
+      "end": 68
+    },
+    {
+      "path": "cases/sourcegraph-token-json-api-key.json",
+      "start": 16,
+      "end": 60
+    },
+    {
+      "path": "cases/sourcegraph-token-mcp-env.json",
+      "start": 200,
+      "end": 244
+    },
+    {
+      "path": "cases/sourcegraph-token-sdk-kwarg.py",
+      "start": 36,
+      "end": 80
+    },
+    {
+      "path": "cases/sourcegraph-token-x-api-key-header.http",
+      "start": 64,
+      "end": 125
+    }
+  ],
+  "digest": "aa71bbcb187c61bdf96dfdf71104744e6b70fb9631419de5cbd674a939ac3089"
+}

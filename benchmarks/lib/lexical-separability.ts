@@ -54,6 +54,8 @@ export function checkLexicalSeparability(fixtures: Fixture[], contracts: Record<
   const violations: LexicalSeparabilityViolation[] = [];
   for (const f of fixtures) {
     if (f.assessment.kind !== 'must-not-flag' || !f.assessment.contract || f.assessment.lexicalExemption) continue;
+    // A T0 control asserts nothing (a disputed property, #583): it is not scored, so it cannot force a detector to fire and stay silent.
+    if (f.assessment.tier === 'T0') continue;
     if (!families.has(f.assessment.contract)) continue;
     const contract = contracts[f.assessment.contract];
     if (!collides(f, contract)) continue;

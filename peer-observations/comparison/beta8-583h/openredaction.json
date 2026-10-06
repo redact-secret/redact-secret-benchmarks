@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583h",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f89af7542219aba563f7f998652f310f6150af54ce03d12247e632ec9761534f",
+    "fixtureCount": 44,
+    "fixturesDigest": "b848c92254d71df979820b22925702eb3967bca33d9bd787273d249a691ebdad",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/fly-token-app-and-org-public-id.toml",
+      "start": 63,
+      "end": 68
+    },
+    {
+      "path": "cases/fly-token-auth-token-output.log",
+      "start": 33,
+      "end": 42
+    },
+    {
+      "path": "cases/fly-token-bare-prose.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/fly-token-base64-blob-encoded-value.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/fly-token-base64-blob-encoded-value.yml",
+      "start": 6,
+      "end": 10
+    },
+    {
+      "path": "cases/fly-token-base64-blob-encoded-value.yml",
+      "start": 11,
+      "end": 16
+    },
+    {
+      "path": "cases/fly-token-base64-blob-encoded-value.yml",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/fly-token-base64-blob-encoded-value.yml",
+      "start": 21,
+      "end": 27
+    },
+    {
+      "path": "cases/fly-token-bearer-header.http",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/fly-token-bearer-header.http",
+      "start": 69,
+      "end": 144,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/fly-token-body-63-twin.http",
+      "start": 57,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/fly-token-bundle-span.http",
+      "start": 68,
+      "end": 77
+    },
+    {
+      "path": "cases/fly-token-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/fly-token-dash-separator-twin.http",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/fly-token-dash-separator-twin.http",
+      "start": 69,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/fly-token-env-flyv1-quoted.env",
+      "start": 276,
+      "end": 316,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/fly-token-env-flyv1-quoted.env",
+      "start": 316,
+      "end": 356,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/fly-token-env-flyv1-quoted.env",
+      "start": 356,
+      "end": 396,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/fly-token-identifier-fm2-near-miss.py",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/fly-token-identifier-fm2-near-miss.py",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/fly-token-identifier-fm2-near-miss.py",
+      "start": 24,
+      "end": 27
+    },
+    {
+      "path": "cases/fly-token-identifier-fm2-near-miss.py",
+      "start": 28,
+      "end": 36
+    },
+    {
+      "path": "cases/fly-token-identifier-fm2-near-miss.py",
+      "start": 38,
+      "end": 53
+    },
+    {
+      "path": "cases/fly-token-json-token.json",
+      "start": 125,
+      "end": 131
+    },
+    {
+      "path": "cases/fly-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/fly-token-prefix-only-near-miss.md",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/fly-token-scheme-alone-near-miss.md",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/fly-token-scheme-alone-near-miss.md",
+      "start": 43,
+      "end": 48
+    },
+    {
+      "path": "cases/fly-token-scheme-alone-near-miss.md",
+      "start": 50,
+      "end": 58
+    },
+    {
+      "path": "cases/fly-token-scheme-alone-near-miss.md",
+      "start": 85,
+      "end": 89
+    },
+    {
+      "path": "cases/fly-token-three-member-bundle.sh",
+      "start": 43,
+      "end": 52
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 0,
+      "end": 5
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 6,
+      "end": 21
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 22,
+      "end": 35
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 35,
+      "end": 47
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 47,
+      "end": 57
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 57,
+      "end": 72
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 73,
+      "end": 80
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 82,
+      "end": 93
+    },
+    {
+      "path": "cases/fly-token-token-guidance-prose.md",
+      "start": 93,
+      "end": 108
+    },
+    {
+      "path": "cases/fly-token-underscore-glue-twin.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/fly-token-uppercase-prefix-twin.json",
+      "start": 55,
+      "end": 71
+    },
+    {
+      "path": "cases/fly-token-x-api-key-header.http",
+      "start": 57,
+      "end": 155,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "711a01a632cda936911ab4061b83bdce4981a26e4fbffc9e957d38d10ccc025a"
+}

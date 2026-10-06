@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "2b19aac5f27837741a321932d39ecea43ce3d8e7b6e4608f56e38c10fff04580",
+    "fixtureCount": 38,
+    "fixturesDigest": "8e8d3e7b6d7235d7a692cc2ae64245a90b158efd991415af795ca0e03d32526d",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 18,
+      "end": 27
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 61,
+      "end": 70
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 147,
+      "end": 152
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 155,
+      "end": 160
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 163,
+      "end": 174
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 177,
+      "end": 185
+    },
+    {
+      "path": "cases/sourcegraph-token-bare-prose.md",
+      "start": 14,
+      "end": 23
+    },
+    {
+      "path": "cases/sourcegraph-token-bearer-header.http",
+      "start": 32,
+      "end": 41
+    },
+    {
+      "path": "cases/sourcegraph-token-bearer-header.http",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/sourcegraph-token-bearer-header.http",
+      "start": 76,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-chat-paste.txt",
+      "start": 13,
+      "end": 22
+    },
+    {
+      "path": "cases/sourcegraph-token-endpoint-and-instance-public-id.env",
+      "start": 23,
+      "end": 32
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-33-twin.json",
+      "start": 27,
+      "end": 36
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-33-twin.json",
+      "start": 89,
+      "end": 98
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-33-twin.json",
+      "start": 155,
+      "end": 164
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-hyphen-twin.py",
+      "start": 15,
+      "end": 26
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-without-underscore-twin.http",
+      "start": 31,
+      "end": 40
+    },
+    {
+      "path": "cases/sourcegraph-token-leading-glue-twin.md",
+      "start": 14,
+      "end": 23
+    },
+    {
+      "path": "cases/sourcegraph-token-mcp-env.json",
+      "start": 27,
+      "end": 36
+    },
+    {
+      "path": "cases/sourcegraph-token-mcp-env.json",
+      "start": 89,
+      "end": 98
+    },
+    {
+      "path": "cases/sourcegraph-token-mcp-env.json",
+      "start": 155,
+      "end": 164
+    },
+    {
+      "path": "cases/sourcegraph-token-non-hex-tail-twin.http",
+      "start": 32,
+      "end": 41
+    },
+    {
+      "path": "cases/sourcegraph-token-non-hex-tail-twin.http",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/sourcegraph-token-non-hex-tail-twin.http",
+      "start": 76,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-prefix-only-near-miss.md",
+      "start": 2,
+      "end": 11
+    },
+    {
+      "path": "cases/sourcegraph-token-sdk-kwarg.py",
+      "start": 15,
+      "end": 26
+    },
+    {
+      "path": "cases/sourcegraph-token-sgph-prefix-twin.sh",
+      "start": 23,
+      "end": 32
+    },
+    {
+      "path": "cases/sourcegraph-token-sha256-digest-encoded-value.txt",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/sourcegraph-token-sha256-digest-encoded-value.txt",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/sourcegraph-token-sha256-digest-encoded-value.txt",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/sourcegraph-token-src-login.sh",
+      "start": 23,
+      "end": 32
+    },
+    {
+      "path": "cases/sourcegraph-token-token-guidance-prose.md",
+      "start": 44,
+      "end": 52
+    },
+    {
+      "path": "cases/sourcegraph-token-token-guidance-prose.md",
+      "start": 70,
+      "end": 86
+    },
+    {
+      "path": "cases/sourcegraph-token-token-guidance-prose.md",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/sourcegraph-token-token-guidance-prose.md",
+      "start": 94,
+      "end": 101
+    },
+    {
+      "path": "cases/sourcegraph-token-token-guidance-prose.md",
+      "start": 102,
+      "end": 105
+    },
+    {
+      "path": "cases/sourcegraph-token-token-guidance-prose.md",
+      "start": 110,
+      "end": 114
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-glue-twin.txt",
+      "start": 13,
+      "end": 22
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-underscore-glue-twin.sh",
+      "start": 18,
+      "end": 27
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-underscore-glue-twin.sh",
+      "start": 61,
+      "end": 70
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-underscore-glue-twin.sh",
+      "start": 148,
+      "end": 153
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-underscore-glue-twin.sh",
+      "start": 156,
+      "end": 161
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-underscore-glue-twin.sh",
+      "start": 164,
+      "end": 175
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-underscore-glue-twin.sh",
+      "start": 178,
+      "end": 186
+    },
+    {
+      "path": "cases/sourcegraph-token-word-only-near-miss.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/sourcegraph-token-x-api-key-header.http",
+      "start": 31,
+      "end": 40
+    }
+  ],
+  "digest": "08a11871c8f2e57a458c339cfa1f721c65bbabf83999ac5d1bd9c8ff115afd74"
+}

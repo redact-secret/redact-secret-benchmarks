@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "535c5c1968442dc9f54c16c1ba97d88845cc5ec1ded0094ab1ca7a6853e4fcdc",
+    "fixtureCount": 61,
+    "fixturesDigest": "dfb751216cc8d1cca459488aa6fd271615fdf4f93ce5d794f8faeee4918911da",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/buildkite-token-bare-prose.md",
+      "start": 63,
+      "end": 108
+    },
+    {
+      "path": "cases/buildkite-token-bearer-header.http",
+      "start": 70,
+      "end": 115
+    },
+    {
+      "path": "cases/buildkite-token-chat-paste.txt",
+      "start": 25,
+      "end": 70
+    },
+    {
+      "path": "cases/buildkite-token-commit-sha-encoded-value.env",
+      "start": 17,
+      "end": 57
+    },
+    {
+      "path": "cases/buildkite-token-dot-separator-twin.py",
+      "start": 39,
+      "end": 79
+    },
+    {
+      "path": "cases/buildkite-token-dotenv.env",
+      "start": 34,
+      "end": 79
+    },
+    {
+      "path": "cases/buildkite-token-export.sh",
+      "start": 35,
+      "end": 80
+    },
+    {
+      "path": "cases/buildkite-token-graphql-curl.sh",
+      "start": 67,
+      "end": 112
+    },
+    {
+      "path": "cases/buildkite-token-json-token.json",
+      "start": 14,
+      "end": 59
+    },
+    {
+      "path": "cases/buildkite-token-legacy-bare-hex-twin.json",
+      "start": 149,
+      "end": 189
+    },
+    {
+      "path": "cases/buildkite-token-mcp-env.json",
+      "start": 149,
+      "end": 194
+    },
+    {
+      "path": "cases/buildkite-token-rest-curl.sh",
+      "start": 99,
+      "end": 144
+    },
+    {
+      "path": "cases/buildkite-token-x-api-key-header.http",
+      "start": 58,
+      "end": 103
+    }
+  ],
+  "digest": "35008f3e35583ce0fec0e6ffac501cc3d81fe8431725ab860de9997ef0f7a320"
+}

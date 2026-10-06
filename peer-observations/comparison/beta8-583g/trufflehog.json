@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583g",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "5c9b65f65fa535528184fde9053786bdf05c8d3b612bef9875880c4e70dafbc0",
+    "fixtureCount": 40,
+    "fixturesDigest": "0faea19ce1e7f8a8a091305a8d62169d214901346109461d84c0a50b1f44d637",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/mapbox-token-equals-in-signature-twin.ts",
+      "start": 84,
+      "end": 176
+    },
+    {
+      "path": "cases/mapbox-token-mapbox-gl-access-token.ts",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/mapbox-token-mapbox-sdk-client.ts",
+      "start": 84,
+      "end": 177
+    },
+    {
+      "path": "cases/mapbox-token-x-api-key-header.http",
+      "start": 55,
+      "end": 148
+    }
+  ],
+  "digest": "1515a04a511df26e643cd12816ec0a1836c7ebe74e63fbd7eb8a8e47497a1d75"
+}

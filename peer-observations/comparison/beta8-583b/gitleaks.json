@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "ce7d61186c11dc79574f776dbb310d04c9bf622df41f3cc855659f2c165ffc54",
+    "fixtureCount": 46,
+    "fixturesDigest": "17b8dfa49a4bd00ee9cc14236837529988cf88413cd9efec724d6dcd9454e502",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/xata-api-key-actions-env.yml",
+      "start": 98,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-body-31-twin.http",
+      "start": 52,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-crc-data-byte-twin.sh",
+      "start": 32,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-crc-stored-byte-twin.yml",
+      "start": 98,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-curl-bearer.sh",
+      "start": 68,
+      "end": 105
+    },
+    {
+      "path": "cases/xata-api-key-docker-env.sh",
+      "start": 32,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-dotenv-org.env",
+      "start": 63,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-dotenv.env",
+      "start": 20,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-export.sh",
+      "start": 21,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-hash-key-hex-encoded-value.txt",
+      "start": 17,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-hyphen-in-body-twin.json",
+      "start": 14,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-hyphen-separator-twin.sh",
+      "start": 21,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-json-api-key.json",
+      "start": 16,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-json-token.json",
+      "start": 14,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-k8s-secret.yml",
+      "start": 91,
+      "end": 131,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-mcp-env.json",
+      "start": 128,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-node-sdk-client.ts",
+      "start": 77,
+      "end": 114,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-sdk-kwarg.py",
+      "start": 29,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-toml-config.toml",
+      "start": 39,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-trailing-hyphen-glue-twin.sh",
+      "start": 68,
+      "end": 106
+    },
+    {
+      "path": "cases/xata-api-key-trailing-underscore-glue-twin.json",
+      "start": 128,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-underscore-in-body-twin.json",
+      "start": 16,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-uppercase-prefix-twin.env",
+      "start": 20,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xata-api-key-x-api-key-header.http",
+      "start": 52,
+      "end": 89,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "7fc718c410feb176bd9f2cd66c527e3687c81c770829a251f233769f0c5f6b22"
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "ce7d61186c11dc79574f776dbb310d04c9bf622df41f3cc855659f2c165ffc54",
+    "fixtureCount": 46,
+    "fixturesDigest": "17b8dfa49a4bd00ee9cc14236837529988cf88413cd9efec724d6dcd9454e502",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/xata-api-key-bearer-header.http",
+      "start": 57,
+      "end": 102,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xata-api-key-curl-bearer.sh",
+      "start": 61,
+      "end": 105,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xata-api-key-trailing-hyphen-glue-twin.sh",
+      "start": 61,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xata-api-key-xat-prefix-twin.http",
+      "start": 57,
+      "end": 102,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "bf808e0e41d0d4628f3d711b814bc89225f43d762727c95e2c7eb76da89c2e8d"
+}

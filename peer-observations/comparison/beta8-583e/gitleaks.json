@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "535c5c1968442dc9f54c16c1ba97d88845cc5ec1ded0094ab1ca7a6853e4fcdc",
+    "fixtureCount": 61,
+    "fixturesDigest": "dfb751216cc8d1cca459488aa6fd271615fdf4f93ce5d794f8faeee4918911da",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/buildkite-token-body-23-twin.http",
+      "start": 58,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-dash-separator-twin.json",
+      "start": 14,
+      "end": 59,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-docker-env.sh",
+      "start": 55,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-dot-separator-twin.py",
+      "start": 34,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-dotenv.env",
+      "start": 34,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-equals-in-body-twin.sh",
+      "start": 35,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-export.sh",
+      "start": 35,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-graphql-curl.sh",
+      "start": 67,
+      "end": 112
+    },
+    {
+      "path": "cases/buildkite-token-json-api-key.json",
+      "start": 16,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-json-token.json",
+      "start": 14,
+      "end": 59,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-legacy-bare-hex-twin.json",
+      "start": 149,
+      "end": 189,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-mcp-env.json",
+      "start": 149,
+      "end": 194,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-pipeline-env.yml",
+      "start": 55,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bkaa.env",
+      "start": 37,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bkat.log",
+      "start": 43,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bkpat.env",
+      "start": 30,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bkps.env",
+      "start": 31,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bkpt.env",
+      "start": 37,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bkrt.env",
+      "start": 32,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bktr.log",
+      "start": 54,
+      "end": 112,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-prefix-bkur.env",
+      "start": 37,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-rest-curl.sh",
+      "start": 99,
+      "end": 144
+    },
+    {
+      "path": "cases/buildkite-token-sdk-kwarg.py",
+      "start": 34,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-third-party-bka-prefix-twin.sh",
+      "start": 67,
+      "end": 111
+    },
+    {
+      "path": "cases/buildkite-token-uppercase-agent-prefix-twin.yml",
+      "start": 55,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-uppercase-prefix-twin.env",
+      "start": 34,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/buildkite-token-x-api-key-header.http",
+      "start": 58,
+      "end": 103,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "40daf8817fdaa80de619433cc6160b0170b627ffc6c37d566b4723b50027aacd"
+}

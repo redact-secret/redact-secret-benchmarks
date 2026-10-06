@@ -125,6 +125,10 @@ function round1Row(def) {
 export const ROWS = {};
 for (const [f, d] of Object.entries(NEW_ROWS)) ROWS[f] = { ...d, part: 'new-rows', pub: d.pub.filter(p => p[1]) };
 for (const [f, d] of Object.entries(ROUND1)) if (d.layouts.some(l => l !== 'digest-only')) ROWS[f] = { ...round1Row(d), part: 'round1-adversarial' };
+// ERRATUM E2: the evidence handoff names oauth_token a public lookalike, the adopted contract reads it as a credential
+// (a recorded round-1 conflict). It is therefore not a public control: it was removed from this row's public fields and
+// has its own `conflict` case below.
+if (ROWS['x:oauth1-access-token-secret']) ROWS['x:oauth1-access-token-secret'].pub = ROWS['x:oauth1-access-token-secret'].pub.filter(p => p[0] !== 'oauth_token');
 export const FAMILY_IDS = Object.keys(ROWS);
 export const PARTS = ['new-rows', 'round1-adversarial'];
 export const CONFLICTS = {
@@ -189,7 +193,8 @@ function build() {
         add(family, 'positive', `${T}-json-big-preceding`, [`${'x'.repeat(63)}\n`.repeat(80), `{"${name}":"`, sec('m8'), '"}\n'], 'about 5 KB of unrelated lines first', ['big-preceding']);
         add(family, 'positive', `${T}-yaml-unquoted`, [`# ${MB}\nresponse:\n  ${name}: `, sec('m9'), '\n  expires_in: 3600\n'], 'YAML mapping, unquoted, comment with multi-byte text first', ['direct-slot', 'utf8-preceding', 'delimiter-after']);
         add(family, 'positive', `${T}-yaml-quoted-crlf`, [`${name}: "`, sec('m10'), '"\r\nother: 1\r\n'], 'YAML quoted value, CRLF', ['line-ending', 'delimiter-after']);
-        add(family, 'positive', `${T}-assignment-eof`, [`${name} = "`, sec('m11')], 'assignment cut at the end of the input inside the value (no closing quote)', ['end-of-input', 'stream-cut']);
+        add(family, 'positive', `${T}-assignment-eof`, [`${name} = `, sec('m11')], 'unquoted assignment whose value is the last byte of the input', ['end-of-input', 'stream-cut']);
+        add(family, 'unsupported', `${T}-assignment-unterminated-quote`, [`${name} = "`, sec('m11u')], 'ERRATUM E1: an unterminated quote at the end of the input is not a layout the contract names (first frozen as a positive, reclassified)', ['end-of-input', 'representation']);
         add(family, 'positive', `${T}-repeat`, [`request: {"${name}":"`, sec('rep', baseLen), `"}\nlog: ${name}=`, { secret: synth(`${family}:rep`, baseLen, alphabet) }, '\n'], 'the same value twice, JSON then assignment', ['repeat-secret']);
         add(family, 'positive', `${T}-neighbouring-secret`, [`{"${name}":"`, sec('m12'), `","client_secret":"${lit('other-secret', 24, ALNUM)}","${name}_expires_at":1791200000}\n`], 'a different credential and an expiry lookalike in the same object', ['neighbouring-secret', 'glued-name']);
         add(family, 'positive', `${T}-lowentropy`, [`{"${name}":"`, { secret: 'abcabcabcabca' }, '"}\n'], 'a 13-byte low-entropy literal: contract expectation is medium confidence and warn', ['value-entropy']);
@@ -240,6 +245,9 @@ function build() {
         add(family, 'unsupported', `${T}-percent-value`, [`${name}=${lit('pct1', 20)}%2B${lit('pct2', 12)}%3D&x=1\n`], 'percent-containing value in a form body: adopted contract keeps the whole value to the delimiter', ['representation']);
       }
 
+      if (family === 'x:oauth1-access-token-secret' && kind === 'form') {
+        add(family, 'conflict', 'oauth_token-as-public-lookalike', [`oauth_token=${lit('otk', 50, URLSAFE)}&oauth_callback_confirmed=true\n`], 'CONTRACT-EVIDENCE CONFLICT (round 1, unchanged): the evidence lists oauth_token as a public lookalike; the contract keeps the default that reads it as contextual_secret and asserts nothing for it', ['near-miss-name', 'representation']);
+      }
       // ============================== fragment (redirect URI hash) ==============================
       if (kind === 'fragment') {
         const T = `${name}-fragment`;
@@ -264,7 +272,7 @@ function build() {
       if (kind === 'bearer' || kind === 'bearer-jwt') {
         const jwt = kind === 'bearer-jwt';
         const val = (slug, n = baseLen, alpha = alphabet) => jwt
-          ? { secret: `${b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }))}.${synth(`${family}:${slug}:p`, 40, URLSAFE)}.${synth(`${family}:${slug}:s`, 43, URLSAFE)}` }
+          ? { secret: `${b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }))}.${b64url(JSON.stringify({ sub: synth(`${family}:${slug}:sub`, 8, LOWER), iss: 'example-issuer', jti: synth(`${family}:${slug}:jti`, 16, HEX), exp: 1791200000 }))}.${synth(`${family}:${slug}:s`, 43, URLSAFE)}` } // ERRATUM E3: the first frozen payload segment was random filler, not an encoded JSON object, so it was not a JWT
           : { secret: synth(`${family}:${slug}`, n, alpha) };
         const type = jwt ? 'jwt' : 'bearer_token';
         const T = jwt ? 'bearer-jwt' : 'bearer';

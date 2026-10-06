@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "kind": "batch2-disposition-ledger",
   "epic": 739,
   "complete": true,
@@ -25,7 +25,8 @@
   },
   "rounds": {
     "round1": "evidence/739/report.md (corpus 74fed382, 30 rows, 486 cases)",
-    "round2": "evidence/739/round2/report.md (corpus a312308a, 1935 cases, adversarial axes)"
+    "round2": "evidence/739/round2/report.md (corpus a312308a, 1935 cases, adversarial axes)",
+    "round3": "evidence/739/round3/report.md (candidate 4e004108, the unchanged frozen corpora a312308a (1935 cases) and 74fed382 (486 cases), Batch 1 controls; Node, WASM, Python, CLI, whole and 7-byte and 1-byte streams)"
   },
   "families": [
     {
@@ -102,6 +103,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -120,7 +127,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "airtable:oauth-access-token",
@@ -198,6 +214,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -216,7 +238,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "asana:oauth-access-token",
@@ -260,6 +291,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -278,7 +315,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 157 observed"
+      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 157 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 220/220 entries at 7-byte chunks, 220/220 at 1-byte chunks; four surfaces identical on 55/55 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "asana:personal-access-token",
@@ -356,6 +402,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -374,7 +426,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "box:oauth-access-token",
@@ -418,6 +479,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -436,7 +503,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 180 observed"
+      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 180 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 220/220 entries at 7-byte chunks, 220/220 at 1-byte chunks; four surfaces identical on 55/55 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "canva:access-token",
@@ -512,6 +588,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -530,7 +612,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "contentful:oauth-application-access-token",
@@ -574,6 +665,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -592,7 +689,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "2 round-2 variants observed and not scored (see report.md for the classes); round 1: 131 observed"
+      "unresolvedOrUnsupportedVariants": "2 round-2 variants observed and not scored (see report.md for the classes); round 1: 131 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 56/56 entries at 7-byte chunks, 56/56 at 1-byte chunks; four surfaces identical on 14/14 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "elastic:access-token",
@@ -670,6 +776,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -688,7 +800,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "elastic:service-account-token",
@@ -766,6 +887,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -784,7 +911,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "figma:oauth-access-token",
@@ -877,6 +1013,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -895,7 +1037,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 5 observed"
+      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 5 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 220/220 entries at 7-byte chunks, 220/220 at 1-byte chunks; four surfaces identical on 55/55 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "figma:scim-api-token",
@@ -973,6 +1124,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -991,7 +1148,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "hubspot:oauth-access-token",
@@ -1069,6 +1235,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1087,7 +1259,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "hubspot:service-key",
@@ -1165,6 +1346,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1183,7 +1370,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "meta:instagram-user-access-token",
@@ -1227,6 +1423,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1245,7 +1447,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 169 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 169 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "meta:page-access-token",
@@ -1289,6 +1500,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1307,7 +1524,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 121 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 121 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "meta:system-user-access-token",
@@ -1351,6 +1577,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1369,7 +1601,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 80 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 80 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "meta:user-access-token",
@@ -1415,6 +1656,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1427,19 +1674,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "meta:user-access-token:r2:access_token-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 109 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "meta:user-access-token:r2:access_token-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "meta:user-access-token:r2:access_token-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 109 observed"
+      }
     },
     {
       "family": "mongodb-atlas:service-account-access-token",
@@ -1517,6 +1776,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1535,7 +1800,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "salesforce:oauth-access-token",
@@ -1579,6 +1853,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1597,7 +1877,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 172 observed"
+      "unresolvedOrUnsupportedVariants": "11 round-2 variants observed and not scored (see report.md for the classes); round 1: 172 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 220/220 entries at 7-byte chunks, 220/220 at 1-byte chunks; four surfaces identical on 55/55 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "spotify:access-token",
@@ -1675,6 +1964,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1693,7 +1988,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "x:oauth2-user-access-token",
@@ -1771,6 +2075,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1789,7 +2099,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "zendesk:oauth-access-token",
@@ -1867,6 +2186,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1885,7 +2210,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "zoom:server-to-server-access-token",
@@ -1963,6 +2297,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -1981,7 +2321,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "adobe:oauth-user-refresh-token",
@@ -2057,6 +2406,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2075,7 +2430,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "airtable:oauth-refresh-token",
@@ -2121,6 +2485,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2133,19 +2503,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "airtable:oauth-refresh-token:r2:refresh_token-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 152 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "airtable:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "airtable:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 152 observed"
+      }
     },
     {
       "family": "asana:oauth-refresh-token",
@@ -2191,6 +2573,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2203,19 +2591,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "asana:oauth-refresh-token:r2:refresh_token-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 102 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "asana:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "asana:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 102 observed"
+      }
     },
     {
       "family": "box:oauth-refresh-token",
@@ -2261,6 +2661,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2273,19 +2679,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "box:oauth-refresh-token:r2:refresh_token-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 105 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "box:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "box:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 105 observed"
+      }
     },
     {
       "family": "canva:refresh-token",
@@ -2361,6 +2779,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2379,7 +2803,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "dropbox:refresh-token",
@@ -2425,6 +2858,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2437,19 +2876,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "dropbox:refresh-token:r2:refresh_token-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 120 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "dropbox:refresh-token:r2:refresh_token-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "dropbox:refresh-token:r2:refresh_token-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 120 observed"
+      }
     },
     {
       "family": "elastic:refresh-token",
@@ -2493,6 +2944,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2511,7 +2968,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 133 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 133 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "figma:oauth-refresh-token",
@@ -2587,6 +3053,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2605,7 +3077,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "hubspot:oauth-refresh-token",
@@ -2651,6 +3132,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2663,19 +3150,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "hubspot:oauth-refresh-token:r2:refresh_token-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 121 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "hubspot:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "hubspot:oauth-refresh-token:r2:refresh_token-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 121 observed"
+      }
     },
     {
       "family": "spotify:refresh-token",
@@ -2751,6 +3250,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2769,7 +3274,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "x:oauth2-refresh-token",
@@ -2815,6 +3329,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2827,19 +3347,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "x:oauth2-refresh-token:r2:refresh_token-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 213 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "x:oauth2-refresh-token:r2:refresh_token-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "x:oauth2-refresh-token:r2:refresh_token-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 213 observed"
+      }
     },
     {
       "family": "zendesk:oauth-refresh-token",
@@ -2883,6 +3415,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2901,7 +3439,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 104 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 104 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "zoom:oauth-refresh-token",
@@ -2977,6 +3524,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -2995,7 +3548,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 112/112 entries at 7-byte chunks, 112/112 at 1-byte chunks; four surfaces identical on 28/28 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "airtable:oauth-client-secret",
@@ -3039,6 +3601,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3057,7 +3625,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 97 observed"
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 97 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 84/84 entries at 7-byte chunks, 84/84 at 1-byte chunks; four surfaces identical on 21/21 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "asana:oauth-client-secret",
@@ -3103,6 +3680,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3115,19 +3698,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 104/104 entries at 7-byte chunks, 104/104 at 1-byte chunks; four surfaces identical on 26/26 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "asana:oauth-client-secret:r2:client_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 80 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 104/104 entries at 7-byte chunks, 104/104 at 1-byte chunks; four surfaces identical on 26/26 cases",
+        "changedVersusPreviousCandidate": [
+          "asana:oauth-client-secret:r2:client_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "asana:oauth-client-secret:r2:client_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 80 observed"
+      }
     },
     {
       "family": "box:oauth-client-secret",
@@ -3173,6 +3768,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3185,19 +3786,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 104/104 entries at 7-byte chunks, 104/104 at 1-byte chunks; four surfaces identical on 26/26 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "box:oauth-client-secret:r2:client_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 85 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 104/104 entries at 7-byte chunks, 104/104 at 1-byte chunks; four surfaces identical on 26/26 cases",
+        "changedVersusPreviousCandidate": [
+          "box:oauth-client-secret:r2:client_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "box:oauth-client-secret:r2:client_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 85 observed"
+      }
     },
     {
       "family": "dropbox:app-secret",
@@ -3277,6 +3890,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3289,19 +3908,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "dropbox:app-secret:r2:client_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "dropbox:app-secret:r2:client_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "dropbox:app-secret:r2:client_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      }
     },
     {
       "family": "figma:oauth-client-secret",
@@ -3376,6 +4007,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3394,7 +4031,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 84/84 entries at 7-byte chunks, 84/84 at 1-byte chunks; four surfaces identical on 21/21 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "hubspot:app-client-secret",
@@ -3440,6 +4086,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3452,19 +4104,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 104/104 entries at 7-byte chunks, 104/104 at 1-byte chunks; four surfaces identical on 26/26 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "hubspot:app-client-secret:r2:client_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 84 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 104/104 entries at 7-byte chunks, 104/104 at 1-byte chunks; four surfaces identical on 26/26 cases",
+        "changedVersusPreviousCandidate": [
+          "hubspot:app-client-secret:r2:client_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "hubspot:app-client-secret:r2:client_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 84 observed"
+      }
     },
     {
       "family": "salesforce:external-client-app-consumer-secret",
@@ -3510,6 +4174,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3522,19 +4192,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 188/188 entries at 7-byte chunks, 188/188 at 1-byte chunks; four surfaces identical on 47/47 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "salesforce:external-client-app-consumer-secret:r2:client_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "8 round-2 variants observed and not scored (see report.md for the classes); round 1: 100 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 188/188 entries at 7-byte chunks, 188/188 at 1-byte chunks; four surfaces identical on 47/47 cases",
+        "changedVersusPreviousCandidate": [
+          "salesforce:external-client-app-consumer-secret:r2:client_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "salesforce:external-client-app-consumer-secret:r2:client_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "8 round-2 variants observed and not scored (see report.md for the classes); round 1: 100 observed"
+      }
     },
     {
       "family": "spotify:client-secret",
@@ -3578,6 +4260,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3596,7 +4284,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 96 observed"
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 96 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 84/84 entries at 7-byte chunks, 84/84 at 1-byte chunks; four surfaces identical on 21/21 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "x:oauth2-client-secret",
@@ -3671,6 +4368,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3689,7 +4392,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 84/84 entries at 7-byte chunks, 84/84 at 1-byte chunks; four surfaces identical on 21/21 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "zendesk:oauth-client-secret",
@@ -3768,6 +4480,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3780,19 +4498,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
       "streamParity": "round 2 candidate whole==stream: 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "zendesk:oauth-client-secret:r2:client_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 216/216 entries at 7-byte chunks, 216/216 at 1-byte chunks; four surfaces identical on 54/54 cases",
+        "changedVersusPreviousCandidate": [
+          "zendesk:oauth-client-secret:r2:client_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "zendesk:oauth-client-secret:r2:client_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      }
     },
     {
       "family": "zoom:oauth-app-client-secret",
@@ -3838,6 +4568,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3850,19 +4586,31 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 188/188 entries at 7-byte chunks, 188/188 at 1-byte chunks; four surfaces identical on 47/47 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "zoom:oauth-app-client-secret:r2:client_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "8 round-2 variants observed and not scored (see report.md for the classes); round 1: 81 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 188/188 entries at 7-byte chunks, 188/188 at 1-byte chunks; four surfaces identical on 47/47 cases",
+        "changedVersusPreviousCandidate": [
+          "zoom:oauth-app-client-secret:r2:client_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "zoom:oauth-app-client-secret:r2:client_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "8 round-2 variants observed and not scored (see report.md for the classes); round 1: 81 observed"
+      }
     },
     {
       "family": "zoom:server-to-server-client-secret",
@@ -3906,6 +4654,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -3924,7 +4678,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 86 observed"
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 86 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 84/84 entries at 7-byte chunks, 84/84 at 1-byte chunks; four surfaces identical on 21/21 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "elastic:cloud-api-key",
@@ -4004,6 +4767,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4022,7 +4791,16 @@
       "conflictCases": [],
       "gapIssue": "redact-secret#1212 (Elastic ApiKey envelope, PR #1215); reused, no new issue",
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "2 round-2 variants observed and not scored (see report.md for the classes); round 1: 1 observed"
+      "unresolvedOrUnsupportedVariants": "2 round-2 variants observed and not scored (see report.md for the classes); round 1: 1 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 76/76 entries at 7-byte chunks, 76/76 at 1-byte chunks; four surfaces identical on 19/19 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "elastic:ece-api-key",
@@ -4066,6 +4844,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4084,7 +4868,16 @@
       "conflictCases": [],
       "gapIssue": "redact-secret#1212 (Elastic ApiKey envelope, PR #1215); reused, no new issue",
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "2 round-2 variants observed and not scored (see report.md for the classes); round 1: 115 observed"
+      "unresolvedOrUnsupportedVariants": "2 round-2 variants observed and not scored (see report.md for the classes); round 1: 115 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 76/76 entries at 7-byte chunks, 76/76 at 1-byte chunks; four surfaces identical on 19/19 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "jfrog:access-token",
@@ -4128,6 +4921,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4146,7 +4945,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "12 round-2 variants observed and not scored (see report.md for the classes); round 1: 130 observed"
+      "unresolvedOrUnsupportedVariants": "12 round-2 variants observed and not scored (see report.md for the classes); round 1: 130 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 220/220 entries at 7-byte chunks, 220/220 at 1-byte chunks; four surfaces identical on 55/55 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "x:app-only-bearer-token",
@@ -4227,6 +5035,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4245,7 +5059,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "8 round-2 variants observed and not scored (see report.md for the classes); round 1: 6 observed"
+      "unresolvedOrUnsupportedVariants": "8 round-2 variants observed and not scored (see report.md for the classes); round 1: 6 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 120/120 entries at 7-byte chunks, 120/120 at 1-byte chunks; four surfaces identical on 30/30 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "hubspot:personal-access-key",
@@ -4298,6 +5121,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4310,54 +5139,46 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "not measured",
       "streamParity": "round 2 candidate whole==stream: 60/60 entries at 7-byte chunks, 60/60 at 1-byte chunks; four surfaces identical on 15/15 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": null,
       "conflictCases": [],
-      "gapIssue": "redact-secret#1233",
-      "gapCases": [
-        {
-          "case": "hubspot:personal-access-key:r2:personalAccessKey-yaml-account:positive",
+      "gapIssue": "redact-secret#1233 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "3 round-2 variants observed and not scored (see report.md for the classes); round 1: 116 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 60/60 entries at 7-byte chunks, 60/60 at 1-byte chunks; four surfaces identical on 15/15 cases",
+        "changedVersusPreviousCandidate": [
+          "hubspot:personal-access-key:r2:personalAccessKey-yaml-account:positive",
+          "hubspot:personal-access-key:r2:personalAccessKey-yaml-quoted:positive",
+          "hubspot:personal-access-key:r2:personalAccessKey-yaml-eof-crlf:positive",
+          "hubspot:personal-access-key:r2:personalAccessKey-yaml-same-shape:positive",
+          "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-env:positive",
+          "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-export-quoted:positive",
+          "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-env-eof:positive",
+          "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-docker-compose:positive",
+          "hubspot:personal-access-key:r2:personalAccessKey-legacy-portals:unsupported"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
-        },
-        {
-          "case": "hubspot:personal-access-key:r2:personalAccessKey-yaml-quoted:positive",
-          "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
-        },
-        {
-          "case": "hubspot:personal-access-key:r2:personalAccessKey-yaml-eof-crlf:positive",
-          "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
-        },
-        {
-          "case": "hubspot:personal-access-key:r2:personalAccessKey-yaml-same-shape:positive",
-          "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
-        },
-        {
-          "case": "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-env:positive",
-          "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
-        },
-        {
-          "case": "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-export-quoted:positive",
-          "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
-        },
-        {
-          "case": "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-env-eof:positive",
-          "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
-        },
-        {
-          "case": "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-docker-compose:positive",
-          "issue": "redact-secret#1233",
-          "rule": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives"
+          "cases": [
+            "hubspot:personal-access-key:r2:personalAccessKey-yaml-account:positive",
+            "hubspot:personal-access-key:r2:personalAccessKey-yaml-quoted:positive",
+            "hubspot:personal-access-key:r2:personalAccessKey-yaml-eof-crlf:positive",
+            "hubspot:personal-access-key:r2:personalAccessKey-yaml-same-shape:positive",
+            "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-env:positive",
+            "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-export-quoted:positive",
+            "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-env-eof:positive",
+            "hubspot:personal-access-key:r2:HUBSPOT_PERSONAL_ACCESS_KEY-docker-compose:positive"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "3 round-2 variants observed and not scored (see report.md for the classes); round 1: 116 observed"
+      }
     },
     {
       "family": "jfrog:myjfrog-api-token",
@@ -4401,6 +5222,12 @@
         },
         "round1": {
           "measured": false
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4419,7 +5246,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 73 observed"
+      "unresolvedOrUnsupportedVariants": "5 round-2 variants observed and not scored (see report.md for the classes); round 1: 73 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 108/108 entries at 7-byte chunks, 108/108 at 1-byte chunks; four surfaces identical on 27/27 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "x:oauth1-access-token-secret",
@@ -4498,6 +5334,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4510,21 +5352,33 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
       "streamParity": "round 2 candidate whole==stream: 220/220 entries at 7-byte chunks, 220/220 at 1-byte chunks; four surfaces identical on 55/55 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": "oauth_token: the evidence handoff names it a public lookalike; the adopted contract (#1225) keeps the default that reads it as contextual_secret and asserts nothing for it. The secret-half expectation is not in conflict.",
       "conflictCases": [
         "x:oauth1-access-token-secret:r2:oauth_token-as-public-lookalike:conflict"
       ],
-      "gapIssue": "redact-secret#1232",
-      "gapCases": [
-        {
-          "case": "x:oauth1-access-token-secret:r2:oauth_token_secret-form-empty-null:control",
+      "gapIssue": "redact-secret#1232 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 220/220 entries at 7-byte chunks, 220/220 at 1-byte chunks; four surfaces identical on 55/55 cases",
+        "changedVersusPreviousCandidate": [
+          "x:oauth1-access-token-secret:r2:oauth_token_secret-form-empty-null:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1232",
-          "rule": "empty form value takes the next parameter as its value"
+          "cases": [
+            "x:oauth1-access-token-secret:r2:oauth_token_secret-form-empty-null:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "10 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      }
     },
     {
       "family": "mongodb-atlas:database-user-password",
@@ -4602,6 +5456,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4614,21 +5474,33 @@
       "findings": "per-case findings (start, end, type, action; no matched text) are in observations-*.json.gz (round 2) and evidence/739/observations-*.json (round 1); expectations in benchmarks/batch2/corpus-r2.mjs and corpus.mjs",
       "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
       "streamParity": "round 2 candidate whole==stream: 148/148 entries at 7-byte chunks, 148/148 at 1-byte chunks; four surfaces identical on 37/37 cases",
-      "coverage": "reproduced product gap (candidate)",
+      "coverage": "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
       "boundary": null,
       "contractEvidenceConflict": "percent encoding in a connection-string password: the contract keeps escapes in the span; the evidence records it as unresolved. The password field and plain URI userinfo expectations are not in conflict.",
       "conflictCases": [
         "mongodb-atlas:database-user-password:r2:password-uri-percent-escapes:conflict"
       ],
-      "gapIssue": "redact-secret#1234",
-      "gapCases": [
-        {
-          "case": "mongodb-atlas:database-user-password:r2:password-member-placeholders:control",
+      "gapIssue": "redact-secret#1234 (fixed in redact-secret#1235; benchmark replay of the exact candidate verified)",
+      "gapCases": [],
+      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 148/148 entries at 7-byte chunks, 148/148 at 1-byte chunks; four surfaces identical on 37/37 cases",
+        "changedVersusPreviousCandidate": [
+          "mongodb-atlas:database-user-password:r2:password-member-placeholders:control"
+        ],
+        "priorGap": {
+          "coverage": "reproduced product gap (candidate)",
           "issue": "redact-secret#1234",
-          "rule": "YOUR_PASSWORD placeholder under password"
+          "cases": [
+            "mongodb-atlas:database-user-password:r2:password-member-placeholders:control"
+          ]
         }
-      ],
-      "unresolvedOrUnsupportedVariants": "6 round-2 variants observed and not scored (see report.md for the classes); round 1: 2 observed"
+      }
     },
     {
       "family": "mongodb-atlas:programmatic-api-private-key",
@@ -4695,6 +5567,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4713,7 +5591,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "0 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "0 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 0/0 entries at 7-byte chunks, 0/0 at 1-byte chunks; four surfaces identical on 0/0 cases",
+        "changedVersusPreviousCandidate": []
+      }
     },
     {
       "family": "mongodb-atlas:service-account-secret",
@@ -4788,6 +5675,12 @@
           "positivesPassOnEverySurfaceAndStream": true,
           "controlsFlaggedNode": 0,
           "controlsCleanOnEverySurface": true
+        },
+        "round3": {
+          "identity": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+          "positivesFailing": 0,
+          "controlsFlagged": 0,
+          "failingCases": []
         }
       },
       "surfaces": {
@@ -4806,7 +5699,16 @@
       "conflictCases": [],
       "gapIssue": null,
       "gapCases": [],
-      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed"
+      "unresolvedOrUnsupportedVariants": "4 round-2 variants observed and not scored (see report.md for the classes); round 1: 3 observed",
+      "round3": {
+        "candidate": "4e0041081aad22d0101bd52db52017b67b5bd3db",
+        "replayed": "Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)",
+        "positivesFailing": 0,
+        "controlsFlagged": 0,
+        "failingCases": [],
+        "streamParity": "whole==stream on 84/84 entries at 7-byte chunks, 84/84 at 1-byte chunks; four surfaces identical on 21/21 cases",
+        "changedVersusPreviousCandidate": []
+      }
     }
   ],
   "counts": {
@@ -4814,9 +5716,20 @@
     "measured": 58,
     "byCoverage": {
       "already-covered / no-code": 38,
-      "reproduced product gap (candidate)": 17,
+      "fixed by candidate 4e004108, replay verified on Node, WASM, Python and CLI (whole, 7-byte and 1-byte streams)": 17,
       "fixed in candidate by an existing core fix (no new gap)": 2,
       "contract-evidence conflict": 1
     }
+  },
+  "candidateRound3": {
+    "source": "unpublished redact-secret commit 4e0041081aad22d0101bd52db52017b67b5bd3db (core main after PR #1235, declared 0.1.0-beta.13, not released)",
+    "versions": {
+      "node": "0.1.0-beta.13",
+      "wasm": "0.1.0-beta.13",
+      "python": "0.1.0b13",
+      "cli": "0.1.0-beta.13"
+    },
+    "platform": "darwin-arm64",
+    "node": "v22.16.0"
   }
 }

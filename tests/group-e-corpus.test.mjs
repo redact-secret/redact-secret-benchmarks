@@ -241,7 +241,7 @@ test('scoring smoke without a detector: an oracle observation is all exact, an e
   assert.equal(wide.span, 'over');
 });
 
-test('the corpus is deterministic and its digest is the proposed freeze, which is not frozen', async () => {
+test('the corpus is deterministic and its digest is the proposed freeze, which is superseded by the frozen manifest', async () => {
   const again = await import('../benchmarks/group-e/corpus-e.mjs?again');
   assert.equal(again.corpusDigest(), corpusDigest());
   const proposed = JSON.parse(readFileSync(file('benchmarks/group-e/FROZEN-group-e.json.proposed'), 'utf8'));
@@ -251,7 +251,7 @@ test('the corpus is deterministic and its digest is the proposed freeze, which i
   assert.equal(proposed.cases, cases.length);
   for (const f of ROWS) assert.equal(proposed.rows[f].total, counts()[f].total);
   assert.equal(proposed.expectationSources.evidenceInputSha256, sha(readFileSync(file('benchmarks/group-e/evidence-group-e.json'))));
-  assert.equal(existsSync(file('benchmarks/group-e/FROZEN-group-e.json')), false, 'freezing is the owner\'s step');
+  assert.equal(existsSync(file('benchmarks/group-e/FROZEN-group-e.json')), true, 'the corpus is frozen');
 });
 
 test('the traceability table names a Case, a fixture or the absence of one, and claims for every case', () => {
@@ -322,4 +322,18 @@ test('unique inputs per row and kind are in the proposal and the traceability', 
   assert.equal(t.filter((r) => !r.uniqueInput).every((r) => r.duplicateOf), true);
   assert.match(p.policyClassTolerance, /tolerance/);
   assert.ok(p.inexpressible.includes('policy-class-tolerance'));
+});
+
+test('Group E is frozen: FROZEN-group-e.json exists, carries the digest and pins the evidence and scorer files', () => {
+  const frozen = JSON.parse(readFileSync(new URL('../benchmarks/group-e/FROZEN-group-e.json', import.meta.url), 'utf8'));
+  assert.equal(frozen.frozen, true);
+  assert.equal(frozen.status, 'frozen');
+  assert.equal(frozen.frozenBeforeAnyScan, true);
+  assert.equal(frozen.sha256, '6aa6221022b94418183f706f8034705d8c6050b5c657e309980832f6231691aa');
+  assert.equal(frozen.sha256, corpusDigest());
+  assert.equal(frozen.cases, cases.length);
+  assert.equal(frozen.evidenceSnapshot.tag, 'snapshot-2026.10.06.5');
+  assert.equal(frozen.evidenceSnapshot.commit, '574b52ba367e2071d5a9bea3e2da7a9c5057f633');
+  assert.match(frozen.frozenAtCommit, /^[0-9a-f]{40}$/);
+  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(createHash('sha256').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex'), h, f);
 });

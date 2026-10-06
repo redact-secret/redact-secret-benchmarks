@@ -20,9 +20,15 @@ test('the evidence snapshot pin and the 11 rows', () => {
   assert.deepEqual([...new Set(cases.map(c => c.family))].sort(), [...ROW_IDS].sort());
 });
 
-test('the corpus digest is the one proposed (or frozen, once the orchestrator freezes it)', () => {
-  const file = existsSync(new URL('../benchmarks/group-c/FROZEN-group-c.json', import.meta.url)) ? 'benchmarks/group-c/FROZEN-group-c.json' : 'benchmarks/group-c/FROZEN-group-c.json.proposed';
-  const frozen = JSON.parse(read(file));
+test('the corpus digest is the frozen one', () => {
+  assert.ok(existsSync(new URL('../benchmarks/group-c/FROZEN-group-c.json', import.meta.url)), 'FROZEN-group-c.json exists');
+  const frozen = JSON.parse(read('benchmarks/group-c/FROZEN-group-c.json'));
+  assert.equal(frozen.frozen, true);
+  assert.equal(frozen.frozenBeforeAnyScan, true);
+  assert.equal(frozen.evidenceSnapshot.tag, 'snapshot-2026.10.06.5');
+  assert.equal(frozen.evidenceSnapshot.commit, '574b52ba367e2071d5a9bea3e2da7a9c5057f633');
+  assert.equal(frozen.sha256, 'f216ca0a72c52d2b268924662d7f4ab66372c9820d0cfe386e3eefa0110dc37d');
+  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(createHash('sha256').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex'), h, f);
   assert.equal(corpusDigest(), frozen.sha256);
   assert.equal(cases.length, frozen.cases);
   assert.equal(frozen.positives + frozen.controls + frozen.unsupported + frozen.conflict, frozen.cases);

@@ -174,3 +174,17 @@ test('erratum D-B1/D-B2/A3: endpoint context and container downgrades hold', () 
   for (const c of down) { assert.equal(c.kind, 'unsupported'); assert.equal(c.trace.downgradedFrom, 'positive'); assert.ok(c.trace.ruling, c.id); }
   assert.ok(cases.some((c) => c.axes.includes('class-extension')));
 });
+
+test('Group D is frozen: FROZEN-group-d.json exists, carries the digest and pins the evidence and scorer files', () => {
+  const frozen = JSON.parse(readFileSync(new URL('../benchmarks/group-d/FROZEN-group-d.json', import.meta.url), 'utf8'));
+  assert.equal(frozen.frozen, true);
+  assert.equal(frozen.status, 'frozen');
+  assert.equal(frozen.frozenBeforeAnyScan, true);
+  assert.equal(frozen.sha256, 'aa173111a8b7142dc4f378ebd29875605658112eae6553dcfce6287cbaf8e72e');
+  assert.equal(frozen.sha256, corpusDigest());
+  assert.equal(frozen.cases, cases.length);
+  assert.equal(frozen.evidenceSnapshot.tag, 'snapshot-2026.10.06.5');
+  assert.equal(frozen.evidenceSnapshot.commit, '574b52ba367e2071d5a9bea3e2da7a9c5057f633');
+  assert.match(frozen.frozenAtCommit, /^[0-9a-f]{40}$/);
+  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(createHash('sha256').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex'), h, f);
+});

@@ -40,6 +40,13 @@ CloudFront viewer-request function code in `redact-secret-sites`; that repositor
 | `/workbench/qualification` | `/evaluation/qualification/` | same subject |
 | `/next`, `/next/...` | the same path without `/next` | the retired preview prefix |
 
+## Before the host rule: the not-found page (#594)
+
+Until the CloudFront function carries the `fixture` row, and on any host without it, `/fixture/<suite>--<id>` reaches the export's `404.html`. The not-found page
+then resolves it in the browser (`web/app/LegacyFixtureLookup.tsx`, `web/lib/legacy-fixture.ts`): split at the first `--`, validate both ids, check the suite's
+records file, and replace a known fixture with `/report/fixtures/<suite>/?fixture=<id>` (original query minus `fixture`, hash kept). An unknown suite or fixture
+stays a 404 that says which ([decision](../decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md)). The host rule is still the answer of record.
+
 ## Decisions where the new site has no equal page
 
 `/coverage` and `/support` go to the family list, `/how-to-read` to the comparison overview, `/scenarios/:id` to the report hub, `/workbench/review/:id` to the evaluation hub: each is

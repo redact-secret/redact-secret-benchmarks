@@ -226,7 +226,18 @@ of the required `validate` aggregate and is unrelated to the rollback. The rehea
 
 ### Rehearsal of the rollback against beta.14 (2026-10-07, #808)
 
-(Filled in below after the run.)
+Rehearsed on 2026-10-07 against `@redact-secret/core@0.1.0-beta.14` (the accepted run 37630100920: policy `rs-policy-1:sha256:5c8f6841…`, 116 stable, 27 provisional, 1 pending of 144 families in the view; the legacy oracle reads 133 stable, parity 0 unexplained), from the #809 branch (`feat/808-published-beta14-repin`, merged with `origin/develop`, commit `57c81d07` before this section was written), by the one-value flip with `web/scripts/with-authority.mjs`, following the procedure above. Nothing was committed during the rehearsal and no authority value was edited: the committed `benchmarks/qualification-authority.json` was `08c867ec5a2442fabbc641b4ee26933daae9d875` (SHA-1) before the first flip, after the flip and at the end. Node 22.16.0; the pinned trufflehog 3.97.4 first on `PATH` for `bench` and `eval:classify`.
+The `new` run used a view built as the `view` job builds it: the four recorded canonical RunArtifacts fetched from the repository's archive (release `official-runs-registry-37630100920`, verified against `benchmarks/official-runs.json`), the two product populations exported from the checkout, `qualification:view`.
+
+| Step | `legacy` | `new` (with the view) |
+| --- | --- | --- |
+| `authority:check` | passes: `Qualification authority: legacy (the new path is not consulted)` | passes: `new (authorised: policy, canonical runs, parity report and decision hold)` |
+| `web` `npm run build` and `check:routes` (`WEB_REQUIRE_RUN=1`; `WEB_REQUIRE_QUALIFICATION=1` for `new`) | passes: every page recounted against the legacy files; 198 qualification case pages, 7,217 rows match the view | passes: every page recounted against the view, independently of the services; 198 qualification case pages, 7,217 rows match the view |
+| Authority file after the step | unchanged (`with-authority.mjs` restored `new`) | unchanged (no flip) |
+| Legacy classification (value-independent) | `npm run bench -- --strict` passes; `npm run eval:classify` reads 133 stable, 10 provisional, 1 pending of 144 families (the legacy oracle's own figure, not compared with the view's); `npm run queue:check` passes | not applicable |
+| `web` `check:no-sx`, `check:header`, `typecheck`, `test:coverage` | pass (33 files, 1,325 tests) | same run |
+
+The browser checks (Storybook, `check:layout`, the Playwright suite) were not rerun locally; the CI run on the pushed tip exercises the rollback state (`legacy-oracle` jobs) and both exports. The rehearsal is evidence for the oracle exit (the rollback rehearsed against that release); it does not declare the exit. The owner's decision that records `legacy.oracle.exit` for beta.14 is [the acceptance](../decisions/2026-10-07-accept-credential-eval-alpha-16-measuring-core-beta-14-on-snapshot-2026-10-06-4.md).
 
 
 **The oracle period.** The `remove-after-cutover` rows below are not removed at the switch. They are removed only after at least one further published release has been qualified

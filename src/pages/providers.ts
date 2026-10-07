@@ -89,7 +89,7 @@ export function providersPage(file: ProviderDossiersFile | null, problem: string
   }
   const meta = `<span><b>${n(file.familyCount)}</b> families across <b>${n(file.providerCount)}</b> providers</span>
     <span>${DOSSIER_VERDICTS.map(v => `${e(DOSSIER_VERDICT_COPY[v].word)} <b>${n(file.verdictDistribution[v])}</b>`).join(' · ')}</span>
-    ${file.supportMatrix ? `<span>Measured status from evidence run <b>${e(file.supportMatrix.runId.slice(0, 8))}</b> · ${e(file.supportMatrix.generatedAt.slice(0, 10))}</span>` : `<span>${statusMark('not-measured', 'No support matrix in this build')}</span>`}`;
+    ${file.supportMatrix && 'runId' in file.supportMatrix ? `<span>Measured status from evidence run <b>${e(file.supportMatrix.runId.slice(0, 8))}</b> · ${e(file.supportMatrix.generatedAt.slice(0, 10))}</span>` : file.supportMatrix ? `<span>Measured status from the qualification view · policy <b>${e(file.supportMatrix.policyRevision.slice(0, 24))}</b></span>` : `<span>${statusMark('not-measured', 'No support matrix in this build')}</span>`}`;
   const shown = file.providers
     .map(provider => ({ provider, rows: filter === 'all' ? provider.families : provider.families.filter(f => f.stage === filter) }))
     .filter(({ rows }) => rows.length);

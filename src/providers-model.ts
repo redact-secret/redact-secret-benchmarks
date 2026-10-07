@@ -28,7 +28,7 @@ export interface ProviderDossierFamily {
 }
 export interface ProviderDossiersFile {
   schemaVersion: 1; taxonomySchemaVersion: 1;
-  supportMatrix: { runId: string; generatedAt: string; revision: string } | null;
+  supportMatrix: { runId: string; generatedAt: string; revision: string } | { source: 'qualification-view'; policyRevision: string; populations: { population: string; semanticDigest: string }[] } | null;
   providerCount: number; familyCount: number;
   stageDistribution: Record<ProviderStage, number>; verdictDistribution: Record<DossierVerdict, number>;
   providers: { id: string; name: string; families: ProviderDossierFamily[] }[];

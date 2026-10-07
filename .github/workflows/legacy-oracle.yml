@@ -51,6 +51,14 @@ jobs:
       # the current corpus, semantic index, pin, adapter and snapshot schema.
       - name: Support classification reuses validated peer observations
         run: npm run eval:classify
+      # The legacy matrix consumers of the publish pipeline (the `legacy` authority, the rollback; #657): the matrix generator, its publisher and the provider roadmap
+      # that reads it still run on what eval:classify wrote, so a rollback does not find them broken. Nothing is written under public/results/.
+      - name: The legacy support matrix is generated, published and read by the roadmap (the rollback path of publish-site.yml, #657)
+        run: |
+          set -euo pipefail
+          npm run eval:matrix
+          npm run eval:publish:matrix -- --output="$RUNNER_TEMP/support-matrix-v1.json"
+          npm run dossiers:publish -- --require-matrix --output="$RUNNER_TEMP/provider-dossiers-v1.json"
       - name: Every review-queue id resolves against the ledger, using the same validated observations (#98)
         run: npm run queue:check
       - name: Run the comparison with a fresh product and validated peer observations

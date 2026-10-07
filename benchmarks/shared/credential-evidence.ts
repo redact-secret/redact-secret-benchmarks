@@ -23,10 +23,21 @@ export interface CredentialEvidenceReadSet {
   totals: { cases: number; reviews: number; caseParts: number; reviewParts: number; maxPartBytes: number };
 }
 
-/** The credential support matrix is one small document; its validation is the support-matrix contract's. */
+/**
+ * The credential support matrix is one small document. It is either the legacy matrix (the support-matrix contract's validator) or, under the `new`
+ * qualification authority, the matrix of the validated view (`qualification:matrix`, checked by `viewMatrixProblems` against the registry, the
+ * policy and the taxonomy of this checkout). The file's own `schema` picks the validator; neither accepts the other's file (#657).
+ */
 const readSupport = async (file: string) => {
   const bytes = await readFile(file);
-  const issue = supportMatrixProblem(JSON.parse(bytes.toString('utf8')));
+  const value = JSON.parse(bytes.toString('utf8'));
+  if ((value as { schema?: unknown } | null)?.schema === 'redact-secret/support-matrix-from-view/v1') {
+    const { loadViewSupportContext, viewMatrixProblems } = await import('../qualification/matrix-publication.ts');
+    const problems = viewMatrixProblems(value, await loadViewSupportContext());
+    if (problems.length) throw new Error(`Credential support artifact is incompatible: ${problems.join('; ')}`);
+    return sha256Of(bytes);
+  }
+  const issue = supportMatrixProblem(value);
   if (issue) throw new Error(`Credential support artifact is incompatible: ${issue}`);
   return sha256Of(bytes);
 };

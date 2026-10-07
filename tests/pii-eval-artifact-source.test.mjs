@@ -119,7 +119,7 @@ test('public workflow isolates App credentials and publisher consumes only stagi
   assert.equal(caller.uses, './.github/workflows/pii-public-synthetic.yml');
   assert.equal(publish.jobs.publish.needs, 'pii-public-synthetic');
   assert.equal(publish.jobs.publish.steps.some(step => step.env?.GH_TOKEN?.includes('pii-eval')), false);
-  const classify = publish.jobs.publish.steps.find(step => step.name === 'Classify support').run;
+  const classify = publish.jobs.publish.steps.find(step => step.name === 'Publish the provider roadmap, the domain gate and the PII support').run;
   assert.match(classify, /pii_eval_args=\(\)/);
   assert.match(classify, /--pii-eval-pins=benchmarks\/pii-eval-public-synthetic-pins.json/);
   assert.match(classify, /--pii-eval-pins=benchmarks\/pii-eval-population-pins.json/);

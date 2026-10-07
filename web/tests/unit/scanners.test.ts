@@ -12,6 +12,7 @@ import type { PeerRuntime } from '../../services/runtime';
 import type { MeasuredRun, OfficialRun, RunScanner } from '../../services/run';
 import type { MeasurementHost } from '../../services/qualification';
 import type { ScannerEnvironment, ScannerSource, SnapshotFacts } from '../../services/scanners';
+import type { ProductScopeProfile } from '../../services/product-scope';
 import { resolveScanners, type ScannerInput } from '../../resolvers/scanners';
 import { REAL_ROOT, edited, overlay } from './overlay';
 
@@ -159,14 +160,59 @@ describe('the scanner page resolver', () => {
     expect(fact(page, 'gamma', 'Configuration')?.value).toBeNull();
   });
 
-  test('the product shows its own out-of-scope statements and the revision its detector count was read at, and a peer never borrows them (#622)', () => {
-    const productScope = { outOfScope: ['Encoded carriers: not decoded.'], readAt: 'a'.repeat(40), detectors: { count: 110, revision: '66b492bdff5e6751fc6b5409266916346ed7c723' } };
-    const page = resolveScanners(input({ productScope }));
-    expect(page.profiles.find(p => p.id === 'redact-secret')?.outOfScope).toEqual(['Encoded carriers: not decoded.']);
-    expect(page.profiles.find(p => p.id === 'alpha')?.outOfScope).toEqual(['alpha is not run in one way.']);
-    expect(fact(page, 'redact-secret', 'Registered detectors')).toMatchObject({ value: '11', note: 'benchmarks/detectors.json, read at redact-secret 66b492bdff5e' });
-    // Without the statement the page keeps saying so, and says it did not record one.
-    expect(resolveScanners(input()).profiles.find(p => p.id === 'redact-secret')?.outOfScope).toBeNull();
+  describe('the product\'s own scope, bound to what was measured (#622)', () => {
+    const bound = '1'.repeat(40);
+    const productScope: ProductScopeProfile = {
+      statements: [
+        { kind: 'product-scope', text: 'Encoded carriers: not decoded.' },
+        { kind: 'optional-profile', text: 'The personal-data profile: off in the measured configuration.' },
+        { kind: 'unmeasured-surface', text: 'The CLI: not run.' },
+      ],
+      readAt: 'a'.repeat(40),
+      boundTo: { release: '9.9.9', revision: bound, mode: 'redact-secret mode line', check: 'synthetic check' },
+      detectors: { count: 110, revision: bound },
+    };
+    const scopeOf = (page: ReturnType<typeof resolveScanners>) => page.profiles.find(p => p.id === 'redact-secret')!.scope!;
+    const scopeFact = (page: ReturnType<typeof resolveScanners>, term: string) => scopeOf(page).facts.find(f => f.term === term);
+
+    test('keeps credential scope, the optional personal-data profile and unmeasured surfaces apart, and a peer never borrows them', () => {
+      const page = resolveScanners(input({ productScope }));
+      expect(scopeOf(page).groups.map(g => [g.title, g.items])).toEqual([
+        ['Credential scope the product documents', ['Encoded carriers: not decoded.']],
+        ['Optional personal-data detection', ['The personal-data profile: off in the measured configuration.']],
+        ['Surfaces this benchmark does not run', ['The CLI: not run.']],
+      ]);
+      expect(scopeOf(page).groups.slice(1).every(g => /not a statement/.test(g.note))).toBe(true);
+      expect(page.profiles.find(p => p.id === 'alpha')).toMatchObject({ outOfScope: ['alpha is not run in one way.'] });
+      expect(page.profiles.find(p => p.id === 'alpha')?.scope).toBeUndefined();
+    });
+
+    test('current: the measured release and mode come from the observation and match the binding; the detector count names its revision', () => {
+      const page = resolveScanners(input({ productScope }));
+      expect(scopeFact(page, 'Measured')?.value).toBe('9.9.9 · redact-secret mode line');
+      expect(scopeFact(page, 'Binding')?.value).toBe('Current');
+      expect(fact(page, 'redact-secret', 'Registered detectors')?.note).toBe('benchmarks/detectors.json, read at redact-secret 111111111111 (the 9.9.9 release), the release this run measured');
+    });
+
+    test('history: a run of another release keeps the statements as read and says they were not re-read', () => {
+      const other = run({ scanners: [scanner('redact-secret', '9.9.10', [{ source: 'fresh', observedAt: 'x', sourceRunId: 'y' }])] });
+      const page = resolveScanners(input({ productScope, run: other }));
+      expect(scopeFact(page, 'Binding')?.value).toBe('History');
+      expect(scopeFact(page, 'Binding')?.note).toMatch(/not been re-read for the measured release/);
+      expect(fact(page, 'redact-secret', 'Registered detectors')?.note).toMatch(/this run measured 9\.9\.10, so the count is of another revision/);
+    });
+
+    test('unknown: without an observation of the product there is no configuration to compare, and nothing is filled in', () => {
+      const page = resolveScanners(input({ productScope, run: undefined }));
+      expect(scopeFact(page, 'Measured')).toMatchObject({ value: null, missing: 'Unknown' });
+      expect(scopeFact(page, 'Binding')).toMatchObject({ value: null, missing: 'Unknown' });
+    });
+
+    test('without the statement file the product says Not recorded', () => {
+      const page = resolveScanners(input());
+      expect(page.profiles.find(p => p.id === 'redact-secret')).toMatchObject({ outOfScope: null });
+      expect(page.profiles.find(p => p.id === 'redact-secret')?.scope).toBeUndefined();
+    });
   });
 
   test('the mode note names published or candidate, and the build a candidate measured', () => {

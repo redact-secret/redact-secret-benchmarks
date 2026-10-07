@@ -141,6 +141,25 @@ export const candidateNote: ScannerModeNoteData = {
 
 export const noRunNote: ScannerModeNoteData = { ...publishedNote, mode: null, modeLabel: 'No benchmark run is published for this checkout, so no mode is recorded.' };
 
+/** The product's own scope (#622): the binding to what was measured, then the statements by kind. Synthetic statements. */
+export const productScope: ScannerProfileData = {
+  ...repositoryScanner,
+  id: 'product-x', name: 'Product X', kind: 'Runtime library', outOfScope: null, command: null,
+  scope: {
+    facts: [
+      { term: 'Statements read at', value: 'product-x 0123456789ab', code: true, note: 'the product commit whose decision records the statements restate' },
+      { term: 'Bound to', value: '1.2.3 · Published npm package · default detectors', note: 'commit 89abcdef0123. The cited records are unchanged at this release.' },
+      { term: 'Measured', value: '1.2.4 · Published npm package · default detectors', note: 'as the official run sha256:0123ab… recorded it, configuration sha256:4567cd…' },
+      { term: 'Binding', value: 'History', note: 'bound to 1.2.3; this run measured 1.2.4. The statements are kept as read for 1.2.3 and have not been re-read for the measured release.' },
+    ],
+    groups: [
+      { title: 'Credential scope the product documents', note: "Restated from the product's own decision records.", items: ['Encoded carriers: not decoded.', 'Credentials cut by a line break: not reconstructed.'] },
+      { title: 'Optional personal-data detection', note: 'Off in the measured configuration. Not measured by this run, which is not a statement that the product lacks it.', items: ['The personal-data profile: off in the measured configuration.'] },
+      { title: 'Surfaces this benchmark does not run', note: 'Not measured here.', items: ['The CLI: not run; the package API only.'] },
+    ],
+  },
+};
+
 /** An official run (#620, #621): the engine's stamp, then the host facts the run driver recorded, or "Unavailable" for a run recorded before them. */
 export const officialHost: ScannerProfileData = {
   ...repositoryScanner,

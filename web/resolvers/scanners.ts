@@ -13,6 +13,7 @@ import type { PeerRuntime, RuntimeTool } from '../services/runtime';
 import type { MeasuredRun, OfficialRun, OfficialScanner, RunScanner } from '../services/run';
 import type { ScannerEnvironment, ScannerSource, SnapshotFacts } from '../services/scanners';
 import type { BuildHost } from '../services/build-host';
+import type { ProductScopeProfile } from '../services/product-scope';
 import { defaultQuery, pairHref, type PairOptions } from './accuracy';
 import { count, int, isoDate } from './format';
 import { DEFAULT_SETTING, performanceHref, PEERS, type Peer } from './performance';
@@ -30,7 +31,7 @@ export interface ScannerInput {
   /** Detectors the product registers (`benchmarks/detectors.json`), or `null` when the catalog could not be read. */
   productDetectors: number | null;
   /** The product's own out-of-scope statements and the revision its detector count was read at (#622). */
-  productScope?: { outOfScope: string[]; readAt: string; detectors: { count: number; revision: string } | null };
+  productScope?: ProductScopeProfile;
   /** Optional scanners the official run did not measure (#763), already worded by `resolveNotMeasuredRows`: absent under the legacy pipeline and for a run that measured them all. */
   notMeasured?: NotMeasuredScanner[];
   /** The machine this page was built on (#621): the publication host, shown apart from the measurement host. */
@@ -209,13 +210,63 @@ function whereFacts(source: ScannerSource, run: MeasuredRun | undefined, scanner
   return out;
 }
 
-function rulesFacts(id: string, profile: PeerProfile | undefined, productDetectors: number | null, scope?: ScannerInput['productScope']): ScannerFact[] {
+/** Which revision the detector count was read at, and whether that is the release the statements are bound to and the release measured (#622). */
+function detectorNote(scope: ProductScopeProfile | undefined, measured: RunScanner | undefined): string {
+  if (!scope?.detectors) return 'benchmarks/detectors.json; the revision it was read at is not recorded';
+  const { revision } = scope.detectors;
+  const atBound = revision === scope.boundTo.revision;
+  const release = atBound ? ` (the ${scope.boundTo.release} release)` : '';
+  const vsMeasured = !measured?.version ? '' : atBound && measured.version === scope.boundTo.release ? `, the release this run measured` : `; this run measured ${measured.version}, so the count is of another revision`;
+  return `benchmarks/detectors.json, read at redact-secret ${revision.slice(0, 12)}${release}${vsMeasured}`;
+}
+
+const SCOPE_GROUPS: Record<ProductScopeProfile['statements'][number]['kind'], { title: string; note: string }> = {
+  'product-scope': { title: 'Credential scope the product documents', note: "Restated from the product's own decision records: what it does not detect or read, in any run." },
+  'optional-profile': { title: 'Optional personal-data detection', note: 'A product capability that is off in the measured configuration. Not measured by this run, which is not a statement that the product lacks it.' },
+  'unmeasured-surface': { title: 'Surfaces this benchmark does not run', note: 'Not measured here, which is not a statement about what the product supports.' },
+};
+
+/**
+ * The product's reviewed scope, bound to what was measured (#622). The statements are committed and reviewed (`scanners/product-scope.json`); the
+ * configuration is the observation's (the official run's version, mode line and configuration hash, or the legacy run's under the rollback), never a static
+ * value. The binding is `Current` when the measured release and mode are the ones the statements are bound to, `History` when they are not (the statements
+ * stay as read for their release and are not re-read for the measured one), and `Unknown` without an observation.
+ */
+function productScopeOf(scope: ProductScopeProfile, measured: RunScanner | undefined, official: OfficialScanner | undefined, run: MeasuredRun | undefined): ScannerProfileData['scope'] {
+  const { boundTo } = scope;
+  const facts: ScannerFact[] = [
+    fact('Statements read at', `redact-secret ${scope.readAt.slice(0, 12)}`, { code: true, note: 'the product commit whose decision records the statements restate' }),
+    fact('Bound to', `${boundTo.release} · ${boundTo.mode}`, { note: `commit ${boundTo.revision.slice(0, 12)}. ${boundTo.check}` }),
+  ];
+  if (!measured?.version) {
+    facts.push(
+      fact('Measured', null, { missing: 'Unknown', note: 'no observation of redact-secret backs this build, so the configuration the statements describe cannot be compared with one' }),
+      fact('Binding', null, { missing: 'Unknown' }),
+    );
+  } else {
+    facts.push(fact('Measured', `${measured.version} · ${measured.mode}`, {
+      note: official && run?.official ? `as the official run ${short(run.official.semanticDigest)} recorded it, configuration ${short(official.configurationHash)}` : 'as the run recorded it',
+    }));
+    const current = measured.version === boundTo.release && measured.mode === boundTo.mode;
+    facts.push(current
+      ? fact('Binding', 'Current', { note: 'the measured release and mode line are the ones the statements are bound to' })
+      : fact('Binding', 'History', { note: `bound to ${boundTo.release} (${boundTo.mode}); this run measured ${measured.version} (${measured.mode}). The statements are kept as read for ${boundTo.release} and have not been re-read for the measured release.` }));
+  }
+  const kinds = Object.keys(SCOPE_GROUPS) as (keyof typeof SCOPE_GROUPS)[];
+  const groups = kinds.flatMap(kind => {
+    const items = scope.statements.filter(s => s.kind === kind).map(s => s.text);
+    return items.length ? [{ ...SCOPE_GROUPS[kind], items }] : [];
+  });
+  return { facts, groups };
+}
+
+function rulesFacts(id: string, profile: PeerProfile | undefined, productDetectors: number | null, scope?: ProductScopeProfile, measured?: RunScanner): ScannerFact[] {
   if (profile) {
     return [fact('Rules', int(profile.ruleCount), {
       note: `rule file ${profile.ruleFileVersion}${profile.ruleFilePath ? `, ${profile.ruleFilePath}` : ''} · ${int(profile.mappedRules)} are mapped to a taxonomy family`,
     })];
   }
-  if (id === PRODUCT) return [fact('Registered detectors', productDetectors === null ? null : int(productDetectors), { note: scope?.detectors ? `benchmarks/detectors.json, read at redact-secret ${scope.detectors.revision.slice(0, 12)}` : 'benchmarks/detectors.json' })];
+  if (id === PRODUCT) return [fact('Registered detectors', productDetectors === null ? null : int(productDetectors), { note: detectorNote(scope, measured) })];
   return [fact('Rules', null)];
 }
 
@@ -249,7 +300,7 @@ function profileOf(source: ScannerSource, input: ScannerInput, scanner: RunScann
     { title: 'Install and pin', facts: installFacts(source, scanner, !!run?.official) },
     { title: 'How it ran', facts: ranFacts(source, scanner, tool, run?.official?.scanners.find(o => o.id === source.id)) },
     { title: 'Where it ran', facts: whereFacts(source, run, scanner, runtime) },
-    { title: 'Rules', facts: rulesFacts(source.id, profile, productDetectors, input.productScope) },
+    { title: 'Rules', facts: rulesFacts(source.id, profile, productDetectors, input.productScope, scanner) },
   ];
   return {
     id: source.id,
@@ -259,7 +310,8 @@ function profileOf(source: ScannerSource, input: ScannerInput, scanner: RunScann
     description: profile?.description ?? null,
     groups,
     command: args ? { summary: 'Exact arguments', label: `${name} arguments`, text: args } : null,
-    outOfScope: profile?.outOfScope ?? (source.id === PRODUCT ? input.productScope?.outOfScope ?? null : null),
+    outOfScope: profile?.outOfScope ?? null,
+    ...(source.id === PRODUCT && input.productScope ? { scope: productScopeOf(input.productScope, scanner, run?.official?.scanners.find(o => o.id === PRODUCT), run) } : {}),
     compared: comparedOn(source.id, kind, run, runtime),
   };
 }

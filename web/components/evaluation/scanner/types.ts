@@ -26,6 +26,9 @@ export interface ScannerFact {
 
 export interface ScannerFactGroup { title: string; facts: ScannerFact[] }
 
+/** One kind of product scope statement: its heading, what the kind means, and the statements. */
+export interface ScannerScopeGroup { title: string; note: string; items: string[] }
+
 export interface ScannerLink { label: string; href: string }
 
 export interface ScannerProfileData {
@@ -39,6 +42,11 @@ export interface ScannerProfileData {
   command: { summary: string; text: string; label: string } | null;
   /** What is not run or measured; `null` is "Not recorded". */
   outOfScope: string[] | null;
+  /**
+   * The product's own scope (#622), in place of `outOfScope`: how the reviewed statements bind to what was measured (release, mode line, current, history or
+   * unknown), then the statements by kind. Absent for a peer.
+   */
+  scope?: { facts: ScannerFact[]; groups: ScannerScopeGroup[] };
   /** The comparison pages that include this scanner. */
   compared: ScannerLink[];
 }

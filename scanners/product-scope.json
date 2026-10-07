@@ -1,23 +1,59 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "product": "redact-secret",
   "readAt": {
     "repository": "redact-secret/redact-secret",
     "revision": "422e43e3dc1fb02536d9c617097fd45e78a92759",
     "note": "The product documents the statements below were read at; they restate the product's own scope decisions and are not read from any result."
   },
+  "boundTo": {
+    "release": "0.1.0-beta.14",
+    "revision": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+    "mode": "Published npm package · default detectors",
+    "check": "readAt.revision is an ancestor of the v0.1.0-beta.14 tag (0c62fd38), and each product decision record cited in sources has the same git blob at both commits (checked 2026-10-07), so the statements read at readAt are unchanged at this release."
+  },
   "description": "Deterministic secret detection and redaction for runtime data; the Node package is measured through its public API with its default detectors.",
   "outOfScope": [
-    "Credentials cut by a line break, string-literal operator, continuation, markdown line ending or escaped newline: not reconstructed.",
-    "Base64, hex, percent-encoded and other encoded carriers: not decoded; a raw encoded value claims nothing.",
-    "No declared netrc, kubeconfig user token, HTTP session cookie, Azure SAS, S3-presigned or GCS-signed-URL family.",
-    "Values in those carriers are claimed only when a supported detector reads them independently, and that claim is incidental.",
-    "The personal-data profile, selectors and the pii:us add-on: off in the published runs; default credential detectors only.",
-    "The CLI, WebAssembly and Python surfaces: not run; the Node package's public API only.",
-    "JSON {\"name\": ..., \"value\": ...} object pairs (HAR postData params and queryString members): not read as a name with its value.",
-    "A credential name that keys an object holding a \"value\" member (Terraform state outputs): not read; the one-line assignment form is.",
-    "A token behind a percent-encoded delimiter (%22, %3D, %2F): not read for any family; percent-encoding is not decoded.",
-    "HTTP session cookies in HAR headers and cookies arrays: no session-cookie family, and no name/value pair reading."
+    {
+      "kind": "product-scope",
+      "text": "Credentials cut by a line break, string-literal operator, continuation, markdown line ending or escaped newline: not reconstructed."
+    },
+    {
+      "kind": "product-scope",
+      "text": "Base64, hex, percent-encoded and other encoded carriers: not decoded; a raw encoded value claims nothing."
+    },
+    {
+      "kind": "product-scope",
+      "text": "No declared netrc, kubeconfig user token, HTTP session cookie, Azure SAS, S3-presigned or GCS-signed-URL family."
+    },
+    {
+      "kind": "product-scope",
+      "text": "Values in those carriers are claimed only when a supported detector reads them independently, and that claim is incidental."
+    },
+    {
+      "kind": "optional-profile",
+      "text": "The personal-data profile, selectors and the pii:us add-on: off in the published runs; default credential detectors only."
+    },
+    {
+      "kind": "unmeasured-surface",
+      "text": "The CLI, WebAssembly and Python surfaces: not run; the Node package's public API only."
+    },
+    {
+      "kind": "product-scope",
+      "text": "JSON {\"name\": ..., \"value\": ...} object pairs (HAR postData params and queryString members): not read as a name with its value."
+    },
+    {
+      "kind": "product-scope",
+      "text": "A credential name that keys an object holding a \"value\" member (Terraform state outputs): not read; the one-line assignment form is."
+    },
+    {
+      "kind": "product-scope",
+      "text": "A token behind a percent-encoded delimiter (%22, %3D, %2F): not read for any family; percent-encoding is not decoded."
+    },
+    {
+      "kind": "product-scope",
+      "text": "HTTP session cookies in HAR headers and cookies arrays: no session-cookie family, and no name/value pair reading."
+    }
   ],
   "sources": [
     "https://github.com/redact-secret/redact-secret/blob/422e43e3dc1fb02536d9c617097fd45e78a92759/docs/decisions/2026-10-04-define-fragmented-credentials-as-outside-the-raw-input-contract.md",

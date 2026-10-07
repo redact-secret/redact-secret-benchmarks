@@ -90,12 +90,27 @@ test('the product scope statement is validated like the peer registry: no judgem
   assert.deepEqual(productScopeProblems(committed), []);
   const bad = structuredClone(committed);
   bad.readAt.revision = 'main';
-  bad.outOfScope = ['Misses the best credentials.', ''];
+  bad.outOfScope = [{ kind: 'product-scope', text: 'Misses the best credentials.' }, { kind: 'product-scope', text: '' }, { kind: 'other', text: 'A thing.' }];
   bad.sources = ['https://github.com/redact-secret/redact-secret/blob/main/docs/x.md'];
+  bad.boundTo = { ...bad.boundTo, revision: 'v1' };
   const found = productScopeProblems(bad).join('\n');
   assert.match(found, /40-character/);
   assert.match(found, /words a judgement/);
   assert.match(found, /empty or over 200/);
   assert.match(found, /40-hex permalink/);
-  assert.deepEqual(productScopeProblems({ schemaVersion: 2 }), ['product-scope.json: schemaVersion must be 1']);
+  assert.match(found, /kind must be one of/);
+  assert.match(found, /boundTo needs/);
+  assert.deepEqual(productScopeProblems({ schemaVersion: 1 }), ['product-scope.json: schemaVersion must be 2']);
+});
+
+test('a statement that is only not measured here never says the product does not support it, and the scope keeps at least one product statement (#622)', async () => {
+  const { productScopeProblems } = await import('../benchmarks/lib/peer-rule-families.ts');
+  const { readFileSync } = await import('node:fs');
+  const committed = JSON.parse(readFileSync(new URL('../scanners/product-scope.json', import.meta.url), 'utf8'));
+  const kinds = new Set(committed.outOfScope.map(s => s.kind));
+  assert.ok(kinds.has('product-scope'), 'the committed scope states the product\'s own credential scope');
+  const surface = { ...committed, outOfScope: [{ kind: 'product-scope', text: 'A carrier is not decoded.' }, { kind: 'unmeasured-surface', text: 'The CLI is unsupported.' }] };
+  assert.match(productScopeProblems(surface).join(), /only not measured here/);
+  const none = { ...committed, outOfScope: [{ kind: 'optional-profile', text: 'The personal-data profile: off in the measured configuration.' }] };
+  assert.match(productScopeProblems(none).join(), /at least one product-scope statement/);
 });

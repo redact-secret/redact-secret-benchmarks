@@ -182,21 +182,52 @@ export function targetedFamilies(set: PeerRuleSet): { families: Set<string>; map
   return { families, mappedRules: Object.keys(set.rules).length };
 }
 
-export interface ProductScope { schemaVersion: number; product: string; readAt: { repository: string; revision: string; note?: string }; description: string; outOfScope: string[]; sources: string[] }
+/**
+ * What kind of statement a product scope statement is (#622). "Not measured by this run" is never "unsupported by the product", so the three are kept apart:
+ *  - `product-scope`: the credential scope the product itself documents it does not cover (restated from its own decision records);
+ *  - `optional-profile`: an optional product capability (the personal-data profile, selectors, add-ons) that exists but is off in the measured configuration;
+ *  - `unmeasured-surface`: a product surface (CLI, WebAssembly, Python) this benchmark does not run.
+ */
+export const PRODUCT_SCOPE_KINDS = ['product-scope', 'optional-profile', 'unmeasured-surface'] as const;
+export type ProductScopeKind = typeof PRODUCT_SCOPE_KINDS[number];
+export interface ProductScopeStatement { kind: ProductScopeKind; text: string }
+export interface ProductScope {
+  schemaVersion: number; product: string;
+  readAt: { repository: string; revision: string; note?: string };
+  /**
+   * The product release and measured configuration the reviewed statements are bound to. The page compares it with the configuration an observation of
+   * the product actually recorded (the official run's version and mode line) and says whether the statements are current for it, history, or unknown;
+   * it never overrides what was measured.
+   */
+  boundTo: { release: string; revision: string; mode: string; check: string };
+  description: string; outOfScope: ProductScopeStatement[]; sources: string[];
+}
 
-/** The product's own out-of-scope statements (#622): what the product documents it does not do, stated without a judgement and read at a named product revision. */
+/** Words that would turn "not measured here" into a claim that the product cannot do it. */
+const UNSUPPORTED_WORDS = /\b(unsupported|not supported|does not support|cannot)\b/i;
+
+/** The product's own out-of-scope statements (#622): what the product documents it does not do, stated without a judgement, read at a named product revision and bound to a release and configuration. */
 export function productScopeProblems(scope: ProductScope): string[] {
   const problems: string[] = [];
-  if (scope?.schemaVersion !== 1) return ['product-scope.json: schemaVersion must be 1'];
+  if (scope?.schemaVersion !== 2) return ['product-scope.json: schemaVersion must be 2'];
   if (scope.product !== 'redact-secret') problems.push('product-scope.json: product must be redact-secret');
   if (!/^[0-9a-f]{40}$/.test(scope.readAt?.revision ?? '')) problems.push('product-scope.json: readAt.revision must be a full 40-character product commit');
+  const bound = scope.boundTo;
+  if (!bound || !/^\d+\.\d+\.\d+(-[0-9A-Za-z.]+)?$/.test(bound.release ?? '') || !/^[0-9a-f]{40}$/.test(bound.revision ?? '') || !bound.mode?.trim() || !bound.check?.trim() || bound.check.length > 400)
+    problems.push('product-scope.json: boundTo needs a release version, its 40-character commit, the mode line of the configuration the statements describe and the check that binds them (at most 400 characters)');
+  else if (RANKING_WORDS.test(bound.check)) problems.push('product-scope.json: boundTo.check words a judgement');
   if (!scope.description?.trim() || scope.description.length > 240) problems.push('product-scope.json: needs a description of one sentence or two, at most 240 characters');
   if (RANKING_WORDS.test(scope.description ?? '')) problems.push('product-scope.json: the description words a judgement');
   if (!Array.isArray(scope.outOfScope) || scope.outOfScope.length === 0 || scope.outOfScope.length > 12) problems.push('product-scope.json: needs one to twelve outOfScope statements');
-  for (const statement of Array.isArray(scope.outOfScope) ? scope.outOfScope : []) {
-    if (typeof statement !== 'string' || !statement.trim() || statement.length > 200) problems.push('product-scope.json: an outOfScope statement is empty or over 200 characters');
-    else if (RANKING_WORDS.test(statement)) problems.push('product-scope.json: an outOfScope statement words a judgement; state what is not covered');
+  const statements = Array.isArray(scope.outOfScope) ? scope.outOfScope : [];
+  for (const statement of statements) {
+    const text = statement?.text;
+    if (!(PRODUCT_SCOPE_KINDS as readonly string[]).includes(statement?.kind)) problems.push(`product-scope.json: an outOfScope statement's kind must be one of ${PRODUCT_SCOPE_KINDS.join(', ')}`);
+    if (typeof text !== 'string' || !text.trim() || text.length > 200) problems.push('product-scope.json: an outOfScope statement is empty or over 200 characters');
+    else if (RANKING_WORDS.test(text)) problems.push('product-scope.json: an outOfScope statement words a judgement; state what is not covered');
+    else if (statement.kind !== 'product-scope' && UNSUPPORTED_WORDS.test(text)) problems.push(`product-scope.json: a ${statement.kind} statement says the product does not support it; it is only not measured here`);
   }
+  if (statements.length && !statements.some(s => s?.kind === 'product-scope')) problems.push('product-scope.json: needs at least one product-scope statement');
   if (!Array.isArray(scope.sources) || scope.sources.length === 0) problems.push('product-scope.json: needs the sources the statements restate');
   for (const source of scope.sources ?? []) if (/github\.com\/redact-secret\/redact-secret\/blob\//.test(source) && !/\/blob\/[0-9a-f]{40}\//.test(source)) problems.push(`product-scope.json: ${source} is a past-state link and needs a 40-hex permalink`);
   return problems;

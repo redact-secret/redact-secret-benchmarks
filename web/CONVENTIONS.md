@@ -225,6 +225,10 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `runs[].measurementHost`), or "Unavailable" for a run recorded before it (never filled in). The header's "Page built" line is the PUBLICATION host
   (`services/build-host.ts`), always labelled apart. `check-export-comparison.mjs` rereads both. Decision:
   `docs/decisions/2026-10-07-record-the-measurement-host-at-execution-and-keep-it-out-of-run-identity.md`.
+  The product's own scope (#622) is `scanners/product-scope.json` (`services/product-scope.ts`): statements by kind (credential scope, optional
+  personal-data profile, unmeasured surface; never worded as "unsupported" when only not measured), bound to a release and mode line, and compared by the
+  resolver with the run's own observation of the product: `Current`, `History` or `Unknown`, never a static value standing in for what was measured.
+  Decision: `docs/decisions/2026-10-07-bind-the-product-scope-statements-to-the-measured-release-and-configuration.md`.
 - Resolver tests live in `web/tests/unit` (`resolvers.test.mjs`, `report-rows.test.mjs`, ...; synthetic
   data only) and also enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.

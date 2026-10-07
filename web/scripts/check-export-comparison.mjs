@@ -177,6 +177,16 @@ if (!view) {
       for (const v of [h.node, h.os.release, ...(h.ci?.imageVersion ? [h.ci.imageVersion] : [])]) if (!t.includes(v)) fail(`/evaluation/scanner/ does not state the recorded host fact ${v}`);
     } else if (!t.includes('Unavailable')) fail('/evaluation/scanner/ must say the host facts are unavailable for a run recorded without them');
     if (!t.includes('Page built')) fail('/evaluation/scanner/ does not state the publication host apart from the measurement host');
+    // The product's own scope (#622): every reviewed statement, the release it is bound to, and the binding state recomputed here from the official
+    // run's observation of the product (Current when its version and mode line are the bound ones, History otherwise).
+    const scope = await readJson('scanners/product-scope.json');
+    for (const s of scope.outOfScope) if (!t.includes(s.text)) fail(`/evaluation/scanner/ does not state the product scope statement: ${s.text}`);
+    const product = report.artifact.scanners.find(s => s.id === 'redact-secret');
+    if (!t.includes(`${scope.boundTo.release} · ${scope.boundTo.mode}`)) fail('/evaluation/scanner/ does not state the release and mode the product scope is bound to');
+    if (product) {
+      const state = product.version === scope.boundTo.release && product.mode === scope.boundTo.mode ? 'Current' : 'History';
+      if (!t.includes(`Binding ${state}`)) fail(`/evaluation/scanner/ does not state the product scope binding as ${state}`);
+    }
 
     let at = -1;
     for (const scanner of scanners) {

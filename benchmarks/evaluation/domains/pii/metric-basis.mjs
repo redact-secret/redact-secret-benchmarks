@@ -1,7 +1,7 @@
 // The measurement-to-product boundary of the ten PII metrics (#795). One definition per quantity, one owner, and a distinct name for
 // quantities that share a metric id but not a meaning. This module states; it measures nothing and sets no threshold, tolerance,
 // membership or verdict. The decision that picks which protocol defines a product value is docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md
-// (status: proposed, owner decision pending), so both protocols are listed and neither is declared the product's.
+// (status: accepted by the owner 2026-10-06): `b11` stays the quantity every threshold and verdict reads, `pii-v1` is published beside it under its own names.
 //
 // Two protocols use the same ten ids:
 //   - `pii-v1`: the neutral accounting owned by pii-eval (revision 2). Populations are authored occurrences of a metric's own kind.

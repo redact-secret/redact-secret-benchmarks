@@ -34,7 +34,7 @@ Each `computed` criterion is recomputed from the committed tree by `pii:authorit
 | `protected-path-live` | computed | migration record `protectedPath.state: live-verified` and a live artifact consumed | unmet: no custodian catalog, transport or production v2 key |
 | `legacy-callers-inventoried` | computed | `docs/generated/pii-legacy-inventory.json` equals the tree | met |
 | `rollback-rehearsed-for-target` | computed | `docs/generated/pii-authority-rehearsal.json` for the pinned engine and population digests | met |
-| `scorer-basis-decided` | owner | which scorer defines the metric values: `b11ScoreTable` or `pii-v1` accounting (different quantities under the same ids: [`pii-scorer-basis.md`](pii-scorer-basis.md)) | unmet: the proposal is recorded as `proposed`, the owner decision is pending |
+| `scorer-basis-decided` | owner | which scorer defines the metric values: `b11ScoreTable` or `pii-v1` accounting (different quantities under the same ids: [`pii-scorer-basis.md`](pii-scorer-basis.md)) | met: accepted by the owner on 2026-10-06 ([decision](../decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md), source: issue #795 comment 6028908779); the scorer basis only, not a verdict |
 | `owner-accepted-verdict` | owner | accepted decision and `new.authorisation` for an explicitly frozen release or candidate | unmet: `authorisation` is null |
 
 ## The oracle period and who decides

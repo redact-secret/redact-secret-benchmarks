@@ -33,7 +33,28 @@
     "kind": "candidate",
     "sourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f",
     "version": "0.1.0-beta.13",
-    "artifactSetCommitment": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5"
+    "artifactSetCommitment": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+    "build": {
+      "repository": "redact-secret/redact-secret",
+      "workflow": "artifact-qualification.yml",
+      "ref": "main",
+      "qualificationRunId": 37093118224
+    },
+    "package": {
+      "name": "@redact-secret/core",
+      "entry": "dist/index.js",
+      "coreTarballSha256": "8e281e2932b245c8d238f52076c08e6c00859edafdb3e1e202500bc176a73cec",
+      "treeSha256": "computed-at-execution",
+      "addon": {
+        "name": "@redact-secret/node-linux-x64-gnu",
+        "pinned": "extraArtifacts tree, digest computed at execution from the qualified tarball"
+      },
+      "identity": {
+        "runIdentity": "package.treeSha256 of the installed core directory (the engine recomputes it before launching a scanner)",
+        "recordedIdentity": "artifact-set commitment of the frozen observation",
+        "equal": false
+      }
+    }
   },
   "scanner": {
     "adapter": {
@@ -105,7 +126,7 @@
     },
     "scorerBasis": {
       "decision": "docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md",
-      "status": "proposed",
+      "status": "accepted",
       "spec": "docs/specs/pii-scorer-basis.md"
     }
   },
@@ -121,27 +142,21 @@
   },
   "openItems": [
     {
-      "id": "scorer-basis",
-      "text": "The scorer-basis decision (#795) is proposed and the owner decision is pending; \"complete populations validate under the accepted scorer semantics\" cannot be asserted before it."
-    },
+      "id": "cost",
+      "text": "A fresh Linux execution of four populations (1,188 memberships) plus the candidate package fetch is a long run; the owner waived the cost gate for exactly one dispatch (2026-10-06, #796), so there is no default re-dispatch."
+    }
+  ],
+  "resolvedItems": [
     {
       "id": "candidate-package-identity",
-      "text": "An official run requires the scanner package tree digest (`package.treeSha256`, the candidate digest) and pinned extra artifacts (native addon). The recorded candidate identity is the artifact-set commitment of the frozen observation; whether it equals the tree digest the engine derives from the beta.13 package is not established, and the package for a fresh run has to be obtained from the product repository build."
-    },
-    {
-      "id": "dispatch-workflow",
-      "text": "No workflow executes `pii-eval run --config` against a scanner package in CI; it must be added and reviewed (dispatch only, read-only pii-eval App token for the pinned engine artifact, no token in the scanner step)."
-    },
-    {
-      "id": "cost",
-      "text": "A fresh Linux execution of four populations (1,188 memberships) plus the candidate package build is a long run; the owner decides whether to dispatch it (CI cost)."
+      "text": "Resolved with evidence: the candidate digest of a run is the tree digest of the launched package, and it is not the recorded artifact-set commitment (different construct, different bytes; the addon tarball is platform specific). The manifest is therefore rebuilt for the run, the snapshot and roster stay identical, and the receipt records both numbers (docs/specs/pii-official-execution-plan.md)."
     }
   ],
   "dispatch": {
-    "workflow": null,
+    "workflow": ".github/workflows/pii-official-run.yml",
     "dispatched": false,
-    "intendedCommand": "gh workflow run pii-official-run.yml -R redact-secret/redact-secret-benchmarks --ref develop -f plan=benchmarks/pii-eval-official-execution-plan.json",
-    "note": "The workflow named in the intended command does not exist yet (open item dispatch-workflow). Nothing was dispatched."
+    "intendedCommand": "gh workflow run pii-official-run.yml -R redact-secret/redact-secret-benchmarks --ref <branch-holding-the-workflow>",
+    "note": "Dispatch only, no inputs (the plan is this file at the dispatched commit). One dispatch is approved; a failed run caused by an infrastructure or workflow defect may be fixed and dispatched once more, said so in the record."
   },
   "execution": {
     "localDarwin": "verification only, never compared with a linux run",

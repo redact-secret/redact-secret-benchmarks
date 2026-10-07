@@ -9,8 +9,17 @@ import { buildConversion, census, manifestFor, observationFor, oracleInput, rost
 
 export const json = value => `${JSON.stringify(value, null, 1)}\n`;
 
-export function writeConversion(outDir) {
+/**
+ * `candidateDigest` is for a fresh execution only (#796): the manifest binds the scanner identity, and a run's candidate digest is the tree digest of the
+ * package it launches, not the artifact-set commitment of the frozen observation (the two are different quantities; docs/specs/pii-official-execution-plan.md).
+ * It replaces the candidate identity in the manifest and the observation set; the snapshot, roster and every case are unchanged.
+ */
+export function writeConversion(outDir, { candidateDigest } = {}) {
   const ctx = buildConversion();
+  if (candidateDigest !== undefined) {
+    if (!/^[0-9a-f]{64}$/.test(candidateDigest)) throw new Error('candidateDigest must be a sha256');
+    ctx.candidate = { ...ctx.candidate, artifactSetCommitment: candidateDigest };
+  }
   const summary = [];
   for (const bucket of ctx.populations) {
     const dir = join(outDir, bucket.view);

@@ -1,0 +1,198 @@
+name: Official PII run (fresh execution, public synthetic)
+
+# #796. Dispatch only, no inputs. One fresh `pii-eval run --config` with `mode: official` per population (the four b11-population-v2 views, 1,188 memberships)
+# against the pinned @redact-secret/core candidate package, on the canonical linux-x64 platform with the pinned engine binary. What it runs is frozen by
+# benchmarks/pii-eval-official-execution-plan.json (derived from the committed pins; the workflow refuses a plan that differs from them): no input can
+# name another plan, engine, commit or package. Spec: docs/specs/pii-official-execution-plan.md.
+#
+# It is an execution, not a replay (the scanner is launched) and not an acceptance: it records nothing in the repository, writes no pin, threshold,
+# status or authority and no owner acceptance. A difference, a missing pin or a failed validation fails the job and is never normalised. The cost gate was
+# waived by the owner for exactly one dispatch (2026-10-06, #796); a failed run caused by an infrastructure or workflow defect may be fixed and dispatched
+# once more, and the record says so.
+#
+# Trust boundaries (docs/specs/threat-model.md, "CI publish pipeline"; ci-hardening norms):
+#   - actions are pinned by commit SHA, the top-level token is empty and the one job holds `contents: read`;
+#   - the two GitHub App tokens (read-only: pii-eval Actions artifacts and contents; redact-secret Actions artifacts and contents) exist only in the steps that
+#     download from those repositories, are never written to disk (`persist-credentials: false`) and are not in the environment of any step that runs
+#     product code (`npm ci`, `js:build`, the package install, the scanner);
+#   - the engine binary is verified by digest (the CI artifact digest, the member digests and the pinned binary digest) before it is run, the shim is
+#     digest-pinned inside the binary, the product tarballs are repacked from the qualified binaries and must equal the bytes the product qualified, and the
+#     package and addon are pinned by tree digest, which the engine recomputes before it launches a scanner;
+#   - nothing from a dispatch event is interpolated into a script: every value reaches a step through env or a step output.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pii-official-run
+  cancel-in-progress: false
+
+jobs:
+  official-run:
+    if: github.repository == 'redact-secret/redact-secret-benchmarks'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    env:
+      PII_EVAL_APP_ID: '5178533'
+      PII_EVAL_OWNER: redact-secret
+      PII_EVAL_REPO: pii-eval
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+
+      - name: The plan equals the committed pins, and what it names
+        id: plan
+        run: |
+          set -euo pipefail
+          node scripts/pii-official-plan.mjs --check
+          node scripts/pii-official-plan.mjs --github-output >> "$GITHUB_OUTPUT"
+
+      # --- the engine: the pinned linux CI artifact, verified by digest ---
+      - name: Mint a read-only pii-eval installation token
+        id: engine-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: '5178533'
+          private-key: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: pii-eval
+          permission-actions: read
+          permission-contents: read
+      - name: Report missing App installation access (distinct from artifact and pin validation)
+        if: steps.engine-token.outcome != 'success'
+        run: |
+          echo "::error title=pii-eval App installation access missing::the installation token could not be minted, so no engine artifact was read (see #689)."
+          exit 1
+      - name: Download and verify the pinned linux engine artifact
+        id: engine
+        env:
+          GH_TOKEN: ${{ steps.engine-token.outputs.token }}
+        run: node scripts/fetch-pii-eval-public-synthetic.mjs fetch-engine --out="$RUNNER_TEMP/pii-eval-engine"
+      - name: Fetch the Node shim at the pinned engine commit (its digest is compiled into the engine and checked before every run)
+        env:
+          GH_TOKEN: ${{ steps.engine-token.outputs.token }}
+          ENGINE_COMMIT: ${{ steps.plan.outputs.engine_commit }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/shim"
+          gh api -H 'Accept: application/vnd.github.raw' "repos/redact-secret/pii-eval/contents/crates/pii-eval-adapters/shims/node/redact-secret-core.mjs?ref=${ENGINE_COMMIT}" > "$RUNNER_TEMP/shim/redact-secret-core.mjs"
+          test -s "$RUNNER_TEMP/shim/redact-secret-core.mjs"
+          sha256sum "$RUNNER_TEMP/shim/redact-secret-core.mjs"
+
+      # --- the candidate: the product commit's own qualified build, repacked and required to be the qualified bytes ---
+      - name: Mint a read-only token for redact-secret
+        id: product-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.BENCHMARKS_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: redact-secret
+          permission-actions: read
+          permission-contents: read
+      - name: The planned run is a successful qualification push of the planned commit on main
+        id: product
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_SHA: ${{ steps.plan.outputs.product_sha }}
+          QUALIFICATION_RUN_ID: ${{ steps.plan.outputs.qualification_run_id }}
+          PRODUCT_REF: ${{ steps.plan.outputs.product_ref }}
+        run: node scripts/qualified-candidate.mjs resolve --repository redact-secret/redact-secret
+      - name: Download and verify the qualified runtime artifacts
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          QUALIFICATION_RUN: ${{ steps.product.outputs.run-id }}
+          PRODUCT_REF: ${{ steps.product.outputs.product-ref }}
+        run: >-
+          node scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret
+          --sha "$PRODUCT_COMMIT" --run-id "$QUALIFICATION_RUN" --product-ref "$PRODUCT_REF"
+          --dir "$RUNNER_TEMP/qualified"
+      - name: Check out redact-secret at the planned commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: redact-secret/redact-secret
+          ref: ${{ steps.product.outputs.sha }}
+          token: ${{ steps.product-token.outputs.token }}
+          path: .redact-secret-product
+          persist-credentials: false
+      # Product code runs from here on (its install, its JS build, its pack script): no token is in the environment of these steps.
+      - name: Pack the qualified artifacts with the product's own pack script
+        working-directory: .redact-secret-product
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run js:build
+          node scripts/pack-npm-candidate.mjs \
+            --addon-dir "$RUNNER_TEMP/qualified/node-addon-x86_64-unknown-linux-gnu" \
+            --wasm-dir "$RUNNER_TEMP/qualified/wasm-web" \
+            --wasm-common-dir "$RUNNER_TEMP/qualified/wasm-web-common" \
+            --out-dir "$RUNNER_TEMP/candidate"
+          test -z "$(git status --porcelain)"
+      - name: The packed tarballs are the bytes the product qualified, and the core tarball is the recorded one
+        env:
+          CORE_TARBALL_SHA256: ${{ steps.plan.outputs.core_tarball_sha256 }}
+        run: |
+          set -euo pipefail
+          node scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/qualified" --packed "$RUNNER_TEMP/candidate"
+          core="$(find "$RUNNER_TEMP/candidate" -name 'redact-secret-core-*.tgz' -print -quit)"
+          echo "$CORE_TARBALL_SHA256  $core" | sha256sum --check -
+      - name: Install the candidate read-only (no lifecycle scripts, no lockfile, no registry package of this build)
+        run: |
+          set -euo pipefail
+          install="$RUNNER_TEMP/scanner"
+          mkdir -p "$install"
+          npm --prefix "$install" init -y > /dev/null
+          npm --prefix "$install" install --no-package-lock --ignore-scripts --no-audit --no-fund "$RUNNER_TEMP"/candidate/*.tgz
+          test -d "$install/node_modules/@redact-secret/core/dist" && test -d "$install/node_modules/@redact-secret/node-linux-x64-gnu"
+          chmod -R a-w "$install/node_modules/@redact-secret"
+
+      # --- the run: no token, no secret ---
+      - name: Run the four populations in official mode, validate, consume
+        # No token and no secret in this step: the engine launches the scanner package, which reads the committed public synthetic conversion and writes under RUNNER_TEMP.
+        env:
+          ENGINE: ${{ steps.engine.outputs.engine }}
+        run: |
+          set -euo pipefail
+          node --import tsx scripts/run-pii-official.mjs --require-canonical \
+            --engine="$ENGINE" \
+            --shim="$RUNNER_TEMP/shim/redact-secret-core.mjs" \
+            --package="$RUNNER_TEMP/scanner/node_modules/@redact-secret/core" \
+            --addon="$RUNNER_TEMP/scanner/node_modules/@redact-secret/node-linux-x64-gnu" \
+            --node="$(command -v node)" \
+            --work="$RUNNER_TEMP/pii-official" \
+            --receipt="$RUNNER_TEMP/pii-official/receipt.json"
+      - name: Summary
+        if: always()
+        run: |
+          test -f "$RUNNER_TEMP/pii-official/receipt.json" || exit 0
+          {
+            echo "### Official PII run (fresh execution, public synthetic)"
+            jq -r '"engine \(.engine.binarySha256) matches pin: \(.engine.matchesPin); platform \(.execution.platform); canonical: \(.execution.canonical); scanners launched: \(.execution.scannersLaunched)",
+              "package tree \(.candidate.packageTreeSha256) (recorded artifact-set commitment \(.candidate.recordedArtifactSetCommitment[0:12]), equal: \(.candidate.equalsRecordedArtifactSetCommitment))",
+              "verdict: \(.verdict | tojson)",
+              (.populations[] | "- \(.view): exit \(.exit) mode \(.mode // "n/a") semantic \((.artifactSemanticDigest // "none")[0:12]) problems \(.problems | length) metric cells differing from the exploratory replay \(.exploratoryParity.metricCellsDiffering // "n/a")/\(.exploratoryParity.metricCells // "n/a")")' "$RUNNER_TEMP/pii-official/receipt.json"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: pii-official-run
+          path: |
+            ${{ runner.temp }}/pii-official/receipt.json
+            ${{ runner.temp }}/pii-official/out
+            ${{ runner.temp }}/pii-official/conv/*/snapshot.json
+            ${{ runner.temp }}/pii-official/conv/*/manifest.json
+            ${{ runner.temp }}/pii-official/conv/*/projection-roster.json
+            ${{ runner.temp }}/pii-official/run-config.*.json
+          if-no-files-found: warn
+          retention-days: 90

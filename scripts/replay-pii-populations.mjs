@@ -51,14 +51,16 @@ export function replayPopulations({ engine, work, root = ROOT, replays = 2 }) {
     const runs = Array.from({ length: replays }, (_, i) => replayOnce(engine, dir, join(work, 'out', view, `run${i + 1}`)));
     const replayed = JSON.parse(runs[0].toString('utf8'));
     const recomputed = semanticDigest(replayed);
+    const pinnedDigest = pin && [pin.artifactDigest, ...(pin.retiredArtifactDigests ?? [])].includes(replayed.semanticDigest) ? replayed.semanticDigest : null;
     return {
       view,
       replays,
       semanticDigestCommitted: committed.semanticDigest,
-      semanticDigestPinned: pin?.artifactDigest ?? null,
+      // The replay is pinned when its digest is the head of the population pin or a digest the pin retired (after an official run is recorded the head is that run's artifact).
+      semanticDigestPinned: pinnedDigest,
       semanticDigestReplayed: replayed.semanticDigest,
       semanticDigestRecomputed: recomputed === replayed.semanticDigest,
-      equalSemanticDigest: recomputed === replayed.semanticDigest && replayed.semanticDigest === committed.semanticDigest && replayed.semanticDigest === pin?.artifactDigest && replayed.semanticDigest === recorded?.semanticDigest,
+      equalSemanticDigest: recomputed === replayed.semanticDigest && replayed.semanticDigest === committed.semanticDigest && pinnedDigest !== null && replayed.semanticDigest === recorded?.semanticDigest,
       replaysByteIdentical: new Set(runs.map(sha256)).size === 1,
       bytesEqualCommitted: sha256(runs[0]) === sha256(committedBytes),
       artifactSha256Committed: sha256(committedBytes),

@@ -130,6 +130,16 @@ describe('PII view', () => {
     const mixed = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('other-product'), { populationId: 'old', scanners: [], population: {} }], build } }));
     expect(rowsOf(mixed).find(item => item.id === 'pii-eval').detail).toContain('1 read under schema 1.1 does not carry it');
     expect(text(view)).not.toMatch(/\b(best|worst|winner|fastest|slowest|better than|outperform)/i);
+    // An official-mode population says what it is: an execution under the engine contract, evidence and not an accepted verdict.
+    const official = population('measures-publication-product');
+    official.productProjection.rows.forEach(row => { row.mode = 'official'; });
+    const officialView = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [official], build } }));
+    const officialGroup = officialView.status.groups.find(g => g.title.includes('product projection'));
+    expect(officialGroup.title).toContain('Official');
+    expect(officialGroup.rows[1].statusWord).toBe('Official');
+    expect(officialGroup.rows[0].detail).toContain('official-mode execution');
+    expect(officialGroup.rows[0].detail).toContain('not a qualification verdict');
+    expect(officialGroup.rows[0].detail).not.toContain('never an official qualification run');
   });
 
   test('custodian conformance is visibly synthetic and never described as protected qualification', () => {

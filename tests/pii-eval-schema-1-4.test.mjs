@@ -13,7 +13,7 @@ const dual = record.benchmarkPopulationDualRun;
 const pinsText = read('benchmarks/pii-eval-population-pins.json');
 const demoPinsText = read('benchmarks/pii-eval-public-synthetic-pins.json');
 const views = dual.artifacts.map(item => item.view);
-const artifactText = view => read(`benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
+const artifactText = view => read(`benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`);
 const reseal = doc => { doc.semanticDigest = semanticDigest(doc); return doc; };
 const codes = (doc, pins) => verifyArtifact(doc, pins).reasons.map(reason => reason.code);
 
@@ -104,7 +104,7 @@ test('publication binding refuses an incomplete set and never calls a candidate 
   const root = new URL('../', import.meta.url).pathname;
   const pins = ['benchmarks/pii-eval-public-synthetic-pins.json', 'benchmarks/pii-eval-population-pins.json'].map(file => root + file);
   const demo = root + JSON.parse(read('benchmarks/pii-eval-public-synthetic-source.json')).durableCopy.path;
-  const files = views.map(view => `${root}benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
+  const files = views.map(view => `${root}benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`);
   await assert.rejects(piiEvalMeasurementFrom(pins, [demo, ...files.slice(1)]), /pinned population missing|artifact validation failed/);
   const measurement = await piiEvalMeasurementFrom(pins, [demo, ...files]);
   assert.equal(measurement.populations.length, files.length + 1);

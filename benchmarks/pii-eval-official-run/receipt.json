@@ -1,0 +1,179 @@
+{
+ "schema": "redact-secret-benchmarks.pii-official-run/1",
+ "supportClaims": false,
+ "authorityChanged": false,
+ "ownerAcceptance": null,
+ "mode": "official",
+ "runClass": "public-synthetic",
+ "execution": {
+  "kind": "fresh-execution",
+  "scannersLaunched": true,
+  "replay": false,
+  "canonical": true,
+  "platform": "linux-x64",
+  "node": "v22.23.3",
+  "note": "canonical linux-x64 execution with the pinned engine binary"
+ },
+ "engine": {
+  "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+  "binarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+  "pinnedBinarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+  "matchesPin": true,
+  "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+ },
+ "candidate": {
+  "version": "0.1.0-beta.13",
+  "sourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f",
+  "packageTreeSha256": "36a596227bd695ccc66f1d98ffc60a34aadf91ccd0c0bbb1d66f0b51bb232a51",
+  "addonTreeSha256": "4a3664ae4979dab46c50592215482e2e4b8e93d6fe119de897f6cf8966504524",
+  "recordedArtifactSetCommitment": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+  "equalsRecordedArtifactSetCommitment": false
+ },
+ "scanner": {
+  "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+  "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+  "activation": [
+   "pii:global",
+   "pii:us"
+  ]
+ },
+ "populations": [
+  {
+   "view": "oracle-plan",
+   "exit": 0,
+   "durationMs": 192,
+   "problems": [],
+   "snapshotDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+   "manifestDigest": "49c64e8b0d9d0361eaae22f6f6eff89ba918c30a00b8d8bb99417c24ae934725",
+   "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c",
+   "populationId": "b11-population-v2-oracle-plan",
+   "memberships": 146,
+   "artifactSemanticDigest": "95a0cbb133c90192a365ad424ea37aaa935fc44b2f59adb0a5a60bf0aeb06049",
+   "artifactSha256": "a1ef5f94ddcce5c6de2d0234730cac20cdf22a85e49ac4af5df746ce20f28392",
+   "artifactBytes": 604991,
+   "mode": "official",
+   "scannerReplays": {
+    "agreed": true,
+    "count": 2
+   },
+   "exploratoryParity": {
+    "against": "committed exploratory replay of the frozen observation",
+    "rows": 6,
+    "rowsCommitted": 6,
+    "metricCells": 60,
+    "metricCellsDiffering": 0
+   }
+  },
+  {
+   "view": "qualification-plan",
+   "exit": 0,
+   "durationMs": 649,
+   "problems": [],
+   "snapshotDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+   "manifestDigest": "6929a53f0c570ece3089c5f24a745c41025a21147cc1afb7b16c475aa26c0b7a",
+   "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293",
+   "populationId": "b11-population-v2-qualification-plan",
+   "memberships": 266,
+   "artifactSemanticDigest": "05bef949f619ebd83117a432667ad251e95d7ab470aa24d9b79c1943d183353c",
+   "artifactSha256": "c78012bc8329dd8b322eb383f0a73281f3a4ddb32a5c910a8cd4c2bb7b0e9142",
+   "artifactBytes": 411058,
+   "mode": "official",
+   "scannerReplays": {
+    "agreed": true,
+    "count": 2
+   },
+   "exploratoryParity": {
+    "against": "committed exploratory replay of the frozen observation",
+    "rows": 6,
+    "rowsCommitted": 6,
+    "metricCells": 60,
+    "metricCellsDiffering": 0
+   }
+  },
+  {
+   "view": "diagnostic-balanced",
+   "exit": 0,
+   "durationMs": 745,
+   "problems": [],
+   "snapshotDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+   "manifestDigest": "c6f75c0067384f6de88f8afc7d73341d5be12be64c4d9c3d401419aad91306d7",
+   "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15",
+   "populationId": "b11-population-v2-diagnostic-balanced",
+   "memberships": 477,
+   "artifactSemanticDigest": "e6ad841fa5309148e1cb5cf841d8ae2e9bfa48705fa335763130bc353d3c7564",
+   "artifactSha256": "c5936b57ea721db29cc9a0916461726bce54dc8cf2c0c190c760badc66b065cc",
+   "artifactBytes": 642175,
+   "mode": "official",
+   "scannerReplays": {
+    "agreed": true,
+    "count": 2
+   },
+   "exploratoryParity": {
+    "against": "committed exploratory replay of the frozen observation",
+    "rows": 6,
+    "rowsCommitted": 6,
+    "metricCells": 60,
+    "metricCellsDiffering": 0
+   }
+  },
+  {
+   "view": "benign-heavy-stress",
+   "exit": 0,
+   "durationMs": 610,
+   "problems": [],
+   "snapshotDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+   "manifestDigest": "ceed2e0b6df4b4871e01620a55a6e9457ded4a88a027deadaa91b9e400fc7093",
+   "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b",
+   "populationId": "b11-population-v2-benign-heavy-stress",
+   "memberships": 299,
+   "artifactSemanticDigest": "22fa100941840d14e6cc74dbe688a7bca66259ba004ac8d90bf13306a604da25",
+   "artifactSha256": "faafbccb51cfa5f7188593cb29ccd2617ad1ed3e093131dfa3222530dae632e8",
+   "artifactBytes": 562025,
+   "mode": "official",
+   "scannerReplays": {
+    "agreed": true,
+    "count": 2
+   },
+   "exploratoryParity": {
+    "against": "committed exploratory replay of the frozen observation",
+    "rows": 6,
+    "rowsCommitted": 6,
+    "metricCells": 60,
+    "metricCellsDiffering": 0
+   }
+  }
+ ],
+ "consumer": {
+  "complete": true,
+  "decision": "none",
+  "pooling": "none",
+  "rejections": [],
+  "populations": [
+   {
+    "label": "oracle-plan",
+    "status": "accepted"
+   },
+   {
+    "label": "qualification-plan",
+    "status": "accepted"
+   },
+   {
+    "label": "diagnostic-balanced",
+    "status": "accepted"
+   },
+   {
+    "label": "benign-heavy-stress",
+    "status": "accepted"
+   }
+  ]
+ },
+ "verdict": {
+  "allPopulationsRan": true,
+  "noProblems": true,
+  "consumedComplete": true
+ },
+ "plan": {
+  "path": "benchmarks/pii-eval-official-execution-plan.json",
+  "sha256": "a82a233cb79b6d5002c6c769c8969732fbd862e6fbe5e3760cf4e4e0c5f0609d"
+ }
+}

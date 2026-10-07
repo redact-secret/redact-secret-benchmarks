@@ -14,7 +14,7 @@
 // that publishes, and never run concurrently with other tests (it edits a tracked file for its duration).
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -30,7 +30,7 @@ async function probe() {
   const { bindPiiProtectedSupport } = await import('../benchmarks/evaluation/domains/pii/protected-support-binding.ts');
   const { piiEvalMeasurementFrom } = await import('./pii-publication-inputs.ts');
   const { checkPiiAuthority } = await import('./check-pii-authority.mjs');
-  const dual = 'benchmarks/pii-eval-population-dual-run';
+  const dual = existsSync(path.join(root, 'benchmarks/pii-eval-official-run/record.json')) ? 'benchmarks/pii-eval-official-run' : 'benchmarks/pii-eval-population-dual-run'; // the artifacts the pins name
   const bindings = {
     piiEvalMeasurement: await piiEvalMeasurementFrom(
       ['benchmarks/pii-eval-public-synthetic-pins.json', 'benchmarks/pii-eval-population-pins.json'].map(f => path.join(root, f)),
@@ -75,7 +75,7 @@ async function rehearse() {
   return {
     schemaVersion: 1, reportType: 'pii-authority-rollback-rehearsal', supportClaims: false, authorityChanged: false, writesAcceptance: false,
     rehearsedOn: new Date().toISOString().slice(0, 10), committedAuthority: committedValue,
-    target: { engineCommit: migration.pins.piiEvalProjection, populationDigests: Object.fromEntries(migration.benchmarkPopulationDualRun.artifacts.map(a => [a.view, a.semanticDigest])) },
+    target: { engineCommit: migration.pins.piiEvalProjection, populationDigests: Object.fromEntries(JSON.parse(readFileSync(path.join(root, 'benchmarks/pii-eval-population-pins.json'), 'utf8')).populations.map(p => [p.label, p.artifactDigest])) },
     method: 'the one value flipped in the working tree and restored; the PII support publication (protected route plus the five bound pii-eval artifacts) rebuilt and the gate run under each value',
     states: states.map(({ label, authority, fileSha256, matrixSha256, matrixBytes, gate }) => ({ label, authority, fileSha256, matrixSha256, matrixBytes, gateAccepted: gate.accepted, gateProblems: gate.problems })),
     result,

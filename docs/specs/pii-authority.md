@@ -11,7 +11,7 @@ neither file names the other and no credential reader reads this one.
 
 | Value | Authority | The pii-eval measurement |
 | --- | --- | --- |
-| `legacy` (committed) | the benchmark scorer (`b11ScoreTable`) over the frozen Beta.11 and Beta.13 evidence and the `b11-population-v2` plans, under `qualification/pii-v1.json` | validated, published and shown beside it as exploratory evidence; decides nothing |
+| `legacy` (committed) | the benchmark scorer (`b11ScoreTable`) over the frozen Beta.11 and Beta.13 evidence and the `b11-population-v2` plans, under `qualification/pii-v1.json` | validated, published and shown beside it as measurement evidence (the pins read the recorded official-mode execution; the replays of the frozen observation are exploratory); decides nothing |
 | `new` | the `pii-eval` artifacts, under an owner authorisation recorded in the file | the source of record; the legacy pipeline stays as the oracle |
 
 `new` is accepted only with `new.authorisation` (release or candidate, date, who accepted, an accepted decision, engine commit, policy digest, each population's semantic digest) and only while every exit criterion is met and nothing it names has changed. A repin, a policy change or a changed
@@ -30,7 +30,7 @@ Each `computed` criterion is recomputed from the committed tree by `pii:authorit
 | --- | --- | --- | --- |
 | `population-dual-run-complete` | computed | `benchmarks/pii-eval-migration.json` acceptance is `accepted` (an engine contract states `not-established`, or the owner drops those memberships) | met: schema 1.4 carries 1,188 of 1,188 memberships (156 range-less, reported `unresolved`) |
 | `linux-engine-replay-equal` | computed | `benchmarks/pii-eval-population-dual-run/linux-replay.json`, `canonical: true`, pinned binary | met (run 37552998602, engine `b1c097e4`) |
-| `official-mode-measurement` | computed | every population pin has `projection.mode: official` | unmet: all exploratory |
+| `official-mode-measurement` | computed | every population pin has `projection.mode: official` and the recorded run holds (`benchmarks/pii-eval-official-run/`, `scripts/lib/pii-official-record.mjs`) | met: a fresh canonical linux-x64 execution, run 37559349070 ([decision](../decisions/2026-10-07-record-the-first-official-public-synthetic-pii-run-and-repin-the-four-populations.md)); evidence, not an accepted verdict |
 | `protected-path-live` | computed | migration record `protectedPath.state: live-verified` and a live artifact consumed | unmet: no custodian catalog, transport or production v2 key |
 | `legacy-callers-inventoried` | computed | `docs/generated/pii-legacy-inventory.json` equals the tree | met |
 | `rollback-rehearsed-for-target` | computed | `docs/generated/pii-authority-rehearsal.json` for the pinned engine and population digests | met |

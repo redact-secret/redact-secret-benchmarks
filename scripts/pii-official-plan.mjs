@@ -18,6 +18,8 @@ const read = file => readFileSync(path.join(ROOT, file));
 const readJson = file => JSON.parse(read(file).toString('utf8'));
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 export const WORKFLOW = '.github/workflows/pii-official-run.yml';
+const RECORD = 'benchmarks/pii-eval-official-run/record.json';
+const recorded = () => (existsSync(path.join(ROOT, RECORD)) ? readJson(RECORD) : null);
 // The product build a fresh execution launches: the packages of the product commit's own `artifact-qualification` run on `main` (the workflow resolves the run
 // for the commit and refuses any other id). Only the run id is typed here; the commit comes from the pins and every tarball is verified against the run's inventory.
 export const CANDIDATE_BUILD = { repository: 'redact-secret/redact-secret', workflow: 'artifact-qualification.yml', ref: 'main', qualificationRunId: 37093118224 };
@@ -47,7 +49,7 @@ export function buildPlan() {
   const decisionStatus = /^status:\s*(\S+)/m.exec(read(decision).toString('utf8'))?.[1];
   return {
     schemaVersion: 1, reportType: 'pii-official-execution-plan', issue: 'redact-secret/redact-secret-benchmarks#796', supportClaims: false, authorityChanged: false,
-    state: 'pending-not-dispatched',
+    state: recorded() ? 'executed-and-recorded' : 'pending-not-dispatched',
     note: 'Public synthetic only: no EC2, custodian, private ledger, protected corpus or production key. Derived by scripts/pii-official-plan.mjs from the committed pins; not a run and not an acceptance.',
     mode: 'official', runClass: 'public-synthetic', product: 'candidate',
     engine: {
@@ -66,12 +68,7 @@ export function buildPlan() {
       qualificationProfile: { path: 'qualification/pii-v1.json', sha256: sha256(read('qualification/pii-v1.json')) },
       scorerBasis: { decision, status: decisionStatus, spec: 'docs/specs/pii-scorer-basis.md' },
     },
-    provenance: {
-      today: 'replay-of-frozen-observation',
-      detail: 'The four committed artifacts are replays of the frozen Beta.13 observation (no scanner launched), exploratory; the canonical linux replay equals them byte for byte. A replay proves deterministic reproduction, not a fresh execution.',
-      replay: { receipt: dual.linuxReplay.path, runId: dual.linuxReplay.runId, scannersLaunched: 0 },
-      freshOfficialExecution: null,
-    },
+    provenance: provenanceBlock(dual),
     openItems: openItems(decisionStatus),
     resolvedItems: [
       { id: 'candidate-package-identity', text: 'Resolved with evidence: the candidate digest of a run is the tree digest of the launched package, and it is not the recorded artifact-set commitment (different construct, different bytes; the addon tarball is platform specific). The manifest is therefore rebuilt for the run, the snapshot and roster stay identical, and the receipt records both numbers (docs/specs/pii-official-execution-plan.md).' },
@@ -81,16 +78,41 @@ export function buildPlan() {
   };
 }
 
+function provenanceBlock(dual) {
+  const replay = { receipt: dual.linuxReplay.path, runId: dual.linuxReplay.runId, scannersLaunched: 0 };
+  const record = recorded();
+  if (!record) {
+    return {
+      today: 'replay-of-frozen-observation',
+      detail: 'The four committed artifacts are replays of the frozen Beta.13 observation (no scanner launched), exploratory; the canonical linux replay equals them byte for byte. A replay proves deterministic reproduction, not a fresh execution.',
+      replay, freshOfficialExecution: null,
+    };
+  }
+  return {
+    today: 'fresh-official-execution-recorded',
+    detail: 'The pins read a fresh canonical linux-x64 official execution of the pinned scanner package (a scanner was launched; the pins retire the exploratory replays of the frozen observation, which stay committed as the oracle parity evidence). An execution is evidence, not an accepted verdict.',
+    replay,
+    freshOfficialExecution: { record: RECORD, workflowRunId: record.workflow.runId, headSha: record.workflow.headSha, canonical: record.provenance.canonical, platform: record.provenance.platform,
+      receiptSha256: record.receipt.sha256, packageTreeSha256: record.candidate.packageTreeSha256 },
+  };
+}
+
 function openItems(decisionStatus) {
+  const record = recorded();
   const items = [];
   if (decisionStatus !== 'accepted') items.push({ id: 'scorer-basis', text: 'The scorer-basis decision (#795) is not accepted; "complete populations validate under the accepted scorer semantics" cannot be asserted before it.' });
   if (!existsSync(path.join(ROOT, WORKFLOW))) items.push({ id: 'dispatch-workflow', text: 'No workflow executes `pii-eval run --config` against a scanner package in CI; it must be added and reviewed (dispatch only, read-only pii-eval App token for the pinned engine artifact, no token in the scanner step).' });
-  items.push({ id: 'cost', text: 'A fresh Linux execution of four populations (1,188 memberships) plus the candidate package fetch is a long run; the owner waived the cost gate for exactly one dispatch (2026-10-06, #796), so there is no default re-dispatch.' });
+  if (!record) items.push({ id: 'cost', text: 'A fresh Linux execution of four populations (1,188 memberships) plus the candidate package fetch is a long run; the owner waived the cost gate for exactly one dispatch (2026-10-06, #796), so there is no default re-dispatch.' });
+  items.push({ id: 'owner-verdict', text: 'Which release or candidate verdict the owner accepts from the official run (`owner-accepted-verdict`, `new.authorisation`) and the #666 exit are the owner\'s; nothing here records either.' });
   return items;
 }
 
 function dispatchBlock() {
-  const exists = existsSync(path.join(ROOT, WORKFLOW));
+  const exists = existsSync(path.join(ROOT, WORKFLOW)), record = recorded();
+  if (record) {
+    return { workflow: WORKFLOW, dispatched: true, dispatches: record.attempts.dispatches, run: { id: record.workflow.runId, url: record.workflow.url, headSha: record.workflow.headSha, conclusion: record.workflow.conclusion },
+      note: 'The one approved dispatch ran and succeeded (benchmarks/pii-eval-official-run/record.json). There is no default re-dispatch; a new official run needs a new owner decision on cost.' };
+  }
   return {
     workflow: exists ? WORKFLOW : null, dispatched: false,
     intendedCommand: 'gh workflow run pii-official-run.yml -R redact-secret/redact-secret-benchmarks --ref <branch-holding-the-workflow>',
@@ -105,8 +127,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
   else if (process.argv.includes('--check')) {
     if (text(plan) !== read(OUT).toString('utf8')) throw new Error(`${OUT} differs from the pins: run node scripts/pii-official-plan.mjs --write`);
     if (plan.populations.some(p => p.memberships !== p.located + p.unresolvedRange)) throw new Error('a population does not add up');
-    if (plan.provenance.freshOfficialExecution !== null || plan.dispatch.dispatched !== false) throw new Error('the plan claims an execution that was not recorded');
-    console.log(`${OUT} equals the pins (pending, not dispatched)`);
+    const has = recorded() !== null;
+    if ((plan.provenance.freshOfficialExecution !== null) !== has || plan.dispatch.dispatched !== has) throw new Error('the plan claims an execution that was not recorded, or omits one that was');
+    console.log(`${OUT} equals the pins (${has ? 'executed and recorded' : 'pending, not dispatched'})`);
   } else if (process.argv.includes('--github-output')) {
     // What the dispatch-only workflow reads (key=value lines for $GITHUB_OUTPUT), after refusing a plan that is not an exact official public-synthetic candidate plan.
     const hex = (value, size) => typeof value === 'string' && new RegExp(`^[0-9a-f]{${size}}$`).test(value);

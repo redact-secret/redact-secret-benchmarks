@@ -165,5 +165,5 @@ metric whose denominator grows. The metric boundary is [`pii-scorer-basis.md`](p
 
 Adoption is derived, not typed: `scripts/adopt-pii-engine.mjs --run=<id> --pii-eval=<checkout> --write` recomputes the transport source, both consumer pin files and the migration record from the CI run's artifacts and the dual-run report, and
 `--replay-run=<id> --replay-receipt=<file>` records the canonical linux replay (`pii-population-replay.yml`, run 37552998602: the pinned linux engine reproduces all four artifacts byte for byte). The consumer reads a pin of exactly one schema minor (1.1, 1.2 or 1.4; 1.3 is not accepted)
-and refuses a document of another minor, a mismatched digest or population, and an absent population (reported `missing`, never invented). The mode of all four stays `exploratory`: they are replays of a frozen observation, not a fresh official execution; see
-[`pii-official-execution-plan.md`](pii-official-execution-plan.md).
+and refuses a document of another minor, a mismatched digest or population, and an absent population (reported `missing`, never invented). The committed replays (`benchmarks/pii-eval-population-dual-run/`) are `exploratory`: replays of a frozen observation, kept as the oracle parity evidence. The pins read the fresh official execution recorded in `benchmarks/pii-eval-official-run/`
+(run 37559349070, `scripts/record-pii-official-run.mjs`; the replays' digests are retired by the pins); see [`pii-official-execution-plan.md`](pii-official-execution-plan.md). An execution is evidence, not an accepted verdict.

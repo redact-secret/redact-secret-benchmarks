@@ -125,7 +125,7 @@ test('public workflow isolates App credentials and publisher consumes only stagi
   assert.match(classify, /--pii-eval-pins=benchmarks\/pii-eval-population-pins.json/);
   assert.match(classify, /--pii-eval-artifact="\$RUNNER_TEMP\/pii-eval-public\/public-synthetic-artifact.json"/);
   for (const view of ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'])
-    assert.match(classify, new RegExp(`--pii-eval-artifact=benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`));
+    assert.match(classify, new RegExp(`--pii-eval-artifact=benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`));
   // Production binds none of it: the candidate populations are staging evidence.
   assert.match(classify, /if \[ "\$TARGET" = staging \]; then\n\s+product_args=[\s\S]*pii_eval_args=\(/);
 });

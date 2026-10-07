@@ -226,7 +226,7 @@ function repin() {
   const result = repinPopulation({ registry, inputs, population: POPULATION, candidate: c, supersededOn: date });
   writeJson('benchmarks/official-runs.json', result.registry);
   writeJson('benchmarks/qualification-inputs.json', result.inputs);
-  console.log(`Repinned ${POPULATION} to ${c.evidenceRelease}. Kept as historical receipts: ${result.movedRunIds.join(', ') || 'none'}.\nNext: replay officially (official-runs.yml), record the runs, then the owner renews the authority and sets ownerAcceptance in ${ADOPTION_FILE}.`);
+  console.log(`Repinned ${POPULATION} to ${c.evidenceRelease}. Kept as historical receipts: ${result.movedRunIds.join(', ') || 'none'}.\nNext: replay officially (official-runs.yml; the default measures the four required scanners, OpenRedaction only with include_openredaction, #812), record the runs, then the owner renews the authority and sets ownerAcceptance in ${ADOPTION_FILE}.`);
 }
 
 function compareRuns() {

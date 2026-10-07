@@ -3,7 +3,13 @@
  * The steps are credential-eval docs/consumers/benchmarks-quickstart.md; the pins are benchmarks/official-runs.json.
  *
  *   node --import tsx scripts/run-official-credential-eval.ts --population <id> --engine-dir <checkout at the pinned tag>
- *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--omit-optional <scanner>] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
+ *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--include-optional <scanner>] [--dry-run] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
+ *
+ * SCANNER SELECTION (#812, benchmarks/qualification/scanner-selection.ts): with no input a full run measures the REQUIRED scanners only (flare-redact, gitleaks, redact-secret, trufflehog) under the
+ * engine's released without-optional configuration; the optional OpenRedaction default profile is an explicit opt-in (`--include-optional openredaction`, workflow input include_openredaction),
+ * recorded as `scannerSelection` in the run record with its configuration. `--omit-optional <scanner>` (#763) is DEPRECATED and changes nothing (omitting is the default). A pinned engine
+ * that ships no without-optional configuration is refused, never run with the optional scanner by accident. `--dry-run` prints the effective selection (scanners, configuration, optional
+ * scanner invocations: 0 unless opted in) and starts nothing: no engine build, no scanner, no output other than --out/scanner-selection.{json,md} when --out is given.
  *
  * `--attribution <id>` (#697) makes an ATTRIBUTION run: the same engine, evidence and population, scanning the product build the registry's `attributionRuns[<id>]`
  * names (the previous published release, with the engine's own configuration file and Node shim directory for it, which are always used together). It exists to
@@ -38,7 +44,9 @@ import path from 'node:path';
 import { canonical, sha256Digest } from '../benchmarks/qualification/canonical.ts';
 import { buildEvaluationEvidence } from '../benchmarks/qualification/evaluation-evidence.ts';
 import { exportPopulation, PRODUCT_POPULATIONS, type ProductPopulation } from '../benchmarks/qualification/population-snapshot.ts';
-import { readScannerRoster, rosterFor } from '../benchmarks/qualification/scanner-roster.ts';
+import { readScannerRoster } from '../benchmarks/qualification/scanner-roster.ts';
+import { controlRosterProblems, controlScannerIds } from './official-run-selection.mjs';
+import { describeSelection, renderSelection, selectScanners, selectionRecord, type ScannerSelection } from '../benchmarks/qualification/scanner-selection.ts';
 import { receiptProblems } from '../benchmarks/qualification/receipt-reuse.ts';
 import { bindingProblems, readRunArtifact, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import { controlFor } from './candidate-control.mjs';
@@ -61,15 +69,15 @@ if (mode !== 'full' && mode !== 'diagnostic') fail(`--mode must be full or diagn
 const diagnostic = mode === 'diagnostic';
 if (!diagnostic && args.includes('--scanners')) fail('--scanners is for --mode diagnostic; a full run uses every pinned scanner');
 const registryScannerIds: string[] = registry.scanners.map((s: { id: string }) => s.id);
-// An OPTIONAL scanner of the evaluation contract (#763, benchmarks/support/scanner-roster.json) is left out on request: the run is complete without it and its record names what was omitted.
+// The scanner selection (#812): one policy for every caller (benchmarks/qualification/scanner-selection.ts). Resolved below, once the platform, the engine checkout and the attribution are known.
 const roster = readScannerRoster();
-const omitOptional = option('omit-optional');
-if (omitOptional !== undefined) {
-  if (diagnostic) fail('--omit-optional is for an official run; the diagnostic lane selects its scanners with --scanners');
-  if (!rosterFor(roster, 'official').optional.includes(omitOptional)) fail(`--omit-optional ${omitOptional}: not an optional scanner of the official run class (benchmarks/support/scanner-roster.json); a required scanner cannot be omitted`);
-  if (!Object.keys(roster.optionalScanners[omitOptional].withoutConfigs).length) fail(`--omit-optional ${omitOptional}: it is in no official configuration, so there is nothing to leave out (#764: the credential profile is measured only by its own profile-only run, pending the owner's approval)`);
-}
-const selectedScanners: string[] = diagnostic ? (() => { try { return parseSelectedScanners(option('scanners'), registryScannerIds); } catch (e) { return fail((e as Error).message); } })() : registryScannerIds.filter(id => id !== omitOptional);
+const optionList = (name: string) => args.flatMap((a, i) => a === `--${name}` ? String(args[i + 1] ?? '').split(',').filter(Boolean) : []);
+const omitOptional = optionList('omit-optional');
+const includeOptional = optionList('include-optional');
+const dryRun = args.includes('--dry-run');
+if (diagnostic && (omitOptional.length || includeOptional.length)) fail('--omit-optional and --include-optional are for an official run; the diagnostic lane selects its scanners with --scanners');
+if (diagnostic && dryRun) fail('--dry-run prints the scanner selection of a full run; the diagnostic lane states its scanners in its summary');
+let selectedScanners: string[] = diagnostic ? (() => { try { return parseSelectedScanners(option('scanners'), registryScannerIds); } catch (e) { return fail((e as Error).message); } })() : registryScannerIds;
 const reuseSet = option('reuse-observations');
 const freshScanners = args.flatMap((a, i) => a === '--fresh' ? [args[i + 1]] : []);
 const observationsOut = option('observations-out');
@@ -84,13 +92,13 @@ const evidenceTag = option('evidence-tag'), evidenceManifestDigest = option('evi
 if (attributionId && candidateId) fail('--attribution and --candidate are exclusive');
 if (diagnostic && candidateId) fail('--candidate (the full comparative candidate replay, #698) and --mode diagnostic (the product-only lane, #705) are different mechanisms; use one');
 if (diagnostic && (attributionId !== undefined || args.includes('--methods'))) fail('a diagnostic run makes no attribution run and no methods run; the methods need the peers and are reported as unavailable');
-type Attribution = { configs: Record<string, string>; nodeDir: string; scanners: Record<string, { version: string; integrity: string }> };
+type Attribution = { configs: Record<string, string>; withoutConfigs?: Record<string, string>; nodeDir: string; scanners: Record<string, { version: string; integrity: string }> };
 const attribution: Attribution | undefined = attributionId === undefined ? undefined : (registry.attributionRuns?.[attributionId] ?? fail(`the registry pins no attribution run ${attributionId}`));
 const populationId = option('population') ?? fail('--population is required');
 const engineDir = path.resolve(option('engine-dir') ?? fail('--engine-dir is required'));
 const platform = option('platform') ?? fail('--platform is required');
 const methodsMode = args.includes('--methods');
-const baseOut = path.resolve(option('out') ?? fail('--out is required'));
+const baseOut = path.resolve(option('out') ?? (dryRun ? '.' : fail('--out is required'))); // a dry run writes only when --out is given
 const out = methodsMode ? path.join(baseOut, 'methods') : baseOut;
 const minRuns = diagnostic ? 1 : 2;
 const runs = Number(option('runs', String(minRuns)));
@@ -115,7 +123,7 @@ if (methodsMode) {
 }
 // A candidate run replays on the adoption's engine candidate (benchmarks/evidence-adoption.json), which is not the registry's accepted engine.
 const adoption = candidateId ? JSON.parse(readFileSync(new URL('../benchmarks/evidence-adoption.json', import.meta.url), 'utf8')) : undefined;
-let engineCandidate: { engine: { tag: string; revision: string }; product: { version: string; integrity: string }; evidenceRelease: string; manifestDigest: string } | undefined;
+let engineCandidate: { engine: { tag: string; revision: string }; product: { version: string; integrity: string }; evidenceRelease: string; manifestDigest: string; replay?: { recordedRuns?: { caseCounts?: Record<string, number> }[] } } | undefined;
 try { engineCandidate = candidateId ? controlFor(adoption, { evidenceTag, manifestDigest: evidenceManifestDigest, requireArchive: false }) as typeof engineCandidate : undefined; } catch (error) { fail((error as Error).message); }
 if (candidateId && !engineCandidate) fail('benchmarks/evidence-adoption.json records no engineCandidate to replay a product candidate on');
 if (candidateId && !evidenceTag && (engineCandidate!.evidenceRelease !== registry.populations.find((p: { id: string }) => p.id === 'public-evidence-snapshot')?.evidence.release.tag)) fail('the engineCandidate evidence is not the registry pin: a product candidate is measured on the accepted evidence');
@@ -127,17 +135,44 @@ if (evidenceTag && !/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(evidenceTag)) 
 if (evidenceManifestDigest && !/^sha256:[0-9a-f]{64}$/.test(evidenceManifestDigest)) fail('--evidence-manifest-digest must be sha256:<64 hex>');
 const expectedEngine = engineCandidate ? { revision: engineCandidate.engine.revision, version: engineCandidate.engine.tag.replace(/^v/, '') } : { revision: registry.engine.revision, version: registry.engine.version };
 const candidate = candidateId ? candidateOf(readCandidateRegistry(), candidateId) : undefined;
-// A candidate replay may leave the same optional scanner out as its control did: the comparison needs one scanner roster on both sides (candidate-diff refuses a different roster).
-if (omitOptional !== undefined && attributionId) fail('--omit-optional is for the accepted official run and a candidate replay, not an attribution run');
-const withoutConfig = omitOptional === undefined ? undefined : (roster.optionalScanners[omitOptional].withoutConfigs[platform] ?? fail(`the scanner roster names no run configuration without ${omitOptional} for platform ${platform}`));
-const configFile = (withoutConfig ?? (attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file)) ?? fail(`no run configuration pinned for platform ${platform}`);
 const nodeDir = path.join(engineDir, attribution?.nodeDir ?? 'adapters/node');
-// The scanners this run is pinned to: the registry's, with the attributed product build in place of the product pin.
+const binary = path.join(engineDir, 'target/release/credential-eval');
+// The effective selection (#812). The pinned engine decides availability: its checkout either ships the without-optional configuration or it does not.
+let selection: ScannerSelection | undefined;
+let configFile: string;
+if (diagnostic) configFile = registry.config.platforms[platform]?.file ?? fail(`no run configuration pinned for platform ${platform}`);
+else {
+  const picked = selectScanners({
+    roster, registryScannerIds, platform, includeOptional, omitOptional,
+    fullConfig: attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file,
+    withoutConfigs: attribution ? (attribution.withoutConfigs ?? {}) : undefined,
+    subject: attributionId ? `attribution run ${attributionId}` : candidateId ? `candidate replay ${candidateId}` : 'the official run',
+    engineHasConfig: file => existsSync(path.join(engineDir, 'configs/official', file)), engineTag: engineCandidate ? engineCandidate.engine.tag : registry.engine.tag,
+  });
+  if (!picked.selection) fail(picked.problems.join('; '));
+  selection = picked.selection!;
+  selectedScanners = selection.scanners;
+  configFile = selection.configFile;
+  for (const notice of selection.notices) console.log(`notice: ${notice}`);
+}
+// A candidate replay is compared with the control of its adoption: ONE scanner roster on both sides. An incompatible control is reported, never matched by turning a scanner on or splicing observations.
+if (selection && candidateId) {
+  const problems = controlRosterProblems({ control: controlScannerIds(engineCandidate?.replay), selected: selection.scanners, controlLabel: `the control replay of ${engineCandidate!.evidenceRelease}`, roster });
+  if (problems.length) fail(problems.join('; '));
+}
+// The scanners this run is pinned to: the registry's selected ones, with the attributed product build in place of the product pin.
 const runScanners: typeof registry.scanners = registry.scanners.filter((s: { id: string }) => selectedScanners.includes(s.id)).map((s: { id: string }) => (attribution?.scanners[s.id] ? { ...s, ...attribution.scanners[s.id] } : s));
 const pinnedConfigPath = path.join(engineDir, 'configs/official', configFile);
-const binary = path.join(engineDir, 'target/release/credential-eval');
-// The without-optional configuration ships with an engine release; a pinned engine that predates it is refused plainly, never measured with the optional scanner by accident.
-if (withoutConfig !== undefined && !existsSync(pinnedConfigPath)) fail(`the pinned engine ${registry.engine.tag} has no configuration ${withoutConfig} (engine release pending, #763): an official run without ${omitOptional} needs an engine release that ships it, and the pin moves only by the owner's repin`);
+const selectionContext = { roster, population: populationId, stage: methodsMode ? 'methods' as const : 'plain' as const, runs };
+if (selection) {
+  console.log(renderSelection(selection, selectionContext));
+  if (dryRun) {
+    const described = describeSelection(selection, selectionContext);
+    if (option('out') !== undefined) { mkdirSync(out, { recursive: true }); writeFileSync(path.join(out, 'scanner-selection.json'), `${JSON.stringify(described, null, 2)}\n`); writeFileSync(path.join(out, 'scanner-selection.md'), renderSelection(selection, selectionContext)); }
+    console.log(`dry run: optional scanner invocations ${JSON.stringify(described.optionalScannerRuns)}; nothing was started`);
+    process.exit(0);
+  }
+}
 mkdirSync(out, { recursive: true });
 
 // 1. Engine identity: the tag's commit, the version string and the protocol. A different engine is a different measurement.
@@ -241,6 +276,7 @@ if (reuseReceipt !== undefined) {
         problems.push(...receiptProblems(found, digest, {
           population: populationId, platform, methods: methodsMode, engineRevision: revision, runs,
           candidateId: candidateId ?? null, attributionId: attributionId ?? null, evidenceTag: evidenceTag ?? null, scannerIds: selectedScanners,
+          ...(selection ? { scannerSelection: { configFile: selection.configFile, includedOptionalScanners: selection.includedOptionalScanners } } : {}),
           ...(methodsMode ? { methodsRun: { methods: methodsRun!.methods, reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),
         }));
         // The stage receipt (#762) is optional: an artifact of an earlier workflow (official-run-*, early-plain-*) has the run record only. When there is one, it must hold.
@@ -305,6 +341,11 @@ for (const [i, file] of artifacts.entries()) {
     : bindingProblems(a.artifact, bindPin, { engineVersion: expectedEngine.version, protocol: registry.engine.protocol })
     // A candidate is exploratory by construction: the class is checked for what it must be instead of being refused.
       .filter(problem => !(candidate && problem.startsWith('run_class is')));
+  // The scanner set the engine measured is the selection and nothing else (#812): an artifact that carries (or lacks) a scanner the selection did not name is refused, so an optional scanner never rides in on a configuration mismatch.
+  if (!diagnostic) {
+    const ran = a.artifact.manifest.scanners.map(x => x.id).sort().join(','), wanted = [...selectedScanners].sort().join(',');
+    if (ran !== wanted) problems.push(`the artifact measured the scanners ${ran}, the scanner selection (${selection!.policy}) is ${wanted}`);
+  }
   if (candidate && (a.artifact.manifest.run_class !== 'exploratory' || a.artifact.manifest.publication !== 'internal')) problems.push(`a product candidate run is exploratory and internal, this artifact is ${a.artifact.manifest.run_class}/${a.artifact.manifest.publication}`);
   if (problems.length) fail(`artifact ${i + 1} is not accepted for ${populationId}: ${problems.join('; ')}`);
   if (methodsMode) {
@@ -329,7 +370,8 @@ const record = {
   evidence: kept.manifest.evidence, configHash: kept.manifest.config_hash,
   artifact: { digest: kept.artifactDigest, semanticDigest: kept.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
   determinism: { runs, semanticDigestsEqual: true },
-  ...(omitOptional !== undefined ? { omittedOptionalScanners: [omitOptional] } : {}),
+  ...(selection?.omittedOptionalScanners.length ? { omittedOptionalScanners: selection.omittedOptionalScanners } : {}),
+  ...(selection ? { scannerSelection: selectionRecord(selection, kept.manifest.config_hash) } : {}),
   ...(receiptReuse ? { receiptReuse } : {}),
   ...(evidenceTag && !(PRODUCT_POPULATIONS as readonly string[]).includes(populationId) ? { evidenceOverride: { tag: evidenceTag, manifestDigest: evidenceManifestDigest } } : {}),
   ...(candidate ? { productCandidate: { id: candidateId, commit: candidate.product.commit, version: candidate.product.version, published: false, packages: candidate.packages.map(x => ({ name: x.name, sha256: x.sha256 })), control: engineCandidate!.product, receipt: 'product-candidate-receipt.json' } } : {}),
@@ -344,6 +386,12 @@ const record = {
 };
 writeFileSync(path.join(out, diagnostic ? 'diagnostic-record.json' : 'run-record.json'), `${JSON.stringify(record, null, 2)}\n`);
 incomplete = undefined; rmSync(markerFile, { force: true });
+if (selection) {
+  // The job summary reads this: what was measured, that an optional scanner was omitted (or opted in) and its invocation count, with the configuration identity of the result.
+  const finalContext = { ...selectionContext, configHash: kept.manifest.config_hash };
+  writeFileSync(path.join(out, 'scanner-selection.json'), `${JSON.stringify(describeSelection(selection, finalContext), null, 2)}\n`);
+  writeFileSync(path.join(out, 'scanner-selection.md'), renderSelection(selection, finalContext));
+}
 if (diagnostic) {
   const summary = diagnosticSummary({
     populations: [populationId], selected: selectedScanners, registryScanners: registryScannerIds,

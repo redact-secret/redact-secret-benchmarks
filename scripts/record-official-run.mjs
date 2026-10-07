@@ -53,6 +53,8 @@ const entry = {
   scanners: record.scanners,
   // An optional scanner of the roster the run left out on purpose (#763): carried so the registry check can tell it from a silent drop.
   ...(record.omittedOptionalScanners?.length ? { omittedOptionalScanners: record.omittedOptionalScanners } : {}),
+  // The scanner selection the run was made under (#812): the configuration file and hash, the scanners and the explicit opt-in (if any), so the recorded result carries its own identity.
+  ...(record.scannerSelection ? { scannerSelection: record.scannerSelection } : {}),
   caseCounts: record.caseCounts,
 };
 const runs = [...registry.runs.filter(run => run.id !== entry.id), entry].sort((a, b) => (a.id < b.id ? -1 : 1));

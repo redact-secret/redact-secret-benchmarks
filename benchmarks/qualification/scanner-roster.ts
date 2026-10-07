@@ -22,7 +22,7 @@ export interface OptionalScanner {
   profile: string;
   /** Why the measurement is optional, stated beside the absence. */
   reason: string;
-  /** Per platform, the official run configuration (credential-eval `configs/official/`) of a run that leaves the scanner out. `engineRelease` says whether a pinned engine has them. Empty for a profile that is in no official configuration (nothing to leave out). */
+  /** Per platform, the official run configuration (credential-eval `configs/official/`) of a run that leaves the scanner out. `engineRelease` is the first credential-eval release that ships them (informational, verified against the release's `configs/official/`, or 'pending'); it is NOT how a run decides: the driver asks the PINNED engine's checkout whether the file exists (scanner-selection.ts), so a repin that moves to an engine without them is refused, never assumed. Empty for a profile that is in no official configuration (nothing to leave out). */
   withoutConfigs: Record<string, string>;
   engineRelease: 'pending' | string;
   /** What the profile detects, in the words of the page (#764). */

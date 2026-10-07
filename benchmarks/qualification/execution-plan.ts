@@ -216,8 +216,19 @@ export interface AccuracyInputs {
   /** Engine runs a fresh population job makes (two repeats; the public population adds two methods runs). */
   engineRunsFor: (population: string) => number;
   telemetry?: Telemetry;
+  /**
+   * The optional scanners the official lane's effective selection decides (#812, scanner-selection.ts): omitted by default (not planned, zero invocations) or opted in. Absent, every
+   * registry scanner is planned as before. The diagnostic lane picks its scanners itself and ignores this.
+   */
+  scannerSelection?: { omittedOptional: string[]; includedOptional: string[] };
 }
-export interface AccuracyPlan { populations: AccuracyPopulationPlan[]; decisions: string[]; missingEvidence: string[] }
+export interface AccuracyScannerSelectionPlan {
+  omittedOptional: string[];
+  includedOptional: string[];
+  /** Engine runs that invoke each decided optional scanner across the fresh populations: 0 for an omitted one. */
+  optionalScannerRuns: Record<string, number>;
+}
+export interface AccuracyPlan { populations: AccuracyPopulationPlan[]; decisions: string[]; missingEvidence: string[]; scannerSelection?: AccuracyScannerSelectionPlan }
 
 export function planAccuracy(inputs: AccuracyInputs): AccuracyPlan {
   const { kinds, registry } = inputs;
@@ -228,7 +239,8 @@ export function planAccuracy(inputs: AccuracyInputs): AccuracyPlan {
   const forcedScanner = (id: string) => force === 'all' || force.includes(id);
   const decisions: string[] = [];
   const missingEvidence: string[] = [];
-  const ids = registry.scanners.map(s => s.id).sort();
+  const omittedOptional = inputs.lane === 'official' ? (inputs.scannerSelection?.omittedOptional ?? []) : [];
+  const ids = registry.scanners.map(s => s.id).filter(id => !omittedOptional.includes(id)).sort();
 
   const populations = registry.populations.map(({ id: population }): AccuracyPopulationPlan => {
     const recorded = registry.runs.find(r => r.population === population && r.platform === inputs.platform && r.kind !== 'methods');
@@ -261,7 +273,12 @@ export function planAccuracy(inputs: AccuracyInputs): AccuracyPlan {
       runnerMinutes: freshCount > 0 ? (inputs.telemetry?.minutesFor(`official-run:${population}`) ?? null) : 0,
     };
   });
-  return { populations, decisions, missingEvidence };
+  const decided = inputs.lane === 'official' && inputs.scannerSelection ? [...inputs.scannerSelection.omittedOptional, ...inputs.scannerSelection.includedOptional].sort() : [];
+  const freshEngineRuns = populations.reduce((n, p) => n + p.engineRuns, 0);
+  const scannerSelection = decided.length && inputs.scannerSelection
+    ? { omittedOptional: [...inputs.scannerSelection.omittedOptional].sort(), includedOptional: [...inputs.scannerSelection.includedOptional].sort(), optionalScannerRuns: Object.fromEntries(decided.map(id => [id, inputs.scannerSelection!.includedOptional.includes(id) ? freshEngineRuns : 0])) }
+    : undefined;
+  return { populations, decisions, missingEvidence, ...(scannerSelection ? { scannerSelection } : {}) };
 }
 
 // ---------------------------------------------------------------- telemetry
@@ -327,7 +344,9 @@ export function planExecution(inputs: ExecutionPlanInputs): ExecutionPlan {
   if (!decisions.length) {
     const cmd = (workflow: string, ins: Record<string, string>) => `gh workflow run ${workflow} --ref <branch>${Object.entries(ins).map(([k, v]) => ` -f ${k}=${v}`).join('')}`;
     if (accuracyJobs.length) {
-      const ins = { mode: inputs.accuracy?.lane === 'diagnostic' ? 'diagnostic' : 'full' };
+      const included = inputs.accuracy?.lane === 'diagnostic' ? [] : (inputs.accuracy?.scannerSelection?.includedOptional ?? []);
+      // The positive opt-in is part of the dispatch the plan names (#812): visible here, never implied.
+      const ins: Record<string, string> = { mode: inputs.accuracy?.lane === 'diagnostic' ? 'diagnostic' : 'full', ...(included.includes('openredaction') ? { include_openredaction: 'true' } : {}) };
       dispatch.push({ axis: 'accuracy', workflow: 'official-runs.yml', inputs: ins, command: cmd('official-runs.yml', ins), covers: accuracyJobs.map(p => p.population) });
     }
     for (const job of perfJobs) {
@@ -372,7 +391,13 @@ export function renderExecutionPlan(plan: ExecutionPlan): string {
   if (plan.dispatch.length) lines.push('### Dispatch (separate workflows, one per axis)', '', ...plan.dispatch.map(d => `- ${d.axis}: \`${d.command}\` (${d.covers.join(', ')})`), '');
   if (plan.decisions.length) lines.push('### Decisions needed', '', ...plan.decisions.map(d => `- ${d}`), '');
   if (plan.accuracy) {
-    lines.push('### Accuracy', '', '| Population | Action | Scanner | Origin | Reason |', '| --- | --- | --- | --- | --- |');
+    lines.push('### Accuracy', '');
+    const sel = plan.accuracy.scannerSelection;
+    if (sel) {
+      for (const id of sel.omittedOptional) lines.push(`Optional scanner ${id}: OMITTED (optional, default) - not planned; ${id} scan invocations: ${sel.optionalScannerRuns[id] ?? 0}. The view states it was not measured.`, '');
+      for (const id of sel.includedOptional) lines.push(`Optional scanner ${id}: INCLUDED by explicit opt-in (include_openredaction) - ${sel.optionalScannerRuns[id]} engine run(s) invoke it; the dispatch above carries the opt-in.`, '');
+    }
+    lines.push('| Population | Action | Scanner | Origin | Reason |', '| --- | --- | --- | --- | --- |');
     for (const p of plan.accuracy.populations) for (const s of p.scanners) lines.push(`| ${p.population} | ${p.action} | ${s.scanner} | ${s.origin} | ${s.reason}${s.source ? ` (${s.source})` : ''} |`);
     lines.push('');
   }

@@ -6,12 +6,15 @@
  *
  *   node scripts/run-evidence-replay.mjs all      --tag <snapshot tag> --manifest-digest sha256:<hex> [--keep-branch]
  *   node scripts/run-evidence-replay.mjs branch   ...   create (or reuse) the transient branch `replay/<tag>-<key12>-control` at the pushed HEAD plus the candidate's pins; keeps the pins patch
- *   node scripts/run-evidence-replay.mjs dispatch ...   dispatch official-runs.yml once on that branch (an existing run of the same commit is reused, never dispatched twice); prints the run id
+ *   node scripts/run-evidence-replay.mjs dispatch ... [--include-openredaction]   dispatch official-runs.yml once on that branch (an existing run of the same commit is reused, never dispatched twice); prints the run id
  *   node scripts/run-evidence-replay.mjs wait     --run <id>
  *   node scripts/run-evidence-replay.mjs collect  ... --run <id>   download, verify each run record, archive as `official-runs-<run id>`, check the round trip, record `evidenceCandidate.replay`, delete the branch
  *   node scripts/run-evidence-replay.mjs contrast ... [--candidate <id>] [--note <text>]   contrast the control (and the candidate) on the new snapshot with the accepted one, by semantic id, strict
  *   node scripts/run-evidence-replay.mjs chain    ... --candidate <id>   the whole chain, each step skipped when its record exists and committed and pushed before the next dispatch:
  *                                                  control replay, candidate on the accepted evidence, candidate on the new evidence (the 2x2), contrast, draft pull request
+ *
+ * SCANNER ROSTER (#812). The control measures the REQUIRED scanners only unless `--include-openredaction` (workflow input include_openredaction) opts the optional OpenRedaction default profile in. The replay
+ * entry records the roster it measured, and a candidate replay is refused against a control of another roster (scripts/official-run-selection.mjs); `chain` passes the same opt-in to every replay it dispatches.
  *
  * The control is the PUBLISHED product on the engine the adoption record names, so the corpus is the only difference from the accepted runs. The candidate must already be
  * recorded by `adopt-evidence-snapshot.yml` (state `accepted`, `evidenceCandidate`), and its product pin must equal the active registry's (a moved product still needs the by-hand pins: this command refuses and says so). A moved engine is
@@ -39,6 +42,8 @@ const readJson = file => JSON.parse(readFileSync(path.join(root, file), 'utf8'))
 const run = (command, args, options = {}) => execFileSync(command, args, { encoding: 'utf8', cwd: root, stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 256 * 1024 * 1024, ...options });
 const gh = (args, options) => run('gh', args, options);
 
+/** The run name the workflow gives a run that opted OpenRedaction in (run-name of official-runs.yml). */
+export const OPENREDACTION_RUN_NAME = '(OpenRedaction included)';
 export const branchName = (tag, adoptionKey) => `replay/${tag}-${adoptionKey.replace('sha256:', '').slice(0, 12)}-control`;
 
 /** Pure: the evidence candidate this command may replay, or the reason it may not. */
@@ -85,15 +90,24 @@ export function moveEngineInTree(tree, ec) {
 }
 
 /** Pure: the run this dispatch may reuse (same commit, not failed or cancelled), the newest first. */
-export function reusableRun(runs, sha) {
+export function reusableRun(runs, sha, includeOpenRedaction = false) {
   return runs
-    .filter(r => r.event === 'workflow_dispatch' && r.headSha === sha && !['failure', 'cancelled', 'timed_out', 'startup_failure'].includes(r.conclusion ?? ''))
+    // A run dispatched with another scanner selection is another measurement (#812): the run name states the opt-in, so a reuse never crosses it.
+    .filter(r => r.event === 'workflow_dispatch' && r.headSha === sha && String(r.displayTitle ?? '').includes(OPENREDACTION_RUN_NAME) === includeOpenRedaction && !['failure', 'cancelled', 'timed_out', 'startup_failure'].includes(r.conclusion ?? ''))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
 }
 
 /** Pure: what the adoption record keeps of the control replay, from the run records. Refuses a record that is not this candidate's published-product replay. */
-export function replayEntry({ records, ec, tag, runId, sha, branch, archive, patchPath, dateNote }) {
+export function replayEntry({ records, ec, tag, runId, sha, branch, archive, patchPath, dateNote, includeOpenRedaction = false }) {
   const problems = [];
+  // Every record measured ONE scanner roster, and it is the one this control was asked for (#812): a run reused for another selection, or a mixed set of stages, is refused, never recorded.
+  const rosterOf = r => (r.scanners ?? []).map(x => x.id).sort().join(',');
+  const rosters = new Set(records.map(({ record }) => rosterOf(record)));
+  if (rosters.size > 1) problems.push(`the run records measured different scanner rosters (${[...rosters].join(' | ')}); a control is one roster`);
+  for (const { rel, record } of records) {
+    const hasOptional = (record.scannerSelection?.includedOptionalScanners ?? []).length > 0 || (record.scanners ?? []).some(x => x.id === 'openredaction');
+    if (hasOptional !== includeOpenRedaction) problems.push(`${rel}: the run ${hasOptional ? 'measured' : 'did not measure'} OpenRedaction, this control was asked to ${includeOpenRedaction ? 'include' : 'omit'} it (include_openredaction); dispatch again with the matching selection`);
+  }
   const recordedRuns = [];
   const semanticDigests = {};
   for (const { rel, record } of records) {
@@ -116,6 +130,7 @@ export function replayEntry({ records, ec, tag, runId, sha, branch, archive, pat
     archive,
     semanticDigests,
     recordedRuns,
+    scannerSelection: { scanners: [...rosters][0]?.split(',') ?? [], includedOptionalScanners: includeOpenRedaction ? ['openredaction'] : [], omittedOptionalScanners: includeOpenRedaction ? [] : ['openredaction'] },
     note: dateNote ?? 'An exploratory replay for the evidence candidate: never an accepted run, and nothing is recorded in runs[].',
   };
 }
@@ -173,15 +188,31 @@ export function branch(tag, manifestDigest, { engineOnly = false } = {}) {
   }
 }
 
-export function dispatch(tag, manifestDigest) {
+/**
+ * Fail before any branch or CI minute (#812): the engine the replay runs on must ship the configuration this selection needs (the without-OpenRedaction one by default, the full one on the
+ * opt-in). The driver checks the checkout again at run time; this is the same question asked of the release tree, so an engine without it is reported here, not an hour into a run.
+ */
+export function requiredEngineConfig({ roster, registry, includeOpenRedaction, platform = 'linux-x64' }) {
+  return includeOpenRedaction ? registry.config.platforms[platform].file : roster.optionalScanners.openredaction.withoutConfigs[platform];
+}
+function assertEngineShipsConfig(ec, includeOpenRedaction) {
+  const file = requiredEngineConfig({ roster: readJson('benchmarks/support/scanner-roster.json'), registry: readJson('benchmarks/official-runs.json'), includeOpenRedaction });
+  let names;
+  try { names = JSON.parse(gh(['api', `repos/redact-secret/credential-eval/contents/configs/official?ref=${ec.engine.tag}`, '--jq', '[.[].name]'])); }
+  catch (error) { throw new Error(`could not list configs/official of credential-eval ${ec.engine.tag} to check that it ships ${file}: ${error.message}`); }
+  if (!names.includes(file)) throw new Error(`credential-eval ${ec.engine.tag} ships no configuration ${file}${includeOpenRedaction ? '' : ' (the default control measures the required scanners only and never falls back to the full configuration; --include-openredaction records an OpenRedaction control explicitly)'}`);
+}
+
+export function dispatch(tag, manifestDigest, { includeOpenRedaction = false } = {}) {
+  assertEngineShipsConfig(context(tag, manifestDigest).ec, includeOpenRedaction);
   const { branch: name, sha } = branch(tag, manifestDigest);
-  const list = () => JSON.parse(gh(['run', 'list', '-R', REPOSITORY, '--workflow', WORKFLOW, '--branch', name, '--limit', '20', '--json', 'databaseId,event,headSha,createdAt,conclusion,status']));
-  const reuse = reusableRun(list(), sha);
+  const list = () => JSON.parse(gh(['run', 'list', '-R', REPOSITORY, '--workflow', WORKFLOW, '--branch', name, '--limit', '20', '--json', 'databaseId,event,headSha,createdAt,conclusion,status,displayTitle']));
+  const reuse = reusableRun(list(), sha, includeOpenRedaction);
   if (reuse) return { runId: String(reuse.databaseId), reused: true, sha, branch: name };
   const after = Date.now();
-  gh(['workflow', 'run', WORKFLOW, '-R', REPOSITORY, '--ref', name]);
+  gh(['workflow', 'run', WORKFLOW, '-R', REPOSITORY, '--ref', name, ...(includeOpenRedaction ? ['-f', 'include_openredaction=true'] : [])]);
   for (let attempt = 0; attempt < 30; attempt += 1) {
-    const found = list().filter(r => r.event === 'workflow_dispatch' && r.headSha === sha && Date.parse(r.createdAt) >= after - 5000)[0];
+    const found = list().filter(r => r.event === 'workflow_dispatch' && r.headSha === sha && Date.parse(r.createdAt) >= after - 5000 && String(r.displayTitle ?? '').includes(OPENREDACTION_RUN_NAME) === includeOpenRedaction)[0];
     if (found) return { runId: String(found.databaseId), reused: false, sha, branch: name };
     execFileSync('sleep', ['5']);
   }
@@ -201,7 +232,7 @@ export function wait(runId, maxMinutes = 360) {
   }
 }
 
-export function collect(tag, manifestDigest, runId, { keepBranch = false } = {}) {
+export function collect(tag, manifestDigest, runId, { keepBranch = false, includeOpenRedaction = false } = {}) {
   const { ec, branch: name, patchPath } = context(tag, manifestDigest);
   const meta = JSON.parse(gh(['run', 'view', runId, '-R', REPOSITORY, '--json', 'headSha,headBranch,event']));
   if (meta.event !== 'workflow_dispatch' || meta.headBranch !== name) throw new Error(`run ${runId} is ${meta.event} on ${meta.headBranch}, not the dispatch on ${name}`);
@@ -225,7 +256,7 @@ export function collect(tag, manifestDigest, runId, { keepBranch = false } = {})
     const check = path.join(scratch, 'roundtrip');
     fetchArchive({ release: archiveTag, sha256: archived.digest, out: check, repository: REPOSITORY });
     for (const rel of listKept(into)) if (sha256File(path.join(into, rel)) !== sha256File(path.join(check, rel))) throw new Error(`the archive round trip differs for ${rel}`);
-    const replay = replayEntry({ records, ec, tag, runId, sha, branch: name, archive: { release: archiveTag, sha256: archived.digest }, patchPath });
+    const replay = replayEntry({ records, ec, tag, runId, sha, branch: name, archive: { release: archiveTag, sha256: archived.digest }, patchPath, includeOpenRedaction });
     const adoption = readJson(ADOPTION);
     writeFileSync(path.join(root, ADOPTION), `${JSON.stringify({ ...adoption, evidenceCandidate: { ...adoption.evidenceCandidate, replay } }, null, 2)}\n`);
     if (!keepBranch && remoteSha(name)) run('git', ['push', 'origin', '--delete', name]);
@@ -291,7 +322,7 @@ export function recordLinks(tag, candidateId) {
   writeFileSync(path.join(root, ADOPTION), `${JSON.stringify({ ...adoption, evidenceCandidate: { ...adoption.evidenceCandidate, productCandidates, contrast: { report: `${GENERATED_DIR}/${tag}.contrast.md`, data: `${GENERATED_DIR}/${tag}.contrast.json` } } }, null, 2)}\n`);
 }
 
-export function chain(tag, manifestDigest, candidateId, { note, keepBranch = false } = {}) {
+export function chain(tag, manifestDigest, candidateId, { note, keepBranch = false, includeOpenRedaction = false } = {}) {
   const log = message => console.error(`[chain] ${message}`);
   const adoption = () => readJson(ADOPTION);
   const registry = () => readJson('benchmarks/product-candidates.json').candidates.find(c => c.id === candidateId);
@@ -301,12 +332,12 @@ export function chain(tag, manifestDigest, candidateId, { note, keepBranch = fal
   pushed();
   // 1. The control: the published product on the new evidence.
   if (adoption().evidenceCandidate?.replay?.archive) log('control replay already recorded');
-  else { const d = dispatch(tag, manifestDigest); log(`control run ${d.runId}`); wait(d.runId); collect(tag, manifestDigest, d.runId, { keepBranch }); commitAndPush(`data(adoption): control replay of ${tag} (run ${d.runId})`, [ADOPTION, `docs/generated/evidence-adoption/${tag}.replay-pins.patch`]); }
+  else { const d = dispatch(tag, manifestDigest, { includeOpenRedaction }); log(`control run ${d.runId}`); wait(d.runId); collect(tag, manifestDigest, d.runId, { keepBranch, includeOpenRedaction }); commitAndPush(`data(adoption): control replay of ${tag} (run ${d.runId})`, [ADOPTION, `docs/generated/evidence-adoption/${tag}.replay-pins.patch`]); }
   // 2. The candidate on the accepted evidence (cell B of the 2x2), 3. on the new evidence (cell D). The candidate replay script dispatches, waits, collects and archives.
   if (registry().replay) log('candidate replay on the accepted evidence already recorded');
-  else { node(['scripts/run-candidate-replay.mjs', 'all', '--candidate', candidateId, '--no-pr']); commitAndPush(`data(candidate): replay of ${candidateId} on the accepted evidence`, ['benchmarks/product-candidates.json', `docs/generated/evidence-adoption/product-${candidateId}`]); }
+  else { node(['scripts/run-candidate-replay.mjs', 'all', '--candidate', candidateId, '--no-pr', ...(includeOpenRedaction ? ['--include-openredaction'] : [])]); commitAndPush(`data(candidate): replay of ${candidateId} on the accepted evidence`, ['benchmarks/product-candidates.json', `docs/generated/evidence-adoption/product-${candidateId}`]); }
   if (registry().evidenceReplays?.[tag]) log(`candidate replay on ${tag} already recorded`);
-  else { node(['scripts/run-candidate-replay.mjs', 'all', '--candidate', candidateId, ...evidence, '--no-pr']); commitAndPush(`data(candidate): replay of ${candidateId} on ${tag} (2x2)`, ['benchmarks/product-candidates.json', `docs/generated/evidence-adoption/product-${candidateId}`]); }
+  else { node(['scripts/run-candidate-replay.mjs', 'all', '--candidate', candidateId, ...evidence, '--no-pr', ...(includeOpenRedaction ? ['--include-openredaction'] : [])]); commitAndPush(`data(candidate): replay of ${candidateId} on ${tag} (2x2)`, ['benchmarks/product-candidates.json', `docs/generated/evidence-adoption/product-${candidateId}`]); }
   // 4. The contrast of the new evidence with the accepted one, by semantic id (strict).
   contrast(tag, manifestDigest, candidateId, note);
   recordLinks(tag, candidateId);
@@ -322,18 +353,19 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   const [command, ...rest] = process.argv.slice(2);
   const option = name => { const at = rest.indexOf(`--${name}`); return at >= 0 ? rest[at + 1] : undefined; };
   const tag = option('tag'), digest = option('manifest-digest');
+  const includeOpenRedaction = rest.includes('--include-openredaction'); // the positive opt-in (#812); absent, the control measures the required scanners only
   try {
     if (command === 'branch') console.log(JSON.stringify(branch(tag, digest, { engineOnly: rest.includes('--engine-only') })));
-    else if (command === 'dispatch') console.log(JSON.stringify(dispatch(tag, digest)));
+    else if (command === 'dispatch') console.log(JSON.stringify(dispatch(tag, digest, { includeOpenRedaction })));
     else if (command === 'wait') wait(option('run'));
-    else if (command === 'collect') console.log(JSON.stringify(collect(tag, digest, option('run'), { keepBranch: rest.includes('--keep-branch') })));
+    else if (command === 'collect') console.log(JSON.stringify(collect(tag, digest, option('run'), { keepBranch: rest.includes('--keep-branch'), includeOpenRedaction })));
     else if (command === 'contrast') console.log(JSON.stringify(contrast(tag, digest, option('candidate'), option('note'))));
-    else if (command === 'chain') console.log(JSON.stringify(chain(tag, digest, option('candidate'), { note: option('note'), keepBranch: rest.includes('--keep-branch') })));
+    else if (command === 'chain') console.log(JSON.stringify(chain(tag, digest, option('candidate'), { note: option('note'), keepBranch: rest.includes('--keep-branch'), includeOpenRedaction })));
     else if (command === 'all') {
-      const d = dispatch(tag, digest);
+      const d = dispatch(tag, digest, { includeOpenRedaction });
       console.error(`${d.reused ? 'reusing' : 'dispatched'} run ${d.runId} on ${d.branch} (${d.sha})`);
       wait(d.runId);
-      console.log(JSON.stringify(collect(tag, digest, d.runId, { keepBranch: rest.includes('--keep-branch') })));
+      console.log(JSON.stringify(collect(tag, digest, d.runId, { keepBranch: rest.includes('--keep-branch'), includeOpenRedaction })));
     } else { console.error('usage: run-evidence-replay.mjs all|branch|dispatch|wait|collect|contrast|chain --tag <snapshot tag> --manifest-digest sha256:<hex> [--run <id>]'); process.exit(2); }
   } catch (error) { console.error(`evidence replay refused: ${error.message}`); process.exit(1); }
 }

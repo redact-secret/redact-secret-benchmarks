@@ -1,5 +1,5 @@
 name: Research a provider or family
-description: Track research on a provider's secret family. Closed only by the dossier PR that records the verdict.
+description: For experienced researchers and maintainers. Track a provider's secret family where a benchmarks dossier is still required. Closed only by the dossier PR that records the verdict.
 title: "research(<provider>): <family>"
 labels: ["research"]
 body:
@@ -8,9 +8,9 @@ body:
       value: |
         **Who this form is for.** Experienced research contributors, maintainer-created research
         tasks, and dossier-ready work, where you can fill the dossier fields below. New to this,
-        or only know that a provider or credential exists? Use "Suggest a provider or credential
-        to research" instead; a maintainer will triage it and open this form's issue when
-        warranted (routing in `docs/research-intake.md`).
+        or only know that a provider or credential exists? Do not use this form; a maintainer
+        opens this form's issue when warranted (routing in
+        [`docs/research-intake.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/main/docs/research-intake.md)).
 
         **Synthetic only, no live credentials.** Never paste a real, live, unrevoked or newly
         generated secret. Describe shapes in words or as a grammar; examples must be synthetic.
@@ -18,9 +18,17 @@ body:
         **Tooling.** Scaffold the taxonomy entry, dossier entry and inert fixture stub with
         `npm run family:new -- <provider> <family>` and check progress with
         `npm run family:status`. The dossier schema is
-        [`schemas/dossier-v1.json`](https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/schemas/dossier-v1.json).
+        [`schemas/dossier-v1.json`](https://github.com/redact-secret/redact-secret-benchmarks/blob/main/schemas/dossier-v1.json).
 
-        **Completion rule.** This issue is closed only by a pull request that adds or updates
+        **Where this fits.** The current order is: credential-evidence research, then core
+        adoption (core's adoption comment, the only place `implementation-ready` is applied),
+        then independent evaluation, then the benchmarks report. A benchmarks dossier is a
+        legacy source: it is still required only where core's
+        [new-detector-family checklist](https://github.com/redact-secret/redact-secret/blob/main/CONTRIBUTION.md#new-detector-family-checklist)
+        names it as the consumer of the research verdict. Otherwise open the research in
+        credential-evidence, not here.
+
+        **Completion rule.** A dossier research issue is closed only by a pull request that adds or updates
         `benchmarks/support/dossiers/<provider>.md` and carries `Closes #N` for this issue. That
         includes a `not-found` or `rejected` verdict. Do not close it by hand. Iterative findings
         stay in comments; the dossier links them by permalink.

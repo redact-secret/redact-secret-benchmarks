@@ -9,6 +9,7 @@ import { contextGroup, type AxisOverlay } from './axis-overlay.ts';
 import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';
 import type { TwinScopeMap } from './twin-scope.ts';
 import { buildViewSupportMatrix } from './support-matrix.ts';
+import { observationOrigins, type OriginRecord } from './observation-origin.ts';
 import { assessRoster, type MeasurementHistory, type ScannerRoster } from './scanner-roster.ts';
 import { profileEffectsOf, scopeByScanner, type ProfileEffect, type ScopeEntry } from './scope-accounting.ts';
 import {
@@ -22,7 +23,7 @@ import {
  * It validates artifact identities, builds per-family views for each separately identified population, combines the
  * populations by product policy WITHOUT pooling their denominators, joins product-owned contract, taxonomy, empirical,
  * review-ledger and known-gap metadata, and applies the existing stable/provisional/pending rules
- * (`classifyFamilySupport`, unchanged). It never re-scores a case, never reads `non_semantic`, and credential-eval
+ * (`classifyFamilySupport`, unchanged). It never re-scores a case, never reads `non_semantic` as evidence (only the provenance fields of observation-origin.ts, carried apart and feeding nothing), and credential-eval
  * never emits a status: every status here is computed here. The output is a pure function of its inputs (no clock,
  * host or path), so the same artifacts and the same product inputs write the same bytes.
  * Spec: docs/specs/qualification-adapter.md.
@@ -127,6 +128,8 @@ export interface PopulationView {
   unmeasured?: { cases: { scanner: string; unmeasured: number; reasons: Record<string, number> }[]; methodsVariants?: { scanner: string; unmeasured: number; reasons: Record<string, number> }[] };
   /** Scope accounting per scanner of the plain artifact, methods artifact apart (#724). Absent counts are "not accounted", never zero. */
   scope?: ScopeEntry[]; methodsScope?: ScopeEntry[];
+  /** Where each scanner's observation came from (#724): provenance read from the artifact's non-semantic telemetry, kept apart from the semantic evidence above and never an input of a count, status or denominator. */
+  origins?: OriginRecord; methodsOrigins?: OriginRecord;
   /** Declared credential profiles against their default scanner on this population: separate observations, never spliced (#724). */
   profileEffects?: ProfileEffect[];
 }
@@ -658,6 +661,8 @@ export function buildQualificationView({ registry, engine, artifacts, product, p
       unmeasured: { cases: unmeasuredByScanner(l.artifact), ...(l.methods ? { methodsVariants: unmeasuredByScanner(l.methods.artifact) } : {}) },
       // Scope accounting is the engine's (ADR 0016) and is read, never recomputed; it does not feed any count, status or denominator above.
       scope: scopeByScanner(l.artifact), ...(l.methods ? { methodsScope: scopeByScanner(l.methods.artifact) } : {}),
+      // Origin is provenance (non_semantic), apart from the evidence: it feeds nothing above or below.
+      origins: observationOrigins(l.artifact), ...(l.methods ? { methodsOrigins: observationOrigins(l.methods.artifact) } : {}),
       profileEffects: profileEffectsOf(l.artifact, profiles, l.input.population),
     })).map(view => ({
       ...view,

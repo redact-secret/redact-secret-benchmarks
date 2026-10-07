@@ -17,7 +17,7 @@ import type { AccountingConfig } from '../../benchmarks/types';
 import { loadAuthority, type Authority, type QualificationAuthority } from './authority';
 import { assembleCatalog, loadCatalog, loadDetectorTitles, loadFixtureBytes, loadFixtureHashes, loadTaxonomy, type BuiltFixture, type Catalog } from './catalog';
 import { bridgeQualificationView } from './credential-bridge';
-import { loadQualificationView, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type QualificationView } from './qualification';
+import { loadQualificationView, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type QualificationView, type RosterNotMeasured } from './qualification';
 import { once, readJson } from './repo';
 import { loadReviewDisclosure, type ReviewDisclosureData } from './review-state';
 import { loadRun, type RunLoad } from './run';
@@ -46,6 +46,8 @@ export interface CredentialPipeline {
     evidenceTag?: string;
     release?: string;
     recordedOn?: string | null;
+    /** The optional scanners the view did not measure (#763), as the view's roster states them: every report page built from this view says so beside its numbers. */
+    notMeasured?: RosterNotMeasured[];
   };
   /** Present when the accepted evidence release records fixtures in the `maintainer-only` review state (a disclosure, not a number of the view). */
   reviewDisclosure?: ReviewDisclosureData;
@@ -140,6 +142,7 @@ async function newSource(authority: QualificationAuthority): Promise<CredentialS
         state: 'ready', commands: QUALIFICATION_COMMANDS, policyRevision: load.view.policy.revision, population: population.population,
         semanticDigest: population.artifact.semanticDigest, engine: `${population.artifact.engine.name} ${population.artifact.engine.version}`,
         evidenceTag: population.artifact.evidence.release?.tag, release: authority.new.release, recordedOn: recorded?.recordedOn ?? null,
+        ...(load.view.scannerRoster?.notMeasured.length ? { notMeasured: load.view.scannerRoster.notMeasured } : {}),
       },
     },
     catalog: bridged.catalog, run: bridged.run, fixtureBytes: bridged.fixtureBytes, fixtureHashes: new Map(),

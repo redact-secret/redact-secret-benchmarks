@@ -50,6 +50,7 @@ import type { DomainViewData } from '../components/evaluation/domain';
 import { loadRcSources } from '../services/candidate';
 import { resolveRcPage, type RcPage } from './rc';
 import { resolveScanners } from './scanners';
+import { resolveNotMeasuredRows } from './qualification';
 import { buildLine, resolveLanding, type LandingData } from './landing';
 import { loadScannerEnvironment } from '../services/scanners';
 import type { ScannerOverviewProps } from '../components/evaluation/scanner';
@@ -550,7 +551,9 @@ export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
   const { run, pipeline } = await loadCredentialSource();
   const official = pipeline.authority === 'new';
   const [environment, profiles, runtime, productScope, detectorTitles] = await Promise.all([loadScannerEnvironment(official ? 'official' : 'snapshots'), loadPeerProfiles(), loadPeerRuntime(), loadProductScope(), loadDetectorTitles()]);
-  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: detectorTitles.size || null, productScope });
+  // Under `new`, an optional scanner the official run did not measure is stated beside the roster, never a silent absence (#763).
+  const notMeasured = official ? resolveNotMeasuredRows(pipeline.view?.notMeasured ?? [], { link: true }) : undefined;
+  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: detectorTitles.size || null, productScope, ...(notMeasured ? { notMeasured } : {}) });
 }
 
 // ---- / (the landing page) and the footer's run line ------------------------------------------------------------------------

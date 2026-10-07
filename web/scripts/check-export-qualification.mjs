@@ -117,5 +117,30 @@ for (const p of view.populations) for (const c of p.cases) {
   if (times !== wanted) fail(`${p.population}/${c.id} is shown ${times} time(s) across the case pages, the view's attribution claims it ${wanted} time(s)`);
 }
 
+// An optional scanner the view did not measure (#763) is stated on the overview and on every page built from the view, with its pointer; the scanner has no row anywhere.
+// A page is built from the view when it carries the new pipeline's stamp (data-pipeline="new") or, for the scanner page, the official run's own words.
+const notMeasured = view.scannerRoster?.notMeasured ?? [];
+let disclosures = 0;
+for (const n of notMeasured) {
+  const pointer = n.lastMeasurement ? `recorded ${n.lastMeasurement.recordedOn}` : 'No earlier measurement of it is recorded';
+  const pages = [
+    ['evaluation/qualification/index.html', true],
+    ...['report', 'report/families', 'report/detectors', 'report/providers', 'report/fixtures', 'evaluation/credential', 'comparison/accuracy'].map(rel => [`${rel}/index.html`, null]),
+    ['evaluation/scanner/index.html', null],
+  ];
+  for (const [rel, always] of pages) {
+    if (!existsSync(out(rel))) continue;
+    const html = await read(rel);
+    const fromView = always || html.includes('data-pipeline="new"') || (rel.startsWith('evaluation/scanner') && html.includes('Official run, '));
+    if (!fromView) continue;
+    const text = decode(stripTags(html));
+    for (const needle of [n.statement, pointer]) if (!text.includes(needle)) fail(`${rel} does not say "${needle}" although the view left ${n.scanner} out`);
+    if (n.lastMeasurement) for (const r of n.lastMeasurement.runs) if (!text.includes(r.id)) fail(`${rel} does not name the last measurement ${r.id} of ${n.scanner}`);
+    if (n.lastMeasurement && !n.lastMeasurement.runs.length) fail(`${n.scanner}: the view points at a last measurement with no run`);
+    if (html.includes(`data-label="${n.scanner}"`)) fail(`${rel} has a table cell for ${n.scanner}, which the view did not measure`);
+    disclosures++;
+  }
+}
+
 if (problems.length) { console.error(problems.slice(0, 20).join('\n')); if (problems.length > 20) console.error(`... and ${problems.length - 20} more`); process.exit(1); }
-console.log(`qualification case pages ok: ${pagesChecked} pages, ${rowsChecked} rows match the view (every case in each scope that claims it, in order, in its own population, with each scanner's word)`);
+console.log(`qualification case pages ok: ${pagesChecked} pages, ${rowsChecked} rows match the view (every case in each scope that claims it, in order, in its own population, with each scanner's word); ${disclosures} not-measured disclosure(s) of an optional scanner`);

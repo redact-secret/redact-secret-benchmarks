@@ -58,6 +58,40 @@ and the `41fc366` run (35868842776) are superseded here; its verdict is still re
 above and in the decision records.
 
 
+### Verified at `0c62fd3`, not re-derived (published 0.1.0-beta.14)
+
+Product `main` `0c62fd38bca75c5b28b042dc79789b708ebf1d17` is the release source
+of `0.1.0-beta.14` (tag `v0.1.0-beta.14`) and the commit measured as the Beta.14
+candidate (run 37552333458, size rows accepted in #803). The 118-detector
+registry is the one pinned at `3b1a5aa`, so `detectors.json` moves its
+`sourceRevision` only.
+[Run 37611533005](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37611533005)
+(`performance-evaluation.yml` on `feat/808-published-beta14-repin`, candidate
+`0c62fd3`, 14 interleaved rounds) reads **ACCEPTED** on both verdicts: RC
+acceptance against the unchanged criteria, and the regression budgets read
+latency 10/10, initialization 9/10, memory 16/16 within budget, with four
+accepted tradeoffs (three size rows and one initialization ratio, 1.2857 against
+the 1.25 limit), no regression and no invalid measurement. Runner: AMD EPYC 7763,
+4 logical CPUs, image `ubuntu24 20260927.320.1`.
+
+The four rows are the `beta14-0c62fd3-*` entries accepted in #803 for this same
+commit; no entry was added or changed:
+
+| Trigger | Baseline (0.1.0-beta.8) | Measured at 0c62fd3 | Change | Entry |
+| --- | ---: | ---: | ---: | --- |
+| `size/wasm/full/gzip` | 137,639 | 235,713 | +71.3% | `beta14-0c62fd3-wasm-full-gzip` |
+| `size/wasm/common/gzip` | 100,058 | 168,891 | +68.8% | `beta14-0c62fd3-wasm-common-gzip` |
+| `size/browser-bundle/quickstart/gzip` | 144,501 | 244,931 | +69.5% | `beta14-0c62fd3-quickstart-bundle-gzip` |
+| `initialization/browser-wasm/scale-logs-small-whole/initialization-ratio` | 1 | 1.2857 | +28.6% | `beta14-0c62fd3-browser-wasm-scale-logs-small-whole-init-ratio` |
+
+The thresholds are not re-derived. The run is frozen in
+[`verified-0c62fd3/`](verified-0c62fd3/) and advances only
+`baseline.verifiedCommit`.
+
+Reproduce: dispatch `performance-evaluation.yml` with
+`candidate_revision=0c62fd38bca75c5b28b042dc79789b708ebf1d17` and `rounds=14`; the
+artifact is `performance-evaluation-0c62fd38bca75c5b28b042dc79789b708ebf1d17`.
+
 ### Verified at `66b492b`, not re-derived (published 0.1.0-beta.13)
 
 Product `main` `66b492bdff5e6751fc6b5409266916346ed7c723` is the release source

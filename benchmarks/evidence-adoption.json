@@ -212,5 +212,43 @@
       },
       "note": "The previously accepted adoption stays the public numbers until this change is applied by the owner and deployed; its runs become historical receipts in benchmarks/official-runs.json."
     }
+  },
+  "engineProductAcceptance": {
+    "note": "The owner accepted the engine and product replay of the accepted evidence (the same snapshot, a different engine tag and product release). The adoption of the evidence itself (candidate, alpha.15 and beta.13) stays as recorded and its frozen report is unchanged; this block is the acceptance of the later measurement that the run registry and the authority file now name.",
+    "evidenceRelease": "snapshot-2026.10.06.4",
+    "manifestDigest": "sha256:d2e966e6106d4e5de2b79cc301149a70c950bec313ae981f3877ab2e81fcdda3",
+    "snapshotDigest": "sha256:2319e44084d4db2fc984c31fd07f091c6228e360ea5e6b9b5d65dabaae9d809a",
+    "engine": {
+      "tag": "v0.1.0-alpha.16",
+      "revision": "66db9b53f2232eec5af9b7160da21be879143e6e"
+    },
+    "product": {
+      "package": "@redact-secret/core",
+      "version": "0.1.0-beta.14",
+      "integrity": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag=="
+    },
+    "replay": {
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37630100920",
+      "archive": {
+        "release": "official-runs-registry-37630100920",
+        "asset": "official-runs-37630100920.tar.gz"
+      },
+      "benchmarkRevision": "3a37c38b4bd9883f0debb220f3ecc499553473a8",
+      "pinsPatch": "docs/generated/evidence-adoption/engine-alpha.16-core-beta.14.replay-pins.patch",
+      "omittedOptionalScanners": [
+        "openredaction"
+      ]
+    },
+    "supersedes": {
+      "engine": "v0.1.0-alpha.15",
+      "product": "0.1.0-beta.13",
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37469753365"
+    },
+    "ownerAcceptance": {
+      "acceptedBy": "Milo Kang",
+      "acceptedOn": "2026-10-07",
+      "decision": "docs/decisions/2026-10-07-accept-credential-eval-alpha-16-measuring-core-beta-14-on-snapshot-2026-10-06-4.md",
+      "source": "https://github.com/redact-secret/redact-secret-benchmarks/issues/808#issuecomment-6040065206"
+    }
   }
 }

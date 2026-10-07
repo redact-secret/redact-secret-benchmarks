@@ -28,7 +28,9 @@ const tagShort = tag => String(tag ?? '').replace(/^v0\.1\.0-/, '');
 export function adoptionReportState(adoption, registry) {
   const c = adoption?.candidate ?? {};
   const state = adoption?.state ?? 'none';
-  const product = registry?.scanners?.find(s => s.id === 'redact-secret')?.version ?? null;
+  // The product release the REPORT's replay scanned is the record's own (candidate.product), not the registry's current pin: a later repin of the registry (a new engine tag measuring a newer release on the same evidence)
+  // is a different measurement and must not relabel this adoption's frozen comparison. The registry is the fallback for a record that names no product.
+  const product = c.product?.version ?? registry?.scanners?.find(s => s.id === 'redact-secret')?.version ?? null;
   return {
     state,
     accepted: state === 'accepted',

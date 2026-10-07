@@ -87,6 +87,45 @@ test('a method that did not run is not measured even when the numbers happen to 
   assert.equal(diffs(report.evidence, 'mutationUnresolvedCritical').length, 0);
 });
 
+test('a legacy-stable family the accepted evidence does not carry is explained by its absence, and only then', () => {
+  const reasons = ['documented.minimumPositiveCases: 0 < 5', 'documented.minimumTwinPairs: 0 < 3', 'benign.minimumCases: 0 < 5'];
+  const dropped = { value: 'provisional', qualificationProfile: null, reasons };
+  const empty = [{ population: FLOORS, role: 'floors-and-gates', cases: 0, pending: 0, notMeasured: 0, positives: 0, benign: 0, twinPairs: 0 }];
+  const absent = next('fam-a', {}, { totalFixtures: 0, positiveCases: 0, benignCases: 0, twinPairs: 0 }, dropped, empty);
+  const report = compareFamilies([legacy()], [absent], options);
+  assert.equal(report.status.differences[0].verdict, 'explained');
+  assert.equal(report.status.differences[0].cause, 'family-not-in-accepted-evidence');
+  assert.deepEqual(report.statusRows[0].unattributedReasons, []);
+  assert.equal(report.status.tally.unexplained, 0);
+  assert.equal(report.counterfactual.heldWithoutMethods, 1);
+
+  // Any case on the new side (here one case in a population, with a zero fixture total) means the family IS carried: the cause never applies.
+  const carried = next('fam-a', {}, { totalFixtures: 0, positiveCases: 0, benignCases: 0, twinPairs: 0 }, dropped, [{ ...empty[0], cases: 1 }]);
+  const negative = compareFamilies([legacy()], [carried], options);
+  assert.equal(negative.status.differences[0].verdict, 'unexplained');
+  assert.deepEqual(negative.statusRows[0].unattributedReasons, ['documented.minimumPositiveCases', 'documented.minimumTwinPairs', 'benign.minimumCases']);
+
+  // A family with a non-zero new fixture total is not absent either.
+  const counted = next('fam-a', {}, { totalFixtures: 3 }, dropped, [{ ...empty[0], cases: 3 }]);
+  assert.equal(compareFamilies([legacy()], [counted], options).status.differences[0].verdict, 'unexplained');
+
+  // A legacy family with no fixtures of its own gives the cause nothing to explain.
+  const none = compareFamilies([legacy('fam-a', {}, { totalFixtures: 0 })], [absent], options);
+  assert.equal(none.status.differences[0].verdict, 'unexplained');
+});
+
+test('legacy ledger entries the released build no longer reproduces are explained only as an exact count of open entries', () => {
+  const side = { a: { occurrences: 4, settled: 3 } };
+  const explained = compareReview(side, side, { differential: 6, mapped: 4, resolvedByRelease: 2 }, 4);
+  const d = explained.differences.find(x => x.subject === 'ledger' && x.field.startsWith('legacy differential entries'));
+  assert.equal(d.verdict, 'explained');
+  assert.equal(d.cause, 'observation-resolved-by-release');
+  // One entry more than proved open, or none proved: unexplained.
+  assert.equal(compareReview(side, side, { differential: 7, mapped: 4, resolvedByRelease: 2 }, 4).differences.find(x => x.field.startsWith('legacy differential entries')).verdict, 'unexplained');
+  assert.equal(compareReview(side, side, { differential: 6, mapped: 4 }, 4).differences.find(x => x.field.startsWith('legacy differential entries')).verdict, 'unexplained');
+  assert.ok(CAUSES.some(c => c.id === 'observation-resolved-by-release'));
+});
+
 test('a status that drops is explained only when every reason the new path adds has a cause', () => {
   const reasons = ['methods.notRun: metamorphic did not run', 'empirical.minimumPositiveAxes: 1 < 6 — axes'];
   const explained = compareFamilies([legacy()], [next('fam-a', {}, {}, { value: 'provisional', qualificationProfile: null, reasons, methodsNotRun: ['metamorphic'] })], options);

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1",
+  "kind": "quickstart-bundle-sizes",
+  "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+  "tool": "vite 7.3.6",
+  "entry": "docs/quickstart.md browser lane (initialize() + scanAndRedact)",
+  "pageText": "redact-secret 0.1.0-beta.14 loaded wasm\nAPI_KEY=<SECRET_1>\nfindings: 1",
+  "files": [
+    {
+      "file": "assets/index-<hash>.js",
+      "kind": "js",
+      "bytes": 16530,
+      "gzipBytes": 5510,
+      "fetched": true
+    },
+    {
+      "file": "assets/redact_secret_wasm_bg-<hash>.wasm",
+      "kind": "wasm",
+      "bytes": 682427,
+      "gzipBytes": 235713,
+      "fetched": true
+    },
+    {
+      "file": "assets/redact_secret_wasm_pii_bg-<hash>.wasm",
+      "kind": "wasm",
+      "bytes": 981328,
+      "gzipBytes": 359236,
+      "fetched": false
+    },
+    {
+      "file": "assets/redact_secret_wasm_pii-<hash>.js",
+      "kind": "js",
+      "bytes": 12951,
+      "gzipBytes": 3545,
+      "fetched": false
+    },
+    {
+      "file": "assets/redact_secret_wasm-<hash>.js",
+      "kind": "js",
+      "bytes": 12943,
+      "gzipBytes": 3541,
+      "fetched": true
+    },
+    {
+      "file": "index.html",
+      "kind": "html",
+      "bytes": 187,
+      "gzipBytes": 167,
+      "fetched": true
+    }
+  ],
+  "totals": {
+    "fetched": {
+      "bytes": 712087,
+      "gzipBytes": 244931
+    },
+    "emitted": {
+      "bytes": 1706366,
+      "gzipBytes": 607712
+    }
+  }
+}

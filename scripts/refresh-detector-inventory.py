@@ -213,11 +213,13 @@ def main():
     version = json.loads((ROOT / "package.json").read_text())["dependencies"]["@redact-secret/core"]
     release = version.rsplit("-", 1)[-1]
     rows = inventory(contents["gitleaks"], contents["trufflehog"], contents["flare-redact"], sources)
+    scope = (f"{len(registry['detectors'])} registered {release} detectors" if registry["sourceRevision"] == release_revision
+             else f"{len(registry['detectors'])} detectors registered at product revision {registry['sourceRevision'][:7]} (published package {release}; detectors added after that release are included)")
     snapshot = {"schemaVersion": 1, "reviewedAt": reviewed_at,
                 "redactSecretVersion": version,
                 "redactSecretRevision": registry["sourceRevision"],
                 "redactSecretReleaseRevision": release_revision,
-                "method": f"Explicit provider-family mapping against the {len(registry['detectors'])} detectors registered at product revision {registry['sourceRevision'][:7]} (published package {release}; detectors added after that release are included). No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+                "method": f"Explicit provider-family mapping against the {scope}. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
                 "sources": sources, "entries": rows}
     serialized = json.dumps(snapshot, indent=2) + "\n"
     if args.check:

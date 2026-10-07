@@ -7,28 +7,28 @@
       "exitCondition": "At least one further published release is qualified through the new path and compared with the legacy path (parity report regenerated, 0 unexplained), the rollback has been rehearsed against that release, and a removal PR lists each legacy file's callers first.",
       "decision": "docs/decisions/2026-10-02-switch-credential-qualification-authority-to-the-new-path.md",
       "exit": {
-        "recordedOn": "2026-10-05",
+        "recordedOn": "2026-10-07",
         "recordedBy": "Milo Kang",
-        "release": "@redact-secret/core@0.1.0-beta.13",
+        "release": "@redact-secret/core@0.1.0-beta.14",
         "parityReport": "docs/generated/qualification-parity.json",
-        "rollbackRehearsal": "docs/specs/qualification-cutover.md#rehearsal-of-the-rollback-against-beta13-2026-10-05-660",
+        "rollbackRehearsal": "docs/specs/qualification-cutover.md#rehearsal-of-the-rollback-against-beta14-2026-10-07-808",
         "callerInventory": "npm run legacy-inventory:check",
-        "decision": "docs/decisions/2026-10-05-record-the-oracle-exit-and-retire-the-legacy-credential-evaluator.md"
+        "decision": "docs/decisions/2026-10-07-accept-credential-eval-alpha-16-measuring-core-beta-14-on-snapshot-2026-10-06-4.md"
       }
     }
   },
   "new": {
-    "release": "@redact-secret/core@0.1.0-beta.13",
-    "acceptedOn": "2026-10-06",
+    "release": "@redact-secret/core@0.1.0-beta.14",
+    "acceptedOn": "2026-10-07",
     "acceptedBy": "Milo Kang",
-    "policyRevision": "rs-policy-1:sha256:393b37e95a723e8af365c32431b874a341751df2d19590a1eda622828f7b01bc",
+    "policyRevision": "rs-policy-1:sha256:5c8f68415071b9e86d0d6dda71140e3c3724d5bcfe4c00f628d445682fcc7f8f",
     "semanticDigests": {
-      "policy-corpus": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b",
-      "public-evidence-snapshot": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
-      "public-evidence-snapshot+methods": "sha256:1f97705aaaa623915734ba127761cb32551e1fc3c5934658022c0d59ddafed5e",
-      "regression-corpus": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0"
+      "policy-corpus": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+      "public-evidence-snapshot": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+      "public-evidence-snapshot+methods": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+      "regression-corpus": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b"
     },
     "parityReport": "docs/generated/qualification-parity.json",
-    "decision": "docs/decisions/2026-10-06-accept-snapshot-2026-10-06-4-on-credential-eval-alpha-15.md"
+    "decision": "docs/decisions/2026-10-07-accept-credential-eval-alpha-16-measuring-core-beta-14-on-snapshot-2026-10-06-4.md"
   }
 }

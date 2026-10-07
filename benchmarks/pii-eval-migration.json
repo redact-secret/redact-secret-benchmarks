@@ -10,7 +10,7 @@
     "piiEvalParityEvidence": "6bb0e750fb165d3b32620a51eb6ba0ca172202c8",
     "piiEvalConsumerHandoff": "6646dd210b0928e3e4228496a45fbd99ad6b8536",
     "piiEvalCargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
-    "piiEvalProjection": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+    "piiEvalProjection": "b1c097e40bad456e52f904f626cca00b69c45612",
     "piiEvalProjectionCargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
     "oracleFilesTreeSha256": "6f35613cc5a6a827f19609d8c3d22a56362c0f7f526553f17cc1bc4e9ec8a83b",
     "privateCustodian": "23f75304d4cf53fc8604379255bbf058f642daeb",
@@ -26,33 +26,121 @@
   "engine": {
     "name": "pii-eval",
     "version": "0.0.0",
-    "artifactSchema": { "id": "pii-eval.public-synthetic-artifact", "version": "1.2", "readableVersions": ["1.1", "1.2"],
+    "artifactSchema": {
+      "id": "pii-eval.public-synthetic-artifact",
+      "version": "1.4",
+      "readableVersions": [
+        "1.1",
+        "1.2",
+        "1.4"
+      ],
       "schemaFiles": {
-        "1.1": { "path": "schemas/pii-eval-public-synthetic-artifact-v1.1.json", "sha256": "5368839ea48cce9a868dfece2dcb2c80ed39c8aab522daccdc8dcc8a8ded57ec", "upstreamCommit": "6157cbc5918b3888c8e84b1884719ea8f3278b36" },
-        "1.2": { "path": "schemas/pii-eval-public-synthetic-artifact-v1.2.json", "sha256": "58238767e9901feffa5544edbc7fba47a3d1aaae99f873137029217cc1064f69", "upstreamCommit": "212d500de90ce97461275be1e8b9dd8acd663fb3" } } },
-    "protocol": { "id": "pii-v1", "revision": 2, "matching": "pii-v1-canonical", "accounting": "pii-v1-canonical-accounting", "statistics": "pii-v1-wilson-exact" },
-    "compatibilityProtocol": { "id": "pii-v1", "revision": 1, "matching": "legacy-first-overlap", "accounting": "legacy-accounting" },
+        "1.1": {
+          "path": "schemas/pii-eval-public-synthetic-artifact-v1.1.json",
+          "sha256": "5368839ea48cce9a868dfece2dcb2c80ed39c8aab522daccdc8dcc8a8ded57ec",
+          "upstreamCommit": "6157cbc5918b3888c8e84b1884719ea8f3278b36"
+        },
+        "1.2": {
+          "path": "schemas/pii-eval-public-synthetic-artifact-v1.2.json",
+          "sha256": "58238767e9901feffa5544edbc7fba47a3d1aaae99f873137029217cc1064f69",
+          "upstreamCommit": "212d500de90ce97461275be1e8b9dd8acd663fb3"
+        },
+        "1.4": {
+          "path": "schemas/pii-eval-public-synthetic-artifact-v1.4.json",
+          "sha256": "5c71cb3ed4bde059289dc81edd03127173d27fa4156d5156482d4591703a1575",
+          "upstreamCommit": "b1c097e40bad456e52f904f626cca00b69c45612"
+        }
+      }
+    },
+    "protocol": {
+      "id": "pii-v1",
+      "revision": 2,
+      "matching": "pii-v1-canonical",
+      "accounting": "pii-v1-canonical-accounting",
+      "statistics": "pii-v1-wilson-exact"
+    },
+    "compatibilityProtocol": {
+      "id": "pii-v1",
+      "revision": 1,
+      "matching": "legacy-first-overlap",
+      "accounting": "legacy-accounting"
+    },
     "methods": [
-      { "id": "type-validation", "version": 2 },
-      { "id": "context-discrimination", "version": 2 },
-      { "id": "pii-benign", "version": 3 },
-      { "id": "jurisdiction-collision", "version": 3 },
-      { "id": "mutation", "version": 1 },
-      { "id": "reference-differential", "version": 1 },
-      { "id": "schema-only", "version": 1 }
+      {
+        "id": "type-validation",
+        "version": 2
+      },
+      {
+        "id": "context-discrimination",
+        "version": 2
+      },
+      {
+        "id": "pii-benign",
+        "version": 3
+      },
+      {
+        "id": "jurisdiction-collision",
+        "version": 3
+      },
+      {
+        "id": "mutation",
+        "version": 1
+      },
+      {
+        "id": "reference-differential",
+        "version": 1
+      },
+      {
+        "id": "schema-only",
+        "version": 1
+      }
     ],
-    "metrics": ["type-miss-rate", "wrong-family-rate", "wrong-jurisdiction-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],
-    "mechanics": { "minDenominator": 4, "replays": 2, "intervalZ": { "mantissa": 196, "scale": 2 }, "intervalPrecision": 6 },
-    "outcomeAxes": ["typeIdentity", "sensitivityContext"]
+    "metrics": [
+      "type-miss-rate",
+      "wrong-family-rate",
+      "wrong-jurisdiction-rate",
+      "sensitive-miss-rate",
+      "non-sensitive-flag-rate",
+      "context-discrimination-rate",
+      "benign-suppression-rate",
+      "jurisdiction-collision-rate",
+      "range-collateral-rate",
+      "measurable-share"
+    ],
+    "mechanics": {
+      "minDenominator": 4,
+      "replays": 2,
+      "intervalZ": {
+        "mantissa": 196,
+        "scale": 2
+      },
+      "intervalPrecision": 6
+    },
+    "outcomeAxes": [
+      "typeIdentity",
+      "sensitivityContext"
+    ]
   },
   "scanner": {
     "id": "redact-secret-core",
-    "adapter": { "id": "redact-secret-core-node", "version": "1.0.0", "normalizationVersion": 1 },
+    "adapter": {
+      "id": "redact-secret-core-node",
+      "version": "1.0.0",
+      "normalizationVersion": 1
+    },
     "releasedVersion": "0.1.0-beta.12",
     "releasedTreeSha256": "726421636189573bc76024ecf23ec6bd1d71fef6d8272e5da1b3967dee036d03",
-    "configuration": { "detectorProfile": "full", "findingSource": "pii-domain-only", "offsetUnit": "utf16-code-units", "sanitizedOutput": true },
+    "configuration": {
+      "detectorProfile": "full",
+      "findingSource": "pii-domain-only",
+      "offsetUnit": "utf16-code-units",
+      "sanitizedOutput": true
+    },
     "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
-    "activation": ["pii:global", "pii:us"],
+    "activation": [
+      "pii:global",
+      "pii:us"
+    ],
     "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3"
   },
   "upstreamParity": {
@@ -63,7 +151,14 @@
     "cases": 37,
     "variants": 54,
     "compatibilityDifferences": 0,
-    "canonicalClassifications": { "intentional-contract-change": 85, "old-bug": 32, "compatibility-behavior": 85, "new-bug": 0, "unresolved": 0, "unexplained": 0 },
+    "canonicalClassifications": {
+      "intentional-contract-change": 85,
+      "old-bug": 32,
+      "compatibility-behavior": 85,
+      "new-bug": 0,
+      "unresolved": 0,
+      "unexplained": 0
+    },
     "deterministicSemanticDigest": true
   },
   "benchmarkPopulations": {
@@ -83,43 +178,169 @@
       "sha256": "74d2c16dcf68c35b615ca96848f73fcc9eb4911350c582fcf0c680ecb198903f"
     },
     "plans": [
-      { "family": "pii:global:network-address", "path": "benchmarks/evaluation/domains/pii/network-address-population-plan-v2.json", "sha256": "a88583c4957cc1127a0a098ab2eb2c9fbe424fb908dc919ab23cb0e5a676ec5b" },
-      { "family": "pii:global:email", "path": "benchmarks/evaluation/domains/pii/email-population-plan-v3.json", "sha256": "7d7f06097369cac94456cc4a0bbfa11d14753b84a636393c21029108806dbd88" },
-      { "family": "pii:global:payment-card", "path": "benchmarks/evaluation/domains/pii/card-iban-stress/payment-card-stress-v2.json", "sha256": "b99ac5c9f78374424250e4fcdd0f889320ce7be3e7be5d1e31c6644e7e8b5b15" },
-      { "family": "pii:global:iban", "path": "benchmarks/evaluation/domains/pii/card-iban-stress/iban-stress-v2.json", "sha256": "69be8af4dbb1da127b19fe581828f62eaad5b220d67d8fe2809fd809f23d170f" },
-      { "family": "pii:us:ssn", "path": "benchmarks/evaluation/domains/pii/us-ssn-stress-v3.json", "sha256": "51179c9ea7d688043f91db44df68e5e1bf7fc6076b244ffd768716a1a5de6e22" },
-      { "family": "pii:global:phone", "path": "benchmarks/evaluation/domains/pii/phone-stress-v3.json", "sha256": "548a7504af661b926d3e187526ffd123af1780a8b34c3915602b710f4102f389" }
+      {
+        "family": "pii:global:network-address",
+        "path": "benchmarks/evaluation/domains/pii/network-address-population-plan-v2.json",
+        "sha256": "a88583c4957cc1127a0a098ab2eb2c9fbe424fb908dc919ab23cb0e5a676ec5b"
+      },
+      {
+        "family": "pii:global:email",
+        "path": "benchmarks/evaluation/domains/pii/email-population-plan-v3.json",
+        "sha256": "7d7f06097369cac94456cc4a0bbfa11d14753b84a636393c21029108806dbd88"
+      },
+      {
+        "family": "pii:global:payment-card",
+        "path": "benchmarks/evaluation/domains/pii/card-iban-stress/payment-card-stress-v2.json",
+        "sha256": "b99ac5c9f78374424250e4fcdd0f889320ce7be3e7be5d1e31c6644e7e8b5b15"
+      },
+      {
+        "family": "pii:global:iban",
+        "path": "benchmarks/evaluation/domains/pii/card-iban-stress/iban-stress-v2.json",
+        "sha256": "69be8af4dbb1da127b19fe581828f62eaad5b220d67d8fe2809fd809f23d170f"
+      },
+      {
+        "family": "pii:us:ssn",
+        "path": "benchmarks/evaluation/domains/pii/us-ssn-stress-v3.json",
+        "sha256": "51179c9ea7d688043f91db44df68e5e1bf7fc6076b244ffd768716a1a5de6e22"
+      },
+      {
+        "family": "pii:global:phone",
+        "path": "benchmarks/evaluation/domains/pii/phone-stress-v3.json",
+        "sha256": "548a7504af661b926d3e187526ffd123af1780a8b34c3915602b710f4102f389"
+      }
     ],
     "views": [
-      { "id": "oracle-plan", "cases": 146, "scoredCases": 146, "unscoredCases": 0 },
-      { "id": "qualification-plan", "cases": 266, "scoredCases": 265, "unscoredCases": 1 },
-      { "id": "diagnostic-balanced", "cases": 477, "scoredCases": 477, "unscoredCases": 0 },
-      { "id": "benign-heavy-stress", "cases": 299, "scoredCases": 299, "unscoredCases": 0 }
+      {
+        "id": "oracle-plan",
+        "cases": 146,
+        "scoredCases": 146,
+        "unscoredCases": 0
+      },
+      {
+        "id": "qualification-plan",
+        "cases": 266,
+        "scoredCases": 265,
+        "unscoredCases": 1
+      },
+      {
+        "id": "diagnostic-balanced",
+        "cases": 477,
+        "scoredCases": 477,
+        "unscoredCases": 0
+      },
+      {
+        "id": "benign-heavy-stress",
+        "cases": 299,
+        "scoredCases": 299,
+        "unscoredCases": 0
+      }
     ]
   },
   "benchmarkPopulationDualRun": {
     "schemaVersion": 1,
-    "report": { "path": "benchmarks/pii-eval-population-dual-run/report.json", "sha256": "be62ad95b8b848d48286ef653818e5e0086f77bd87f481c219f45171790782db", "markdown": "docs/reports/2026-10-05-pii-eval-population-dual-run.md" },
-    "oracle": { "commit": "4b846967346505baca11e0b98cab1475fbce6773", "filesTreeSha256": "6f35613cc5a6a827f19609d8c3d22a56362c0f7f526553f17cc1bc4e9ec8a83b" },
-    "engine": { "commit": "212d500de90ce97461275be1e8b9dd8acd663fb3", "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a", "artifactSchema": "1.2" },
+    "report": {
+      "path": "benchmarks/pii-eval-population-dual-run/report.json",
+      "sha256": "085872366fef1fcabd7b0ca2be1570c58583447558877837c047e2866799a49b",
+      "markdown": "docs/reports/2026-10-05-pii-eval-population-dual-run.md"
+    },
+    "oracle": {
+      "commit": "4b846967346505baca11e0b98cab1475fbce6773",
+      "filesTreeSha256": "6f35613cc5a6a827f19609d8c3d22a56362c0f7f526553f17cc1bc4e9ec8a83b"
+    },
+    "engine": {
+      "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+      "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+      "artifactSchema": "1.4"
+    },
     "artifacts": [
-      { "view": "oracle-plan", "populationId": "b11-population-v2-oracle-plan", "path": "benchmarks/pii-eval-population-dual-run/oracle-plan.public-synthetic-artifact.json", "sha256": "8351d46b40ded917e61f412c5ba44b4a14cb9eb4c3c7aece836d228f38085791", "semanticDigest": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
-        "snapshotDigest": "b9c80deee38229e86287a5fdacdb6eddc516cc5b325e0435b7786a31a7b56116", "manifestDigest": "bd0a8087e46ec2df8389a9962b075a1d8be8a59c4d9805fe6ce9d4159b67fd7e", "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf",
-        "cases": 146, "carriedCases": 95, "notRepresentableCases": 51, "mode": "exploratory" },
-      { "view": "qualification-plan", "populationId": "b11-population-v2-qualification-plan", "path": "benchmarks/pii-eval-population-dual-run/qualification-plan.public-synthetic-artifact.json", "sha256": "a74393a00056926b5fc5c637ae603484934f601c27261bf7d3c00cfec14f0b95", "semanticDigest": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
-        "snapshotDigest": "69d6cc26bc9d2d7a9aee4231f5f1e3c7969840fb6407d8f4cc777312836a59d6", "manifestDigest": "7bd499d2622b5c49b8486c69ddff0b443653fa9b3c8503c825b8c4fde8f93fe5", "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883",
-        "cases": 266, "carriedCases": 230, "notRepresentableCases": 36, "mode": "exploratory" },
-      { "view": "diagnostic-balanced", "populationId": "b11-population-v2-diagnostic-balanced", "path": "benchmarks/pii-eval-population-dual-run/diagnostic-balanced.public-synthetic-artifact.json", "sha256": "482f75af74622976aebf54a2ca00d4273e66eb4db7eb53434d29fcfd0e8402d5", "semanticDigest": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
-        "snapshotDigest": "4864e3a4f52d9b4119f97314c6cecb8fb780eec9098270977ce34fd7f29022bb", "manifestDigest": "925d56c824f08fc0ef49a1d9f8ea2d272cc1e4a690f9b5ea7238073ea69b4e7c", "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63",
-        "cases": 477, "carriedCases": 428, "notRepresentableCases": 49, "mode": "exploratory" },
-      { "view": "benign-heavy-stress", "populationId": "b11-population-v2-benign-heavy-stress", "path": "benchmarks/pii-eval-population-dual-run/benign-heavy-stress.public-synthetic-artifact.json", "sha256": "a7ab60db62bdedb714d726ca7e4afb75b9a00e96468ccf04ed34eed34d8c6f39", "semanticDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19",
-        "snapshotDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88", "manifestDigest": "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64", "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b",
-        "cases": 299, "carriedCases": 279, "notRepresentableCases": 20, "mode": "exploratory" }
+      {
+        "view": "oracle-plan",
+        "populationId": "b11-population-v2-oracle-plan",
+        "path": "benchmarks/pii-eval-population-dual-run/oracle-plan.public-synthetic-artifact.json",
+        "sha256": "9e8e7f328ebcc795a9097ba9058593449cbd584ea35df3470d441bf05dd090ff",
+        "semanticDigest": "37a74f301c30b854a698b3d4aeb313d24e637d8860c5a49d390f904f1246b868",
+        "snapshotDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+        "manifestDigest": "f7a96b75053f460efe87af77f9aebbf1e319522526d4b9fa92a89d76ed1d1a84",
+        "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c",
+        "cases": 146,
+        "carriedCases": 146,
+        "notRepresentableCases": 0,
+        "mode": "exploratory",
+        "locatedCases": 95,
+        "unresolvedRangeCases": 51
+      },
+      {
+        "view": "qualification-plan",
+        "populationId": "b11-population-v2-qualification-plan",
+        "path": "benchmarks/pii-eval-population-dual-run/qualification-plan.public-synthetic-artifact.json",
+        "sha256": "4b51bc0d7d3f45630af003b50516686f9fe20748a025a4d9ce152a18a29c1835",
+        "semanticDigest": "6f41e411e27de75f48b64ac6a66571ed82dc309643b804ac55ac9a95c791fba9",
+        "snapshotDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+        "manifestDigest": "c49f36a2bce27fb47618076c71804aad5e363a0e6572effbec8e1e9191534906",
+        "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293",
+        "cases": 266,
+        "carriedCases": 266,
+        "notRepresentableCases": 0,
+        "mode": "exploratory",
+        "locatedCases": 230,
+        "unresolvedRangeCases": 36
+      },
+      {
+        "view": "diagnostic-balanced",
+        "populationId": "b11-population-v2-diagnostic-balanced",
+        "path": "benchmarks/pii-eval-population-dual-run/diagnostic-balanced.public-synthetic-artifact.json",
+        "sha256": "203b88a8533076327e6380f03bfc7151a6d679427100ea393adb36f885971185",
+        "semanticDigest": "134d30a3c6f9c21f38ae46fdc74c861eae38feeb1cc3ea6c8b171f800a733166",
+        "snapshotDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+        "manifestDigest": "4dd090d3dd4be6c39657703ac49a4a85b275d62e3a3fdf1099d4a083c877a9e2",
+        "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15",
+        "cases": 477,
+        "carriedCases": 477,
+        "notRepresentableCases": 0,
+        "mode": "exploratory",
+        "locatedCases": 428,
+        "unresolvedRangeCases": 49
+      },
+      {
+        "view": "benign-heavy-stress",
+        "populationId": "b11-population-v2-benign-heavy-stress",
+        "path": "benchmarks/pii-eval-population-dual-run/benign-heavy-stress.public-synthetic-artifact.json",
+        "sha256": "3a05e89ff36bb001a7036d994f7d5c98d70648846021e34c54f748809ebf6189",
+        "semanticDigest": "a82ac5144a4ae22336cd66318e37a2010ec7a8fc3129233630b130f3df082767",
+        "snapshotDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+        "manifestDigest": "2de68476d08a82605cb882592aad791e453796fe23ddbe427ad58ddd565aff3d",
+        "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b",
+        "cases": 299,
+        "carriedCases": 299,
+        "notRepresentableCases": 0,
+        "mode": "exploratory",
+        "locatedCases": 279,
+        "unresolvedRangeCases": 20
+      }
     ],
-    "coverage": { "benchmarkCases": 1188, "carriedCases": 1032, "notRepresentableCases": 156, "notRepresentableReason": "authored identity not-established: both engine contracts are closed over valid/invalid" },
+    "coverage": {
+      "benchmarkCases": 1188,
+      "carriedCases": 1188,
+      "locatedCases": 1032,
+      "unresolvedRangeCases": 156,
+      "notRepresentableCases": 0,
+      "unresolvedRangeReason": "authored identity not-established with no candidate range (pii-eval ADR 0017 and 0018, schema 1.4): carried range-less and reported unresolved, never a pass or a fail"
+    },
     "unexplainedDifferences": 0,
-    "classifiedDifferences": { "compatibility": ["0007/D1", "0007/D4"], "intentionalContractChange": [], "oldBug": [], "newBug": [], "unresolved": [] },
-    "determinism": { "replays": 3, "equalSemanticDigest": true },
+    "classifiedDifferences": {
+      "compatibility": [
+        "0007/D1",
+        "0007/D4"
+      ],
+      "intentionalContractChange": [],
+      "oldBug": [],
+      "newBug": [],
+      "unresolved": []
+    },
+    "determinism": {
+      "replays": 3,
+      "equalSemanticDigest": true
+    },
     "mode": "exploratory",
     "consumerPins": "benchmarks/pii-eval-population-pins.json",
     "linuxReplay": {
@@ -135,9 +356,15 @@
     }
   },
   "publicationBinding": {
-    "ciRun": { "repository": "redact-secret/pii-eval", "runId": 37340150108, "headSha": "212d500de90ce97461275be1e8b9dd8acd663fb3", "engineArtifactId": 11358475612, "measurementArtifactId": 11357099796 },
+    "ciRun": {
+      "repository": "redact-secret/pii-eval",
+      "runId": 37551091456,
+      "headSha": "b1c097e40bad456e52f904f626cca00b69c45612",
+      "engineArtifactId": 11452747504,
+      "measurementArtifactId": 11453011630
+    },
     "transportPins": "benchmarks/pii-eval-public-synthetic-source.json",
-    "durableCopy": "tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json",
+    "durableCopy": "tests/fixtures/pii-eval/ci-37551091456-projection.public-synthetic-artifact.json",
     "stagingOnly": true,
     "candidateBinding": "a candidate population is bound to a publication's product only when its pin names exactly that source commit; otherwise it is another product"
   },
@@ -158,8 +385,13 @@
   "acceptance": {
     "ownershipAndContracts": "accepted",
     "genericCompatibilityParity": "accepted",
-    "benchmarkPopulationDualRun": "accepted-representable-cases",
-    "reason": "pii-eval schema 1.2 carries the four benchmark population views, per-family projections, language and control-class strata and the run mode. The four frozen populations ran through the pinned oracle and the pinned pii-eval engine on identical inputs with zero unexplained differences (see benchmarkPopulationDualRun). 156 of 1188 case memberships have an authored identity of not-established, which neither engine contract can state, so they are not part of the dual run and remain scored only by the benchmark's own scorer; the legacy path must keep scoring them until that is resolved (#666 inventory).",
-    "residual": { "notRepresentableCases": 156, "ownedBy": "benchmarks scorer until an engine contract can state an unestablished identity", "gates": "#666 retirement of the legacy scorer" }
+    "benchmarkPopulationDualRun": "accepted",
+    "reason": "pii-eval schema 1.4 (ADR 0017 and 0018) states the authored not-established identity and the absent candidate range, so all 1188 population memberships are carried: 1032 located memberships ran through the pinned oracle and the pinned engine on identical inputs and the 156 range-less memberships are reported unresolved (neither a pass nor a fail) and checked against what the authors wrote, with zero unexplained differences (see benchmarkPopulationDualRun). Every located numerator, eligible count, effective N and interval equals the oracle's; only total, notApplicable and the measurable-share denominator grow, exactly and by the range-less count. This is evidence acceptance only: it does not decide the scorer basis (#795, proposed, owner decision pending), the run is exploratory, and no authority changed.",
+    "residual": {
+      "notRepresentableCases": 0,
+      "unresolvedRangeCases": 156,
+      "ownedBy": "the scorer-basis decision (#795, proposed, owner decision pending): how a product scorer reads an unresolved membership is not defined by this record",
+      "gates": "#666 owner criteria (scorer-basis-decided, owner-accepted-verdict) and official-mode-measurement"
+    }
   }
 }

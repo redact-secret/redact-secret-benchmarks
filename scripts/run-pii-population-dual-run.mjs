@@ -10,7 +10,7 @@
 //      oracle's input from the pinned plans and the pinned frozen observation.
 //   2. The oracle files at the pinned benchmark commit run unmodified (pii-eval's own module hooks stub only ajv and the
 //      evidence loader) and export their variants, outcomes and ten metrics.
-//   3. `pii-eval replay` derives the schema 1.2 public artifact from the same observation, three times.
+//   3. `pii-eval replay` derives the schema 1.4 public artifact from the same observation, three times.
 //   4. pii-eval's own parity comparator (unmodified, scripts/pii-eval-population-parity/population_parity.rs) classifies
 //      every oracle-versus-engine difference; the engine side of that comparator is compared with the CLI artifact too.
 //   5. The same comparison runs for every (family), (family, language) and (family, control class) cell of the artifact's
@@ -107,14 +107,40 @@ const stable = value => (Array.isArray(value) ? `[${value.map(stable).join(',')}
 const same = (a, b) => stable(a) === stable(b);
 const metricMap = list => Object.fromEntries(list.map(m => [m.metric.id, fromArtifact(m)]));
 
-/** Compare two metric maps; every key must exist on both sides. */
-function diffMetrics(left, right, label, sink, layer) {
+/**
+ * Compare the oracle's (located-case) metric map with the artifact's. The oracle contract is closed over located valid/invalid
+ * cases; the artifact also carries `rangeless` authored not-established memberships (schema 1.4, pii-eval ADR 0017/0018) that
+ * the engine accounts for as `unresolved`. That is the only permitted difference and it is stated exactly: every located
+ * quantity (eligible, measured, numerator, effective N, rate, status) of a judged metric is equal; `total` and `notApplicable`
+ * grow by `rangeless`; `measurable-share` counts each range-less membership once per axis as `unresolved`, so its denominator
+ * grows by 2 x rangeless and its rate is recomputed by the engine (verified by `pii-eval validate`). With `rangeless = 0`
+ * this is plain equality. Every key must exist on both sides.
+ */
+function diffMetrics(left, right, label, sink, layer, rangeless = 0) {
   const ids = [...new Set([...Object.keys(left), ...Object.keys(right)])].sort();
   for (const id of ids) {
-    if (!same(left[id], right[id])) sink.push({ layer, subject: label, aspect: id, left: left[id] ?? null, right: right[id] ?? null });
+    const l = left[id] ?? null, r = right[id] ?? null;
+    if (!l || !r || rangeless === 0) {
+      if (!same(l, r)) sink.push({ layer, subject: label, aspect: id, left: l, right: r });
+      continue;
+    }
+    const share = id === 'measurable-share';
+    const lc = l.counts;
+    // `context-discrimination-rate` counts twin pairs of the twin method, which no schema-only membership joins: unchanged.
+    const expected = id === 'context-discrimination-rate' ? lc : share
+      ? { ...lc, eligible: lc.eligible + 2 * rangeless, total: lc.total + 2 * rangeless, unresolved: lc.unresolved + 2 * rangeless }
+      : { ...lc, total: lc.total + rangeless, notApplicable: lc.notApplicable + rangeless };
+    const locatedEqual = share || same({ status: l.status, effectiveN: l.effectiveN, rate: l.rate }, { status: r.status, effectiveN: r.effectiveN, rate: r.rate });
+    const shareLocated = !share || (r.counts.measured === lc.measured && r.counts.numerator === lc.numerator);
+    if (!same(expected, r.counts) || !locatedEqual || !shareLocated) sink.push({ layer, subject: label, aspect: id, left: { ...l, counts: expected }, right: r });
   }
   return ids.length;
 }
+
+/** The oracle side of a cell that has no located case: no located quantity at all. */
+const emptyOracle = ids => Object.fromEntries(ids.map(id => [id, {
+  status: 'not-applicable', counts: { eligible: 0, measured: 0, notApplicable: 0, notMeasured: 0, numerator: 0, total: 0, unresolved: 0 }, effectiveN: 0, rate: { kind: 'null' },
+}]));
 
 // ---------------------------------------------------------------------------------------------------------------
 // One population
@@ -175,14 +201,31 @@ function runPopulation(ctx, bucket, index) {
   const semantic = artifact.semantic;
 
   // Layer: case and variant identities and counts.
-  const snapCases = snapshot.semantic.cases;
+  // The population is every authored membership (schema 1.4); the oracle's input is its located part. A range-less case is an
+  // authored `not-established` identity with no candidate range (pii-eval ADR 0017/0018): the oracle cannot state it, so it is
+  // checked here against what the authors wrote and what the engine must report (`unresolved` on every axis), never dropped.
+  const allSnapCases = snapshot.semantic.cases;
+  const isRangeless = c => c.variants.every(v => v.expectations.every(e => e.range === undefined));
+  const snapCases = allSnapCases.filter(c => !isRangeless(c));
+  const rangelessCases = allSnapCases.filter(isRangeless);
   const exportedCases = exported.cases;
   if (snapCases.length !== exportedCases.length || snapCases.length !== input.cases.length) differences.push({ layer: 'identity', subject: bucket.view, aspect: 'case-count', left: exportedCases.length, right: snapCases.length });
+  if (allSnapCases.length !== semantic.populationCounts.authoredCases || allSnapCases.length !== bucket.cases.length) differences.push({ layer: 'identity', subject: bucket.view, aspect: 'membership-count', left: bucket.cases.length, right: semantic.populationCounts.authoredCases });
   const variantsOracle = exportedCases.reduce((n, c) => n + c.variants.length, 0);
-  const variantsSnapshot = snapCases.reduce((n, c) => n + c.variants.length, 0);
-  if (variantsOracle !== variantsSnapshot || variantsSnapshot !== semantic.populationCounts.variants) differences.push({ layer: 'identity', subject: bucket.view, aspect: 'variant-count', left: variantsOracle, right: variantsSnapshot });
+  const variantsSnapshot = allSnapCases.reduce((n, c) => n + c.variants.length, 0);
+  if (variantsOracle !== snapCases.reduce((n, c) => n + c.variants.length, 0) || variantsSnapshot !== semantic.populationCounts.variants) differences.push({ layer: 'identity', subject: bucket.view, aspect: 'variant-count', left: variantsOracle, right: variantsSnapshot });
   bump('case-identity', snapCases.length);
-  bump('variant-identity', variantsSnapshot);
+  bump('variant-identity', variantsSnapshot - rangelessCases.reduce((n, c) => n + c.variants.length, 0));
+  // Range-less memberships: authored not-established on both axes, no range, schema-only, neutral context, and reported unresolved.
+  const rangelessIds = new Set(rangelessCases.map(c => c.caseId));
+  const rangelessOutcomes = new Map(semantic.outcomes.filter(o => rangelessIds.has(o.caseId)).map(o => [o.caseId, o]));
+  for (const c of rangelessCases) {
+    const e = c.variants[0].expectations[0], o = rangelessOutcomes.get(c.caseId);
+    const ok = c.variants.length === 1 && c.variants[0].expectations.length === 1 && e.typeExpectation === 'not-established' && e.sensitivity === 'not-established' && c.method === 'schema-only' &&
+      e.contextClass === 'neutral' && o && o.typeIdentity === 'unresolved' && o.sensitivityContext === 'unresolved' && o.range === 'unresolved' && o.action.state === 'not-measured';
+    if (!ok) differences.push({ layer: 'identity', subject: c.caseId, aspect: 'range-less-membership', left: 'authored not-established', right: o ?? null });
+  }
+  bump('range-less-membership', rangelessCases.length);
   const bySlug = new Map(snapCases.map(c => [c.caseId, c]));
   for (const c of exportedCases) {
     const s = bySlug.get(c.id);
@@ -214,27 +257,31 @@ function runPopulation(ctx, bucket, index) {
   }
   bump('outcome', ours.outcomes.length);
   const states = (list, pick) => Object.fromEntries(Object.entries(list.reduce((m, o) => ({ ...m, [pick(o)]: (m[pick(o)] ?? 0) + 1 }), {})).sort());
-  const stateCensus = { typeIdentity: states(semantic.outcomes, o => o.typeIdentity), sensitivityContext: states(semantic.outcomes, o => o.sensitivityContext), range: states(semantic.outcomes, o => o.range) };
+  const censusOf = list => ({ typeIdentity: states(list, o => o.typeIdentity), sensitivityContext: states(list, o => o.sensitivityContext), range: states(list, o => o.range) });
+  const stateCensus = censusOf(semantic.outcomes);
+  const locatedCensus = censusOf(semantic.outcomes.filter(o => !rangelessIds.has(o.caseId)));
   const oracleCensus = { typeIdentity: states(ours.outcomes, o => o.type.state), sensitivityContext: states(ours.outcomes, o => o.sensitivity.state), range: states(ours.outcomes, o => o.range) };
-  if (!same(stateCensus, oracleCensus)) differences.push({ layer: 'outcome', subject: bucket.view, aspect: 'state-census', left: oracleCensus, right: stateCensus });
+  if (!same(locatedCensus, oracleCensus)) differences.push({ layer: 'outcome', subject: bucket.view, aspect: 'state-census', left: oracleCensus, right: locatedCensus });
+  if (semantic.outcomes.length !== allSnapCases.length) differences.push({ layer: 'outcome', subject: bucket.view, aspect: 'outcome-count', left: allSnapCases.length, right: semantic.outcomes.length });
 
   // Layer: ten metrics (numerator, denominator, intervals, withheld states), population level.
   const artifactMetrics = metricMap(semantic.scannerMetrics[0].metrics);
-  bump('metric', diffMetrics(ours.metrics, artifactMetrics, bucket.view, differences, 'metric'));
+  const R = rangelessCases.length;
+  bump('metric', diffMetrics(ours.metrics, artifactMetrics, bucket.view, differences, 'metric', R));
   // The comparison is not vacuous: corrupted copies of the same data are found.
   const probe = [];
   const bent = structuredClone(artifactMetrics);
   bent['type-miss-rate'].counts.numerator += 1;
-  diffMetrics(ours.metrics, bent, bucket.view, probe, 'probe');
+  diffMetrics(ours.metrics, bent, bucket.view, probe, 'probe', R);
   const bentRate = structuredClone(artifactMetrics);
   bentRate['sensitive-miss-rate'].rate = { kind: 'value', point: '0.000001', bound: '0.000002' };
-  diffMetrics(ours.metrics, bentRate, bucket.view, probe, 'probe');
+  diffMetrics(ours.metrics, bentRate, bucket.view, probe, 'probe', R);
   const bentOutcome = { ...ours.outcomes[0], range: ours.outcomes[0].range === 'exact' ? 'miss' : 'exact' };
   const injectedFound = probe.length === 2 && !same({ type: bentOutcome.type.state, sensitivity: bentOutcome.sensitivity.state, range: bentOutcome.range },
     { type: outcomeByCase.get(bentOutcome.case).typeIdentity, sensitivity: outcomeByCase.get(bentOutcome.case).sensitivityContext, range: outcomeByCase.get(bentOutcome.case).range });
   const canonical = Object.fromEntries(Object.entries(comparator.canonicalMetrics[SCANNER_ID]).map(([id, m]) => [id, fromHarness(m)]));
   const enginePath = [];
-  diffMetrics(canonical, artifactMetrics, bucket.view, enginePath, 'engine-path');
+  diffMetrics(canonical, artifactMetrics, bucket.view, enginePath, 'engine-path', R);
   if (semantic.scanners[0].status !== 'complete' || exported.scanners[0].status !== 'complete') differences.push({ layer: 'scanner-status', subject: bucket.view, aspect: 'status', left: exported.scanners[0].status, right: semantic.scanners[0].status });
 
   // Layer: the projection, cell by cell, stratum by stratum, each against its own oracle run.
@@ -242,11 +289,18 @@ function runPopulation(ctx, bucket, index) {
   const cellDifferences = [];
   const classified = [];
   const projection = semantic.productProjection;
-  const authoredById = new Map(input.cases.map(c => [c.id, c]));
+  const authoredById = new Map(allSnapCases.map(c => [c.caseId, c]));
   const roleClass = new Map();
   for (const entry of roster.controlClasses ?? []) for (const id of entry.cases) roleClass.set(id, entry.class);
   let cellIndex = 0;
   const subset = (ids, label) => {
+    // Only located cases reach the oracle. A cell whose every membership is range-less has no located quantity: it is held to
+    // zero located counts (`emptyOracle`) instead of an oracle run the contract cannot make.
+    ids = ids.filter(id => !rangelessIds.has(id));
+    if (ids.length === 0) {
+      const none = emptyOracle(Object.keys(artifactMetrics));
+      return { oracleMetrics: none, canonical: none, unexplained: 0, compat: 0, label };
+    }
     cellIndex += 1;
     const sub = join(work, 'sub', bucket.view, String(cellIndex));
     mkdirSync(sub, { recursive: true });
@@ -258,7 +312,7 @@ function runPopulation(ctx, bucket, index) {
     return { oracleMetrics, canonical: Object.fromEntries(Object.entries(summary.canonicalMetrics[SCANNER_ID]).map(([id, m]) => [id, fromHarness(m)])), unexplained: summary.unexplained, compat: summary.compatibilityDifferences, label };
   };
   for (const row of projection.rows) {
-    const ids = input.cases.filter(c => c.family === row.family).map(c => c.id);
+    const ids = allSnapCases.filter(c => c.variants[0].expectations[0].family === row.family).map(c => c.caseId);
     if (ids.length !== row.counts.authoredCases) cellDifferences.push({ layer: 'projection', subject: `${row.family}`, aspect: 'case-count', left: ids.length, right: row.counts.authoredCases });
     const targets = [{ kind: 'cell', key: row.family, ids, metrics: metricMap(row.metrics), counts: row.counts }];
     for (const stratum of row.byLanguage ?? []) targets.push({ kind: 'language', key: `${row.family}/${stratum.language}`, ids: ids.filter(id => authoredById.get(id).language === stratum.language), metrics: metricMap(stratum.metrics), counts: stratum.counts });
@@ -267,8 +321,9 @@ function runPopulation(ctx, bucket, index) {
       if (target.ids.length !== target.counts.authoredCases) cellDifferences.push({ layer: 'projection', subject: target.key, aspect: 'case-count', left: target.ids.length, right: target.counts.authoredCases });
       const result = subset(target.ids, target.key);
       const before = cellDifferences.length;
-      diffMetrics(result.oracleMetrics, target.metrics, target.key, cellDifferences, 'projection');
-      diffMetrics(result.canonical, target.metrics, target.key, cellDifferences, 'projection-engine-path');
+      const cellRangeless = target.ids.filter(id => rangelessIds.has(id)).length;
+      diffMetrics(result.oracleMetrics, target.metrics, target.key, cellDifferences, 'projection', cellRangeless);
+      diffMetrics(result.canonical, target.metrics, target.key, cellDifferences, 'projection-engine-path', cellRangeless);
       if (result.unexplained !== 0 || result.compat !== 0) cellDifferences.push({ layer: 'projection', subject: target.key, aspect: 'comparator', left: 0, right: result.unexplained + result.compat });
       cells.push({ kind: target.kind, key: target.key, cases: target.ids.length, metricsEqual: cellDifferences.length === before });
     }
@@ -300,6 +355,12 @@ function runPopulation(ctx, bucket, index) {
       inputSha256: sha256(readFileSync(join(dir, 'parity-input.json'))), oracleExportSha256: sha256(readFileSync(join(dir, 'oracle-export.json'))),
     },
     conversion: (({ excluded, ...rest }) => ({ ...rest, excludedIds: excluded.map(e => `${e.family}/${e.caseId}`) }))(readJson(join(dir, 'census.json'))),
+    // Authored not-established memberships carried range-less (pii-eval ADR 0017/0018): in the artifact, never in the oracle.
+    rangeless: {
+      cases: rangelessCases.length, located: snapCases.length,
+      byFamily: Object.fromEntries(Object.entries(rangelessCases.reduce((m, c) => ({ ...m, [c.variants[0].expectations[0].family]: (m[c.variants[0].expectations[0].family] ?? 0) + 1 }), {})).sort()),
+      reportedAs: { typeIdentity: 'unresolved', sensitivityContext: 'unresolved', range: 'unresolved', action: 'not-measured' },
+    },
     artifact: {
       schemaVersion: artifact.schemaVersion, publicArtifactSha256: sha256(readFileSync(publicPath)), semanticDigest: artifact.semanticDigest,
       semanticDigestRecomputed: semanticDigest(artifact) === artifact.semanticDigest, runArtifactDigest: runs[0].summary.semantic.runArtifactDigest,
@@ -388,7 +449,7 @@ export async function main(argv) {
     schemaVersion: 1, reportType: 'pii-eval-population-dual-run', supportClaims: false, authorityChanged: false,
     identities: {
       oracle: { repository: 'redact-secret/redact-secret-benchmarks', commit: ctx.spec.pin, filesTreeDigest: ctx.spec.treeDigest, fileCount: ctx.spec.files.length, runsUnmodified: true, stubs: ['ajv (accepts every document)', 'benign-collision-evidence (no entries)'] },
-      piiEval: { repository: 'redact-secret/pii-eval', commit: migration.pins.piiEvalProjection, cargoLockSha256: ctx.lock, engineVersion: '0.0.0', artifactSchema: '1.2', protocolRevision: 2, buildFlags: '--release --locked' },
+      piiEval: { repository: 'redact-secret/pii-eval', commit: migration.pins.piiEvalProjection, cargoLockSha256: ctx.lock, engineVersion: '0.0.0', artifactSchema: '1.4', protocolRevision: 2, buildFlags: '--release --locked' },
       candidate: migration.benchmarkPopulations.candidate, activationDigest: migration.scanner.activationDigest, configurationDigest: migration.scanner.configurationDigest, mode: 'exploratory',
       tooling: { 'scripts/lib/pii-population-conversion.mjs': scriptDigest('lib/pii-population-conversion.mjs'), 'scripts/pii-eval-population-parity/population_parity.rs': scriptDigest('pii-eval-population-parity/population_parity.rs') },
     },

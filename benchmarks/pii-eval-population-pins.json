@@ -1,14 +1,14 @@
 {
   "artifactSchema": {
     "id": "pii-eval.public-synthetic-artifact",
-    "version": "1.2"
+    "version": "1.4"
   },
   "build": {
     "repository": "redact-secret/pii-eval",
-    "commit": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+    "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
     "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
-    "binarySha256": "b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af",
-    "sourceArchiveSha256": "6904137f1dd508fc4bfcf44223d5d91262849ac525b86e269ae297347f11df84"
+    "binarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+    "sourceArchiveSha256": "de7bebc2ca12a404b9d9141cd2c4f9da439012b96bab36582e26031b71b3b77b"
   },
   "engine": {
     "name": "pii-eval",
@@ -16,11 +16,11 @@
   },
   "populations": [
     {
-      "artifactDigest": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
+      "artifactDigest": "37a74f301c30b854a698b3d4aeb313d24e637d8860c5a49d390f904f1246b868",
       "label": "oracle-plan",
-      "manifestDigest": "bd0a8087e46ec2df8389a9962b075a1d8be8a59c4d9805fe6ce9d4159b67fd7e",
+      "manifestDigest": "f7a96b75053f460efe87af77f9aebbf1e319522526d4b9fa92a89d76ed1d1a84",
       "population": {
-        "populationDigest": "b9c80deee38229e86287a5fdacdb6eddc516cc5b325e0435b7786a31a7b56116",
+        "populationDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
         "populationId": "b11-population-v2-oracle-plan",
         "populationVersion": 1,
         "visibility": "public-synthetic"
@@ -30,10 +30,14 @@
         "requiredViews": [
           "oracle-plan"
         ],
-        "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf"
+        "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c"
       },
-      "retiredArtifactDigests": [],
-      "retiredManifestDigests": [],
+      "retiredArtifactDigests": [
+        "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b"
+      ],
+      "retiredManifestDigests": [
+        "bd0a8087e46ec2df8389a9962b075a1d8be8a59c4d9805fe6ce9d4159b67fd7e"
+      ],
       "runClass": "public-synthetic",
       "scanners": [
         {
@@ -56,11 +60,11 @@
       ]
     },
     {
-      "artifactDigest": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
+      "artifactDigest": "6f41e411e27de75f48b64ac6a66571ed82dc309643b804ac55ac9a95c791fba9",
       "label": "qualification-plan",
-      "manifestDigest": "7bd499d2622b5c49b8486c69ddff0b443653fa9b3c8503c825b8c4fde8f93fe5",
+      "manifestDigest": "c49f36a2bce27fb47618076c71804aad5e363a0e6572effbec8e1e9191534906",
       "population": {
-        "populationDigest": "69d6cc26bc9d2d7a9aee4231f5f1e3c7969840fb6407d8f4cc777312836a59d6",
+        "populationDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
         "populationId": "b11-population-v2-qualification-plan",
         "populationVersion": 1,
         "visibility": "public-synthetic"
@@ -70,10 +74,14 @@
         "requiredViews": [
           "qualification-plan"
         ],
-        "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883"
+        "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293"
       },
-      "retiredArtifactDigests": [],
-      "retiredManifestDigests": [],
+      "retiredArtifactDigests": [
+        "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e"
+      ],
+      "retiredManifestDigests": [
+        "7bd499d2622b5c49b8486c69ddff0b443653fa9b3c8503c825b8c4fde8f93fe5"
+      ],
       "runClass": "public-synthetic",
       "scanners": [
         {
@@ -96,11 +104,11 @@
       ]
     },
     {
-      "artifactDigest": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
+      "artifactDigest": "134d30a3c6f9c21f38ae46fdc74c861eae38feeb1cc3ea6c8b171f800a733166",
       "label": "diagnostic-balanced",
-      "manifestDigest": "925d56c824f08fc0ef49a1d9f8ea2d272cc1e4a690f9b5ea7238073ea69b4e7c",
+      "manifestDigest": "4dd090d3dd4be6c39657703ac49a4a85b275d62e3a3fdf1099d4a083c877a9e2",
       "population": {
-        "populationDigest": "4864e3a4f52d9b4119f97314c6cecb8fb780eec9098270977ce34fd7f29022bb",
+        "populationDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
         "populationId": "b11-population-v2-diagnostic-balanced",
         "populationVersion": 1,
         "visibility": "public-synthetic"
@@ -110,10 +118,14 @@
         "requiredViews": [
           "diagnostic-balanced"
         ],
-        "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63"
+        "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15"
       },
-      "retiredArtifactDigests": [],
-      "retiredManifestDigests": [],
+      "retiredArtifactDigests": [
+        "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39"
+      ],
+      "retiredManifestDigests": [
+        "925d56c824f08fc0ef49a1d9f8ea2d272cc1e4a690f9b5ea7238073ea69b4e7c"
+      ],
       "runClass": "public-synthetic",
       "scanners": [
         {
@@ -136,11 +148,11 @@
       ]
     },
     {
-      "artifactDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19",
+      "artifactDigest": "a82ac5144a4ae22336cd66318e37a2010ec7a8fc3129233630b130f3df082767",
       "label": "benign-heavy-stress",
-      "manifestDigest": "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64",
+      "manifestDigest": "2de68476d08a82605cb882592aad791e453796fe23ddbe427ad58ddd565aff3d",
       "population": {
-        "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+        "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
         "populationId": "b11-population-v2-benign-heavy-stress",
         "populationVersion": 1,
         "visibility": "public-synthetic"
@@ -150,10 +162,14 @@
         "requiredViews": [
           "benign-heavy-stress"
         ],
-        "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b"
+        "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b"
       },
-      "retiredArtifactDigests": [],
-      "retiredManifestDigests": [],
+      "retiredArtifactDigests": [
+        "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19"
+      ],
+      "retiredManifestDigests": [
+        "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64"
+      ],
       "runClass": "public-synthetic",
       "scanners": [
         {

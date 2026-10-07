@@ -19,6 +19,7 @@ import { runArtifactSchemaDigest } from '../benchmarks/qualification/run-artifac
 
 const root = new URL('..', import.meta.url).pathname;
 const read = file => JSON.parse(readFileSync(path.join(root, file), 'utf8'));
+const lit = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // a literal inside a RegExp, backslash included
 const FULL = 'credential-public-v1.json';
 const WITHOUT = 'credential-public-v1.without-openredaction.json';
 const roster = {
@@ -50,7 +51,7 @@ test('absent inputs select the four required scanners and the released without-O
   const text = renderSelection(selection, { roster, population: 'regression-corpus', runs: 2 });
   assert.match(text, /OpenRedaction default \(all patterns\): OMITTED \(optional, omitted by default\)/);
   assert.match(text, /openredaction scan invocations: 0/);
-  assert.match(text, new RegExp(WITHOUT.replace(/\./g, '\\.')));
+  assert.match(text, new RegExp(lit(WITHOUT)));
 });
 
 test('the platform variant is selected from the roster for darwin-arm64', () => {
@@ -78,7 +79,7 @@ test('explicit opt-in selects the full configuration under its own recorded iden
 test('a pinned engine that ships no without-OpenRedaction configuration is refused; the default never falls back to the full one (#812)', () => {
   const { selection, problems } = selectScanners(request({ engineHasConfig: engineWith(FULL) }));
   assert.equal(selection, null);
-  assert.match(problems.join(' '), new RegExp(`the pinned engine v0\\.0\\.0-pinned has no configuration ${WITHOUT.replace(/\./g, '\\.')}`));
+  assert.match(problems.join(' '), new RegExp(`the pinned engine v0\\.0\\.0-pinned has no configuration ${lit(WITHOUT)}`));
   assert.match(problems.join(' '), /never measured with openredaction by accident/);
   assert.match(problems.join(' '), /include_openredaction/, 'it names the explicit way to get the historical configuration');
   // The explicit opt-in on the same engine is the legacy reproduction: the full configuration, no without-config needed.
@@ -248,7 +249,7 @@ test('driver --dry-run, no inputs: four required scanners, the without-OpenRedac
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /OpenRedaction default \(all patterns\): OMITTED/);
   assert.match(r.stdout, /openredaction scan invocations: 0/);
-  assert.match(r.stdout, new RegExp(realWithout.replace(/\./g, '\\.')));
+  assert.match(r.stdout, new RegExp(lit(realWithout)));
   assert.match(r.stdout, /nothing was started/);
   const described = JSON.parse(readFileSync(path.join(out, 'scanner-selection.json'), 'utf8'));
   assert.deepEqual(described.scanners, registry.scanners.map(s => s.id).filter(id => id !== 'openredaction'));
@@ -262,7 +263,7 @@ test('driver --dry-run --include-optional openredaction: the opt-in is visible i
   assert.match(r.stdout, /EXPLICIT opt-in/);
   assert.match(r.stdout, /INCLUDED by explicit opt-in/);
   assert.match(r.stdout, /openredaction scan invocations: 2/);
-  assert.match(r.stdout, new RegExp(realFull.replace(/\./g, '\\.')));
+  assert.match(r.stdout, new RegExp(lit(realFull)));
 });
 
 test('driver --dry-run, legacy reproduction: an engine without the without-config still reproduces the full configuration on the opt-in only (#812)', () => {
@@ -273,7 +274,7 @@ test('driver --dry-run, legacy reproduction: an engine without the without-confi
   assert.match(refused.stderr, /never measured with openredaction by accident/);
   const reproduced = driver(legacy, ['--dry-run', '--include-optional', 'openredaction']);
   assert.equal(reproduced.status, 0, reproduced.stderr);
-  assert.match(reproduced.stdout, new RegExp(realFull.replace(/\./g, '\\.')));
+  assert.match(reproduced.stdout, new RegExp(lit(realFull)));
 });
 
 test('driver --dry-run, deprecated --omit-optional: accepted, says it is deprecated, selects the same as the default (#812)', () => {

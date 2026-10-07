@@ -1,20 +1,27 @@
 /**
  * `/evaluation/rc`: the release candidate beside the last release, resolved to block props. Pure.
  *
+ * Two readings share the page (#658). Under the `new` authority the candidate is the candidate diff of a recorded replay (`rc-artifact.ts`, no import of the
+ * legacy model). This file is the `legacy` rollback's reading of the saved-baseline evidence (`eval:candidate`), and the one place that picks the reading.
+ *
  * Boundary rule: everything here is a value a run recorded. The classification of one fixture (regressed,
  * improved, other change, unchanged) is the existing Workbench's own (`changeRows` in benchmarks/shared/evaluation-model.ts,
  * applied to the one fixture), so this page and the old Changes page can never disagree about what moved.
  * Nothing is worded as approval, a gate or a ranking, and a missing record is stated, never a zero.
  */
 import { candidatePairs, changeRows, type ChangeRow, type OutcomePair } from '../../benchmarks/shared/evaluation-model.ts';
-import type { RcBuild, RcBuildsData, RcDifferencesData, RcLevelsData, RcMovedData, RcMovedRow, RcNotRecordedData, RcPerformanceData, RcStamp, RcTile } from '../components/evaluation/rc/types';
-import type { CandidateLoad, LastRelease, RcSources, ReleaseBaseline } from '../services/candidate';
+import type { RcBuild, RcMovedRow, RcNotRecordedData, RcStamp, RcTile } from '../components/evaluation/rc/types';
+import type { CandidateLoad, LastRelease, RcSources } from '../services/candidate';
 import type { OwnPerformance } from '../services/performance';
 import { count, int, isoDate } from './format';
+import { performanceOf, PRODUCT_COMMIT_URL, releaseBuild, short, type RcNote, type RcPage } from './rc-common';
+import { artifactNotRecorded, resolveArtifactRcPage } from './rc-artifact';
 import { fixtureHref } from './rows';
 import { LEVEL_TITLE } from './report';
 
-export const PRODUCT_COMMIT_URL = 'https://github.com/redact-secret/redact-secret/commit/';
+export { PRODUCT_COMMIT_URL };
+export type { RcNote, RcNoteTone, RcPage } from './rc-common';
+
 /** The command the existing Workbench names for writing candidate evidence (src/pages/workbench/changes.ts). */
 export const CANDIDATE_COMMAND = [
   'npm run eval:candidate -- --output-dir "$PWD/public/results" \\',
@@ -24,26 +31,10 @@ export const CANDIDATE_COMMAND = [
 /** The most rows one group of the moved-fixtures list shows. */
 export const MOVED_LIMIT = 100;
 
-export type RcNoteTone = 'warning' | 'info';
-export interface RcNote { tone: RcNoteTone; title: string; text: string }
-
-export interface RcPage {
-  state: 'recorded' | 'not-recorded' | 'invalid';
-  head: { eyebrow: string; title: string; lede: string };
-  notes: RcNote[];
-  builds: RcBuildsData;
-  differences: RcDifferencesData | null;
-  levels: RcLevelsData | null;
-  moved: RcMovedData | null;
-  notRecorded: RcNotRecordedData | null;
-  performance: RcPerformanceData;
-}
-
+type LegacyRecorded = Extract<CandidateLoad, { state: 'recorded'; source: 'legacy' }>;
 type Change = 'regressed' | 'improved' | 'other' | 'unchanged';
 const LEVEL_ORDER = ['T1', 'T2', 'T3', 'T0'] as const;
 const WORD: Record<string, string> = { EXACT: 'Exact', COVERED: 'Covered', OVERBROAD: 'Overbroad', PARTIAL: 'Partial', MISS: 'Miss' };
-
-const short = (sha: string) => sha.slice(0, 7);
 
 /** How the recorded outcome code reads: span outcomes as words, controls as flagged or not. */
 export function outcomeText(code: string | null): string {
@@ -73,22 +64,7 @@ const levelDetail = (level: string) => (level === 'T0' ? 'T0 · observed, never 
 
 // ---- builds ---------------------------------------------------------------------------
 
-function releaseBuild(version: string, commit: string | null, baseline: ReleaseBaseline | null): RcBuild {
-  return {
-    role: 'Last release',
-    mode: 'published',
-    tags: [],
-    heading: version,
-    facts: [
-      commit ? { term: 'Commit', value: short(commit), href: `${PRODUCT_COMMIT_URL}${commit}`, mono: true, note: 'release pin' } : { term: 'Commit', value: 'Not recorded for this version' },
-      baseline?.savedAt ? { term: 'Date', value: `Baseline saved ${isoDate(baseline.savedAt)}` } : { term: 'Date', value: 'Not recorded' },
-      baseline?.runId ? { term: 'Run', value: baseline.runId, mono: true } : { term: 'Run', value: 'Not recorded' },
-      baseline ? { term: 'Source', value: `baselines/${baseline.version}.json`, mono: true } : { term: 'Source', value: `No baselines/${version}.json is saved` },
-    ],
-  };
-}
-
-function candidateBuild(c: Extract<CandidateLoad, { state: 'recorded' }>): RcBuild {
+function candidateBuild(c: LegacyRecorded): RcBuild {
   const { report } = c;
   const { candidate, completeness, selection } = report;
   return {
@@ -108,7 +84,7 @@ function candidateBuild(c: Extract<CandidateLoad, { state: 'recorded' }>): RcBui
 
 // ---- recorded -------------------------------------------------------------------------
 
-function notesFor(c: Extract<CandidateLoad, { state: 'recorded' }>, release: LastRelease, uncompared: number): RcNote[] {
+function notesFor(c: LegacyRecorded, release: LastRelease, uncompared: number): RcNote[] {
   const { report } = c;
   const notes: RcNote[] = [];
   const against = report.results[0]?.baseline.version;
@@ -129,7 +105,7 @@ function figureOf(row: ChangeRow | undefined, label: string, detail: string): Rc
   return { label, value: int(row.after), detail, observation: `release ${int(before)} → candidate ${int(row.after)} of ${int(row.of)}` };
 }
 
-function recorded(c: Extract<CandidateLoad, { state: 'recorded' }>, release: LastRelease, performance: OwnPerformance): RcPage {
+function recorded(c: LegacyRecorded, release: LastRelease, performance: OwnPerformance): RcPage {
   const { report } = c;
   const baselineVersion = report.results[0]?.baseline.version ?? release.version;
   const against = c.against ?? (baselineVersion === release.version ? release.baseline : null);
@@ -212,18 +188,7 @@ function recorded(c: Extract<CandidateLoad, { state: 'recorded' }>, release: Las
 
 // ---- not recorded, invalid ------------------------------------------------------------
 
-function performanceOf(performance: OwnPerformance, candidateCommit: string | null): RcPerformanceData {
-  const base = { title: 'Performance cost', heading: 'No performance run names this candidate', href: '/comparison/performance/', linkLabel: 'Performance comparison' };
-  if (performance.state !== 'measured') return { ...base, heading: 'No performance run is recorded', text: `${performance.reason} Nothing is estimated.` };
-  const accepted = `The accepted performance run measured commit ${short(performance.sourceCommit)} (${count(performance.repetitions, 'repetition')}).`;
-  if (candidateCommit && performance.sourceCommit === candidateCommit) {
-    return { ...base, heading: 'Not recorded as a before and after', text: `${accepted} That is this candidate's commit, and no run of the last release's commit is recorded beside it, so no cost is compared and nothing is estimated.` };
-  }
-  if (!candidateCommit) return { ...base, heading: 'No candidate to compare', text: `${accepted} No candidate is recorded, so no cost is compared and nothing is estimated.` };
-  return { ...base, text: `${accepted} No run is recorded for the candidate commit ${short(candidateCommit)}, so no before and after is shown and nothing is estimated.` };
-}
-
-function notRecorded(load: Extract<CandidateLoad, { state: 'not-recorded' | 'invalid' }>): RcNotRecordedData {
+function notRecorded(load: Exclude<CandidateLoad, { state: 'recorded' }>): RcNotRecordedData {
   const invalid = load.state === 'invalid';
   return {
     title: invalid ? 'The candidate evidence did not validate' : 'No release candidate is recorded',
@@ -243,8 +208,8 @@ function notRecorded(load: Extract<CandidateLoad, { state: 'not-recorded' | 'inv
   };
 }
 
-export function resolveRcPage({ candidate, release, performance }: RcSources): RcPage {
-  if (candidate.state === 'recorded') return recorded(candidate, release, performance);
+export function resolveRcPage({ authority, candidate, release, performance }: RcSources): RcPage {
+  if (candidate.state === 'recorded') return candidate.source === 'artifact' ? resolveArtifactRcPage(candidate.diff, release, performance) : recorded(candidate, release, performance);
   return {
     state: candidate.state,
     head: {
@@ -257,7 +222,7 @@ export function resolveRcPage({ candidate, release, performance }: RcSources): R
     differences: null,
     levels: null,
     moved: null,
-    notRecorded: notRecorded(candidate),
+    notRecorded: authority === 'new' ? artifactNotRecorded(candidate) : notRecorded(candidate),
     performance: performanceOf(performance, null),
   };
 }

@@ -70,6 +70,8 @@ export interface RcLevelRow {
 
 export interface RcLevelsData {
   title: string;
+  /** The first column's header; "Evidence level" when absent, "Population" for a candidate diff. */
+  heading?: string;
   stamp: RcStamp;
   caption: string;
   rows: RcLevelRow[];

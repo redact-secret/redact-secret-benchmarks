@@ -20,7 +20,7 @@ import path from 'node:path';
 import { POINTER_FILE, bundleCases, bundleReviews, resolveBundle, validateBundle, type BundleManifest, type Summary } from '../../benchmarks/evaluation/bundle/bundle.ts';
 import { evaluationProblem } from '../../benchmarks/shared/evaluation-model.ts';
 import type { EvaluationCase, EvaluationReport, QualificationEvidence } from '../../benchmarks/shared/evaluation-types.ts';
-import { loadCatalogSources } from './catalog';
+import { loadCorpusHashes } from './catalog';
 import { once, readJsonIfPresent, REPO_ROOT } from './repo';
 
 export type { EvaluationReport, QualificationEvidence };
@@ -86,7 +86,7 @@ function casesReader(read: (method: string) => Promise<EvaluationCase[]>) {
 async function loadBundle(): Promise<EvaluationLoad> {
   const what = `public/results/${POINTER_FILE}`;
   try {
-    const { hashes } = await loadCatalogSources();
+    const hashes = await loadCorpusHashes();
     const { directory, manifest } = await resolveBundle(RESULTS_DIR());
     const { summary, index } = await validateBundle(directory, { corpusHashes: hashes });
     const caseCounts: Record<string, number> = {};
@@ -113,7 +113,7 @@ async function loadLegacy(): Promise<EvaluationLoad> {
   } catch {
     return { state: 'unusable', reason: `public/results/${LEGACY_FILE} is not valid JSON.` };
   }
-  const { hashes } = await loadCatalogSources();
+  const hashes = await loadCorpusHashes();
   const problem = evaluationProblem(value, hashes);
   if (problem) return refusal(`public/results/${LEGACY_FILE}`, `${problem}: it does not match the evaluation contract or this checkout's fixtures.`);
   const { cases, reviews, ...summary } = value as EvaluationReport;

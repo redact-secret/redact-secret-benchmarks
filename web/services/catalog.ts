@@ -109,20 +109,40 @@ interface Loaded extends CatalogSources {
   scenarios: { id: string; title: string }[];
 }
 
+interface Corpora { categories: CategoryEntry[]; corpora: Record<string, CorpusFile>; hashes: Record<string, string> }
+
+/**
+ * The published corpus files and their sha256, read from `benchmarks/categories.json` and the corpora it names, and nothing else: no fixture index, detector
+ * assignment or scenario file. Both authorities need it (the evaluation bundle states the corpus hashes it was measured over), so it is the one read of the
+ * corpora; the legacy catalog (`loadSources`) builds on it.
+ */
+function loadCorpora(): Promise<Corpora> {
+  return once('corpora', async () => {
+    const categoriesAll = await readJson<CategoryEntry[]>('benchmarks/categories.json');
+    const categories = categoriesAll.filter(c => !c.calibrationOnly);
+    const texts = await Promise.all(categories.map(async c => [c.id, await readFile(path.join(REPO_ROOT, c.corpus), 'utf8')] as const));
+    const corpora = Object.fromEntries(texts.map(([id, text]) => [id, JSON.parse(text) as CorpusFile]));
+    const hashes = Object.fromEntries(texts.map(([id, text]) => [id, createHash('sha256').update(new TextEncoder().encode(text)).digest('hex')]));
+    return { categories, corpora, hashes };
+  });
+}
+
+/** sha256 of each published corpus file's text, by suite id: the `corpusHash` a suite report or an evaluation bundle must carry. Reads no legacy catalog file. */
+export async function loadCorpusHashes(): Promise<Record<string, string>> {
+  return (await loadCorpora()).hashes;
+}
+
+/** The legacy catalog's sources: the corpora plus `fixture-index.json`, `fixture-detectors.json` and `scenarios.json`. Only the `legacy` authority and the legacy run reader come here (#658). */
 function loadSources(): Promise<Loaded> {
   return once('catalog-sources', async () => {
-    const [categoriesAll, registry, assignments, index, taxonomy, scenarioRegistry] = await Promise.all([
-      readJson<CategoryEntry[]>('benchmarks/categories.json'),
+    const [{ categories, corpora, hashes }, registry, assignments, index, taxonomy, scenarioRegistry] = await Promise.all([
+      loadCorpora(),
       readJson<DetectorRegistry>('benchmarks/detectors.json'),
       readJson<Record<string, string[]>>('benchmarks/fixture-detectors.json'),
       readJson<FixtureIndex>('benchmarks/fixture-index.json'),
       readJson<Taxonomy>('benchmarks/support/taxonomy.json'),
       readJson<{ scenarios: { id: string; title: string }[] }>('benchmarks/scenarios.json'),
     ]);
-    const categories = categoriesAll.filter(c => !c.calibrationOnly);
-    const texts = await Promise.all(categories.map(async c => [c.id, await readFile(path.join(REPO_ROOT, c.corpus), 'utf8')] as const));
-    const corpora = Object.fromEntries(texts.map(([id, text]) => [id, JSON.parse(text) as CorpusFile]));
-    const hashes = Object.fromEntries(texts.map(([id, text]) => [id, createHash('sha256').update(new TextEncoder().encode(text)).digest('hex')]));
 
     const indexIssues = fixtureIndexProblems(index);
     if (indexIssues.length) throw new Error(`benchmarks/fixture-index.json is invalid: ${indexIssues.join('; ')}`);

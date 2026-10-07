@@ -265,6 +265,17 @@ describe('catalog', () => {
     expect((await s.catalog.loadCatalogSources()).categories.length).toBe(catalog.suites.length);
   });
 
+  test('the corpus hashes the evaluation bundle is checked against need no fixture index, detector assignment or scenario file (#658)', async () => {
+    // Both authorities read them (the bundle states the corpus hashes it was measured over); the legacy catalog files are the legacy authority's alone.
+    const bare = await services(overlay({ 'benchmarks/fixture-index.json': null, 'benchmarks/fixture-detectors.json': null, 'benchmarks/scenarios.json': null }));
+    const hashes = await bare.catalog.loadCorpusHashes();
+    const full = await (await services()).catalog.loadCatalogSources();
+    expect(Object.keys(hashes)).toEqual(full.categories);
+    expect(hashes).toEqual(full.hashes);
+    for (const hash of Object.values(hashes)) expect(hash).toMatch(/^[0-9a-f]{64}$/);
+    await expect(bare.catalog.loadCatalog()).rejects.toThrow();
+  });
+
   test('a fixture index that does not match the corpora fails the build, naming the file', async () => {
     const s = await services(overlay({ 'benchmarks/fixture-index.json': edited('benchmarks/fixture-index.json', v => { v.fixtures = []; }) }));
     await expect(s.catalog.loadCatalog()).rejects.toThrow(/fixture-index|semantic index/);

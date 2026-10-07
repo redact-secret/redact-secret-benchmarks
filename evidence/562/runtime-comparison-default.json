@@ -9,7 +9,7 @@
     "activation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
     "families": []
   },
-  "generatedAt": "2026-10-03T11:33:42.987Z",
+  "generatedAt": "2026-10-07T11:30:52.140Z",
   "runner": {
     "platform": "linux",
     "arch": "arm64",
@@ -17,17 +17,17 @@
     "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
     "cpuLimit": 4,
     "emulated": false,
-    "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+    "imageDigest": "sha256:2ff03e6865c101b97e2b4a39a74d044f9ecb20e86e8c534c9ef86360ad5c129a"
   },
   "tools": [
     {
       "id": "redact-secret",
-      "version": "0.1.0-beta.13",
+      "version": "0.1.0-beta.14",
       "provenance": {
         "kind": "published-npm-package",
         "package": "@redact-secret/core",
         "piiActivation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
-        "commit": "66b492bdff5e6751fc6b5409266916346ed7c723"
+        "commit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
       }
     },
     {
@@ -50,7 +50,7 @@
   "methodologyNotes": [
     "Informational only: no pass/fail verdict, no ranking assertion (this repository measures and records; see AGENTS.md Boundary rule).",
     "OpenRedaction's detect() is Promise-returning (asynchronous); flare-redact's redact() and redact-secret's scanAndRedact() are synchronous. Each is timed with performance.now() around the actual call, awaited where applicable, so the OpenRedaction figures include at least one Node event-loop microtask tick that the other two tools' figures do not.",
-    "redact-secret is measured from the published @redact-secret/core npm package 0.1.0-beta.13 (the pinned release, built from product commit 66b492bdff5e6751fc6b5409266916346ed7c723), not a local build; PII is selected through initialize({ pii }). This run used the Default setting (no PII selectors). flare-redact and OpenRedaction are measured from their published npm packages at their package defaults, so their columns do not change with the setting; they are timed in every setting's run as a reference for how much the machine varied between runs.",
+    "redact-secret is measured from the published @redact-secret/core npm package 0.1.0-beta.14 (the pinned release, built from product commit 0c62fd38bca75c5b28b042dc79789b708ebf1d17), not a local build; PII is selected through initialize({ pii }). This run used the Default setting (no PII selectors). flare-redact and OpenRedaction are measured from their published npm packages at their package defaults, so their columns do not change with the setting; they are timed in every setting's run as a reference for how much the machine varied between runs.",
     "Workloads are the ones in qualification/runtime-comparison-v2.json: validator-heavy and multilingual-context are the v1 workloads rendered byte-identically, the others are new and synthetic. Credential values are generated from a seed at run time and never stored; a value that reaches a recorded outcome is replaced by its index.",
     "One setting is measured per process because redact-secret accepts one PII selection per process. The tools run in-process, interleaved round-robin per workload, after two discarded warmup calls each, and each time is the median of the recorded samples.",
     "Outcomes come from one untimed call per distinct line, outside the timed calls. A value counts as hidden when it no longer appears verbatim in the returned text. Outcomes are recorded, never graded."
@@ -63,1034 +63,1034 @@
       "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
       "samples": [
         {
-          "redactMs": 1.866,
-          "bytesPerSecond": 70229696
+          "redactMs": 2.02,
+          "bytesPerSecond": 64889827
         },
         {
-          "redactMs": 1.682,
-          "bytesPerSecond": 77939809
+          "redactMs": 1.85,
+          "bytesPerSecond": 70862485
         },
         {
-          "redactMs": 6.995,
-          "bytesPerSecond": 18738178
+          "redactMs": 1.97,
+          "bytesPerSecond": 66545259
         },
         {
-          "redactMs": 1.744,
-          "bytesPerSecond": 75150577
+          "redactMs": 2.026,
+          "bytesPerSecond": 64681652
         },
         {
-          "redactMs": 1.833,
-          "bytesPerSecond": 71500305
+          "redactMs": 1.931,
+          "bytesPerSecond": 67879225
         },
         {
-          "redactMs": 1.669,
-          "bytesPerSecond": 78515612
+          "redactMs": 1.863,
+          "bytesPerSecond": 70358475
         },
         {
-          "redactMs": 1.842,
-          "bytesPerSecond": 71141332
+          "redactMs": 1.919,
+          "bytesPerSecond": 68300781
         },
         {
-          "redactMs": 1.824,
-          "bytesPerSecond": 71864574
-        },
-        {
-          "redactMs": 1.646,
-          "bytesPerSecond": 79620510
-        },
-        {
-          "redactMs": 1.69,
-          "bytesPerSecond": 77559324
-        },
-        {
-          "redactMs": 1.591,
-          "bytesPerSecond": 82394178
-        },
-        {
-          "redactMs": 1.592,
-          "bytesPerSecond": 82344589
-        }
-      ],
-      "summary": {
-        "medianMs": 1.69,
-        "p95Ms": 6.995,
-        "medianBytesPerSecond": 75150577
-      }
-    },
-    {
-      "tool": "flare-redact",
-      "workload": "real-looking-values",
-      "workloadBytes": 131072,
-      "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
-      "samples": [
-        {
-          "redactMs": 9.294,
-          "bytesPerSecond": 14102800
-        },
-        {
-          "redactMs": 6.886,
-          "bytesPerSecond": 19033988
-        },
-        {
-          "redactMs": 16.558,
-          "bytesPerSecond": 7915992
-        },
-        {
-          "redactMs": 6.069,
-          "bytesPerSecond": 21598157
-        },
-        {
-          "redactMs": 5.78,
-          "bytesPerSecond": 22675510
-        },
-        {
-          "redactMs": 5.616,
-          "bytesPerSecond": 23338337
-        },
-        {
-          "redactMs": 5.096,
-          "bytesPerSecond": 25721827
-        },
-        {
-          "redactMs": 4.887,
-          "bytesPerSecond": 26822603
-        },
-        {
-          "redactMs": 4.991,
-          "bytesPerSecond": 26259698
-        },
-        {
-          "redactMs": 4.936,
-          "bytesPerSecond": 26555640
-        },
-        {
-          "redactMs": 5.052,
-          "bytesPerSecond": 25944576
-        },
-        {
-          "redactMs": 5.172,
-          "bytesPerSecond": 25342202
-        }
-      ],
-      "summary": {
-        "medianMs": 5.172,
-        "p95Ms": 16.558,
-        "medianBytesPerSecond": 23338337
-      }
-    },
-    {
-      "tool": "openredaction",
-      "workload": "real-looking-values",
-      "workloadBytes": 131072,
-      "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
-      "samples": [
-        {
-          "redactMs": 321.63,
-          "bytesPerSecond": 407524
-        },
-        {
-          "redactMs": 1311.378,
-          "bytesPerSecond": 99950
-        },
-        {
-          "redactMs": 542.24,
-          "bytesPerSecond": 241723
-        },
-        {
-          "redactMs": 499.921,
-          "bytesPerSecond": 262185
-        },
-        {
-          "redactMs": 409.42,
-          "bytesPerSecond": 320141
-        },
-        {
-          "redactMs": 425.571,
-          "bytesPerSecond": 307991
-        },
-        {
-          "redactMs": 434.325,
-          "bytesPerSecond": 301783
-        },
-        {
-          "redactMs": 419.302,
-          "bytesPerSecond": 312596
-        },
-        {
-          "redactMs": 391.125,
-          "bytesPerSecond": 335115
-        },
-        {
-          "redactMs": 383.349,
-          "bytesPerSecond": 341913
-        },
-        {
-          "redactMs": 365.727,
-          "bytesPerSecond": 358387
-        },
-        {
-          "redactMs": 402.496,
-          "bytesPerSecond": 325648
-        }
-      ],
-      "summary": {
-        "medianMs": 409.42,
-        "p95Ms": 1311.378,
-        "medianBytesPerSecond": 312596
-      }
-    },
-    {
-      "tool": "redact-secret",
-      "workload": "validator-heavy",
-      "workloadBytes": 94720,
-      "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
-      "samples": [
-        {
-          "redactMs": 0.976,
-          "bytesPerSecond": 97074046
-        },
-        {
-          "redactMs": 0.969,
-          "bytesPerSecond": 97750258
-        },
-        {
-          "redactMs": 0.957,
-          "bytesPerSecond": 98993241
-        },
-        {
-          "redactMs": 0.983,
-          "bytesPerSecond": 96398981
-        },
-        {
-          "redactMs": 0.986,
-          "bytesPerSecond": 96101458
-        },
-        {
-          "redactMs": 1.04,
-          "bytesPerSecond": 91120731
-        },
-        {
-          "redactMs": 0.961,
-          "bytesPerSecond": 98589644
-        },
-        {
-          "redactMs": 0.964,
-          "bytesPerSecond": 98265722
-        },
-        {
-          "redactMs": 0.956,
-          "bytesPerSecond": 99049244
-        },
-        {
-          "redactMs": 0.969,
-          "bytesPerSecond": 97754394
-        },
-        {
-          "redactMs": 0.96,
-          "bytesPerSecond": 98700904
-        },
-        {
-          "redactMs": 1.105,
-          "bytesPerSecond": 85713019
-        }
-      ],
-      "summary": {
-        "medianMs": 0.969,
-        "p95Ms": 1.105,
-        "medianBytesPerSecond": 97750258
-      }
-    },
-    {
-      "tool": "flare-redact",
-      "workload": "validator-heavy",
-      "workloadBytes": 94720,
-      "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
-      "samples": [
-        {
-          "redactMs": 2.179,
-          "bytesPerSecond": 43477782
-        },
-        {
-          "redactMs": 2.174,
-          "bytesPerSecond": 43570279
-        },
-        {
-          "redactMs": 2.074,
-          "bytesPerSecond": 45675708
-        },
-        {
-          "redactMs": 2.132,
-          "bytesPerSecond": 44421704
-        },
-        {
-          "redactMs": 2.1,
-          "bytesPerSecond": 45108349
-        },
-        {
-          "redactMs": 2.3,
-          "bytesPerSecond": 41176629
-        },
-        {
-          "redactMs": 2.176,
-          "bytesPerSecond": 43522751
-        },
-        {
-          "redactMs": 2.11,
-          "bytesPerSecond": 44894527
-        },
-        {
-          "redactMs": 2.109,
-          "bytesPerSecond": 44907852
-        },
-        {
-          "redactMs": 2.145,
-          "bytesPerSecond": 44155935
-        },
-        {
-          "redactMs": 2.113,
-          "bytesPerSecond": 44817545
-        },
-        {
-          "redactMs": 2.636,
-          "bytesPerSecond": 35932660
-        }
-      ],
-      "summary": {
-        "medianMs": 2.132,
-        "p95Ms": 2.636,
-        "medianBytesPerSecond": 44155935
-      }
-    },
-    {
-      "tool": "openredaction",
-      "workload": "validator-heavy",
-      "workloadBytes": 94720,
-      "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
-      "samples": [
-        {
-          "redactMs": 274.642,
-          "bytesPerSecond": 344886
-        },
-        {
-          "redactMs": 268.163,
-          "bytesPerSecond": 353219
-        },
-        {
-          "redactMs": 270.598,
-          "bytesPerSecond": 350040
-        },
-        {
-          "redactMs": 267.529,
-          "bytesPerSecond": 354055
-        },
-        {
-          "redactMs": 274.613,
-          "bytesPerSecond": 344922
-        },
-        {
-          "redactMs": 254.404,
-          "bytesPerSecond": 372321
-        },
-        {
-          "redactMs": 254.861,
-          "bytesPerSecond": 371654
-        },
-        {
-          "redactMs": 254.221,
-          "bytesPerSecond": 372590
-        },
-        {
-          "redactMs": 275.649,
-          "bytesPerSecond": 343626
-        },
-        {
-          "redactMs": 259.195,
-          "bytesPerSecond": 365439
-        },
-        {
-          "redactMs": 289.107,
-          "bytesPerSecond": 327630
-        },
-        {
-          "redactMs": 267.326,
-          "bytesPerSecond": 354324
-        }
-      ],
-      "summary": {
-        "medianMs": 267.529,
-        "p95Ms": 289.107,
-        "medianBytesPerSecond": 353219
-      }
-    },
-    {
-      "tool": "redact-secret",
-      "workload": "multilingual-context",
-      "workloadBytes": 150528,
-      "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
-      "samples": [
-        {
-          "redactMs": 1.935,
-          "bytesPerSecond": 77773840
-        },
-        {
-          "redactMs": 1.982,
-          "bytesPerSecond": 75958718
-        },
-        {
-          "redactMs": 1.975,
-          "bytesPerSecond": 76216709
-        },
-        {
-          "redactMs": 1.996,
-          "bytesPerSecond": 75427451
-        },
-        {
-          "redactMs": 2.12,
-          "bytesPerSecond": 71009367
-        },
-        {
-          "redactMs": 2.423,
-          "bytesPerSecond": 62134255
-        },
-        {
-          "redactMs": 1.885,
-          "bytesPerSecond": 79839820
-        },
-        {
-          "redactMs": 1.827,
-          "bytesPerSecond": 82387017
-        },
-        {
-          "redactMs": 1.981,
-          "bytesPerSecond": 75968302
-        },
-        {
-          "redactMs": 1.951,
-          "bytesPerSecond": 77147716
+          "redactMs": 1.913,
+          "bytesPerSecond": 68525422
         },
         {
           "redactMs": 1.993,
-          "bytesPerSecond": 75534679
+          "bytesPerSecond": 65752457
         },
         {
-          "redactMs": 1.89,
-          "bytesPerSecond": 79632141
+          "redactMs": 1.944,
+          "bytesPerSecond": 67420990
+        },
+        {
+          "redactMs": 1.864,
+          "bytesPerSecond": 70319181
+        },
+        {
+          "redactMs": 1.845,
+          "bytesPerSecond": 71024065
         }
       ],
       "summary": {
-        "medianMs": 1.975,
-        "p95Ms": 2.423,
-        "medianBytesPerSecond": 75968302
+        "medianMs": 1.919,
+        "p95Ms": 2.026,
+        "medianBytesPerSecond": 67879225
       }
     },
     {
       "tool": "flare-redact",
-      "workload": "multilingual-context",
-      "workloadBytes": 150528,
-      "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
+      "workload": "real-looking-values",
+      "workloadBytes": 131072,
+      "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
       "samples": [
         {
-          "redactMs": 4.883,
-          "bytesPerSecond": 30824583
+          "redactMs": 6.308,
+          "bytesPerSecond": 20777597
         },
         {
-          "redactMs": 5.023,
-          "bytesPerSecond": 29966752
+          "redactMs": 5.965,
+          "bytesPerSecond": 21973663
         },
         {
-          "redactMs": 5.631,
-          "bytesPerSecond": 26730239
+          "redactMs": 8.313,
+          "bytesPerSecond": 15767429
         },
         {
-          "redactMs": 5.384,
-          "bytesPerSecond": 27960343
+          "redactMs": 5.231,
+          "bytesPerSecond": 25057174
         },
         {
-          "redactMs": 5.204,
-          "bytesPerSecond": 28923130
+          "redactMs": 5.26,
+          "bytesPerSecond": 24920602
         },
         {
-          "redactMs": 5.026,
-          "bytesPerSecond": 29952096
+          "redactMs": 5.178,
+          "bytesPerSecond": 25311210
         },
         {
-          "redactMs": 4.707,
-          "bytesPerSecond": 31980739
-        },
-        {
-          "redactMs": 4.652,
-          "bytesPerSecond": 32358565
-        },
-        {
-          "redactMs": 5.814,
-          "bytesPerSecond": 25891535
-        },
-        {
-          "redactMs": 4.718,
-          "bytesPerSecond": 31907865
-        },
-        {
-          "redactMs": 4.855,
-          "bytesPerSecond": 31007401
-        },
-        {
-          "redactMs": 4.602,
-          "bytesPerSecond": 32707480
-        }
-      ],
-      "summary": {
-        "medianMs": 4.883,
-        "p95Ms": 5.814,
-        "medianBytesPerSecond": 29966752
-      }
-    },
-    {
-      "tool": "openredaction",
-      "workload": "multilingual-context",
-      "workloadBytes": 150528,
-      "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
-      "samples": [
-        {
-          "redactMs": 409.97,
-          "bytesPerSecond": 367168
-        },
-        {
-          "redactMs": 410.463,
-          "bytesPerSecond": 366727
-        },
-        {
-          "redactMs": 416.613,
-          "bytesPerSecond": 361314
-        },
-        {
-          "redactMs": 395.704,
-          "bytesPerSecond": 380406
-        },
-        {
-          "redactMs": 418.761,
-          "bytesPerSecond": 359460
-        },
-        {
-          "redactMs": 400.077,
-          "bytesPerSecond": 376248
-        },
-        {
-          "redactMs": 371.679,
-          "bytesPerSecond": 404994
-        },
-        {
-          "redactMs": 392.836,
-          "bytesPerSecond": 383183
-        },
-        {
-          "redactMs": 406.646,
-          "bytesPerSecond": 370169
-        },
-        {
-          "redactMs": 389.368,
-          "bytesPerSecond": 386595
-        },
-        {
-          "redactMs": 394.736,
-          "bytesPerSecond": 381338
-        },
-        {
-          "redactMs": 506.617,
-          "bytesPerSecond": 297124
-        }
-      ],
-      "summary": {
-        "medianMs": 400.077,
-        "p95Ms": 506.617,
-        "medianBytesPerSecond": 370169
-      }
-    },
-    {
-      "tool": "redact-secret",
-      "workload": "credentials-real",
-      "workloadBytes": 294400,
-      "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
-      "samples": [
-        {
-          "redactMs": 14.357,
-          "bytesPerSecond": 20506331
-        },
-        {
-          "redactMs": 22.525,
-          "bytesPerSecond": 13070044
-        },
-        {
-          "redactMs": 14.264,
-          "bytesPerSecond": 20639734
-        },
-        {
-          "redactMs": 14.791,
-          "bytesPerSecond": 19903378
-        },
-        {
-          "redactMs": 14.562,
-          "bytesPerSecond": 20217235
-        },
-        {
-          "redactMs": 14.526,
-          "bytesPerSecond": 20267223
-        },
-        {
-          "redactMs": 14.853,
-          "bytesPerSecond": 19821245
-        },
-        {
-          "redactMs": 14.93,
-          "bytesPerSecond": 19718246
-        },
-        {
-          "redactMs": 15.536,
-          "bytesPerSecond": 18950096
-        },
-        {
-          "redactMs": 48.398,
-          "bytesPerSecond": 6082954
-        },
-        {
-          "redactMs": 15.095,
-          "bytesPerSecond": 19502501
-        },
-        {
-          "redactMs": 16.474,
-          "bytesPerSecond": 17871081
-        }
-      ],
-      "summary": {
-        "medianMs": 14.853,
-        "p95Ms": 48.398,
-        "medianBytesPerSecond": 19718246
-      }
-    },
-    {
-      "tool": "flare-redact",
-      "workload": "credentials-real",
-      "workloadBytes": 294400,
-      "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
-      "samples": [
-        {
-          "redactMs": 7.991,
-          "bytesPerSecond": 36839524
-        },
-        {
-          "redactMs": 7.959,
-          "bytesPerSecond": 36989767
-        },
-        {
-          "redactMs": 7.9,
-          "bytesPerSecond": 37263464
-        },
-        {
-          "redactMs": 7.437,
-          "bytesPerSecond": 39586743
-        },
-        {
-          "redactMs": 7.478,
-          "bytesPerSecond": 39370568
-        },
-        {
-          "redactMs": 7.378,
-          "bytesPerSecond": 39904214
-        },
-        {
-          "redactMs": 7.458,
-          "bytesPerSecond": 39475713
-        },
-        {
-          "redactMs": 7.772,
-          "bytesPerSecond": 37878145
-        },
-        {
-          "redactMs": 9.921,
-          "bytesPerSecond": 29674925
-        },
-        {
-          "redactMs": 16.734,
-          "bytesPerSecond": 17593406
-        },
-        {
-          "redactMs": 8.194,
-          "bytesPerSecond": 35927448
-        },
-        {
-          "redactMs": 8.129,
-          "bytesPerSecond": 36216761
-        }
-      ],
-      "summary": {
-        "medianMs": 7.9,
-        "p95Ms": 16.734,
-        "medianBytesPerSecond": 36989767
-      }
-    },
-    {
-      "tool": "openredaction",
-      "workload": "credentials-real",
-      "workloadBytes": 294400,
-      "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
-      "samples": [
-        {
-          "redactMs": 832.7,
-          "bytesPerSecond": 353549
-        },
-        {
-          "redactMs": 933.186,
-          "bytesPerSecond": 315478
-        },
-        {
-          "redactMs": 848.45,
-          "bytesPerSecond": 346986
-        },
-        {
-          "redactMs": 857.135,
-          "bytesPerSecond": 343470
-        },
-        {
-          "redactMs": 888.554,
-          "bytesPerSecond": 331325
-        },
-        {
-          "redactMs": 861.984,
-          "bytesPerSecond": 341538
-        },
-        {
-          "redactMs": 899.405,
-          "bytesPerSecond": 327327
-        },
-        {
-          "redactMs": 965.397,
-          "bytesPerSecond": 304952
-        },
-        {
-          "redactMs": 912.663,
-          "bytesPerSecond": 322572
-        },
-        {
-          "redactMs": 926.383,
-          "bytesPerSecond": 317795
-        },
-        {
-          "redactMs": 1036.375,
-          "bytesPerSecond": 284067
-        },
-        {
-          "redactMs": 863.163,
-          "bytesPerSecond": 341071
-        }
-      ],
-      "summary": {
-        "medianMs": 888.554,
-        "p95Ms": 1036.375,
-        "medianBytesPerSecond": 327327
-      }
-    },
-    {
-      "tool": "redact-secret",
-      "workload": "credentials-fake",
-      "workloadBytes": 167936,
-      "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
-      "samples": [
-        {
-          "redactMs": 4.268,
-          "bytesPerSecond": 39343482
-        },
-        {
-          "redactMs": 4.21,
-          "bytesPerSecond": 39885845
-        },
-        {
-          "redactMs": 4.213,
-          "bytesPerSecond": 39865715
-        },
-        {
-          "redactMs": 4.421,
-          "bytesPerSecond": 37989559
-        },
-        {
-          "redactMs": 4.553,
-          "bytesPerSecond": 36887730
-        },
-        {
-          "redactMs": 4.309,
-          "bytesPerSecond": 38970671
-        },
-        {
-          "redactMs": 4.218,
-          "bytesPerSecond": 39811770
-        },
-        {
-          "redactMs": 4.366,
-          "bytesPerSecond": 38463397
-        },
-        {
-          "redactMs": 4.297,
-          "bytesPerSecond": 39081768
-        },
-        {
-          "redactMs": 4.287,
-          "bytesPerSecond": 39172556
-        },
-        {
-          "redactMs": 4.262,
-          "bytesPerSecond": 39406564
-        },
-        {
-          "redactMs": 4.393,
-          "bytesPerSecond": 38229178
-        }
-      ],
-      "summary": {
-        "medianMs": 4.287,
-        "p95Ms": 4.553,
-        "medianBytesPerSecond": 39081768
-      }
-    },
-    {
-      "tool": "flare-redact",
-      "workload": "credentials-fake",
-      "workloadBytes": 167936,
-      "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
-      "samples": [
-        {
-          "redactMs": 3.107,
-          "bytesPerSecond": 54045791
-        },
-        {
-          "redactMs": 3.063,
-          "bytesPerSecond": 54823553
-        },
-        {
-          "redactMs": 3.021,
-          "bytesPerSecond": 55594141
-        },
-        {
-          "redactMs": 3.038,
-          "bytesPerSecond": 55285297
-        },
-        {
-          "redactMs": 3.604,
-          "bytesPerSecond": 46597657
-        },
-        {
-          "redactMs": 3.279,
-          "bytesPerSecond": 51209758
-        },
-        {
-          "redactMs": 3.039,
-          "bytesPerSecond": 55260283
-        },
-        {
-          "redactMs": 3.454,
-          "bytesPerSecond": 48614269
-        },
-        {
-          "redactMs": 3.082,
-          "bytesPerSecond": 54483388
-        },
-        {
-          "redactMs": 3.159,
-          "bytesPerSecond": 53163921
-        },
-        {
-          "redactMs": 3.248,
-          "bytesPerSecond": 51698465
-        },
-        {
-          "redactMs": 3.059,
-          "bytesPerSecond": 54894500
-        }
-      ],
-      "summary": {
-        "medianMs": 3.082,
-        "p95Ms": 3.604,
-        "medianBytesPerSecond": 54045791
-      }
-    },
-    {
-      "tool": "openredaction",
-      "workload": "credentials-fake",
-      "workloadBytes": 167936,
-      "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
-      "samples": [
-        {
-          "redactMs": 154.171,
-          "bytesPerSecond": 1089285
-        },
-        {
-          "redactMs": 156.622,
-          "bytesPerSecond": 1072240
-        },
-        {
-          "redactMs": 159.758,
-          "bytesPerSecond": 1051189
-        },
-        {
-          "redactMs": 165.421,
-          "bytesPerSecond": 1015203
-        },
-        {
-          "redactMs": 159.232,
-          "bytesPerSecond": 1054663
-        },
-        {
-          "redactMs": 156.762,
-          "bytesPerSecond": 1071282
-        },
-        {
-          "redactMs": 156.88,
-          "bytesPerSecond": 1070473
-        },
-        {
-          "redactMs": 164.006,
-          "bytesPerSecond": 1023961
-        },
-        {
-          "redactMs": 155.426,
-          "bytesPerSecond": 1080486
-        },
-        {
-          "redactMs": 156.381,
-          "bytesPerSecond": 1073893
-        },
-        {
-          "redactMs": 159.122,
-          "bytesPerSecond": 1055394
-        },
-        {
-          "redactMs": 160.9,
-          "bytesPerSecond": 1043726
-        }
-      ],
-      "summary": {
-        "medianMs": 156.88,
-        "p95Ms": 165.421,
-        "medianBytesPerSecond": 1055394
-      }
-    },
-    {
-      "tool": "redact-secret",
-      "workload": "credentials-context",
-      "workloadBytes": 291840,
-      "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
-      "samples": [
-        {
-          "redactMs": 12.001,
-          "bytesPerSecond": 24317299
-        },
-        {
-          "redactMs": 11.891,
-          "bytesPerSecond": 24543448
-        },
-        {
-          "redactMs": 11.863,
-          "bytesPerSecond": 24600773
-        },
-        {
-          "redactMs": 11.882,
-          "bytesPerSecond": 24561952
-        },
-        {
-          "redactMs": 11.954,
-          "bytesPerSecond": 24413841
-        },
-        {
-          "redactMs": 11.862,
-          "bytesPerSecond": 24602500
-        },
-        {
-          "redactMs": 12.2,
-          "bytesPerSecond": 23922047
-        },
-        {
-          "redactMs": 11.841,
-          "bytesPerSecond": 24646915
-        },
-        {
-          "redactMs": 12.79,
-          "bytesPerSecond": 22818644
-        },
-        {
-          "redactMs": 11.859,
-          "bytesPerSecond": 24608639
-        },
-        {
-          "redactMs": 12.158,
-          "bytesPerSecond": 24003042
-        },
-        {
-          "redactMs": 11.822,
-          "bytesPerSecond": 24685830
-        }
-      ],
-      "summary": {
-        "medianMs": 11.882,
-        "p95Ms": 12.79,
-        "medianBytesPerSecond": 24543448
-      }
-    },
-    {
-      "tool": "flare-redact",
-      "workload": "credentials-context",
-      "workloadBytes": 291840,
-      "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
-      "samples": [
-        {
-          "redactMs": 4.847,
-          "bytesPerSecond": 60214576
-        },
-        {
-          "redactMs": 5.411,
-          "bytesPerSecond": 53931667
-        },
-        {
-          "redactMs": 4.787,
-          "bytesPerSecond": 60961930
-        },
-        {
-          "redactMs": 4.891,
-          "bytesPerSecond": 59669792
-        },
-        {
-          "redactMs": 5.069,
-          "bytesPerSecond": 57571601
-        },
-        {
-          "redactMs": 4.825,
-          "bytesPerSecond": 60482881
+          "redactMs": 4.792,
+          "bytesPerSecond": 27354868
         },
         {
           "redactMs": 5.015,
-          "bytesPerSecond": 58192457
+          "bytesPerSecond": 26136211
         },
         {
-          "redactMs": 5.207,
-          "bytesPerSecond": 56048522
+          "redactMs": 4.998,
+          "bytesPerSecond": 26226643
         },
         {
-          "redactMs": 6.07,
-          "bytesPerSecond": 48079743
+          "redactMs": 5.134,
+          "bytesPerSecond": 25527705
         },
         {
-          "redactMs": 4.757,
-          "bytesPerSecond": 61353885
+          "redactMs": 4.808,
+          "bytesPerSecond": 27261940
         },
         {
-          "redactMs": 5.559,
-          "bytesPerSecond": 52499047
-        },
-        {
-          "redactMs": 4.899,
-          "bytesPerSecond": 59565262
+          "redactMs": 4.754,
+          "bytesPerSecond": 27570888
         }
       ],
       "summary": {
-        "medianMs": 4.899,
-        "p95Ms": 6.07,
-        "medianBytesPerSecond": 58192457
+        "medianMs": 5.134,
+        "p95Ms": 8.313,
+        "medianBytesPerSecond": 25311210
+      }
+    },
+    {
+      "tool": "openredaction",
+      "workload": "real-looking-values",
+      "workloadBytes": 131072,
+      "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
+      "samples": [
+        {
+          "redactMs": 248.6,
+          "bytesPerSecond": 527242
+        },
+        {
+          "redactMs": 378.817,
+          "bytesPerSecond": 346003
+        },
+        {
+          "redactMs": 371.909,
+          "bytesPerSecond": 352430
+        },
+        {
+          "redactMs": 372.223,
+          "bytesPerSecond": 352133
+        },
+        {
+          "redactMs": 396.166,
+          "bytesPerSecond": 330851
+        },
+        {
+          "redactMs": 377.482,
+          "bytesPerSecond": 347227
+        },
+        {
+          "redactMs": 377.292,
+          "bytesPerSecond": 347402
+        },
+        {
+          "redactMs": 386.917,
+          "bytesPerSecond": 338760
+        },
+        {
+          "redactMs": 413.289,
+          "bytesPerSecond": 317144
+        },
+        {
+          "redactMs": 379.947,
+          "bytesPerSecond": 344975
+        },
+        {
+          "redactMs": 376.855,
+          "bytesPerSecond": 347805
+        },
+        {
+          "redactMs": 366.802,
+          "bytesPerSecond": 357337
+        }
+      ],
+      "summary": {
+        "medianMs": 377.292,
+        "p95Ms": 413.289,
+        "medianBytesPerSecond": 347227
+      }
+    },
+    {
+      "tool": "redact-secret",
+      "workload": "validator-heavy",
+      "workloadBytes": 94720,
+      "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
+      "samples": [
+        {
+          "redactMs": 1.122,
+          "bytesPerSecond": 84426923
+        },
+        {
+          "redactMs": 1.16,
+          "bytesPerSecond": 81622945
+        },
+        {
+          "redactMs": 1.124,
+          "bytesPerSecond": 84273612
+        },
+        {
+          "redactMs": 1.447,
+          "bytesPerSecond": 65478441
+        },
+        {
+          "redactMs": 1.327,
+          "bytesPerSecond": 71390294
+        },
+        {
+          "redactMs": 2.07,
+          "bytesPerSecond": 45748310
+        },
+        {
+          "redactMs": 3.201,
+          "bytesPerSecond": 29587675
+        },
+        {
+          "redactMs": 1.371,
+          "bytesPerSecond": 69105092
+        },
+        {
+          "redactMs": 1.163,
+          "bytesPerSecond": 81476626
+        },
+        {
+          "redactMs": 1.215,
+          "bytesPerSecond": 77972196
+        },
+        {
+          "redactMs": 1.145,
+          "bytesPerSecond": 82712827
+        },
+        {
+          "redactMs": 1.175,
+          "bytesPerSecond": 80618461
+        }
+      ],
+      "summary": {
+        "medianMs": 1.175,
+        "p95Ms": 3.201,
+        "medianBytesPerSecond": 77972196
+      }
+    },
+    {
+      "tool": "flare-redact",
+      "workload": "validator-heavy",
+      "workloadBytes": 94720,
+      "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
+      "samples": [
+        {
+          "redactMs": 2.083,
+          "bytesPerSecond": 45475605
+        },
+        {
+          "redactMs": 2.191,
+          "bytesPerSecond": 43233868
+        },
+        {
+          "redactMs": 2.149,
+          "bytesPerSecond": 44076315
+        },
+        {
+          "redactMs": 2.226,
+          "bytesPerSecond": 42545278
+        },
+        {
+          "redactMs": 2.655,
+          "bytesPerSecond": 35674403
+        },
+        {
+          "redactMs": 4.703,
+          "bytesPerSecond": 20141227
+        },
+        {
+          "redactMs": 5.859,
+          "bytesPerSecond": 16167500
+        },
+        {
+          "redactMs": 2.351,
+          "bytesPerSecond": 40286377
+        },
+        {
+          "redactMs": 2.177,
+          "bytesPerSecond": 43518572
+        },
+        {
+          "redactMs": 2.427,
+          "bytesPerSecond": 39029616
+        },
+        {
+          "redactMs": 2.276,
+          "bytesPerSecond": 41619157
+        },
+        {
+          "redactMs": 2.184,
+          "bytesPerSecond": 43371612
+        }
+      ],
+      "summary": {
+        "medianMs": 2.226,
+        "p95Ms": 5.859,
+        "medianBytesPerSecond": 41619157
+      }
+    },
+    {
+      "tool": "openredaction",
+      "workload": "validator-heavy",
+      "workloadBytes": 94720,
+      "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
+      "samples": [
+        {
+          "redactMs": 271.064,
+          "bytesPerSecond": 349438
+        },
+        {
+          "redactMs": 272.734,
+          "bytesPerSecond": 347298
+        },
+        {
+          "redactMs": 273.146,
+          "bytesPerSecond": 346774
+        },
+        {
+          "redactMs": 270.564,
+          "bytesPerSecond": 350083
+        },
+        {
+          "redactMs": 365.302,
+          "bytesPerSecond": 259292
+        },
+        {
+          "redactMs": 455.557,
+          "bytesPerSecond": 207921
+        },
+        {
+          "redactMs": 592.571,
+          "bytesPerSecond": 159846
+        },
+        {
+          "redactMs": 269.082,
+          "bytesPerSecond": 352011
+        },
+        {
+          "redactMs": 270.175,
+          "bytesPerSecond": 350588
+        },
+        {
+          "redactMs": 265.329,
+          "bytesPerSecond": 356991
+        },
+        {
+          "redactMs": 267.481,
+          "bytesPerSecond": 354119
+        },
+        {
+          "redactMs": 276.328,
+          "bytesPerSecond": 342782
+        }
+      ],
+      "summary": {
+        "medianMs": 271.064,
+        "p95Ms": 592.571,
+        "medianBytesPerSecond": 347298
+      }
+    },
+    {
+      "tool": "redact-secret",
+      "workload": "multilingual-context",
+      "workloadBytes": 150528,
+      "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
+      "samples": [
+        {
+          "redactMs": 2.204,
+          "bytesPerSecond": 68309263
+        },
+        {
+          "redactMs": 2.23,
+          "bytesPerSecond": 67493779
+        },
+        {
+          "redactMs": 2.508,
+          "bytesPerSecond": 60029120
+        },
+        {
+          "redactMs": 2.205,
+          "bytesPerSecond": 68261497
+        },
+        {
+          "redactMs": 2.28,
+          "bytesPerSecond": 66033101
+        },
+        {
+          "redactMs": 2.556,
+          "bytesPerSecond": 58890106
+        },
+        {
+          "redactMs": 2.482,
+          "bytesPerSecond": 60638703
+        },
+        {
+          "redactMs": 2.411,
+          "bytesPerSecond": 62442469
+        },
+        {
+          "redactMs": 3.277,
+          "bytesPerSecond": 45937037
+        },
+        {
+          "redactMs": 2.51,
+          "bytesPerSecond": 59964339
+        },
+        {
+          "redactMs": 2.455,
+          "bytesPerSecond": 61317990
+        },
+        {
+          "redactMs": 2.359,
+          "bytesPerSecond": 63805572
+        }
+      ],
+      "summary": {
+        "medianMs": 2.411,
+        "p95Ms": 3.277,
+        "medianBytesPerSecond": 61317990
+      }
+    },
+    {
+      "tool": "flare-redact",
+      "workload": "multilingual-context",
+      "workloadBytes": 150528,
+      "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
+      "samples": [
+        {
+          "redactMs": 4.615,
+          "bytesPerSecond": 32613881
+        },
+        {
+          "redactMs": 4.721,
+          "bytesPerSecond": 31886742
+        },
+        {
+          "redactMs": 5.165,
+          "bytesPerSecond": 29145501
+        },
+        {
+          "redactMs": 4.695,
+          "bytesPerSecond": 32061342
+        },
+        {
+          "redactMs": 5.309,
+          "bytesPerSecond": 28352027
+        },
+        {
+          "redactMs": 4.888,
+          "bytesPerSecond": 30795159
+        },
+        {
+          "redactMs": 5.391,
+          "bytesPerSecond": 27924035
+        },
+        {
+          "redactMs": 4.879,
+          "bytesPerSecond": 30850909
+        },
+        {
+          "redactMs": 4.836,
+          "bytesPerSecond": 31123333
+        },
+        {
+          "redactMs": 4.836,
+          "bytesPerSecond": 31123333
+        },
+        {
+          "redactMs": 4.722,
+          "bytesPerSecond": 31880550
+        },
+        {
+          "redactMs": 5.242,
+          "bytesPerSecond": 28717812
+        }
+      ],
+      "summary": {
+        "medianMs": 4.836,
+        "p95Ms": 5.391,
+        "medianBytesPerSecond": 30850909
+      }
+    },
+    {
+      "tool": "openredaction",
+      "workload": "multilingual-context",
+      "workloadBytes": 150528,
+      "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
+      "samples": [
+        {
+          "redactMs": 390.618,
+          "bytesPerSecond": 385358
+        },
+        {
+          "redactMs": 386.269,
+          "bytesPerSecond": 389697
+        },
+        {
+          "redactMs": 383.253,
+          "bytesPerSecond": 392764
+        },
+        {
+          "redactMs": 381.276,
+          "bytesPerSecond": 394801
+        },
+        {
+          "redactMs": 389.265,
+          "bytesPerSecond": 386698
+        },
+        {
+          "redactMs": 384.833,
+          "bytesPerSecond": 391152
+        },
+        {
+          "redactMs": 385.419,
+          "bytesPerSecond": 390557
+        },
+        {
+          "redactMs": 405.947,
+          "bytesPerSecond": 370807
+        },
+        {
+          "redactMs": 383.099,
+          "bytesPerSecond": 392922
+        },
+        {
+          "redactMs": 583.118,
+          "bytesPerSecond": 258143
+        },
+        {
+          "redactMs": 496.728,
+          "bytesPerSecond": 303039
+        },
+        {
+          "redactMs": 1975.582,
+          "bytesPerSecond": 76194
+        }
+      ],
+      "summary": {
+        "medianMs": 386.269,
+        "p95Ms": 1975.582,
+        "medianBytesPerSecond": 386698
+      }
+    },
+    {
+      "tool": "redact-secret",
+      "workload": "credentials-real",
+      "workloadBytes": 294400,
+      "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
+      "samples": [
+        {
+          "redactMs": 17.403,
+          "bytesPerSecond": 16916420
+        },
+        {
+          "redactMs": 17.84,
+          "bytesPerSecond": 16502164
+        },
+        {
+          "redactMs": 17.732,
+          "bytesPerSecond": 16602557
+        },
+        {
+          "redactMs": 18.174,
+          "bytesPerSecond": 16198743
+        },
+        {
+          "redactMs": 17.727,
+          "bytesPerSecond": 16607435
+        },
+        {
+          "redactMs": 22.703,
+          "bytesPerSecond": 12967639
+        },
+        {
+          "redactMs": 37.025,
+          "bytesPerSecond": 7951304
+        },
+        {
+          "redactMs": 22.013,
+          "bytesPerSecond": 13374042
+        },
+        {
+          "redactMs": 19.98,
+          "bytesPerSecond": 14734612
+        },
+        {
+          "redactMs": 23.198,
+          "bytesPerSecond": 12690589
+        },
+        {
+          "redactMs": 21.447,
+          "bytesPerSecond": 13727048
+        },
+        {
+          "redactMs": 724.898,
+          "bytesPerSecond": 406126
+        }
+      ],
+      "summary": {
+        "medianMs": 19.98,
+        "p95Ms": 724.898,
+        "medianBytesPerSecond": 13727048
+      }
+    },
+    {
+      "tool": "flare-redact",
+      "workload": "credentials-real",
+      "workloadBytes": 294400,
+      "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
+      "samples": [
+        {
+          "redactMs": 8.653,
+          "bytesPerSecond": 34024522
+        },
+        {
+          "redactMs": 9.182,
+          "bytesPerSecond": 32062295
+        },
+        {
+          "redactMs": 8.509,
+          "bytesPerSecond": 34599506
+        },
+        {
+          "redactMs": 9.566,
+          "bytesPerSecond": 30774589
+        },
+        {
+          "redactMs": 8.71,
+          "bytesPerSecond": 33802007
+        },
+        {
+          "redactMs": 12.86,
+          "bytesPerSecond": 22892468
+        },
+        {
+          "redactMs": 17.466,
+          "bytesPerSecond": 16855163
+        },
+        {
+          "redactMs": 9.922,
+          "bytesPerSecond": 29672436
+        },
+        {
+          "redactMs": 9.276,
+          "bytesPerSecond": 31736251
+        },
+        {
+          "redactMs": 11.74,
+          "bytesPerSecond": 25077462
+        },
+        {
+          "redactMs": 11.303,
+          "bytesPerSecond": 26046950
+        },
+        {
+          "redactMs": 116.87,
+          "bytesPerSecond": 2519040
+        }
+      ],
+      "summary": {
+        "medianMs": 9.566,
+        "p95Ms": 116.87,
+        "medianBytesPerSecond": 29672436
+      }
+    },
+    {
+      "tool": "openredaction",
+      "workload": "credentials-real",
+      "workloadBytes": 294400,
+      "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
+      "samples": [
+        {
+          "redactMs": 1033.226,
+          "bytesPerSecond": 284933
+        },
+        {
+          "redactMs": 1084.268,
+          "bytesPerSecond": 271520
+        },
+        {
+          "redactMs": 1086.547,
+          "bytesPerSecond": 270950
+        },
+        {
+          "redactMs": 1134.355,
+          "bytesPerSecond": 259531
+        },
+        {
+          "redactMs": 1316.512,
+          "bytesPerSecond": 223621
+        },
+        {
+          "redactMs": 4383.403,
+          "bytesPerSecond": 67162
+        },
+        {
+          "redactMs": 1629.755,
+          "bytesPerSecond": 180641
+        },
+        {
+          "redactMs": 1498.01,
+          "bytesPerSecond": 196527
+        },
+        {
+          "redactMs": 1431.808,
+          "bytesPerSecond": 205614
+        },
+        {
+          "redactMs": 1407.129,
+          "bytesPerSecond": 209220
+        },
+        {
+          "redactMs": 1593.896,
+          "bytesPerSecond": 184705
+        },
+        {
+          "redactMs": 2872.971,
+          "bytesPerSecond": 102472
+        }
+      ],
+      "summary": {
+        "medianMs": 1407.129,
+        "p95Ms": 4383.403,
+        "medianBytesPerSecond": 205614
+      }
+    },
+    {
+      "tool": "redact-secret",
+      "workload": "credentials-fake",
+      "workloadBytes": 167936,
+      "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
+      "samples": [
+        {
+          "redactMs": 5.955,
+          "bytesPerSecond": 28201432
+        },
+        {
+          "redactMs": 6.132,
+          "bytesPerSecond": 27385336
+        },
+        {
+          "redactMs": 6.1,
+          "bytesPerSecond": 27531431
+        },
+        {
+          "redactMs": 6.051,
+          "bytesPerSecond": 27753429
+        },
+        {
+          "redactMs": 6.237,
+          "bytesPerSecond": 26923965
+        },
+        {
+          "redactMs": 23.628,
+          "bytesPerSecond": 7107512
+        },
+        {
+          "redactMs": 6.637,
+          "bytesPerSecond": 25301885
+        },
+        {
+          "redactMs": 6.792,
+          "bytesPerSecond": 24726470
+        },
+        {
+          "redactMs": 5.981,
+          "bytesPerSecond": 28078637
+        },
+        {
+          "redactMs": 6.255,
+          "bytesPerSecond": 26848994
+        },
+        {
+          "redactMs": 7.445,
+          "bytesPerSecond": 22555496
+        },
+        {
+          "redactMs": 7.658,
+          "bytesPerSecond": 21929007
+        }
+      ],
+      "summary": {
+        "medianMs": 6.237,
+        "p95Ms": 23.628,
+        "medianBytesPerSecond": 26848994
+      }
+    },
+    {
+      "tool": "flare-redact",
+      "workload": "credentials-fake",
+      "workloadBytes": 167936,
+      "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
+      "samples": [
+        {
+          "redactMs": 3.989,
+          "bytesPerSecond": 42097136
+        },
+        {
+          "redactMs": 3.913,
+          "bytesPerSecond": 42918376
+        },
+        {
+          "redactMs": 4.216,
+          "bytesPerSecond": 39833017
+        },
+        {
+          "redactMs": 4.077,
+          "bytesPerSecond": 41189395
+        },
+        {
+          "redactMs": 4.558,
+          "bytesPerSecond": 36844230
+        },
+        {
+          "redactMs": 15.114,
+          "bytesPerSecond": 11110920
+        },
+        {
+          "redactMs": 4.241,
+          "bytesPerSecond": 39599767
+        },
+        {
+          "redactMs": 4.145,
+          "bytesPerSecond": 40513277
+        },
+        {
+          "redactMs": 4.005,
+          "bytesPerSecond": 41935941
+        },
+        {
+          "redactMs": 3.994,
+          "bytesPerSecond": 42049703
+        },
+        {
+          "redactMs": 4.664,
+          "bytesPerSecond": 36003966
+        },
+        {
+          "redactMs": 4.958,
+          "bytesPerSecond": 33872863
+        }
+      ],
+      "summary": {
+        "medianMs": 4.145,
+        "p95Ms": 15.114,
+        "medianBytesPerSecond": 39833017
+      }
+    },
+    {
+      "tool": "openredaction",
+      "workload": "credentials-fake",
+      "workloadBytes": 167936,
+      "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
+      "samples": [
+        {
+          "redactMs": 234.431,
+          "bytesPerSecond": 716354
+        },
+        {
+          "redactMs": 233.882,
+          "bytesPerSecond": 718038
+        },
+        {
+          "redactMs": 232.458,
+          "bytesPerSecond": 722436
+        },
+        {
+          "redactMs": 228.934,
+          "bytesPerSecond": 733556
+        },
+        {
+          "redactMs": 350.827,
+          "bytesPerSecond": 478687
+        },
+        {
+          "redactMs": 273.894,
+          "bytesPerSecond": 613143
+        },
+        {
+          "redactMs": 251.134,
+          "bytesPerSecond": 668712
+        },
+        {
+          "redactMs": 231.594,
+          "bytesPerSecond": 725131
+        },
+        {
+          "redactMs": 226.183,
+          "bytesPerSecond": 742478
+        },
+        {
+          "redactMs": 227.597,
+          "bytesPerSecond": 737866
+        },
+        {
+          "redactMs": 287.209,
+          "bytesPerSecond": 584717
+        },
+        {
+          "redactMs": 589.819,
+          "bytesPerSecond": 284724
+        }
+      ],
+      "summary": {
+        "medianMs": 233.882,
+        "p95Ms": 589.819,
+        "medianBytesPerSecond": 716354
+      }
+    },
+    {
+      "tool": "redact-secret",
+      "workload": "credentials-context",
+      "workloadBytes": 291840,
+      "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
+      "samples": [
+        {
+          "redactMs": 19.911,
+          "bytesPerSecond": 14657225
+        },
+        {
+          "redactMs": 17.471,
+          "bytesPerSecond": 16703894
+        },
+        {
+          "redactMs": 21.612,
+          "bytesPerSecond": 13503583
+        },
+        {
+          "redactMs": 18.939,
+          "bytesPerSecond": 15409845
+        },
+        {
+          "redactMs": 17.241,
+          "bytesPerSecond": 16926970
+        },
+        {
+          "redactMs": 17.913,
+          "bytesPerSecond": 16292078
+        },
+        {
+          "redactMs": 17.483,
+          "bytesPerSecond": 16693066
+        },
+        {
+          "redactMs": 28.812,
+          "bytesPerSecond": 10129142
+        },
+        {
+          "redactMs": 20.776,
+          "bytesPerSecond": 14046864
+        },
+        {
+          "redactMs": 19.411,
+          "bytesPerSecond": 15034774
+        },
+        {
+          "redactMs": 23.685,
+          "bytesPerSecond": 12321549
+        },
+        {
+          "redactMs": 18.696,
+          "bytesPerSecond": 15609790
+        }
+      ],
+      "summary": {
+        "medianMs": 18.939,
+        "p95Ms": 28.812,
+        "medianBytesPerSecond": 15034774
+      }
+    },
+    {
+      "tool": "flare-redact",
+      "workload": "credentials-context",
+      "workloadBytes": 291840,
+      "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
+      "samples": [
+        {
+          "redactMs": 7.212,
+          "bytesPerSecond": 40467057
+        },
+        {
+          "redactMs": 6.795,
+          "bytesPerSecond": 42946598
+        },
+        {
+          "redactMs": 8.355,
+          "bytesPerSecond": 34928590
+        },
+        {
+          "redactMs": 7.337,
+          "bytesPerSecond": 39778058
+        },
+        {
+          "redactMs": 9.306,
+          "bytesPerSecond": 31360413
+        },
+        {
+          "redactMs": 6.332,
+          "bytesPerSecond": 46091224
+        },
+        {
+          "redactMs": 7.965,
+          "bytesPerSecond": 36642220
+        },
+        {
+          "redactMs": 10.737,
+          "bytesPerSecond": 27181303
+        },
+        {
+          "redactMs": 7.624,
+          "bytesPerSecond": 38278069
+        },
+        {
+          "redactMs": 7.061,
+          "bytesPerSecond": 41330765
+        },
+        {
+          "redactMs": 8.849,
+          "bytesPerSecond": 32979688
+        },
+        {
+          "redactMs": 8.157,
+          "bytesPerSecond": 35776399
+        }
+      ],
+      "summary": {
+        "medianMs": 7.624,
+        "p95Ms": 10.737,
+        "medianBytesPerSecond": 36642220
       }
     },
     {
@@ -1100,58 +1100,58 @@
       "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
       "samples": [
         {
-          "redactMs": 585.553,
-          "bytesPerSecond": 498401
+          "redactMs": 950.037,
+          "bytesPerSecond": 307188
         },
         {
-          "redactMs": 563.567,
-          "bytesPerSecond": 517845
+          "redactMs": 1194.274,
+          "bytesPerSecond": 244366
         },
         {
-          "redactMs": 559.665,
-          "bytesPerSecond": 521455
+          "redactMs": 1008.573,
+          "bytesPerSecond": 289359
         },
         {
-          "redactMs": 573.619,
-          "bytesPerSecond": 508770
+          "redactMs": 913.748,
+          "bytesPerSecond": 319388
         },
         {
-          "redactMs": 630.982,
-          "bytesPerSecond": 462517
+          "redactMs": 966.371,
+          "bytesPerSecond": 301996
         },
         {
-          "redactMs": 567.064,
-          "bytesPerSecond": 514651
+          "redactMs": 975.56,
+          "bytesPerSecond": 299151
         },
         {
-          "redactMs": 579.509,
-          "bytesPerSecond": 503599
+          "redactMs": 1494.61,
+          "bytesPerSecond": 195262
         },
         {
-          "redactMs": 588.767,
-          "bytesPerSecond": 495680
+          "redactMs": 1249.719,
+          "bytesPerSecond": 233524
         },
         {
-          "redactMs": 587.292,
-          "bytesPerSecond": 496925
+          "redactMs": 1106.492,
+          "bytesPerSecond": 263753
         },
         {
-          "redactMs": 696.432,
-          "bytesPerSecond": 419050
+          "redactMs": 1459.508,
+          "bytesPerSecond": 199958
         },
         {
-          "redactMs": 589.64,
-          "bytesPerSecond": 494946
+          "redactMs": 1086.936,
+          "bytesPerSecond": 268498
         },
         {
-          "redactMs": 575.677,
-          "bytesPerSecond": 506951
+          "redactMs": 990.989,
+          "bytesPerSecond": 294494
         }
       ],
       "summary": {
-        "medianMs": 579.509,
-        "p95Ms": 696.432,
-        "medianBytesPerSecond": 498401
+        "medianMs": 1008.573,
+        "p95Ms": 1494.61,
+        "medianBytesPerSecond": 268498
       }
     }
   ],
@@ -1985,5 +1985,5 @@
       ]
     }
   ],
-  "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da"
+  "artifactCommitment": "a4c2a16d2e37d7ec494c3b53e9c2a3eca4366b4e02f0da4074334f50d6ba2392"
 }

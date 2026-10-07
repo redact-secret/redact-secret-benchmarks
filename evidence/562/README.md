@@ -19,22 +19,22 @@ three sets of times show how far the machine moved between runs.
 
 ## Source identities
 
-- Benchmark source: `redact-secret/redact-secret-benchmarks`, measured from `workbench/repin-beta13-published` at `2613f290` (Refs #562). Plan `qualification/runtime-comparison-v2.json` is unchanged.
-- Benchmark lockfile SHA-256: `e42d4ba20a6f867e5685c3fbc4b15d3ba0302ff3dabc705c1f02799041ad8a53` (flare-redact 1.6.1,
-  `@openredaction/core` 1.1.5, `@redact-secret/core` 0.1.0-beta.13); the peers are the same versions as `evidence/429`.
-- redact-secret: the **published** `@redact-secret/core` `0.1.0-beta.13` from npm (mode `published`, provenance kind
+- Benchmark source: `redact-secret/redact-secret-benchmarks`, measured from `feat/808-published-beta14-repin` at `a2a45980` (Refs #562). Plan `qualification/runtime-comparison-v2.json` is unchanged.
+- Benchmark lockfile SHA-256: `91090ff8efbb9a9b6a6ac7804ad2586cf9053346afac8c6116fc0ea25eb55ede` (flare-redact 1.6.1,
+  `@openredaction/core` 1.1.5, `@redact-secret/core` 0.1.0-beta.14); the peers are the same versions as `evidence/429`.
+- redact-secret: the **published** `@redact-secret/core` `0.1.0-beta.14` from npm (mode `published`, provenance kind
   `published-npm-package`), installed by `npm ci` from `package-lock.json`; nothing is built from product source. Its recorded
-  `commit` is the pinned release source `66b492bdff5e6751fc6b5409266916346ed7c723` (`pin-manifest.json`
+  `commit` is the pinned release source `0c62fd38bca75c5b28b042dc79789b708ebf1d17` (`pin-manifest.json`
   `redactSecretRevision`). PII is selected through `initialize({ pii })`, one selection per process. Image ID:
-  `sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32`.
+  `sha256:2ff03e6865c101b97e2b4a39a74d044f9ecb20e86e8c534c9ef86360ad5c129a`.
 - Plan commitment `522434d8ed797641d1070e2fec5db6cfb8e7afc4290c101b77b2d5db4e75a4eb`.
-- Report `artifactCommitment`: `default` `d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da`,
-  `pii-global` `9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc`,
-  `pii-global-us` `5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74`.
+- Report `artifactCommitment`: `default` `a4c2a16d2e37d7ec494c3b53e9c2a3eca4366b4e02f0da4074334f50d6ba2392`,
+  `pii-global` `9ba82af80c26c02083fc1f5cfa5e40d408cc6af02c17ef393a1dbcada7d2762b`,
+  `pii-global-us` `9ce403bdf739e4ed3b0bd7ef2aceffdcbc3d0546f1ffa56be49a8609fa4d569d`.
 
 ## Environment
 
-Generated 2026-10-03 on a developer laptop: Apple M4 (macOS 26), Docker Desktop 28.3.3, a native `linux/arm64` container (not
+Generated 2026-10-07 on a developer laptop: Apple M4 (macOS 26), Docker Desktop 28.3.3, a native `linux/arm64` container (not
 emulated; nothing here is platform-native: redact-secret ships WebAssembly and both peers are JavaScript), Node v22.22.2,
 container limited to 4 CPUs. The container only sees a virtual CPU, so the runner records the host through `HOST_CPU_MODEL`
 (`Apple M4 (Docker Desktop linux/arm64 VM)`). The laptop was not idle and the container runs in a VM, so absolute numbers carry

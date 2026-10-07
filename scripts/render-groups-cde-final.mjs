@@ -65,7 +65,7 @@ const goodN = (t) => t.exact + (t.controls - t.controlFlagged); // exact implies
 const scored = (t) => t.positives + t.controls;
 const tick = (s) => `\`${s}\``;
 const fmt = (t) => `${t.exact}/${t.positives} exact, ${t.controlFlagged}/${t.controls} flagged`;
-const cell = (c) => c.replace(/\|/g, '\\|');
+const cell = (c) => c.replace(/\\/g, '\\\\').replace(/\|/g, '\\|'); // escape backslashes first, then the table pipe
 
 const files = new Map();
 function lineageFor(g) {
@@ -193,7 +193,7 @@ function renderGroup(g) {
     if (!inG) continue;
     const closed = v.closed.filter((id) => id in S3.perCase[g]).length, open = v.open.filter((o) => o.corpus === G).length;
     const h = HANDOFF[k];
-    p(`| ${tick(k)} ${GAPS1.groups[k].title.replace(/\|/g, '\\|')} (${GAPS1.groups[k].triage.toLowerCase()}) | ${inG} | ${h[0]} | [record](${h[1]}) | ${h[2]} | ${closed} closed, ${open} open |`);
+    p(`| ${tick(k)} ${cell(GAPS1.groups[k].title)} (${GAPS1.groups[k].triage.toLowerCase()}) | ${inG} | ${h[0]} | [record](${h[1]}) | ${h[2]} | ${closed} closed, ${open} open |`);
   }
   p();
   p(`Item states from \`gh\` on 2026-10-07: redact-secret#${gi.product} closed (2026-10-06); #1234 and #1241 closed; **#1247 (curl -u / --user password carrier) and #1256 (bare \`token\` member) are open maintainer decisions** with their own acceptance criteria. The two deviations (a) Meta \`APP_ID|SECRET\` redacted whole and (b) the Adobe public client ID under \`x-api-key\` are policy decisions recorded in the core's detector-families spec, not defects, so no defect item exists for them. No confirmed gap is left without a recorded item; nothing needed filing from this repository.`);

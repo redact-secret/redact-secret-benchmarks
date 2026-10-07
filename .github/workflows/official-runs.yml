@@ -19,7 +19,7 @@ run-name: ${{ inputs.include_openredaction && 'Official credential-eval runs (Op
 # (stage-plain-<population>, stage-methods-<population>, 14 days), with stage-receipt.json naming the stage, population, engine/config/evidence identity and the
 # digests of its bytes. `retry_run_id` resolves each stage from stage-*, early-plain-* or the job-end official-run-* artifact of the earlier run and reuses it only
 # when the driver finds the IDENTICAL identity (never a mix). A failure or cancel after the engine finished keeps the output and marks the stage INCOMPLETE
-# (stage-incomplete.json, never a success, never reused). `populations` + `rehearse_post_step_failure` rehearse that on the cheap populations only.
+# (stage-incomplete.json, never a success, never reused). `populations` + `rehearse_post_step_failure` (fails after a verified stage) or `rehearse_post_engine_failure` (fails verification after the engine finished: the INCOMPLETE path) rehearse that on the cheap populations only.
 #
 # Safety: dispatch only (never pull_request_target); contents: read; the engine token is a GitHub App token scoped to
 # redact-secret/credential-eval with contents: read, minted in the job that needs it and never echoed; no checkout keeps
@@ -45,6 +45,11 @@ on:
         type: string
       rehearse_post_step_failure:
         description: Stage rehearsal only (#762). Fail the job on purpose after the plain stage was measured, verified and uploaded, to prove that a retry (retry_run_id) reuses the finished stage. Needs `populations`.
+        required: false
+        default: false
+        type: boolean
+      rehearse_post_engine_failure:
+        description: Stage rehearsal only (#762). Make the driver's verification fail on purpose AFTER the engine finished, so the plain stage is INCOMPLETE (stage-incomplete.json, finished output kept in official-run-<population>, nothing reused). A retry (retry_run_id, flag off) must refuse that output explicitly and measure the stage again. Needs `populations`; exclusive with rehearse_post_step_failure.
         required: false
         default: false
         type: boolean
@@ -110,6 +115,7 @@ jobs:
     env:
       POPULATIONS: ${{ inputs.populations }}
       REHEARSE_FAILURE: ${{ inputs.rehearse_post_step_failure }}
+      REHEARSE_ENGINE_FAILURE: ${{ inputs.rehearse_post_engine_failure }}
       OMIT_OPTIONAL: ${{ inputs.omit_optional }}
       INCLUDE_OPENREDACTION: ${{ inputs.include_openredaction }}
       MODE: ${{ inputs.mode }}
@@ -141,6 +147,8 @@ jobs:
             echo "### Scanner selection: default - flare-redact, gitleaks, redact-secret, trufflehog. OpenRedaction (optional) is OMITTED; zero OpenRedaction scan invocations (include_openredaction=false)" >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ "$REHEARSE_FAILURE" = "true" ] && [ -z "$POPULATIONS" ]; then echo "::error::rehearse_post_step_failure needs populations (a stage rehearsal)"; exit 1; fi
+          if [ "$REHEARSE_ENGINE_FAILURE" = "true" ] && [ -z "$POPULATIONS" ]; then echo "::error::rehearse_post_engine_failure needs populations (a stage rehearsal)"; exit 1; fi
+          if [ "$REHEARSE_ENGINE_FAILURE" = "true" ] && [ "$REHEARSE_FAILURE" = "true" ]; then echo "::error::rehearse_post_engine_failure and rehearse_post_step_failure are two different rehearsals: use one"; exit 1; fi
           if [ -n "$POPULATIONS" ]; then
             [ "$MODE" != "diagnostic" ] && [ "$INCLUDE_PUBLIC" != "true" ] && [ -z "$ATTRIBUTION" ] && [ -z "$CANDIDATE" ] && [ -z "$REUSE_RUN_ID" ] && [ -z "$REUSE_CANDIDATE_RUN_ID" ] || { echo "::error::populations (a stage rehearsal) is exclusive with diagnostic mode, attribution, candidate and the reuse inputs"; exit 1; }
             [[ "$POPULATIONS" =~ ^(regression-corpus|policy-corpus)(,(regression-corpus|policy-corpus))?$ ]] || { echo "::error::populations must be regression-corpus and/or policy-corpus: a rehearsal never runs the public population"; exit 1; }
@@ -182,6 +190,8 @@ jobs:
       OMIT_OPTIONAL: ${{ inputs.omit_optional }}
       # The positive opt-in (#812): empty unless include_openredaction was set, then the optional scanner's id. The driver is the one place that turns it into a selection.
       INCLUDE_OPTIONAL: ${{ inputs.include_openredaction && 'openredaction' || '' }}
+      # Rehearsal only (#762): the driver refuses it for anything but the cheap populations of a plain official-class run.
+      REHEARSE_ENGINE_FAILURE: ${{ inputs.rehearse_post_engine_failure && 'true' || '' }}
     steps:
       - name: Name the stage-timing file (the runner context is not available in job-level env)
         run: echo "STAGE_TIMINGS=$RUNNER_TEMP/stage-timings.tsv" >> "$GITHUB_ENV"
@@ -294,7 +304,7 @@ jobs:
         run: >
           scripts/ci-stage.sh "plain run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${INCLUDE_OPTIONAL:+--include-optional "$INCLUDE_OPTIONAL"} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${INCLUDE_OPTIONAL:+--include-optional "$INCLUDE_OPTIONAL"} ${REHEARSE_ENGINE_FAILURE:+--rehearse-post-engine-failure} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Write the plain stage receipt (the stage is verified and finished)
         id: plain-receipt
         if: ${{ !cancelled() && steps.plain.outcome == 'success' }}

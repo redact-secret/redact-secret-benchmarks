@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -152,6 +153,32 @@ test('the driver checks every offered source whole, marks a finished-but-unverif
   assert.match(driver, /writeMarker\('engine output finished; verification not completed'\)/);
   assert.match(driver, /incomplete\?\.\(message\)/, 'a refusal after the engine finished updates the marker');
   assert.match(driver, /rmSync\(markerFile/, 'a verified stage carries no marker');
+});
+
+test('the post-engine rehearsal fails verification after the engine, only on the cheap populations of a plain run, and is a different input from the post-step one (#762)', async () => {
+  const yml = (await readFile('.github/workflows/official-runs.yml')).replace(/^\s*#.*$/gm, '');
+  const driver = await readFile('scripts/run-official-credential-eval.ts');
+  assert.match(yml, /rehearse_post_engine_failure:\n(?:.*\n)*?\s+type: boolean/);
+  assert.match(yml, /rehearse_post_engine_failure needs populations/);
+  assert.match(yml, /rehearse_post_engine_failure and rehearse_post_step_failure are two different rehearsals/);
+  assert.match(yml, /\$\{REHEARSE_ENGINE_FAILURE:\+--rehearse-post-engine-failure\}/);
+  assert.ok(!/REHEARSE_ENGINE_FAILURE:\+--rehearse-post-engine-failure[^\n]*--methods/.test(yml), 'the methods step is never rehearsed');
+  assert.match(driver, /REHEARSAL_POPULATIONS = \['regression-corpus', 'policy-corpus'\]/);
+  assert.match(driver, /--rehearse-post-engine-failure is a stage rehearsal[^\n]*only/);
+  // the failure comes after the marker is written, so the output is kept and marked
+  const marker = driver.indexOf("writeMarker('engine output finished; verification not completed')");
+  const rehearsal = driver.indexOf("if (rehearsePostEngineFailure) fail(");
+  assert.ok(marker > 0 && rehearsal > marker, 'the rehearsal fails after the INCOMPLETE marker exists');
+  // a failed plain step still uploads the output through the always() upload, and the byte-copy cleanup (success only) leaves it
+  assert.match(yml, /name: Remove the byte copies the checks made\n\s+run:/);
+});
+
+test('the driver refuses the post-engine rehearsal for the public population and for methods, before any work (#762)', () => {
+  for (const extra of [['--population', 'public-evidence-snapshot'], ['--population', 'regression-corpus', '--methods'], ['--population', 'regression-corpus', '--include-optional', 'openredaction']]) {
+    const run = spawnSync(process.execPath, ['--import', 'tsx', 'scripts/run-official-credential-eval.ts', ...extra, '--engine-dir', '.', '--platform', 'linux-x64', '--out', tmpdir(), '--rehearse-post-engine-failure'], { encoding: 'utf8' });
+    assert.equal(run.status, 4, extra.join(' '));
+    assert.match(run.stderr, /--rehearse-post-engine-failure is a stage rehearsal/);
+  }
 });
 
 async function readFile(file) { return readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'); }

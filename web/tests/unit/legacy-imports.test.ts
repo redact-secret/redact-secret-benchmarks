@@ -28,6 +28,7 @@ const PII = (what: string) => other('pii', `the PII evaluation reads ${what}; it
 
 const ROLES: Record<string, Record<string, Entry>> = {
   'app/layout.tsx': { 'src/tokens.css': 'keep' },
+  'resolvers/evaluation-checks.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/evaluation-hub.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/evaluation-methods.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/domains.ts': { 'benchmarks/evaluation/domains/pii/metric-basis.mjs': PII('its metric basis') },

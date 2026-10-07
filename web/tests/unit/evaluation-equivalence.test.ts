@@ -32,7 +32,10 @@ async function pagesOf(dir: string) {
   vi.stubEnv('WEB_RESULTS_DIR', dir);
   const pages = await import('../../resolvers/evaluation-pages');
   const service = await import('../../services/evaluation');
-  return { hub: await pages.resolveEvaluationHubPage(), methods: await Promise.all(METHOD_IDS.map(id => pages.resolveMethodPageFor(id))), load: await service.loadEvaluation() };
+  // The lists behind the method counts (#623): every pre-rendered address and its page, read through the same per-method reads.
+  const checkParams = await pages.resolveMethodChecksFileParams();
+  const checks = { pages: await Promise.all(METHOD_IDS.filter(m => m !== 'holdout').map(id => pages.resolveMethodChecksPageFor(id))), files: await Promise.all(checkParams.map(p => pages.resolveMethodChecksFile(p))) };
+  return { hub: await pages.resolveEvaluationHubPage(), methods: await Promise.all(METHOD_IDS.map(id => pages.resolveMethodPageFor(id))), checkParams, checks, load: await service.loadEvaluation() };
 }
 
 async function fixture() {
@@ -57,6 +60,11 @@ describe('the pages from a bundle equal the pages from the legacy file', () => {
     expect(bundle.load).toMatchObject({ state: 'measured', source: 'bundle' });
     expect(bundle.hub).toEqual(legacy.hub);
     METHOD_IDS.forEach((id, i) => expect(bundle.methods[i], id).toEqual(legacy.methods[i]));
+    expect(bundle.checkParams).toEqual(legacy.checkParams);
+    expect(bundle.checks).toEqual(legacy.checks);
+    expect(bundle.checkParams.length).toBeGreaterThan(0);
+    expect(bundle.checks.files.every(f => f !== undefined && 'checks' in f && f.checks.length > 0)).toBe(true);
+    expect(bundle.checks.pages.every(p => p.index.body.state === 'index')).toBe(true);
     // Not the empty page in both: the equality is over real recorded sections.
     for (const id of METHOD_IDS.filter(m => m !== 'holdout')) expect(bundle.methods[METHOD_IDS.indexOf(id)].recorded.state, id).toBe('recorded');
   });
@@ -81,6 +89,11 @@ describe('no usable evidence resolves to the same explicit state', () => {
     expect(p.hub.meta).toEqual([{ value: 'Not measured' }]);
     for (const m of p.hub.methods.filter(x => x.id !== 'holdout')) expect(m.fact).toBeUndefined();
     for (const id of METHOD_IDS.filter(m => m !== 'holdout')) expect(p.methods[METHOD_IDS.indexOf(id)].recorded, id).toMatchObject({ state: 'not-measured' });
+    // Only the one stated file the static export needs, which is no list, and every checks page says why: never an empty list or a zero.
+    expect(p.checkParams).toEqual([{ method: 'twin', row: 'not-published', scanner: 'none', status: 'fail' }]);
+    expect(p.checks.files[0]).toMatchObject({ unavailable: expect.any(String) });
+    expect(p.checks.files[0]).not.toHaveProperty('checks');
+    for (const page of p.checks.pages) expect(page).toMatchObject({ entries: [], context: null, index: { body: { state: 'not-measured' } } });
   };
 
   test('nothing published', async () => {

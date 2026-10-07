@@ -26,6 +26,7 @@
  * `npx playwright install --with-deps chromium` first.
  */
 import http from 'node:http';
+import { readdirSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -122,6 +123,23 @@ ROUTES.push('comparison/accuracy', 'comparison/accuracy/?with=trufflehog&level=T
   'comparison/accuracy/?level=T3&peers=1', 'comparison/accuracy/?with=openredaction&level=T3&scope=listed&peers=1', 'comparison/accuracy/?data=pii', 'comparison/accuracy/?data=pii&with=openredaction');
 // The Evaluation overview and its six method pages (epic #543 follow-up, P1): every page of the section's first phase.
 ROUTES.push('evaluation', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `evaluation/method/${m}`));
+// The checks behind a method count (#623): every method's index of lists, and the first list the export holds a file for.
+ROUTES.push(...['twin', 'benign', 'metamorphic', 'mutation', 'differential'].map(m => `evaluation/method/${m}/checks`));
+const firstDir = (rel) => { try { return readdirSync(path.join(webRoot, 'out', rel), { withFileTypes: true }).filter(e => e.isDirectory()).map(e => e.name).sort()[0]; } catch { return undefined; } };
+const checksList = (() => {
+  for (const method of ['twin', 'benign', 'metamorphic', 'mutation', 'differential']) {
+    const row = firstDir(`data/evaluation/${method}`), scanner = row && firstDir(`data/evaluation/${method}/${row}`), status = scanner && firstDir(`data/evaluation/${method}/${row}/${scanner}`);
+    if (status) return `evaluation/method/${method}/checks/?row=${encodeURIComponent(row)}&scanner=${encodeURIComponent(scanner)}&status=${status}`;
+  }
+  return undefined;
+})();
+if (checksList) {
+  ROUTES.push(checksList);
+  STATES.push(
+    { name: 'checks loading', route: checksList, gate: true, wait: '[data-checks-state="loading"]', loaded: () => !!document.querySelector('[data-checks-ready]'), anchor: '[data-checks-state] h1' },
+    { name: 'checks error', route: checksList, abort: true, wait: '[data-checks-state="error"]' },
+  );
+}
 // The landing page is the root (`''`), which the route list's trailing-slash rule would write as `//`.
 const PAGE_ONLY = ['', '404.html'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.txt': 'text/plain' };
@@ -163,7 +181,7 @@ async function main() {
 
   const targets = [
     ...stories.map(id => ({ name: `story ${id}`, url: `${origin}${STORYBOOK}/iframe.html?id=${id}&viewMode=story`, ready: 'body.sb-show-main', header: false })),
-    ...ROUTES.filter(routeSelected).map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: /[?&]fixture=/.test(r) ? '[data-fixture-ready]' : 'main', header: true })),
+    ...ROUTES.filter(routeSelected).map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: /[?&]fixture=/.test(r) ? '[data-fixture-ready]' : /[?&]row=/.test(r) ? '[data-checks-ready]' : 'main', header: true })),
     ...PAGE_ONLY.filter(routeSelected).map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r}`, ready: 'main', header: true })),
     ...STATES.filter(state => routeSelected(state.route)).map(state => ({ ...state, name: `page /${state.route} (${state.name})`, url: `${origin}${basePath}/${state.route.replace('?', '/?').replace('//', '/')}`, header: true })),
   ];

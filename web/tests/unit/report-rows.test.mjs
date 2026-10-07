@@ -505,7 +505,7 @@ test('suites resolve to counts, and a suite with no fixtures is not zeros', () =
 const walk = dir => readdirSync(dir, { withFileTypes: true, recursive: true }).filter(e => e.isFile()).map(e => path.join(e.parentPath, e.name));
 
 test('the resolvers a client island may run import nothing from node and no service at runtime', () => {
-  const pure = ['filters', 'rowdata', 'rows', 'fixtures', 'families', 'format', 'peers', 'detectors', 'inventory', 'report'];
+  const pure = ['filters', 'rowdata', 'rows', 'fixtures', 'families', 'format', 'peers', 'detectors', 'inventory', 'report', 'evaluation-checks-view', 'qualification'];
   for (const name of pure) {
     const source = readFileSync(`${WEB}/resolvers/${name}.ts`, 'utf8');
     assert.doesNotMatch(source, /from\s+['"]node:/, `${name}.ts imports node`);

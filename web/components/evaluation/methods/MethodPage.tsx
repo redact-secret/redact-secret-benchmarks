@@ -69,6 +69,7 @@ export function MethodPage({ switchLabel, switcher, currentHref, crumbs, eyebrow
           <>
             <EvidenceTable columns={recorded.columns} groups={recorded.groups} rowHeader={recorded.rowHeader} caption={recorded.caption} />
             <p className={styles.meaning}>{recorded.cellMeaning}</p>
+            {recorded.detail && <p className={styles.meaning}>{recorded.detail}</p>}
             {recorded.unscored && (
               <Note title={recorded.unscored.title}>
                 <p>{recorded.unscored.text}</p>

@@ -42,7 +42,7 @@ describe('routes', () => {
   test('every page of the app is covered', () => {
     expect(all.map(c => c.route).filter((r, i, a) => a.indexOf(r) === i).sort()).toEqual([
       '/', '/comparison', '/comparison/accuracy', '/comparison/feature', '/comparison/performance', '/comparison/runtime',
-      '/evaluation', '/evaluation/credential', '/evaluation/method/[method]', '/evaluation/pii', '/evaluation/qualification', '/evaluation/qualification/families/[family]', '/evaluation/qualification/families/[family]/cases/[page]', '/evaluation/qualification/unattributed/[page]', '/evaluation/rc', '/evaluation/scanner',
+      '/evaluation', '/evaluation/credential', '/evaluation/method/[method]', '/evaluation/method/[method]/checks', '/evaluation/pii', '/evaluation/qualification', '/evaluation/qualification/families/[family]', '/evaluation/qualification/families/[family]/cases/[page]', '/evaluation/qualification/unattributed/[page]', '/evaluation/rc', '/evaluation/scanner',
       '/report', '/report/detectors', '/report/detectors/[detector]', '/report/families', '/report/families/[family]', '/report/findings',
       '/report/fixtures', '/report/fixtures/[suite]', '/report/providers', '/report/rows/[level]',
     ]);
@@ -84,6 +84,7 @@ describe('dynamic routes refuse what the export does not contain', () => {
     ['/report/detectors/[detector]', { detector: bad.detector }],
     ['/report/fixtures/[suite]', { suite: bad.suite }],
     ['/evaluation/method/[method]', { method: 'no-such-method' }],
+    ['/evaluation/method/[method]/checks', { method: 'holdout' }],
   ])('%s with an unknown id is a 404', async (route, params) => {
     const mod = await modules[`../../app${route}/page.tsx`]();
     await expect(Promise.resolve().then(() => mod.default({ params: Promise.resolve(params) }))).rejects.toMatchObject({ digest: NOT_FOUND });

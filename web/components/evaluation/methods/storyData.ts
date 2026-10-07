@@ -1,5 +1,5 @@
 import type {
-  EvidenceCell, EvidenceColumn, EvidenceGroup, MethodInputsData, MethodPageProps, MethodRecordedData, NotMeasuredData, TextTable,
+  EvidenceCell, EvidenceColumn, EvidenceGroup, MethodCasesProps, MethodInputsData, MethodPageProps, MethodRecordedData, NotMeasuredData, TextTable,
 } from './types';
 
 /** Synthetic values for stories: the shape of a run, never a recorded count. */
@@ -11,6 +11,9 @@ export const columns: EvidenceColumn[] = [
 ];
 
 const n = (value: string, of: string): EvidenceCell => ({ kind: 'count', value, of });
+/** A count that opens the checks behind it (#623); a zero has none to open. */
+const linked = (row: string, scanner: string, value: string, of: string): EvidenceCell =>
+  value === '0' ? n(value, of) : { kind: 'count', value, of, href: `/evaluation/method/twin/checks/?row=${row}&scanner=${scanner}&status=fail` };
 
 export const pairRows: EvidenceGroup[] = [{
   label: '',
@@ -39,6 +42,22 @@ export const groupedRows: EvidenceGroup[] = [
   },
 ];
 
+/** The pair rows with every non-zero count linked to its checks, and one row that says why it opens none. */
+export const linkedRows: EvidenceGroup[] = [{
+  label: '',
+  rows: [
+    ...pairRows[0].rows.map(row => ({
+      ...row,
+      cells: row.cells.map((cell, i) => (cell.kind === 'count' ? linked(row.key, columns[i].id, cell.value, cell.of) : cell)),
+    })),
+    {
+      key: 'split', label: 'A row that splits the rows above', note: 'The same checks, counted another way',
+      unlisted: 'Not listed: these are the checks of the rows above, split another way. Open a count above.',
+      cells: [n('4', '120'), n('9', '120'), { kind: 'not-measured' }, n('0', '120')],
+    },
+  ],
+}];
+
 /** A scanner that did not run, a row with nothing to score, one that waits for review and one with no check of that kind. */
 export const edgeRows: EvidenceGroup[] = [{
   label: '',
@@ -65,6 +84,7 @@ export const recorded: MethodRecordedData = {
   groups: pairRows,
   unscored: { title: 'Needs review', text: '19 pairs have a side whose expected outcome is unresolved (tier T0). They are counted in no row above.' },
   caption: 'Twin: checks that did not hold, per scanner',
+  detail: 'A count opens the checks behind it, from this run only. A zero has none to open.',
 };
 
 export const suiteTable: TextTable = {
@@ -151,4 +171,80 @@ export const pageArgs: MethodPageProps = {
     ],
   },
   inputs,
+};
+
+const casesTable: MethodCasesProps['body'] = {
+  state: 'recorded',
+  table: {
+    caption: 'Checks of Pair told apart that did not hold for scanner-b',
+    columns: [
+      { key: 'case', header: 'Case' }, { key: 'source', header: 'Source fixture' }, { key: 'variant', header: 'Variant' },
+      { key: 'check', header: 'Check' }, { key: 'families', header: 'Families in the qualification view' },
+    ],
+    rows: [
+      {
+        key: 'pair-1:twin',
+        cells: [
+          [{ text: 'synthetic-pair-1', code: true }],
+          [{ text: 'synthetic-pair-1', href: '/report/fixtures/credential-formats/?fixture=synthetic-pair-1', note: 'credential-formats' }],
+          [{ text: 'twin', code: true, note: 'authored.twin · T1' }],
+          [{ text: 'must-flip', note: 'against canonical' }],
+          [{ text: 'alpha-token', href: '/evaluation/qualification/families/alpha-token/cases/1/' }],
+        ],
+      },
+      {
+        key: 'pair-2:twin',
+        cells: [
+          [{ text: 'synthetic-pair-with-a-much-longer-identifier-that-does-not-break-on-its-own', code: true }],
+          [{ text: 'synthetic-pair-2', note: 'unlisted-suite (not a published suite)' }],
+          [{ text: 'twin', code: true, note: 'authored.twin · T2' }],
+          [{ text: 'must-flip', note: 'against canonical' }],
+          [{ text: 'beta-key', note: 'not in the qualification view' }, { text: 'alpha-token', href: '/evaluation/qualification/families/alpha-token/cases/1/' }],
+        ],
+      },
+    ],
+  },
+  pager: { page: 1, pageCount: 3, total: 212, pageSize: 100, nextHref: '/evaluation/method/twin/checks/?row=pair&scanner=scanner-b&status=fail&page=2' },
+};
+
+export const casesArgs: MethodCasesProps = {
+  crumbs: [{ label: 'Evaluation', href: '/evaluation/' }, { label: 'Twin', href: '/evaluation/method/twin/' }, { label: 'Pair told apart · scanner-b' }],
+  eyebrow: 'EVALUATION METHOD · CHECKS',
+  title: 'Pair told apart: scanner-b',
+  lede: '212 of 1,372 checks did not hold. These are the 212, as the run recorded them.',
+  meta: [{ label: 'Run', value: '0a1b2c3d · 2026-10-01' }, { label: 'Cases hash', value: 'c0ffee12' }, { label: 'Accounting', value: 'v1.1' }],
+  filters: [
+    { term: 'Method', description: 'Twin' },
+    { term: 'Check', description: 'Pair told apart' },
+    { term: 'Scanner', description: 'scanner-b 4.5.6' },
+    { term: 'Status', description: 'Did not hold' },
+  ],
+  notes: [
+    { title: 'The checks behind one count', text: 'Every row is one check the discovery run recorded for this scanner. Nothing here is counted on another page.' },
+    { title: 'Families link to another run', text: 'A family link opens that family\u2019s cases in the qualification view, built from the official credential-eval runs per population. Its rows are not these checks.' },
+  ],
+  body: casesTable,
+  back: { label: 'Back to the twin method', href: '/evaluation/method/twin/' },
+};
+
+/** The index of a method's lists: what a reader sees without an address, or without script. */
+export const indexArgs: MethodCasesProps = {
+  ...casesArgs,
+  crumbs: [{ label: 'Evaluation', href: '/evaluation/' }, { label: 'Twin', href: '/evaluation/method/twin/' }, { label: 'Checks' }],
+  title: 'Twin: the checks behind each count',
+  lede: 'Every count of the twin page that has checks behind it opens one of these lists. Open one to read its checks.',
+  filters: [{ term: 'Method', description: 'Twin' }, { term: 'Lists', description: '3' }],
+  notes: [{ title: 'From one run', text: 'Every list is one row and one scanner of discovery run 0a1b2c3d. Nothing is counted across lists, scanners or runs.' }],
+  body: {
+    state: 'index',
+    table: {
+      caption: 'Twin: the lists behind the counts',
+      columns: [{ key: 'check', header: 'Check' }, { key: 'scanner', header: 'Scanner' }, { key: 'status', header: 'Status' }, { key: 'checks', header: 'Checks' }],
+      rows: [
+        { key: 'pair/scanner-b/fail', cells: [[{ text: 'Pair told apart' }], [{ text: 'scanner-b' }], [{ text: 'Did not hold' }], [{ text: '212 of 1,372', href: '/evaluation/method/twin/checks/?row=pair&scanner=scanner-b&status=fail' }]] },
+        { key: 'negative/scanner-c/fail', cells: [[{ text: 'Negative twin' }], [{ text: 'scanner-c' }], [{ text: 'Did not hold' }], [{ text: '62 of 1,372', href: '/evaluation/method/twin/checks/?row=negative&scanner=scanner-c&status=fail' }]] },
+        { key: 'pair/scanner-d/review-required', cells: [[{ text: 'A check that waits for review' }], [{ text: 'scanner-d' }], [{ text: 'Needs review' }], [{ text: '48 unscored', href: '/evaluation/method/twin/checks/?row=b&scanner=scanner-d&status=review-required' }]] },
+      ],
+    },
+  },
 };

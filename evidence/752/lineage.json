@@ -1,0 +1,196 @@
+{
+ "schema": "groups-cde-lineage-v1",
+ "issue": 752,
+ "group": "C",
+ "corpusSha256": "16036d043fc0dad0e45ec42e2513d2ffec2020da3458a95ed57f09f44fb0e02d",
+ "evidence": {
+  "repo": "redact-secret/credential-evidence",
+  "tag": "snapshot-2026.10.06.5",
+  "commit": "574b52ba367e2071d5a9bea3e2da7a9c5057f633"
+ },
+ "contract": {
+  "issue": "redact-secret#1228",
+  "mergedIn": "redact-secret#1243",
+  "commit": "db0e5c8ddf706988967e971593f509daf460c222"
+ },
+ "rows": {
+  "adobe:oauth-server-to-server-client-secret": {
+   "researchChild": 239,
+   "evidenceCases": {
+    "adobe-client-secret-placeholders-references-and-public-identifiers": 32,
+    "adobe-s2s-client-secret-token-request-parameter": 26,
+    "adobe-client-secret-bare-p8e-prefixed-value-and-subtype": 3
+   },
+   "corpusCases": 61,
+   "kinds": {
+    "positive": 24,
+    "control": 28,
+    "unsupported": 9,
+    "conflict": 0
+   },
+   "disposition": "covered with recorded policy deviation"
+  },
+  "adobe:enterprise-web-app-client-secret": {
+   "researchChild": 239,
+   "evidenceCases": {
+    "adobe-client-secret-placeholders-references-and-public-identifiers": 32,
+    "adobe-enterprise-id-token-and-org-id-beside-client-secret": 4,
+    "adobe-enterprise-web-app-client-secret-form-parameter": 27,
+    "adobe-client-secret-bare-p8e-prefixed-value-and-subtype": 1
+   },
+   "corpusCases": 64,
+   "kinds": {
+    "positive": 21,
+    "control": 28,
+    "unsupported": 15,
+    "conflict": 0
+   },
+   "disposition": "covered with recorded policy deviation"
+  },
+  "adobe:oauth-web-app-client-secret": {
+   "researchChild": 239,
+   "evidenceCases": {
+    "adobe-client-secret-placeholders-references-and-public-identifiers": 19,
+    "adobe-web-app-client-secret-basic-envelope": 17,
+    "adobe-web-app-client-secret-post-form-parameter-and-decoded-pair": 4,
+    "adobe-client-secret-bare-p8e-prefixed-value-and-subtype": 1
+   },
+   "corpusCases": 41,
+   "kinds": {
+    "positive": 16,
+    "control": 15,
+    "unsupported": 10,
+    "conflict": 0
+   },
+   "disposition": "covered with recorded policy deviation"
+  },
+  "airtable:personal-access-token": {
+   "researchChild": 240,
+   "evidenceCases": {
+    "airtable-personal-access-token-bearer-header-value": 22,
+    "airtable-personal-access-token-placeholders-references-and-masks": 21,
+    "airtable-personal-access-token-url-parameter-and-tool-layout": 4
+   },
+   "corpusCases": 47,
+   "kinds": {
+    "positive": 22,
+    "control": 21,
+    "unsupported": 4,
+    "conflict": 0
+   },
+   "disposition": "fully covered"
+  },
+  "contentful:cma-personal-access-token": {
+   "researchChild": 241,
+   "evidenceCases": {
+    "contentful-cma-personal-access-token-bearer-header-and-create-response-member": 36,
+    "contentful-cma-personal-access-token-documented-placeholders-and-masks": 28,
+    "contentful-cma-personal-access-token-prefixed-and-hexadecimal-shapes": 9
+   },
+   "corpusCases": 73,
+   "kinds": {
+    "positive": 33,
+    "control": 28,
+    "unsupported": 12,
+    "conflict": 0
+   },
+   "disposition": "policy-limited"
+  },
+  "dropbox:access-token": {
+   "researchChild": 240,
+   "evidenceCases": {
+    "dropbox-access-token-bearer-header-and-response-member": 39,
+    "dropbox-access-token-placeholders-references-and-non-values": 22,
+    "dropbox-access-token-sl-prefixed-run-and-unnamed-carriers": 9
+   },
+   "corpusCases": 70,
+   "kinds": {
+    "positive": 36,
+    "control": 22,
+    "unsupported": 12,
+    "conflict": 0
+   },
+   "disposition": "fully covered"
+  },
+  "hubspot:private-app-access-token": {
+   "researchChild": 240,
+   "evidenceCases": {
+    "hubspot-private-app-access-token-bearer-header-and-token-key-member": 38,
+    "hubspot-private-app-access-token-placeholders-references-and-masks": 22,
+    "hubspot-private-app-token-layout-leads-and-info-response-identifiers": 8
+   },
+   "corpusCases": 68,
+   "kinds": {
+    "positive": 35,
+    "control": 22,
+    "unsupported": 11,
+    "conflict": 0
+   },
+   "disposition": "fully covered"
+  },
+  "jfrog:reference-token": {
+   "researchChild": 241,
+   "evidenceCases": {
+    "jfrog-reference-token-header-and-basic-password-value": 35,
+    "jfrog-reference-token-placeholders-references-and-masks": 22,
+    "jfrog-reference-token-sixty-four-and-one-hundred-twenty-eight-character-forms": 7
+   },
+   "corpusCases": 64,
+   "kinds": {
+    "positive": 33,
+    "control": 22,
+    "unsupported": 9,
+    "conflict": 0
+   },
+   "disposition": "policy-limited"
+  },
+  "meta:app-secret": {
+   "researchChild": 241,
+   "evidenceCases": {
+    "meta-app-secret-bare-thirty-two-character-values": 7,
+    "meta-app-secret-client-secret-query-parameter": 9,
+    "meta-app-secret-in-app-id-pipe-access-token": 18,
+    "meta-app-secret-pipe-placeholders-derived-proof-and-non-values": 28
+   },
+   "corpusCases": 62,
+   "kinds": {
+    "positive": 22,
+    "control": 23,
+    "unsupported": 17,
+    "conflict": 0
+   },
+   "disposition": "covered with recorded policy deviation"
+  },
+  "salesforce:oauth-refresh-token": {
+   "researchChild": 241,
+   "evidenceCases": {
+    "salesforce-oauth-refresh-token-placeholders-references-and-masks": 21,
+    "salesforce-oauth-refresh-token-prefixed-values-and-get-query-carrier": 6,
+    "salesforce-oauth-refresh-token-response-member-and-post-parameter": 42
+   },
+   "corpusCases": 69,
+   "kinds": {
+    "positive": 35,
+    "control": 21,
+    "unsupported": 13,
+    "conflict": 0
+   },
+   "disposition": "fully covered"
+  },
+  "x:oauth1-consumer-secret": {
+   "researchChild": 241,
+   "evidenceCases": {
+    "x-oauth1-consumer-secret-signature-output-and-signing-key-placeholders": 18,
+    "x-oauth1-consumer-secret-signing-key-and-bare-values": 9
+   },
+   "corpusCases": 27,
+   "kinds": {
+    "positive": 0,
+    "control": 12,
+    "unsupported": 15,
+    "conflict": 0
+   },
+   "disposition": "carrier unresolved (observed only)"
+  }
+ }
+}

@@ -1,0 +1,387 @@
+{
+ "schema": "redact-secret/product-candidate-effect/v1",
+ "commit": "f537059f07590be28233eca3e3184d5ec5284e1e",
+ "candidate": "core-main-f537059f",
+ "pr": [
+  "redact-secret/redact-secret#1272",
+  "redact-secret/redact-secret#1277"
+ ],
+ "build": "core: npm pack of packages/javascript built from the commit (js:build); node-linux-x64-gnu: bindings/node/npm/linux-x64-gnu with the addon the commit's own CI run built; wasm: bindings/wasm/npm with the wasm-web and wasm-web-common outputs of the same run. Never published. The core and wasm tarballs and the addon are byte-identical to what the commit's own artifact qualification run attested (scripts/qualified-candidate.mjs verify). The commit is 19 commits after the beta.14 release source 0c62fd38bca75c5b28b042dc79789b708ebf1d17 and changes packages/javascript (errors, formatters) among release close-out, workflow and documentation changes: it is the newest main commit that passed qualification and differs from the published build, so a replay shows what core main changed since beta.14, an empty diff being a valid result.",
+ "tarballSha256": {
+  "@redact-secret/core": "sha256:929393ddc64905093e1a9fa818d9483fae9ae090c5bf5099269e0c0fa82b87a0",
+  "@redact-secret/node-linux-x64-gnu": "sha256:69efc0c10ebe2299855b38a865a2ce1a0008d2325119aed4d73385769480d25a",
+  "@redact-secret/wasm": "sha256:d2acc0dd0dcf325799a0ec824f2c5353c56e35a9deaf7b968f0770c226777fc4"
+ },
+ "control": {
+  "product": {
+   "package": "@redact-secret/core",
+   "version": "0.1.0-beta.14",
+   "integrity": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag=="
+  },
+  "archive": {
+   "release": "official-runs-37665271345",
+   "sha256": "sha256:9bd01eea99945c86189b74642b3bf076795f122d8f4c275c3332162d70ece0d7",
+   "files": 8,
+   "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37665271345",
+   "benchmarkRevision": "ada934613dd99fdc4fd48248896a1688be2504a1",
+   "engineTag": "v0.1.0-alpha.16",
+   "productVersion": "0.1.0-beta.14",
+   "semanticDigests": {
+    "policy-corpus": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+    "public-evidence-snapshot+methods": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+    "public-evidence-snapshot": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+    "regression-corpus": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b"
+   },
+   "recordedRuns": [
+    {
+     "id": "policy-corpus@linux-x64",
+     "semanticDigest": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+     "byteDigest": "sha256:fa8ae7ddcb654f6677aaaa066ebc3efab7723f00a813fd7eef2690499c421e14",
+     "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+     "caseCounts": {
+      "flare-redact": 19,
+      "gitleaks": 19,
+      "redact-secret": 19,
+      "trufflehog": 19
+     }
+    },
+    {
+     "id": "public-evidence-snapshot+methods@linux-x64",
+     "semanticDigest": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+     "byteDigest": "sha256:b539b69c4f6cfdd59535ed181e5f9e93bd3ae1965845d48853a3d9f4b576d10f",
+     "configHash": "sha256:f469f8d006586ef0bc09da6231d507e22d10db61930923d15583ea4cb4c690a0",
+     "caseCounts": {
+      "flare-redact": 38849,
+      "gitleaks": 38849,
+      "redact-secret": 38849,
+      "trufflehog": 38849
+     }
+    },
+    {
+     "id": "public-evidence-snapshot@linux-x64",
+     "semanticDigest": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+     "byteDigest": "sha256:5ae2326a9ead9c2039283a55c0796fa7f8adb8ae2845ed4cff671690e8bcd323",
+     "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+     "caseCounts": {
+      "flare-redact": 7036,
+      "gitleaks": 7036,
+      "redact-secret": 7036,
+      "trufflehog": 7036
+     }
+    },
+    {
+     "id": "regression-corpus@linux-x64",
+     "semanticDigest": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b",
+     "byteDigest": "sha256:3c37dc5a2950a1e0956ad3784b2c6fb490e6a1d10248cbd1e5a238912a544c36",
+     "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+     "caseCounts": {
+      "flare-redact": 153,
+      "gitleaks": 153,
+      "redact-secret": 153,
+      "trufflehog": 153
+     }
+    }
+   ],
+   "note": "A control copy at the accepted pins (#657): the published @redact-secret/core 0.1.0-beta.14 on credential-eval alpha.16 and the accepted snapshot-2026.10.06.4, measured once in the default full mode (the four required scanners, no OpenRedaction, #812), plain and methods, two engine runs with equal semantic digests. Its four semantic digests equal the canonical official runs of the registry (an independent re-measurement of the accepted release). The control a candidate replay at the accepted pins is compared with (scripts/candidate-control.mjs); the alpha.15/beta.13 replayCopy stays as history. Not an accepted run, nothing in runs[], never public evidence."
+  },
+  "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37469753365",
+  "runClass": "official"
+ },
+ "replay": {
+  "engine": "credential-eval v0.1.0-alpha.16 (66db9b53)",
+  "runClass": "exploratory",
+  "publication": "internal",
+  "platform": "linux-x64",
+  "evidence": "snapshot-2026.10.06.4",
+  "scope": "plain, methods (floors population), policy and regression populations; every scanner and the engine configuration as the control; only the product build differs"
+ },
+ "worsened": false,
+ "fixed": [],
+ "improved": [],
+ "regressed": [],
+ "stillFailing": [
+  "asana-authored--oauth-lookalike-access-token-documented-placeholder",
+  "authored-provider-neutral--pytest-fake-fixtures",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-url",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-three-layers-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-unpadded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-json",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-url",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-url",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-mixed-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-url",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-three-layers-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-url",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-url",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-mixed-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-json",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-url",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+  "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-in-url",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+  "cross-provider--base62-bearer-twin",
+  "cross-provider--base62-generic-key-twin",
+  "elevenlabs--elevenlabs-api-key-residency-suffix",
+  "exa--exa-api-key-js-positional",
+  "exa--exa-api-key-python-positional",
+  "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+  "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+  "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+  "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+  "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+  "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+  "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
+  "graphql-requests-and-responses-authored--get-url-variables-value",
+  "har-exports-authored--bearer-token-in-postdata-params",
+  "har-exports-authored--bearer-token-in-url-and-querystring-array",
+  "har-exports-authored--session-cookie-in-headers-and-cookies-arrays",
+  "hashicorp-terraform-authored--state-json-output-password-with-sensitive-true",
+  "http-auth-carriers-authored--basic-empty-password",
+  "http-auth-carriers-authored--basic-rfc-published-example",
+  "http-auth-carriers-authored--basic-token-split-by-space",
+  "http-auth-carriers-authored--cookie-header-session-id-among-preferences",
+  "http-auth-carriers-authored--set-cookie-session-id-with-attributes",
+  "jfrog-authored--api-key-curl-basic-password",
+  "jupyter-notebook-files-authored--source-value-split-between-array-elements",
+  "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference",
+  "line-break-and-fragment-authored--key-split-across-javascript-added-literals",
+  "line-break-and-fragment-authored--key-split-across-python-adjacent-literals",
+  "line-break-and-fragment-authored--key-split-after-prefix-by-shell-continuation",
+  "line-break-and-fragment-authored--key-split-before-last-character-by-shell-continuation",
+  "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+  "line-break-and-fragment-authored--key-split-by-backslash-newline-in-single-quotes",
+  "line-break-and-fragment-authored--key-split-by-double-quoted-shell-continuation",
+  "line-break-and-fragment-authored--key-split-by-javascript-literal-continuation",
+  "line-break-and-fragment-authored--key-split-by-literal-crlf",
+  "line-break-and-fragment-authored--key-split-by-literal-line-feed",
+  "line-break-and-fragment-authored--key-split-by-python-literal-continuation",
+  "line-break-and-fragment-authored--key-split-by-unquoted-shell-continuation",
+  "line-break-and-fragment-authored--key-split-in-three-javascript-added-literals",
+  "line-break-and-fragment-authored--key-with-literal-backslash-n-in-log-line",
+  "line-break-and-fragment-authored--key-wrapped-in-markdown-code-span",
+  "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
+  "mailgun--mailgun-api-key-triplet-merged-last-segments-twin",
+  "mailgun--mailgun-api-key-triplet-short-first-segment-twin",
+  "meta-authored--app-pair-curl-url",
+  "meta-authored--app-pair-raw-http",
+  "meta-authored--app-pair-url-query-continues",
+  "meta-authored--client-token-pair-parameter",
+  "structured-credential-files-authored--kubeconfig-client-key-data-encoded-pem",
+  "structured-credential-files-authored--kubeconfig-four-users-two-inline-secrets",
+  "structured-credential-files-authored--kubeconfig-inline-bearer-token",
+  "structured-credential-files-authored--netrc-quoted-password-with-spaces",
+  "structured-credential-files-authored--netrc-single-line-entry",
+  "structured-credential-files-authored--netrc-three-line-entry",
+  "structured-credential-files-authored--netrc-two-machines-and-default",
+  "url-credential-boundaries-authored--cloud-storage-signed-url-in-prose",
+  "url-credential-boundaries-authored--s3-presigned-url-in-prose",
+  "url-credential-boundaries-authored--sas-token-in-config-line",
+  "vercel--vercel-app-access-token-body-55-twin",
+  "vercel--vercel-app-refresh-token-body-55-twin",
+  "vercel--vercel-personal-access-token-body-55-twin",
+  "x-authored--oauth-authorization-header-identity-and-signature",
+  "x-authored--refresh-angle-placeholder",
+  "zoom-authored--webhook-lookalike-validation-response"
+ ],
+ "populations": {
+  "public-evidence-snapshot": {
+   "cases": 7036,
+   "fixed": [],
+   "regressed": [],
+   "improved": [],
+   "changed": [],
+   "unchanged": 7036,
+   "stillFailing": 112,
+   "aggregatesIdentical": true,
+   "status": {
+    "control": "complete",
+    "candidate": "complete"
+   },
+   "peers": {
+    "flare-redact": {
+     "casesIdentical": true,
+     "differing": 0
+    },
+    "gitleaks": {
+     "casesIdentical": true,
+     "differing": 0
+    },
+    "trufflehog": {
+     "casesIdentical": true,
+     "differing": 0
+    }
+   },
+   "repeat": {
+    "control": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "candidate": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "semanticDigest": {
+     "control": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+     "candidate": "sha256:f6a0f3d4477826b2448c11680026a88675a5f9aecd2d51de133cd8b8f7451857"
+    }
+   },
+   "differing": []
+  },
+  "regression-corpus": {
+   "cases": 153,
+   "fixed": [],
+   "regressed": [],
+   "improved": [],
+   "changed": [],
+   "unchanged": 153,
+   "stillFailing": 0,
+   "aggregatesIdentical": true,
+   "status": {
+    "control": "complete",
+    "candidate": "complete"
+   },
+   "peers": {
+    "flare-redact": {
+     "casesIdentical": true,
+     "differing": 0
+    },
+    "gitleaks": {
+     "casesIdentical": true,
+     "differing": 0
+    },
+    "trufflehog": {
+     "casesIdentical": true,
+     "differing": 0
+    }
+   },
+   "repeat": {
+    "control": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "candidate": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "semanticDigest": {
+     "control": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b",
+     "candidate": "sha256:79fb568fe34f96ef6a5366ff9d172622cf9840643bd3a5dddf8b42ab6c6e9763"
+    }
+   },
+   "differing": []
+  },
+  "policy-corpus": {
+   "cases": 19,
+   "fixed": [],
+   "regressed": [],
+   "improved": [],
+   "changed": [],
+   "unchanged": 19,
+   "stillFailing": 0,
+   "aggregatesIdentical": true,
+   "status": {
+    "control": "complete",
+    "candidate": "complete"
+   },
+   "peers": {
+    "flare-redact": {
+     "casesIdentical": true,
+     "differing": 0
+    },
+    "gitleaks": {
+     "casesIdentical": true,
+     "differing": 0
+    },
+    "trufflehog": {
+     "casesIdentical": true,
+     "differing": 0
+    }
+   },
+   "repeat": {
+    "control": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "candidate": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "semanticDigest": {
+     "control": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+     "candidate": "sha256:a92e4d485928a32c72eb859eabc9044b0dd7716e159790aebce31ee4f5ce0aa9"
+    }
+   },
+   "differing": []
+  },
+  "methods": {
+   "assertions": {
+    "control": 52346,
+    "candidate": 52346,
+    "fixed": 0,
+    "regressed": 0,
+    "stillFailing": 1720,
+    "fixedKeys": [],
+    "regressedKeys": []
+   },
+   "reviewOccurrences": {
+    "control": 8134,
+    "candidate": 8134,
+    "added": [],
+    "removed": [],
+    "addedOnFixedCases": 0,
+    "addedElsewhere": 0
+   },
+   "variantCases": {
+    "changed": 0,
+    "fixed": 0,
+    "regressed": 0,
+    "changes": []
+   },
+   "repeat": {
+    "control": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "candidate": {
+     "runs": 2,
+     "semanticDigestsEqual": true
+    },
+    "semanticDigest": {
+     "control": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+     "candidate": "sha256:aca8177ecb5370e0abc57582ca434a9354f45a5bff16599b8dc3956b9dae75d1"
+    }
+   }
+  }
+ },
+ "note": "An exploratory, internal measurement of an unpublished build: never an accepted run, never public evidence. It decides nothing: no ledger row, status or evidence expectation is changed."
+}

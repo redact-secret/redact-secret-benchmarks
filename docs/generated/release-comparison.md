@@ -748,6 +748,84 @@ Suites are summed here for readability only; per-suite groups are in the baselin
 
 Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
 
+## 0.1.0-beta.14
+
+Run `2026-10-07T11:35:07.458Z-7834d7` · revision `69601174ed8b4a73e09c244ea7283a9ea2188315` · saved 2026-10-07T11:35:18.683Z · **accounting v1.1** (rates are point estimates here; the dashboard headline is the Wilson bound; twins follow the strict EXACT/COVERED reading)
+
+Scanner versions: redact-secret 0.1.0-beta.14 · gitleaks 8.30.1 · trufflehog 3.97.4 · flare-redact 1.6.1 · openredaction 1.1.5
+
+### Must not flag · T1 Provider-documented
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 10 | 0 | 0.0% |
+| gitleaks | 10 | 0 | 0.0% |
+| trufflehog | 10 | 0 | 0.0% |
+| flare-redact | 10 | 0 | 0.0% |
+| openredaction | 10 | 6 | 60.0% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must not flag · T2 Tool-corroborated
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 2244 | 1 | 0.0% |
+| gitleaks | 2244 | 127 | 5.7% |
+| trufflehog | 2244 | 64 | 2.9% |
+| flare-redact | 2244 | 84 | 3.7% |
+| openredaction | 2244 | 641 | 28.6% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must not flag · T3 Project policy
+
+> This project’s own numbers only. T3 is this project’s masking policy: a peer positive here is out of scope by design, not a defect, so peer columns are an explicit opt-in (`npm run baseline:report -- --include-t3-peers`).
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 1486 | 4 | 0.3% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must redact · T1 Provider-documented
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 1480 | 1487 | 0 | 0.0% | 0.000 | 911 / 911 |
+| gitleaks | 1480 | 1487 | 513 | 34.5% | 0.002 | 537 / 911 |
+| trufflehog | 1480 | 1487 | 883 | 59.4% | 0.001 | 357 / 911 |
+| flare-redact | 1480 | 1487 | 1003 | 67.5% | 0.006 | 215 / 911 |
+| openredaction | 1480 | 1487 | 1150 | 77.3% | 0.519 | 129 / 911 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must redact · T2 Tool-corroborated
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 551 | 551 | 0 | 0.0% | 0.000 | 253 / 253 |
+| gitleaks | 551 | 551 | 165 | 29.9% | 0.003 | 182 / 253 |
+| trufflehog | 551 | 551 | 320 | 58.1% | 0.007 | 92 / 253 |
+| flare-redact | 551 | 551 | 365 | 66.2% | 0.005 | 66 / 253 |
+| openredaction | 551 | 551 | 463 | 84.0% | 0.067 | 19 / 253 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Pending · T0 Pending
+
+84 files, unscored.
+
+### Policy · T3 Project policy
+
+> This project’s own numbers only. T3 is this project’s masking policy: a peer positive here is out of scope by design, not a defect, so peer columns are an explicit opt-in (`npm run baseline:report -- --include-t3-peers`).
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 568 | 569 | 2 | 0.4% | 0.000 | 306 / 308 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
 ## Changed rows: 0.1.0-beta.4 → 0.1.0-beta.5
 
 51 (fixture, scanner) outcomes changed · 222 fixtures added · 0 fixtures removed. Corpus hashes differ; only fixtures present in both baselines are compared.
@@ -1161,4 +1239,13 @@ Suites are summed here for readability only; per-suite groups are in the baselin
 ## Changed rows: 0.1.0-beta.12 → 0.1.0-beta.13
 
 0 (fixture, scanner) outcomes changed · 0 fixtures added · 0 fixtures removed. Corpus hashes unchanged.
+
+## Changed rows: 0.1.0-beta.13 → 0.1.0-beta.14
+
+2 (fixture, scanner) outcomes changed · 473 fixtures added · 0 fixtures removed. Corpus hashes differ; only fixtures present in both baselines are compared.
+
+| Fixture | Scanner | Before | After |
+| --- | --- | --- | --- |
+| real-world-shapes--terraform-apply-sensitive | redact-secret | `flagged:1` | `clean` |
+| beta8-384e--exa-api-key-your-key-here-placeholder | redact-secret | `flagged:1` | `clean` |
 

@@ -1,0 +1,112 @@
+{
+  "note": "Retained slice of CI run 37630100920 (beta.14 on credential-eval alpha.16; dispatched with omit_optional=openredaction, so the four required scanners only). Identity only: ids, digests, configuration hashes, case counts and the omitted optional scanner, as recorded in benchmarks/official-runs.json. Used by tests/acceptance-package-roster.test.mjs; archived artifacts: release official-runs-registry-37630100920.",
+  "ciRun": "37630100920",
+  "archive": {
+    "release": "official-runs-registry-37630100920",
+    "asset": "official-runs-37630100920.tar.gz"
+  },
+  "engineRevision": "66db9b53f2232eec5af9b7160da21be879143e6e",
+  "benchmarkRevision": "3a37c38b4bd9883f0debb220f3ecc499553473a8",
+  "runs": [
+    {
+      "id": "policy-corpus@linux-x64",
+      "population": "policy-corpus",
+      "platform": "linux-x64",
+      "methods": false,
+      "semanticDigest": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+      "byteDigest": "sha256:c7a19ee3395e58a80da040570bd3b1eb89eb8bf012734cf24c6b4fe4a4e15f85",
+      "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+      "caseCounts": {
+        "flare-redact": 19,
+        "gitleaks": 19,
+        "redact-secret": 19,
+        "trufflehog": 19
+      },
+      "scanners": [
+        "flare-redact",
+        "gitleaks",
+        "redact-secret",
+        "trufflehog"
+      ],
+      "omittedOptionalScanners": [
+        "openredaction"
+      ],
+      "evidenceTag": "policy-37293aba657d"
+    },
+    {
+      "id": "public-evidence-snapshot+methods@linux-x64",
+      "population": "public-evidence-snapshot",
+      "platform": "linux-x64",
+      "methods": true,
+      "semanticDigest": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+      "byteDigest": "sha256:9085d402e63cc47aeca8ce220efa994efc54bb5d7801f5e3280222948bc767b3",
+      "configHash": "sha256:f469f8d006586ef0bc09da6231d507e22d10db61930923d15583ea4cb4c690a0",
+      "caseCounts": {
+        "flare-redact": 38849,
+        "gitleaks": 38849,
+        "redact-secret": 38849,
+        "trufflehog": 38849
+      },
+      "scanners": [
+        "flare-redact",
+        "gitleaks",
+        "redact-secret",
+        "trufflehog"
+      ],
+      "omittedOptionalScanners": [
+        "openredaction"
+      ],
+      "evidenceTag": "snapshot-2026.10.06.4"
+    },
+    {
+      "id": "public-evidence-snapshot@linux-x64",
+      "population": "public-evidence-snapshot",
+      "platform": "linux-x64",
+      "methods": false,
+      "semanticDigest": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+      "byteDigest": "sha256:36c1b5c77651bd14d2f6010ccc1e47e16ccc5b4120e62c3d66aa4a3bb406b3fc",
+      "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+      "caseCounts": {
+        "flare-redact": 7036,
+        "gitleaks": 7036,
+        "redact-secret": 7036,
+        "trufflehog": 7036
+      },
+      "scanners": [
+        "flare-redact",
+        "gitleaks",
+        "redact-secret",
+        "trufflehog"
+      ],
+      "omittedOptionalScanners": [
+        "openredaction"
+      ],
+      "evidenceTag": "snapshot-2026.10.06.4"
+    },
+    {
+      "id": "regression-corpus@linux-x64",
+      "population": "regression-corpus",
+      "platform": "linux-x64",
+      "methods": false,
+      "semanticDigest": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b",
+      "byteDigest": "sha256:322855ea53cc4404dfc23c780d541a8b0ea830ddd647b685c61534bfeedbfa87",
+      "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+      "caseCounts": {
+        "flare-redact": 153,
+        "gitleaks": 153,
+        "redact-secret": 153,
+        "trufflehog": 153
+      },
+      "scanners": [
+        "flare-redact",
+        "gitleaks",
+        "redact-secret",
+        "trufflehog"
+      ],
+      "omittedOptionalScanners": [
+        "openredaction"
+      ],
+      "evidenceTag": "regression-b7b236c5ad1a"
+    }
+  ]
+}

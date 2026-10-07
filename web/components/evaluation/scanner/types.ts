@@ -20,6 +20,8 @@ export interface ScannerFact {
   note?: string;
   /** Set the value in monospace (ids, digests, versions, commands). */
   code?: boolean;
+  /** The word shown for a `null` value, when it is not "Not recorded" (for example "Unavailable": the record predates the fact). */
+  missing?: string;
 }
 
 export interface ScannerFactGroup { title: string; facts: ScannerFact[] }

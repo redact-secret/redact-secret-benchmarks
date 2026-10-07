@@ -9,7 +9,8 @@ import path from 'node:path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { PeerProfile } from '../../services/peers';
 import type { PeerRuntime } from '../../services/runtime';
-import type { MeasuredRun, RunScanner } from '../../services/run';
+import type { MeasuredRun, OfficialRun, RunScanner } from '../../services/run';
+import type { MeasurementHost } from '../../services/qualification';
 import type { ScannerEnvironment, ScannerSource, SnapshotFacts } from '../../services/scanners';
 import { resolveScanners, type ScannerInput } from '../../resolvers/scanners';
 import { REAL_ROOT, edited, overlay } from './overlay';
@@ -98,6 +99,45 @@ describe('the scanner page resolver', () => {
     expect(fact(page, 'alpha', 'Host OS release, CPU and Node of the snapshots')?.value).toBeNull();
     expect(fact(page, 'beta', 'Runtime comparison')).toMatchObject({ value: 'linux x64 · Node v22.1.0' });
     expect(fact(page, 'beta', 'Runtime comparison call')?.value).toBe('redact(), asynchronous');
+  });
+
+  describe('the measurement host of an official run (#620, #621)', () => {
+    const official = (over: Partial<OfficialRun> = {}): OfficialRun => ({
+      population: 'pop-a', denominator: 'pop-a', role: 'floors-and-gates', caseCount: 3, semanticDigest: `sha256:${'e'.repeat(64)}`, artifactDigest: `sha256:${'f'.repeat(64)}`,
+      engine: 'engine 0.0.1', evidenceTag: null, recordedOn: '2026-01-05', scanners: [], measurement: null, host: null, ...over,
+    });
+    const host: MeasurementHost = {
+      schema: 'redact-secret-benchmarks/measurement-host/v1', capturedAt: '2026-01-05T10:20:30.000Z',
+      os: { platform: 'linux', arch: 'x64', release: '6.0.0-synthetic', name: 'Example Linux 1' }, cpu: { model: 'Synthetic CPU', logicalCores: 4 }, node: 'v22.9.9',
+      ci: { provider: 'github-actions', image: 'exampleos', imageVersion: '20260101.1', runnerEnvironment: 'github-hosted' },
+    };
+    const page = (o: OfficialRun) => resolveScanners(input({ run: run({ official: o }), buildHost: { builtOn: '2026-02-01', platform: 'darwin', arch: 'arm64', node: 'v24.0.0', ci: null } }));
+
+    test('states the engine stamp and the recorded host facts, and the publication host apart', () => {
+      const p = page(official({ measurement: { host: 'linux-x86_64', startedAt: '2026-01-05T10:21:00Z', finishedAt: '2026-01-05T10:22:00Z' }, host }));
+      expect(fact(p, 'alpha', 'Measured')?.value).toBe('2026-01-05 10:21 UTC');
+      expect(fact(p, 'alpha', 'Engine host')?.value).toBe('linux-x86_64');
+      expect(fact(p, 'alpha', 'OS release')?.value).toBe('Example Linux 1 · kernel 6.0.0-synthetic');
+      expect(fact(p, 'alpha', 'CPU')?.value).toBe('Synthetic CPU · 4 logical cores');
+      expect(fact(p, 'alpha', 'Node')?.value).toBe('v22.9.9');
+      expect(fact(p, 'alpha', 'CI runner image')?.value).toBe('exampleos 20260101.1');
+      // the page's own build host is a separate line and is never offered as the measurement host
+      expect(p.meta.find(m => m.label === 'Page built')?.value).toBe('2026-02-01 · darwin arm64 · Node v24.0.0 · not a CI build');
+      expect(factsOf(p, 'alpha').some(f => f.value?.includes('v24.0.0'))).toBe(false);
+    });
+
+    test('a run recorded without host facts says Unavailable and is never filled in from anywhere else', () => {
+      const p = page(official());
+      expect(fact(p, 'alpha', 'OS release, CPU, Node and CI image')).toMatchObject({ value: null, missing: 'Unavailable' });
+      expect(fact(p, 'alpha', 'Measured')).toMatchObject({ value: null, missing: 'Unavailable' });
+      expect(fact(p, 'alpha', 'Engine host')).toMatchObject({ value: null, missing: 'Unavailable' });
+      expect(fact(p, 'alpha', 'Node')).toBeUndefined();
+    });
+
+    test('a local verification run says it is not a CI run', () => {
+      const p = page(official({ host: { ...host, ci: null } }));
+      expect(fact(p, 'alpha', 'CI runner image')).toMatchObject({ value: null, missing: 'Not a CI run' });
+    });
   });
 
   test('without a run the roster keeps the pins and every run fact is Not recorded, never invented', () => {

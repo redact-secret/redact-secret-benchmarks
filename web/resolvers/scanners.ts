@@ -12,6 +12,7 @@ import type { PeerProfile } from '../services/peers';
 import type { PeerRuntime, RuntimeTool } from '../services/runtime';
 import type { MeasuredRun, OfficialRun, OfficialScanner, RunScanner } from '../services/run';
 import type { ScannerEnvironment, ScannerSource, SnapshotFacts } from '../services/scanners';
+import type { BuildHost } from '../services/build-host';
 import { defaultQuery, pairHref, type PairOptions } from './accuracy';
 import { count, int, isoDate } from './format';
 import { DEFAULT_SETTING, performanceHref, PEERS, type Peer } from './performance';
@@ -32,6 +33,8 @@ export interface ScannerInput {
   productScope?: { outOfScope: string[]; readAt: string; detectors: { count: number; revision: string } | null };
   /** Optional scanners the official run did not measure (#763), already worded by `resolveNotMeasuredRows`: absent under the legacy pipeline and for a run that measured them all. */
   notMeasured?: NotMeasuredScanner[];
+  /** The machine this page was built on (#621): the publication host, shown apart from the measurement host. */
+  buildHost?: BuildHost;
 }
 
 const short = (digest: string): string => `${digest.slice(0, 12)}…`;
@@ -144,6 +147,42 @@ function runtimeRunner(runtime: PeerRuntime | undefined, id: string): { text: st
   };
 }
 
+/** "2026-10-07 13:39 UTC" from an RFC 3339 time in UTC; the date alone for any other offset. */
+const utcMinute = (value: string): string => (/Z$/.test(value) ? `${value.slice(0, 10)} ${value.slice(11, 16)} UTC` : isoDate(value));
+
+const HOST_GAP = 'The engine\'s RunArtifact (v1) records only the OS and architecture; the OS release, CPU, Node and CI image are recorded by the benchmark\'s run driver when it starts the engine.';
+
+/**
+ * Where and when the official run was measured (#620, #621), never where this page was built: the engine's own stamp from the verified artifact, then the
+ * host facts the run driver recorded at execution. A run recorded before the driver captured them says so, as "Unavailable"; it is never filled in.
+ */
+function measurementFacts(o: OfficialRun): ScannerFact[] {
+  const m = o.measurement;
+  const out: ScannerFact[] = [
+    fact('Measured', m?.startedAt ? utcMinute(m.startedAt) : null, m?.startedAt
+      ? { note: `the engine's start time in the run's artifact${m.finishedAt ? `, finished ${utcMinute(m.finishedAt)}` : ''}; non-semantic, outside the run's identity` }
+      : { missing: 'Unavailable', note: 'the view this page was built from carries no engine time stamp for this run' }),
+    fact('Engine host', m?.host ?? null, m?.host
+      ? { code: true, note: 'the OS and architecture the engine stamped into the artifact' }
+      : { missing: 'Unavailable', note: 'the artifact carries no host stamp, or the view predates it' }),
+  ];
+  const h = o.host;
+  if (!h) {
+    out.push(fact('OS release, CPU, Node and CI image', null, { missing: 'Unavailable', note: `not in this run's record${o.recordedOn ? ` (recorded ${o.recordedOn})` : ''}: it was recorded before the run driver captured host facts, and a recorded run is never amended. ${HOST_GAP}` }));
+    return out;
+  }
+  const captured = `read by the run driver on the measuring host, ${utcMinute(h.capturedAt)}`;
+  out.push(
+    fact('OS release', `${h.os.name ?? `${h.os.platform}`} · kernel ${h.os.release}`, { note: `${h.os.platform} ${h.os.arch}, ${captured}` }),
+    fact('CPU', `${h.cpu.model ?? 'model not recorded'} · ${count(h.cpu.logicalCores, 'logical core')}`),
+    fact('Node', h.node, { code: true }),
+    fact('CI runner image', h.ci ? [h.ci.image, h.ci.imageVersion].filter(Boolean).join(' ') || null : null, h.ci
+      ? { note: `GitHub Actions${h.ci.runnerEnvironment ? `, ${h.ci.runnerEnvironment} runner` : ''}` }
+      : { missing: 'Not a CI run', note: 'measured off CI: a local verification, never compared with the canonical CI run' }),
+  );
+  return out;
+}
+
 /** What an official run says about itself, in one line: the denominator is named, and no other population is added in. */
 const officialNote = (o: OfficialRun): string =>
   `run ${short(o.semanticDigest)} · ${o.engine}${o.evidenceTag ? ` · evidence ${o.evidenceTag}` : ''}${o.recordedOn ? ` · recorded ${o.recordedOn}` : ''}. ${count(o.caseCount, 'case')} of the ${o.denominator} population; the other populations were run separately and are not added in.`;
@@ -154,7 +193,7 @@ function whereFacts(source: ScannerSource, run: MeasuredRun | undefined, scanner
   const fresh = scanner?.observations.some(o => o.source === 'fresh');
   if (run?.official) {
     out.push(fact('Observed', `Official run, ${run.official.population}`, { note: officialNote(run.official) }));
-    out.push(fact('Host OS release, CPU and Node of the official run', null));
+    out.push(...measurementFacts(run.official));
   } else if (run && fresh) {
     out.push(fact('This run', run.hosts.map(h => `Node ${h.node} · ${h.platform} ${h.arch}`).join('; ') || null, { note: `observed fresh, ${isoDate(run.generatedAt)}; OS release and CPU are not part of the run` }));
   } else if (snap) {
@@ -237,6 +276,10 @@ function modeNote(run: MeasuredRun | undefined): ScannerModeNoteData {
   return { ...common, mode: 'published', modeLabel: `This run measured the released ${PRODUCT} ${run.productVersion ?? 'version not recorded'}.` };
 }
 
+/** The publication host in one line: where this page was built, which is not where any run was measured. */
+const buildHostText = (b: BuildHost): string =>
+  `${b.builtOn} · ${b.platform} ${b.arch} · Node ${b.node}${b.ci ? ` · GitHub Actions${b.ci.image ? ` ${b.ci.image}` : ''}${b.ci.imageVersion ? ` ${b.ci.imageVersion}` : ''}` : ' · not a CI build'}`;
+
 export function resolveScanners(input: ScannerInput): ScannerOverviewProps {
   const { environment, run } = input;
   const byId = new Map(environment.sources.map(s => [s.id, s]));
@@ -252,11 +295,14 @@ export function resolveScanners(input: ScannerInput): ScannerOverviewProps {
     eyebrow: 'Evaluation',
     title: 'Scanners and where they ran',
     lede: 'The scanners this benchmark ran with: the version of each, how it was installed, how it was run, where it was observed and what was left out. Results are on the report and comparison pages.',
-    meta: run?.official
-      ? [{ label: 'Mode', value: modeText(run) }, { label: 'Population', value: `${run.official.population} · ${count(run.official.caseCount, 'case')}` }, { label: 'Official run', value: `${run.official.recordedOn ? `${isoDate(run.generatedAt)} · ` : ''}${short(run.official.semanticDigest)}` }]
-      : run
-        ? [{ label: 'Mode', value: modeText(run) }, { label: 'Run', value: `${isoDate(run.generatedAt)} · ${count(run.suiteCount, 'suite')}` }]
-        : [],
+    meta: [
+      ...(run?.official
+        ? [{ label: 'Mode', value: modeText(run) }, { label: 'Population', value: `${run.official.population} · ${count(run.official.caseCount, 'case')}` }, { label: 'Official run', value: `${run.official.recordedOn ? `${isoDate(run.generatedAt)} · ` : ''}${short(run.official.semanticDigest)}` }]
+        : run
+          ? [{ label: 'Mode', value: modeText(run) }, { label: 'Run', value: `${isoDate(run.generatedAt)} · ${count(run.suiteCount, 'suite')}` }]
+          : []),
+      ...(input.buildHost ? [{ label: 'Page built', value: buildHostText(input.buildHost) }] : []),
+    ],
     roster: {
       title: count(rows.length, 'scanner'),
       description: run ? 'In the order the run lists them. The kind and the description come from the scanner registry, the version from the run.' : 'No benchmark run is published for this checkout. Versions are the pins; the mode line is not recorded.',

@@ -17,6 +17,7 @@
  * the result is `{ state: 'not-published' }` and every page shows "Not measured";
  * CI runs `npm run bench` before the web build, as the publish workflow does.
  */
+import type { EngineTelemetry, MeasurementHost } from './qualification';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { reportProblem } from '../../benchmarks/shared/report-model.mjs';
@@ -71,6 +72,16 @@ export interface OfficialRun {
   evidenceTag: string | null;
   recordedOn: string | null;
   scanners: OfficialScanner[];
+  /**
+   * Where and when the engine says it ran (#620, #621): the verified artifact's non-semantic `host` (OS and architecture) and start and finish times,
+   * as the view carries them. `null` when the view was built before it. Provenance: no figure reads it.
+   */
+  measurement: EngineTelemetry | null;
+  /**
+   * The host facts the benchmark recorded when it ran the engine (`runs[].measurementHost` of `benchmarks/official-runs.json`): OS release, CPU, Node and
+   * the CI runner image. `null` for a run recorded before the driver captured them; never filled in afterwards, and never the host of the site build.
+   */
+  host: MeasurementHost | null;
 }
 
 export interface RunScanner {

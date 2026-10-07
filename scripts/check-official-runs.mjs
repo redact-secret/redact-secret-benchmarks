@@ -11,6 +11,7 @@ import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
+import { measurementHostProblems } from '../benchmarks/qualification/measurement-host.ts';
 
 const root = new URL('../', import.meta.url);
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
@@ -20,6 +21,24 @@ const PRODUCT = ['regression-corpus', 'policy-corpus'];
 /** The scanners the roster lets an official run leave out when it says so (#763): benchmarks/support/scanner-roster.json, the same file the adapter reads. */
 const rosterFile = JSON.parse(readFileSync(new URL('../benchmarks/support/scanner-roster.json', import.meta.url), 'utf8'));
 const optionalOfficial = new Set(rosterFile.runClasses.official.optional);
+const HOST_PLATFORM = { 'linux-x64': ['linux', 'x64'], 'darwin-arm64': ['darwin', 'arm64'] };
+
+/**
+ * The host a run was measured on (#620, #621), when its record carries one. Optional: a run recorded before the driver captured it has none, and none is
+ * ever added afterwards (the record is immutable; the page says "unavailable"). It is provenance and enters no identity, so it is checked for shape, for
+ * agreeing with the run's platform and for being read no later than the day the run was recorded, and for nothing else.
+ */
+export function measurementHostRecordProblems(run, at) {
+  if (run.measurementHost === undefined) return [];
+  const problems = measurementHostProblems(run.measurementHost, `${at}: measurementHost`);
+  if (problems.length) return problems;
+  const host = run.measurementHost;
+  const [platform, arch] = HOST_PLATFORM[run.platform] ?? [];
+  if (platform && (host.os.platform !== platform || host.os.arch !== arch)) problems.push(`${at}: measurementHost is ${host.os.platform}-${host.os.arch}, the run's platform is ${run.platform}`);
+  if (run.recordedOn && host.capturedAt.slice(0, 10) > run.recordedOn) problems.push(`${at}: measurementHost was captured after the run was recorded (${host.capturedAt} > ${run.recordedOn}); host facts come from the measurement, never added later`);
+  if (run.canonical === true && host.ci === null) problems.push(`${at}: a canonical run is a CI run, but its measurementHost names no CI runner`);
+  return problems;
+}
 
 /** Pure consistency check of a parsed registry. `schemaDigest` is the digest of the vendored RunArtifact schema; `inputs` is the parsed qualification-inputs manifest. */
 export function officialRunProblems(registry, { schemaDigest, inputs, evaluationEvidenceDigest }) {
@@ -115,6 +134,7 @@ export function officialRunProblems(registry, { schemaDigest, inputs, evaluation
     if (!DIGEST.test(run.configHash ?? '')) problems.push(`${at}: configHash is required`);
     const pinnedConfig = isMethods ? undefined : registry.config?.platforms?.[run.platform]?.configHash;
     if (typeof pinnedConfig === 'string' && pinnedConfig !== run.configHash) problems.push(`${at}: configHash differs from the pinned ${pinnedConfig}`);
+    problems.push(...measurementHostRecordProblems(run, at));
     const omittedOptional = new Set(run.omittedOptionalScanners ?? []);
     for (const id of omittedOptional) if (!optionalOfficial.has(id) || (run.scanners ?? []).some(x => x.id === id)) problems.push(`${at}: omittedOptionalScanners names ${id}, which is not an optional scanner left out of this run`);
     // The scanner selection a run was made under (#812) must agree with what the run measured: its scanners, its opted-in optional scanners and the configuration it names are the run's identity.
@@ -185,6 +205,7 @@ export function historicalRunProblems(registry) {
     if (!DIGEST.test(run.artifact?.semanticDigest ?? '') || !DIGEST.test(run.artifact?.byteDigest ?? '')) problems.push(`${at}: artifact needs semanticDigest and byteDigest`);
     if (run.evidence?.release?.manifest_digest === population.evidence?.release?.manifestDigest) problems.push(`${at}: its evidence is the population's current pin, so it belongs in runs[], not in the receipts`);
     if (run.supersededBy?.manifestDigest === run.evidence?.release?.manifest_digest) problems.push(`${at}: a run cannot be superseded by its own evidence release`);
+    problems.push(...measurementHostRecordProblems(run, at));
   }
   return problems;
 }

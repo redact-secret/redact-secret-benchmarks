@@ -10,6 +10,7 @@ import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';
 import type { TwinScopeMap } from './twin-scope.ts';
 import { buildViewSupportMatrix } from './support-matrix.ts';
 import { observationOrigins, type OriginRecord } from './observation-origin.ts';
+import { engineTelemetry, type EngineTelemetry } from './measurement-host.ts';
 import { assessRoster, type MeasurementHistory, type ScannerRoster } from './scanner-roster.ts';
 import { profileEffectsOf, scopeByScanner, type ProfileEffect, type ScopeEntry } from './scope-accounting.ts';
 import {
@@ -130,6 +131,8 @@ export interface PopulationView {
   scope?: ScopeEntry[]; methodsScope?: ScopeEntry[];
   /** Where each scanner's observation came from (#724): provenance read from the artifact's non-semantic telemetry, kept apart from the semantic evidence above and never an input of a count, status or denominator. */
   origins?: OriginRecord; methodsOrigins?: OriginRecord;
+  /** Where and when the engine says it ran (#620, #621): the artifact's `non_semantic.host`, `started_at` and `finished_at`, verified bytes but provenance only, never an input of anything above. Absent in a view built before it. */
+  measurement?: EngineTelemetry; methodsMeasurement?: EngineTelemetry;
   /** Declared credential profiles against their default scanner on this population: separate observations, never spliced (#724). */
   profileEffects?: ProfileEffect[];
 }
@@ -663,6 +666,8 @@ export function buildQualificationView({ registry, engine, artifacts, product, p
       scope: scopeByScanner(l.artifact), ...(l.methods ? { methodsScope: scopeByScanner(l.methods.artifact) } : {}),
       // Origin is provenance (non_semantic), apart from the evidence: it feeds nothing above or below.
       origins: observationOrigins(l.artifact), ...(l.methods ? { methodsOrigins: observationOrigins(l.methods.artifact) } : {}),
+      // Measurement host and time are provenance too (#620, #621): the engine's own non-semantic stamp, displayed apart and feeding nothing.
+      measurement: engineTelemetry(l.artifact), ...(l.methods ? { methodsMeasurement: engineTelemetry(l.methods.artifact) } : {}),
       profileEffects: profileEffectsOf(l.artifact, profiles, l.input.population),
     })).map(view => ({
       ...view,

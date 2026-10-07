@@ -56,6 +56,9 @@ const entry = {
   // The scanner selection the run was made under (#812): the configuration file and hash, the scanners and the explicit opt-in (if any), so the recorded result carries its own identity.
   ...(record.scannerSelection ? { scannerSelection: record.scannerSelection } : {}),
   caseCounts: record.caseCounts,
+  // The host the driver read when it started the engine (#620, #621), or the earlier run's for a reused stage. Copied as recorded, never read here: a
+  // record without one stays without one (the page says "unavailable"), and the recorder never fills it from this machine.
+  ...(record.measurementHost ? { measurementHost: record.measurementHost } : {}),
 };
 const runs = [...registry.runs.filter(run => run.id !== entry.id), entry].sort((a, b) => (a.id < b.id ? -1 : 1));
 const schemaBytes = await readFile(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url));

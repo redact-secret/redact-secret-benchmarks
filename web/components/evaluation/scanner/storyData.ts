@@ -140,3 +140,17 @@ export const candidateNote: ScannerModeNoteData = {
 };
 
 export const noRunNote: ScannerModeNoteData = { ...publishedNote, mode: null, modeLabel: 'No benchmark run is published for this checkout, so no mode is recorded.' };
+
+/** An official run (#620, #621): the engine's stamp, then the host facts the run driver recorded, or "Unavailable" for a run recorded before them. */
+export const officialHost: ScannerProfileData = {
+  ...repositoryScanner,
+  groups: repositoryScanner.groups.map(g => (g.title !== 'Where it ran' ? g : {
+    title: 'Where it ran',
+    facts: [
+      { term: 'Observed', value: 'Official run, population-a', note: 'run sha256:0123ab… · engine 0.0.1. 12 cases of the population-a population.' },
+      { term: 'Measured', value: '2026-01-05 10:21 UTC', note: "the engine's start time in the run's artifact; non-semantic, outside the run's identity" },
+      { term: 'Engine host', value: 'linux-x86_64', code: true, note: 'the OS and architecture the engine stamped into the artifact' },
+      { term: 'OS release, CPU, Node and CI image', value: null, missing: 'Unavailable', note: "not in this run's record (recorded 2026-01-05): it was recorded before the run driver captured host facts, and a recorded run is never amended." },
+    ],
+  })),
+};

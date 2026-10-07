@@ -16,6 +16,7 @@ import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
 import { loadPeerProfiles } from '../services/peers';
 import { loadProductScope } from '../services/product-scope';
+import { loadBuildHost } from '../services/build-host';
 import { loadOwnPerformance } from '../services/performance';
 import { loadPeerRuntime } from '../services/runtime';
 import type { MeasuredRun } from '../services/run';
@@ -553,7 +554,7 @@ export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
   const [environment, profiles, runtime, productScope, detectorTitles] = await Promise.all([loadScannerEnvironment(official ? 'official' : 'snapshots'), loadPeerProfiles(), loadPeerRuntime(), loadProductScope(), loadDetectorTitles()]);
   // Under `new`, an optional scanner the official run did not measure is stated beside the roster, never a silent absence (#763).
   const notMeasured = official ? resolveNotMeasuredRows(pipeline.view?.notMeasured ?? [], { link: true }) : undefined;
-  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: detectorTitles.size || null, productScope, ...(notMeasured ? { notMeasured } : {}) });
+  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: detectorTitles.size || null, productScope, buildHost: await loadBuildHost(), ...(notMeasured ? { notMeasured } : {}) });
 }
 
 // ---- / (the landing page) and the footer's run line ------------------------------------------------------------------------

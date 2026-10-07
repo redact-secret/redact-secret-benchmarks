@@ -13,7 +13,14 @@ export interface ScannerProfileProps extends ScannerProfileData {
 }
 
 function value(fact: ScannerFact) {
-  if (fact.value === null) return <StatusBadge status="not-measured">Not recorded</StatusBadge>;
+  if (fact.value === null) {
+    return (
+      <>
+        <StatusBadge status="not-measured">{fact.missing ?? 'Not recorded'}</StatusBadge>
+        {fact.note && <small className={styles.note}>{fact.note}</small>}
+      </>
+    );
+  }
   return (
     <>
       {fact.code ? <Code>{fact.value}</Code> : fact.value}

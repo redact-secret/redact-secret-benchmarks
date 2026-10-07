@@ -167,6 +167,16 @@ if (!view) {
     if (!t.includes(`${int(cases.length)} cases of the ${report.denominator} population`)) fail('/evaluation/scanner/ does not state the denominator of the official run');
     if (/committed snapshot|Snapshots, |snapshots recorded/.test(t)) fail('/evaluation/scanner/ describes a committed peer snapshot, but the pipeline is the official run');
     if (!/Published|Candidate/.test(t) || !t.includes('Mode')) fail('/evaluation/scanner/ does not state published or candidate');
+    // Measurement host (#620, #621): the engine's stamp from the view and the host facts the canonical run recorded, or "Unavailable" for a record without
+    // them; and the publication host apart, under its own label.
+    const recorded = (await readJson('benchmarks/official-runs.json')).runs.find(r => r.canonical && r.id.startsWith(`${report.population}@`));
+    if (report.measurement?.host && !t.includes(report.measurement.host)) fail(`/evaluation/scanner/ does not state the engine host ${report.measurement.host} of the official run`);
+    if (report.measurement?.startedAt && !t.includes(report.measurement.startedAt.slice(0, 10))) fail('/evaluation/scanner/ does not state when the official run was measured');
+    if (recorded?.measurementHost) {
+      const h = recorded.measurementHost;
+      for (const v of [h.node, h.os.release, ...(h.ci?.imageVersion ? [h.ci.imageVersion] : [])]) if (!t.includes(v)) fail(`/evaluation/scanner/ does not state the recorded host fact ${v}`);
+    } else if (!t.includes('Unavailable')) fail('/evaluation/scanner/ must say the host facts are unavailable for a run recorded without them');
+    if (!t.includes('Page built')) fail('/evaluation/scanner/ does not state the publication host apart from the measurement host');
 
     let at = -1;
     for (const scanner of scanners) {

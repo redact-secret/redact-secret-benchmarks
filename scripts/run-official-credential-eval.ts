@@ -52,6 +52,8 @@ import { bindingProblems, readRunArtifact, type RunArtifact } from '../benchmark
 import { controlFor } from './candidate-control.mjs';
 import { incompleteProblem, readJsonIfPresent, STAGE_INCOMPLETE_FILE, STAGE_INCOMPLETE_SCHEMA, stageReceiptProblems } from './stage-receipts.mjs';
 import { createHash } from 'node:crypto';
+import { arch as osArch, cpus, platform as osPlatform, release as osRelease } from 'node:os';
+import { captureMeasurementHost, measurementHostProblems, type MeasurementHost } from '../benchmarks/qualification/measurement-host.ts';
 import { releaseIdentityProblems } from './evidence-adoption.mjs';
 import { candidateOf, install as installCandidate, readRegistry as readCandidateRegistry, verifyLoaded } from './install-product-candidate.mjs';
 import { diagnosticBindingProblems, diagnosticSummary, outcomesOf, parseSelectedScanners, renderDiagnosticSummary, selectedScannerConfig, DIAGNOSTIC_PRODUCT_SCANNER, type PopulationOutcomes } from '../benchmarks/qualification/diagnostic-lane.ts';
@@ -263,6 +265,7 @@ if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
 // same determinism check and is the identity this run would produce. It is bound to the current pins in step 5 like a fresh artifact; any doubt measures fresh.
 const artifacts: string[] = [];
 let receiptReuse: { reused: boolean; source?: string; artifactDigest?: string; reasons?: string[] } | undefined;
+let measurementHost: MeasurementHost | undefined;
 if (reuseReceipt !== undefined) {
   const stage = methodsMode ? 'methods' : 'plain';
   const sources = reuseReceipt.split(',').filter(Boolean);
@@ -293,6 +296,8 @@ if (reuseReceipt !== undefined) {
           writeFileSync(kept, bytes);
           artifacts.push(kept);
           receiptReuse = { reused: true, source: source.replace(/^.*receipts-in\//, ''), artifactDigest: digest };
+          // The host of a reused stage is the host that measured it (#620, #621): the earlier record's, or none. Never this job's.
+          measurementHost = found.measurementHost !== undefined && measurementHostProblems(found.measurementHost).length === 0 ? found.measurementHost : undefined;
           console.log(`receipt reused (${stage} stage of ${populationId}, source ${receiptReuse.source}${receipt ? `, stage receipt measured in run ${receipt.measuredInRun}` : ', run record only'}): engine ${revision}, artifact ${digest}; the engine is not run for this stage`);
           break;
         }
@@ -305,6 +310,15 @@ if (reuseReceipt !== undefined) {
     receiptReuse = { reused: false, reasons: rejected.length ? rejected : ['no source was offered'] };
     console.log(`receipt not reused (${receiptReuse.reasons!.join(' | ')}): measuring fresh`);
   }
+}
+// The host facts are read here, as the engine is started on this machine (#620, #621): provenance of the measurement, never of a later build or reuse.
+if (!receiptReuse?.reused) {
+  let etcOsRelease: string | null = null;
+  try { etcOsRelease = readFileSync('/etc/os-release', 'utf8'); } catch { /* no /etc/os-release (macOS): the distribution name is not recorded */ }
+  measurementHost = captureMeasurementHost({ now: new Date(), env: process.env, platform: osPlatform(), arch: osArch(), release: osRelease(), osRelease: etcOsRelease, cpus: cpus(), node: process.version });
+  const hostProblems = measurementHostProblems(measurementHost);
+  // A host fact that does not fit the bounded record is left out, never written in another shape; the measurement itself is unaffected.
+  if (hostProblems.length) { console.log(`host facts not recorded: ${hostProblems.join('; ')}`); measurementHost = undefined; }
 }
 for (let n = 1; n <= runs && !receiptReuse?.reused; n++) {
   const artifact = path.join(out, `artifact-${n}.json`);
@@ -380,6 +394,8 @@ const record = {
   ...(selection?.omittedOptionalScanners.length ? { omittedOptionalScanners: selection.omittedOptionalScanners } : {}),
   ...(selection ? { scannerSelection: selectionRecord(selection, kept.manifest.config_hash) } : {}),
   ...(receiptReuse ? { receiptReuse } : {}),
+  // Where the engine ran (#620, #621): presentation provenance, excluded from every identity (id, config hash, semantic digest, receipt match).
+  ...(measurementHost ? { measurementHost } : {}),
   ...(evidenceTag && !(PRODUCT_POPULATIONS as readonly string[]).includes(populationId) ? { evidenceOverride: { tag: evidenceTag, manifestDigest: evidenceManifestDigest } } : {}),
   ...(candidate ? { productCandidate: { id: candidateId, commit: candidate.product.commit, version: candidate.product.version, published: false, packages: candidate.packages.map(x => ({ name: x.name, sha256: x.sha256 })), control: engineCandidate!.product, receipt: 'product-candidate-receipt.json' } } : {}),
   ...(attributionId ? { attribution: { id: attributionId, configFile, nodeDir: attribution!.nodeDir } } : {}),

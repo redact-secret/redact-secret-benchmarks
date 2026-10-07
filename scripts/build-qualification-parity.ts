@@ -19,6 +19,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { attributeCase, seedCaseId } from '../benchmarks/qualification/adapter.ts';
 import { ledgerSettledId } from '../benchmarks/qualification/ledger-rekey.ts';
+import { legacyReview } from '../benchmarks/qualification/legacy-review.ts';
 import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
 import { loadProductInputs } from '../benchmarks/qualification/inputs.ts';
 import { readRunArtifact, type CaseResult, type Measurement, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
@@ -336,7 +337,7 @@ if (existsSync(methodsFile) && reviewDerivation && changedSeeds.size) {
 }
 // Legacy differential entries the mapping cannot place: explained as resolved by the release only when every one is an OPEN ledger entry of a joined case with no canonical occurrence (the derivation's own reason).
 const mappedLegacyIds = new Set(Object.values(product.ledgerRekey?.occurrences ?? {}));
-const unplaced = ((JSON.parse(await readFile(path.join(root, 'benchmarks/support/legacy-review-queue.json'), 'utf8')).differential ?? []) as { id: string }[]).filter(q => !mappedLegacyIds.has(q.id));
+const unplaced = snapshot ? (await legacyReview(snapshot as never)).legacyQueue.filter(q => !mappedLegacyIds.has(q.id)) : [];
 const resolvedByRelease = reviewDerivation && unplaced.length > 0 && unplaced.length === (reviewDerivation.legacy.unmatched?.['no-canonical-occurrence'] ?? 0) && unplaced.every(q => product.ledger.entries[q.id]?.status === 'open') ? unplaced.length : 0;
 const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: mappedLegacyIds.size, resolvedByRelease }, reviewMapped, unjoinedByPeer, changedUnmappedByPeer);
 

@@ -3,7 +3,7 @@
  * The steps are credential-eval docs/consumers/benchmarks-quickstart.md; the pins are benchmarks/official-runs.json.
  *
  *   node --import tsx scripts/run-official-credential-eval.ts --population <id> --engine-dir <checkout at the pinned tag>
- *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--include-optional <scanner>] [--dry-run] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
+ *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--include-optional <scanner>] [--rehearse-post-engine-failure] [--dry-run] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
  *
  * SCANNER SELECTION (#812, benchmarks/qualification/scanner-selection.ts): with no input a full run measures the REQUIRED scanners only (flare-redact, gitleaks, redact-secret, trufflehog) under the
  * engine's released without-optional configuration; the optional OpenRedaction default profile is an explicit opt-in (`--include-optional openredaction`, workflow input include_openredaction),
@@ -56,6 +56,7 @@ import { releaseIdentityProblems } from './evidence-adoption.mjs';
 import { candidateOf, install as installCandidate, readRegistry as readCandidateRegistry, verifyLoaded } from './install-product-candidate.mjs';
 import { diagnosticBindingProblems, diagnosticSummary, outcomesOf, parseSelectedScanners, renderDiagnosticSummary, selectedScannerConfig, DIAGNOSTIC_PRODUCT_SCANNER, type PopulationOutcomes } from '../benchmarks/qualification/diagnostic-lane.ts';
 
+const REHEARSAL_POPULATIONS = ['regression-corpus', 'policy-corpus'] as const;
 const registry = JSON.parse(readFileSync(new URL('../benchmarks/official-runs.json', import.meta.url), 'utf8'));
 const args = process.argv.slice(2);
 const option = (name: string, fallback?: string) => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : fallback; };
@@ -98,6 +99,11 @@ const populationId = option('population') ?? fail('--population is required');
 const engineDir = path.resolve(option('engine-dir') ?? fail('--engine-dir is required'));
 const platform = option('platform') ?? fail('--platform is required');
 const methodsMode = args.includes('--methods');
+// Rehearsal only (#762): fail verification on purpose once the engine output exists, to exercise the INCOMPLETE path on a cheap population. Never for a real run.
+const rehearsePostEngineFailure = args.includes('--rehearse-post-engine-failure');
+if (rehearsePostEngineFailure && (diagnostic || methodsMode || attributionId || candidateId || reuseReceipt !== undefined || includeOptional.length || !(REHEARSAL_POPULATIONS as readonly string[]).includes(populationId))) {
+  fail(`--rehearse-post-engine-failure is a stage rehearsal of a plain official-class run on ${REHEARSAL_POPULATIONS.join(' or ')} only: no diagnostic, methods, attribution, candidate, receipt reuse, optional scanner or other population`);
+}
 const baseOut = path.resolve(option('out') ?? (dryRun ? '.' : fail('--out is required'))); // a dry run writes only when --out is given
 const out = methodsMode ? path.join(baseOut, 'methods') : baseOut;
 const minRuns = diagnostic ? 1 : 2;
@@ -327,6 +333,7 @@ const writeMarker = (reason: string) => {
   } catch { /* the marker is best effort: the exit status already says the run failed */ }
 };
 if (!diagnostic) { writeMarker('engine output finished; verification not completed'); incomplete = writeMarker; }
+if (rehearsePostEngineFailure) fail('REHEARSAL: verification failed on purpose after the engine finished (--rehearse-post-engine-failure); the finished engine output is kept and this stage is INCOMPLETE');
 
 // 5. Accept only schema-valid artifacts that bind to the population and agree semantically. They are read one at a time: a methods
 // artifact is a few hundred MB, and only the first one's identity is kept.

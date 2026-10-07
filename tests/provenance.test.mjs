@@ -49,26 +49,30 @@ test('a staging run that measured the candidate says so and never calls its vers
 
 test('staging measures the corpus against the qualified candidate; production against the released package (#201)', async () => {
   const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
-  const step = workflow.slice(workflow.indexOf('- name: Measure the corpus'), workflow.indexOf('- name: Produce the evaluation and qualification reports the site reads'));
+  const step = workflow.slice(workflow.indexOf('- name: Measure the corpus'), workflow.indexOf('- name: Produce the evaluation reports the site reads'));
   const staging = step.slice(step.indexOf('if [ "$TARGET" = staging ]'), step.indexOf('else'));
   for (const flag of ['--candidate-package="$CORE_PACKAGE"', '--candidate-node-package="$NODE_PACKAGE"', '--candidate-wasm-package="$WASM_PACKAGE"', '--candidate-source-commit="$PRODUCT_COMMIT"']) assert.ok(staging.includes(flag), flag);
   assert.match(step.slice(step.indexOf('else')), /else\n\s+npm run bench -- --strict\n\s+fi/, 'production runs bench with no candidate flag');
-  const evaluation = workflow.slice(workflow.indexOf('- name: Produce the evaluation and qualification reports the site reads'), workflow.indexOf('- name: Measure the qualified redact-secret commit as candidate evidence'));
-  assert.ok(!evaluation.includes('if:'), 'both environments publish evaluation and qualification evidence (#213)');
+  const evaluation = workflow.slice(workflow.indexOf('- name: Produce the evaluation reports the site reads'), workflow.indexOf('- name: Measure the qualified redact-secret commit as candidate evidence'));
+  assert.ok(!evaluation.includes('if:'), 'both environments publish evaluation evidence (#213)');
   assert.match(evaluation, /\n\s+npm run eval -- --scanner="\$scanners"\n/, 'evaluation-v1.json keeps measuring the released package');
   assert.match(evaluation, /scanners="\$\(jq -r '\.runClasses\.official\.required \| join\(","\)' benchmarks\/support\/scanner-roster\.json\)"/, 'with the required scanners of the roster, never the optional OpenRedaction default (#763)');
-  assert.match(evaluation, /\n\s+if ! npm run eval:qualify; then\n/, 'eval:qualify runs with the suite pins, no candidate flag');
-  assert.match(evaluation, /npm run eval:publish -- --qualification="\$qualification"\n/, 'the qualification run is published with the evaluation report');
+  // The engine qualification runs only under the legacy authority (#657); under `new` the bundle is published without an embedded qualification.
+  assert.match(evaluation, /if \[ "\$AUTHORITY" = legacy \]; then\n(?:.*\n)*?\s+if ! npm run eval:qualify; then\n(?:.*\n)*?\s+qualification_args=\(--qualification="\$qualification"\)\n\s+fi\n/, 'eval:qualify runs with the suite pins, no candidate flag, only under the legacy authority');
+  assert.match(evaluation, /npm run eval:publish -- "\$\{qualification_args\[@\]\}" --ledger-history="\$history"/, 'the qualification run, when there is one, is published with the evaluation report');
   assert.ok(!evaluation.includes('--candidate'), 'evaluation and qualification take no candidate flag');
 });
 
-test('both environments publish a support matrix: staging the candidate, production the released package (#213)', async () => {
+test('the support matrix: legacy classifies the candidate on staging and the release on production; new reads the view (#213, #657)', async () => {
   const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
-  const step = workflow.slice(workflow.indexOf('- name: Classify support'), workflow.indexOf('- name: Build the qualification view'));
-  assert.ok(!/\n\s+if: /.test(step), 'the step runs for every environment');
+  const step = workflow.slice(workflow.indexOf('- name: Classify support (legacy authority)'), workflow.indexOf('- name: Publish the provider roadmap'));
+  assert.match(step, /if: steps\.authority\.outputs\.authority == 'legacy'/, 'the legacy classification runs only under the legacy authority');
   const staging = step.slice(step.indexOf('if [ "$TARGET" = staging ]'), step.indexOf('else'));
   for (const flag of ['--candidate-package="$CORE_PACKAGE"', '--candidate-source-commit="$PRODUCT_COMMIT"']) assert.ok(staging.includes(flag), flag);
   assert.match(step.slice(step.indexOf('else')), /else\n\s+npm run eval:classify\n\s+fi\n\s+npm run eval:matrix\n\s+npm run eval:publish:matrix\n/, 'production classifies the released package in published mode');
+  const view = workflow.slice(workflow.indexOf('- name: Support matrix from the qualification view'), workflow.indexOf('- name: Mint a read-only token'));
+  assert.match(view, /if: steps\.authority\.outputs\.authority == 'new'/);
+  assert.match(view, /npm run qualification:matrix -- --mode published\n\s+npm run eval:publish:matrix -- --from-view/, 'the view matrix is built in published mode and validated again before it is placed in public/results');
 });
 
 test('the publish workflow no longer builds the legacy site UI, so it hands it no environment or commit (#602)', async () => {

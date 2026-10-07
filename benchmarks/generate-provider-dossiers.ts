@@ -33,7 +33,8 @@ export interface Inputs {
   detectorIds: Set<string>;
   criteria: unknown;
   coverage: Map<string, CoverageRow>;
-  matrix: { sourceReport: { runId: string; generatedAt: string; revision: string }; families: { family: string; status: string }[] } | null;
+  /** The legacy matrix (`sourceReport`) or the published matrix of the validated view (`source`, #657); only family and status are read, and the identity is carried. */
+  matrix: ({ sourceReport: { runId: string; generatedAt: string; revision: string }; families: { family: string; status: string }[] } | { schema: string; source: { view: { policyRevision: string }; populations: { population: string; semanticDigest: string }[] }; families: { family: string; status: string }[] }) | null;
 }
 
 export function defaultInputs(matrixPath: string | null): Inputs {
@@ -90,10 +91,13 @@ export function buildProviderDossiers(input: Inputs) {
     });
     return { id: provider.id, name: provider.name, families };
   });
-  const report = input.matrix?.sourceReport;
+  const matrix = input.matrix;
+  const report = matrix && 'sourceReport' in matrix ? matrix.sourceReport : null;
+  const supportMatrix = report ? { runId: report.runId, generatedAt: report.generatedAt, revision: report.revision }
+    : matrix && 'source' in matrix ? { source: 'qualification-view' as const, policyRevision: matrix.source.view.policyRevision, populations: matrix.source.populations.map(p => ({ population: p.population, semanticDigest: p.semanticDigest })) } : null;
   const output = {
     schemaVersion: 1 as const, taxonomySchemaVersion: input.taxonomy.schemaVersion,
-    supportMatrix: report ? { runId: report.runId, generatedAt: report.generatedAt, revision: report.revision } : null,
+    supportMatrix,
     providerCount: providers.length, familyCount: providers.reduce((n: number, p: { families: unknown[] }) => n + p.families.length, 0),
     stageDistribution, verdictDistribution, providers,
   };
@@ -112,7 +116,14 @@ async function main() {
   }
   const matrixPath = path.resolve(root, typeof options.matrix === 'string' ? options.matrix : 'results-output/support-matrix.json');
   if (options['require-matrix'] && !existsSync(matrixPath)) throw new Error(`Cannot read ${path.relative(root, matrixPath)} — run \`npm run eval:matrix\` first.`);
-  const output = buildProviderDossiers(defaultInputs(matrixPath));
+  const inputs = defaultInputs(matrixPath);
+  if (inputs.matrix && 'schema' in inputs.matrix) {
+    // The matrix of the validated view (#657): the same check a publisher applies, against the registry, the policy and the taxonomy of this checkout.
+    const { loadViewSupportContext, viewMatrixProblems } = await import('./qualification/matrix-publication.ts');
+    const problems = viewMatrixProblems(inputs.matrix, await loadViewSupportContext());
+    if (problems.length) throw new Error(`Refusing to read ${path.relative(root, matrixPath)} as the view support matrix: ${problems.join('; ')}`);
+  }
+  const output = buildProviderDossiers(inputs);
   const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'public/results/provider-dossiers-v1.json');
   await mkdir(path.dirname(target), { recursive: true });
   const temporary = `${target}.${process.pid}.tmp`;

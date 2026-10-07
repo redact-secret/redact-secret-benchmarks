@@ -170,6 +170,7 @@ export function authorityFreshnessProblems(file: QualificationAuthority, context
 export const AUTHORITY_READERS: readonly { path: string; why: string }[] = [
   { path: 'benchmarks/qualification/authority.ts', why: 'the shape and freshness rules' },
   { path: 'scripts/check-qualification-authority.mjs', why: 'the authority:check gate' },
+  { path: 'scripts/credential-publication.ts', why: 'the one place publish-site.yml learns which pipeline to run; the workflow never reads the file itself (#657)' },
   { path: 'web/services/authority.ts', why: 'the only reader in the Next app; every page asks it, never the file' },
   { path: 'schemas/qualification-authority-v1.json', why: 'the JSON schema of the file' },
   { path: 'tests/qualification-authority.test.mjs', why: 'the validator tests' },

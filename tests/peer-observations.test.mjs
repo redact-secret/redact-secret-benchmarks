@@ -110,7 +110,7 @@ test('ordinary validation and publication consume snapshots before any peer prov
 
   const publish = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
   const measure = publish.indexOf('- name: Measure the corpus');
-  const provision = publish.indexOf('- name: Provision checksum-pinned peers for qualification only');
+  const provision = publish.indexOf('- name: Provision checksum-pinned peers for the discovery evaluation and the legacy qualification');
   assert.ok(measure >= 0 && provision > measure, 'comparison runs without provisioned peer binaries');
   const measurement = publish.slice(measure, provision);
   assert.match(measurement, /npm run bench -- --strict/);

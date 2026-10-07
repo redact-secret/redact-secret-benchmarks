@@ -5,6 +5,12 @@ Issue [#533](https://github.com/redact-secret/redact-secret-benchmarks/issues/53
 [redact-secret#1049](https://github.com/redact-secret/redact-secret/issues/1049). Decision:
 [`decision-define-benchmark-handoff-states`](../decisions/2026-09-30-define-benchmark-handoff-states.md).
 
+Core's contract for the same five words is
+[`implementation-ready-handoff`](https://github.com/redact-secret/redact-secret/blob/main/docs/contracts/contribution/implementation-ready-handoff.md).
+Issue [#810](https://github.com/redact-secret/redact-secret-benchmarks/issues/810) aligned this spec with it; the
+amendment is
+[`decision-apply-implementation-ready-only-on-the-core-issue`](../decisions/2026-10-07-apply-implementation-ready-only-on-the-core-issue.md).
+
 Public anchor for other issues to link:
 `docs/specs/contribution-handoff-states.md#shared-vocabulary`.
 
@@ -25,10 +31,16 @@ Five workflow states. They label a **work item** (an issue), never a family's su
 | State | Meaning | Who moves it |
 | --- | --- | --- |
 | `intake` | A suggestion or edge case was received and is not yet triaged into research | any contributor opens; a maintainer triages |
-| `research-needed` | Triaged; the family's grammar, sources or issuance feasibility are not yet recorded | researcher works in the dossier |
-| `implementation-ready` | Benchmark research has handed a frozen contract to core (conditions below) | benchmark maintainer, by the handoff comment |
+| `research-needed` | Triaged; the family's grammar, sources or issuance feasibility are not yet recorded | credential-evidence researcher on the case; the dossier owner for a legacy dossier |
+| `implementation-ready` | Core may code now: the contract comes from the reviewed credential-evidence handoff and core's adoption ruling (conditions below) | core maintainer, on the **core** issue only, by the adoption comment |
 | `verification-needed` | Core reports an implementation; the benchmark has not yet measured that exact candidate | core maintainer, by the reverse handoff |
 | `complete` | The benchmark measured the exact candidate and recorded the result | benchmark maintainer, by the evidence PR |
+
+Core implements detectors; this repository does not. `implementation-ready` is therefore never applied on a
+benchmarks issue and never by a benchmarks maintainer. This repository's input to it is condition 5, the
+benchmark counterpart. The dossier stays a legacy source of the contract only where its documented consumer
+(core's new-detector-family checklist) still needs it. The `evaluation.owner` role in core's handoff is
+`benchmarks-maintainer`; it owns `complete`, the evidence PR.
 
 `complete` means "the loop closed and the measurement is recorded". It does not mean the candidate passed,
 was promoted, or is supported (see [No inference rule](#no-inference-rule)).
@@ -53,10 +65,11 @@ from the other by tooling.
 
 ## Conditions for `implementation-ready`
 
-The benchmark may hand a family to core as `implementation-ready` only when **all** hold, and each is
+Core applies `implementation-ready` on the core issue only when **all** hold, and each is
 checkable from the repository at a named commit:
 
-1. **Verdict.** The family's dossier entry has `research.verdict: ready`, a `tier`, a `researchedAt` date
+1. **Verdict.** The contract comes from the reviewed credential-evidence handoff and core's adoption ruling.
+   Where a legacy dossier is still the documented consumer, its entry has `research.verdict: ready`, a `tier`, a `researchedAt` date
    and at least one research issue, and `npm run dossiers:check` passes.
 2. **Identity.** The family id exists in `benchmarks/support/taxonomy.json` and belongs to the dossier's
    provider. A family that is not in the taxonomy is added through `npm run family:new` first, by a
@@ -67,8 +80,10 @@ checkable from the repository at a named commit:
 4. **Benign and twin requirements.** The contract lists the benign controls and near-miss twins the
    candidate must not flag, with the reason each is a control, so core can build its own minimal
    regression fixtures.
-5. **Benchmark counterpart.** A benchmark issue or evidence path exists that will measure the candidate
-   (for example a fixture slice and its evidence README), so the reverse handoff has a named target.
+5. **Benchmark counterpart.** This is the benchmarks side's real input. A benchmark issue exists that names the
+   corpus or fixture slice and the evidence path (for example `evidence/<issue>/README.md`) that will measure
+   the candidate, so the reverse handoff has a named target. Benchmarks composes the cases and uploads fixtures
+   to the corpus; it does not implement detectors.
 6. **Limitations as exclusions.** Every unresolved limitation (an `issuance-gated` body, an undocumented
    length, a provider-undecided property) is written as an exclusion, not as support. Nothing the
    dossier's `blockedBy` line gates is inside the supported contract.
@@ -83,7 +98,7 @@ issue rather than moving the state.
 
 ## Data the core issue receives
 
-The handoff is a comment on the core issue (and, for a family that already has a research issue here, a
+The handoff is core's adoption comment on the core issue (and, for a family that already has a research issue here, a
 link back). It carries links and identifiers only. It never copies the benchmark corpus, generated
 variants, holdout cases, raw result bundles or dossier prose.
 

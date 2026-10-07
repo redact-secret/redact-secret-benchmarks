@@ -9,6 +9,7 @@
 // numbers of the schema 1.2 artifacts before range-less memberships were carried (`--before-ref`; kept in the record with the retired semantic
 // digests, which `--check` verifies against the pins). It states a difference and decides nothing: no threshold, tolerance, membership or
 // verdict is read or written, and cells are never pooled across families or populations.
+import { OFFICIAL_ARTIFACT, officialRecordExists } from './lib/pii-official-record.mjs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -43,7 +44,8 @@ function rowsOf(artifact) {
 function build(beforeRef) {
   const populations = [];
   for (const view of VIEWS) {
-    const after = JSON.parse(readFileSync(path.join(ROOT, `benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`), 'utf8'));
+    // The artifact the consumer pins name now: the recorded official execution when there is one, else the exploratory replay.
+    const after = JSON.parse(readFileSync(path.join(ROOT, officialRecordExists(ROOT) ? OFFICIAL_ARTIFACT(view) : `benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`), 'utf8'));
     const afterRows = rowsOf(after);
     let before = null, beforeRows = null;
     if (beforeRef) {

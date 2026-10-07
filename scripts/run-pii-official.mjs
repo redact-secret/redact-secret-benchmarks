@@ -78,6 +78,24 @@ export function metricParity(fresh, committed) {
   return { against: 'committed exploratory replay of the frozen observation', rows: b.length, rowsCommitted: a.length, metricCells: cells, metricCellsDiffering: differing };
 }
 
+/**
+ * The pin set official artifacts are consumed under: the committed pins with the three digests an execution changes (artifact, manifest, candidate) and the mode
+ * official, the previous head retired (what a repin does). Nothing else may differ, so any other difference between an artifact and the committed pins is a
+ * rejection of the consumer, not a repin. Idempotent: a head that already is the new digest is not retired.
+ */
+export function deriveOfficialPins(pins, { view, artifactDigest, manifestDigest, candidateDigest }) {
+  const out = structuredClone(pins);
+  const pin = out.populations.find(item => item.label === view);
+  if (!pin) throw new Error(`no pin for ${view}`);
+  if (pin.artifactDigest !== artifactDigest) pin.retiredArtifactDigests = [...new Set([...(pin.retiredArtifactDigests ?? []), pin.artifactDigest])].sort();
+  if (pin.manifestDigest !== manifestDigest) pin.retiredManifestDigests = [...new Set([...(pin.retiredManifestDigests ?? []), pin.manifestDigest])].sort();
+  pin.artifactDigest = artifactDigest;
+  pin.manifestDigest = manifestDigest;
+  pin.projection.mode = 'official';
+  for (const scanner of pin.scanners) { scanner.artifactDigest = candidateDigest; scanner.product = { candidateDigest, kind: 'candidate' }; }
+  return out;
+}
+
 /** Problems with a fresh artifact, against the plan and the committed pins. An empty list is the official-mode contract met by this artifact. */
 export function artifactProblems({ doc, plan, population, pinPopulation, candidateDigest, manifestDigest }) {
   const problems = [];
@@ -132,7 +150,8 @@ export function runOfficial({ engine, shim, packageDir, addonDir, node, work, ro
   mkdirSync(work, { recursive: true });
   const conv = join(work, 'conv');
   const { summary } = writeConversion(conv, { candidateDigest: packageTree });
-  const populations = [], accepted = [], derivedPins = structuredClone(pins);
+  const populations = [], accepted = [];
+  let derivedPins = structuredClone(pins);
   derivedPins.requireComplete = true;
   for (const planned of plan.populations) {
     const view = planned.view, dir = join(conv, view), out = join(work, 'out', view);
@@ -168,14 +187,7 @@ export function runOfficial({ engine, shim, packageDir, addonDir, node, work, ro
     });
     populations.push(entry);
     accepted.push({ name: `${view}.public-synthetic-artifact.json`, text: bytes.toString('utf8') });
-    // The pin set the artifacts are consumed under: the committed pins with the three digests a fresh execution changes and the mode official.
-    const pin = derivedPins.populations.find(item => item.label === view);
-    pin.retiredArtifactDigests = [...new Set([...(pin.retiredArtifactDigests ?? []), pin.artifactDigest])].sort();
-    pin.retiredManifestDigests = [...new Set([...(pin.retiredManifestDigests ?? []), pin.manifestDigest])].sort();
-    pin.artifactDigest = doc.semanticDigest;
-    pin.manifestDigest = row.manifestDigest;
-    pin.projection.mode = 'official';
-    for (const scanner of pin.scanners) { scanner.artifactDigest = packageTree; scanner.product = { kind: 'candidate', candidateDigest: packageTree }; }
+    derivedPins = deriveOfficialPins(derivedPins, { view, artifactDigest: doc.semanticDigest, manifestDigest: row.manifestDigest, candidateDigest: packageTree });
   }
   let consumed = null;
   if (populations.every(item => item.problems.length === 0) && accepted.length === plan.populations.length) {

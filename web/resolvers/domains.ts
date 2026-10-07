@@ -304,7 +304,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       rows: [
         { id: `${population.populationId}:projection-binding`, label: 'Measured product', status: 'info', statusWord: modeLabel,
           value: `${kind} ${String(identity?.scannerVersion ?? '')} · ${projection.requiredViews.join(', ')}`,
-          detail: `${relation} The ${mode} run is a verification, never an official qualification run. Roster ${projection.rosterDigest.slice(0, 12)}, population ${population.population.populationDigest.slice(0, 12)}. Each row below keeps its own denominators; nothing is pooled across families, views or populations.` },
+          detail: `${relation} ${mode === 'official' ? 'This is an official-mode execution under the pinned engine contract. It is evidence, not a qualification verdict: statuses still come from the benchmark scorer and nothing here is an accepted verdict.' : `The ${mode} run is a verification, never an official qualification run.`} Roster ${projection.rosterDigest.slice(0, 12)}, population ${population.population.populationDigest.slice(0, 12)}. Each row below keeps its own denominators; nothing is pooled across families, views or populations.` },
         ...projection.rows.map(row => ({
           id: `${population.populationId}:${row.view}:${row.family}`, label: `${row.family} · ${row.view}`, status: 'info' as const, statusWord: modeLabel,
           value: `${int(row.counts.authoredCases)} ${row.counts.authoredCases === 1 ? 'case' : 'cases'} · ${int(row.counts.variants)} ${row.counts.variants === 1 ? 'variant' : 'variants'}`,

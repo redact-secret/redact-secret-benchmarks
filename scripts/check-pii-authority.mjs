@@ -16,6 +16,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
+import { officialRecordExists, officialRecordProblems } from './lib/pii-official-record.mjs';
 import { PII_AUTHORITY_FILE, criteriaDriftProblems, piiAuthorityFreshnessProblems, piiAuthorityShapeProblems, unlistedPiiAuthorityReaders } from '../benchmarks/evaluation/domains/pii/authority.ts';
 
 const root = new URL('../', import.meta.url);
@@ -33,7 +34,8 @@ export async function computeCriteria({ read = json, readIfPresent = jsonIfPrese
   const migration = read('benchmarks/pii-eval-migration.json');
   const pins = read('benchmarks/pii-eval-population-pins.json');
   const artifacts = migration.benchmarkPopulationDualRun.artifacts;
-  const digests = Object.fromEntries(artifacts.map(a => [a.view, a.semanticDigest]));
+  // The target of the rehearsal and of an authorisation is what the consumer pins read now (the head of each population pin): the exploratory replays until an official run is recorded, that run's artifacts after.
+  const digests = Object.fromEntries(pins.populations.map(p => [p.label, p.artifactDigest]));
   const met = ok => (ok ? 'met' : 'unmet');
   const state = {};
 
@@ -44,7 +46,9 @@ export async function computeCriteria({ read = json, readIfPresent = jsonIfPrese
     replay.engine?.platform === 'linux-x64' && replay.verdict?.allEqualSemanticDigest === true && replay.verdict?.allReplaysByteIdentical === true &&
     artifacts.every(a => replay.populations?.find(p => p.view === a.view)?.semanticDigestReplayed === a.semanticDigest));
 
-  state['official-mode-measurement'] = met(pins.populations.length > 0 && pins.populations.every(p => p.projection?.mode === 'official'));
+  // Official mode is not a flag: the pins are official AND the recorded run (provenance, receipt, durable copies, the pinned engine, the production consumer over the committed copies) holds.
+  state['official-mode-measurement'] = met(pins.populations.length > 0 && pins.populations.every(p => p.projection?.mode === 'official') &&
+    officialRecordExists(root.pathname) && officialRecordProblems({ root: root.pathname }).length === 0);
   state['protected-path-live'] = met(migration.protectedPath?.state === 'live-verified' && migration.protectedPath?.liveProtectedArtifactConsumed === true);
 
   const { buildInventory, comparable, INVENTORY_FILE } = await import('./pii-legacy-inventory.mjs');
@@ -54,7 +58,7 @@ export async function computeCriteria({ read = json, readIfPresent = jsonIfPrese
   const rehearsal = readIfPresent(REHEARSAL);
   state['rollback-rehearsed-for-target'] = met(Boolean(rehearsal) && rehearsal.result?.restoredIdentical === true && rehearsal.result?.matrixIdenticalAcrossValues === true &&
     rehearsal.target?.engineCommit === migration.pins.piiEvalProjection &&
-    artifacts.every(a => rehearsal.target?.populationDigests?.[a.view] === a.semanticDigest));
+    pins.populations.every(p => rehearsal.target?.populationDigests?.[p.label] === p.artifactDigest));
   return { state, digests, engineCommit: migration.pins.piiEvalProjection };
 }
 

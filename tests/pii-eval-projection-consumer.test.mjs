@@ -6,7 +6,7 @@ import { consume, loadPins, parseStrictJson, semanticDigest, verifyArtifact, PRO
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const pinsText = read('benchmarks/pii-eval-population-pins.json');
 const views = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'];
-const artifactText = view => read(`benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
+const artifactText = view => read(`benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`);
 const clone = value => structuredClone(value);
 const reseal = doc => { doc.semanticDigest = semanticDigest(doc); return doc; };
 const codes = (doc, pins) => verifyArtifact(doc, pins).reasons.map(reason => reason.code);
@@ -31,7 +31,7 @@ test('the four benchmark populations are accepted with their projections, separa
     assert.equal(population.schemaVersion, '1.4');
     assert.equal(population.unavailable, undefined, 'a 1.4 artifact has nothing to mark unavailable');
     assert.deepEqual(population.productProjection.requiredViews, [population.label]);
-    assert.ok(population.productProjection.rows.every(row => row.mode === 'exploratory' && row.view === population.label));
+    assert.ok(population.productProjection.rows.every(row => row.mode === pins.populations.find(pin => pin.label === population.label).projection.mode && row.view === population.label));
     assert.equal(population.productProjection.rows.reduce((n, row) => n + row.counts.authoredCases, 0), population.populationCounts.authoredCases);
   }
   assert.equal(new Set(report.populations.map(row => row.population.populationDigest)).size, 4);
@@ -93,7 +93,8 @@ test('rows that do not add up to the population are rejected as a count mismatch
 
 test('unknown and mixed modes and views are rejected', () => {
   let doc = base('oracle-plan');
-  doc.semantic.productProjection.rows[0].mode = 'official';
+  const pinnedMode = loadPins(pinsText).populations.find(row => row.label === 'oracle-plan').projection.mode;
+  doc.semantic.productProjection.rows[0].mode = pinnedMode === 'official' ? 'exploratory' : 'official';
   assert.ok(codes(reseal(doc), pinsFor(doc)).includes('projection-mode-mismatch'), 'a row that differs from the pinned mode');
   doc = base('oracle-plan');
   doc.semantic.productProjection.rows[0].mode = 'staging';

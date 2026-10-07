@@ -24,7 +24,7 @@ const every = (measurement, visit) => {
 async function publishedMatrix() {
   const pins = ['benchmarks/pii-eval-public-synthetic-pins.json', 'benchmarks/pii-eval-population-pins.json'].map(file => root + file);
   const demo = root + JSON.parse(readFileSync(`${root}benchmarks/pii-eval-public-synthetic-source.json`, 'utf8')).durableCopy.path;
-  const files = views.map(view => `${root}benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
+  const files = views.map(view => `${root}benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`);
   return buildPiiSupportMatrixV2({ piiEvalMeasurement: await piiEvalMeasurementFrom(pins, [demo, ...files]) });
 }
 

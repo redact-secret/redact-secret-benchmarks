@@ -43,9 +43,9 @@
     {
       "id": "official-mode-measurement",
       "basis": "computed",
-      "statement": "The four populations are measured in official mode on the canonical engine. They are exploratory today, so no PII number is an official run.",
-      "state": "unmet",
-      "evidence": "benchmarks/pii-eval-population-pins.json populations[].projection.mode"
+      "statement": "The four populations are measured in official mode on the canonical engine: a fresh execution of the pinned scanner package, recorded with its provenance. An official measurement is evidence; it is not an accepted verdict.",
+      "state": "met",
+      "evidence": "benchmarks/pii-eval-official-run/record.json (fresh canonical linux-x64 execution, run 37559349070 of .github/workflows/pii-official-run.yml; pins projection.mode official; checked by scripts/lib/pii-official-record.mjs through pii:migration:check). An execution, not an accepted verdict"
     },
     {
       "id": "protected-path-live",

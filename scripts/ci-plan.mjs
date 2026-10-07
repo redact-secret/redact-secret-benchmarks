@@ -42,8 +42,8 @@ const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.js
  * (`benchmarks/evaluation/domains/pii/`, which is the oracle) stays a legacy input.
  */
 export const PII_MIGRATION = [
-  /^scripts\/(adopt-pii-engine|pii-official-plan|pii-scorer-basis|replay-pii-populations|run-pii-population-dual-run|convert-pii-populations|check-pii-eval-migration|fetch-pii-eval-public-synthetic|check-custodian-conformance|check-pii-authority|pii-legacy-inventory|rehearse-pii-authority-rollback|run-pii-official)\.mjs$/,
-  /^scripts\/(lib\/pii-population-|lib\/pii-tree-digest\.mjs$|pii-eval-population-parity\/)/,
+  /^scripts\/(adopt-pii-engine|pii-official-plan|pii-scorer-basis|replay-pii-populations|run-pii-population-dual-run|convert-pii-populations|check-pii-eval-migration|fetch-pii-eval-public-synthetic|check-custodian-conformance|check-pii-authority|pii-legacy-inventory|rehearse-pii-authority-rollback|run-pii-official|record-pii-official-run)\.mjs$/,
+  /^scripts\/(lib\/pii-population-|lib\/pii-(tree-digest|official-record)\.mjs$|pii-eval-population-parity\/)/,
   /^benchmarks\/(pii-eval-|pii-authority\.json$)/,
   /^benchmarks\/evaluation\/domains\/pii\/(pii-eval-artifact-consumer|custodian-consumer|authority)\./,
 ]

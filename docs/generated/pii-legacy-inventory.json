@@ -67,7 +67,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 26
+    "externalCallerFiles": 28
    }
   }
  },
@@ -1237,22 +1237,24 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 13,
+    "total": 15,
     "withinCandidates": 0,
     "testCallers": 6,
-    "external": 7,
+    "external": 9,
     "externalByClass": {
      "benchmarks": 1,
      "package hook": 1,
-     "script": 5
+     "script": 7
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/custodian-consumer.mjs (benchmarks, import)",
      "package.json (package hook, path)",
      "scripts/check-pii-eval-migration.mjs (script, import+path)",
      "scripts/fetch-pii-eval-public-synthetic.mjs (script, import+path)",
+     "scripts/lib/pii-official-record.mjs (script, import+path)",
      "scripts/lib/pii-population-conversion.mjs (script, import+path)",
      "scripts/pii-publication-inputs.ts (script, import+path)",
+     "scripts/record-pii-official-run.mjs (script, import+path)",
      "scripts/run-pii-official.mjs (script, import+path)"
     ]
    }

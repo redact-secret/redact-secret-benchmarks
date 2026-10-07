@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { parseStrictJson, semanticDigest } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
+import { officialRecordExists, officialRecordProblems } from './lib/pii-official-record.mjs';
 
 const file = new URL('../benchmarks/pii-eval-migration.json', import.meta.url);
 const record = JSON.parse(await readFile(file, 'utf8'));
@@ -105,19 +106,29 @@ if (JSON.stringify(report.populations.flatMap(row => row.classifiedDifferences.m
 for (const [version, item] of Object.entries(record.engine.artifactSchema.schemaFiles)) {
   if (!/^[0-9a-f]{40}$/.test(item.upstreamCommit) || await digest(item.path) !== item.sha256) fail(`public artifact schema ${version} drift`);
 }
-// The consumer pins of the four populations are exactly the dual-run artifacts, for the pinned engine, and bind a candidate only by commit.
+// The consumer pins of the four populations are the dual-run artifacts (exploratory replays of the frozen observation, the oracle parity evidence) until an official run is recorded; from then on
+// the pins head is that run's artifact, the replays' digests are retired by the pins, and the record of the run (durable copies, receipt, provenance) is checked whole.
 const popPins = JSON.parse(await readFile(new URL(`../${dual.consumerPins}`, import.meta.url), 'utf8'));
 if (popPins.schema !== 'pii-eval-consumer-pins/1' || popPins.artifactSchema.version !== record.engine.artifactSchema.version || popPins.build.commit !== record.pins.piiEvalProjection ||
     popPins.build.cargoLockSha256 !== record.pins.piiEvalProjectionCargoLockSha256 || popPins.requireComplete !== true || popPins.populations.length !== dual.artifacts.length)
   fail('population consumer pins');
+const rootPath = new URL('../', import.meta.url).pathname;
+const official = officialRecordExists(rootPath);
+if (official) {
+  const problems = officialRecordProblems({ root: rootPath });
+  if (problems.length) fail(`official run record: ${problems.join('; ')}`);
+}
 for (const item of dual.artifacts) {
   const pin = popPins.populations.find(row => row.label === item.view);
-  if (!pin || pin.artifactDigest !== item.semanticDigest || pin.manifestDigest !== item.manifestDigest || pin.population.populationDigest !== item.snapshotDigest ||
-      pin.projection.rosterDigest !== item.rosterDigest || JSON.stringify(pin.projection.requiredViews) !== JSON.stringify([item.view]) || pin.projection.mode !== item.mode ||
-      pin.scanners.length !== 1 || pin.scanners[0].product.kind !== 'candidate' || pin.scanners[0].candidateSourceCommit !== record.benchmarkPopulations.candidate.sourceCommit ||
-      pin.scanners[0].product.candidateDigest !== record.benchmarkPopulations.candidate.artifactSetCommitment || pin.scanners[0].activationDigest !== record.scanner.activationDigest ||
-      pin.scanners[0].configurationDigest !== record.scanner.configurationDigest)
-    fail(`population consumer pin for ${item.view}`);
+  // Everything the exploratory replay and the official run share must equal the migration record; the three digests an execution changes are checked by the official record.
+  const sharedOk = pin && pin.population.populationDigest === item.snapshotDigest && pin.projection.rosterDigest === item.rosterDigest &&
+    JSON.stringify(pin.projection.requiredViews) === JSON.stringify([item.view]) && pin.scanners.length === 1 && pin.scanners[0].product.kind === 'candidate' &&
+    pin.scanners[0].candidateSourceCommit === record.benchmarkPopulations.candidate.sourceCommit && pin.scanners[0].activationDigest === record.scanner.activationDigest &&
+    pin.scanners[0].configurationDigest === record.scanner.configurationDigest;
+  const exploratoryOk = pin && pin.artifactDigest === item.semanticDigest && pin.manifestDigest === item.manifestDigest && pin.projection.mode === item.mode &&
+    pin.scanners[0].product.candidateDigest === record.benchmarkPopulations.candidate.artifactSetCommitment;
+  const officialOk = official && pin && pin.projection.mode === 'official' && pin.retiredArtifactDigests.includes(item.semanticDigest) && pin.retiredManifestDigests.includes(item.manifestDigest);
+  if (!sharedOk || !(exploratoryOk || officialOk)) fail(`population consumer pin for ${item.view}`);
 }
 // The linux replay: the canonical engine reproduces the committed artifacts' semantic digests and bytes (a darwin build made them).
 const linux = dual.linuxReplay;

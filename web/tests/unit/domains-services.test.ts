@@ -92,7 +92,7 @@ describe('PII evaluation', () => {
 
   test('a published support artifact carries the schema 1.4 projection of the four populations and binds a candidate only to its own commit', async () => {
     const files = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress']
-      .map(view => `${REAL}/benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
+      .map(view => `${REAL}/benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`);
     const pins = [`${REAL}/benchmarks/pii-eval-public-synthetic-pins.json`, `${REAL}/benchmarks/pii-eval-population-pins.json`];
     const copy = `${REAL}/${(JSON.parse(await readFile(`${REAL}/benchmarks/pii-eval-public-synthetic-source.json`, 'utf8')) as { durableCopy: { path: string } }).durableCopy.path}`;
     const candidate = JSON.parse(await readFile(pins[1], 'utf8')).populations[0].scanners[0].candidateSourceCommit as string;

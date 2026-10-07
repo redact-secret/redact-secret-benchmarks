@@ -5,6 +5,8 @@ import { Chip, Note, StatusBadge } from '../feedback';
 import { Stack, Section } from '../layout';
 import { Breadcrumb, PageHead } from '../page';
 import { Code } from '../text';
+import { ObservationOrigins } from './ObservationOrigins';
+import { OptionalScannerNote } from './OptionalScannerNote';
 import { ReviewDisclosure } from './ReviewDisclosure';
 import { ScopeAccounting } from './ScopeAccounting';
 import { cx } from '../../lib/cx';
@@ -70,7 +72,7 @@ const gapColumns: DataTableColumn<GapRow>[] = [
  * one population at a time. The support status is the product's own qualification and is shown apart from the scanner
  * observations on each family page; no count here is a sum across populations or scanners.
  */
-export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, disclosure, summary, identity, populations, scanners, families, unattributed, gaps, scope }: QualificationOverviewProps) {
+export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, disclosure, summary, identity, populations, scanners, families, unattributed, gaps, scope, origins }: QualificationOverviewProps) {
   return (
     <Stack gap="xl" className={styles.overview}>
       <PageHead before={<Breadcrumb items={breadcrumb} />} eyebrow={eyebrow} title={title} lede={lede} meta={meta} />
@@ -101,16 +103,12 @@ export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, 
             {scanners.profiles.disclosure && <Note tone="info" title="Results differ by configuration">{scanners.profiles.disclosure}</Note>}
           </>
         )}
-        {scanners.notMeasured?.map(n => (
-          <Note key={n.key} tone="info" title={n.statement}>
-            <p>{n.reason}</p>
-            <p>{n.lastMeasurement}</p>
-            {n.officialMeasurement && <p>{n.officialMeasurement}</p>}
-          </Note>
-        ))}
+        {scanners.notMeasured && <OptionalScannerNote scanners={scanners.notMeasured} />}
       </Section>
 
       {scope && <ScopeAccounting {...scope} />}
+
+      {origins && <ObservationOrigins {...origins} />}
 
       <Section title={families.title} description={families.description}>
         <DataTable<FamilyRow> columns={familyColumns} rows={families.rows} getRowKey={r => r.family} caption={families.title} wide empty="No detector family is recorded in this view." />

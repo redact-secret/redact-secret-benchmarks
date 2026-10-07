@@ -149,3 +149,22 @@ test('an attribution run is a dispatch input of the same workflow and driver, ne
   assert.match(driver, /the registry pins no attribution run/);
   assert.match(driver, /node-dir', nodeDir/, 'the node directory follows the configuration');
 });
+
+
+// ---- Retained measurements of the scanner roster (#763): synthetic registry and roster, no recorded run is read. ----
+
+import { retainedMeasurementProblems } from '../scripts/check-official-runs.mjs';
+
+const retainedRoster = (over = {}) => ({
+  runClasses: { official: { required: ['a'], optional: ['opt'] } },
+  optionalScanners: { opt: { retainedMeasurements: [{ recordedOn: '2026-01-01', runs: [{ id: 'old@linux-x64', semanticDigest: 'sha256:' + '1'.repeat(64) }], ...over }] } },
+});
+const activeRegistry = (extra = {}) => ({ runs: [{ id: 'new@linux-x64', recordedOn: '2026-02-01', artifact: { semanticDigest: 'sha256:' + '2'.repeat(64) } }], ...extra });
+
+test('a retained measurement is older than the active runs, named once, and for an optional scanner (#763)', () => {
+  assert.deepEqual(retainedMeasurementProblems(activeRegistry(), retainedRoster()), []);
+  assert.match(retainedMeasurementProblems(activeRegistry(), retainedRoster({ recordedOn: '2026-02-01' }))[0], /not older than the active runs/);
+  assert.match(retainedMeasurementProblems(activeRegistry({ historicalRuns: [{ id: 'old@linux-x64', artifact: { semanticDigest: 'sha256:' + '1'.repeat(64) } }] }), retainedRoster())[0], /also listed by the registry/);
+  const required = retainedRoster(); required.runClasses.official.optional = [];
+  assert.match(retainedMeasurementProblems(activeRegistry(), required)[0], /not an optional scanner/);
+});

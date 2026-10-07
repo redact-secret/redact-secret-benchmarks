@@ -32,7 +32,57 @@
         "darwin-arm64": "credential-public-v1.without-openredaction.darwin-arm64.json"
       },
       "engineRelease": "v0.1.0-alpha.13",
-      "detects": "Every built-in OpenRedaction pattern (579 in 1.1.5): credentials and also personal data (names, phone numbers, handles) and resource identifiers. Most of its findings are out of scope for credential evaluation."
+      "detects": "Every built-in OpenRedaction pattern (579 in 1.1.5): credentials and also personal data (names, phone numbers, handles) and resource identifiers. Most of its findings are out of scope for credential evaluation.",
+      "retainedMeasurements": [
+        {
+          "recordedOn": "2026-10-05",
+          "engine": {
+            "version": "0.1.0-alpha.5",
+            "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+          },
+          "note": "The last official measurement of the default profile: the four canonical linux-x64 runs of the snapshot-2026.10.05 acceptance on credential-eval alpha.5. The repin to alpha.15 (and the four-scanner default) dropped them from official-runs.json, so the roster keeps the pointer; the artifacts are retained in the archive release below and each is checked by its byte digest.",
+          "archive": {
+            "release": "official-runs-registry-37296823599",
+            "asset": "official-runs-37296823599.tar.gz",
+            "ciRun": "37296823599"
+          },
+          "nativeLabels": "unavailable",
+          "runs": [
+            {
+              "id": "policy-corpus@linux-x64",
+              "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+              "semanticDigest": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+              "byteDigest": "sha256:400da577902a97d63100da1166ede6a6bc7ee4a016c98489102fd6401a2fe226",
+              "scannerVersion": "1.1.5",
+              "scannerConfigurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974"
+            },
+            {
+              "id": "public-evidence-snapshot+methods@linux-x64",
+              "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
+              "semanticDigest": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
+              "byteDigest": "sha256:d4e9a1b0b373ec404cfafa629b985b68eb161276b14da8dcb01bb81fb99d90ec",
+              "scannerVersion": "1.1.5",
+              "scannerConfigurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974"
+            },
+            {
+              "id": "public-evidence-snapshot@linux-x64",
+              "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+              "semanticDigest": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
+              "byteDigest": "sha256:31ebec733e4e715fafe5d8ee8af826c864d4cc61a3f49eca19242fce2ba4e3ea",
+              "scannerVersion": "1.1.5",
+              "scannerConfigurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974"
+            },
+            {
+              "id": "regression-corpus@linux-x64",
+              "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+              "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+              "byteDigest": "sha256:50687e1c6a38410db5686ec8c1c3ce6f46a7585bc4e8cf5bfcdfa22cf6411340",
+              "scannerVersion": "1.1.5",
+              "scannerConfigurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974"
+            }
+          ]
+        }
+      ]
     },
     "openredaction-credential-bearing": {
       "label": "OpenRedaction credential profile (33 types)",

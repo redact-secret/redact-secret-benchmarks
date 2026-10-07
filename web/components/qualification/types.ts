@@ -133,13 +133,44 @@ export interface QualificationOverviewProps {
   gaps: { title: string; description: string; rows: GapRow[] };
   /** Scope accounting beside the scanner counts (#724); absent when the view carries none. */
   scope?: ScopeAccountingProps;
+  /** Where each scanner's observation came from, apart from the scope evidence (#724); absent when the view carries none. */
+  origins?: ObservationOriginsProps;
+}
+
+/** One scanner's observation of one artifact: scanned in that run, reused from an earlier verified run, or not recorded. Provenance, never evidence. */
+export interface OriginRow {
+  key: string; population: string; artifact: string; scanner: string;
+  state: 'fresh' | 'reused' | 'not-recorded';
+  /** The state in words: "Scanned in this run", "Reused from an earlier verified run", "Not recorded". */
+  origin: string;
+  /** The engine's fixed-vocabulary reason, or why none is shown. */
+  reason: string;
+  /** For a reused observation, the digests of the source set and the input; otherwise a statement that none applies. */
+  receipt: string;
+}
+export interface ObservationOriginsProps {
+  title: string;
+  description: string;
+  notes: string[];
+  rows: OriginRow[];
+  /** Optional scanners with no observation in this view: stated, never given an origin of their own. */
+  omitted: { key: string; statement: string }[];
+  empty: string;
 }
 
 /**
  * An OPTIONAL scanner this view does not carry (#763): the contract's sentence, why, and where its last measurement is. Never a zero and never a row of counts.
  * Every field is already formatted; the pointer names the run, engine, configuration and date of the earlier measurement, which stays history.
  */
-export interface NotMeasuredScanner { key: string; statement: string; reason: string; lastMeasurement: string; officialMeasurement?: string; decision?: string }
+export interface NotMeasuredScanner {
+  key: string; statement: string; reason: string; lastMeasurement: string; officialMeasurement?: string; decision?: string;
+  /** Where the artifacts of the last measurement are kept, when the registry no longer lists its runs (a retained measurement). */
+  archive?: string;
+  /** What scope accounting that measurement carries: a legacy engine's native labels are unavailable, so its counts are Unknown and never zero. */
+  scope?: string;
+  /** A link to the page that holds the full pointer. Internal only. */
+  link?: { label: string; href: string };
+}
 
 /**
  * The profiles of one scanner, labelled separately (#764): what each detects, its configuration identity and whether this view measured it, with the one disclosure
@@ -259,5 +290,7 @@ export interface PipelineStampProps {
   facts: { term: string; value: string; code?: boolean }[];
   link?: { label: string; href: string };
   disclosure?: ReviewDisclosureProps;
+  /** Optional scanners the view did not measure (#763): the page states it beside its numbers and points at the last measurement. */
+  notMeasured?: NotMeasuredScanner[];
   className?: string;
 }

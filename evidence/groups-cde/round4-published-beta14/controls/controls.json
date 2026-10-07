@@ -1,0 +1,137 @@
+{
+ "schema": "groups-cde-round4-controls-v1",
+ "published": "0.1.0-beta.14",
+ "reference": "candidate 4e0041081aad22d0101bd52db52017b67b5bd3db (evidence/739/round3)",
+ "corpora": {
+  "b1": {
+   "cases": 82,
+   "sha256": "ddd709174816443e2234594f040d0dae27e3b78b5dce68f2396296bffde8708c",
+   "positives": 34,
+   "positivesFailing": 0,
+   "controls": 42,
+   "controlsFlagged": 0,
+   "unsupported": 6,
+   "conflict": 0,
+   "parityDivergent": 0,
+   "streamNotEqualWhole": 0,
+   "regressionsVsAccepted": [],
+   "improvementsVsAccepted": [],
+   "casesWithDifferentFindings": 0,
+   "differentFindingCases": []
+  },
+  "r1": {
+   "cases": 486,
+   "sha256": "74fed38245503b63d55247f0da2da8e27a271de5467b3b06146ebef0c4f7a4f1",
+   "positives": 200,
+   "positivesFailing": 0,
+   "controls": 203,
+   "controlsFlagged": 0,
+   "unsupported": 81,
+   "conflict": 2,
+   "parityDivergent": 0,
+   "streamNotEqualWhole": 0,
+   "regressionsVsAccepted": [],
+   "improvementsVsAccepted": [],
+   "casesWithDifferentFindings": 2,
+   "differentFindingCases": [
+    {
+     "id": "x:app-only-bearer-token:bearer-percent-raw:unsupported",
+     "kind": "unsupported",
+     "before": [
+      [
+       22,
+       40,
+       "bearer_token",
+       "redact"
+      ]
+     ],
+     "after": [
+      [
+       22,
+       56,
+       "bearer_token",
+       "redact"
+      ]
+     ]
+    },
+    {
+     "id": "x:app-only-bearer-token:bearer-percent-curl:unsupported",
+     "kind": "unsupported",
+     "before": [
+      [
+       31,
+       49,
+       "bearer_token",
+       "redact"
+      ]
+     ],
+     "after": [
+      [
+       31,
+       65,
+       "bearer_token",
+       "redact"
+      ]
+     ]
+    }
+   ]
+  },
+  "r2": {
+   "cases": 1935,
+   "sha256": "a312308a141e3157c859f62e53c5e0762ca91c2e0083d0e02497848ebee8b921",
+   "positives": 1010,
+   "positivesFailing": 0,
+   "controls": 555,
+   "controlsFlagged": 0,
+   "unsupported": 368,
+   "conflict": 2,
+   "parityDivergent": 0,
+   "streamNotEqualWhole": 0,
+   "regressionsVsAccepted": [],
+   "improvementsVsAccepted": [],
+   "casesWithDifferentFindings": 2,
+   "differentFindingCases": [
+    {
+     "id": "x:app-only-bearer-token:r2:bearer-percent-raw:unsupported",
+     "kind": "unsupported",
+     "before": [
+      [
+       22,
+       40,
+       "bearer_token",
+       "redact"
+      ]
+     ],
+     "after": [
+      [
+       22,
+       56,
+       "bearer_token",
+       "redact"
+      ]
+     ]
+    },
+    {
+     "id": "x:app-only-bearer-token:r2:bearer-percent-curl:unsupported",
+     "kind": "unsupported",
+     "before": [
+      [
+       31,
+       49,
+       "bearer_token",
+       "redact"
+      ]
+     ],
+     "after": [
+      [
+       31,
+       65,
+       "bearer_token",
+       "redact"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

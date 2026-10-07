@@ -2,12 +2,12 @@
   "schema": "redact-secret/qualification-parity/v1",
   "identities": {
     "legacy": {
-      "package": "@redact-secret/core@0.1.0-beta.13",
+      "package": "@redact-secret/core@0.1.0-beta.14",
       "fixtureIndex": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
       "fixtureCount": 6423,
       "taxonomyDigest": "41d23792c6a99862ce14620d391a74ce0057638597c9aea7be70bed14d124f05",
       "scanners": {
-        "redact-secret": "0.1.0-beta.13",
+        "redact-secret": "0.1.0-beta.14",
         "gitleaks": "8.30.1",
         "trufflehog": "3.97.4",
         "flare-redact": "1.6.1",
@@ -16,15 +16,15 @@
       "caseCount": 20009,
       "familyCount": 144,
       "distribution": {
-        "stable": 127,
-        "provisional": 16,
+        "stable": 133,
+        "provisional": 10,
         "pending": 1,
         "unsupported": 0
       }
     },
     "new": {
       "publication": "public",
-      "policyRevision": "rs-policy-1:sha256:393b37e95a723e8af365c32431b874a341751df2d19590a1eda622828f7b01bc",
+      "policyRevision": "rs-policy-1:sha256:ebd6d5c0440ee9363a3373ce76d089e464b2d5313f34992df34b366cf9e98a15",
       "adapter": {
         "id": "credential-eval-run-artifact",
         "version": 1
@@ -32,7 +32,7 @@
       "scanners": {
         "flare-redact": "1.6.1",
         "gitleaks": "8.30.1",
-        "redact-secret": "0.1.0-beta.13",
+        "redact-secret": "0.1.0-beta.14",
         "trufflehog": "3.97.4"
       },
       "distribution": {
@@ -52,8 +52,8 @@
           "population": "policy-corpus",
           "role": "policy-route",
           "runClass": "public",
-          "semanticDigest": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b",
-          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
+          "semanticDigest": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+          "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
           "evidenceTag": "policy-37293aba657d",
           "methods": [],
           "caseCount": 19
@@ -63,15 +63,15 @@
           "population": "public-evidence-snapshot",
           "role": "floors-and-gates",
           "runClass": "public",
-          "semanticDigest": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
-          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
+          "semanticDigest": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+          "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
           "evidenceTag": "snapshot-2026.10.06.4",
           "methods": [],
           "caseCount": 7036,
           "methodsRun": {
             "run": "public-evidence-snapshot+methods@linux-x64",
-            "semanticDigest": "sha256:1f97705aaaa623915734ba127761cb32551e1fc3c5934658022c0d59ddafed5e",
-            "configHash": "sha256:95bd486e034d2f13890e7da727cdc17771c4c2518d207e005428af05ee7cdfb4",
+            "semanticDigest": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+            "configHash": "sha256:f469f8d006586ef0bc09da6231d507e22d10db61930923d15583ea4cb4c690a0",
             "methods": [
               "differential",
               "metamorphic",
@@ -85,8 +85,8 @@
           "population": "regression-corpus",
           "role": "gates",
           "runClass": "public",
-          "semanticDigest": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0",
-          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
+          "semanticDigest": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b",
+          "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
           "evidenceTag": "regression-b7b236c5ad1a",
           "methods": [],
           "caseCount": 153
@@ -117,7 +117,7 @@
       "ledgerRekey": {
         "corpusDigest": "sha256:2319e44084d4db2fc984c31fd07f091c6228e360ea5e6b9b5d65dabaae9d809a",
         "id": "credential-public-review-ledger-rekey-v1",
-        "occurrences": 4268,
+        "occurrences": 4264,
         "population": "public-evidence-snapshot"
       },
       "differentialPeers": [
@@ -258,9 +258,9 @@
     "status": {
       "tally": {
         "compared": 144,
-        "equal": 133,
+        "equal": 127,
         "explained": 11,
-        "unexplained": 0,
+        "unexplained": 6,
         "byCause": {
           "corpus-twin-change": 2,
           "canonical-evidence-membership": 4,
@@ -297,6 +297,13 @@
           "note": "new-only reasons: canonical-evidence-membership"
         },
         {
+          "subject": "fly-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "unexplained"
+        },
+        {
           "subject": "github-token",
           "field": "status",
           "legacy": "stable/documented",
@@ -324,6 +331,13 @@
           "note": "new-only reasons: pending-not-scored"
         },
         {
+          "subject": "pydantic-logfire-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "unexplained"
+        },
+        {
           "subject": "sendgrid-token",
           "field": "status",
           "legacy": "stable/documented",
@@ -333,6 +347,27 @@
           "note": "new-only reasons: canonical-evidence-membership"
         },
         {
+          "subject": "sourcegraph-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "unexplained"
+        },
+        {
+          "subject": "square-oauth-application-secret",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "unexplained"
+        },
+        {
+          "subject": "square-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "unexplained"
+        },
+        {
           "subject": "twilio-api-key-secret",
           "field": "status",
           "legacy": "stable/empirical",
@@ -340,6 +375,13 @@
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "unkey-root-key",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "unexplained"
         },
         {
           "subject": "vercel-app-access-token",
@@ -373,14 +415,14 @@
     "evidence": {
       "tally": {
         "compared": 4752,
-        "equal": 4499,
-        "explained": 253,
+        "equal": 4532,
+        "explained": 220,
         "unexplained": 0,
         "byCause": {
           "corpus-twin-change": 2,
-          "canonical-evidence-membership": 91,
+          "canonical-evidence-membership": 89,
           "policy-corpus-bounded": 4,
-          "family-not-in-accepted-evidence": 121,
+          "family-not-in-accepted-evidence": 90,
           "pending-not-scored": 29,
           "engine-twin-scoring": 6
         }
@@ -493,19 +535,19 @@
           "subject": "aws-secret-access-key",
           "field": "metamorphicCriticalFailures",
           "legacy": 0,
-          "next": 14,
+          "next": 7,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual 14 = 14 failed metamorphic assertion(s) of cases with no legacy counterpart"
+          "note": "residual 7 = 7 failed metamorphic assertion(s) of cases with no legacy counterpart"
         },
         {
           "subject": "aws-secret-access-key",
           "field": "mutationUnresolvedCritical",
           "legacy": 0,
-          "next": 2,
+          "next": 1,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual 2 = 2 failed mutation assertion(s) of cases with no legacy counterpart"
+          "note": "residual 1 = 1 failed mutation assertion(s) of cases with no legacy counterpart"
         },
         {
           "subject": "aws-secret-access-key",
@@ -757,25 +799,7 @@
         {
           "subject": "buildkite-token",
           "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 11,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of buildkite-token"
-        },
-        {
-          "subject": "buildkite-token",
-          "field": "metamorphicCriticalFailures",
-          "legacy": 111,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of buildkite-token"
-        },
-        {
-          "subject": "buildkite-token",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 111,
+          "legacy": 1,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -803,15 +827,6 @@
           "subject": "buildkite-token",
           "field": "totalFixtures",
           "legacy": 64,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of buildkite-token"
-        },
-        {
-          "subject": "buildkite-token",
-          "field": "twinFailures",
-          "legacy": 5,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -894,21 +909,12 @@
         },
         {
           "subject": "connection-string",
-          "field": "metamorphicCriticalFailures",
+          "field": "differentialUnresolvedContractDisagreements",
           "legacy": 0,
-          "next": 7,
+          "next": 2,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual 7 = 7 failed metamorphic assertion(s) of cases with no legacy counterpart"
-        },
-        {
-          "subject": "connection-string",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 0,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "canonical-evidence-membership",
-          "note": "residual 1 = 1 failed mutation assertion(s) of cases with no legacy counterpart"
+          "note": "residual 2 = 2 unsettled differential occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "connection-string",
@@ -1002,7 +1008,7 @@
                 "required": 5
               },
               {
-                "actual": 8,
+                "actual": 2,
                 "code": "critical-failure",
                 "required": 0
               },
@@ -1123,33 +1129,6 @@
         },
         {
           "subject": "fly-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 9,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of fly-token"
-        },
-        {
-          "subject": "fly-token",
-          "field": "metamorphicCriticalFailures",
-          "legacy": 97,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of fly-token"
-        },
-        {
-          "subject": "fly-token",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 108,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of fly-token"
-        },
-        {
-          "subject": "fly-token",
           "field": "positiveAxes",
           "legacy": 10,
           "next": 0,
@@ -1170,15 +1149,6 @@
           "subject": "fly-token",
           "field": "totalFixtures",
           "legacy": 50,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of fly-token"
-        },
-        {
-          "subject": "fly-token",
-          "field": "twinFailures",
-          "legacy": 3,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1273,10 +1243,10 @@
           "subject": "generic-token",
           "field": "differentialUnresolvedContractDisagreements",
           "legacy": 0,
-          "next": 8,
+          "next": 6,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual 8 = 8 unsettled differential occurrence(s) of cases with no legacy counterpart"
+          "note": "residual 6 = 6 unsettled differential occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "generic-token",
@@ -1398,7 +1368,7 @@
                 "required": 5
               },
               {
-                "actual": 296,
+                "actual": 294,
                 "code": "critical-failure",
                 "required": 0
               },
@@ -1464,15 +1434,6 @@
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "residual -130 = -130 canonical-evidence-membership"
-        },
-        {
-          "subject": "generic-token",
-          "field": "twinFailures",
-          "legacy": 0,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "canonical-evidence-membership",
-          "note": "residual -1 = -1 canonical-evidence-membership"
         },
         {
           "subject": "generic-token",
@@ -1699,7 +1660,7 @@
         {
           "subject": "mapbox-token",
           "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 4,
+          "legacy": 3,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1708,7 +1669,7 @@
         {
           "subject": "mapbox-token",
           "field": "metamorphicCriticalFailures",
-          "legacy": 69,
+          "legacy": 14,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1717,7 +1678,7 @@
         {
           "subject": "mapbox-token",
           "field": "mutationUnresolvedCritical",
-          "legacy": 26,
+          "legacy": 2,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1745,15 +1706,6 @@
           "subject": "mapbox-token",
           "field": "totalFixtures",
           "legacy": 46,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of mapbox-token"
-        },
-        {
-          "subject": "mapbox-token",
-          "field": "twinFailures",
-          "legacy": 3,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2182,33 +2134,6 @@
         },
         {
           "subject": "pydantic-logfire-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 2,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of pydantic-logfire-token"
-        },
-        {
-          "subject": "pydantic-logfire-token",
-          "field": "metamorphicCriticalFailures",
-          "legacy": 62,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of pydantic-logfire-token"
-        },
-        {
-          "subject": "pydantic-logfire-token",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 59,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of pydantic-logfire-token"
-        },
-        {
-          "subject": "pydantic-logfire-token",
           "field": "positiveAxes",
           "legacy": 10,
           "next": 0,
@@ -2229,15 +2154,6 @@
           "subject": "pydantic-logfire-token",
           "field": "totalFixtures",
           "legacy": 49,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of pydantic-logfire-token"
-        },
-        {
-          "subject": "pydantic-logfire-token",
-          "field": "twinFailures",
-          "legacy": 3,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2445,33 +2361,6 @@
         },
         {
           "subject": "sourcegraph-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 11,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph-token",
-          "field": "metamorphicCriticalFailures",
-          "legacy": 55,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph-token",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 25,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph-token",
           "field": "positiveAxes",
           "legacy": 10,
           "next": 0,
@@ -2492,15 +2381,6 @@
           "subject": "sourcegraph-token",
           "field": "totalFixtures",
           "legacy": 43,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph-token",
-          "field": "twinFailures",
-          "legacy": 4,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2551,15 +2431,6 @@
         },
         {
           "subject": "square-oauth-application-secret",
-          "field": "benignFalseAlarms",
-          "legacy": 1,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square-oauth-application-secret",
           "field": "confusionAxes",
           "legacy": 9,
           "next": 0,
@@ -2571,33 +2442,6 @@
           "subject": "square-oauth-application-secret",
           "field": "controlAxes",
           "legacy": 6,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square-oauth-application-secret",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 3,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square-oauth-application-secret",
-          "field": "metamorphicCriticalFailures",
-          "legacy": 28,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square-oauth-application-secret",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 21,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2632,15 +2476,6 @@
         },
         {
           "subject": "square-oauth-application-secret",
-          "field": "twinFailures",
-          "legacy": 3,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square-oauth-application-secret",
           "field": "twinPairs",
           "legacy": 9,
           "next": 0,
@@ -2684,15 +2519,6 @@
         },
         {
           "subject": "square-token",
-          "field": "benignFalseAlarms",
-          "legacy": 2,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square-token",
           "field": "confusionAxes",
           "legacy": 9,
           "next": 0,
@@ -2704,33 +2530,6 @@
           "subject": "square-token",
           "field": "controlAxes",
           "legacy": 6,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 29,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square-token",
-          "field": "metamorphicCriticalFailures",
-          "legacy": 62,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square-token",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 23,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2758,15 +2557,6 @@
           "subject": "square-token",
           "field": "totalFixtures",
           "legacy": 40,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square-token",
-          "field": "twinFailures",
-          "legacy": 3,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2988,33 +2778,6 @@
         },
         {
           "subject": "unkey-root-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 9,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of unkey-root-key"
-        },
-        {
-          "subject": "unkey-root-key",
-          "field": "metamorphicCriticalFailures",
-          "legacy": 111,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of unkey-root-key"
-        },
-        {
-          "subject": "unkey-root-key",
-          "field": "mutationUnresolvedCritical",
-          "legacy": 57,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of unkey-root-key"
-        },
-        {
-          "subject": "unkey-root-key",
           "field": "positiveAxes",
           "legacy": 11,
           "next": 0,
@@ -3035,15 +2798,6 @@
           "subject": "unkey-root-key",
           "field": "totalFixtures",
           "legacy": 58,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of unkey-root-key"
-        },
-        {
-          "subject": "unkey-root-key",
-          "field": "twinFailures",
-          "legacy": 13,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -3284,7 +3038,7 @@
         {
           "subject": "xata-api-key",
           "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 5,
+          "legacy": 4,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -3293,7 +3047,7 @@
         {
           "subject": "xata-api-key",
           "field": "metamorphicCriticalFailures",
-          "legacy": 62,
+          "legacy": 14,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -3302,7 +3056,7 @@
         {
           "subject": "xata-api-key",
           "field": "mutationUnresolvedCritical",
-          "legacy": 47,
+          "legacy": 2,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -3330,15 +3084,6 @@
           "subject": "xata-api-key",
           "field": "totalFixtures",
           "legacy": 52,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of xata-api-key"
-        },
-        {
-          "subject": "xata-api-key",
-          "field": "twinFailures",
-          "legacy": 3,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4789,13 +4534,13 @@
     "supportMatrix": {
       "tally": {
         "compared": 7932,
-        "equal": 7505,
-        "explained": 427,
+        "equal": 7524,
+        "explained": 408,
         "unexplained": 0,
         "byCause": {
           "corpus-twin-change": 8,
-          "canonical-evidence-membership": 177,
-          "family-not-in-accepted-evidence": 153,
+          "canonical-evidence-membership": 175,
+          "family-not-in-accepted-evidence": 136,
           "policy-corpus-bounded": 5,
           "pending-not-scored": 60,
           "engine-twin-scoring": 24
@@ -5124,7 +4869,7 @@
           "subject": "aws:iam-user-secret-access-key",
           "field": "reason",
           "legacy": null,
-          "next": "metamorphic.criticalFailures: 14 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 6 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "metamorphic.criticalFailures: 7 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 1 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 6 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "new-only reason(s) metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements"
@@ -5151,7 +4896,7 @@
           "subject": "aws:iam-user-secret-access-key",
           "field": "unresolvedCriticalItems.metamorphic",
           "legacy": 0,
-          "next": 14,
+          "next": 7,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.metamorphicCriticalFailures of aws-secret-access-key"
@@ -5160,7 +4905,7 @@
           "subject": "aws:iam-user-secret-access-key",
           "field": "unresolvedCriticalItems.mutation",
           "legacy": 0,
-          "next": 2,
+          "next": 1,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.mutationUnresolvedCritical of aws-secret-access-key"
@@ -5365,17 +5110,8 @@
         {
           "subject": "buildkite:access-token",
           "field": "reason",
-          "legacy": "twinFailures: 5 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 111 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 111 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 11 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": "differential.unresolvedContractDisagreements: 1 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of buildkite-token"
-        },
-        {
-          "subject": "buildkite:access-token",
-          "field": "twinCoverage.failures",
-          "legacy": 5,
-          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of buildkite-token"
@@ -5392,25 +5128,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "unresolvedCriticalItems.differential",
-          "legacy": 11,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of buildkite-token"
-        },
-        {
-          "subject": "buildkite:access-token",
-          "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 111,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of buildkite-token"
-        },
-        {
-          "subject": "buildkite:access-token",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 111,
+          "legacy": 1,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -5613,8 +5331,17 @@
         },
         {
           "subject": "fly:access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of fly-token"
+        },
+        {
+          "subject": "fly:access-token",
           "field": "reason",
-          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 97 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 108 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 9 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": null,
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -5622,9 +5349,9 @@
         },
         {
           "subject": "fly:access-token",
-          "field": "twinCoverage.failures",
-          "legacy": 3,
-          "next": 0,
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of fly-token"
@@ -5633,33 +5360,6 @@
           "subject": "fly:access-token",
           "field": "twinCoverage.pairs",
           "legacy": 10,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of fly-token"
-        },
-        {
-          "subject": "fly:access-token",
-          "field": "unresolvedCriticalItems.differential",
-          "legacy": 9,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of fly-token"
-        },
-        {
-          "subject": "fly:access-token",
-          "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 97,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of fly-token"
-        },
-        {
-          "subject": "fly:access-token",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 108,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -6081,7 +5781,7 @@
                 "required": 5
               },
               {
-                "actual": 8,
+                "actual": 2,
                 "code": "critical-failure",
                 "required": 0
               },
@@ -6230,28 +5930,19 @@
           "subject": "generic:connection-string-password",
           "field": "reason",
           "legacy": "policy.protected-holdout: not-run (requires pass on frozen candidate)",
-          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 8 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | metamorphic.criticalFailures: 7 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 1 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 2 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, metamorphic.criticalFailures, mutation.unresolvedCritical"
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, differential.unresolvedContractDisagreements"
         },
         {
           "subject": "generic:connection-string-password",
-          "field": "unresolvedCriticalItems.metamorphic",
+          "field": "unresolvedCriticalItems.differential",
           "legacy": 0,
-          "next": 7,
+          "next": 2,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "follows evidence.metamorphicCriticalFailures of connection-string"
-        },
-        {
-          "subject": "generic:connection-string-password",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 0,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "canonical-evidence-membership",
-          "note": "follows evidence.mutationUnresolvedCritical of connection-string"
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of connection-string"
         },
         {
           "subject": "generic:otp-seed",
@@ -6555,7 +6246,7 @@
                 "required": 5
               },
               {
-                "actual": 296,
+                "actual": 294,
                 "code": "critical-failure",
                 "required": 0
               },
@@ -6782,19 +6473,10 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "reason",
           "legacy": "policy.exact-span: 1 (requires 0) | policy.leaked-span: 1 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
-          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 296 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | twinFailures: 1 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 252 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 36 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 8 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 294 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 252 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 36 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 6 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, twinFailures, benign.falseAlarms, metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements; legacy-only policy.exact-span, policy.leaked-span"
-        },
-        {
-          "subject": "generic:unclassified-assignment-literal",
-          "field": "twinCoverage.failures",
-          "legacy": 0,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "canonical-evidence-membership",
-          "note": "follows evidence.twinFailures of generic-token"
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, benign.falseAlarms, metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements; legacy-only policy.exact-span, policy.leaked-span"
         },
         {
           "subject": "generic:unclassified-assignment-literal",
@@ -6809,7 +6491,7 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "unresolvedCriticalItems.differential",
           "legacy": 0,
-          "next": 8,
+          "next": 6,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.differentialUnresolvedContractDisagreements of generic-token"
@@ -8482,17 +8164,8 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "reason",
-          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 69 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 26 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 4 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": "benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 14 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 3 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of mapbox-token"
-        },
-        {
-          "subject": "mapbox:secret-access-token",
-          "field": "twinCoverage.failures",
-          "legacy": 3,
-          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of mapbox-token"
@@ -8509,7 +8182,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "unresolvedCriticalItems.differential",
-          "legacy": 4,
+          "legacy": 3,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8518,7 +8191,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 69,
+          "legacy": 14,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8527,7 +8200,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 26,
+          "legacy": 2,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8536,29 +8209,29 @@
         {
           "subject": "matrix",
           "field": "distribution.provisional",
-          "legacy": 16,
+          "legacy": 10,
           "next": 31,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "15 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
+          "note": "21 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, family-not-in-accepted-evidence, pending-not-scored)"
         },
         {
           "subject": "matrix",
           "field": "distribution.stable",
-          "legacy": 144,
+          "legacy": 150,
           "next": 129,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "15 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
+          "note": "21 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, family-not-in-accepted-evidence, pending-not-scored)"
         },
         {
           "subject": "matrix",
           "field": "stableDistribution.documented",
-          "legacy": 106,
+          "legacy": 112,
           "next": 96,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "10 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, pending-not-scored)"
+          "note": "16 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, family-not-in-accepted-evidence, pending-not-scored)"
         },
         {
           "subject": "matrix",
@@ -9415,8 +9088,17 @@
         },
         {
           "subject": "pydantic:logfire-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic:logfire-token",
           "field": "reason",
-          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 62 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 59 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": null,
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -9424,9 +9106,9 @@
         },
         {
           "subject": "pydantic:logfire-token",
-          "field": "twinCoverage.failures",
-          "legacy": 3,
-          "next": 0,
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of pydantic-logfire-token"
@@ -9435,33 +9117,6 @@
           "subject": "pydantic:logfire-token",
           "field": "twinCoverage.pairs",
           "legacy": 11,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of pydantic-logfire-token"
-        },
-        {
-          "subject": "pydantic:logfire-token",
-          "field": "unresolvedCriticalItems.differential",
-          "legacy": 2,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of pydantic-logfire-token"
-        },
-        {
-          "subject": "pydantic:logfire-token",
-          "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 62,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of pydantic-logfire-token"
-        },
-        {
-          "subject": "pydantic:logfire-token",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 59,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -9999,8 +9654,17 @@
         },
         {
           "subject": "sourcegraph:access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph:access-token",
           "field": "reason",
-          "legacy": "twinFailures: 4 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 55 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 25 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 11 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": null,
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10008,9 +9672,9 @@
         },
         {
           "subject": "sourcegraph:access-token",
-          "field": "twinCoverage.failures",
-          "legacy": 4,
-          "next": 0,
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of sourcegraph-token"
@@ -10019,33 +9683,6 @@
           "subject": "sourcegraph:access-token",
           "field": "twinCoverage.pairs",
           "legacy": 10,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph:access-token",
-          "field": "unresolvedCriticalItems.differential",
-          "legacy": 11,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph:access-token",
-          "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 55,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph:access-token",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 25,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10246,8 +9883,17 @@
         },
         {
           "subject": "square:access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of square-token"
+        },
+        {
+          "subject": "square:access-token",
           "field": "reason",
-          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 62 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 23 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 29 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": null,
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10255,9 +9901,9 @@
         },
         {
           "subject": "square:access-token",
-          "field": "twinCoverage.failures",
-          "legacy": 3,
-          "next": 0,
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of square-token"
@@ -10266,33 +9912,6 @@
           "subject": "square:access-token",
           "field": "twinCoverage.pairs",
           "legacy": 7,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square:access-token",
-          "field": "unresolvedCriticalItems.differential",
-          "legacy": 29,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square:access-token",
-          "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 62,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-token"
-        },
-        {
-          "subject": "square:access-token",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 23,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10490,8 +10109,17 @@
         },
         {
           "subject": "square:oauth-application-secret",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of square-oauth-application-secret"
+        },
+        {
+          "subject": "square:oauth-application-secret",
           "field": "reason",
-          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 28 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 21 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 3 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": null,
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10499,9 +10127,9 @@
         },
         {
           "subject": "square:oauth-application-secret",
-          "field": "twinCoverage.failures",
-          "legacy": 3,
-          "next": 0,
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of square-oauth-application-secret"
@@ -10510,33 +10138,6 @@
           "subject": "square:oauth-application-secret",
           "field": "twinCoverage.pairs",
           "legacy": 9,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square:oauth-application-secret",
-          "field": "unresolvedCriticalItems.differential",
-          "legacy": 3,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square:oauth-application-secret",
-          "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 28,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of square-oauth-application-secret"
-        },
-        {
-          "subject": "square:oauth-application-secret",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 21,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -11686,8 +11287,17 @@
         },
         {
           "subject": "unkey:root-key",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey:root-key",
           "field": "reason",
-          "legacy": "twinFailures: 13 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 111 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 57 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 9 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": null,
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -11695,9 +11305,9 @@
         },
         {
           "subject": "unkey:root-key",
-          "field": "twinCoverage.failures",
-          "legacy": 13,
-          "next": 0,
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of unkey-root-key"
@@ -11706,33 +11316,6 @@
           "subject": "unkey:root-key",
           "field": "twinCoverage.pairs",
           "legacy": 19,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of unkey-root-key"
-        },
-        {
-          "subject": "unkey:root-key",
-          "field": "unresolvedCriticalItems.differential",
-          "legacy": 9,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of unkey-root-key"
-        },
-        {
-          "subject": "unkey:root-key",
-          "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 111,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of unkey-root-key"
-        },
-        {
-          "subject": "unkey:root-key",
-          "field": "unresolvedCriticalItems.mutation",
-          "legacy": 57,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -12709,17 +12292,8 @@
         {
           "subject": "xata:api-key",
           "field": "reason",
-          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 62 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 47 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 5 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "legacy": "benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 14 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 4 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of xata-api-key"
-        },
-        {
-          "subject": "xata:api-key",
-          "field": "twinCoverage.failures",
-          "legacy": 3,
-          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of xata-api-key"
@@ -12736,7 +12310,7 @@
         {
           "subject": "xata:api-key",
           "field": "unresolvedCriticalItems.differential",
-          "legacy": 5,
+          "legacy": 4,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -12745,7 +12319,7 @@
         {
           "subject": "xata:api-key",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 62,
+          "legacy": 14,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -12754,7 +12328,7 @@
         {
           "subject": "xata:api-key",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 47,
+          "legacy": 2,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -12766,39 +12340,33 @@
       "tally": {
         "compared": 8,
         "equal": 4,
-        "explained": 4,
-        "unexplained": 0,
+        "explained": 1,
+        "unexplained": 3,
         "byCause": {
-          "canonical-evidence-membership": 4
+          "canonical-evidence-membership": 1
         }
       },
       "differences": [
         {
           "subject": "overview",
           "field": "distribution.provisional",
-          "legacy": 16,
+          "legacy": 10,
           "next": 27,
-          "verdict": "explained",
-          "cause": "canonical-evidence-membership",
-          "note": "11 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
+          "verdict": "unexplained"
         },
         {
           "subject": "overview",
           "field": "distribution.stable",
-          "legacy": 127,
+          "legacy": 133,
           "next": 116,
-          "verdict": "explained",
-          "cause": "canonical-evidence-membership",
-          "note": "11 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
+          "verdict": "unexplained"
         },
         {
           "subject": "overview",
           "field": "stableDistribution.documented",
-          "legacy": 89,
+          "legacy": 95,
           "next": 83,
-          "verdict": "explained",
-          "cause": "canonical-evidence-membership",
-          "note": "6 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, pending-not-scored)"
+          "verdict": "unexplained"
         },
         {
           "subject": "overview",
@@ -12814,9 +12382,9 @@
     "review": {
       "tally": {
         "compared": 8,
-        "equal": 2,
+        "equal": 1,
         "explained": 6,
-        "unexplained": 0,
+        "unexplained": 1,
         "byCause": {
           "review-occurrence-identity": 2,
           "canonical-evidence-membership": 2,
@@ -12828,7 +12396,7 @@
           "subject": "flare-redact",
           "field": "occurrences",
           "legacy": "not run",
-          "next": 2992,
+          "next": 2999,
           "verdict": "explained",
           "cause": "review-occurrence-identity",
           "note": "flare-redact was never scanned by the legacy run, so the legacy ledger holds no entry for it"
@@ -12845,11 +12413,11 @@
         {
           "subject": "gitleaks",
           "field": "occurrences",
-          "legacy": 1811,
-          "next": 2156,
+          "legacy": 1809,
+          "next": 2153,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "345 occurrence(s) of cases with no legacy counterpart"
+          "note": "344 occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "gitleaks",
@@ -12861,13 +12429,20 @@
           "note": "119 occurrence(s) settled by the owner-decided ledger rows keyed by the accepted run's occurrence ids (not a legacy decision)"
         },
         {
+          "subject": "ledger",
+          "field": "legacy differential entries, against those mapped to a canonical occurrence",
+          "legacy": 4268,
+          "next": 4264,
+          "verdict": "unexplained"
+        },
+        {
           "subject": "trufflehog",
           "field": "occurrences",
-          "legacy": 2457,
-          "next": 2974,
+          "legacy": 2455,
+          "next": 2982,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "517 occurrence(s) of cases with no legacy counterpart"
+          "note": "527 occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "trufflehog",
@@ -13499,11 +13074,11 @@
     },
     {
       "family": "fly-token",
-      "legacy": "provisional",
+      "legacy": "stable",
       "next": "provisional",
-      "legacyProfile": null,
+      "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "equal",
+      "verdict": "unexplained",
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
@@ -14098,11 +13673,11 @@
     },
     {
       "family": "pydantic-logfire-token",
-      "legacy": "provisional",
+      "legacy": "stable",
       "next": "provisional",
-      "legacyProfile": null,
+      "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "equal",
+      "verdict": "unexplained",
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
@@ -14275,11 +13850,11 @@
     },
     {
       "family": "sourcegraph-token",
-      "legacy": "provisional",
+      "legacy": "stable",
       "next": "provisional",
-      "legacyProfile": null,
+      "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "equal",
+      "verdict": "unexplained",
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
@@ -14294,11 +13869,11 @@
     },
     {
       "family": "square-oauth-application-secret",
-      "legacy": "provisional",
+      "legacy": "stable",
       "next": "provisional",
-      "legacyProfile": null,
+      "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "equal",
+      "verdict": "unexplained",
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
@@ -14313,11 +13888,11 @@
     },
     {
       "family": "square-token",
-      "legacy": "provisional",
+      "legacy": "stable",
       "next": "provisional",
-      "legacyProfile": null,
+      "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "equal",
+      "verdict": "unexplained",
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
@@ -14479,11 +14054,11 @@
     },
     {
       "family": "unkey-root-key",
-      "legacy": "provisional",
+      "legacy": "stable",
       "next": "provisional",
-      "legacyProfile": null,
+      "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "equal",
+      "verdict": "unexplained",
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
@@ -14618,8 +14193,8 @@
     },
     "distribution": {
       "legacy": {
-        "stable": 144,
-        "provisional": 16,
+        "stable": 150,
+        "provisional": 10,
         "pending": 5,
         "unsupported": 17
       },
@@ -14632,7 +14207,7 @@
     },
     "stableDistribution": {
       "legacy": {
-        "documented": 106,
+        "documented": 112,
         "empirical": 38,
         "policy-qualified": 0
       },
@@ -14644,17 +14219,18 @@
     }
   },
   "counterfactual": {
-    "legacyStable": 127,
+    "legacyStable": 133,
     "nextStable": 116,
     "heldOnlyByMethods": 0,
     "heldByMethodsAndOthers": 0,
-    "heldWithoutMethods": 11
+    "heldWithoutMethods": 17
   },
   "heldBy": {
     "canonical-evidence-membership": 4,
     "corpus-twin-change": 2,
     "engine-twin-scoring + pending-not-scored": 3,
-    "pending-not-scored": 2
+    "pending-not-scored": 2,
+    "unattributed": 6
   },
   "outcomeGroups": [
     {
@@ -15245,7 +14821,7 @@
     },
     {
       "area": "review ledger entries outside the mapping",
-      "reason": "the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 8122 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 2992 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 862 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
+      "reason": "the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4264 of 8134 canonical occurrences are mapped (4264 of 4268 legacy differential entries), 2999 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 871 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
     },
     {
       "area": "candidate-regression inputs and protected holdout",
@@ -15258,14 +14834,14 @@
   ],
   "summary": {
     "compared": 43363,
-    "equal": 36423,
-    "explained": 6940,
-    "unexplained": 0,
+    "equal": 36468,
+    "explained": 6885,
+    "unexplained": 10,
     "byCause": {
-      "canonical-evidence-membership": 278,
+      "canonical-evidence-membership": 271,
       "corpus-twin-change": 12,
       "engine-twin-scoring": 33,
-      "family-not-in-accepted-evidence": 274,
+      "family-not-in-accepted-evidence": 226,
       "legacy-id-rekey": 156,
       "optional-scanner-not-measured": 5963,
       "owner-ledger-settlement": 2,
@@ -15275,14 +14851,14 @@
       "twin-scope-vocabulary": 40
     },
     "classes": {
-      "must-equal": 36423,
-      "expected-structural": 6940,
-      "unexplained": 0
+      "must-equal": 36468,
+      "expected-structural": 6885,
+      "unexplained": 10
     }
   },
   "recommendations": [
-    "Status: the legacy path reads 127 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership; 2 by corpus-twin-change; 3 by engine-twin-scoring + pending-not-scored; 2 by pending-not-scored. Not applied: nothing here changes a status.",
-    "Review ledger: 4460 of 7214 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"flare-redact\":2677,\"gitleaks\":1880,\"trufflehog\":2657}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
+    "Status: the legacy path reads 133 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership; 2 by corpus-twin-change; 3 by engine-twin-scoring + pending-not-scored; 2 by pending-not-scored; 6 by unattributed. Not applied: nothing here changes a status.",
+    "Review ledger: 4460 of 7213 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"gitleaks\":1880,\"trufflehog\":2657,\"flare-redact\":2676}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
     "Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.",
     "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 0 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.",
     "Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open."

@@ -7,6 +7,7 @@
  */
 import type { CoverageNotRecorded, CoverageRow, CoverageTable, DefinitionRow, DomainViewData, GlanceItem, StatusGroup, StatusRowData } from '../components/evaluation/domain';
 import type { CredentialEvaluation, PiiEvaluation, PiiFamilyRecord, PiiViewCounts, PiiViewId, SupportRecord } from '../services/domains';
+import { quantityOf } from '../../benchmarks/evaluation/domains/pii/metric-basis.mjs';
 import { count, int, isoDate } from './format';
 import { modeText } from './report';
 import { resolvePipelineStamp } from './run';
@@ -267,7 +268,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
               counts: { numerator: number; measured: number; eligible: number; unresolved: number; notMeasured: number };
               value: { state: 'withheld'; reason: string } | { state: 'measured'; point: { mantissa: number; scale: number }; bound: { mantissa: number; scale: number } } };
             return {
-              id: `${population.populationId}:${scanner.scannerId}:${metric.metric.id}`, label: metric.metric.id,
+              id: `${population.populationId}:${scanner.scannerId}:${metric.metric.id}`, label: `${quantityOf('pii-v1', metric.metric.id).name} (pii-v1:${metric.metric.id})`,
               status: metric.value.state === 'withheld' ? 'not-measured' as const : 'info' as const,
               statusWord: metric.value.state === 'withheld' ? 'Withheld' : metric.status,
               value: `${int(metric.counts.numerator)} / ${int(metric.effectiveN)} effective N`,
@@ -295,7 +296,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
     type Cell = { counts: { authoredCases: number }; metrics: unknown[] };
     const metricText = (cell: Cell) => (cell.metrics as Array<{ metric: { id: string }; effectiveN: number; counts: { numerator: number };
       value: { state: 'withheld'; reason: string } | { state: 'measured'; point: { mantissa: number; scale: number }; bound: { mantissa: number; scale: number } } }>)
-      .map(metric => `${metric.metric.id} ${int(metric.counts.numerator)}/${int(metric.effectiveN)} ${metric.value.state === 'withheld' ? `withheld (${metric.value.reason})` : `${fixedDecimal(metric.value.point)}, bound ${fixedDecimal(metric.value.bound)}`}`).join('; ');
+      .map(metric => `${quantityOf('pii-v1', metric.metric.id).quantity} ${int(metric.counts.numerator)}/${int(metric.effectiveN)} ${metric.value.state === 'withheld' ? `withheld (${metric.value.reason})` : `${fixedDecimal(metric.value.point)}, bound ${fixedDecimal(metric.value.bound)}`}`).join('; ');
     const strataText = (label: string, strata: Array<Cell & Record<string, unknown>> | undefined, key: string) =>
       strata?.length ? ` ${label}: ${strata.map(item => `${String(item[key])} ${int(item.counts.authoredCases)}`).join(', ')}.` : ` ${label}: none authored.`;
     status.push({

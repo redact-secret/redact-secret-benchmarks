@@ -124,7 +124,7 @@ was reviewed, not automatic: the new pins were derived from the successful `main
 read-only download, and `fetch` was run end to end against the live artifacts with a read-only token before the pins were committed. The
 retired 1.1 artifact digest is recorded in `retiredArtifactDigests`. Because an Actions artifact outlives its run by only 14 days, the
 sanitized public projection of the pinned run is also committed byte for byte at
-`tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json` (public synthetic aggregates, no case text); `pii:artifact-source:check` verifies
+`tests/fixtures/pii-eval/ci-37551091456-projection.public-synthetic-artifact.json` (public synthetic aggregates, no case text); `pii:artifact-source:check` verifies
 that its digest is the pinned member digest and that the semantic consumer accepts it, so the pin can always be re-verified offline. The copy is
 verification evidence and a test fixture; it is never a substitute for the verified transport, and no publication step reads it instead of the Actions artifact.
 
@@ -155,3 +155,15 @@ pii-eval, the prerequisite is an existing App installation on that repository wi
 available to benchmarks; this implementation neither creates credentials nor changes installation settings.
 The publish-site mirror in `redact-secret/redact-secret-sites/docs/upstream/redact-secret-benchmarks--publish-site.yml`
 must be synchronized by its owner after this benchmark PR lands.
+
+## Schema 1.4: all 1,188 memberships (#796, #665 public part)
+
+`pii-eval` `b1c097e40bad456e52f904f626cca00b69c45612` (schema 1.4, ADR 0017 and 0018; CI run 37551091456, engine artifact 11452747504, `Cargo.lock` unchanged) states the authored `not-established` identity and the absent range. The converter patch of the handoff
+(`scripts/lib/pii-population-conversion.mjs`, digest `c44ad88a…`) carries the 156 range-less memberships; each population is again its own snapshot, manifest, observation set, roster and artifact, now sealed under schema 1.4 (oracle-plan 146, qualification-plan 266,
+diagnostic-balanced 477, benign-heavy-stress 299; unresolved 51, 36, 49, 20). Located quantities are exactly the oracle's (0 unexplained differences over the 1,032 located memberships; the range-less ones are checked against what the authors wrote); `measurable-share` is the one
+metric whose denominator grows. The metric boundary is [`pii-scorer-basis.md`](pii-scorer-basis.md), proposed and pending the owner.
+
+Adoption is derived, not typed: `scripts/adopt-pii-engine.mjs --run=<id> --pii-eval=<checkout> --write` recomputes the transport source, both consumer pin files and the migration record from the CI run's artifacts and the dual-run report, and
+`--replay-run=<id> --replay-receipt=<file>` records the canonical linux replay (`pii-population-replay.yml`, run 37552998602: the pinned linux engine reproduces all four artifacts byte for byte). The consumer reads a pin of exactly one schema minor (1.1, 1.2 or 1.4; 1.3 is not accepted)
+and refuses a document of another minor, a mismatched digest or population, and an absent population (reported `missing`, never invented). The mode of all four stays `exploratory`: they are replays of a frozen observation, not a fresh official execution; see
+[`pii-official-execution-plan.md`](pii-official-execution-plan.md).

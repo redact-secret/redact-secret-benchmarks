@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-official-execution-plan",
+  "issue": "redact-secret/redact-secret-benchmarks#796",
+  "supportClaims": false,
+  "authorityChanged": false,
+  "state": "pending-not-dispatched",
+  "note": "Public synthetic only: no EC2, custodian, private ledger, protected corpus or production key. Derived by scripts/pii-official-plan.mjs from the committed pins; not a run and not an acceptance.",
+  "mode": "official",
+  "runClass": "public-synthetic",
+  "product": "candidate",
+  "engine": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "binarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+    "sourceArchiveSha256": "de7bebc2ca12a404b9d9141cd2c4f9da439012b96bab36582e26031b71b3b77b",
+    "build": "cargo build --release --locked -p pii-eval-cli",
+    "ci": {
+      "runId": 37551091456,
+      "engineArtifactId": 11452747504,
+      "engineArtifactName": "pii-eval-engine-b1c097e40bad456e52f904f626cca00b69c45612-linux-x86_64",
+      "archiveSha256": "24620d83e34e0239bb39afa6b8b4277b6fc6f1ece2c06f0adf856e4cca4b9b52",
+      "expiresAt": "2026-11-06T00:17:21Z"
+    }
+  },
+  "protocol": {
+    "id": "pii-v1",
+    "revision": 2,
+    "artifactSchema": "1.4"
+  },
+  "candidate": {
+    "kind": "candidate",
+    "sourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f",
+    "version": "0.1.0-beta.13",
+    "artifactSetCommitment": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5"
+  },
+  "scanner": {
+    "adapter": {
+      "id": "redact-secret-core-node",
+      "version": "1.0.0",
+      "normalizationVersion": 1
+    },
+    "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+    "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+    "activation": [
+      "pii:global",
+      "pii:us"
+    ]
+  },
+  "populations": [
+    {
+      "view": "oracle-plan",
+      "populationId": "b11-population-v2-oracle-plan",
+      "snapshotDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+      "manifestDigest": "f7a96b75053f460efe87af77f9aebbf1e319522526d4b9fa92a89d76ed1d1a84",
+      "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c",
+      "memberships": 146,
+      "located": 95,
+      "unresolvedRange": 51,
+      "expectedMode": "official",
+      "currentMode": "exploratory"
+    },
+    {
+      "view": "qualification-plan",
+      "populationId": "b11-population-v2-qualification-plan",
+      "snapshotDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+      "manifestDigest": "c49f36a2bce27fb47618076c71804aad5e363a0e6572effbec8e1e9191534906",
+      "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293",
+      "memberships": 266,
+      "located": 230,
+      "unresolvedRange": 36,
+      "expectedMode": "official",
+      "currentMode": "exploratory"
+    },
+    {
+      "view": "diagnostic-balanced",
+      "populationId": "b11-population-v2-diagnostic-balanced",
+      "snapshotDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+      "manifestDigest": "4dd090d3dd4be6c39657703ac49a4a85b275d62e3a3fdf1099d4a083c877a9e2",
+      "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15",
+      "memberships": 477,
+      "located": 428,
+      "unresolvedRange": 49,
+      "expectedMode": "official",
+      "currentMode": "exploratory"
+    },
+    {
+      "view": "benign-heavy-stress",
+      "populationId": "b11-population-v2-benign-heavy-stress",
+      "snapshotDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+      "manifestDigest": "2de68476d08a82605cb882592aad791e453796fe23ddbe427ad58ddd565aff3d",
+      "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b",
+      "memberships": 299,
+      "located": 279,
+      "unresolvedRange": 20,
+      "expectedMode": "official",
+      "currentMode": "exploratory"
+    }
+  ],
+  "benchmarkPolicy": {
+    "qualificationProfile": {
+      "path": "qualification/pii-v1.json",
+      "sha256": "02e1e012f48f610885b17ba806fd7b47d13de6d5a33ac8b58c094175b57b8df2"
+    },
+    "scorerBasis": {
+      "decision": "docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md",
+      "status": "proposed",
+      "spec": "docs/specs/pii-scorer-basis.md"
+    }
+  },
+  "provenance": {
+    "today": "replay-of-frozen-observation",
+    "detail": "The four committed artifacts are replays of the frozen Beta.13 observation (no scanner launched), exploratory; the canonical linux replay equals them byte for byte. A replay proves deterministic reproduction, not a fresh execution.",
+    "replay": {
+      "receipt": "benchmarks/pii-eval-population-dual-run/linux-replay.json",
+      "runId": 37552998602,
+      "scannersLaunched": 0
+    },
+    "freshOfficialExecution": null
+  },
+  "openItems": [
+    {
+      "id": "scorer-basis",
+      "text": "The scorer-basis decision (#795) is proposed and the owner decision is pending; \"complete populations validate under the accepted scorer semantics\" cannot be asserted before it."
+    },
+    {
+      "id": "candidate-package-identity",
+      "text": "An official run requires the scanner package tree digest (`package.treeSha256`, the candidate digest) and pinned extra artifacts (native addon). The recorded candidate identity is the artifact-set commitment of the frozen observation; whether it equals the tree digest the engine derives from the beta.13 package is not established, and the package for a fresh run has to be obtained from the product repository build."
+    },
+    {
+      "id": "dispatch-workflow",
+      "text": "No workflow executes `pii-eval run --config` against a scanner package in CI; it must be added and reviewed (dispatch only, read-only pii-eval App token for the pinned engine artifact, no token in the scanner step)."
+    },
+    {
+      "id": "cost",
+      "text": "A fresh Linux execution of four populations (1,188 memberships) plus the candidate package build is a long run; the owner decides whether to dispatch it (CI cost)."
+    }
+  ],
+  "dispatch": {
+    "workflow": null,
+    "dispatched": false,
+    "intendedCommand": "gh workflow run pii-official-run.yml -R redact-secret/redact-secret-benchmarks --ref develop -f plan=benchmarks/pii-eval-official-execution-plan.json",
+    "note": "The workflow named in the intended command does not exist yet (open item dispatch-workflow). Nothing was dispatched."
+  },
+  "execution": {
+    "localDarwin": "verification only, never compared with a linux run",
+    "canonicalPlatform": "linux-x64"
+  }
+}

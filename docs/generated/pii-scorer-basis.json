@@ -1,0 +1,7945 @@
+{
+ "authorityChanged": false,
+ "identities": {
+  "artifacts": [
+   {
+    "retiredSemanticDigests": [
+     "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b"
+    ],
+    "semanticDigest": "37a74f301c30b854a698b3d4aeb313d24e637d8860c5a49d390f904f1246b868",
+    "view": "oracle-plan"
+   },
+   {
+    "retiredSemanticDigests": [
+     "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e"
+    ],
+    "semanticDigest": "6f41e411e27de75f48b64ac6a66571ed82dc309643b804ac55ac9a95c791fba9",
+    "view": "qualification-plan"
+   },
+   {
+    "retiredSemanticDigests": [
+     "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39"
+    ],
+    "semanticDigest": "134d30a3c6f9c21f38ae46fdc74c861eae38feeb1cc3ea6c8b171f800a733166",
+    "view": "diagnostic-balanced"
+   },
+   {
+    "retiredSemanticDigests": [
+     "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19"
+    ],
+    "semanticDigest": "a82ac5144a4ae22336cd66318e37a2010ec7a8fc3129233630b130f3df082767",
+    "view": "benign-heavy-stress"
+   }
+  ],
+  "b11Report": {
+   "path": "evidence/901/428/core-401158d09a67/pii-beta11-report-v2.json",
+   "sha256": "f1413ad3f7674c9b28d4dd62e2fc8f2b739eaeec76338c373cc508dcef90e59e"
+  },
+  "engine": {
+   "artifactSchema": "1.4",
+   "commit": "b1c097e40bad456e52f904f626cca00b69c45612"
+  }
+ },
+ "metricsWithDifferentDefinitions": [
+  "type-miss-rate",
+  "wrong-family-rate",
+  "wrong-jurisdiction-rate",
+  "sensitive-miss-rate",
+  "non-sensitive-flag-rate",
+  "context-discrimination-rate",
+  "benign-suppression-rate",
+  "jurisdiction-collision-rate",
+  "range-collateral-rate",
+  "measurable-share"
+ ],
+ "note": "Descriptive. Two scorers use the same ten metric ids for different quantities (benchmarks/evaluation/domains/pii/metric-basis.mjs). This record decides nothing: no threshold, membership or verdict is read or written, and cells are never pooled across families or populations. The decision on which protocol defines a product value is docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md.",
+ "populations": [
+  {
+   "artifactSemanticDigest": "37a74f301c30b854a698b3d4aeb313d24e637d8860c5a49d390f904f1246b868",
+   "b11NotEstablished": {
+    "pii:global:email": {
+     "cases": 13,
+     "falseAlarm": 0,
+     "scoredCases": 20,
+     "unscoredCases": 0
+    },
+    "pii:global:iban": {
+     "cases": 19,
+     "falseAlarm": 0,
+     "scoredCases": 21,
+     "unscoredCases": 0
+    },
+    "pii:global:network-address": {
+     "cases": 6,
+     "falseAlarm": 0,
+     "scoredCases": 25,
+     "unscoredCases": 0
+    },
+    "pii:global:payment-card": {
+     "cases": 13,
+     "falseAlarm": 0,
+     "scoredCases": 19,
+     "unscoredCases": 0
+    },
+    "pii:global:phone": {
+     "cases": 25,
+     "falseAlarm": 0,
+     "scoredCases": 41,
+     "unscoredCases": 0
+    },
+    "pii:us:ssn": {
+     "cases": 17,
+     "falseAlarm": 0,
+     "scoredCases": 20,
+     "unscoredCases": 0
+    }
+   },
+   "beforeArtifactSemanticDigest": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
+   "beforeMemberships": 95,
+   "beforeSchemaVersion": "1.2",
+   "cells": [
+    {
+     "b11": {
+      "bound": 0.324416,
+      "denominator": 8,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.781196,
+      "effectiveN": 20,
+      "eligible": 20,
+      "notApplicable": 5,
+      "numerator": 12,
+      "point": 0.6,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 20,
+      "eligible": 20,
+      "numerator": 12,
+      "point": 0.6,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.324416,
+      "denominator": 8,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.16113,
+      "effectiveN": 20,
+      "eligible": 20,
+      "notApplicable": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 20,
+      "eligible": 20,
+      "numerator": 0,
+      "point": 0,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.324416,
+      "denominator": 8,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.324416,
+      "effectiveN": 8,
+      "eligible": 8,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 8,
+      "eligible": 8,
+      "numerator": 0,
+      "point": 0,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.25884,
+      "denominator": 11,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.25884,
+      "effectiveN": 11,
+      "eligible": 11,
+      "notApplicable": 14,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 11,
+      "eligible": 11,
+      "numerator": 0,
+      "point": 0,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:network-address",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.815676,
+      "denominator": 17,
+      "numerator": 17,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.324416,
+      "denominator": 8,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.324416,
+      "effectiveN": 8,
+      "eligible": 8,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 8,
+      "eligible": 8,
+      "numerator": 0,
+      "point": 0,
+      "total": 22,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.866804,
+      "denominator": 25,
+      "numerator": 25,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.692037,
+      "effectiveN": 50,
+      "eligible": 50,
+      "notApplicable": 0,
+      "numerator": 41,
+      "point": 0.82,
+      "status": "partial",
+      "total": 50,
+      "unresolved": 9,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 44,
+      "eligible": 44,
+      "numerator": 41,
+      "point": 0.931818,
+      "total": 44,
+      "unresolved": 3
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.4899,
+      "denominator": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.831822,
+      "effectiveN": 10,
+      "eligible": 10,
+      "notApplicable": 10,
+      "numerator": 6,
+      "point": 0.6,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 10,
+      "eligible": 10,
+      "numerator": 6,
+      "point": 0.6,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.4899,
+      "denominator": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.27754,
+      "effectiveN": 10,
+      "eligible": 10,
+      "notApplicable": 10,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 10,
+      "eligible": 10,
+      "numerator": 0,
+      "point": 0,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 20,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.4899,
+      "denominator": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.4899,
+      "effectiveN": 4,
+      "eligible": 4,
+      "notApplicable": 16,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 4,
+      "eligible": 4,
+      "numerator": 0,
+      "point": 0,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 3,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:email",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 3,
+      "eligible": 3,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 3,
+      "eligible": 3,
+      "numerator": 0,
+      "point": null,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:email",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.806387,
+      "denominator": 16,
+      "numerator": 16,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 20,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 20,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.4899,
+      "denominator": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.4899,
+      "effectiveN": 4,
+      "eligible": 4,
+      "notApplicable": 16,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 4,
+      "eligible": 4,
+      "numerator": 0,
+      "point": 0,
+      "total": 11,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.83887,
+      "denominator": 20,
+      "numerator": 20,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.307051,
+      "effectiveN": 40,
+      "eligible": 40,
+      "notApplicable": 0,
+      "numerator": 18,
+      "point": 0.45,
+      "status": "partial",
+      "total": 40,
+      "unresolved": 22,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 22,
+      "eligible": 22,
+      "numerator": 18,
+      "point": 0.818182,
+      "total": 22,
+      "unresolved": 4
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.806743,
+      "effectiveN": 12,
+      "eligible": 12,
+      "notApplicable": 7,
+      "numerator": 7,
+      "point": 0.583333,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 12,
+      "eligible": 12,
+      "numerator": 7,
+      "point": 0.583333,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.242501,
+      "effectiveN": 12,
+      "eligible": 12,
+      "notApplicable": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 12,
+      "eligible": 12,
+      "numerator": 0,
+      "point": 0,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.434491,
+      "effectiveN": 5,
+      "eligible": 5,
+      "notApplicable": 14,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 5,
+      "eligible": 5,
+      "numerator": 0,
+      "point": 0,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 1,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 1,
+      "eligible": 1,
+      "notApplicable": 18,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 1,
+      "eligible": 1,
+      "numerator": 0,
+      "point": null,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.784683,
+      "denominator": 14,
+      "numerator": 14,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.434491,
+      "effectiveN": 5,
+      "eligible": 5,
+      "notApplicable": 14,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 5,
+      "eligible": 5,
+      "numerator": 0,
+      "point": 0,
+      "total": 14,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.831816,
+      "denominator": 19,
+      "numerator": 19,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.372587,
+      "effectiveN": 38,
+      "eligible": 38,
+      "notApplicable": 0,
+      "numerator": 20,
+      "point": 0.526316,
+      "status": "partial",
+      "total": 38,
+      "unresolved": 18,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 28,
+      "eligible": 28,
+      "numerator": 20,
+      "point": 0.714286,
+      "total": 28,
+      "unresolved": 8
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 2,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:iban",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.882382,
+      "effectiveN": 5,
+      "eligible": 5,
+      "notApplicable": 16,
+      "numerator": 3,
+      "point": 0.6,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 5,
+      "eligible": 5,
+      "numerator": 3,
+      "point": 0.6,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 2,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:iban",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.434491,
+      "effectiveN": 5,
+      "eligible": 5,
+      "notApplicable": 16,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 5,
+      "eligible": 5,
+      "numerator": 0,
+      "point": 0,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 21,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 2,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:iban",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 2,
+      "eligible": 2,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 2,
+      "eligible": 2,
+      "numerator": 0,
+      "point": null,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:iban",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 21,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:iban",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.831816,
+      "denominator": 19,
+      "numerator": 19,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 21,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 21,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 2,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:iban",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 2,
+      "eligible": 2,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 2,
+      "eligible": 2,
+      "numerator": 0,
+      "point": null,
+      "total": 8,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.845356,
+      "denominator": 21,
+      "numerator": 21,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.134808,
+      "effectiveN": 42,
+      "eligible": 42,
+      "notApplicable": 0,
+      "numerator": 10,
+      "point": 0.238095,
+      "status": "partial",
+      "total": 42,
+      "unresolved": 32,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 16,
+      "eligible": 16,
+      "numerator": 10,
+      "point": 0.625,
+      "total": 16,
+      "unresolved": 6
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 3,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:us:ssn",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.879418,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 11,
+      "numerator": 6,
+      "point": 0.666667,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 6,
+      "point": 0.666667,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 3,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 11,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 3,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 11,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 3,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:us:ssn",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 3,
+      "eligible": 3,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 3,
+      "eligible": 3,
+      "numerator": 0,
+      "point": null,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:us:ssn",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 20,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:us:ssn",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.815676,
+      "denominator": 17,
+      "numerator": 17,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 20,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.83887,
+      "denominator": 20,
+      "numerator": 20,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 20,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 3,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:us:ssn",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 3,
+      "eligible": 3,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 20,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 3,
+      "eligible": 3,
+      "numerator": 0,
+      "point": null,
+      "total": 15,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.83887,
+      "denominator": 20,
+      "numerator": 20,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.307051,
+      "effectiveN": 40,
+      "eligible": 40,
+      "notApplicable": 0,
+      "numerator": 18,
+      "point": 0.45,
+      "status": "partial",
+      "total": 40,
+      "unresolved": 22,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 30,
+      "eligible": 30,
+      "numerator": 18,
+      "point": 0.6,
+      "total": 30,
+      "unresolved": 12
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.215317,
+      "denominator": 14,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.592148,
+      "effectiveN": 23,
+      "eligible": 23,
+      "notApplicable": 18,
+      "numerator": 9,
+      "point": 0.391304,
+      "status": "measured",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 23,
+      "eligible": 23,
+      "numerator": 9,
+      "point": 0.391304,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.215317,
+      "denominator": 14,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.143121,
+      "effectiveN": 23,
+      "eligible": 23,
+      "notApplicable": 18,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 23,
+      "eligible": 23,
+      "numerator": 0,
+      "point": 0,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 41,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.215317,
+      "denominator": 14,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.215317,
+      "effectiveN": 14,
+      "eligible": 14,
+      "notApplicable": 27,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 14,
+      "eligible": 14,
+      "numerator": 0,
+      "point": 0,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 2,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:phone",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 2,
+      "eligible": 2,
+      "notApplicable": 39,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 2,
+      "eligible": 2,
+      "numerator": 0,
+      "point": null,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:phone",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.875441,
+      "denominator": 27,
+      "numerator": 27,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 41,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 41,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.215317,
+      "denominator": 14,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.215317,
+      "effectiveN": 14,
+      "eligible": 14,
+      "notApplicable": 27,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 41,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 14,
+      "eligible": 14,
+      "numerator": 0,
+      "point": 0,
+      "total": 25,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.91433,
+      "denominator": 41,
+      "numerator": 41,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.394226,
+      "effectiveN": 82,
+      "eligible": 82,
+      "notApplicable": 0,
+      "numerator": 41,
+      "point": 0.5,
+      "status": "partial",
+      "total": 82,
+      "unresolved": 41,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 50,
+      "eligible": 50,
+      "numerator": 41,
+      "point": 0.82,
+      "total": 50,
+      "unresolved": 9
+     },
+     "sameCounts": false
+    }
+   ],
+   "memberships": 146,
+   "summary": {
+    "benign-suppression-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "context-discrimination-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 6
+    },
+    "jurisdiction-collision-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "measurable-share": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "non-sensitive-flag-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 4,
+     "sameCounts": 6
+    },
+    "range-collateral-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 6
+    },
+    "sensitive-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 6
+    },
+    "type-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "wrong-family-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "wrong-jurisdiction-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 1,
+     "sameCounts": 0
+    }
+   },
+   "unresolvedRangeMemberships": 51,
+   "view": "oracle-plan"
+  },
+  {
+   "artifactSemanticDigest": "6f41e411e27de75f48b64ac6a66571ed82dc309643b804ac55ac9a95c791fba9",
+   "b11NotEstablished": {
+    "pii:global:email": {
+     "cases": 17,
+     "falseAlarm": 0,
+     "scoredCases": 52,
+     "unscoredCases": 0
+    },
+    "pii:global:iban": {
+     "cases": 9,
+     "falseAlarm": 0,
+     "scoredCases": 43,
+     "unscoredCases": 0
+    },
+    "pii:global:network-address": {
+     "cases": 4,
+     "falseAlarm": 0,
+     "scoredCases": 24,
+     "unscoredCases": 1
+    },
+    "pii:global:payment-card": {
+     "cases": 46,
+     "falseAlarm": 0,
+     "scoredCases": 114,
+     "unscoredCases": 0
+    },
+    "pii:global:phone": {
+     "cases": 4,
+     "falseAlarm": 0,
+     "scoredCases": 17,
+     "unscoredCases": 0
+    },
+    "pii:us:ssn": {
+     "cases": 8,
+     "falseAlarm": 0,
+     "scoredCases": 15,
+     "unscoredCases": 0
+    }
+   },
+   "beforeArtifactSemanticDigest": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
+   "beforeMemberships": 230,
+   "beforeSchemaVersion": "1.2",
+   "cells": [
+    {
+     "b11": {
+      "bound": 0.16113,
+      "denominator": 20,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.358535,
+      "effectiveN": 24,
+      "eligible": 24,
+      "notApplicable": 1,
+      "numerator": 4,
+      "point": 0.166667,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 24,
+      "eligible": 24,
+      "numerator": 4,
+      "point": 0.166667,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.16113,
+      "denominator": 20,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.137981,
+      "effectiveN": 24,
+      "eligible": 24,
+      "notApplicable": 1,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 24,
+      "eligible": 24,
+      "numerator": 0,
+      "point": 0,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.16113,
+      "denominator": 20,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.16113,
+      "effectiveN": 20,
+      "eligible": 20,
+      "notApplicable": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 20,
+      "eligible": 20,
+      "numerator": 0,
+      "point": 0,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:network-address",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 2,
+      "numerator": 2,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:network-address",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.5101,
+      "denominator": 4,
+      "numerator": 4,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.16113,
+      "denominator": 20,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.16113,
+      "effectiveN": 20,
+      "eligible": 20,
+      "notApplicable": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 25,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 20,
+      "eligible": 20,
+      "numerator": 0,
+      "point": 0,
+      "total": 24,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.804555,
+      "denominator": 25,
+      "numerator": 24,
+      "point": 0.96,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.761949,
+      "effectiveN": 50,
+      "eligible": 50,
+      "notApplicable": 0,
+      "numerator": 44,
+      "point": 0.88,
+      "status": "partial",
+      "total": 50,
+      "unresolved": 6,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 48,
+      "eligible": 48,
+      "numerator": 44,
+      "point": 0.916667,
+      "total": 48,
+      "unresolved": 4
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.098904,
+      "denominator": 35,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.235792,
+      "effectiveN": 39,
+      "eligible": 39,
+      "notApplicable": 13,
+      "numerator": 4,
+      "point": 0.102564,
+      "status": "measured",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 39,
+      "eligible": 39,
+      "numerator": 4,
+      "point": 0.102564,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.098904,
+      "denominator": 35,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.08967,
+      "effectiveN": 39,
+      "eligible": 39,
+      "notApplicable": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 39,
+      "eligible": 39,
+      "numerator": 0,
+      "point": 0,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 52,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.098904,
+      "denominator": 35,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.098904,
+      "effectiveN": 35,
+      "eligible": 35,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 35,
+      "eligible": 35,
+      "numerator": 0,
+      "point": 0,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:email",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 52,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.74116,
+      "denominator": 11,
+      "numerator": 11,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.815676,
+      "denominator": 17,
+      "numerator": 17,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 52,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 52,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.094061,
+      "denominator": 37,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.098904,
+      "effectiveN": 35,
+      "eligible": 35,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 52,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 35,
+      "eligible": 35,
+      "numerator": 0,
+      "point": 0,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.931205,
+      "denominator": 52,
+      "numerator": 52,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.658884,
+      "effectiveN": 104,
+      "eligible": 104,
+      "notApplicable": 0,
+      "numerator": 78,
+      "point": 0.75,
+      "status": "partial",
+      "total": 104,
+      "unresolved": 26,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 86,
+      "eligible": 86,
+      "numerator": 78,
+      "point": 0.906977,
+      "total": 86,
+      "unresolved": 8
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.054228,
+      "denominator": 67,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.152482,
+      "effectiveN": 72,
+      "eligible": 72,
+      "notApplicable": 42,
+      "numerator": 5,
+      "point": 0.069444,
+      "status": "measured",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 72,
+      "eligible": 72,
+      "numerator": 5,
+      "point": 0.069444,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.054228,
+      "denominator": 67,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.050653,
+      "effectiveN": 72,
+      "eligible": 72,
+      "notApplicable": 42,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 72,
+      "eligible": 72,
+      "numerator": 0,
+      "point": 0,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 114,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.054228,
+      "denominator": 67,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.054228,
+      "effectiveN": 67,
+      "eligible": 67,
+      "notApplicable": 47,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 67,
+      "eligible": 67,
+      "numerator": 0,
+      "point": 0,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 1,
+      "numerator": 0,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 1,
+      "eligible": 1,
+      "notApplicable": 113,
+      "numerator": 0,
+      "point": null,
+      "status": "measured",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": "insufficient-evidence"
+     },
+     "piiV1Before": {
+      "effectiveN": 1,
+      "eligible": 1,
+      "numerator": 0,
+      "point": null,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.921346,
+      "denominator": 45,
+      "numerator": 45,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.92444,
+      "denominator": 47,
+      "numerator": 47,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 114,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 114,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.054228,
+      "denominator": 67,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.054228,
+      "effectiveN": 67,
+      "eligible": 67,
+      "notApplicable": 47,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 114,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 67,
+      "eligible": 67,
+      "numerator": 0,
+      "point": 0,
+      "total": 103,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.9674,
+      "denominator": 114,
+      "numerator": 114,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.689965,
+      "effectiveN": 228,
+      "eligible": 228,
+      "notApplicable": 0,
+      "numerator": 171,
+      "point": 0.75,
+      "status": "partial",
+      "total": 228,
+      "unresolved": 57,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 206,
+      "eligible": 206,
+      "numerator": 171,
+      "point": 0.830097,
+      "total": 206,
+      "unresolved": 35
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.101518,
+      "denominator": 34,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.101518,
+      "effectiveN": 34,
+      "eligible": 34,
+      "notApplicable": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 34,
+      "eligible": 34,
+      "numerator": 0,
+      "point": 0,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.101518,
+      "denominator": 34,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.101518,
+      "effectiveN": 34,
+      "eligible": 34,
+      "notApplicable": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 34,
+      "eligible": 34,
+      "numerator": 0,
+      "point": 0,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 43,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.101518,
+      "denominator": 34,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.101518,
+      "effectiveN": 34,
+      "eligible": 34,
+      "notApplicable": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 34,
+      "eligible": 34,
+      "numerator": 0,
+      "point": 0,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:iban",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 43,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.700847,
+      "denominator": 9,
+      "numerator": 9,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.700847,
+      "denominator": 9,
+      "numerator": 9,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 43,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 43,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.101518,
+      "denominator": 34,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.101518,
+      "effectiveN": 34,
+      "eligible": 34,
+      "notApplicable": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 43,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 34,
+      "eligible": 34,
+      "numerator": 0,
+      "point": 0,
+      "total": 34,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.917987,
+      "denominator": 43,
+      "numerator": 43,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.693232,
+      "effectiveN": 86,
+      "eligible": 86,
+      "notApplicable": 0,
+      "numerator": 68,
+      "point": 0.790698,
+      "status": "partial",
+      "total": 86,
+      "unresolved": 18,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 68,
+      "eligible": 68,
+      "numerator": 68,
+      "point": 1,
+      "total": 68,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.547417,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 6,
+      "numerator": 2,
+      "point": 0.222222,
+      "status": "measured",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 2,
+      "point": 0.222222,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 6,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 6,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 8,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:us:ssn",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 15,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.645661,
+      "denominator": 7,
+      "numerator": 7,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.675584,
+      "denominator": 8,
+      "numerator": 8,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 15,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.796111,
+      "denominator": 15,
+      "numerator": 15,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 15,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 8,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 15,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.796111,
+      "denominator": 15,
+      "numerator": 15,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.487797,
+      "effectiveN": 30,
+      "eligible": 30,
+      "notApplicable": 0,
+      "numerator": 20,
+      "point": 0.666667,
+      "status": "partial",
+      "total": 30,
+      "unresolved": 10,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 26,
+      "eligible": 26,
+      "numerator": 20,
+      "point": 0.769231,
+      "total": 26,
+      "unresolved": 6
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.228102,
+      "effectiveN": 13,
+      "eligible": 13,
+      "notApplicable": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 13,
+      "eligible": 13,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.228102,
+      "effectiveN": 13,
+      "eligible": 13,
+      "notApplicable": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 13,
+      "eligible": 13,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.228102,
+      "effectiveN": 13,
+      "eligible": 13,
+      "notApplicable": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 13,
+      "eligible": 13,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:phone",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 3,
+      "numerator": 3,
+      "point": null,
+      "status": "insufficient-denominator"
+     },
+     "family": "pii:global:phone",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.5101,
+      "denominator": 4,
+      "numerator": 4,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.228102,
+      "effectiveN": 13,
+      "eligible": 13,
+      "notApplicable": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 17,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 13,
+      "eligible": 13,
+      "numerator": 0,
+      "point": 0,
+      "total": 13,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.815676,
+      "denominator": 17,
+      "numerator": 17,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.600035,
+      "effectiveN": 34,
+      "eligible": 34,
+      "notApplicable": 0,
+      "numerator": 26,
+      "point": 0.764706,
+      "status": "partial",
+      "total": 34,
+      "unresolved": 8,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 26,
+      "eligible": 26,
+      "numerator": 26,
+      "point": 1,
+      "total": 26,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    }
+   ],
+   "memberships": 266,
+   "summary": {
+    "benign-suppression-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "context-discrimination-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "jurisdiction-collision-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "measurable-share": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "non-sensitive-flag-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 1,
+     "sameCounts": 6
+    },
+    "range-collateral-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 5
+    },
+    "sensitive-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 6
+    },
+    "type-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 2
+    },
+    "wrong-family-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 2
+    },
+    "wrong-jurisdiction-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 1,
+     "sameCounts": 0
+    }
+   },
+   "unresolvedRangeMemberships": 36,
+   "view": "qualification-plan"
+  },
+  {
+   "artifactSemanticDigest": "134d30a3c6f9c21f38ae46fdc74c861eae38feeb1cc3ea6c8b171f800a733166",
+   "b11NotEstablished": {
+    "pii:global:email": {
+     "cases": 35,
+     "falseAlarm": 0,
+     "scoredCases": 86,
+     "unscoredCases": 0
+    },
+    "pii:global:iban": {
+     "cases": 54,
+     "falseAlarm": 0,
+     "scoredCases": 93,
+     "unscoredCases": 0
+    },
+    "pii:global:network-address": {
+     "cases": 41,
+     "falseAlarm": 0,
+     "scoredCases": 97,
+     "unscoredCases": 0
+    },
+    "pii:global:payment-card": {
+     "cases": 80,
+     "falseAlarm": 0,
+     "scoredCases": 161,
+     "unscoredCases": 0
+    },
+    "pii:global:phone": {
+     "cases": 7,
+     "falseAlarm": 0,
+     "scoredCases": 21,
+     "unscoredCases": 0
+    },
+    "pii:us:ssn": {
+     "cases": 10,
+     "falseAlarm": 0,
+     "scoredCases": 19,
+     "unscoredCases": 0
+    }
+   },
+   "beforeArtifactSemanticDigest": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
+   "beforeMemberships": 428,
+   "beforeSchemaVersion": "1.2",
+   "cells": [
+    {
+     "b11": {
+      "bound": 0.08567,
+      "denominator": 41,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.625546,
+      "effectiveN": 86,
+      "eligible": 86,
+      "notApplicable": 11,
+      "numerator": 45,
+      "point": 0.523256,
+      "status": "measured",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 86,
+      "eligible": 86,
+      "numerator": 45,
+      "point": 0.523256,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.08567,
+      "denominator": 41,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.04276,
+      "effectiveN": 86,
+      "eligible": 86,
+      "notApplicable": 11,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 86,
+      "eligible": 86,
+      "numerator": 0,
+      "point": 0,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 97,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.08567,
+      "denominator": 41,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.08567,
+      "effectiveN": 41,
+      "eligible": 41,
+      "notApplicable": 56,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 41,
+      "eligible": 41,
+      "numerator": 0,
+      "point": 0,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.203889,
+      "denominator": 15,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.203889,
+      "effectiveN": 15,
+      "eligible": 15,
+      "notApplicable": 82,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 15,
+      "eligible": 15,
+      "numerator": 0,
+      "point": 0,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.815676,
+      "denominator": 17,
+      "numerator": 17,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.935804,
+      "denominator": 56,
+      "numerator": 56,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 97,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 97,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.078654,
+      "denominator": 45,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.08567,
+      "effectiveN": 41,
+      "eligible": 41,
+      "notApplicable": 56,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 97,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 41,
+      "eligible": 41,
+      "numerator": 0,
+      "point": 0,
+      "total": 91,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.961905,
+      "denominator": 97,
+      "numerator": 97,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.692814,
+      "effectiveN": 194,
+      "eligible": 194,
+      "notApplicable": 0,
+      "numerator": 147,
+      "point": 0.757732,
+      "status": "partial",
+      "total": 194,
+      "unresolved": 47,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 182,
+      "eligible": 182,
+      "numerator": 147,
+      "point": 0.807692,
+      "total": 182,
+      "unresolved": 35
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.080298,
+      "denominator": 44,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.480204,
+      "effectiveN": 69,
+      "eligible": 69,
+      "notApplicable": 17,
+      "numerator": 25,
+      "point": 0.362319,
+      "status": "measured",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 69,
+      "eligible": 69,
+      "numerator": 25,
+      "point": 0.362319,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.080298,
+      "denominator": 44,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.052739,
+      "effectiveN": 69,
+      "eligible": 69,
+      "notApplicable": 17,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 69,
+      "eligible": 69,
+      "numerator": 0,
+      "point": 0,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 86,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.080298,
+      "denominator": 44,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.080298,
+      "effectiveN": 44,
+      "eligible": 44,
+      "notApplicable": 42,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 44,
+      "eligible": 44,
+      "numerator": 0,
+      "point": 0,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 79,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.83887,
+      "denominator": 20,
+      "numerator": 20,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.916198,
+      "denominator": 42,
+      "numerator": 42,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 86,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 86,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.07556,
+      "denominator": 47,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.080298,
+      "effectiveN": 44,
+      "eligible": 44,
+      "notApplicable": 42,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 86,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 44,
+      "eligible": 44,
+      "numerator": 0,
+      "point": 0,
+      "total": 73,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.95724,
+      "denominator": 86,
+      "numerator": 86,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.64963,
+      "effectiveN": 172,
+      "eligible": 172,
+      "notApplicable": 0,
+      "numerator": 124,
+      "point": 0.72093,
+      "status": "partial",
+      "total": 172,
+      "unresolved": 48,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 146,
+      "eligible": 146,
+      "numerator": 124,
+      "point": 0.849315,
+      "total": 146,
+      "unresolved": 22
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.05133,
+      "denominator": 71,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.441854,
+      "effectiveN": 109,
+      "eligible": 109,
+      "notApplicable": 52,
+      "numerator": 38,
+      "point": 0.348624,
+      "status": "measured",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 109,
+      "eligible": 109,
+      "numerator": 38,
+      "point": 0.348624,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.05133,
+      "denominator": 71,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.034044,
+      "effectiveN": 109,
+      "eligible": 109,
+      "notApplicable": 52,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 109,
+      "eligible": 109,
+      "numerator": 0,
+      "point": 0,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 161,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.05133,
+      "denominator": 71,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.05133,
+      "effectiveN": 71,
+      "eligible": 71,
+      "notApplicable": 90,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 71,
+      "eligible": 71,
+      "numerator": 0,
+      "point": 0,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.27754,
+      "denominator": 10,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.27754,
+      "effectiveN": 10,
+      "eligible": 10,
+      "notApplicable": 151,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 10,
+      "eligible": 10,
+      "numerator": 0,
+      "point": 0,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.938869,
+      "denominator": 59,
+      "numerator": 59,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.959063,
+      "denominator": 90,
+      "numerator": 90,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 161,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 161,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.05133,
+      "denominator": 71,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.05133,
+      "effectiveN": 71,
+      "eligible": 71,
+      "notApplicable": 90,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 161,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 71,
+      "eligible": 71,
+      "numerator": 0,
+      "point": 0,
+      "total": 150,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.976695,
+      "denominator": 161,
+      "numerator": 161,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.665871,
+      "effectiveN": 322,
+      "eligible": 322,
+      "notApplicable": 0,
+      "numerator": 231,
+      "point": 0.717391,
+      "status": "partial",
+      "total": 322,
+      "unresolved": 91,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 300,
+      "eligible": 300,
+      "numerator": 231,
+      "point": 0.77,
+      "total": 300,
+      "unresolved": 69
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.08967,
+      "denominator": 39,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.466278,
+      "effectiveN": 59,
+      "eligible": 59,
+      "notApplicable": 34,
+      "numerator": 20,
+      "point": 0.338983,
+      "status": "measured",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 59,
+      "eligible": 59,
+      "numerator": 20,
+      "point": 0.338983,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.08967,
+      "denominator": 39,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.061131,
+      "effectiveN": 59,
+      "eligible": 59,
+      "notApplicable": 34,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 59,
+      "eligible": 59,
+      "numerator": 0,
+      "point": 0,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 93,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.08967,
+      "denominator": 39,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.08967,
+      "effectiveN": 39,
+      "eligible": 39,
+      "notApplicable": 54,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 39,
+      "eligible": 39,
+      "numerator": 0,
+      "point": 0,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:iban",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 93,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.875441,
+      "denominator": 27,
+      "numerator": 27,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.933584,
+      "denominator": 54,
+      "numerator": 54,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 93,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 93,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.08967,
+      "denominator": 39,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.08967,
+      "effectiveN": 39,
+      "eligible": 39,
+      "notApplicable": 54,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 93,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 39,
+      "eligible": 39,
+      "numerator": 0,
+      "point": 0,
+      "total": 77,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.960331,
+      "denominator": 93,
+      "numerator": 93,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.552191,
+      "effectiveN": 186,
+      "eligible": 186,
+      "notApplicable": 0,
+      "numerator": 116,
+      "point": 0.623656,
+      "status": "partial",
+      "total": 186,
+      "unresolved": 70,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 154,
+      "eligible": 154,
+      "numerator": 116,
+      "point": 0.753247,
+      "total": 154,
+      "unresolved": 38
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.668218,
+      "effectiveN": 16,
+      "eligible": 16,
+      "notApplicable": 3,
+      "numerator": 7,
+      "point": 0.4375,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 16,
+      "eligible": 16,
+      "numerator": 7,
+      "point": 0.4375,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.193613,
+      "effectiveN": 16,
+      "eligible": 16,
+      "notApplicable": 3,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 16,
+      "eligible": 16,
+      "numerator": 0,
+      "point": 0,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": 0.193613,
+      "effectiveN": 16,
+      "eligible": 16,
+      "notApplicable": 3,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 16,
+      "eligible": 16,
+      "numerator": 0,
+      "point": 0,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 10,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:us:ssn",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.565509,
+      "denominator": 5,
+      "numerator": 5,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.72246,
+      "denominator": 10,
+      "numerator": 10,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.831816,
+      "denominator": 19,
+      "numerator": 19,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 19,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 10,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 19,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 18,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.831816,
+      "denominator": 19,
+      "numerator": 19,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.552426,
+      "effectiveN": 38,
+      "eligible": 38,
+      "notApplicable": 0,
+      "numerator": 27,
+      "point": 0.710526,
+      "status": "partial",
+      "total": 38,
+      "unresolved": 11,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 36,
+      "eligible": 36,
+      "numerator": 27,
+      "point": 0.75,
+      "total": 36,
+      "unresolved": 9
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.690371,
+      "effectiveN": 17,
+      "eligible": 17,
+      "notApplicable": 4,
+      "numerator": 8,
+      "point": 0.470588,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 17,
+      "eligible": 17,
+      "numerator": 8,
+      "point": 0.470588,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.184324,
+      "effectiveN": 17,
+      "eligible": 17,
+      "notApplicable": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 17,
+      "eligible": 17,
+      "numerator": 0,
+      "point": 0,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 21,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 12,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.434491,
+      "effectiveN": 5,
+      "eligible": 5,
+      "notApplicable": 16,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 5,
+      "eligible": 5,
+      "numerator": 0,
+      "point": 0,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.565509,
+      "denominator": 5,
+      "numerator": 5,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.757499,
+      "denominator": 12,
+      "numerator": 12,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 21,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 21,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.299153,
+      "denominator": 9,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.299153,
+      "effectiveN": 9,
+      "eligible": 9,
+      "notApplicable": 12,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 21,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 9,
+      "eligible": 9,
+      "numerator": 0,
+      "point": 0,
+      "total": 19,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.845356,
+      "denominator": 21,
+      "numerator": 21,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.640599,
+      "effectiveN": 42,
+      "eligible": 42,
+      "notApplicable": 0,
+      "numerator": 33,
+      "point": 0.785714,
+      "status": "partial",
+      "total": 42,
+      "unresolved": 9,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 38,
+      "eligible": 38,
+      "numerator": 33,
+      "point": 0.868421,
+      "total": 38,
+      "unresolved": 5
+     },
+     "sameCounts": false
+    }
+   ],
+   "memberships": 477,
+   "summary": {
+    "benign-suppression-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "context-discrimination-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "jurisdiction-collision-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "measurable-share": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "non-sensitive-flag-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 4,
+     "sameCounts": 6
+    },
+    "range-collateral-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 4
+    },
+    "sensitive-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 6
+    },
+    "type-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "wrong-family-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "wrong-jurisdiction-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 1,
+     "sameCounts": 0
+    }
+   },
+   "unresolvedRangeMemberships": 49,
+   "view": "diagnostic-balanced"
+  },
+  {
+   "artifactSemanticDigest": "a82ac5144a4ae22336cd66318e37a2010ec7a8fc3129233630b130f3df082767",
+   "b11NotEstablished": {
+    "pii:global:email": {
+     "cases": 28,
+     "falseAlarm": 0,
+     "scoredCases": 51,
+     "unscoredCases": 0
+    },
+    "pii:global:iban": {
+     "cases": 45,
+     "falseAlarm": 0,
+     "scoredCases": 50,
+     "unscoredCases": 0
+    },
+    "pii:global:network-address": {
+     "cases": 37,
+     "falseAlarm": 0,
+     "scoredCases": 80,
+     "unscoredCases": 0
+    },
+    "pii:global:payment-card": {
+     "cases": 32,
+     "falseAlarm": 0,
+     "scoredCases": 55,
+     "unscoredCases": 0
+    },
+    "pii:global:phone": {
+     "cases": 20,
+     "falseAlarm": 0,
+     "scoredCases": 34,
+     "unscoredCases": 0
+    },
+    "pii:us:ssn": {
+     "cases": 22,
+     "falseAlarm": 0,
+     "scoredCases": 29,
+     "unscoredCases": 0
+    }
+   },
+   "beforeArtifactSemanticDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19",
+   "beforeMemberships": 279,
+   "beforeSchemaVersion": "1.2",
+   "cells": [
+    {
+     "b11": {
+      "bound": 0.137981,
+      "denominator": 24,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.75382,
+      "effectiveN": 69,
+      "eligible": 69,
+      "notApplicable": 11,
+      "numerator": 45,
+      "point": 0.652174,
+      "status": "measured",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 69,
+      "eligible": 69,
+      "numerator": 45,
+      "point": 0.652174,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.137981,
+      "denominator": 24,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.052739,
+      "effectiveN": 69,
+      "eligible": 69,
+      "notApplicable": 11,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 69,
+      "eligible": 69,
+      "numerator": 0,
+      "point": 0,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 80,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.137981,
+      "denominator": 24,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.137981,
+      "effectiveN": 24,
+      "eligible": 24,
+      "notApplicable": 56,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 24,
+      "eligible": 24,
+      "numerator": 0,
+      "point": 0,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.168184,
+      "denominator": 19,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.168184,
+      "effectiveN": 19,
+      "eligible": 19,
+      "notApplicable": 61,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 19,
+      "eligible": 19,
+      "numerator": 0,
+      "point": 0,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.675584,
+      "denominator": 8,
+      "numerator": 8,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.935804,
+      "denominator": 56,
+      "numerator": 56,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 80,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:network-address",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 80,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.120647,
+      "denominator": 28,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.137981,
+      "effectiveN": 24,
+      "eligible": 24,
+      "notApplicable": 56,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 80,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 24,
+      "eligible": 24,
+      "numerator": 0,
+      "point": 0,
+      "total": 74,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.95418,
+      "denominator": 80,
+      "numerator": 80,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:network-address",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.65773,
+      "effectiveN": 160,
+      "eligible": 160,
+      "notApplicable": 0,
+      "numerator": 117,
+      "point": 0.73125,
+      "status": "partial",
+      "total": 160,
+      "unresolved": 43,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 148,
+      "eligible": 148,
+      "numerator": 117,
+      "point": 0.790541,
+      "total": 148,
+      "unresolved": 31
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.242501,
+      "denominator": 12,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.84747,
+      "effectiveN": 47,
+      "eligible": 47,
+      "notApplicable": 4,
+      "numerator": 35,
+      "point": 0.744681,
+      "status": "measured",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 47,
+      "eligible": 47,
+      "numerator": 35,
+      "point": 0.744681,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.242501,
+      "denominator": 12,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.07556,
+      "effectiveN": 47,
+      "eligible": 47,
+      "notApplicable": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 47,
+      "eligible": 47,
+      "numerator": 0,
+      "point": 0,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 51,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.242501,
+      "denominator": 12,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.242501,
+      "effectiveN": 12,
+      "eligible": 12,
+      "notApplicable": 39,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 12,
+      "eligible": 12,
+      "numerator": 0,
+      "point": 0,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.25884,
+      "denominator": 11,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.25884,
+      "effectiveN": 11,
+      "eligible": 11,
+      "notApplicable": 40,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 11,
+      "eligible": 11,
+      "numerator": 0,
+      "point": 0,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.645661,
+      "denominator": 7,
+      "numerator": 7,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.91033,
+      "denominator": 39,
+      "numerator": 39,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 51,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:email",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 51,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.242501,
+      "effectiveN": 12,
+      "eligible": 12,
+      "notApplicable": 39,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 51,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 12,
+      "eligible": 12,
+      "numerator": 0,
+      "point": 0,
+      "total": 47,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.929951,
+      "denominator": 51,
+      "numerator": 51,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:email",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.590855,
+      "effectiveN": 102,
+      "eligible": 102,
+      "notApplicable": 0,
+      "numerator": 70,
+      "point": 0.686275,
+      "status": "partial",
+      "total": 102,
+      "unresolved": 32,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 94,
+      "eligible": 94,
+      "numerator": 70,
+      "point": 0.744681,
+      "total": 94,
+      "unresolved": 24
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.844544,
+      "effectiveN": 51,
+      "eligible": 51,
+      "notApplicable": 4,
+      "numerator": 38,
+      "point": 0.745098,
+      "status": "measured",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 51,
+      "eligible": 51,
+      "numerator": 38,
+      "point": 0.745098,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.070049,
+      "effectiveN": 51,
+      "eligible": 51,
+      "notApplicable": 4,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 51,
+      "eligible": 51,
+      "numerator": 0,
+      "point": 0,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 55,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.228102,
+      "effectiveN": 13,
+      "eligible": 13,
+      "notApplicable": 42,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 13,
+      "eligible": 13,
+      "numerator": 0,
+      "point": 0,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.27754,
+      "denominator": 10,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.27754,
+      "effectiveN": 10,
+      "eligible": 10,
+      "notApplicable": 45,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 10,
+      "eligible": 10,
+      "numerator": 0,
+      "point": 0,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.565509,
+      "denominator": 5,
+      "numerator": 5,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.916198,
+      "denominator": 42,
+      "numerator": 42,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 55,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:payment-card",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 55,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.228102,
+      "denominator": 13,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.228102,
+      "effectiveN": 13,
+      "eligible": 13,
+      "notApplicable": 42,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 55,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 13,
+      "eligible": 13,
+      "numerator": 0,
+      "point": 0,
+      "total": 55,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.934713,
+      "denominator": 55,
+      "numerator": 55,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:payment-card",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.618305,
+      "effectiveN": 110,
+      "eligible": 110,
+      "notApplicable": 0,
+      "numerator": 78,
+      "point": 0.709091,
+      "status": "partial",
+      "total": 110,
+      "unresolved": 32,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 110,
+      "eligible": 110,
+      "numerator": 78,
+      "point": 0.709091,
+      "total": 110,
+      "unresolved": 32
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.911395,
+      "effectiveN": 25,
+      "eligible": 25,
+      "notApplicable": 25,
+      "numerator": 20,
+      "point": 0.8,
+      "status": "measured",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 25,
+      "eligible": 25,
+      "numerator": 20,
+      "point": 0.8,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.133196,
+      "effectiveN": 25,
+      "eligible": 25,
+      "notApplicable": 25,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 25,
+      "eligible": 25,
+      "numerator": 0,
+      "point": 0,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 50,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.434491,
+      "effectiveN": 5,
+      "eligible": 5,
+      "notApplicable": 45,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 5,
+      "eligible": 5,
+      "numerator": 0,
+      "point": 0,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:global:iban",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 50,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.5101,
+      "denominator": 4,
+      "numerator": 4,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.921346,
+      "denominator": 45,
+      "numerator": 45,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 50,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:iban",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 50,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.434491,
+      "denominator": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.434491,
+      "effectiveN": 5,
+      "eligible": 5,
+      "notApplicable": 45,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 50,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 5,
+      "eligible": 5,
+      "numerator": 0,
+      "point": 0,
+      "total": 43,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.92865,
+      "denominator": 50,
+      "numerator": 50,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:iban",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.384644,
+      "effectiveN": 100,
+      "eligible": 100,
+      "notApplicable": 0,
+      "numerator": 48,
+      "point": 0.48,
+      "status": "partial",
+      "total": 100,
+      "unresolved": 52,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 86,
+      "eligible": 86,
+      "numerator": 48,
+      "point": 0.55814,
+      "total": 86,
+      "unresolved": 38
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.862957,
+      "effectiveN": 26,
+      "eligible": 26,
+      "notApplicable": 3,
+      "numerator": 19,
+      "point": 0.730769,
+      "status": "measured",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 26,
+      "eligible": 26,
+      "numerator": 19,
+      "point": 0.730769,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.128733,
+      "effectiveN": 26,
+      "eligible": 26,
+      "notApplicable": 3,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 26,
+      "eligible": 26,
+      "numerator": 0,
+      "point": 0,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": 0.128733,
+      "effectiveN": 26,
+      "eligible": 26,
+      "notApplicable": 3,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 26,
+      "eligible": 26,
+      "numerator": 0,
+      "point": 0,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 22,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": null,
+      "denominator": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable"
+     },
+     "family": "pii:us:ssn",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 29,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.5101,
+      "denominator": 4,
+      "numerator": 4,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.85134,
+      "denominator": 22,
+      "numerator": 22,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 29,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.883026,
+      "denominator": 29,
+      "numerator": 29,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 29,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 22,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 29,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 29,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.883026,
+      "denominator": 29,
+      "numerator": 29,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:us:ssn",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.492026,
+      "effectiveN": 58,
+      "eligible": 58,
+      "notApplicable": 0,
+      "numerator": 36,
+      "point": 0.62069,
+      "status": "partial",
+      "total": 58,
+      "unresolved": 22,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 58,
+      "eligible": 58,
+      "numerator": 36,
+      "point": 0.62069,
+      "total": 58,
+      "unresolved": 22
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "type-miss-rate",
+     "piiV1": {
+      "bound": 0.877817,
+      "effectiveN": 29,
+      "eligible": 29,
+      "notApplicable": 5,
+      "numerator": 22,
+      "point": 0.758621,
+      "status": "measured",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 29,
+      "eligible": 29,
+      "numerator": 22,
+      "point": 0.758621,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "wrong-family-rate",
+     "piiV1": {
+      "bound": 0.116974,
+      "effectiveN": 29,
+      "eligible": 29,
+      "notApplicable": 5,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 29,
+      "eligible": 29,
+      "numerator": 0,
+      "point": 0,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "wrong-jurisdiction-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 34,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "sensitive-miss-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 27,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "non-sensitive-flag-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 27,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.5101,
+      "denominator": 4,
+      "numerator": 4,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "context-discrimination-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 0,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 0,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 0,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.875441,
+      "denominator": 27,
+      "numerator": 27,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "benign-suppression-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 34,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": null,
+     "family": "pii:global:phone",
+     "metric": "jurisdiction-collision-rate",
+     "piiV1": {
+      "bound": null,
+      "effectiveN": 0,
+      "eligible": 0,
+      "notApplicable": 34,
+      "numerator": 0,
+      "point": null,
+      "status": "not-applicable",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": "zero-denominator"
+     },
+     "piiV1Before": {
+      "effectiveN": 0,
+      "eligible": 0,
+      "numerator": 0,
+      "point": null,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": false
+    },
+    {
+     "b11": {
+      "bound": 0.354339,
+      "denominator": 7,
+      "numerator": 0,
+      "point": 0,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "range-collateral-rate",
+     "piiV1": {
+      "bound": 0.354339,
+      "effectiveN": 7,
+      "eligible": 7,
+      "notApplicable": 27,
+      "numerator": 0,
+      "point": 0,
+      "status": "measured",
+      "total": 34,
+      "unresolved": 0,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 7,
+      "eligible": 7,
+      "numerator": 0,
+      "point": 0,
+      "total": 31,
+      "unresolved": 0
+     },
+     "sameCounts": true
+    },
+    {
+     "b11": {
+      "bound": 0.898482,
+      "denominator": 34,
+      "numerator": 34,
+      "point": 1,
+      "status": "met"
+     },
+     "family": "pii:global:phone",
+     "metric": "measurable-share",
+     "piiV1": {
+      "bound": 0.54337,
+      "effectiveN": 68,
+      "eligible": 68,
+      "notApplicable": 0,
+      "numerator": 45,
+      "point": 0.661765,
+      "status": "partial",
+      "total": 68,
+      "unresolved": 23,
+      "withheld": null
+     },
+     "piiV1Before": {
+      "effectiveN": 62,
+      "eligible": 62,
+      "numerator": 45,
+      "point": 0.725806,
+      "total": 62,
+      "unresolved": 17
+     },
+     "sameCounts": false
+    }
+   ],
+   "memberships": 299,
+   "summary": {
+    "benign-suppression-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "context-discrimination-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "jurisdiction-collision-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 0,
+     "sameCounts": 0
+    },
+    "measurable-share": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "non-sensitive-flag-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 4,
+     "sameCounts": 6
+    },
+    "range-collateral-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 4
+    },
+    "sensitive-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 6
+    },
+    "type-miss-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "wrong-family-rate": {
+     "b11Cells": 6,
+     "cells": 6,
+     "piiV1MeasuredCells": 6,
+     "sameCounts": 0
+    },
+    "wrong-jurisdiction-rate": {
+     "b11Cells": 1,
+     "cells": 6,
+     "piiV1MeasuredCells": 1,
+     "sameCounts": 0
+    }
+   },
+   "unresolvedRangeMemberships": 20,
+   "view": "benign-heavy-stress"
+  }
+ ],
+ "reportType": "pii-scorer-basis-comparison",
+ "schemaVersion": 1,
+ "supportClaims": false
+}

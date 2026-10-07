@@ -98,3 +98,19 @@ test('a stale or substituted artifact (another digest, another population, anoth
   const retired = loadPins(pinsText);
   for (const pin of retired.populations) assert.ok(!pin.retiredArtifactDigests.includes(pin.artifactDigest), 'the current digest is never also retired');
 });
+
+test('publication binding refuses an incomplete set and never calls a candidate a release (public path, no custodian or ledger)', async () => {
+  const { piiEvalMeasurementFrom } = await import('../scripts/pii-publication-inputs.ts');
+  const root = new URL('../', import.meta.url).pathname;
+  const pins = ['benchmarks/pii-eval-public-synthetic-pins.json', 'benchmarks/pii-eval-population-pins.json'].map(file => root + file);
+  const demo = root + JSON.parse(read('benchmarks/pii-eval-public-synthetic-source.json')).durableCopy.path;
+  const files = views.map(view => `${root}benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
+  await assert.rejects(piiEvalMeasurementFrom(pins, [demo, ...files.slice(1)]), /pinned population missing|artifact validation failed/);
+  const measurement = await piiEvalMeasurementFrom(pins, [demo, ...files]);
+  assert.equal(measurement.populations.length, files.length + 1);
+  assert.ok(measurement.populations.every(row => row.status === 'accepted'));
+  assert.ok(measurement.populations.filter(row => views.includes(row.label)).every(row => row.schemaVersion === '1.4'));
+  assert.deepEqual([...new Set(measurement.populations.map(row => row.productBinding.state))], ['publication-product-not-measured'], 'with no measured product no population claims one');
+  const other = await piiEvalMeasurementFrom(pins, [demo, ...files], { sourceCommit: 'f'.repeat(40), coreSha256: 'e'.repeat(64) });
+  assert.ok(other.populations.every(row => row.productBinding.state === 'other-product'), 'a candidate of another commit is another product');
+});

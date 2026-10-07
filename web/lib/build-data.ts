@@ -30,7 +30,8 @@ export function dataUrl(path: string): string {
 export type LoadFailure = 'offline' | 'unavailable' | 'invalid';
 
 export class BuildDataError extends Error {
-  constructor(readonly failure: LoadFailure, message: string) {
+  /** `status` is the HTTP status when the host answered, so a missing file (404) can be told from a network failure. */
+  constructor(readonly failure: LoadFailure, message: string, readonly status?: number) {
     super(message);
     this.name = 'BuildDataError';
   }
@@ -55,7 +56,7 @@ export function loadBuildData<T>(path: string, check: (value: unknown) => value 
   if (shared) return shared as Promise<T>;
   const request = fetch(dataUrl(path), { method: 'GET', credentials: 'omit', mode: 'same-origin', referrerPolicy: 'no-referrer' })
     .then(async response => {
-      if (!response.ok) throw new BuildDataError('unavailable', `${path}: HTTP ${response.status}`);
+      if (!response.ok) throw new BuildDataError('unavailable', `${path}: HTTP ${response.status}`, response.status);
       let body: unknown;
       try { body = await response.json(); } catch { throw new BuildDataError('invalid', `${path}: not JSON`); }
       if (!check(body)) throw new BuildDataError('invalid', `${path}: unexpected shape`);

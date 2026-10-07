@@ -22,6 +22,7 @@ import { piiCurrentProtectedRoute } from '../../benchmarks/evaluation/domains/pi
 import { loadPiiProtectedSupportEvidence, validatePiiProtectedSupportBinding } from '../../benchmarks/evaluation/domains/pii/protected-support-binding';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../benchmarks/evaluation/domains/pii/support-v2';
 import type { CustodianConformance, PiiEvalMeasurement } from '../../benchmarks/evaluation/domains/pii/support-v2';
+export type { PiiEvalMeasurement };
 import { domainDescriptorV2, evaluationDomainsV2Problem } from '../../benchmarks/shared/evaluation-domains-v2.ts';
 import type { Catalog } from './catalog';
 import { loadPiiAuthority, type PiiAuthority, type PiiAuthorityState } from './pii-authority';

@@ -10,6 +10,7 @@ import type { CredentialEvaluation, PiiEvaluation, PiiFamilyRecord, PiiViewCount
 import { quantityOf } from '../../benchmarks/evaluation/domains/pii/metric-basis.mjs';
 import { count, int, isoDate } from './format';
 import { modeText } from './report';
+import { resolvePiiMethodCoverage } from './pii-method-coverage';
 import { resolvePipelineStamp } from './run';
 
 export type DomainId = 'pii' | 'credential';
@@ -360,7 +361,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       mode: recorded
         ? `Counts are from the frozen report bound by the reviewed protected binding ${recorded.route.id}. Mode: ${modeLine.toLowerCase()}${recorded.mode === 'candidate' ? ', unreleased' : ''}.`
         : 'No PII record is bound, so no count is shown.',
-      tables: [coverageTable, { id: 'by-method', caption: 'Cases and variants by method', text: 'The ledger holds no per-method counts for this domain; the credential page shows them.', issue: issue(ISSUES.methods) }],
+      tables: [coverageTable, ...resolvePiiMethodCoverage(piiEval)],
       columnKey: [...PII_VIEWS.map(v => ({ term: v.column, text: v.meaning })), { term: 'Protected', text: 'A sealed corpus, run once. Only its size is public.' }],
       scope: [
         { term: 'Languages with context evidence', text: `${(recorded?.languages ?? []).join(', ') || 'Not recorded'}. Language is not jurisdiction.` },

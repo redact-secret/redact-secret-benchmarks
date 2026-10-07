@@ -72,7 +72,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 28
+    "externalCallerFiles": 29
    }
   }
  },
@@ -736,9 +736,9 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 2,
+    "total": 3,
     "withinCandidates": 2,
-    "testCallers": 0,
+    "testCallers": 1,
     "external": 0,
     "externalByClass": {},
     "externalFiles": []
@@ -1949,16 +1949,17 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 6,
+    "total": 8,
     "withinCandidates": 0,
-    "testCallers": 3,
-    "external": 3,
+    "testCallers": 4,
+    "external": 4,
     "externalByClass": {
-     "web (Next app)": 3
+     "web (Next app)": 4
     },
     "externalFiles": [
      "web/resolvers/domains.ts (web (Next app), import)",
      "web/resolvers/pages.ts (web (Next app), import)",
+     "web/resolvers/pii-method-coverage.ts (web (Next app), import)",
      "web/services/credential-source.ts (web (Next app), path)"
     ]
    }

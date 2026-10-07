@@ -104,7 +104,7 @@ stays as the oracle. The publish builds the qualification view first (from the a
 publish and to the CI jobs that build the committed `new` export from the view (`web-build`, `web-browser`, #654). `node scripts/assemble-site.mjs` then makes `dist/`: the export at `/` and `public/results/` at `/results/` (the same step runs in the `web-build` job,
 so the publication guards scan what ships). Keep `BASE_PATH` empty and every link root-relative (`check:routes` fails a link that is not a page or file of the export, and a `/next/` string anywhere). Do not add a
 `robots` meta: staging's `noindex` is CloudFront's `X-Robots-Tag`, and the same build is production. The CloudFront function of the benchmarks stacks must route `<path>/` to `<path>/index.html` and redirect legacy URLs
-by `benchmarks/legacy-url-redirects.json` (`docs/specs/legacy-url-redirects.md`).
+by `benchmarks/legacy-url-redirects.json` (`docs/specs/legacy-url-redirects.md`). Before that rule is live, the not-found page resolves an old `/fixture/<suite>--<id>` link itself (`LegacyFixtureLookup`, #594): one records-file request, a known fixture replaced by its `?fixture=` page, anything else a 404 that says why.
 
 ## Data layer: services, resolvers, pages
 

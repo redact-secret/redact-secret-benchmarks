@@ -22,14 +22,17 @@ export function OptionalScannerNote({ scanners, variant = 'full', className }: O
   return (
     <div className={cx(styles.notes, className)} data-optional-scanners="not-measured">
       {scanners.map(n => (
-        <Note key={n.key} tone="info" title={n.statement}>
-          <p className={styles.p} data-optional-scanner={n.key}>{n.reason}</p>
-          <p className={styles.p}>{n.lastMeasurement}</p>
-          {variant === 'full' && n.archive && <p className={styles.p}>{n.archive}</p>}
-          {variant === 'full' && n.scope && <p className={styles.p}>{n.scope}</p>}
-          {n.officialMeasurement && <p className={styles.p}>{n.officialMeasurement}</p>}
-          {n.link && <p className={styles.p}><Link href={n.link.href}>{n.link.label}</Link></p>}
-        </Note>
+        <div key={n.key} className={styles.item}>
+          <Note tone="info" title={n.statement}>
+            <p className={styles.p} data-optional-scanner={n.key}>{n.reason}</p>
+            <p className={styles.p}>{n.lastMeasurement}</p>
+            {variant === 'full' && n.archive && <p className={styles.p}>{n.archive}</p>}
+            {variant === 'full' && n.scope && <p className={styles.p}>{n.scope}</p>}
+            {n.officialMeasurement && <p className={styles.p}>{n.officialMeasurement}</p>}
+          </Note>
+          {/* The link sits beside the note, not in its tinted fill: link ink on the info fill misses the contrast the pages hold. */}
+          {n.link && <p className={styles.link}><Link href={n.link.href}>{n.link.label}</Link></p>}
+        </div>
       ))}
     </div>
   );

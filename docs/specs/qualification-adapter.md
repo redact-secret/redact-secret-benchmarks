@@ -57,7 +57,7 @@ Issue [#763](https://github.com/redact-secret/redact-secret-benchmarks/issues/76
 Decision: [Make the OpenRedaction default profile an optional, manual measurement](../decisions/2026-10-06-make-the-openredaction-default-profile-an-optional-manual-measurement.md).
 
 The evaluation contract names, per run class (and, when needed, per population), the scanners a run MUST measure and the ones it MAY leave unmeasured:
-`benchmarks/support/scanner-roster.json` (`required`, `optional`, and for each optional scanner its label, profile, reason, the per-platform engine configuration that leaves it out, and the engine release status). The
+`benchmarks/support/scanner-roster.json` (`required`, `optional`, and for each optional scanner its label, profile, reason, the per-platform engine configuration that leaves it out, and the first engine release that ships it; whether the PINNED engine ships it is read from its checkout by the driver, #812). The
 adapter reads it (`benchmarks/qualification/scanner-roster.ts`, `buildQualificationView({ roster, history })`):
 
 - A **required** scanner that is absent from an artifact, or not `complete`, refuses the view, as before. The product (`redact-secret`) is always required.

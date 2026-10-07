@@ -37,6 +37,8 @@ node --import tsx scripts/plan-execution.ts plan --axis <accuracy|performance|bo
 
 The axes are dispatched by separate workflows, never one from the other: accuracy by `official-runs.yml` (`mode` full or diagnostic), performance by the measurement's own workflow (`peer-pii-runtime-throughput.yml`, input `measurement`, recorded per measurement in the cell register). `plan` ends with the exact `gh workflow run` commands for what it scheduled, one per axis job, and none while a decision is open. A fixture-only plan therefore names no performance workflow. `execution-plan.yml` has no dispatch rights by design (`contents: read`), so it names the commands and a maintainer runs them.
 
+**Scanner selection (#812).** The official lane plans the effective scanner selection, not every registry scanner: the optional OpenRedaction default profile is omitted by default (not planned, `openredaction scan invocations: 0` in the markdown), and `plan --include-openredaction` plans it as the explicit opt-in, adding `include_openredaction=true` to the accuracy dispatch. The diagnostic lane picks its scanners itself and ignores the selection. The plan cannot see the pinned engine's configurations; the driver's `--dry-run` reads them from the engine checkout ([official-runs.md](official-runs.md#how-a-run-is-made)).
+
 ## Views
 
 The runtime and performance pages already show each measurement's date and host (`resolvers/performance.ts`, `resolvers/scanners.ts`: `Run of <date>: <platform> <arch> · Node · <cpu>`), and each report is a frozen, content-addressed artifact, so a view always shows an independent historical measurement with its source. The cell register carries the same fields plus the artifact digest for the plan.

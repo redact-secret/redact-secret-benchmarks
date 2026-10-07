@@ -19,6 +19,8 @@ export interface ReceiptExpectation {
   evidenceTag: string | null;
   /** The scanners this stage measures (#763): a receipt of another scanner set (with or without an optional scanner) is another measurement. */
   scannerIds?: string[];
+  /** The configuration and the opted-in optional scanners of this stage's scanner selection (#812). A receipt that records a selection must hold exactly it: a retry never turns an optional scanner on or off, and a receipt measured under another configuration is another measurement. */
+  scannerSelection?: { configFile: string; includedOptionalScanners: string[] };
   /** The registry's pinned methods selection and evaluation, for a methods receipt. */
   methodsRun?: { methods: string[]; reference: string; seed: string; evidenceDigest: string };
 }
@@ -30,6 +32,8 @@ interface ReceiptRecord {
   determinism?: { runs?: number; semanticDigestsEqual?: boolean };
   productCandidate?: { id?: string }; attribution?: { id?: string }; evidenceOverride?: { tag?: string };
   scanners?: { id?: string }[];
+  scannerSelection?: { configFile?: string; includedOptionalScanners?: string[] };
+  omittedOptionalScanners?: string[];
   evaluation?: { reference?: string; seed?: string; evidenceDigest?: string };
 }
 
@@ -48,6 +52,15 @@ export function receiptProblems(record: ReceiptRecord, artifactDigest: string, w
   if (want.scannerIds) {
     const had = (record.scanners ?? []).map(s => s.id ?? '').sort().join(',');
     if (had !== [...want.scannerIds].sort().join(',')) problems.push(`the receipt measured the scanners ${had || 'none recorded'}, this run measures ${[...want.scannerIds].sort().join(',')}`);
+  }
+  if (want.scannerSelection) {
+    // A record of an earlier workflow names no selection; its scanner set (checked above) is then its whole identity. A record that does name one must agree.
+    const had = record.scannerSelection;
+    if (had) {
+      if (had.configFile !== want.scannerSelection.configFile) problems.push(`the receipt was measured under configuration ${had.configFile ?? 'none recorded'}, this run uses ${want.scannerSelection.configFile}`);
+      const hadIncluded = [...(had.includedOptionalScanners ?? [])].sort().join(','), wantIncluded = [...want.scannerSelection.includedOptionalScanners].sort().join(',');
+      if (hadIncluded !== wantIncluded) problems.push(`the receipt opted in to the optional scanners [${hadIncluded}], this run opts in to [${wantIncluded}]: a retry never turns an optional scanner on or off`);
+    }
   }
   if (want.methods && want.methodsRun) {
     if ([...(record.methods ?? [])].sort().join(',') !== [...want.methodsRun.methods].sort().join(',')) problems.push('the receipt ran a different methods selection');

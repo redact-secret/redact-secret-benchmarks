@@ -4,8 +4,8 @@
  * effect report and the artifacts, archive them durably, verify the archive round trip, write the generated data and the registry receipt, and open the draft pull
  * request. Every step is idempotent and every refusal exits non-zero with the reason; nothing is accepted, no ledger row or status moves, and the evidence is not edited.
  *
- *   node scripts/run-candidate-replay.mjs all      --candidate <id> [--ref <branch>] [--omit-optional <scanner>] [--no-pr]
- *   node scripts/run-candidate-replay.mjs dispatch --candidate <id> [--ref <branch>] [--reuse-run <id>] [--omit-optional <scanner>]   prints the run id; --reuse-run rebuilds only the effect report from an earlier run's scanner artifacts
+ *   node scripts/run-candidate-replay.mjs all      --candidate <id> [--ref <branch>] [--include-openredaction] [--no-pr]
+ *   node scripts/run-candidate-replay.mjs dispatch --candidate <id> [--ref <branch>] [--reuse-run <id>] [--include-openredaction]   prints the run id; --reuse-run rebuilds only the effect report from an earlier run's scanner artifacts
  *   node scripts/run-candidate-replay.mjs wait     --run <id>                                    exits non-zero unless the run succeeded
  *   node scripts/run-candidate-replay.mjs collect  --candidate <id> --run <id>                   download, archive, verify, write data, record
  *   node scripts/run-candidate-replay.mjs propose  --candidate <id>                              branch, commit, push, draft pull request
@@ -26,6 +26,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { buildReport } from './candidate-replay-pipeline.mjs';
 import { controlFor } from './candidate-control.mjs';
 import { fetchArchive, listKept, pack, sha256File } from './replay-archive.mjs';
+import { controlRosterProblems, controlScannerIds, effectiveScannerIds } from './official-run-selection.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
@@ -55,16 +56,33 @@ export function recordReplay(registry, id, replay, evidenceTag) {
   return { ...registry, candidates: registry.candidates.map(c => (c.id !== id ? c : evidenceTag ? { ...c, evidenceReplays: { ...(c.evidenceReplays ?? {}), [evidenceTag]: receipt } } : { ...c, replay: receipt })) };
 }
 
+/**
+ * The scanner selection of a candidate replay dispatch (#812) against the control it will be compared with. The default measures the required scanners only; `include` is the
+ * explicit OpenRedaction opt-in. A control that measured another roster is reported before any CI minute is spent, and nothing is matched by turning a scanner on.
+ * Pure: the caller passes the registries.
+ */
+export function replaySelectionProblems({ adoption, evidence, include, officialRuns, roster }) {
+  let control;
+  try { control = controlFor(adoption, { evidenceTag: evidence?.tag, manifestDigest: evidence?.digest, requireArchive: false }); } catch (error) { return [error.message]; }
+  const selected = effectiveScannerIds(officialRuns.scanners, roster, include ? ['openredaction'] : []);
+  return controlRosterProblems({ control: controlScannerIds(control.replay), selected, roster, controlLabel: `the control replay of ${control.evidenceRelease ?? 'the accepted evidence'}` });
+}
+
 export const dataDir = id => `docs/generated/evidence-adoption/product-${id}`;
 
-function dispatch(id, ref, reuse, evidence, omit) {
+function dispatch(id, ref, reuse, evidence, include, omit) {
+  const readJson = file => JSON.parse(readFileSync(path.join(root, file), 'utf8'));
+  if (omit) console.error(`notice: --omit-optional is DEPRECATED (#812): omitting ${omit} is the default; use --include-openredaction to measure OpenRedaction`);
+  if (include && omit) throw new Error('--include-openredaction and --omit-optional contradict each other');
+  const problems = replaySelectionProblems({ adoption: readJson('benchmarks/evidence-adoption.json'), evidence, include, officialRuns: readJson('benchmarks/official-runs.json'), roster: readJson('benchmarks/support/scanner-roster.json') });
+  if (problems.length) throw new Error(problems.join('; '));
   if (run('git', ['status', '--porcelain']).trim()) throw new Error('the working tree is not clean: the replay runs the pushed commit, so commit and push first');
   const sha = run('git', ['rev-parse', 'HEAD']).trim();
   const pushed = run('git', ['ls-remote', 'origin', `refs/heads/${ref}`]).split('\t')[0];
   if (pushed !== sha) throw new Error(`origin/${ref} is at ${pushed || 'nothing'}, HEAD is ${sha}: push first`);
   run('node', ['scripts/check-product-candidates.mjs', '--bindings'], { stdio: ['ignore', 2, 2] });
   const after = Date.now();
-  gh(['workflow', 'run', WORKFLOW, '-R', REPOSITORY, '--ref', ref, '-f', `candidate=${id}`, ...(reuse ? ['-f', `reuse_candidate_run_id=${reuse}`] : []), ...(omit ? ['-f', `omit_optional=${omit}`] : []), ...(evidence ? ['-f', `evidence_tag=${evidence.tag}`, '-f', `evidence_manifest_digest=${evidence.digest}`] : [])]);
+  gh(['workflow', 'run', WORKFLOW, '-R', REPOSITORY, '--ref', ref, '-f', `candidate=${id}`, ...(reuse ? ['-f', `reuse_candidate_run_id=${reuse}`] : []), ...(include ? ['-f', 'include_openredaction=true'] : []), ...(omit ? ['-f', `omit_optional=${omit}`] : []), ...(evidence ? ['-f', `evidence_tag=${evidence.tag}`, '-f', `evidence_manifest_digest=${evidence.digest}`] : [])]);
   for (let attempt = 0; attempt < 30; attempt += 1) {
     const runs = JSON.parse(gh(['run', 'list', '-R', REPOSITORY, '--workflow', WORKFLOW, '--branch', ref, '--limit', '10', '--json', 'databaseId,event,headBranch,headSha,createdAt']));
     const found = pickDispatchedRun(runs, { ref, sha, after });
@@ -94,6 +112,13 @@ function collect(id, runId, evidence) {
     // The report is rebuilt from the downloaded artifacts by the code the workflow's report job runs, so the committed data never depends on a CI-only step.
     const adoptionRecord = JSON.parse(readFileSync(path.join(root, 'benchmarks/evidence-adoption.json'), 'utf8'));
     const adoption = controlFor(adoptionRecord, { evidenceTag: evidence?.tag, manifestDigest: evidence?.digest });
+    // Receipts of another scanner roster than the control's are refused here, before any report is built from them (#812): never matched by splicing observations.
+    const roster = JSON.parse(readFileSync(path.join(root, 'benchmarks/support/scanner-roster.json'), 'utf8'));
+    for (const rel of ['public-evidence-snapshot', 'public-evidence-snapshot/methods', 'regression-corpus', 'policy-corpus']) {
+      const ran = (JSON.parse(readFileSync(path.join(into, rel, 'run-record.json'), 'utf8')).scanners ?? []).map(x => x.id);
+      const problems = controlRosterProblems({ control: controlScannerIds(adoption.replay), selected: ran, roster, controlLabel: `the control replay (${adoption.replay.archive.release})` });
+      if (problems.length) throw new Error(`${rel}/run-record.json: ${problems.join('; ')}`);
+    }
     fetchArchive({ release: adoption.replay.archive.release, sha256: adoption.replay.archive.sha256, out: path.join(scratch, 'control'), repository: REPOSITORY });
     run('node', ['scripts/fetch-pinned-public-snapshot.mjs', '--out', path.join(scratch, 'snapshot'), ...(evidence ? ['--tag', evidence.tag, '--manifest-digest', evidence.digest] : [])], { stdio: 'inherit' });
     buildReport({ control: path.join(scratch, 'control'), candidate: into, id, snapshot: path.join(scratch, 'snapshot/credential-eval-corpus-snapshot.json'), out: path.join(scratch, 'report'), evidenceTag: evidence?.tag, manifestDigest: evidence?.digest });
@@ -128,7 +153,9 @@ function collect(id, runId, evidence) {
         '--snapshot-new', path.join(scratch, 'snapshot/credential-eval-corpus-snapshot.json'), '--maintainer-only-ids', ids, '--out-json', path.join(out, 'two-by-two.json'), '--out-md', path.join(out, 'two-by-two.md'), '--strict'],
       { stdio: ['ignore', 'inherit', 'inherit'], env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=8192' } });
     }
-    const omittedOptional = JSON.parse(readFileSync(path.join(into, 'public-evidence-snapshot/run-record.json'), 'utf8')).omittedOptionalScanners ?? [];
+    const publicRecord = JSON.parse(readFileSync(path.join(into, 'public-evidence-snapshot/run-record.json'), 'utf8'));
+    const omittedOptional = publicRecord.omittedOptionalScanners ?? [];
+    const includedOptional = publicRecord.scannerSelection?.includedOptionalScanners ?? [];
     const next = recordReplay(registry, id, {
       ciRun: `https://github.com/${REPOSITORY}/actions/runs/${runId}`,
       archive: { release: `candidate-runs-${runId}`, sha256: archived.digest, files: archived.files.length },
@@ -136,6 +163,7 @@ function collect(id, runId, evidence) {
       data: dir, worsened: effect.worsened, fixed: effect.fixed.length, improved: (effect.improved ?? []).length, regressed: effect.regressed.length,
       repeatRunsEqual: true,
       ...(omittedOptional.length ? { omittedOptionalScanners: omittedOptional } : {}),
+      ...(includedOptional.length ? { includedOptionalScanners: includedOptional } : {}),
       ...(evidence ? { evidence: { tag: evidence.tag, manifestDigest: evidence.digest } } : {}),
     }, evidence?.tag);
     writeFileSync(registryFile, `${JSON.stringify(next, null, 2)}\n`);
@@ -159,15 +187,17 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   const [command, ...rest] = process.argv.slice(2);
   const option = name => { const at = rest.indexOf(`--${name}`); return at >= 0 ? rest[at + 1] : undefined; };
   const id = option('candidate');
+  // OpenRedaction is a positive opt-in (#812); --omit-optional (#763) still works and is deprecated, because omitting is the default.
+  const includeOpenRedaction = rest.includes('--include-openredaction');
   const evidence = option('evidence-tag') ? { tag: option('evidence-tag'), digest: option('manifest-digest') } : undefined;
   try {
     const ref = option('ref') ?? run('git', ['branch', '--show-current']).trim();
-    if (command === 'dispatch') console.log(dispatch(id, ref, option('reuse-run'), evidence, option('omit-optional')));
+    if (command === 'dispatch') console.log(dispatch(id, ref, option('reuse-run'), evidence, includeOpenRedaction, option('omit-optional')));
     else if (command === 'wait') wait(option('run'));
     else if (command === 'collect') console.log(JSON.stringify(collect(id, option('run'), evidence)));
     else if (command === 'propose') console.log(propose(id, evidence));
     else if (command === 'all') {
-      const runId = dispatch(id, ref, option('reuse-run'), evidence, option('omit-optional'));
+      const runId = dispatch(id, ref, option('reuse-run'), evidence, includeOpenRedaction, option('omit-optional'));
       console.error(`dispatched run ${runId}`);
       wait(runId);
       const result = collect(id, option('reuse-run') ?? runId, evidence);

@@ -1,7 +1,11 @@
 name: Official credential-eval runs
+run-name: ${{ inputs.include_openredaction && 'Official credential-eval runs (OpenRedaction included)' || 'Official credential-eval runs' }}
+# Scanner selection (#812): a full run measures flare-redact, gitleaks, redact-secret and trufflehog under the engine's released without-OpenRedaction configuration, with zero OpenRedaction scan
+# invocations, and the job summary says so. The optional OpenRedaction default profile (all patterns) is measured only on the explicit opt-in `include_openredaction`, which the run name, the plan, the
+# summary and the run record (`scannerSelection`) all carry; a retry, a missing artifact or an attribution/candidate run never turns it on. `omit_optional` (#763) is deprecated: omitting is the default.
 # Runs credential-eval officially, once per qualification population (#604), and builds the qualification view from the
 # artifacts (#605). The floors population is run twice: a plain measurement and a methods run (#636). Manual only: it
-# builds a private engine and runs five scanners, so it is never part of push or pull request validation. The pins are
+# builds a private engine and runs the four required scanners (five with the explicit include_openredaction opt-in), so it is never part of push or pull request validation. The pins are
 # benchmarks/official-runs.json; the steps are credential-eval docs/consumers/benchmarks-quickstart.md.
 # Spec: docs/specs/official-runs.md.
 #
@@ -24,7 +28,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: full = the official run (all populations, all scanners, two engine runs, methods, the qualification view). diagnostic = the fast product-candidate lane (#705); exploratory and internal, never promotable.
+        description: full = the official run (all populations, the four required scanners - OpenRedaction only with include_openredaction, two engine runs, methods, the qualification view). diagnostic = the fast product-candidate lane (#705); exploratory and internal, never promotable.
         required: false
         default: full
         type: choice
@@ -44,8 +48,13 @@ on:
         required: false
         default: false
         type: boolean
+      include_openredaction:
+        description: Measure the OPTIONAL OpenRedaction default profile (all patterns; slow, about 50 minutes on the public population) as an explicit, manual opt-in (#812). Off by default - a full run measures flare-redact, gitleaks, redact-secret and trufflehog under the engine's without-OpenRedaction configuration with zero OpenRedaction scan invocations, and says so in the summary. On, the run uses the engine's full configuration and its run record carries the opt-in and the configuration. A retry (retry_run_id) never changes it - pass it again to retry an opted-in run - and a candidate replay must match its control's scanner roster. Refused with diagnostic mode, reuse_run_id, reuse_candidate_run_id and populations.
+        required: false
+        default: false
+        type: boolean
       omit_optional:
-        description: Leave an OPTIONAL scanner of the evaluation contract out of the official run (#763, benchmarks/support/scanner-roster.json), for example openredaction (its default profile is a manual measurement). The run is complete without it and the view says it was not measured. Needs an engine release that ships the without-optional configuration; refused otherwise. Exclusive with diagnostic mode, attribution and candidate.
+        description: DEPRECATED (#812), kept for existing callers. Omitting an optional scanner (openredaction) is now the default, so naming it changes nothing; use include_openredaction to measure it. Refused together with include_openredaction and with diagnostic mode.
         required: false
         default: ''
         type: string
@@ -102,6 +111,7 @@ jobs:
       POPULATIONS: ${{ inputs.populations }}
       REHEARSE_FAILURE: ${{ inputs.rehearse_post_step_failure }}
       OMIT_OPTIONAL: ${{ inputs.omit_optional }}
+      INCLUDE_OPENREDACTION: ${{ inputs.include_openredaction }}
       MODE: ${{ inputs.mode }}
       INCLUDE_PUBLIC: ${{ inputs.include_public }}
       ATTRIBUTION: ${{ inputs.attribution }}
@@ -119,7 +129,16 @@ jobs:
           echo "rehearsal=false" >> "$GITHUB_OUTPUT"
           if [ -n "$OMIT_OPTIONAL" ]; then
             [[ "$OMIT_OPTIONAL" =~ ^[a-z][a-z0-9-]*$ ]] || { echo "::error::omit_optional must be a scanner id"; exit 1; }
-            [ "$MODE" != "diagnostic" ] && [ -z "$ATTRIBUTION" ] || { echo "::error::omit_optional is exclusive with diagnostic mode and attribution"; exit 1; }
+            [ "$MODE" != "diagnostic" ] || { echo "::error::omit_optional is exclusive with diagnostic mode (it is deprecated: omitting an optional scanner is the default)"; exit 1; }
+            echo "::warning::omit_optional is DEPRECATED (#812): omitting an optional scanner is the default, so it changes nothing; use include_openredaction to measure OpenRedaction"
+          fi
+          if [ "$INCLUDE_OPENREDACTION" = "true" ]; then
+            [ "$MODE" != "diagnostic" ] && [ -z "$REUSE_RUN_ID" ] && [ -z "$REUSE_CANDIDATE_RUN_ID" ] && [ -z "$POPULATIONS" ] || { echo "::error::include_openredaction measures OpenRedaction in a full scan: it is exclusive with diagnostic mode, the view-only reuse inputs (nothing is scanned) and a stage rehearsal"; exit 1; }
+            [ -z "$OMIT_OPTIONAL" ] || { echo "::error::include_openredaction and omit_optional contradict each other"; exit 1; }
+            echo "::warning::include_openredaction: the OPTIONAL OpenRedaction default profile WILL be measured (explicit opt-in, expensive)"
+            echo "### Scanner selection: OpenRedaction INCLUDED by explicit opt-in (include_openredaction=true); full engine configuration" >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$MODE" != "diagnostic" ]; then
+            echo "### Scanner selection: default - flare-redact, gitleaks, redact-secret, trufflehog. OpenRedaction (optional) is OMITTED; zero OpenRedaction scan invocations (include_openredaction=false)" >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ "$REHEARSE_FAILURE" = "true" ] && [ -z "$POPULATIONS" ]; then echo "::error::rehearse_post_step_failure needs populations (a stage rehearsal)"; exit 1; fi
           if [ -n "$POPULATIONS" ]; then
@@ -148,7 +167,7 @@ jobs:
     permissions:
       contents: read
       actions: read # download the receipts of a retried run (#707)
-    timeout-minutes: 180 # two plain and two methods runs; OpenRedaction's methods scan alone takes ~29 min of its 30-min per-scan limit (credential-eval ADR 0004)
+    timeout-minutes: 180 # two plain and two methods runs; OpenRedaction's methods scan alone takes ~29 min of its 30-min per-scan limit (credential-eval ADR 0004), and it runs only on the explicit include_openredaction opt-in (#812)
     strategy:
       fail-fast: false
       matrix:
@@ -161,6 +180,8 @@ jobs:
       EVIDENCE_TAG: ${{ inputs.evidence_tag }}
       EVIDENCE_DIGEST: ${{ inputs.evidence_manifest_digest }}
       OMIT_OPTIONAL: ${{ inputs.omit_optional }}
+      # The positive opt-in (#812): empty unless include_openredaction was set, then the optional scanner's id. The driver is the one place that turns it into a selection.
+      INCLUDE_OPTIONAL: ${{ inputs.include_openredaction && 'openredaction' || '' }}
     steps:
       - name: Name the stage-timing file (the runner context is not available in job-level env)
         run: echo "STAGE_TIMINGS=$RUNNER_TEMP/stage-timings.tsv" >> "$GITHUB_ENV"
@@ -230,7 +251,7 @@ jobs:
       - name: Provision the peer scanners at their pinned digests
         if: ${{ inputs.mode != 'diagnostic' }} # the diagnostic lane runs the product only; no peer is needed or waited for
         run: |
-          scripts/ci-stage.sh "peer provisioning" -- node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin"
+          scripts/ci-stage.sh "peer provisioning" -- node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin" ${INCLUDE_OPTIONAL:+--include-optional "$INCLUDE_OPTIONAL"}
           echo "$RUNNER_TEMP/peer-bin" >> "$GITHUB_PATH"
       - name: Read the Node shim directory (the attribution run's own, when one is made)
         id: shim
@@ -273,7 +294,7 @@ jobs:
         run: >
           scripts/ci-stage.sh "plain run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${INCLUDE_OPTIONAL:+--include-optional "$INCLUDE_OPTIONAL"} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Write the plain stage receipt (the stage is verified and finished)
         id: plain-receipt
         if: ${{ !cancelled() && steps.plain.outcome == 'success' }}
@@ -311,7 +332,7 @@ jobs:
         run: >
           scripts/ci-stage.sh "methods run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 --methods ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 --methods ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${INCLUDE_OPTIONAL:+--include-optional "$INCLUDE_OPTIONAL"} ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Write the methods stage receipt (the stage is verified and finished)
         id: methods-receipt
         if: ${{ !cancelled() && steps.methods.outcome == 'success' }}
@@ -328,6 +349,14 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           compression-level: 1
+      - name: Scanner selection of each finished stage (what was measured, the optional scanner omitted or opted in, its invocation count) (#812)
+        if: ${{ inputs.mode != 'diagnostic' && !cancelled() }}
+        env:
+          POPULATION: ${{ matrix.population }}
+        run: |
+          for file in "official-out/$POPULATION/scanner-selection.md" "official-out/$POPULATION/methods/scanner-selection.md"; do
+            if [ -f "$file" ]; then cat "$file" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
       - name: Say plainly which stages are INCOMPLETE (engine output finished, verification did not)
         if: ${{ always() }}
         env:

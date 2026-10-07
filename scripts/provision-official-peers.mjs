@@ -12,12 +12,16 @@ import { createHash } from 'node:crypto';
 import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { provisionedExecutables } from './official-run-selection.mjs';
 
 const registry = JSON.parse(readFileSync(new URL('../benchmarks/official-runs.json', import.meta.url), 'utf8'));
 const args = process.argv.slice(2);
 const option = name => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
 const platform = option('platform'), out = option('out');
-if (!platform || !out || !registry.config.platforms[platform]) throw new Error('Usage: provision-official-peers.mjs --platform <linux-x64|darwin-arm64> --out <dir>');
+if (!platform || !out || !registry.config.platforms[platform]) throw new Error('Usage: provision-official-peers.mjs --platform <linux-x64|darwin-arm64> --out <dir> [--include-optional <scanner>]');
+// Only what the effective scanner selection executes (#812): an optional scanner's executable is provisioned on the explicit opt-in only.
+const roster = JSON.parse(readFileSync(new URL('../benchmarks/support/scanner-roster.json', import.meta.url), 'utf8'));
+const include = args.flatMap((a, i) => a === '--include-optional' ? String(args[i + 1] ?? '').split(',').filter(Boolean) : []);
 
 const ASSET = {
   gitleaks: { 'linux-x64': 'linux_x64', 'darwin-arm64': 'darwin_arm64', url: v => `https://github.com/gitleaks/gitleaks/releases/download/v${v}/gitleaks_${v}_`, name: 'gitleaks' },
@@ -28,7 +32,7 @@ mkdirSync(out, { recursive: true });
 chmodSync(out, 0o755);
 const work = mkdtempSync(path.join(tmpdir(), 'official-peers-'));
 try {
-  for (const scanner of registry.scanners.filter(s => s.kind === 'executable')) {
+  for (const scanner of provisionedExecutables(registry.scanners, roster, include)) {
     const asset = ASSET[scanner.id];
     if (!asset) throw new Error(`No download rule for ${scanner.id}`);
     const response = await fetch(`${asset.url(scanner.version)}${asset[platform]}.tar.gz`);

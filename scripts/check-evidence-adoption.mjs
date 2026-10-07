@@ -10,13 +10,14 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { freshnessProblems } from './adoption-report-sync.mjs';
+import { acceptanceSelectionProblems } from './acceptance-roster.mjs';
 
 const root = new URL('../', import.meta.url);
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const readJson = path => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 
 /** Pure: `pin` is the floors population pin of benchmarks/qualification-inputs.json; `exists(path)` tells whether a repo file exists; `read(path)` returns a repo file's text (only the prepared acceptance is checked through it). */
-export function evidenceAdoptionProblems(record, { pin, exists, read }) {
+export function evidenceAdoptionProblems(record, { pin, exists, read, roster }) {
   const problems = [];
   if (record.schema !== 'redact-secret/evidence-adoption/v1') problems.push('schema must be redact-secret/evidence-adoption/v1');
   if (!['none', 'candidate', 'accepted'].includes(record.state)) { problems.push('state must be none, candidate or accepted'); return problems; }
@@ -27,7 +28,7 @@ export function evidenceAdoptionProblems(record, { pin, exists, read }) {
   if (!/^[0-9a-f]{40}$/.test(c.sourceRevision ?? '')) problems.push('candidate.sourceRevision must be a full 40-hex commit');
   if (c.engineCompatibility?.compatible !== true) problems.push('a candidate is recorded only after the engine compatibility preflight passed');
   if (!c.changeReport || !exists(c.changeReport)) problems.push(`candidate.changeReport ${c.changeReport} does not exist`);
-  if (c.acceptance) problems.push(...preparedAcceptanceProblems(c.acceptance, { exists, read }));
+  if (c.acceptance) problems.push(...preparedAcceptanceProblems(c.acceptance, { exists, read, replay: c.replay, roster }));
   const isPin = c.evidenceRelease === pin.evidenceRelease;
   if (record.state === 'candidate') {
     if (isPin) problems.push('a candidate is not the active pin; once pinned, the adoption is accepted or withdrawn');
@@ -44,8 +45,10 @@ export function evidenceAdoptionProblems(record, { pin, exists, read }) {
  * The prepared acceptance (#680): the owner report, its data and the patch the owner applies exist, the patch matches its recorded digest, and the patch never fills an
  * owner field (every added acceptedBy or acceptedOn line is the OWNER-TO-SET placeholder, so the gates stay red until the owner decides).
  */
-export function preparedAcceptanceProblems(acceptance, { exists, read }) {
+export function preparedAcceptanceProblems(acceptance, { exists, read, replay, roster }) {
   const problems = [];
+  // The scanner selection the package records is the one the control replay measured (#773); a package prepared before that records none.
+  problems.push(...acceptanceSelectionProblems(acceptance, replay, roster).map(p => `candidate.${p}`));
   for (const f of ['report', 'comparison', 'patch', 'patchDigestFile']) if (!acceptance[f] || !exists(acceptance[f])) problems.push(`candidate.acceptance.${f} ${acceptance[f]} does not exist`);
   if (problems.length || !read) return problems;
   const patch = read(acceptance.patch);
@@ -77,7 +80,7 @@ export function engineCandidateProblems(record, { pin, exists }) {
 /** The identity digest of a registered product candidate's bytes: sha256 over `name sha256` lines of its packages, sorted. The same bytes give the same digest on any evidence. */
 export const packagesDigest = packages => `sha256:${createHash('sha256').update([...packages].map(p => `${p.name} ${p.sha256}`).sort().join('\n') + '\n').digest('hex')}`;
 
-export function evidenceCandidateProblems(record, { pin, exists, read, productCandidates }) {
+export function evidenceCandidateProblems(record, { pin, exists, read, productCandidates, roster }) {
   const ec = record.evidenceCandidate;
   if (ec === undefined) return [];
   const problems = [];
@@ -100,14 +103,14 @@ export function evidenceCandidateProblems(record, { pin, exists, read, productCa
     }
   }
   // The prepared acceptance: the owner report, its data and the patch exist, the patch matches the digest file's, and it never fills an owner field.
-  if (ec.acceptance) problems.push(...preparedAcceptanceProblems(ec.acceptance, { exists, read }).map(p => p.replace(/^candidate\./, 'evidenceCandidate.')));
+  if (ec.acceptance) problems.push(...preparedAcceptanceProblems(ec.acceptance, { exists, read, replay: ec.replay, roster }).map(p => p.replace(/^candidate\./, 'evidenceCandidate.')));
   return problems;
 }
 
 export function checkEvidenceAdoption() {
   const inputs = readJson('benchmarks/qualification-inputs.json');
   const record = readJson('benchmarks/evidence-adoption.json');
-  const context = { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8'), productCandidates: readJson('benchmarks/product-candidates.json') };
+  const context = { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8'), productCandidates: readJson('benchmarks/product-candidates.json'), roster: readJson('benchmarks/support/scanner-roster.json') };
   return [...evidenceAdoptionProblems(record, context), ...engineCandidateProblems(record, context), ...evidenceCandidateProblems(record, context)];
 }
 

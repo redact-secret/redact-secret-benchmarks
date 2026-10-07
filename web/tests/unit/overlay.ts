@@ -20,8 +20,15 @@ export const authorityFile = (authority: 'legacy' | 'new'): string => JSON.strin
 
 export const PII_AUTHORITY_FILE = 'benchmarks/pii-authority.json';
 
-/** The committed PII authority file with only its value changed (#666), independent of the credential authority. */
-export const piiAuthorityFile = (authority: 'legacy' | 'new'): string => JSON.stringify({ ...JSON.parse(readFileSync(path.join(REAL_ROOT, PII_AUTHORITY_FILE), 'utf8')), authority });
+/**
+ * The committed PII authority file with only its value changed (#666), independent of the credential authority. `authorised: false` removes the
+ * recorded owner authorisation from the copy (the working copy only), which is how a test puts `new` in the state the service must refuse.
+ */
+export const piiAuthorityFile = (authority: 'legacy' | 'new', authorised = true): string => {
+  const file = JSON.parse(readFileSync(path.join(REAL_ROOT, PII_AUTHORITY_FILE), 'utf8'));
+  if (!authorised) file.new.authorisation = null;
+  return JSON.stringify({ ...file, authority });
+};
 
 /**
  * A root where each `overrides` path is replaced by the given text, or removed when `null`. Unless the test names the authority file

@@ -70,12 +70,13 @@ test('deriving the official pins is idempotent and retires only a head that chan
   assert.throws(() => deriveOfficialPins(pins, { view: 'nope', artifactDigest: 'b'.repeat(64), manifestDigest: 'c'.repeat(64), candidateDigest: 'd'.repeat(64) }), /no pin/);
 });
 
-test('the authority record: official-mode is computed from the recorded run, the owner criteria are the owner\'s, and nothing is switched', async () => {
+test('the authority record: official-mode is computed from the recorded run, the owner criteria are the owner\'s, and the authorisation is the owner\'s recorded words', async () => {
   const { state } = await computeCriteria();
   assert.equal(state['official-mode-measurement'], 'met');
   const file = JSON.parse(bytes(PII_AUTHORITY_FILE).toString('utf8'));
-  assert.equal(file.authority, 'legacy');
-  assert.equal(file.new.authorisation, null);
+  // The record is internally consistent whichever value is committed: an owner acceptance exists exactly when an authorisation does, and it names its source.
   const owner = Object.fromEntries(file.exitCriteria.filter(c => c.basis === 'owner').map(c => [c.id, c.state]));
-  assert.equal(owner['owner-accepted-verdict'], 'unmet', 'the repository never records the owner\'s verdict');
+  assert.equal(owner['owner-accepted-verdict'] === 'met', file.new.authorisation !== null);
+  if (file.new.authorisation) assert.match(file.new.authorisation.source.issueComment, /issues\/666#issuecomment-\d+$/);
+  if (file.authority === 'new') assert.notEqual(file.new.authorisation, null);
 });

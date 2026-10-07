@@ -68,6 +68,26 @@ export const GROUPS = [
   },
 ];
 
+/**
+ * The retained (non-candidate, non-test) code that reaches a removal candidate through the import graph, following candidate-only chains.
+ * A candidate with any retained consumer is part of the oracle or of a specialized consumer and cannot be removed until that consumer is
+ * repointed; this is the per-file evidence behind the removal decision (#666).
+ */
+function retainedConsumers(path, candidateSet) {
+  const seen = new Set([path]);
+  const queue = [path];
+  const retained = new Set();
+  while (queue.length) {
+    for (const c of callersOf(queue.pop())) {
+      if (seen.has(c.file) || c.file === 'scripts/pii-legacy-inventory.mjs' || c.file === 'docs/generated/pii-legacy-inventory.json') continue;
+      seen.add(c.file);
+      if (candidateSet.has(c.file)) queue.push(c.file);
+      else if (c.class !== 'test') retained.add(c.file);
+    }
+  }
+  return [...retained].sort();
+}
+
 export function buildInventory() {
   const candidateSet = new Set(GROUPS.filter(g => g.disposition !== 'retain').flatMap(g => g.paths));
   const seen = new Map();
@@ -82,8 +102,14 @@ export function buildInventory() {
       const testCallers = callers.filter(c => !candidateSet.has(c.file) && c.class === 'test').length;
       const byClass = {};
       for (const c of external) byClass[c.class] = (byClass[c.class] ?? 0) + 1;
+      const isCandidate = group.disposition === 'removal-candidate';
+      const reach = isCandidate && group.id !== 'oracle-behaviour-tests' ? retainedConsumers(path, candidateSet) : [];
+      // Authority is new (#666), but the oracle period has not run: the further measured release, the repeated rehearsal and a reviewed removal PR are unmet. So no candidate is removed now, and the row says why.
+      const retention = isCandidate
+        ? { removalDecision: 'retain-for-oracle-period', reachedByRetainedCode: reach.length > 0, informational: { retainedConsumerCount: reach.length, retainedConsumers: reach.slice(0, 5) }, reason: group.id === 'oracle-behaviour-tests' ? 'the test of a retained oracle file; removed with that file' : reach.length ? 'reached by retained code (the oracle, the mixed files or a specialized consumer)' : 'no retained consumer; held by the unmet oracle-period exit' }
+        : { removalDecision: group.disposition === 'retain' ? 'retain' : group.disposition === 'retain-until-criterion' ? 'retain-until-criterion' : 'split-then-decide' };
       entries.push({
-        path, group: group.id, disposition: group.disposition, owner: group.owner, prerequisite: group.prerequisite,
+        path, group: group.id, disposition: group.disposition, retention, owner: group.owner, prerequisite: group.prerequisite,
         callers: { total: callers.length, withinCandidates: callers.filter(c => candidateSet.has(c.file)).length, testCallers, external: external.length, externalByClass: Object.fromEntries(Object.entries(byClass).sort()), externalFiles: external.map(c => `${c.file} (${c.class}, ${c.via})`) },
       });
     }
@@ -91,6 +117,7 @@ export function buildInventory() {
   const byGroup = Object.fromEntries(GROUPS.map(g => [g.id, { disposition: g.disposition, files: g.paths.length, externalCallerFiles: new Set(entries.filter(e => e.group === g.id).flatMap(e => e.callers.externalFiles)).size }]));
   return {
     schemaVersion: 1, reportType: 'pii-legacy-inventory', supportClaims: false, removesNothing: true,
+    removalReview: { authority: 'new (public/synthetic), 2026-10-07', removed: [], decision: 'No legacy file is removed: every removal candidate is either reached by retained code or is held by the oracle-period exit (one further measured release through both pipelines, a repeated rehearsal, a reviewed removal PR).' },
     source: 'redact-secret/pii-eval docs/migration/ownership-map.md at 212d500de90ce97461275be1e8b9dd8acd663fb3, restricted to this repository',
     groups: GROUPS.map(({ paths, ...g }) => ({ ...g, files: paths.length })),
     summary: { files: entries.length, byGroup },
@@ -102,11 +129,11 @@ const render = inventory => `${JSON.stringify(inventory, null, 1)}\n`;
 
 /**
  * What a drift check compares: the candidates, their groups and the callers that would block a removal (everything but a test). The count of
- * test callers and the totals are informational, so an unrelated pull request that adds a test naming a candidate does not turn the gate red;
+ * test callers, the totals and the sample of retained consumers (`retention.informational`) are informational, so an unrelated pull request that adds a test naming a candidate does not turn the gate red;
  * a new script, workflow, page or service that uses one does, because that caller has to be repointed before the file can go.
  */
 export function comparable(inventory) {
-  return JSON.stringify({ ...inventory, entries: inventory.entries.map(e => ({ ...e, callers: { external: e.callers.external, externalByClass: e.callers.externalByClass, externalFiles: e.callers.externalFiles } })) });
+  return JSON.stringify({ ...inventory, entries: inventory.entries.map(e => ({ ...e, retention: { ...e.retention, informational: undefined }, callers: { external: e.callers.external, externalByClass: e.callers.externalByClass, externalFiles: e.callers.externalFiles } })) });
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

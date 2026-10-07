@@ -1,21 +1,34 @@
 # PII authority, the measured exit and the rollback (#666)
 
-Status: benchmark-side record. This document measures and records; it asserts no product output and writes no owner acceptance. Decision:
-[`docs/decisions/2026-10-05-keep-pii-authority-legacy-with-a-measured-exit-and-a-rehearsed-rollback.md`](../decisions/2026-10-05-keep-pii-authority-legacy-with-a-measured-exit-and-a-rehearsed-rollback.md).
+Status: benchmark-side record. This document measures and records; it asserts no product output and never writes an owner acceptance on the owner's behalf. Decisions:
+[`2026-10-07 switch the public/synthetic PII measurement authority to pii-eval`](../decisions/2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md) (active) and
+[`2026-10-05 keep legacy with a measured exit`](../decisions/2026-10-05-keep-pii-authority-legacy-with-a-measured-exit-and-a-rehearsed-rollback.md) (the mechanism; its value is superseded for the public lane).
 The credential analogue is [`qualification-cutover.md`](qualification-cutover.md); the two are independent.
+
+## Who is the authority for what
+
+PII authority is not one global boolean. `authorityModel` in the file records the owners; `protected` records the protected path's readiness.
+
+| Class | Owner | State |
+| --- | --- | --- |
+| Public/synthetic measurement | `pii-eval` | the committed value `new` (owner authorisation recorded 2026-10-07, public/synthetic scope only) |
+| Product qualification and publication (thresholds, support status, accepted tradeoffs, policy `qualification/pii-v1.json`) | `benchmarks` | unchanged by the switch; no verdict, threshold or membership moved |
+| Protected execution/delivery | `private-custodian` | pending, not operational (`protected.state`, criterion `protected-path-live` unmet) |
+| Private audit/operational ledger | `private-ledger` | pending, not operational |
+| Legacy TypeScript evaluator | `benchmarks` (bounded oracle and rollback source) | retained until the oracle exit; review 2027-01-02 |
 
 ## The one value
 
 `benchmarks/pii-authority.json` holds `authority: "legacy" | "new"`, validated by `schemas/pii-authority-v1.json` and `npm run pii:authority:check` (a `validate-sources` step). A credential authority setting is not authorisation for PII:
 neither file names the other and no credential reader reads this one.
 
-| Value | Authority | The pii-eval measurement |
-| --- | --- | --- |
-| `legacy` (committed) | the benchmark scorer (`b11ScoreTable`) over the frozen Beta.11 and Beta.13 evidence and the `b11-population-v2` plans, under `qualification/pii-v1.json` | validated, published and shown beside it as measurement evidence (the pins read the recorded official-mode execution; the replays of the frozen observation are exploratory); decides nothing |
-| `new` | the `pii-eval` artifacts, under an owner authorisation recorded in the file | the source of record; the legacy pipeline stays as the oracle |
+| Value | Meaning |
+| --- | --- |
+| `legacy` | the benchmark scorer (`b11ScoreTable`) over the frozen Beta.11 and Beta.13 evidence and the `b11-population-v2` plans is the authority; the pii-eval measurement is shown beside it as exploratory evidence and decides nothing |
+| `new` (committed) | the `pii-eval` artifacts are the authority for the public/synthetic measurement, under `new.authorisation`; the legacy evaluator is the bounded oracle; the protected path is pending and does not gate it |
 
-`new` is accepted only with `new.authorisation` (release or candidate, date, who accepted, an accepted decision, engine commit, policy digest, each population's semantic digest) and only while every exit criterion is met and nothing it names has changed. A repin, a policy change or a changed
-population makes it stale until it is authorised again in a reviewed commit. The gate refuses `new` with no authorisation, and so does the Next service (`web/services/pii-authority.ts`); under `new` the page never falls back to the legacy evaluation.
+`new` is accepted only with `new.authorisation` (owner, date, scope `public-synthetic-measurement-authority`, source with the issue-comment URL of the owner's words, an accepted decision, engine commit, policy digest, each population's semantic and manifest digest, engine binary digest, scanner package tree digest, protocol, artifact schema and the official run id),
+only while every PUBLIC exit criterion is met and every named part equals the tree. A repin, a policy change or a changed population makes it stale until the owner authorises again in a reviewed commit. The gate refuses `new` with no authorisation, and so does the Next service (`web/services/pii-authority.ts`); under `new` the page never falls back to the legacy evaluation.
 
 ## Readers
 
@@ -24,29 +37,30 @@ population makes it stale until it is authorised again in a reviewed commit. The
 
 ## Exit criteria
 
-Each `computed` criterion is recomputed from the committed tree by `pii:authority:check` and must equal the recorded state; `owner` criteria are decisions the repository never records for the owner.
+Each criterion has a scope. The seven `public` criteria gate the public/synthetic cutover. `protected-path-live` is `protected`: it gates only the protected path, is tracked in its own issues (pii-eval #30, private-custodian #71 and #72, private-ledger #9 to #12), is recorded as `protected.state: pending-not-operational`, and never blocks the public measurement.
+Each `computed` criterion is recomputed from the committed tree by `pii:authority:check` and must equal the recorded state; `owner` criteria are decisions the repository never records for the owner (`owner-accepted-verdict` is `met` exactly when `new.authorisation` is recorded, and the gate checks that).
 
-| Criterion | Basis | Evidence | At this record |
-| --- | --- | --- | --- |
-| `population-dual-run-complete` | computed | `benchmarks/pii-eval-migration.json` acceptance is `accepted` (an engine contract states `not-established`, or the owner drops those memberships) | met: schema 1.4 carries 1,188 of 1,188 memberships (156 range-less, reported `unresolved`) |
-| `linux-engine-replay-equal` | computed | `benchmarks/pii-eval-population-dual-run/linux-replay.json`, `canonical: true`, pinned binary | met (run 37552998602, engine `b1c097e4`) |
-| `official-mode-measurement` | computed | every population pin has `projection.mode: official` and the recorded run holds (`benchmarks/pii-eval-official-run/`, `scripts/lib/pii-official-record.mjs`) | met: a fresh canonical linux-x64 execution, run 37559349070 ([decision](../decisions/2026-10-07-record-the-first-official-public-synthetic-pii-run-and-repin-the-four-populations.md)); evidence, not an accepted verdict |
-| `protected-path-live` | computed | migration record `protectedPath.state: live-verified` and a live artifact consumed | unmet: no custodian catalog, transport or production v2 key |
-| `legacy-callers-inventoried` | computed | `docs/generated/pii-legacy-inventory.json` equals the tree | met |
-| `rollback-rehearsed-for-target` | computed | `docs/generated/pii-authority-rehearsal.json` for the pinned engine and population digests | met |
-| `scorer-basis-decided` | owner | which scorer defines the metric values: `b11ScoreTable` or `pii-v1` accounting (different quantities under the same ids: [`pii-scorer-basis.md`](pii-scorer-basis.md)) | met: accepted by the owner on 2026-10-06 ([decision](../decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md), source: issue #795 comment 6028908779); the scorer basis only, not a verdict |
-| `owner-accepted-verdict` | owner | accepted decision and `new.authorisation` for an explicitly frozen release or candidate | unmet: `authorisation` is null |
+| Criterion | Scope | Basis | Evidence | At this record |
+| --- | --- | --- | --- | --- |
+| `population-dual-run-complete` | public | computed | `benchmarks/pii-eval-migration.json` acceptance is `accepted` | met: schema 1.4 carries 1,188 of 1,188 memberships (156 range-less, reported `unresolved`) |
+| `linux-engine-replay-equal` | public | computed | `benchmarks/pii-eval-population-dual-run/linux-replay.json`, pinned binary | met (run 37552998602) |
+| `official-mode-measurement` | public | computed | every pin is `official` and the recorded run holds (`benchmarks/pii-eval-official-run/`, `scripts/lib/pii-official-record.mjs`) | met: run 37559349070 |
+| `legacy-callers-inventoried` | public | computed | `docs/generated/pii-legacy-inventory.json` equals the tree | met |
+| `rollback-rehearsed-for-target` | public | computed | `docs/generated/pii-authority-rehearsal.json` for the pinned identities | met |
+| `scorer-basis-decided` | public | owner | [`pii-scorer-basis.md`](pii-scorer-basis.md) | met: accepted 2026-10-06 (#795 comment 6028908779) |
+| `owner-accepted-verdict` | public | owner | accepted decision and `new.authorisation` | met: owner Milo Kang, 2026-10-07, [#666 comment 6034993114](https://github.com/redact-secret/redact-secret-benchmarks/issues/666#issuecomment-6034993114); public/synthetic scope only |
+| `protected-path-live` | protected | computed | migration record `protectedPath.state: live-verified` and a live artifact consumed | unmet: no custodian catalog, transport or production v2 key; pending |
 
 ## The oracle period and who decides
 
-The legacy PII measurement stays the oracle. The owner of this repository decides the exit. It ends when `new` has been authorised for a frozen target, that target was measured through both pipelines with the dual-run report regenerated and 0 unexplained differences, the rollback was rehearsed again against it,
-and a removal PR lists each legacy file's callers first and is reviewed. Review date 2027-01-02: the owner keeps the oracle or records a new exit. A lapse of time removes nothing, and this repository removes no legacy PII code before the exit.
+The legacy PII measurement stays the oracle. The owner decides the exit. It ends when `new` has been authorised (done), the new path has been the authority for at least one further release or candidate measured through both pipelines with the dual-run report regenerated and 0 unexplained differences, the rollback was rehearsed again against it,
+and a removal PR lists each legacy file's callers first and is reviewed. Review date 2027-01-02: the owner keeps the oracle or records a new exit. A lapse of time removes nothing. At the switch no legacy file was removed: the inventory records, per file, the retained code that reaches it and `removalDecision`.
 
 ## Rollback
 
-Rolling back is changing `authority` to `legacy`: no data is migrated and nothing is restored. `npm run pii:authority:rehearse` (`scripts/rehearse-pii-authority-rollback.mjs`, working tree only, restores the file's own bytes, never run by a publishing workflow) flips the value, rebuilds the PII support publication (the reviewed protected route and the
-five bound pii-eval artifacts) and runs the gate under each value. The record `docs/generated/pii-authority-rehearsal.json` shows the publication byte-identical under both values and across the rollback, `new` refused without an authorisation, and the file restored byte for byte.
-The rehearsal is against the pinned engine commit and population digests; a repin makes it stale (criterion unmet) until it is repeated. `web/tests/unit/pii-authority.test.ts` shows the same on the evaluation the pages read.
+Rolling back is changing `authority` to `legacy`: no data is migrated and nothing is restored. `npm run pii:authority:rehearse` (`scripts/rehearse-pii-authority-rollback.mjs`, working tree only, restores the file's own bytes, never run by a publishing workflow) runs committed, flipped, rolled-back, and `new` without its authorisation: it rebuilds the PII support publication (the reviewed protected route and the
+five bound pii-eval artifacts) and runs the gate in each state. The record `docs/generated/pii-authority-rehearsal.json` shows the publication byte-identical in every state, the gate accepting `legacy` and the authorised `new`, `new` refused without an authorisation, and the file restored byte for byte.
+The rehearsal is against the pinned engine commit and population digests; a repin makes it stale (criterion unmet) until it is repeated. `web/tests/unit/pii-authority.test.ts` and `domains-services.test.ts` show the same on the evaluation the pages read (everything but the stamp is byte-equal under both values, and the rollback restores it). Under `new`, a build with no published support artifact reads the pii-eval measurement from the committed durable copies the pins name (the new pipeline's own input, product unbound), never from the legacy evaluation.
 
 ## Caller inventory
 
@@ -60,12 +74,12 @@ The rehearsal is against the pinned engine commit and population digests; a repi
 | benchmark scorer (`beta11-*`) | 4 | retain until criterion | benchmarks | `population-dual-run-complete` and `scorer-basis-decided` |
 | product policy (support, bindings, consumers, publication) | 10 | retain | benchmarks | none: never removal candidates |
 
-The gate compares the candidates and the callers that would block a removal (not test callers).
+The gate compares the candidates and the callers that would block a removal (not test callers). Each entry also carries `retention.removalDecision` and the retained (non-candidate, non-test) code that reaches it through the import graph. At the 2026-10-07 switch all 31 generic-engine files are reached by retained code (the dual-run oracle, `registry.ts`, `holdout.ts`, `support*.ts`, the observation scripts, the legacy site source) and the 7 tests belong to them, so `removalReview.removed` is empty: the oracle period has not run.
 
 ## CI lanes
 
 Repetitive PII measurement is not run for unrelated pull requests, and no required check is weaker for it. `scripts/ci-plan.mjs` (`PII_MIGRATION`) does not select the legacy oracle for a change to only the PII migration tooling and data; the PII oracle domain code, the product policy and the PII publication code remain legacy inputs.
-Every PII gate runs in `validate-sources` on every change; the root unit tests (every PII test) run on every change; the site is built for a PII data change. The measurement workflows (`pii-profile-cost*`, `peer-pii-runtime-throughput`, `pii-population-replay`) are dispatch-only; `publish-site.yml` measures the populations on a push. `tests/pii-ci-lanes.test.mjs` holds this.
+Routine PII measurement is the dispatch-only official run (`pii-official-run.yml`), the replay and cost workflows and the push-time publication; a pull request validates committed artifacts, pins and policy. Every PII gate runs in `validate-sources` on every change; the root unit tests (every PII test) run on every change; the site is built for a PII data change. The measurement workflows (`pii-profile-cost*`, `peer-pii-runtime-throughput`, `pii-population-replay`) are dispatch-only; `publish-site.yml` measures the populations on a push. `tests/pii-ci-lanes.test.mjs` holds this.
 
 ## Commands
 

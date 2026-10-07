@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Rehearsal of the PII authority rollback (#666), in the manner of web/scripts/with-authority.mjs. It changes the one committed value
 // (benchmarks/pii-authority.json) in the working tree, builds the PII support publication and runs the authority gate under each value,
-// and puts the file's own bytes back (also when interrupted). Nothing is committed by it and no owner authorisation is written: `new`
-// is rehearsed exactly as it can be selected today, with no authorisation, and must be refused.
+// and puts the file's own bytes back (also when interrupted). Nothing is committed by it and no owner authorisation is written or invented:
+// the committed authorisation is exercised as it stands, and `new` with the authorisation removed (in the working tree only) must be refused.
+// Whichever value is committed, the rehearsal runs committed -> flipped -> rolled back, and a fourth state, `new` without its authorisation.
 //
 //   node --import tsx scripts/rehearse-pii-authority-rollback.mjs            run, print the record
 //   node --import tsx scripts/rehearse-pii-authority-rollback.mjs --write    also write docs/generated/pii-authority-rehearsal.json
@@ -39,7 +40,8 @@ async function probe() {
   const route = await bindPiiProtectedSupport(root);
   if (route) bindings.protectedRoute = route;
   const matrix = validatePiiSupportMatrixV2(buildPiiSupportMatrixV2(bindings), bindings);
-  const problems = await checkPiiAuthority();
+  // The rehearsal criterion is the very record this run regenerates: a stale record must not stop the run that renews it, so problems about that one criterion are not counted here (the committed gate still counts them).
+  const problems = (await checkPiiAuthority()).filter(p => !/rollback-rehearsed-for-target/.test(p));
   console.log(JSON.stringify({ matrixSha256: sha256(`${JSON.stringify(matrix)}\n`), matrixBytes: Buffer.byteLength(`${JSON.stringify(matrix)}\n`), gate: { accepted: problems.length === 0, problems: problems.map(p => p.replace(/\s+/g, ' ').slice(0, 200)) } }));
 }
 
@@ -57,20 +59,25 @@ async function rehearse() {
   const restore = () => writeFileSync(file, original);
   for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => { restore(); process.exit(130); });
   const states = [];
+  const withoutAuthorisation = () => { const copy = JSON.parse(original); copy.authority = 'new'; copy.new.authorisation = null; return `${JSON.stringify(copy, null, 2)}\n`; };
   try {
-    for (const [label, value] of [['committed', committedValue], ['flipped', committedValue === 'legacy' ? 'new' : 'legacy'], ['rolled-back', committedValue]]) {
-      writeFileSync(file, original.replace(pattern, `$1${value}$3`));
+    for (const [label, value] of [['committed', committedValue], ['flipped', committedValue === 'legacy' ? 'new' : 'legacy'], ['rolled-back', committedValue], ['new-without-authorisation', 'new']]) {
+      writeFileSync(file, label === 'new-without-authorisation' ? withoutAuthorisation() : original.replace(pattern, `$1${value}$3`));
       states.push({ label, authority: value, fileSha256: sha256(readFileSync(file)), ...child() });
     }
   } finally { restore(); }
-  const restoredIdentical = sha256(readFileSync(file)) === sha256(original) && states[2].fileSha256 === states[0].fileSha256;
+  const [committed, flipped, rolledBack, unauthorised] = states;
+  const restoredIdentical = sha256(readFileSync(file)) === sha256(original) && rolledBack.fileSha256 === committed.fileSha256;
   const migration = JSON.parse(readFileSync(path.join(root, 'benchmarks/pii-eval-migration.json'), 'utf8'));
-  const flipped = states[1];
+  const authorised = JSON.parse(original).new.authorisation !== null;
+  const byValue = value => states.filter(s => s.authority === value && s.label !== 'new-without-authorisation');
   const result = {
     matrixIdenticalAcrossValues: new Set(states.map(s => s.matrixSha256)).size === 1,
     restoredIdentical,
-    legacyAccepted: [states[0], states[2]].every(s => s.authority !== 'legacy' || s.gate.accepted),
-    newWithoutAuthorisationRefused: flipped.authority !== 'new' || (!flipped.gate.accepted && flipped.gate.problems.some(p => /no owner authorisation/.test(p))),
+    legacyAccepted: byValue('legacy').every(s => s.gate.accepted),
+    // Under a committed legacy with no authorisation there is no `new` state to accept; the field then states that no authorised new exists.
+    newAcceptedWhenAuthorised: authorised && byValue('new').every(s => s.gate.accepted),
+    newWithoutAuthorisationRefused: !unauthorised.gate.accepted && unauthorised.gate.problems.some(p => /no owner authorisation/.test(p)),
   };
   return {
     schemaVersion: 1, reportType: 'pii-authority-rollback-rehearsal', supportClaims: false, authorityChanged: false, writesAcceptance: false,

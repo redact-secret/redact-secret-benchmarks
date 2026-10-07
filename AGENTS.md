@@ -52,10 +52,12 @@ rollback and the files that still have callers stay. The legacy review queue the
 
 **PII authority (#666).** Which pipeline is the authority for PII measurement is its own committed value, `benchmarks/pii-authority.json`
 (`legacy` or `new`), checked by `npm run pii:authority:check`; a credential authority setting is not authorisation for PII and the two never read each
-other. It is `legacy`, with eight exit criteria recomputed from the tree (`docs/specs/pii-authority.md`); the owner decides the exit, and the repository never
-writes `new.authorisation` or an owner criterion on the owner's behalf. Do not read the file anywhere else (the gate lists the readers), do not delete the
-legacy PII code (the caller inventory is `docs/generated/pii-legacy-inventory.json`; removal needs the exit), and rehearse the rollback with
-`npm run pii:authority:rehearse` after a repin. The linux replay of the four populations is `pii-population-replay.yml` (dispatch only).
+other. It is `new` for the PUBLIC/SYNTHETIC measurement only (owner Milo Kang, 2026-10-07, [ADR](docs/decisions/2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md)):
+pii-eval is the public measurement authority, benchmarks keeps product qualification (thresholds, support status), protected execution (private-custodian) and
+private audit (private-ledger) are pending and not operational and never gate the public measurement, and the legacy TypeScript evaluator is the bounded oracle and rollback source
+(`docs/specs/pii-authority.md`). Never write `new.authorisation` or an owner criterion on the owner's behalf; a repin needs a fresh rehearsal and a fresh owner authorisation.
+Do not read the file anywhere else (the gate lists the readers), do not delete the legacy PII code (caller inventory `docs/generated/pii-legacy-inventory.json`; removal needs the oracle exit),
+and rehearse the rollback with `npm run pii:authority:rehearse -- --write` after a repin. The linux replay of the four populations is `pii-population-replay.yml` (dispatch only).
 
 ## Branches
 

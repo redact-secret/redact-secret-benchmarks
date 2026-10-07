@@ -28,6 +28,8 @@ const sha256 = value => createHash('sha256').update(value).digest('hex');
 export const LINUX_REPLAY = 'benchmarks/pii-eval-population-dual-run/linux-replay.json';
 export const REHEARSAL = 'docs/generated/pii-authority-rehearsal.json';
 export const INVENTORY = 'docs/generated/pii-legacy-inventory.json';
+export const OFFICIAL_RECORD = 'benchmarks/pii-eval-official-run/record.json';
+export const OFFICIAL_PLAN = 'benchmarks/pii-eval-official-execution-plan.json';
 
 /** The state of each `computed` criterion, from the committed tree. Pure of the network. */
 export async function computeCriteria({ read = json, readIfPresent = jsonIfPresent } = {}) {
@@ -49,7 +51,6 @@ export async function computeCriteria({ read = json, readIfPresent = jsonIfPrese
   // Official mode is not a flag: the pins are official AND the recorded run (provenance, receipt, durable copies, the pinned engine, the production consumer over the committed copies) holds.
   state['official-mode-measurement'] = met(pins.populations.length > 0 && pins.populations.every(p => p.projection?.mode === 'official') &&
     officialRecordExists(root.pathname) && officialRecordProblems({ root: root.pathname }).length === 0);
-  state['protected-path-live'] = met(migration.protectedPath?.state === 'live-verified' && migration.protectedPath?.liveProtectedArtifactConsumed === true);
 
   const { buildInventory, comparable, INVENTORY_FILE } = await import('./pii-legacy-inventory.mjs');
   const committedInventory = readIfPresent(INVENTORY_FILE);
@@ -57,9 +58,24 @@ export async function computeCriteria({ read = json, readIfPresent = jsonIfPrese
 
   const rehearsal = readIfPresent(REHEARSAL);
   state['rollback-rehearsed-for-target'] = met(Boolean(rehearsal) && rehearsal.result?.restoredIdentical === true && rehearsal.result?.matrixIdenticalAcrossValues === true &&
+    rehearsal.result?.legacyAccepted === true && rehearsal.result?.newWithoutAuthorisationRefused === true && rehearsal.result?.newAcceptedWhenAuthorised === true &&
     rehearsal.target?.engineCommit === migration.pins.piiEvalProjection &&
     pins.populations.every(p => rehearsal.target?.populationDigests?.[p.label] === p.artifactDigest));
-  return { state, digests, engineCommit: migration.pins.piiEvalProjection };
+  // Protected readiness is its own scope: computed here so the record is honest, never required for the public cutover.
+  state['protected-path-live'] = met(migration.protectedPath?.state === 'live-verified' && migration.protectedPath?.liveProtectedArtifactConsumed === true);
+
+  // The frozen target as the tree pins it now, compared field by field with what an owner authorisation names.
+  const record = readIfPresent(OFFICIAL_RECORD);
+  const plan = readIfPresent(OFFICIAL_PLAN);
+  const target = {
+    engineBinarySha256: pins.build.binarySha256,
+    scannerPackageTreeSha256: record?.candidate?.packageTreeSha256 ?? '',
+    protocol: { id: plan?.protocol?.id ?? '', revision: plan?.protocol?.revision ?? -1 },
+    artifactSchema: pins.artifactSchema.version,
+    manifestDigests: Object.fromEntries(pins.populations.map(p => [p.label, p.manifestDigest])),
+    officialRunId: record?.workflow?.runId ?? 0,
+  };
+  return { state, digests, engineCommit: migration.pins.piiEvalProjection, target };
 }
 
 /** Tracked files that name the authority file, other than the file itself. */
@@ -92,7 +108,7 @@ export async function checkPiiAuthority({ listing } = {}) {
     const decision = auth ? existsSyncText(auth.decision) : undefined;
     problems.push(...piiAuthorityFreshnessProblems(file, {
       computed: computed.state, policyDigest: sha256(readFileSync(new URL('qualification/pii-v1.json', root))), engineCommit: computed.engineCommit,
-      populationDigests: computed.digests, decisionStatus: decision === undefined ? undefined : /^status:\s*(\S+)/m.exec(decision)?.[1],
+      populationDigests: computed.digests, target: computed.target, decisionStatus: decision === undefined ? undefined : /^status:\s*(\S+)/m.exec(decision)?.[1],
     }));
   }
 
@@ -111,6 +127,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     process.exit(1);
   }
   const file = json(PII_AUTHORITY_FILE);
-  const unmet = file.exitCriteria.filter(c => c.state !== 'met').map(c => c.id);
-  console.log(`PII authority: ${file.authority}${file.authority === 'new' ? ' (authorised by an owner record; every criterion met)' : ` (the new path is not consulted; ${unmet.length} of ${file.exitCriteria.length} exit criteria unmet: ${unmet.join(', ')})`}; only listed readers name the file.`);
+  const unmet = file.exitCriteria.filter(c => c.scope === 'public' && c.state !== 'met').map(c => c.id);
+  const pending = file.exitCriteria.filter(c => c.scope === 'protected' && c.state !== 'met').map(c => c.id);
+  console.log(`PII authority: ${file.authority}${file.authority === 'new' ? ' (public/synthetic measurement, authorised by an owner record; every public criterion met)' : ` (the new path is not consulted; ${unmet.length} public exit criteria unmet: ${unmet.join(', ')})`}; protected path ${file.protected.state}${pending.length ? ` (${pending.join(', ')} does not gate the public cutover)` : ''}; only listed readers name the file.`);
 }

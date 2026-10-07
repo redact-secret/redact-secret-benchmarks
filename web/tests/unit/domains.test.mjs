@@ -11,7 +11,7 @@ const family = (id, over = {}) => ({
   id, name: `Family ${id}`, scope: 'global', jurisdiction: null, validatorApplicable: true, coverage: 'Global', status: 'provisional', reasonCodes: [], activation: 'not-measured',
   views, protectedRun: { state: 'met', reason: 'protected-gates-met', cases: 10 }, publicGates: { met: 4, notMet: 0, unresolved: 0, acceptedTradeoffs: 1 }, ...over,
 });
-const stamp = { authority: 'legacy', from: 'committed', source: 'The benchmark-owned scorer over the frozen evidence.', unmet: ['criterion-a', 'criterion-b'], total: 8, decidedBy: 'the owner', reviewOn: '2027-01-02' };
+const stamp = { authority: 'legacy', from: 'committed', source: 'The benchmark-owned scorer over the frozen evidence.', unmet: ['criterion-a', 'criterion-b'], total: 7, protectedPending: ['protected-path-live'], authorisation: null, decidedBy: 'the owner', reviewOn: '2027-01-02' };
 const pii = (over = {}) => ({
   authority: stamp, state: 'recorded', mode: 'candidate', core: { commit: 'abcdef1234567890', versionString: '0.0.0' }, route: { id: 'route-x', record: 'evidence/1/2.md', maximumStatus: 'provisional' },
   profile: { id: 'pii-v1', version: 1, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1' }, distribution: { pending: 1, provisional: 1, stable: 0, unsupported: 0 },
@@ -279,7 +279,7 @@ describe('the PII authority row (#666)', () => {
   test('legacy says the benchmark scorer is the authority, the pii-eval measurement is exploratory, what is unmet, who decides, and that it is independent of the credential authority', () => {
     const row = authorityRow(resolvePiiView(pii()));
     expect(row.statusWord).toBe('Legacy');
-    expect(row.value).toBe('6 of 8 exit criteria met');
+    expect(row.value).toBe('5 of 7 public exit criteria met');
     expect(row.detail).toContain('benchmark-owned scorer');
     expect(row.detail).toContain('exploratory evidence and decides nothing');
     expect(row.detail).toContain('Not yet met: criterion-a, criterion-b');
@@ -295,9 +295,20 @@ describe('the PII authority row (#666)', () => {
   });
 
   test('new says the pii-eval artifacts are the authority under a recorded owner authorisation and that the legacy pipeline is the oracle', () => {
-    const row = authorityRow(resolvePiiView(pii({ authority: { ...stamp, authority: 'new', unmet: [] } })));
+    const authorisation = { acceptedBy: 'the owner', acceptedOn: '2000-01-01', scope: 'public-synthetic-measurement-authority', engine: 'redact-secret/pii-eval@synthetic', officialRunId: 1, source: 'https://example.invalid/synthetic' };
+    const row = authorityRow(resolvePiiView(pii({ authority: { ...stamp, authority: 'new', unmet: [], authorisation } })));
     expect(row.statusWord).toBe('New');
-    expect(row.detail).toContain('pii-eval artifacts are the authority');
-    expect(row.detail).toContain('oracle');
+    expect(row.value).toBe('7 of 7 public exit criteria met');
+    expect(row.detail).toContain('pii-eval artifacts are the authority for the public synthetic measurement');
+    expect(row.detail).toContain('authorised by the owner on 2000-01-01 for official run 1');
+    expect(row.detail).toContain('bounded oracle and rollback source');
+    expect(row.detail).toContain('Product qualification, thresholds and support status stay with the benchmarks');
+  });
+
+  test('new says the protected path is pending and does not gate the public measurement, and an operational one is not called pending', () => {
+    const pending = authorityRow(resolvePiiView(pii({ authority: { ...stamp, authority: 'new', unmet: [] } })));
+    expect(pending.detail).toContain('pending and not operational, and do not gate this measurement (protected-path-live)');
+    const live = authorityRow(resolvePiiView(pii({ authority: { ...stamp, authority: 'new', unmet: [], protectedPending: [] } })));
+    expect(live.detail).not.toContain('pending and not operational');
   });
 });

@@ -246,10 +246,10 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
   const met = stamp.total - stamp.unmet.length;
   status[0].rows.push({
     id: 'pii-authority', label: 'PII authority', status: 'info', statusWord: stamp.authority === 'new' ? 'New' : 'Legacy',
-    value: stamp.total ? `${int(met)} of ${int(stamp.total)} exit criteria met` : undefined,
+    value: stamp.total ? `${int(met)} of ${int(stamp.total)} public exit criteria met` : undefined,
     detail: stamp.authority === 'legacy'
       ? `${stamp.source} The pii-eval measurement is shown beside it as exploratory evidence and decides nothing.${stamp.unmet.length ? ` Not yet met: ${stamp.unmet.join(', ')}.` : ''}${stamp.decidedBy ? ` The exit is decided by ${stamp.decidedBy}${stamp.reviewOn ? `, reviewed on ${stamp.reviewOn}` : ''}.` : ''} Independent of the credential authority.`
-      : `The pii-eval artifacts are the authority, under an owner authorisation recorded in the repository. The legacy pipeline stays as the oracle. Independent of the credential authority.`,
+      : `The pii-eval artifacts are the authority for the public synthetic measurement${stamp.authorisation ? `, authorised by ${stamp.authorisation.acceptedBy} on ${stamp.authorisation.acceptedOn} for official run ${stamp.authorisation.officialRunId} (${stamp.authorisation.engine})` : ''}. Product qualification, thresholds and support status stay with the benchmarks. The legacy evaluator stays as the bounded oracle and rollback source${stamp.reviewOn ? `, reviewed on ${stamp.reviewOn}` : ''}. Protected execution (private-custodian) and private audit (private-ledger) are ${stamp.protectedPending.length ? 'pending and not operational' : 'operational'}${stamp.protectedPending.length ? `, and do not gate this measurement (${stamp.protectedPending.join(', ')})` : ''}. Independent of the credential authority.`,
     link: { label: `#${ISSUES.piiAuthority}`, href: issue(ISSUES.piiAuthority).href, external: true },
   });
   if (piiEval) {

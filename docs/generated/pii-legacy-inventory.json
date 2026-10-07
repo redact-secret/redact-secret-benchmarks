@@ -67,7 +67,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 25
+    "externalCallerFiles": 26
    }
   }
  },
@@ -1131,9 +1131,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 19,
+    "total": 20,
     "withinCandidates": 2,
-    "testCallers": 9,
+    "testCallers": 10,
     "external": 8,
     "externalByClass": {
      "benchmarks": 2,
@@ -1237,14 +1237,14 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 11,
+    "total": 13,
     "withinCandidates": 0,
-    "testCallers": 5,
-    "external": 6,
+    "testCallers": 6,
+    "external": 7,
     "externalByClass": {
      "benchmarks": 1,
      "package hook": 1,
-     "script": 4
+     "script": 5
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/custodian-consumer.mjs (benchmarks, import)",
@@ -1252,7 +1252,8 @@
      "scripts/check-pii-eval-migration.mjs (script, import+path)",
      "scripts/fetch-pii-eval-public-synthetic.mjs (script, import+path)",
      "scripts/lib/pii-population-conversion.mjs (script, import+path)",
-     "scripts/pii-publication-inputs.ts (script, import+path)"
+     "scripts/pii-publication-inputs.ts (script, import+path)",
+     "scripts/run-pii-official.mjs (script, import+path)"
     ]
    }
   },
@@ -1304,9 +1305,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 9,
+    "total": 10,
     "withinCandidates": 0,
-    "testCallers": 7,
+    "testCallers": 8,
     "external": 2,
     "externalByClass": {
      "script": 2

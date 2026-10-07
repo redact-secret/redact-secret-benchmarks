@@ -64,9 +64,9 @@ test('every PII gate runs in validate-sources on every pull request, with no con
 });
 
 test('no pull request workflow runs a PII measurement; the measurement workflows are dispatch-only or push-only', () => {
-  const measuring = /pii:observe|pii:beta11|pii:parity:measure|pii:population:(dual-run|replay)|pii:arrival|pii:populations:email-network|peer-pii-runtime-throughput|measure-pii|profile-cost|run-pii-population-dual-run|replay-pii-populations/;
+  const measuring = /pii:observe|pii:beta11|pii:parity:measure|pii:population:(dual-run|replay)|pii:arrival|pii:populations:email-network|peer-pii-runtime-throughput|measure-pii|profile-cost|run-pii-population-dual-run|replay-pii-populations|run-pii-official/;
   for (const file of ['validate.yml', 'legacy-oracle.yml']) assert.doesNotMatch(read(`.github/workflows/${file}`), measuring, `${file} runs a PII measurement`);
-  for (const file of ['pii-profile-cost.yml', 'pii-profile-cost-v2.yml', 'peer-pii-runtime-throughput.yml', 'pii-population-replay.yml']) {
+  for (const file of ['pii-profile-cost.yml', 'pii-profile-cost-v2.yml', 'peer-pii-runtime-throughput.yml', 'pii-population-replay.yml', 'pii-official-run.yml']) {
     const on = read(`.github/workflows/${file}`).split('\njobs:')[0];
     assert.match(on, /\non:\n\s+workflow_dispatch:/, `${file} is dispatchable`);
     assert.doesNotMatch(on, /pull_request|push:|schedule:/, `${file} is dispatch-only`);

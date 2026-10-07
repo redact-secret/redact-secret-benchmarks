@@ -15,6 +15,7 @@ import type { PiiAuthority, PiiContract } from './types.ts';
 import { PII_SUPPORT_REGISTRY_SOURCE, piiProtectedRouteProblem, piiProtectedRouteReasonCodes, piiReviewedProtectedRoute, piiSupportRegistryProjection,
   piiSupportSemanticProblem, type PiiProtectedRoute } from './support-semantics.ts';
 import { validatePiiProductBinding, type PiiTrustedProductBinding } from './product-binding.ts';
+import { quantityOf } from './metric-basis.mjs';
 
 export const PII_ACTIVATION_CONTRACT = Object.freeze({
   repository: 'redact-secret/redact-secret' as const,
@@ -57,6 +58,9 @@ export interface PiiEvalProjection {
   }>;
 }
 export interface PiiEvalMeasurement {
+  /** Present on a published measurement (derived, never typed): which quantity each metric id is and which protocol a verdict reads. */
+  quantityBasis?: { decision: string; protocol: 'pii-v1'; verdictReads: 'b11'; thresholdsApplied: false;
+    definitions: Array<{ quantity: string; id: string; name: string; owner: string; population: string; numerator: string; denominator: string }> };
   schema: 'pii-eval-consumer-report/1'; complete: true; decision: 'none'; pooling: 'none'; rejections: [];
   build: { repository: 'redact-secret/pii-eval'; commit: string; cargoLockSha256: string; binarySha256: string;
     sourceArchiveSha256: string; binding: 'out-of-band-build-provenance' };
@@ -242,7 +246,52 @@ function validatePiiEvalProjection(population: PiiEvalMeasurement['populations']
   }
 }
 
-function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasurement {
+/**
+ * Quantity labels (#795, accepted 2026-10-06). The ten metric ids are shared by two scorers with different meanings (`pii-v1` accounting and the
+ * benchmark's `b11` scorer), so a published metric carries `quantity` (`pii-v1:<id>`) next to its bare id and the measurement carries one
+ * `quantityBasis` block that defines each quantity and says which protocol a verdict reads. The labels are derived, never typed: a published
+ * matrix whose label differs from the derivation, or has none, is refused. The metric values themselves are the artifact's, untouched.
+ */
+export const PII_QUANTITY_DECISION = 'docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md';
+function quantityBasisBlock() {
+  return { decision: PII_QUANTITY_DECISION, protocol: 'pii-v1' as const, verdictReads: 'b11' as const, thresholdsApplied: false as const,
+    definitions: PII_EVAL_METRICS.map(id => { const q = quantityOf('pii-v1', id);
+      return { quantity: q.quantity, id, name: q.name, owner: q.owner, population: q.population, numerator: q.numerator, denominator: q.denominator }; }) };
+}
+function mapPiiEvalMetrics(value: PiiEvalMeasurement, map: (metrics: unknown[]) => unknown[]): PiiEvalMeasurement {
+  const out = structuredClone(value);
+  for (const population of out.populations) {
+    for (const scanner of population.scanners) scanner.metrics = map(scanner.metrics);
+    for (const row of population.productProjection?.rows ?? []) {
+      row.metrics = map(row.metrics);
+      for (const stratum of [...(row.byLanguage ?? []), ...(row.byControlClass ?? [])]) stratum.metrics = map(stratum.metrics);
+    }
+  }
+  return out;
+}
+const labelMetric = (metric: unknown) => {
+  const id = (metric as { metric?: { id?: string } } | null)?.metric?.id;
+  return typeof id === 'string' && (PII_EVAL_METRICS as readonly string[]).includes(id) ? { ...(metric as object), quantity: quantityOf('pii-v1', id).quantity } : metric;
+};
+/** The published form: every metric labelled and the basis block present. Idempotent for an already labelled measurement that is correct. */
+export function labelPiiEvalQuantities(value: PiiEvalMeasurement): PiiEvalMeasurement {
+  const raw = unlabelPiiEvalQuantities(value);
+  return { ...mapPiiEvalMetrics(raw, metrics => metrics.map(labelMetric)), quantityBasis: quantityBasisBlock() };
+}
+/** The artifact's own form. A label that differs from the derivation is refused, never repaired. */
+export function unlabelPiiEvalQuantities(value: PiiEvalMeasurement): PiiEvalMeasurement {
+  const { quantityBasis, ...rest } = value as PiiEvalMeasurement & { quantityBasis?: unknown };
+  if (quantityBasis !== undefined && JSON.stringify(canonical(quantityBasis)) !== JSON.stringify(canonical(quantityBasisBlock()))) throw new Error('Invalid pii-eval quantity basis');
+  return mapPiiEvalMetrics(rest as PiiEvalMeasurement, metrics => metrics.map(metric => {
+    if (!metric || typeof metric !== 'object' || !('quantity' in metric)) return metric;
+    const { quantity, ...bare } = metric as { quantity: unknown; metric?: { id?: string } };
+    if (quantity !== quantityOf('pii-v1', String(bare.metric?.id)).quantity) throw new Error('Invalid pii-eval quantity label');
+    return bare;
+  }));
+}
+
+function validatePiiEvalMeasurement(input: PiiEvalMeasurement): PiiEvalMeasurement {
+  const value = unlabelPiiEvalQuantities(input);
   const unavailable = 'schema-1.1-does-not-carry';
   if (value.schema !== 'pii-eval-consumer-report/1' || value.complete !== true || value.decision !== 'none' || value.pooling !== 'none' ||
       value.rejections.length !== 0 || value.build.repository !== 'redact-secret/pii-eval' || !/^[a-f0-9]{40}$/.test(value.build.commit) ||
@@ -263,7 +312,7 @@ function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasureme
           ? row.productProjection !== undefined || !row.unavailable || Object.values(row.unavailable).some(state => state !== unavailable) || Object.keys(row.unavailable).length !== 5
           : row.unavailable !== undefined || row.productProjection === undefined))) throw new Error('Invalid pii-eval measurement evidence');
   for (const row of value.populations) if (row.schemaVersion !== '1.1') validatePiiEvalProjection(row);
-  return structuredClone(value);
+  return labelPiiEvalQuantities(value);
 }
 
 function validateCustodianConformance(value: CustodianConformance): CustodianConformance {
@@ -445,7 +494,8 @@ export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupport
       matrix.families.some(row => row.activation.selector !== selector(row.family) || row.status.profile.id !== 'pii-v1' || row.status.profile.version !== 1) ||
       /RAW-CANARY|SYNTHETIC-PERSON-ID|"(?:content|candidate|seed|fixture|path|raw|caseId|variant)"\s*:/i.test(JSON.stringify(matrix)))
     throw new Error('Inconsistent or unsafe PII support-matrix v2');
-  if (matrix.piiEvalMeasurement) validatePiiEvalMeasurement(matrix.piiEvalMeasurement);
+  if (matrix.piiEvalMeasurement && JSON.stringify(canonical(validatePiiEvalMeasurement(matrix.piiEvalMeasurement))) !== JSON.stringify(canonical(matrix.piiEvalMeasurement)))
+    throw new Error('PII support-matrix v2 pii-eval measurement carries no quantity labels');
   if (matrix.custodianConformance) validateCustodianConformance(matrix.custodianConformance);
   const hasPopulationClaim = matrix.populationReports.some(row => row.status === 'measured' || row.status === 'partial') ||
     matrix.families.some(row => row.populationEvidence.some(entry => entry.status === 'measured' || entry.status === 'partial'));

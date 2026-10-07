@@ -2,7 +2,7 @@
 
 Status: benchmark-side record. This repository measures and records; it asserts no product output. The decision on which protocol defines a product value is
 [`docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md`](../decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md),
-**status: proposed, owner decision pending**. Until the owner records it, PII authority stays `legacy` (`benchmarks/pii-authority.json`, #666), the new artifacts are
+**status: accepted by the owner, 2026-10-06** (scorer, denominator and label decision only; source: issue #795 comment 6028908779). PII authority stays `legacy` (`benchmarks/pii-authority.json`, #666), the new artifacts are
 exploratory, and no threshold, tolerance, membership, suppression or support verdict changes. Nothing here reads or needs EC2, the custodian, the private ledger or a protected corpus.
 
 ## Two protocols, ten shared ids
@@ -14,6 +14,10 @@ exploratory, and no threshold, tolerance, membership, suppression or support ver
 
 The registry is `benchmarks/evaluation/domains/pii/metric-basis.mjs`: each quantity is `<protocol>:<metric id>` with one name, one population, one numerator, one denominator and one owner. A consumer shows the
 quantity name; a bare metric id is never a label (`web/resolvers/domains.ts` does). `tests/pii-metric-basis.test.mjs` holds it.
+
+**Published labels (accepted projection).** The published support matrix (`pii-support-matrix-v2`) states the quantity of every `pii-v1` metric it carries: each metric entry (population, family and view rows, language and control-class strata) has `quantity: "pii-v1:<id>"` beside the bare `metric.id`, and `piiEvalMeasurement.quantityBasis`
+defines the ten quantities (name, owner, population, numerator, denominator) and states `verdictReads: "b11"` and `thresholdsApplied: false`. Labels are derived from the registry in `support-v2.ts`, never typed; a matrix with a missing, swapped or redefined label is refused (`tests/pii-quantity-labels.test.mjs`).
+A consumer of the JSON therefore sees `pii-v1:type-miss-rate` ("valid-type occurrence miss rate (generic, every context)"), which cannot be read as the `b11` sensitive miss. The metric values are the artifact's, untouched.
 
 ## Per-metric table
 

@@ -18,12 +18,42 @@ each of the four complete populations (snapshot, manifest and roster digests; 14
 
 Only the last would be an official measurement, and it does not exist. A replay proves deterministic reproduction; it is never relabelled as an execution, an official run or an acceptance.
 
-## What stops the dispatch (state `pending-not-dispatched`)
+## The candidate identity of a run (resolved with evidence)
 
-1. The scorer-basis decision (#795) is proposed and the owner decision is pending, so "validates under the accepted scorer semantics" cannot be asserted.
-2. An official run pins the scanner package tree digest and extra artifacts (the native addon); the recorded candidate identity is the artifact-set commitment of the frozen observation, and their equality is not established. The package for a fresh run comes from the product repository's build.
-3. No workflow runs `pii-eval run --config` against a scanner package in CI; it must be added and reviewed (dispatch only, read-only App token for the pinned engine artifact, no token in the scanner step).
-4. CI cost: the owner decides whether to dispatch a long Linux run; none was started. The intended command is recorded in the plan (`dispatch.intendedCommand`) and names a workflow that does not exist yet.
+The question was whether the scanner package tree digest an official `pii-eval run` pins (`package.treeSha256`, the candidate digest) equals the recorded artifact-set commitment `a26968fe…`. It does not, and cannot:
+
+| | Construct | Value |
+| --- | --- | --- |
+| Recorded commitment | `sha256` of the canonical JSON `{core, node, wasm}` of three npm tarball digests (`piiArrivalCommitment`), of the frozen darwin-arm64 observation | `a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5` (recomputed from the recorded components: equal) |
+| Run identity | tree digest of the installed `@redact-secret/core` directory: `sha256` of the sorted listing `<file sha256>  <relative path>`, recomputed by the engine before a scanner starts | `36a59622…` for `0.1.0-beta.13` (derived from the qualified tarball; the run recomputes and records it) |
+
+The inputs differ as well: the `core` tarball is the same everywhere (`8e281e29…` in the frozen observation, in the product's own CI qualification run 37093118224 for `401158d0…` and in a local repack), but the recorded `node` and `wasm` tarballs (`bd42ad8d…`, `f1991945…`) are a local build and
+the product's qualified linux-x64 set is another (`node-linux-x64-gnu` `90ca2c60…`, so its commitment is `94c64a3c…`, not `a26968fe…`). The manifest binds the scanner identity, and the engine derives a candidate's identity from the package tree digest, so a fresh run needs a manifest
+rebuilt for that digest: the snapshot, roster, cases, configuration and activation digests are byte-identical, the manifest digest and every artifact digest differ from the replays by construction. `scripts/run-pii-official.mjs` rebuilds it (`writeConversion(.., { candidateDigest })`),
+records both numbers in its receipt (`candidate.equalsRecordedArtifactSetCommitment: false`) and refuses an artifact whose candidate digest is not the tree digest of the package it launched.
+
+## The workflow
+
+[`.github/workflows/pii-official-run.yml`](../../.github/workflows/pii-official-run.yml), dispatch only and with no inputs: what it runs is this plan at the dispatched commit (`pii-official-plan.mjs --check` equals the pins, `--github-output` names the exact commit, qualification run and core tarball). It
+
+1. mints a read-only pii-eval installation token, downloads the pinned linux engine artifact (digest of the archive, of each member and of the binary against the pin) and fetches the Node shim at the pinned engine commit (its digest is compiled into the engine);
+2. mints a read-only redact-secret token, requires the planned run to be a successful `artifact-qualification` push of the planned commit on `main`, downloads and verifies the qualified binaries, checks out the commit and repacks with the product's own script, requires every tarball to equal the bytes the product qualified and the core tarball to equal the recorded one;
+3. installs the three tarballs with `--ignore-scripts` and no lockfile, and makes `@redact-secret` read-only;
+4. runs `scripts/run-pii-official.mjs --require-canonical` with no token and no secret: four `pii-eval run --config` (`mode: official`, `host.resources: enforce`, `output.overwrite: refuse`, projection roster pinned), `pii-eval validate` of each public artifact (recomputed projection) and run artifact (accounting verifier),
+   the strict official-mode contract (`artifactProblems`), then the production consumer under the committed pins with only the artifact, manifest and candidate digests changed and the mode official, so any other difference is a rejection;
+5. uploads the receipt, the artifacts and the inputs that reproduce them (90 days). It records nothing in the repository: the recording (provenance, pins, durable copies, rollback rehearsal, exit states) is a separate reviewed change that reads the run.
+
+Tokens: the two App tokens live only in the steps that download from those repositories; the steps that run product code (`npm ci`, `js:build`, the package install, the scanner) have none. Cost: the owner waived the CI-cost gate for exactly one dispatch (2026-10-06, #796). A failed run caused by an infrastructure or
+workflow defect may be fixed and dispatched once more, and the record says so; there is no default re-dispatch.
+
+## What stopped the dispatch (before this change) and what remains
+
+1. The scorer-basis decision (#795): accepted by the owner on 2026-10-06 (scorer, denominator and label decision only). It is not an acceptance of any verdict of this run.
+2. The candidate package identity: resolved above.
+3. The workflow: added, reviewed (actionlint, zizmor, `tests/pii-official-run.test.mjs`).
+4. CI cost: waived for one dispatch. The intended command is recorded in the plan (`dispatch.intendedCommand`).
+
+The run is evidence. Which product, release or candidate verdict the owner accepts from it (`owner-accepted-verdict`, `new.authorisation`) is the owner's, and PII authority stays `legacy` (#666).
 
 Once an official artifact exists it feeds the existing consumer (schema 1.4, `popPins.projection.mode: official`), the durable public copy is committed beside the Actions artifact (coordinated with #785; no new storage is invented), and the #666 rehearsal is regenerated against the same pins
 (`npm run pii:authority:rehearse -- --write`). Local darwin runs are verification only and are never compared with a linux run.

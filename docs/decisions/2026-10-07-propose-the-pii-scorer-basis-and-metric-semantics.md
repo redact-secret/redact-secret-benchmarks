@@ -1,15 +1,19 @@
 ---
 decision_id: decision-propose-the-pii-scorer-basis-and-metric-semantics
-status: proposed
+status: accepted
 scope: benchmarks
-title: Propose which scorer defines each PII metric value, how denominators and unresolved memberships are read, and how the two quantities are named
+title: Which scorer defines each PII metric value, how denominators and unresolved memberships are read, and how the two quantities are named
 decided_at: 2026-10-07
+accepted_on: 2026-10-06
+accepted_by: Milo Kang (owner of redact-secret/redact-secret-benchmarks)
+acceptance_source: https://github.com/redact-secret/redact-secret-benchmarks/issues/795#issuecomment-6028908779
 ---
 
-# Propose which scorer defines each PII metric value, how denominators and unresolved memberships are read, and how the two quantities are named
+# Which scorer defines each PII metric value, how denominators and unresolved memberships are read, and how the two quantities are named
 
-**Status: proposed. The owner decision is pending and is not recorded here.** No owner acceptance is written by this document. Until the owner records one, PII authority stays `legacy`, the new artifacts stay exploratory,
-and no threshold, tolerance, membership, suppression or support verdict changes. Spec and numbers: [`docs/specs/pii-scorer-basis.md`](../specs/pii-scorer-basis.md), derived record `docs/generated/pii-scorer-basis.json`.
+**Status: accepted by the owner, Milo Kang, on 2026-10-06** (acceptance recorded on the issue: <https://github.com/redact-secret/redact-secret-benchmarks/issues/795#issuecomment-6028908779>; the owner's words there are "#795 수락, 승인" and "수락한다고 이미 했다 ... 구현 해라").
+The proposal below was accepted as written. **Scope: the scorer, denominator and metric-label decision only.** The acceptance does not accept any official-run verdict, does not switch PII authority (it stays `legacy`, `benchmarks/pii-authority.json`), writes no `new.authorisation` and no `owner-accepted-verdict`, and touches no protected path.
+No threshold, tolerance, membership, suppression or support verdict changes with it. Spec and numbers: [`docs/specs/pii-scorer-basis.md`](../specs/pii-scorer-basis.md), derived record `docs/generated/pii-scorer-basis.json`.
 
 ## Context
 
@@ -21,7 +25,7 @@ scorer and an axis-assertion share, unresolved included, in the other.
 
 With pii-eval schema 1.4 (#32, ADR 0017 and 0018) all 1,188 memberships are carried: 1,032 located and 156 authored `not-established` with no range, reported `unresolved`. The 156 are a representation matter and are kept apart from the scorer definition.
 
-## Proposal
+## Decision (the proposal, accepted as written)
 
 1. **Two named protocols, ten shared ids, distinct quantities.** `pii-v1:<id>` and `b11:<id>` are the quantity ids (`benchmarks/evaluation/domains/pii/metric-basis.mjs`), each with one name, one population, one numerator, one denominator and one owner.
    A consumer shows the quantity name. `pii-v1:type-miss-rate` is named "valid-type occurrence miss rate (generic, every context)"; `b11:type-miss-rate` is "sensitive case without any finding rate". Implemented additively (registry, Next rows, tests); no frozen data was renamed.
@@ -35,11 +39,13 @@ With pii-eval schema 1.4 (#32, ADR 0017 and 0018) all 1,188 memberships are carr
 
 ## Consequences
 
-- Product consumers cannot mistake a generic type miss for a sensitive miss; the numbers they could confuse are shown with distinct names.
-- Existing support verdicts are unchanged: nothing reads a `pii-v1` number for a verdict.
-- If the owner accepts: the accepted basis is implemented as a benchmark-side projection with parity evidence regenerated against the retained oracle; criterion `scorer-basis-decided` of #666 is then recorded by the owner in `benchmarks/pii-authority.json`.
-  If the owner chooses `pii-v1` for a metric, that is a policy change with its own measured evidence and review, not a migration step.
+- Product consumers cannot mistake a generic type miss for a sensitive miss: the numbers they could confuse are shown with distinct names, in the Next rows and, since the acceptance, in the published support matrix itself
+  (`piiEvalMeasurement.quantityBasis` and a `quantity` label of the form `pii-v1:<id>` on every published metric, derived from the registry and refused when absent or different).
+- Existing support verdicts are unchanged: nothing reads a `pii-v1` number for a verdict; the matrix says so (`quantityBasis.verdictReads: "b11"`, `thresholdsApplied: false`).
+- Implemented as accepted: the benchmark-side projection (registry, published labels, Next rows, tests) with parity evidence regenerated against the retained oracle (`scripts/run-pii-population-dual-run.mjs --check`: 0 unexplained differences, recorded dual run equal).
+  Criterion `scorer-basis-decided` of #666 is recorded in `benchmarks/pii-authority.json` as met on this decision only.
+- If the owner later chooses `pii-v1` for a metric, that is a policy change with its own measured evidence and review, not a migration step.
 
 ## Not decided here
 
-PII authority (#666), `new.authorisation`, any threshold, the official run (#796), protected-path items (custodian #71 and #72, ledger).
+PII authority (#666), `new.authorisation`, `owner-accepted-verdict`, any threshold, the verdict of the official run (#796; the run is evidence, its acceptance is the owner's), protected-path items (custodian #71 and #72, ledger).

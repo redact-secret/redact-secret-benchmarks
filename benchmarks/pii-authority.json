@@ -72,8 +72,8 @@
       "id": "scorer-basis-decided",
       "basis": "owner",
       "statement": "The owner has decided which scorer defines the PII metric values the qualification uses: the benchmark scorer (b11ScoreTable) or pii-v1 accounting. They are different scorers and their numbers are not compared.",
-      "state": "unmet",
-      "evidence": "no owner decision recorded; the proposed (pending-owner) decision and the per-metric table are docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md and docs/specs/pii-scorer-basis.md"
+      "state": "met",
+      "evidence": "docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md (status accepted; owner Milo Kang, 2026-10-06; source https://github.com/redact-secret/redact-secret-benchmarks/issues/795#issuecomment-6028908779). The scorer, denominator and label decision only: it is not an accepted verdict (owner-accepted-verdict stays unmet) and does not authorise new"
     },
     {
       "id": "owner-accepted-verdict",

@@ -107,9 +107,9 @@ population holds a single case of the family. A family with any case on the new 
 attributed to this cause. Reasons another cause recognises (`methods.*`, `policy.*`, axes, differential) keep that cause.
 
 A legacy review-ledger entry the mapping cannot place is explained as `observation-resolved-by-release` only when every such entry is an open
-entry of a joined case with no canonical occurrence (the derivation's `no-canonical-occurrence`) and their number equals the difference
-exactly: the released build no longer reports the disagreement. A settled decision that loses its occurrence stays unexplained. The entry stays in
-the ledger, open; closing it is a reviewed ledger decision.
+entry (or one the owner closed in the class `observation-resolved-by-release`) of a joined case with no canonical occurrence (the derivation's `no-canonical-occurrence`) and their number equals the difference
+exactly: the released build no longer reports the disagreement. Any other settled decision that loses its occurrence stays unexplained. The entry stays in
+the ledger; closing it is a reviewed ledger decision.
 
 ## Not compared, and why
 

@@ -24,7 +24,7 @@
     },
     "new": {
       "publication": "public",
-      "policyRevision": "rs-policy-1:sha256:ebd6d5c0440ee9363a3373ce76d089e464b2d5313f34992df34b366cf9e98a15",
+      "policyRevision": "rs-policy-1:sha256:5c8f68415071b9e86d0d6dda71140e3c3724d5bcfe4c00f628d445682fcc7f8f",
       "adapter": {
         "id": "credential-eval-run-artifact",
         "version": 1
@@ -205,7 +205,7 @@
     },
     {
       "id": "observation-resolved-by-release",
-      "change": "A legacy review-ledger entry that is still open records a disagreement the published product used to cause (a false alarm on a control, a placeholder read as a secret). The released build no longer reports it: the case is in the evidence and in the methods run, but the methods run holds no occurrence of that case, variant, peer and disagreement, so the generated mapping has nothing to map the entry to. Recognised only when every legacy entry the mapping cannot place is an OPEN entry whose case is joined (no-canonical-occurrence) and their number equals the difference exactly; a settled legacy decision that loses its occurrence stays unexplained. The entry stays in the ledger, open and visible; closing it is a reviewed ledger decision, not made here.",
+      "change": "A legacy review-ledger entry (still open, or closed by the owner in this very class) records a disagreement the published product used to cause (a false alarm on a control, a placeholder read as a secret). The released build no longer reports it: the case is in the evidence and in the methods run, but the methods run holds no occurrence of that case, variant, peer and disagreement, so the generated mapping has nothing to map the entry to. Recognised only when every legacy entry the mapping cannot place is an open entry, or one the owner closed in this class (note ends `Class: <kind>/<peer>/observation-resolved-by-release.`), whose case is joined (no-canonical-occurrence) and their number equals the difference exactly; any other settled legacy decision that loses its occurrence stays unexplained. The entry stays in the ledger either way.",
       "confirmation": "confirmed",
       "owner": "repository owner"
     },

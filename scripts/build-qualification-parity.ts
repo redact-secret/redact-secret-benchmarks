@@ -335,10 +335,10 @@ if (existsSync(methodsFile) && reviewDerivation && changedSeeds.size) {
     const peer = String(q.peer ?? 'unknown'); changedUnmappedByPeer[peer] = (changedUnmappedByPeer[peer] ?? 0) + 1;
   }
 }
-// Legacy differential entries the mapping cannot place: explained as resolved by the release only when every one is an OPEN ledger entry of a joined case with no canonical occurrence (the derivation's own reason).
+// Legacy differential entries the mapping cannot place: explained as resolved by the release only when every one is an OPEN ledger entry, or one the owner closed in this class (`observation-resolved-by-release`), of a joined case with no canonical occurrence (the derivation's own reason).
 const mappedLegacyIds = new Set(Object.values(product.ledgerRekey?.occurrences ?? {}));
 const unplaced = snapshot ? (await legacyReview(snapshot as never)).legacyQueue.filter(q => !mappedLegacyIds.has(q.id)) : [];
-const resolvedByRelease = reviewDerivation && unplaced.length > 0 && unplaced.length === (reviewDerivation.legacy.unmatched?.['no-canonical-occurrence'] ?? 0) && unplaced.every(q => product.ledger.entries[q.id]?.status === 'open') ? unplaced.length : 0;
+const resolvedByRelease = reviewDerivation && unplaced.length > 0 && unplaced.length === (reviewDerivation.legacy.unmatched?.['no-canonical-occurrence'] ?? 0) && unplaced.every(q => { const e = product.ledger.entries[q.id]; return e?.status === 'open' || (e?.status === 'resolved' && /Class: [a-z-]+\/[a-z-]+\/observation-resolved-by-release\.$/.test(e.note ?? '')); }) ? unplaced.length : 0;
 const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: mappedLegacyIds.size, resolvedByRelease }, reviewMapped, unjoinedByPeer, changedUnmappedByPeer);
 
 // -- identity ----------------------------------------------------------------------------------------------------------

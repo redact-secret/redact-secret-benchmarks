@@ -224,6 +224,11 @@ export under `with-authority.mjs legacy` and then the committed `new` export fro
 of the required `validate` aggregate and is unrelated to the rollback. The rehearsal is evidence for the oracle exit (the rollback rehearsed against that release); it does not declare the exit; the owner did, in the decision that records `legacy.oracle.exit` (`benchmarks/qualification-authority.json`).
 
 
+### Rehearsal of the rollback against beta.14 (2026-10-07, #808)
+
+(Filled in below after the run.)
+
+
 **The oracle period.** The `remove-after-cutover` rows below are not removed at the switch. They are removed only after at least one further published release has been qualified
 through the new path and compared with the legacy path (the parity report regenerated, 0 unexplained), the rollback has been rehearsed against that release, and the removal PR lists each file's callers first. The
 period is also reviewed on 2027-01-02: if no further release has been qualified by then, the maintainer decides whether to keep the oracle, with a new exit condition recorded in the ADR. A lapse removes nothing.

@@ -3,7 +3,7 @@
  * Prepare the reviewable acceptance package of an evidence candidate (#690, #680) as one command. Until now the patch, its digest, the views, the parity report, the derived inputs and the
  * owner report were assembled by hand. This builds them on a transient worktree and writes only DATA into this checkout; nothing is applied, accepted or deployed:
  *
- *   node scripts/prepare-acceptance-package.mjs --tag <snapshot tag> --manifest-digest sha256:<hex> [--peers-dir <dir holding the pinned trufflehog>] [--superseded-on YYYY-MM-DD]
+ *   node scripts/prepare-acceptance-package.mjs --tag <snapshot tag> --manifest-digest sha256:<hex> [--peers-dir <dir holding the pinned trufflehog>] [--superseded-on YYYY-MM-DD] [--include-openredaction]
  *
  * On a transient worktree of HEAD it does what the owner's acceptance branch would: `repin` (the earlier runs become historical receipts), records the control replay's four runs, stores them
  * in the registry-format archive (a release of this repository, verified by fetching it back), regenerates the three derived inputs from the snapshot and the methods run and proves them with the
@@ -11,6 +11,8 @@
  * candidate into the accepted record (owner acceptance OWNER-TO-SET) and drafts the decision (status: proposed). The authority is not touched: the gate lists its readers and the owner renews it in a
  * reviewed commit, so the package carries the values to set (`candidate.acceptance.authorityValues`) and the patch does not change that file.
  * The result is `git diff` as `<tag>.acceptance.patch` with its sha256, and `candidate.acceptance` is written to the evidence candidate. Refuses unless the control replay is recorded.
+ * The control's scanner set (the four required scanners by default; `--include-openredaction` for a control that opted the OpenRedaction default in) is read once and every surface is reconciled with it,
+ * and a mismatched roster or a stale control is refused (#773, scripts/acceptance-roster.mjs); the package records it as `candidate.acceptance.scannerSelection`.
  *
  * It never fills acceptedBy, acceptedOn or the decision status, never reads or writes the authority, never writes the accepted record in THIS checkout (only the transient copy, as a patch), and never deploys.
  */
@@ -22,6 +24,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { fetchArchive } from './replay-archive.mjs';
 import { moveEngineInTree } from './run-evidence-replay.mjs';
+import { acceptanceSelection, archiveProblems, controlRecordProblems, derivedInputProblems, packageSelection, parityProblems, recordedRunProblems, viewProblems } from './acceptance-roster.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
@@ -75,13 +78,19 @@ export function draftDecision({ tag, ec, decision, summary }) {
 
 const sh = (command, args, options = {}) => execFileSync(command, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 512 * 1024 * 1024, ...options });
 
-export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineReplayRun }) {
+/** A surface of the package disagrees with the control's scanner selection: refuse, naming the surface and every disagreement. */
+const reconciled = (surface, problems) => { if (problems.length) throw new Error(`${surface} does not match the control replay's scanner selection (#773): ${problems.join('; ')}`); };
+
+export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineReplayRun, includeOpenRedaction = false }) {
   const adoption = readJson('benchmarks/evidence-adoption.json');
   const ec = adoption.evidenceCandidate;
   if (adoption.state !== 'accepted' || ec?.evidenceRelease !== tag || ec.manifestDigest !== manifestDigest) throw new Error(`benchmarks/evidence-adoption.json records no evidence candidate ${tag} with that manifest digest`);
   if (ec.replay?.state !== 'replayed' || !ec.replay.archive) throw new Error('the control replay is not recorded: run scripts/run-evidence-replay.mjs first');
   if (ec.ownerAcceptance) throw new Error('the candidate carries an owner acceptance; nothing to prepare');
   const registry = readJson('benchmarks/official-runs.json');
+  // The scanner set the control measured must be the roster this package is prepared for (the required scanners; OpenRedaction only on the explicit opt-in): refused before anything is built.
+  const { selection, problems: selectionProblems } = packageSelection({ replay: ec.replay, roster: readJson('benchmarks/support/scanner-roster.json'), registryScanners: registry.scanners, includeOpenRedaction });
+  if (selectionProblems.length) throw new Error(`the control replay cannot back this package: ${selectionProblems.join('; ')}`);
   const pinnedTruffle = registry.scanners.find(s => s.id === 'trufflehog').version;
   const env = { ...process.env, PATH: `${peersDir ? `${path.resolve(peersDir)}:` : ''}${process.env.PATH}`, NODE_OPTIONS: '--max-old-space-size=8192' };
   const truffle = sh('trufflehog', ['--version'], { env, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -97,15 +106,20 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     const replay = path.join(scratch, 'replay');
     fetchArchive({ release: ec.replay.archive.release, sha256: ec.replay.archive.sha256, out: replay, repository: REPOSITORY });
     const runId = ec.replay.ciRun.split('/').pop();
+    // The control is not stale: the run records in the archive are the runs the adoption record's replay recorded (digests, configuration, engine, commit, evidence, scanner set).
+    const records = ['policy-corpus', 'public-evidence-snapshot', 'public-evidence-snapshot/methods', 'regression-corpus'].map(rel => ({ rel: `${rel}/run-record.json`, record: readJson(`${rel}/run-record.json`, replay) }));
+    reconciled('the control replay archive', controlRecordProblems({ ec, tag, selection, records }));
     // 2. Repin and record the four runs.
     run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', supersededOn ?? new Date().toISOString().slice(0, 10)]);
     // A candidate that moves the engine (record `engineChange`): the engine pin and schema move with it and the previous engine's runs of the other populations are dropped (#773).
     moveEngineInTree(tree, ec);
     for (const rel of ['policy-corpus', 'public-evidence-snapshot', 'public-evidence-snapshot/methods', 'regression-corpus']) run('npm', ['run', '-s', 'official-runs:record', '--', path.join(replay, rel, 'run-record.json'), '--date', supersededOn ?? new Date().toISOString().slice(0, 10)]);
+    reconciled('benchmarks/official-runs.json', recordedRunProblems({ selection, replay: ec.replay, runs: readJson('benchmarks/official-runs.json', tree).runs }));
     // 3. The registry-format archive, stored in a release (storage of bytes, not an acceptance) and fetched back against the registry.
     const archiveFile = readJson('benchmarks/official-run-archive.json', tree);
     archiveFile.release = { tag: `official-runs-registry-${runId}`, asset: `official-runs-${runId}.tar.gz` };
     archiveFile.source.ciRun = runId;
+    reconciled('benchmarks/official-run-archive.json', archiveProblems({ archive: archiveFile, runId, selection }));
     writeJson('benchmarks/official-run-archive.json', archiveFile, tree);
     const pack = path.join(scratch, 'registry-pack');
     run('node', ['scripts/official-run-archive.mjs', 'pack', '--run', runId, '--out', pack]);
@@ -120,6 +134,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     const methods = path.join(replay, 'public-evidence-snapshot/methods/artifact.json');
     const derived = path.join(scratch, 'derived');
     run('npm', ['run', '-s', 'qualification:derive-inputs', '--', '--snapshot', snapshotFile, '--plain-run', path.join(replay, 'public-evidence-snapshot/artifact.json'), '--methods-run', methods, '--out', derived]);
+    reconciled('the derived inputs', derivedInputProblems({ receipt: JSON.parse(readFileSync(path.join(derived, 'derived-inputs.json'), 'utf8')), replay: ec.replay }));
     for (const f of ['public-axis-overlay.json', 'public-twin-scope-map.json', 'public-review-ledger-map.json']) cpSync(path.join(derived, f), path.join(tree, 'benchmarks/support', f));
     run('npm', ['run', '-s', 'qualification:axis-overlay', '--', '--snapshot', snapshotFile, '--check']);
     run('npm', ['run', '-s', 'qualification:twin-scope', '--', '--snapshot', snapshotFile, '--check']);
@@ -133,10 +148,12 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     }
     const view = path.join(scratch, 'view.json');
     run('npm', ['run', '-s', 'qualification:view', '--', '--artifacts', replay, '--out', view]);
+    reconciled('the candidate view', viewProblems({ view: JSON.parse(readFileSync(view, 'utf8')), selection, replay: ec.replay }));
     // 6. The legacy oracle and the parity report (strict).
     run('npm', ['run', '-s', 'bench'], { stdio: ['ignore', 'ignore', 'inherit'] });
     run('npm', ['run', '-s', 'eval:classify'], { stdio: ['ignore', 'ignore', 'inherit'] });
     run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--change-report', ec.changeReport, '--strict']);
+    reconciled('the parity report', parityProblems({ parity: readJson('docs/generated/qualification-parity.json', tree), selection, replay: ec.replay }));
     // 7. The prepared-acceptance block is part of the base the patch applies to (the patch removes the evidence candidate it lives in), so it is committed to the transient tree first and
     //    written to this checkout's record at the end, by the same code from the same record.
     const decision = adrPath(tag, ec.engine.tag);
@@ -150,6 +167,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
       note: 'Prepared for the owner (#690). Nothing here is accepted: the active pins, runs and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.',
       report: `${GENERATED}/${tag}.md`, comparison: `${GENERATED}/${tag}.comparison.json`, patch: patchFile, patchDigestFile: `${patchFile}.sha256`, applies: `git apply ${patchFile}`,
       ownerFields: ['the authority: renew it in a reviewed commit with `authorityValues` (and set its acceptedOn and acceptedBy); the patch does not change it, so authority:check stays red until you do', 'benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn', `${decision} status (proposed to accepted), decided_at and its Decision`],
+      scannerSelection: acceptanceSelection({ selection, replay: ec.replay, archive: archiveFile, runId }),
       authorityValues: { release: `@redact-secret/core@${ec.product?.version ?? registry.scanners.find(x => x.id === 'redact-secret').version}`, policyRevision: viewData.policy?.revision, semanticDigests, parityReport: 'docs/generated/qualification-parity.json', decision },
       candidateView: { sha256: `sha256:${createHash('sha256').update(readFileSync(view)).digest('hex')}`, policyRevision: viewData.policy?.revision, distribution },
       derivedInputs: {
@@ -237,6 +255,6 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const args = process.argv.slice(2);
   const option = name => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
-  try { console.log(JSON.stringify(prepare({ tag: option('tag'), manifestDigest: option('manifest-digest'), peersDir: option('peers-dir'), supersededOn: option('superseded-on'), engineReplayRun: option('engine-replay-run') }), null, 1)); }
+  try { console.log(JSON.stringify(prepare({ tag: option('tag'), manifestDigest: option('manifest-digest'), peersDir: option('peers-dir'), supersededOn: option('superseded-on'), engineReplayRun: option('engine-replay-run'), includeOpenRedaction: args.includes('--include-openredaction') }), null, 1)); }
   catch (error) { console.error(`acceptance package refused: ${error.message}`); process.exit(1); }
 }

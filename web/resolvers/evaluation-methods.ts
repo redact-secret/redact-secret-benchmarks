@@ -43,7 +43,12 @@ export interface MethodInput {
   suites: Map<string, string>;
 }
 
-const QUALIFY_COMMANDS = 'npm run eval:qualify\nnpm run eval:publish -- --qualification=results-output/qualification/engine-v1.json';
+/**
+ * The holdout aggregate is the protected-holdout lifecycle's output (`eval:qualify`), which the owner kept (2026-10-05). Under the `new` authority the publication
+ * runs no qualification and the evaluation bundle embeds none (#657): the page reads the frozen report committed at `docs/specs/qualification/engine-v1.json`. Only
+ * the `legacy` rollback's publication embeds a fresh one (`eval:publish --qualification`), so that command is named as the rollback's, not as how the page is fed.
+ */
+const QUALIFY_COMMANDS = 'npm run eval:qualify   # writes results-output/qualification/engine-v1.json (the protected-holdout lifecycle)\n# the rollback publication embeds it: npm run eval:publish -- --qualification=results-output/qualification/engine-v1.json';
 
 const notMeasured = (title: string, body: string, command = EVAL_COMMANDS): NotMeasuredData => ({ state: 'not-measured', title, body, command });
 
@@ -479,7 +484,7 @@ export function resolveMethodPage(id: MethodId, input: MethodInput): MethodPageP
   if (id === 'holdout') {
     const q = input.qualification;
     if (q.state !== 'recorded') {
-      const missing = notMeasured('Not measured: no holdout aggregate', `${q.reason} Holdout is not part of ordinary discovery: run the qualification workflow and publish its validated output.`, QUALIFY_COMMANDS);
+      const missing = notMeasured('Not measured: no holdout aggregate', `${q.reason} Holdout is not part of ordinary discovery. Under the new authority the publication measures no qualification: this page reads the frozen report committed at docs/specs/qualification/engine-v1.json.`, QUALIFY_COMMANDS);
       return { ...common, meta: [{ value: 'Not measured' }], how: how([]), recorded: missing, inputs: missing };
     }
     const meta: MetaItem[] = [

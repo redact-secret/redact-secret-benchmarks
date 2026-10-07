@@ -1482,5 +1482,121 @@
     },
     "decidedAt": "2026-10-03",
     "decidedBy": "milocosmopolitan (the maintainer approval of 2026-10-03 for this exact size growth at candidate core 401158d, re-keyed to the release source commit 66b492b on the evidence of run 37118371501, which measured byte-identical values; same re-keying as entry beta12-4227160-quickstart-bundle-gzip for Beta.12)"
+  },
+  {
+    "id": "beta14-0c62fd3-wasm-full-gzip",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+    },
+    "measured": {
+      "baseline": 137639,
+      "candidate": 235713,
+      "unit": "bytes"
+    },
+    "rationale": "New size growth, not a carry-over: the `full` WebAssembly artifact measured 235,713 gzip bytes against the baseline of 137,639 in performance-evaluation.yml run 37552333458 (candidate redact-secret 0c62fd38bca75c5b28b042dc79789b708ebf1d17, 0.1.0-beta.14; fixed RC acceptance ACCEPTED, 46 checks, 0 failures). Against the Beta.13 accepted value 206,697 (entry beta13-66b492b-wasm-full-gzip, also the 401158d value) that is 29,016 bytes (+14.0%) more; against the baseline 0.1.0-beta.8 it is 98,074 bytes (+71.3%), up from 69,058 bytes (+50.2%) at Beta.13. The growth since the Beta.13 accepted candidate (66b492b, the peeled v0.1.0-beta.13 tag) has three sources, all merged to redact-secret main before the candidate 0c62fd3: (1) the declarative action-policy overlay and comparison APIs of epic redact-secret#1216 (PR #1244: strict hand-written parser `load_action_policy`, SHA-256 of each policy document for the comparison digests, `compare_action_policies`, exported by the WebAssembly, Node, Python and CLI bindings); (2) the eight Beta.14 provider detectors (the #1102 to #1109 provider handoffs, PRs #1214 and #1227, named in the 0.1.0-beta.14 changelog and prepared in PR #1245), with the Batch 1 credential slots (#1215) and Batch 2 gap fixes (#1235); (3) the closeout detector fixes of PR #1257 (Batch 2 and Groups C, D and E). PRs #1267 and #1271 are documentation, policy-text and release-tooling changes and add no measured size. The cost is stated, not hidden. The core evidence measured the declarative action-policy parser at +5,653 brotli bytes on the `full` WebAssembly artifact and +5,888 on `common` (3.43% and 5.05%; https://github.com/redact-secret/redact-secret/blob/01ce5284b8c947f7a56da1910bcbba0af82dd653/docs/audits/evidence/1219/README.md), and the parser, SHA-256 of the policy documents and comparison together at +11,493 brotli bytes on `full` (164,789 to 176,282, about 7.0%; https://github.com/redact-secret/redact-secret/blob/01ce5284b8c947f7a56da1910bcbba0af82dd653/docs/audits/evidence/1220/README.md). Those figures are brotli at core commit 01ce528 and this row is gzip, so they size the policy overlay but do not convert to this row's bytes, and this entry does not claim how the remaining growth splits between the overlay and the detector work. If the maintainer wants a smaller artifact, the parser is the place to cut (the #1219 evidence shows a class-only rejection message still leaves +3.07% of `full`). The budget definition is unchanged. It does not cover any growth beyond the measured value: a later breach of this trigger at a different source commit needs its own entry and is judged afresh.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Users own the action policy: a versioned declarative overlay validated by a strict parser, and a preview-only comparison of 1 to 4 policies over the same findings so a policy can be compared before it is adopted (epic #1216, PR #1244); eight new provider detectors and the Batch 2 / Groups C, D and E closeout fixes that close detection gaps and leaks found by an independent baseline measurement across Node, WASM, Python and CLI (PRs #1245, #1257, 0 regressions and 0 parity divergences against the published beta.13 in the round-3 measurement); the Beta.14 documentation-lifecycle and pre-release corrections (#1267, #1271). Fixed RC acceptance in run 37552333458: ACCEPTED, 46 checks, 0 failures.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1244",
+        "https://github.com/redact-secret/redact-secret/pull/1245",
+        "https://github.com/redact-secret/redact-secret/pull/1257",
+        "https://github.com/redact-secret/redact-secret/pull/1267",
+        "https://github.com/redact-secret/redact-secret/pull/1271",
+        "https://github.com/redact-secret/redact-secret/pull/1214",
+        "https://github.com/redact-secret/redact-secret/pull/1227"
+      ]
+    },
+    "decidedAt": "2026-10-06",
+    "decidedBy": "milocosmopolitan (explicit maintainer approval given in the Beta.14 release orchestration session on 2026-10-06 to accept the size growth caused by epic #1216 and the closeout detector fixes, on the evidence of performance-evaluation.yml run 37552333458 at candidate core 0c62fd3, as with the Beta.13 and Beta.12 size decisions; this is new growth, not a re-keying of the Beta.13 value, and nothing beyond the measured value is accepted)"
+  },
+  {
+    "id": "beta14-0c62fd3-wasm-common-gzip",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+    },
+    "measured": {
+      "baseline": 100058,
+      "candidate": 168891,
+      "unit": "bytes"
+    },
+    "rationale": "New size growth, not a carry-over: the `common` WebAssembly artifact measured 168,891 gzip bytes against the baseline of 100,058 in performance-evaluation.yml run 37552333458 (candidate redact-secret 0c62fd38bca75c5b28b042dc79789b708ebf1d17, 0.1.0-beta.14; fixed RC acceptance ACCEPTED, 46 checks, 0 failures). Against the Beta.13 accepted value 142,866 (entry beta13-66b492b-wasm-common-gzip, also the 401158d value) that is 26,025 bytes (+18.2%) more; against the baseline 0.1.0-beta.8 it is 68,833 bytes (+68.8%), up from 42,808 bytes (+42.8%) at Beta.13. The growth since the Beta.13 accepted candidate (66b492b, the peeled v0.1.0-beta.13 tag) has three sources, all merged to redact-secret main before the candidate 0c62fd3: (1) the declarative action-policy overlay and comparison APIs of epic redact-secret#1216 (PR #1244: strict hand-written parser `load_action_policy`, SHA-256 of each policy document for the comparison digests, `compare_action_policies`, exported by the WebAssembly, Node, Python and CLI bindings); (2) the eight Beta.14 provider detectors (the #1102 to #1109 provider handoffs, PRs #1214 and #1227, named in the 0.1.0-beta.14 changelog and prepared in PR #1245), with the Batch 1 credential slots (#1215) and Batch 2 gap fixes (#1235); (3) the closeout detector fixes of PR #1257 (Batch 2 and Groups C, D and E). PRs #1267 and #1271 are documentation, policy-text and release-tooling changes and add no measured size. The cost is stated, not hidden. The core evidence measured the declarative action-policy parser at +5,653 brotli bytes on the `full` WebAssembly artifact and +5,888 on `common` (3.43% and 5.05%; https://github.com/redact-secret/redact-secret/blob/01ce5284b8c947f7a56da1910bcbba0af82dd653/docs/audits/evidence/1219/README.md), and the parser, SHA-256 of the policy documents and comparison together at +11,493 brotli bytes on `full` (164,789 to 176,282, about 7.0%; https://github.com/redact-secret/redact-secret/blob/01ce5284b8c947f7a56da1910bcbba0af82dd653/docs/audits/evidence/1220/README.md). Those figures are brotli at core commit 01ce528 and this row is gzip, so they size the policy overlay but do not convert to this row's bytes, and this entry does not claim how the remaining growth splits between the overlay and the detector work. If the maintainer wants a smaller artifact, the parser is the place to cut (the #1219 evidence shows a class-only rejection message still leaves +3.07% of `full`). The budget definition is unchanged. It does not cover any growth beyond the measured value: a later breach of this trigger at a different source commit needs its own entry and is judged afresh.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Users own the action policy: a versioned declarative overlay validated by a strict parser, and a preview-only comparison of 1 to 4 policies over the same findings so a policy can be compared before it is adopted (epic #1216, PR #1244); eight new provider detectors and the Batch 2 / Groups C, D and E closeout fixes that close detection gaps and leaks found by an independent baseline measurement across Node, WASM, Python and CLI (PRs #1245, #1257, 0 regressions and 0 parity divergences against the published beta.13 in the round-3 measurement); the Beta.14 documentation-lifecycle and pre-release corrections (#1267, #1271). Fixed RC acceptance in run 37552333458: ACCEPTED, 46 checks, 0 failures.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1244",
+        "https://github.com/redact-secret/redact-secret/pull/1245",
+        "https://github.com/redact-secret/redact-secret/pull/1257",
+        "https://github.com/redact-secret/redact-secret/pull/1267",
+        "https://github.com/redact-secret/redact-secret/pull/1271",
+        "https://github.com/redact-secret/redact-secret/pull/1214",
+        "https://github.com/redact-secret/redact-secret/pull/1227"
+      ]
+    },
+    "decidedAt": "2026-10-06",
+    "decidedBy": "milocosmopolitan (explicit maintainer approval given in the Beta.14 release orchestration session on 2026-10-06 to accept the size growth caused by epic #1216 and the closeout detector fixes, on the evidence of performance-evaluation.yml run 37552333458 at candidate core 0c62fd3, as with the Beta.13 and Beta.12 size decisions; this is new growth, not a re-keying of the Beta.13 value, and nothing beyond the measured value is accepted)"
+  },
+  {
+    "id": "beta14-0c62fd3-quickstart-bundle-gzip",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+    },
+    "measured": {
+      "baseline": 144501,
+      "candidate": 244931,
+      "unit": "bytes"
+    },
+    "rationale": "New size growth, not a carry-over: the documented browser quickstart bundle measured 244,931 gzip bytes against the baseline of 144,501 in performance-evaluation.yml run 37552333458 (candidate redact-secret 0c62fd38bca75c5b28b042dc79789b708ebf1d17, 0.1.0-beta.14; fixed RC acceptance ACCEPTED, 46 checks, 0 failures). Against the Beta.13 accepted value 214,214 (entry beta13-66b492b-quickstart-bundle-gzip, also the 401158d value) that is 30,717 bytes (+14.3%) more; against the baseline 0.1.0-beta.8 it is 100,430 bytes (+69.5%), up from 69,713 bytes (+48.2%) at Beta.13. The growth since the Beta.13 accepted candidate (66b492b, the peeled v0.1.0-beta.13 tag) has three sources, all merged to redact-secret main before the candidate 0c62fd3: (1) the declarative action-policy overlay and comparison APIs of epic redact-secret#1216 (PR #1244: strict hand-written parser `load_action_policy`, SHA-256 of each policy document for the comparison digests, `compare_action_policies`, exported by the WebAssembly, Node, Python and CLI bindings); (2) the eight Beta.14 provider detectors (the #1102 to #1109 provider handoffs, PRs #1214 and #1227, named in the 0.1.0-beta.14 changelog and prepared in PR #1245), with the Batch 1 credential slots (#1215) and Batch 2 gap fixes (#1235); (3) the closeout detector fixes of PR #1257 (Batch 2 and Groups C, D and E). PRs #1267 and #1271 are documentation, policy-text and release-tooling changes and add no measured size. The cost is stated, not hidden. The core evidence measured the declarative action-policy parser at +5,653 brotli bytes on the `full` WebAssembly artifact and +5,888 on `common` (3.43% and 5.05%; https://github.com/redact-secret/redact-secret/blob/01ce5284b8c947f7a56da1910bcbba0af82dd653/docs/audits/evidence/1219/README.md), and the parser, SHA-256 of the policy documents and comparison together at +11,493 brotli bytes on `full` (164,789 to 176,282, about 7.0%; https://github.com/redact-secret/redact-secret/blob/01ce5284b8c947f7a56da1910bcbba0af82dd653/docs/audits/evidence/1220/README.md). Those figures are brotli at core commit 01ce528 and this row is gzip, so they size the policy overlay but do not convert to this row's bytes, and this entry does not claim how the remaining growth splits between the overlay and the detector work. If the maintainer wants a smaller artifact, the parser is the place to cut (the #1219 evidence shows a class-only rejection message still leaves +3.07% of `full`). The budget definition is unchanged. It does not cover any growth beyond the measured value: a later breach of this trigger at a different source commit needs its own entry and is judged afresh.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Users own the action policy: a versioned declarative overlay validated by a strict parser, and a preview-only comparison of 1 to 4 policies over the same findings so a policy can be compared before it is adopted (epic #1216, PR #1244); eight new provider detectors and the Batch 2 / Groups C, D and E closeout fixes that close detection gaps and leaks found by an independent baseline measurement across Node, WASM, Python and CLI (PRs #1245, #1257, 0 regressions and 0 parity divergences against the published beta.13 in the round-3 measurement); the Beta.14 documentation-lifecycle and pre-release corrections (#1267, #1271). Fixed RC acceptance in run 37552333458: ACCEPTED, 46 checks, 0 failures.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1244",
+        "https://github.com/redact-secret/redact-secret/pull/1245",
+        "https://github.com/redact-secret/redact-secret/pull/1257",
+        "https://github.com/redact-secret/redact-secret/pull/1267",
+        "https://github.com/redact-secret/redact-secret/pull/1271",
+        "https://github.com/redact-secret/redact-secret/pull/1214",
+        "https://github.com/redact-secret/redact-secret/pull/1227"
+      ]
+    },
+    "decidedAt": "2026-10-06",
+    "decidedBy": "milocosmopolitan (explicit maintainer approval given in the Beta.14 release orchestration session on 2026-10-06 to accept the size growth caused by epic #1216 and the closeout detector fixes, on the evidence of performance-evaluation.yml run 37552333458 at candidate core 0c62fd3, as with the Beta.13 and Beta.12 size decisions; this is new growth, not a re-keying of the Beta.13 value, and nothing beyond the measured value is accepted)"
+  },
+  {
+    "id": "beta14-0c62fd3-browser-wasm-scale-logs-small-whole-init-ratio",
+    "triggerId": "initialization/browser-wasm/scale-logs-small-whole/initialization-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.3437500000021316,
+      "unit": "ratio"
+    },
+    "rationale": "The browser-WebAssembly initialization ratio on scale-logs-small-whole measured 1.3437500000021316 (baseline 1, budget allowance 0.25, so the 1.25 limit is exceeded) in performance-evaluation.yml run 37552333458 at candidate core 0c62fd38bca75c5b28b042dc79789b708ebf1d17, with no other initialization, latency or memory trigger breaching in that run. The highest value accepted at Beta.13 was 1.5000000000067684 (entry beta13-401158d-browser-wasm-scale-logs-small-whole-init-ratio, the highest of the observed 1.21 to 1.50 spread; the v0.1.0-beta.13 release commit 66b492b has no initialization entry in this ledger). The new value is 0.15625 lower (-10.4%) than that accepted value and +34.4% above the baseline of 1. It is therefore not growth over Beta.13, but it breaches the budget and is recorded here as its own entry because the ledger keys by source commit. The ratio is a same-job paired ratio of a roughly 1 ms-scale initialization on a shared runner (1.34375 is 43/32), the Beta.13 entry already attributed its 1.21 to 1.50 spread to run-to-run variance on identical code plus the accepted phone-detector initialization cost, and this entry does not attribute the value to any single Beta.14 change, including the policy overlay. It was measured once in this run and was not rerun. The size growth since the Beta.13 accepted candidate (66b492b, the peeled v0.1.0-beta.13 tag) has three sources (listed for context; none is shown here to move this ratio), all merged to redact-secret main before the candidate 0c62fd3: (1) the declarative action-policy overlay and comparison APIs of epic redact-secret#1216 (PR #1244: strict hand-written parser `load_action_policy`, SHA-256 of each policy document for the comparison digests, `compare_action_policies`, exported by the WebAssembly, Node, Python and CLI bindings); (2) the eight Beta.14 provider detectors (the #1102 to #1109 provider handoffs, PRs #1214 and #1227, named in the 0.1.0-beta.14 changelog and prepared in PR #1245), with the Batch 1 credential slots (#1215) and Batch 2 gap fixes (#1235); (3) the closeout detector fixes of PR #1257 (Batch 2 and Groups C, D and E). PRs #1267 and #1271 are documentation, policy-text and release-tooling changes and add no measured size. It does not cover any growth beyond the measured value: a later breach at a different source commit needs its own entry and is judged afresh. The budget definition is unchanged.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Users own the action policy: a versioned declarative overlay validated by a strict parser, and a preview-only comparison of 1 to 4 policies over the same findings so a policy can be compared before it is adopted (epic #1216, PR #1244); eight new provider detectors and the Batch 2 / Groups C, D and E closeout fixes that close detection gaps and leaks found by an independent baseline measurement across Node, WASM, Python and CLI (PRs #1245, #1257, 0 regressions and 0 parity divergences against the published beta.13 in the round-3 measurement); the Beta.14 documentation-lifecycle and pre-release corrections (#1267, #1271). Fixed RC acceptance in run 37552333458: ACCEPTED, 46 checks, 0 failures.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1244",
+        "https://github.com/redact-secret/redact-secret/pull/1245",
+        "https://github.com/redact-secret/redact-secret/pull/1257",
+        "https://github.com/redact-secret/redact-secret/pull/1267",
+        "https://github.com/redact-secret/redact-secret/pull/1271",
+        "https://github.com/redact-secret/redact-secret/pull/1214",
+        "https://github.com/redact-secret/redact-secret/pull/1227"
+      ]
+    },
+    "decidedAt": "2026-10-06",
+    "decidedBy": "milocosmopolitan (explicit maintainer approval given in the Beta.14 release orchestration session on 2026-10-06 to accept the size growth caused by epic #1216 and the closeout detector fixes, on the evidence of performance-evaluation.yml run 37552333458 at candidate core 0c62fd3, as with the Beta.13 and Beta.12 size decisions; this is new growth, not a re-keying of the Beta.13 value, and nothing beyond the measured value is accepted)"
   }
 ]

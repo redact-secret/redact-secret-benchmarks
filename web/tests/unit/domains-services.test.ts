@@ -90,15 +90,15 @@ describe('PII evaluation', () => {
     expect(publicOnly).not.toHaveProperty('distribution');
   });
 
-  test('a published support artifact carries the schema 1.2 projection of the four populations and binds a candidate only to its own commit', async () => {
+  test('a published support artifact carries the schema 1.4 projection of the four populations and binds a candidate only to its own commit', async () => {
     const files = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress']
       .map(view => `${REAL}/benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
     const pins = [`${REAL}/benchmarks/pii-eval-public-synthetic-pins.json`, `${REAL}/benchmarks/pii-eval-population-pins.json`];
-    const copy = `${REAL}/tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json`;
+    const copy = `${REAL}/${(JSON.parse(await readFile(`${REAL}/benchmarks/pii-eval-public-synthetic-source.json`, 'utf8')) as { durableCopy: { path: string } }).durableCopy.path}`;
     const candidate = JSON.parse(await readFile(pins[1], 'utf8')).populations[0].scanners[0].candidateSourceCommit as string;
     const measurement = await piiEvalMeasurementFrom(pins, [copy, ...files], { sourceCommit: candidate, coreSha256: 'e'.repeat(64) });
     expect(measurement.populations).toHaveLength(files.length + 1);
-    expect(measurement.populations.every(row => row.schemaVersion === '1.2' && row.productProjection && !row.unavailable)).toBe(true);
+    expect(measurement.populations.every(row => (row.schemaVersion === '1.2' || row.schemaVersion === '1.4') && row.productProjection && !row.unavailable)).toBe(true);
     const states = Object.fromEntries(measurement.populations.map(row => [row.populationId, row.productBinding.state]));
     expect(states['synthetic-demo-population']).toBe('other-product');
     expect(Object.values(states).filter(state => state === 'measures-publication-product')).toHaveLength(files.length);

@@ -77,7 +77,26 @@ function transport(runId, dir) {
   return out;
 }
 
+/** Record the canonical linux replay (pii-population-replay.yml) of the adopted engine: the receipt is the artifact of that run, byte for byte. */
+function recordLinuxReplay() {
+  const run = Number(arg('replay-run'));
+  const receiptFile = path.resolve(arg('replay-receipt') ?? '');
+  const meta = gh(`/repos/redact-secret/redact-secret-benchmarks/actions/runs/${run}`);
+  if (meta.status !== 'completed' || meta.conclusion !== 'success' || meta.path !== '.github/workflows/pii-population-replay.yml' || meta.event !== 'workflow_dispatch') fail(`run ${run} is not a successful dispatch of pii-population-replay.yml`);
+  const bytes = readFileSync(receiptFile);
+  const receipt = JSON.parse(bytes.toString('utf8'));
+  const record = readJson(MIGRATION);
+  const pins = readJson(POP_PINS);
+  if (receipt.engine.commit !== pins.build.commit || receipt.engine.binarySha256 !== pins.build.binarySha256 || receipt.canonical !== true || receipt.verdict.allBytesEqualCommitted !== true) fail('the receipt is not a canonical replay of the pinned engine');
+  const target = path.join(ROOT, record.benchmarkPopulationDualRun.linuxReplay.path);
+  if (write) writeFileSync(target, bytes);
+  record.benchmarkPopulationDualRun.linuxReplay = { ...record.benchmarkPopulationDualRun.linuxReplay, sha256: sha256(bytes), runId: run, headSha: meta.head_sha, engineBinarySha256: receipt.engine.binarySha256, platform: receipt.engine.platform, result: 'equal' };
+  if (write) writeJson(MIGRATION, record);
+  console.log(JSON.stringify({ linuxReplay: record.benchmarkPopulationDualRun.linuxReplay, written: write }, null, 1));
+}
+
 function main() {
+  if (arg('replay-run')) return recordLinuxReplay();
   const runId = Number(arg('run'));
   const checkout = arg('pii-eval');
   if (!Number.isSafeInteger(runId) || !checkout || !existsSync(path.join(checkout, '.git'))) fail('usage: --run=<id> --pii-eval=<checkout> [--write]');

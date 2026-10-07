@@ -62,7 +62,7 @@ export interface PiiEvalMeasurement {
     sourceArchiveSha256: string; binding: 'out-of-band-build-provenance' };
   populations: Array<{ label: string; populationId: string; artifactDigest: string; file: string; status: 'accepted';
     /** The public artifact schema this population was read under. 1.1 cannot carry a projection; 1.2 carries it in `productProjection`. */
-    schemaVersion: '1.1' | '1.2';
+    schemaVersion: '1.1' | '1.2' | '1.4';
     population: { populationId: string; populationVersion: number; populationDigest: string; visibility: 'public-synthetic' };
     populationCounts: { authoredCases: number; variants: number; occurrences: number };
     /** How the measured scanner relates to the product this publication measured. A candidate is never a release. */
@@ -250,7 +250,7 @@ function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasureme
       value.build.binding !== 'out-of-band-build-provenance' || !value.populations.length ||
       new Set(value.populations.map(row => row.populationId)).size !== value.populations.length || value.populations.some(row =>
         row.status !== 'accepted' || row.populationId !== row.population.populationId || row.population.visibility !== 'public-synthetic' ||
-        !['1.1', '1.2'].includes(row.schemaVersion) ||
+        !['1.1', '1.2', '1.4'].includes(row.schemaVersion) ||
         !['measures-publication-product', 'other-product', 'publication-product-not-measured'].includes(row.productBinding?.state) ||
         !(row.productBinding.candidateSourceCommit === null || /^[a-f0-9]{40}$/.test(row.productBinding.candidateSourceCommit)) ||
         !digest(row.artifactDigest) || !Number.isInteger(row.population.populationVersion) || !digest(row.population.populationDigest) ||
@@ -262,7 +262,7 @@ function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasureme
         (row.schemaVersion === '1.1'
           ? row.productProjection !== undefined || !row.unavailable || Object.values(row.unavailable).some(state => state !== unavailable) || Object.keys(row.unavailable).length !== 5
           : row.unavailable !== undefined || row.productProjection === undefined))) throw new Error('Invalid pii-eval measurement evidence');
-  for (const row of value.populations) if (row.schemaVersion === '1.2') validatePiiEvalProjection(row);
+  for (const row of value.populations) if (row.schemaVersion !== '1.1') validatePiiEvalProjection(row);
   return structuredClone(value);
 }
 

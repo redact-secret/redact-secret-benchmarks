@@ -27,9 +27,9 @@ test('the pinned public artifact is also committed, so the pin outlives the 14-d
   const copy = readFileSync(new URL(`../${source.durableCopy.path}`, import.meta.url));
   assert.equal(createHash('sha256').update(copy).digest('hex'), source.artifacts.measurement.members[source.durableCopy.member]);
   assert.ok(new Date(source.artifacts.measurement.expiresAt) > new Date('2026-10-05T00:00:00Z'));
-  assert.equal(source.workflow.headSha, '212d500de90ce97461275be1e8b9dd8acd663fb3');
-  assert.equal(source.artifacts.measurement.id, 11357099796);
-  assert.equal(source.artifacts.engine.id, 11358475612);
+  assert.equal(source.workflow.headSha, 'b1c097e40bad456e52f904f626cca00b69c45612');
+  assert.equal(source.artifacts.measurement.id, 11453011630);
+  assert.equal(source.artifacts.engine.id, 11452747504);
   const altered = clone(source);
   altered.artifacts.measurement.members[source.durableCopy.member] = '0'.repeat(64);
   const directory = mkdtempSync(path.join(tmpdir(), 'pii-eval-copy-'));

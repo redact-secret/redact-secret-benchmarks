@@ -1,0 +1,77 @@
+{
+ "schema": "redact-secret/replay-effect-comparison/v1",
+ "label": "product effect: published control to unpublished candidate core-main-f537059f",
+ "from": "/var/folders/8j/d_ssv7cx3nn3khgst1nwjgfh0000gn/T/candidate-collect-OYPcMA/control",
+ "to": "/var/folders/8j/d_ssv7cx3nn3khgst1nwjgfh0000gn/T/candidate-collect-OYPcMA/replay",
+ "unexplainedPathGroups": 0,
+ "populations": {
+  "regression-corpus/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b",
+    "to": "sha256:79fb568fe34f96ef6a5366ff9d172622cf9840643bd3a5dddf8b42ab6c6e9763",
+    "equal": false
+   },
+   "differingLeaves": 3,
+   "identityPaths": {
+    "/manifest/publication": 1,
+    "/manifest/run_class": 1,
+    "/manifest/scanners/*/provenance/components/*/sha256": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  },
+  "policy-corpus/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+    "to": "sha256:a92e4d485928a32c72eb859eabc9044b0dd7716e159790aebce31ee4f5ce0aa9",
+    "equal": false
+   },
+   "differingLeaves": 3,
+   "identityPaths": {
+    "/manifest/publication": 1,
+    "/manifest/run_class": 1,
+    "/manifest/scanners/*/provenance/components/*/sha256": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  },
+  "public-evidence-snapshot/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+    "to": "sha256:f6a0f3d4477826b2448c11680026a88675a5f9aecd2d51de133cd8b8f7451857",
+    "equal": false
+   },
+   "differingLeaves": 3,
+   "identityPaths": {
+    "/manifest/publication": 1,
+    "/manifest/run_class": 1,
+    "/manifest/scanners/*/provenance/components/*/sha256": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  },
+  "public-evidence-snapshot/methods/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+    "to": "sha256:aca8177ecb5370e0abc57582ca434a9354f45a5bff16599b8dc3956b9dae75d1",
+    "equal": false
+   },
+   "differingLeaves": 3,
+   "identityPaths": {
+    "/manifest/publication": 1,
+    "/manifest/run_class": 1,
+    "/manifest/scanners/*/provenance/components/*/sha256": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  }
+ }
+}

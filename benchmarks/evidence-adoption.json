@@ -121,6 +121,72 @@
           "policy-corpus": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b"
         },
         "note": "A control copy: the published @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.15 and the accepted snapshot-2026.10.06.4, re-measured at the current pins (evaluation evidence 1a3be8dd, the pin of the acceptance) with omit_optional=openredaction, plain and methods, two engine runs with equal semantic digests. The replay recorded beside it predates the acceptance repin and holds the earlier evaluation evidence (8213183b), so its methods configuration hash differs from any run at the current pins. Not an accepted run, nothing in runs[], never public evidence (#657)."
+      },
+      "acceptedPinsCopy": {
+        "release": "official-runs-37665271345",
+        "sha256": "sha256:9bd01eea99945c86189b74642b3bf076795f122d8f4c275c3332162d70ece0d7",
+        "files": 8,
+        "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37665271345",
+        "benchmarkRevision": "ada934613dd99fdc4fd48248896a1688be2504a1",
+        "engineTag": "v0.1.0-alpha.16",
+        "productVersion": "0.1.0-beta.14",
+        "semanticDigests": {
+          "policy-corpus": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+          "public-evidence-snapshot+methods": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+          "public-evidence-snapshot": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+          "regression-corpus": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b"
+        },
+        "recordedRuns": [
+          {
+            "id": "policy-corpus@linux-x64",
+            "semanticDigest": "sha256:47854ffdc5d0f75a6088b395b8f84d62b17469d6c91a32b18d9c1df5e33bb1ef",
+            "byteDigest": "sha256:fa8ae7ddcb654f6677aaaa066ebc3efab7723f00a813fd7eef2690499c421e14",
+            "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+            "caseCounts": {
+              "flare-redact": 19,
+              "gitleaks": 19,
+              "redact-secret": 19,
+              "trufflehog": 19
+            }
+          },
+          {
+            "id": "public-evidence-snapshot+methods@linux-x64",
+            "semanticDigest": "sha256:b39f42310579f0230678218b2c09fd061da27884d9a5b8817897b94ff1e6908f",
+            "byteDigest": "sha256:b539b69c4f6cfdd59535ed181e5f9e93bd3ae1965845d48853a3d9f4b576d10f",
+            "configHash": "sha256:f469f8d006586ef0bc09da6231d507e22d10db61930923d15583ea4cb4c690a0",
+            "caseCounts": {
+              "flare-redact": 38849,
+              "gitleaks": 38849,
+              "redact-secret": 38849,
+              "trufflehog": 38849
+            }
+          },
+          {
+            "id": "public-evidence-snapshot@linux-x64",
+            "semanticDigest": "sha256:4bec6e539482ad55f5d2e9ad25d84b5958d24050ada07271a33d50c6d4118586",
+            "byteDigest": "sha256:5ae2326a9ead9c2039283a55c0796fa7f8adb8ae2845ed4cff671690e8bcd323",
+            "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+            "caseCounts": {
+              "flare-redact": 7036,
+              "gitleaks": 7036,
+              "redact-secret": 7036,
+              "trufflehog": 7036
+            }
+          },
+          {
+            "id": "regression-corpus@linux-x64",
+            "semanticDigest": "sha256:afedeab625b51e2bc842286c1ab93da7fcdc9e188c8b4b44573055e35d5f7e7b",
+            "byteDigest": "sha256:3c37dc5a2950a1e0956ad3784b2c6fb490e6a1d10248cbd1e5a238912a544c36",
+            "configHash": "sha256:660d8f90a0a00ef45d3cde08610807a9e62dac02150ab90303dfd12e53c66d61",
+            "caseCounts": {
+              "flare-redact": 153,
+              "gitleaks": 153,
+              "redact-secret": 153,
+              "trufflehog": 153
+            }
+          }
+        ],
+        "note": "A control copy at the accepted pins (#657): the published @redact-secret/core 0.1.0-beta.14 on credential-eval alpha.16 and the accepted snapshot-2026.10.06.4, measured once in the default full mode (the four required scanners, no OpenRedaction, #812), plain and methods, two engine runs with equal semantic digests. Its four semantic digests equal the canonical official runs of the registry (an independent re-measurement of the accepted release). The control a candidate replay at the accepted pins is compared with (scripts/candidate-control.mjs); the alpha.15/beta.13 replayCopy stays as history. Not an accepted run, nothing in runs[], never public evidence."
       }
     },
     "ownerAcceptance": {

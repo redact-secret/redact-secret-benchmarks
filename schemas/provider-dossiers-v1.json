@@ -10,7 +10,7 @@
     "schemaVersion": { "const": 1 },
     "taxonomySchemaVersion": { "const": 1 },
     "supportMatrix": {
-      "description": "Which evidence run the measured status was read from; null when the file was generated without a support matrix, in which case no family reaches the measured stage.",
+      "description": "Which evidence the measured status was read from (a legacy engine run, or the canonical official runs of the qualification view); null when the file was generated without a support matrix, in which case no family reaches the measured stage.",
       "oneOf": [
         { "type": "null" },
         {
@@ -21,6 +21,29 @@
             "runId": { "type": "string", "minLength": 1 },
             "generatedAt": { "type": "string", "minLength": 1 },
             "revision": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "description": "The matrix of the validated qualification view (#657): the policy revision and the canonical official runs (population and semantic digest) the statuses were read from. It carries no run id or date a legacy engine run would have.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "policyRevision", "populations"],
+          "properties": {
+            "source": { "const": "qualification-view" },
+            "policyRevision": { "type": "string", "minLength": 1 },
+            "populations": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["population", "semanticDigest"],
+                "properties": {
+                  "population": { "type": "string", "minLength": 1 },
+                  "semanticDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+                }
+              }
+            }
           }
         }
       ]

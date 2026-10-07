@@ -332,6 +332,27 @@ jobs:
         # The site service refuses a view built from other pins or another policy (WEB_REQUIRE_QUALIFICATION); this states the identity in the log.
         run: |
           jq -r '"view: \(.distribution.stable|tostring) stable, policy \(.policy.revision), populations \([.populations[]|.population]|join(", "))"' public/results/qualification-v1.json
+      # The consumers of the view that publish-site.yml runs under the `new` authority (#657), on the same view: the support matrix in published mode, its publication as
+      # its own file, the provider roadmap that reads it, and the refusals. A matrix of another policy, a legacy-shaped file and a candidate projection must exit non-zero
+      # and write nothing; the cases are in tests/publication-switch.test.mjs, this is the same check on the real view of this run.
+      - name: The support matrix is the view's, publishes as its own file, feeds the roadmap, and a stale or wrong one is refused (#657)
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/matrix-out"
+          npm run qualification:matrix -- --mode published --out "$RUNNER_TEMP/matrix-out/from-view.json"
+          npm run eval:publish:matrix -- --from-view --input="$RUNNER_TEMP/matrix-out/from-view.json" --output="$RUNNER_TEMP/matrix-out/support-matrix-view-v1.json"
+          npm run dossiers:publish -- --require-matrix --matrix="$RUNNER_TEMP/matrix-out/support-matrix-view-v1.json" --output="$RUNNER_TEMP/matrix-out/provider-dossiers-v1.json"
+          jq '.source.view.policyRevision = "rs-policy-1:sha256:stale"' "$RUNNER_TEMP/matrix-out/from-view.json" > "$RUNNER_TEMP/matrix-out/stale.json"
+          echo '{"schemaVersion":1,"families":[]}' > "$RUNNER_TEMP/matrix-out/legacy-shaped.json"
+          jq '.mode = "candidate-projection" | .publication = "internal"' "$RUNNER_TEMP/matrix-out/from-view.json" > "$RUNNER_TEMP/matrix-out/projection.json"
+          for bad in stale legacy-shaped projection; do
+            if npm run eval:publish:matrix -- --from-view --input="$RUNNER_TEMP/matrix-out/$bad.json" --output="$RUNNER_TEMP/matrix-out/refused-$bad.json"; then
+              echo "::error::a $bad support matrix was published"
+              exit 1
+            fi
+            test ! -e "$RUNNER_TEMP/matrix-out/refused-$bad.json"
+          done
+
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: qualification-view

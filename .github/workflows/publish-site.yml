@@ -39,6 +39,14 @@
 # every reader on one coherent run. Staging is kept out of search indexes by CloudFront's X-Robots-Tag, not by
 # the build, so the same export is indexable on production.
 #
+# Which pipeline measures what is the committed qualification authority, read by `scripts/credential-publication.ts authority` and by no other step
+# (#608, #657). Under `new` the credential qualification, the support matrix and the candidate evidence are consumers of validated artifacts: the
+# qualification view and the support matrix are built from the canonical official RunArtifacts (checked byte for byte against the registry, then against
+# the current engine, policy, taxonomy and scanner roster), and the candidate diff is read from a recorded candidate replay at the exact qualified tarball
+# digest when one exists. Nothing is measured here for them (`eval:qualify`, `eval:candidate`, `eval:classify` and `eval:matrix` do not run), and a missing,
+# wrong or stale artifact fails the publish or, for the optional candidate, is said not to be recorded; no released observation stands in for a candidate.
+# Under `legacy` (the rollback, one committed value) the steps below that carry `authority == 'legacy'` run exactly as before the switch.
+#
 # Per-environment configuration lives in the repository's GitHub environments,
 # so this file carries no account ID and no bucket name:
 #
@@ -136,6 +144,12 @@ jobs:
           name: verified-pii-public-synthetic
           path: ${{ runner.temp }}/pii-eval-public
 
+      # The one place the workflow learns the qualification authority (#657): the committed value, validated, as a step output. `new` makes the qualification,
+      # the support matrix and the candidate evidence consumers of validated artifacts; `legacy` is the rollback and runs the legacy steps unchanged.
+      - name: Read the credential qualification authority
+        id: authority
+        run: node --import tsx scripts/credential-publication.ts authority
+
       # The Next qualification pages need the canonical official RunArtifacts (#602).
       # Fetched first so a missing or altered artifact fails before anything slow runs.
       # contents: read is enough for the release asset; nothing is written back.
@@ -146,6 +160,34 @@ jobs:
           set -euo pipefail
           npm run official-runs:check -- --bindings
           node scripts/official-run-archive.mjs fetch --out "$RUNNER_TEMP/official-in"
+
+      # The qualification view the Next pages read (public/results/qualification-v1.json, never committed). Same
+      # artifacts and same product inputs write the same bytes. The product populations' case metadata is exported
+      # from this checkout, whose corpus official-runs:check --bindings pinned above. Built right after the fetch (#657): the support
+      # matrix, the roadmap and the domain gate consume it, and a view that does not match the pins fails here, before anything slow runs.
+      - name: Build the qualification view from the official RunArtifacts
+        env:
+          NODE_OPTIONS: --max-old-space-size=5120
+        run: |
+          set -euo pipefail
+          for population in regression-corpus policy-corpus; do
+            npm run qualification:export -- --population "$population" --out "$RUNNER_TEMP/official-export/$population"
+            mkdir -p "$RUNNER_TEMP/official-in/$population/inputs"
+            cp "$RUNNER_TEMP/official-export/$population/case-metadata.json" "$RUNNER_TEMP/official-in/$population/inputs/"
+          done
+          rm -f public/results/qualification-v1.json
+          npm run qualification:view -- --artifacts "$RUNNER_TEMP/official-in" --out public/results/qualification-v1.json
+
+      # The support matrix is the view's (#657): published mode, so public canonical runs only, no candidate scanner build, the pins of the registry, the current
+      # engine, policy revision, taxonomy and official scanner roster (a run that measured another roster is refused). `eval:publish:matrix --from-view` checks the
+      # file again before it is placed in public/results/ as its own artifact; the legacy support-matrix-v1.json contract is not changed and not written.
+      - name: Support matrix from the qualification view
+        if: steps.authority.outputs.authority == 'new'
+        run: |
+          set -euo pipefail
+          rm -f public/results/support-matrix-view-v1.json results-output/support-matrix-from-view.json
+          npm run qualification:matrix -- --mode published
+          npm run eval:publish:matrix -- --from-view
 
       # Staging only (#152): stage an allowed redact-secret commit for eval:candidate
       # before anything slow runs, so a commit with no qualified artifacts fails
@@ -263,10 +305,9 @@ jobs:
             npm run bench -- --strict
           fi
 
-      # Qualification still executes its distinct holdout lifecycle live. The
-      # four-scanner comparison above has already consumed snapshots and cannot
-      # accidentally fall back to these binaries.
-      - name: Provision checksum-pinned peers for qualification only
+      # The discovery evaluation below, and under the legacy authority the qualification's distinct holdout lifecycle, execute the
+      # scanners live. The four-scanner comparison above has already consumed snapshots and cannot accidentally fall back to these binaries.
+      - name: Provision checksum-pinned peers for the discovery evaluation and the legacy qualification
         run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
 
       - name: Verify the qualification peers, including TruffleHog 3.97.4
@@ -276,16 +317,16 @@ jobs:
           [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
           [ "$(trufflehog --version | awk '{print $2}')" = "3.97.4" ]
 
-      # Both environments (#213): the Workbench Qualification checklist reads its
-      # three engine floors (scanners complete, resolved rate, ledger rows for every
-      # entry) from a qualification run published inside the evaluation bundle's summary part.
-      # eval:qualify loads the lockfile package the suite pins
-      # (qualification/suite-v1.json) with the pinned peers provisioned above, on
-      # staging too, and the page names that version. Its public-control holdout is
-      # generated fresh in this checkout, so its one-run budget is this run's.
-      # An incomplete qualification is still evidence and is published with its
+      # Both environments (#213). Under the legacy authority the Workbench Qualification checklist reads its three engine floors (scanners complete, resolved rate,
+      # ledger rows for every entry) from a qualification run published inside the evaluation bundle's summary: eval:qualify loads the lockfile package the suite pins
+      # (qualification/suite-v1.json) with the pinned peers provisioned above, on staging too, and the page names that version. Its public-control holdout is
+      # generated fresh in this checkout, so its one-run budget is this run's. An incomplete qualification is still evidence and is published with its
       # reasons; a run that wrote no report (tool drift, a crash) fails the publish.
-      - name: Produce the evaluation and qualification reports the site reads
+      # Under `new` (#657) no engine qualification is executed: the qualification is the view built above from the official RunArtifacts, and the bundle is
+      # published without an embedded qualification, so the holdout page reads the committed frozen report and says so (services/evaluation.ts).
+      - name: Produce the evaluation reports the site reads
+        env:
+          AUTHORITY: ${{ steps.authority.outputs.authority }}
         run: |
           set -euo pipefail
           # The REQUIRED scanners of the official run class (benchmarks/support/scanner-roster.json), not the optional ones: OpenRedaction's default profile is an optional,
@@ -295,21 +336,25 @@ jobs:
           rm -rf results-output/evaluation results-output/evaluation.json public/results/evaluation-bundle-v1.json
           npm run eval -- --scanner="$scanners"
           test -s results-output/evaluation/manifest.json || { echo "::error::npm run eval wrote no discovery store (results-output/evaluation/manifest.json)"; exit 1; }
-          qualification=results-output/qualification/engine-v1.json
-          rm -f "$qualification"
-          if ! npm run eval:qualify; then
-            test -s "$qualification" || { echo "::error::eval:qualify wrote no qualification report"; exit 1; }
-            echo "::warning::qualification is $(jq -r .status "$qualification"): $(jq -r '.accounting.reasons | join(", ")' "$qualification")"
+          qualification_args=()
+          if [ "$AUTHORITY" = legacy ]; then
+            qualification=results-output/qualification/engine-v1.json
+            rm -f "$qualification"
+            if ! npm run eval:qualify; then
+              test -s "$qualification" || { echo "::error::eval:qualify wrote no qualification report"; exit 1; }
+              echo "::warning::qualification is $(jq -r .status "$qualification"): $(jq -r '.accounting.reasons | join(", ")' "$qualification")"
+            fi
+            qualification_args=(--qualification="$qualification")
           fi
           # Carry only validated last-observation fields from the currently published
           # environment. Decisions and notes always come from this checkout's ledger.
           history=results-output/review-ledger-history.json
           origin="https://$([ "$TARGET" = production ] && echo benchmarks.redactsecret.dev || echo staging.benchmarks.redactsecret.dev)"
           if curl --fail --silent --show-error "$origin/results/review-ledger-v2.json" --output "$history"; then
-            npm run eval:publish -- --qualification="$qualification" --ledger-history="$history"
+            npm run eval:publish -- "${qualification_args[@]}" --ledger-history="$history"
           else
             echo "::notice::No prior review observation artifact; legacy entries remain cannot-verify until observed."
-            npm run eval:publish -- --qualification="$qualification"
+            npm run eval:publish -- "${qualification_args[@]}"
           fi
           # The immutable bundle and its pointer, validated by eval:publish itself; nothing public/ names a staging directory after a success.
           test -s public/results/evaluation-bundle-v1.json
@@ -322,7 +367,7 @@ jobs:
       # eval:candidate itself refuses any other core package. An incomplete
       # measurement exits non-zero and staging is not published.
       - name: Measure the qualified redact-secret commit as candidate evidence
-        if: env.TARGET == 'staging'
+        if: env.TARGET == 'staging' && steps.authority.outputs.authority == 'legacy'
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
@@ -339,12 +384,29 @@ jobs:
           --expected-artifact-sha256 "$CORE_SHA256"
           --output-dir "$GITHUB_WORKSPACE/public/results"
 
+      # Under `new` (#657) the candidate is not measured here. The qualified candidate (core tarball digest and product commit, as verified above) is looked up in
+      # benchmarks/product-candidates.json: a registered, replayed candidate has its recorded replay fetched (archive digest verified) and
+      # `qualification:candidate-diff --verify-tarballs` reads it (any refusal fails the publish); an unregistered one is said not to be recorded. The result is the
+      # internal allowlisted projection (counts only, under results-output/, never public/); the Candidate page keeps showing no recorded candidate evidence, and no
+      # released observation is reused as a candidate run.
+      - name: Read the candidate diff from the recorded candidate replay
+        if: env.TARGET == 'staging' && steps.authority.outputs.authority == 'new'
+        id: candidate-diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          CORE_SHA256: ${{ steps.candidate.outputs.core-sha256 }}
+        run: >-
+          node --import tsx scripts/credential-publication.ts candidate
+          --core-sha256 "$CORE_SHA256" --product-commit "$PRODUCT_COMMIT"
+
       # Classify every family's support and publish the matrix the Support page
       # reads. Staging classifies the same candidate build and the matrix records
       # that candidate; production classifies the released lockfile package
       # (published mode, #213) and the matrix records that release. The page
       # labels each by what it recorded.
-      - name: Classify support
+      - name: Classify support (legacy authority)
+        if: steps.authority.outputs.authority == 'legacy'
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
@@ -363,15 +425,33 @@ jobs:
           fi
           npm run eval:matrix
           npm run eval:publish:matrix
+
+      # The consumers of the credential support matrix, whichever pipeline wrote it (#657): the roadmap, the domain gate and the PII index each validate the file they
+      # read with the validator of its kind (the legacy matrix with the legacy provenance it carries, the view matrix against the registry, policy, taxonomy and roster)
+      # and refuse the other kind's file.
+      - name: Publish the provider roadmap, the domain gate and the PII support
+        env:
+          AUTHORITY: ${{ steps.authority.outputs.authority }}
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
+        run: |
+          set -euo pipefail
+          if [ "$AUTHORITY" = new ]; then
+            support=public/results/support-matrix-view-v1.json
+            roadmap_matrix="$support"
+          else
+            support=public/results/support-matrix-v1.json
+            roadmap_matrix=results-output/support-matrix.json
+          fi
           # The Providers roadmap (#478): each family's stage, blocker and
           # research date, joining the provider dossiers with this matrix. Every
           # stage is derived, so no status is hand-written on the site.
-          npm run dossiers:publish -- --require-matrix
+          npm run dossiers:publish -- --require-matrix --matrix="$roadmap_matrix"
           # Gate: the credential evaluation bundle and the support matrix pass
           # their validators before the v2 domain index is written below. The
           # v1 index and evaluation-v1.json are the opt-in --legacy-v1 contract
           # and are not part of normal publication (#790).
-          npm run eval:publish:domains
+          npm run eval:publish:domains -- --support="$support"
           # PII support is a separate v2 artifact. The publisher validates the
           # complete credential bundle + PII set and renames the v2 index last.
           # Staging names the product it measured, so committed activation
@@ -396,28 +476,12 @@ jobs:
           fi
           population_bundle=results-output/pii/population-release-v1.json
           if [ -s "$population_bundle" ]; then
-            npm run eval:publish:pii-support -- "${product_args[@]}" "${pii_eval_args[@]}" --population-bundle="$population_bundle"
+            npm run eval:publish:pii-support -- --credential-support="$support" "${product_args[@]}" "${pii_eval_args[@]}" --population-bundle="$population_bundle"
           else
             # No bundle: measured PII populations were skipped (for example, #515: core main equals the published release).
             echo "::notice::PII populations not measured for this publish: no comparison bundle was written (candidate equals the published release; no comparison)."
-            npm run eval:publish:pii-support -- "${product_args[@]}" "${pii_eval_args[@]}" --population-mode=not-measured
+            npm run eval:publish:pii-support -- --credential-support="$support" "${product_args[@]}" "${pii_eval_args[@]}" --population-mode=not-measured
           fi
-
-      # The qualification view the Next pages read (public/results/qualification-v1.json, never committed). Same
-      # artifacts and same product inputs write the same bytes. The product populations' case metadata is exported
-      # from this checkout, whose corpus official-runs:check --bindings pinned above.
-      - name: Build the qualification view from the official RunArtifacts
-        env:
-          NODE_OPTIONS: --max-old-space-size=5120
-        run: |
-          set -euo pipefail
-          for population in regression-corpus policy-corpus; do
-            npm run qualification:export -- --population "$population" --out "$RUNNER_TEMP/official-export/$population"
-            mkdir -p "$RUNNER_TEMP/official-in/$population/inputs"
-            cp "$RUNNER_TEMP/official-export/$population/case-metadata.json" "$RUNNER_TEMP/official-in/$population/inputs/"
-          done
-          rm -f public/results/qualification-v1.json
-          npm run qualification:view -- --artifacts "$RUNNER_TEMP/official-in" --out public/results/qualification-v1.json
 
       # The site, exported statically for the root of the host (empty BASE_PATH). check:routes recounts the pages
       # from the files this run measured; WEB_REQUIRE_QUALIFICATION makes the "view not built" state (the normal
@@ -558,22 +622,30 @@ jobs:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           QUALIFICATION_RUN_URL: ${{ steps.product.outputs.run-url }}
           PREVIOUS_BUNDLE: ${{ steps.publish.outputs.previous-id }}
+          AUTHORITY: ${{ steps.authority.outputs.authority }}
         run: |
           {
             echo "### Published to $TARGET"
             echo
+            echo "- credential qualification authority: \`$AUTHORITY\` ($([ "$AUTHORITY" = new ] && echo 'artifact consumers: view, support matrix and candidate diff; nothing measured for them' || echo 'rollback: the legacy qualification, classification and candidate steps ran'))"
             echo "- benchmarks commit: \`${{ github.sha }}\`"
             echo "- run id: $(jq -r .runId public/results/run.json)"
             echo "- redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
             bundle_id=$(jq -r .bundleId public/results/evaluation-bundle-v1.json)
             bundle="public/results/evaluation-bundles/$bundle_id"
             echo "- evaluation bundle \`$bundle_id\`: $(jq -r '"\(.totals.cases) cases, \(.totals.reviews) reviews in \(.cases | length) case parts and \(.reviews | length) review parts"' "$bundle/manifest.json"); previous live bundle \`${PREVIOUS_BUNDLE:-none}\` kept for rollback"
-            echo "- qualification: $(jq -r '.report.qualification.status + " with redact-secret " + (.report.qualification.holdout.scanners[] | select(.id == "redact-secret") | .version)' "$bundle/summary.json")"
-            echo "- support matrix: $(jq -r '.distribution.stable|tostring' public/results/support-matrix-v1.json) stable, $(jq -r 'if .sourceReport.product then "candidate " + .sourceReport.product.sourceCommit[0:7] else "released " + (.sourceReport.publishedPackage.version // "package") end' public/results/support-matrix-v1.json)"
+            echo "- engine qualification embedded in the bundle: $(jq -r 'if .report.qualification then .report.qualification.status + " with redact-secret " + (.report.qualification.holdout.scanners[] | select(.id == "redact-secret") | .version) else "none (the holdout page reads the committed frozen report)" end' "$bundle/summary.json")"
+            if [ "$AUTHORITY" = new ]; then
+              echo "- support matrix (view, published mode): $(jq -r '.distribution.stable|tostring' public/results/support-matrix-view-v1.json) stable of $(jq -r .familyCount public/results/support-matrix-view-v1.json) families, policy \`$(jq -r .source.view.policyRevision public/results/support-matrix-view-v1.json)\`, populations $(jq -r '[.source.populations[] | .population + " " + .semanticDigest[0:19]] | join(", ")' public/results/support-matrix-view-v1.json)"
+            else
+              echo "- support matrix: $(jq -r '.distribution.stable|tostring' public/results/support-matrix-v1.json) stable, $(jq -r 'if .sourceReport.product then "candidate " + .sourceReport.product.sourceCommit[0:7] else "released " + (.sourceReport.publishedPackage.version // "package") end' public/results/support-matrix-v1.json)"
+            fi
             echo "- site root (Next export at /, measured files at /results/): $(find dist -type f | wc -l) files; qualification view $(jq -r '.distribution.stable|tostring' public/results/qualification-v1.json) stable, policy \`$(jq -r .policy.revision public/results/qualification-v1.json)\`, official run artifacts checked against benchmarks/official-runs.json"
             pii_artifact=$(jq -r '.domains[] | select(.domain=="pii") | .support.href | ltrimstr("/")' public/results/evaluation-domains-v2.json)
             echo "- PII populations: $(jq -r '[.populationComparisons[] | .id + "=" + .verdict] | join(", ")' "public/$pii_artifact")"
-            if [ "$TARGET" = staging ]; then
+            if [ "$TARGET" = staging ] && [ "$AUTHORITY" = new ]; then
+              echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\`: the candidate diff above (state \`${{ steps.candidate-diff.outputs.state }}\`); no candidate-evidence-v1.json is written under the new authority, artifacts from $QUALIFICATION_RUN_URL"
+            elif [ "$TARGET" = staging ]; then
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
             else
               echo "- published product version: \`$(jq -r .pins.packageVersion benchmarks/pin-manifest.json)\`"

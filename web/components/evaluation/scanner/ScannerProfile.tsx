@@ -13,7 +13,14 @@ export interface ScannerProfileProps extends ScannerProfileData {
 }
 
 function value(fact: ScannerFact) {
-  if (fact.value === null) return <StatusBadge status="not-measured">Not recorded</StatusBadge>;
+  if (fact.value === null) {
+    return (
+      <>
+        <StatusBadge status="not-measured">{fact.missing ?? 'Not recorded'}</StatusBadge>
+        {fact.note && <small className={styles.note}>{fact.note}</small>}
+      </>
+    );
+  }
   return (
     <>
       {fact.code ? <Code>{fact.value}</Code> : fact.value}
@@ -27,7 +34,7 @@ function value(fact: ScannerFact) {
  * rules), what is out of scope, and the comparison pages it is in. A fact the repository does not hold is a dashed
  * "Not recorded". Nothing here says how well the scanner did.
  */
-export function ScannerProfile({ id, name, version, kind, description, groups, command, outOfScope, compared, className }: ScannerProfileProps) {
+export function ScannerProfile({ id, name, version, kind, description, groups, command, outOfScope, scope, compared, className }: ScannerProfileProps) {
   return (
     <div id={id} className={cx(styles.profile, className)}>
       <Section title={`${name} ${version}`} eyebrow={kind ?? undefined} description={description ?? undefined}>
@@ -46,7 +53,18 @@ export function ScannerProfile({ id, name, version, kind, description, groups, c
         )}
         <div className={styles.group}>
           <h3 className={styles.h3}>Out of scope</h3>
-          {outOfScope ? (
+          {scope ? (
+            <>
+              <KeyValueList items={scope.facts.map(f => ({ term: f.term, description: value(f) }))} />
+              {scope.groups.map(g => (
+                <div key={g.title} className={styles.scopeGroup}>
+                  <h4 className={styles.h4}>{g.title}</h4>
+                  <p className={styles.note}>{g.note}</p>
+                  <ul className={styles.list}>{g.items.map(text => <li key={text}>{text}</li>)}</ul>
+                </div>
+              ))}
+            </>
+          ) : outOfScope ? (
             <ul className={styles.list}>{outOfScope.map(text => <li key={text}>{text}</li>)}</ul>
           ) : (
             <p><StatusBadge status="not-measured">Not recorded</StatusBadge></p>

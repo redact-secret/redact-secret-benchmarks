@@ -25,7 +25,7 @@ import type { AccountingConfig, ScoredRow } from '../../benchmarks/types';
 import type { RunSummary } from '../../benchmarks/evaluation/domains/credential/run-summary';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
 import { assembleCatalog, type BuiltFixture, type Catalog, type CatalogFixture, type CatalogSuite, type Tier } from './catalog';
-import type { CaseRow, CaseScannerResult, PopulationView, QualificationView } from './qualification';
+import type { CaseRow, CaseScannerResult, MeasurementHost, PopulationView, QualificationView } from './qualification';
 import type { MeasuredRun, OfficialRun, Outcome, RowResult, RunScanner } from './run';
 
 /** The role the population policy gives the population the report pages are about. */
@@ -38,6 +38,8 @@ export interface BridgeInput {
   accounting: AccountingConfig;
   /** The date the canonical run of the report population was recorded (`benchmarks/official-runs.json`), or `null`. */
   recordedOn: string | null;
+  /** The host facts that run recorded at measurement execution (#620, #621), or `null` when its record has none. */
+  measurementHost?: MeasurementHost | null;
 }
 
 export interface Bridged {
@@ -164,6 +166,7 @@ export function bridgeQualificationView(view: QualificationView, input: BridgeIn
     semanticDigest: population.artifact.semanticDigest, artifactDigest: population.artifact.artifactDigest,
     engine: `${population.artifact.engine.name} ${population.artifact.engine.version}`, evidenceTag: population.artifact.evidence.release?.tag ?? null, recordedOn: input.recordedOn,
     scanners: population.artifact.scanners.map(s => ({ id: s.id, version: s.version, mode: s.mode, build: s.build, configurationHash: s.configurationHash, status: s.status })),
+    measurement: population.measurement ?? null, host: input.measurementHost ?? null,
   };
   const run: MeasuredRun = {
     state: 'measured', official, runId: population.artifact.semanticDigest, generatedAt: summary.generatedAt, accountingVersion: ACCOUNTING_VERSION,

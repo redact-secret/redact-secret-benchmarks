@@ -121,4 +121,4 @@ node scripts/run-candidate-replay.mjs all --candidate core-main-1e45cecf --evide
 
 ## Product scope (#622)
 
-`scanners/product-scope.json` holds the product's own out-of-scope statements, read at a named product revision and validated by `npm run peer-rules:check` (no judgement words, bounded, permalinked sources). The scanner page shows them for redact-secret and states the revision the registered-detector count was read at.
+`scanners/product-scope.json` (schema 2, #622) holds the product's own out-of-scope statements, each with its kind (`product-scope`, `optional-profile`, `unmeasured-surface`), read at a named product revision, bound to a release and mode line (`boundTo`) and validated by `npm run peer-rules:check` (no judgement words, bounded, permalinked sources, and no "unsupported" wording for what is only not measured). The scanner page compares the binding with the official run's observation of the product (Current, History or Unknown) and states the revision the registered-detector count was read at. Decision: `docs/decisions/2026-10-07-bind-the-product-scope-statements-to-the-measured-release-and-configuration.md`.

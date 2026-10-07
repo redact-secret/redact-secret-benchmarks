@@ -17,7 +17,7 @@ import type { AccountingConfig } from '../../benchmarks/types';
 import { loadAuthority, type Authority, type QualificationAuthority } from './authority';
 import { assembleCatalog, loadCatalog, loadDetectorTitles, loadFixtureBytes, loadFixtureHashes, loadTaxonomy, type BuiltFixture, type Catalog } from './catalog';
 import { bridgeQualificationView } from './credential-bridge';
-import { loadQualificationView, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type QualificationView, type RosterNotMeasured } from './qualification';
+import { loadQualificationView, measurementHostProblems, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type MeasurementHost, type QualificationView, type RosterNotMeasured } from './qualification';
 import { once, readJson } from './repo';
 import { loadReviewDisclosure, type ReviewDisclosureData } from './review-state';
 import { loadRun, type RunLoad } from './run';
@@ -94,7 +94,15 @@ export function viewAuthorisationProblems(file: QualificationAuthority, view: Qu
   return problems;
 }
 
-interface Registry { runs: { id: string; canonical: boolean; recordedOn?: string }[] }
+interface Registry { runs: { id: string; canonical: boolean; recordedOn?: string; measurementHost?: unknown }[] }
+
+/** The host facts a recorded run carries (#620, #621), validated; `null` when it has none (a run recorded before they were captured). A malformed record is refused, never shown. */
+function recordedHost(run: Registry['runs'][number] | undefined): MeasurementHost | null {
+  if (run?.measurementHost === undefined) return null;
+  const problems = measurementHostProblems(run.measurementHost, `${run.id} measurementHost`);
+  if (problems.length) throw new Error(`benchmarks/official-runs.json: ${problems.join('; ')} (npm run official-runs:check)`);
+  return run.measurementHost as MeasurementHost;
+}
 
 async function legacySource(): Promise<Omit<CredentialSource, 'pipeline'>> {
   const [catalog, run, fixtureBytes, fixtureHashes] = await Promise.all([loadCatalog(), loadRun(), loadFixtureBytes(), loadFixtureHashes()]);
@@ -131,7 +139,7 @@ async function newSource(authority: QualificationAuthority): Promise<CredentialS
   const accounting: AccountingConfig = validateAccounting(suite.accounting);
   const reportPopulationId = load.view.populations.find(p => p.role === 'floors-and-gates')?.population;
   const recorded = registry.runs.find(r => r.canonical && r.id.startsWith(`${reportPopulationId}@`));
-  const bridged = bridgeQualificationView(load.view, { taxonomy, detectorTitles, accounting, recordedOn: recorded?.recordedOn ?? null });
+  const bridged = bridgeQualificationView(load.view, { taxonomy, detectorTitles, accounting, recordedOn: recorded?.recordedOn ?? null, measurementHost: recordedHost(recorded) });
   if ('problem' in bridged) return unavailable(authority, 'incompatible', `${QUALIFICATION_FILE} cannot be read as a report: ${bridged.problem}.`);
   const { population } = bridged;
   const reviewDisclosure = await loadReviewDisclosure(population.artifact.evidence.release?.tag);

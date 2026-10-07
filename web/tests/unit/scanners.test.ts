@@ -9,8 +9,10 @@ import path from 'node:path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { PeerProfile } from '../../services/peers';
 import type { PeerRuntime } from '../../services/runtime';
-import type { MeasuredRun, RunScanner } from '../../services/run';
+import type { MeasuredRun, OfficialRun, RunScanner } from '../../services/run';
+import type { MeasurementHost } from '../../services/qualification';
 import type { ScannerEnvironment, ScannerSource, SnapshotFacts } from '../../services/scanners';
+import type { ProductScopeProfile } from '../../services/product-scope';
 import { resolveScanners, type ScannerInput } from '../../resolvers/scanners';
 import { REAL_ROOT, edited, overlay } from './overlay';
 
@@ -100,6 +102,45 @@ describe('the scanner page resolver', () => {
     expect(fact(page, 'beta', 'Runtime comparison call')?.value).toBe('redact(), asynchronous');
   });
 
+  describe('the measurement host of an official run (#620, #621)', () => {
+    const official = (over: Partial<OfficialRun> = {}): OfficialRun => ({
+      population: 'pop-a', denominator: 'pop-a', role: 'floors-and-gates', caseCount: 3, semanticDigest: `sha256:${'e'.repeat(64)}`, artifactDigest: `sha256:${'f'.repeat(64)}`,
+      engine: 'engine 0.0.1', evidenceTag: null, recordedOn: '2026-01-05', scanners: [], measurement: null, host: null, ...over,
+    });
+    const host: MeasurementHost = {
+      schema: 'redact-secret-benchmarks/measurement-host/v1', capturedAt: '2026-01-05T10:20:30.000Z',
+      os: { platform: 'linux', arch: 'x64', release: '6.0.0-synthetic', name: 'Example Linux 1' }, cpu: { model: 'Synthetic CPU', logicalCores: 4 }, node: 'v22.9.9',
+      ci: { provider: 'github-actions', image: 'exampleos', imageVersion: '20260101.1', runnerEnvironment: 'github-hosted' },
+    };
+    const page = (o: OfficialRun) => resolveScanners(input({ run: run({ official: o }), buildHost: { builtOn: '2026-02-01', platform: 'darwin', arch: 'arm64', node: 'v24.0.0', ci: null } }));
+
+    test('states the engine stamp and the recorded host facts, and the publication host apart', () => {
+      const p = page(official({ measurement: { host: 'linux-x86_64', startedAt: '2026-01-05T10:21:00Z', finishedAt: '2026-01-05T10:22:00Z' }, host }));
+      expect(fact(p, 'alpha', 'Measured')?.value).toBe('2026-01-05 10:21 UTC');
+      expect(fact(p, 'alpha', 'Engine host')?.value).toBe('linux-x86_64');
+      expect(fact(p, 'alpha', 'OS release')?.value).toBe('Example Linux 1 · kernel 6.0.0-synthetic');
+      expect(fact(p, 'alpha', 'CPU')?.value).toBe('Synthetic CPU · 4 logical cores');
+      expect(fact(p, 'alpha', 'Node')?.value).toBe('v22.9.9');
+      expect(fact(p, 'alpha', 'CI runner image')?.value).toBe('exampleos 20260101.1');
+      // the page's own build host is a separate line and is never offered as the measurement host
+      expect(p.meta.find(m => m.label === 'Page built')?.value).toBe('2026-02-01 · darwin arm64 · Node v24.0.0 · not a CI build');
+      expect(factsOf(p, 'alpha').some(f => f.value?.includes('v24.0.0'))).toBe(false);
+    });
+
+    test('a run recorded without host facts says Unavailable and is never filled in from anywhere else', () => {
+      const p = page(official());
+      expect(fact(p, 'alpha', 'OS release, CPU, Node and CI image')).toMatchObject({ value: null, missing: 'Unavailable' });
+      expect(fact(p, 'alpha', 'Measured')).toMatchObject({ value: null, missing: 'Unavailable' });
+      expect(fact(p, 'alpha', 'Engine host')).toMatchObject({ value: null, missing: 'Unavailable' });
+      expect(fact(p, 'alpha', 'Node')).toBeUndefined();
+    });
+
+    test('a local verification run says it is not a CI run', () => {
+      const p = page(official({ host: { ...host, ci: null } }));
+      expect(fact(p, 'alpha', 'CI runner image')).toMatchObject({ value: null, missing: 'Not a CI run' });
+    });
+  });
+
   test('without a run the roster keeps the pins and every run fact is Not recorded, never invented', () => {
     const page = resolveScanners(input({ run: undefined }));
     expect(page.roster.rows.map(r => r.id)).toEqual(['redact-secret', 'alpha', 'beta']);
@@ -119,14 +160,59 @@ describe('the scanner page resolver', () => {
     expect(fact(page, 'gamma', 'Configuration')?.value).toBeNull();
   });
 
-  test('the product shows its own out-of-scope statements and the revision its detector count was read at, and a peer never borrows them (#622)', () => {
-    const productScope = { outOfScope: ['Encoded carriers: not decoded.'], readAt: 'a'.repeat(40), detectors: { count: 110, revision: '66b492bdff5e6751fc6b5409266916346ed7c723' } };
-    const page = resolveScanners(input({ productScope }));
-    expect(page.profiles.find(p => p.id === 'redact-secret')?.outOfScope).toEqual(['Encoded carriers: not decoded.']);
-    expect(page.profiles.find(p => p.id === 'alpha')?.outOfScope).toEqual(['alpha is not run in one way.']);
-    expect(fact(page, 'redact-secret', 'Registered detectors')).toMatchObject({ value: '11', note: 'benchmarks/detectors.json, read at redact-secret 66b492bdff5e' });
-    // Without the statement the page keeps saying so, and says it did not record one.
-    expect(resolveScanners(input()).profiles.find(p => p.id === 'redact-secret')?.outOfScope).toBeNull();
+  describe('the product\'s own scope, bound to what was measured (#622)', () => {
+    const bound = '1'.repeat(40);
+    const productScope: ProductScopeProfile = {
+      statements: [
+        { kind: 'product-scope', text: 'Encoded carriers: not decoded.' },
+        { kind: 'optional-profile', text: 'The personal-data profile: off in the measured configuration.' },
+        { kind: 'unmeasured-surface', text: 'The CLI: not run.' },
+      ],
+      readAt: 'a'.repeat(40),
+      boundTo: { release: '9.9.9', revision: bound, mode: 'redact-secret mode line', check: 'synthetic check' },
+      detectors: { count: 110, revision: bound },
+    };
+    const scopeOf = (page: ReturnType<typeof resolveScanners>) => page.profiles.find(p => p.id === 'redact-secret')!.scope!;
+    const scopeFact = (page: ReturnType<typeof resolveScanners>, term: string) => scopeOf(page).facts.find(f => f.term === term);
+
+    test('keeps credential scope, the optional personal-data profile and unmeasured surfaces apart, and a peer never borrows them', () => {
+      const page = resolveScanners(input({ productScope }));
+      expect(scopeOf(page).groups.map(g => [g.title, g.items])).toEqual([
+        ['Credential scope the product documents', ['Encoded carriers: not decoded.']],
+        ['Optional personal-data detection', ['The personal-data profile: off in the measured configuration.']],
+        ['Surfaces this benchmark does not run', ['The CLI: not run.']],
+      ]);
+      expect(scopeOf(page).groups.slice(1).every(g => /not a statement/.test(g.note))).toBe(true);
+      expect(page.profiles.find(p => p.id === 'alpha')).toMatchObject({ outOfScope: ['alpha is not run in one way.'] });
+      expect(page.profiles.find(p => p.id === 'alpha')?.scope).toBeUndefined();
+    });
+
+    test('current: the measured release and mode come from the observation and match the binding; the detector count names its revision', () => {
+      const page = resolveScanners(input({ productScope }));
+      expect(scopeFact(page, 'Measured')?.value).toBe('9.9.9 · redact-secret mode line');
+      expect(scopeFact(page, 'Binding')?.value).toBe('Current');
+      expect(fact(page, 'redact-secret', 'Registered detectors')?.note).toBe('benchmarks/detectors.json, read at redact-secret 111111111111 (the 9.9.9 release), the release this run measured');
+    });
+
+    test('history: a run of another release keeps the statements as read and says they were not re-read', () => {
+      const other = run({ scanners: [scanner('redact-secret', '9.9.10', [{ source: 'fresh', observedAt: 'x', sourceRunId: 'y' }])] });
+      const page = resolveScanners(input({ productScope, run: other }));
+      expect(scopeFact(page, 'Binding')?.value).toBe('History');
+      expect(scopeFact(page, 'Binding')?.note).toMatch(/not been re-read for the measured release/);
+      expect(fact(page, 'redact-secret', 'Registered detectors')?.note).toMatch(/this run measured 9\.9\.10, so the count is of another revision/);
+    });
+
+    test('unknown: without an observation of the product there is no configuration to compare, and nothing is filled in', () => {
+      const page = resolveScanners(input({ productScope, run: undefined }));
+      expect(scopeFact(page, 'Measured')).toMatchObject({ value: null, missing: 'Unknown' });
+      expect(scopeFact(page, 'Binding')).toMatchObject({ value: null, missing: 'Unknown' });
+    });
+
+    test('without the statement file the product says Not recorded', () => {
+      const page = resolveScanners(input());
+      expect(page.profiles.find(p => p.id === 'redact-secret')).toMatchObject({ outOfScope: null });
+      expect(page.profiles.find(p => p.id === 'redact-secret')?.scope).toBeUndefined();
+    });
   });
 
   test('the mode note names published or candidate, and the build a candidate measured', () => {

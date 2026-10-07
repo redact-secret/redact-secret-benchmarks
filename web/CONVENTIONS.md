@@ -217,9 +217,18 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
 - `/evaluation/scanner/` (#612) shows the scanners the benchmark ran with and each one's environment: pins, install checksums, configuration and
   platform from the validated peer snapshots (`services/scanners.ts`), the mode line and host from the run, `outOfScope` from the registry. Blocks are
   `Scanner*` in `components/evaluation/scanner/` (a folder of folders is a section; each phase of `/evaluation` has its own). A fact the repository does not
-  hold is "Not recorded" (#620, #621, #622), never a guess; the tests use synthetic scanners and never assert a version, digest or host.
+  hold is "Not recorded", never a guess; the tests use synthetic scanners and never assert a version, digest or host.
   `check-export-scanners.mjs` rereads the pins, the run, the checksums and the registry. Decision:
   `docs/decisions/2026-10-01-show-the-scanners-and-their-environments-on-evaluation-scanner.md`.
+  Under `new`, "Where it ran" is the MEASUREMENT host of the official run (#620, #621): the engine's stamp from the verified artifact (`OfficialRun.measurement`,
+  the view's `populations[].measurement`) and the OS release, CPU, Node and CI image the run driver recorded at execution (`OfficialRun.host`,
+  `runs[].measurementHost`), or "Unavailable" for a run recorded before it (never filled in). The header's "Page built" line is the PUBLICATION host
+  (`services/build-host.ts`), always labelled apart. `check-export-comparison.mjs` rereads both. Decision:
+  `docs/decisions/2026-10-07-record-the-measurement-host-at-execution-and-keep-it-out-of-run-identity.md`.
+  The product's own scope (#622) is `scanners/product-scope.json` (`services/product-scope.ts`): statements by kind (credential scope, optional
+  personal-data profile, unmeasured surface; never worded as "unsupported" when only not measured), bound to a release and mode line, and compared by the
+  resolver with the run's own observation of the product: `Current`, `History` or `Unknown`, never a static value standing in for what was measured.
+  Decision: `docs/decisions/2026-10-07-bind-the-product-scope-statements-to-the-measured-release-and-configuration.md`.
 - Resolver tests live in `web/tests/unit` (`resolvers.test.mjs`, `report-rows.test.mjs`, ...; synthetic
   data only) and also enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.

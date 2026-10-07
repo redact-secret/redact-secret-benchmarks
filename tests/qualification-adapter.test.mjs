@@ -191,14 +191,14 @@ test('known gaps join to cases by id in every population that carries the id', (
   assert.deepEqual(gap.fixtures[1].matches, []);
 });
 
-test('the view is deterministic and schema-valid; non_semantic moves only the byte digest', () => {
+test('the view is deterministic and schema-valid; non_semantic moves only the byte digest and the measurement provenance (#620, #621)', () => {
   const first = serializeView(build({ methods: true }));
   assert.equal(serializeView(build({ methods: true })), first);
   const other = build({ methods: true, aOptions: { mutate: d => { d.non_semantic = { run_id: 'other', host: 'elsewhere' }; } } });
   const a = JSON.parse(first), b = JSON.parse(serializeView(other));
   assert.notEqual(a.populations[0].artifact.artifactDigest, b.populations[0].artifact.artifactDigest);
   assert.equal(a.populations[0].artifact.semanticDigest, b.populations[0].artifact.semanticDigest);
-  for (const view of [a, b]) for (const p of view.populations) { p.artifact.artifactDigest = 'masked'; if (p.methodsArtifact) p.methodsArtifact.artifactDigest = 'masked'; }
+  for (const view of [a, b]) for (const p of view.populations) { p.artifact.artifactDigest = 'masked'; if (p.methodsArtifact) p.methodsArtifact.artifactDigest = 'masked'; delete p.measurement; delete p.methodsMeasurement; }
   assert.deepEqual(a, b);
   assert.deepEqual(validateQualificationView(JSON.parse(first)), []);
   assert.ok(validateQualificationView({ ...JSON.parse(first), extra: true }).length > 0);
@@ -911,6 +911,19 @@ test('the origin of each scanner is provenance read from non_semantic: fresh, re
   assert.ok(a.methodsOrigins && a.methodsOrigins.scanners.every(s => s.origin === 'not-recorded'), 'the methods artifact is read apart from the plain one');
   // provenance moves no count, status or digest: the same view with another origin differs in the origin record alone
   const strip = v => JSON.parse(JSON.stringify(v, (k, x) => (k === 'origins' || k === 'methodsOrigins' ? undefined : x)));
+  const same = strip(build({ methods: true }));
+  const moved = strip(view);
+  for (const v of [same, moved]) for (const p of v.populations) { p.artifact.artifactDigest = 'masked'; if (p.methodsArtifact) p.methodsArtifact.artifactDigest = 'masked'; }
+  assert.deepEqual(moved, same);
+});
+
+test('the engine host and times are provenance read from non_semantic: carried per population and moving nothing else (#620, #621)', () => {
+  const stamp = d => { d.non_semantic = { ...d.non_semantic, host: 'linux-x86_64', started_at: '2026-01-05T10:21:00Z', finished_at: '2026-01-05T10:22:00Z' }; };
+  const view = build({ methods: true, aOptions: { mutate: stamp } });
+  const a = view.populations.find(p => p.population === 'pop-a');
+  assert.deepEqual(a.measurement, { host: 'linux-x86_64', startedAt: '2026-01-05T10:21:00Z', finishedAt: '2026-01-05T10:22:00Z' });
+  assert.deepEqual(validateQualificationView(view), []);
+  const strip = v => JSON.parse(JSON.stringify(v, (k, x) => (k === 'measurement' || k === 'methodsMeasurement' ? undefined : x)));
   const same = strip(build({ methods: true }));
   const moved = strip(view);
   for (const v of [same, moved]) for (const p of v.populations) { p.artifact.artifactDigest = 'masked'; if (p.methodsArtifact) p.methodsArtifact.artifactDigest = 'masked'; }

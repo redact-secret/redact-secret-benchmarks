@@ -20,9 +20,11 @@ import { canonical, sha256Digest } from '../../benchmarks/qualification/canonica
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA } from '../lib/qualification';
 import type { ProfileEffect, ScopeEntry } from '../../benchmarks/qualification/scope-accounting';
 import type { OriginRecord, ScannerOrigin } from '../../benchmarks/qualification/observation-origin';
+import { engineTelemetryProblems, measurementHostProblems, type EngineTelemetry, type MeasurementHost } from '../../benchmarks/qualification/measurement-host';
 import { once, readJson, REPO_ROOT } from './repo';
 
-export type { ProfileEffect, ScopeEntry, OriginRecord, ScannerOrigin };
+export type { ProfileEffect, ScopeEntry, OriginRecord, ScannerOrigin, EngineTelemetry, MeasurementHost };
+export { measurementHostProblems };
 export { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA };
 
 export type SupportStatusWord = 'stable' | 'provisional' | 'pending' | 'unsupported';
@@ -65,6 +67,8 @@ export interface PopulationView {
   scope?: ScopeEntry[]; methodsScope?: ScopeEntry[]; profileEffects?: ProfileEffect[];
   /** Where each scanner's observation came from (#724): provenance from the artifact's non-semantic telemetry, apart from the scope evidence above. Absent in a view built before it. */
   origins?: OriginRecord; methodsOrigins?: OriginRecord;
+  /** Where and when the engine says it ran (#620, #621): the artifact's non-semantic host and times, provenance only. Absent in a view built before it. */
+  measurement?: EngineTelemetry; methodsMeasurement?: EngineTelemetry;
   artifact: {
     artifactDigest: string; semanticDigest: string; configHash: string; protocolVersion: string; engineRunClass?: string; publication?: string;
     engine: { name: string; version: string }; methods: string[]; caseCount: number;
@@ -134,6 +138,7 @@ export function qualificationShapeProblem(value: unknown): string | null {
     if (!object(p) || typeof p.population !== 'string' || !object(p.artifact) || !object(p.artifact.evidence) || !Array.isArray(p.artifact.scanners) || !Array.isArray(p.artifact.methods)) return 'a population has no artifact identity';
     for (const key of ['scope', 'methodsScope', 'profileEffects']) if (p[key] !== undefined && !Array.isArray(p[key])) return `population ${p.population} has a ${key} that is not a list`;
     for (const key of ['origins', 'methodsOrigins']) if (p[key] !== undefined && (!object(p[key]) || !Array.isArray(p[key].scanners))) return `population ${p.population} has an ${key} that is not an origin record`;
+    for (const key of ['measurement', 'methodsMeasurement']) if (p[key] !== undefined && engineTelemetryProblems(p[key]).length) return `population ${p.population} has a ${key} that is not the engine's host and time stamp`;
     if (!Array.isArray(p.cases)) return `population ${p.population} has no cases: the view predates the case rows, rebuild it with npm run qualification:view`;
     for (const c of p.cases) {
       if (!object(c) || typeof c.id !== 'string' || typeof c.kind !== 'string' || !Array.isArray(c.detectors) || !Array.isArray(c.expected) || !Array.isArray(c.results) || c.results.some((r: unknown) => !object(r) || typeof (r as Record<string, unknown>).scanner !== 'string' || typeof (r as Record<string, unknown>).measurement !== 'string')) return `population ${p.population} has a case row that is not readable`;

@@ -533,6 +533,68 @@
               }
             },
             "description": "The same for the methods artifact, kept apart from the plain one."
+          },
+          "measurement": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "host",
+              "startedAt",
+              "finishedAt"
+            ],
+            "description": "Where and when the engine says it ran (#620, #621): non_semantic.host, started_at and finished_at of the artifact. Provenance only; never an input of a count, status or denominator.",
+            "properties": {
+              "host": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[a-z0-9_]{1,24}-[a-z0-9_]{1,24}$"
+              },
+              "startedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "finishedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "methodsMeasurement": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "host",
+              "startedAt",
+              "finishedAt"
+            ],
+            "description": "Where and when the engine says it ran (#620, #621): non_semantic.host, started_at and finished_at of the artifact. Provenance only; never an input of a count, status or denominator.",
+            "properties": {
+              "host": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[a-z0-9_]{1,24}-[a-z0-9_]{1,24}$"
+              },
+              "startedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "finishedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
           }
         }
       }

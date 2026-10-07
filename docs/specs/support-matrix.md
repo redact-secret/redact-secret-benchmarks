@@ -166,6 +166,8 @@ matrix drift) consume `results-output/support-matrix.json` — never a status
 re-derived or hand-adjusted from it. Both have landed: `npm run
 eval:publish:matrix` copies this file to `public/results/support-matrix-v1.json`
 and `/support` renders it, with a CI gate that fails if the site carries a
-status this artifact cannot (see [support-ui.md](support-ui.md)), and `npm run
-eval:matrix:drift` diffs a candidate's matrix against a saved baseline (see
-[support-matrix-drift.md](support-matrix-drift.md)).
+status this artifact cannot (see [support-ui.md](support-ui.md)). The
+`eval:matrix:drift` command that once diffed a candidate's matrix against a saved
+baseline was removed in #660: the drift between two matrices is the parity report's
+`matrix` section (`qualification:parity`) and, for a product candidate, the candidate
+diff (`qualification:candidate-diff`).

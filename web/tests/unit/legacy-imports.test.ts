@@ -64,7 +64,7 @@ const ROLES: Record<string, Record<string, Entry>> = {
   'services/peers.ts': { 'benchmarks/lib/peer-rule-families': 'keep', 'benchmarks/support/taxonomy': 'keep' },
   'services/performance.ts': { 'benchmarks/lib/measured-performance': other('performance', 'the performance comparison reads the accepted performance run'), 'benchmarks/lib/performance-schema': other('performance', 'the performance comparison validates its reports') },
   'services/product-scope.ts': { 'benchmarks/lib/peer-rule-families': 'keep' },
-  'services/qualification.ts': { 'benchmarks/qualification/canonical': 'keep', 'benchmarks/qualification/scope-accounting': 'keep' },
+  'services/qualification.ts': { 'benchmarks/qualification/canonical': 'keep', 'benchmarks/qualification/observation-origin': 'keep', 'benchmarks/qualification/scope-accounting': 'keep' },
   'services/run.ts': {
     'benchmarks/shared/report-model.mjs': oracle('re-checks the legacy suite reports against the corpora'),
     'benchmarks/shared/run-data.ts': oracle('the legacy run\'s summary validators'), 'benchmarks/shared/run-types.ts': oracle('the legacy run\'s types'),

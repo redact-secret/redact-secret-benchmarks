@@ -39,6 +39,24 @@ export interface OptionalScanner {
   decision?: string;
   /** What stands between the entry and its official measurement, when there is no recorded one. */
   officialMeasurement?: string;
+  /** Earlier official measurements that `official-runs.json` no longer lists, newest last (#763). The registry's `runs[]` and `historicalRuns[]` win when they hold one. */
+  retainedMeasurements?: RetainedMeasurement[];
+}
+/**
+ * One earlier official measurement of an optional scanner that the run registry no longer lists (#763). A repin moves its runs out of `runs[]` and may not
+ * keep them as `historicalRuns[]`; without this record the view would say "no earlier measurement is recorded" about a scanner that has one. Every field is a
+ * fact about a retained run (identity, digests, where its artifacts are archived), never a result: the pointer shows no count and no outcome.
+ */
+export interface RetainedMeasurement {
+  recordedOn: string;
+  engine: { version: string; revision: string };
+  /** Why the registry does not list the runs, and where they are. */
+  note?: string;
+  /** The immutable release asset that holds the runs' artifacts, and the CI run that made them. */
+  archive: { release: string; asset: string; ciRun: string };
+  /** Whether the runs carry native labels / scope accounting: `unavailable` is a legacy engine (counts are Unknown on a page, never zero). */
+  nativeLabels?: 'unavailable' | 'available';
+  runs: { id: string; configHash: string; semanticDigest: string; byteDigest: string; scannerVersion: string | null; scannerConfigurationHash: string | null }[];
 }
 export interface ScannerRoster {
   schemaVersion: number;
@@ -51,8 +69,12 @@ export interface ScannerRoster {
 export interface LastMeasurement {
   recordedOn: string;
   engine: { version: string; revision: string };
-  registry: 'runs' | 'historicalRuns';
+  /** Where the pointer was read: the active runs, the superseded receipts, or the roster's own record of a retained run (#763). */
+  registry: 'runs' | 'historicalRuns' | 'retained';
   runs: { id: string; configHash: string; scannerVersion: string | null; scannerConfigurationHash: string | null }[];
+  /** For a retained measurement: the immutable archive release that holds the artifacts, and whether the runs carry native labels. */
+  archive?: { release: string; asset: string; ciRun: string };
+  nativeLabels?: 'unavailable' | 'available';
 }
 
 interface HistoryRecord {
@@ -100,6 +122,16 @@ export function validateRoster(roster: ScannerRoster): ScannerRoster {
   }
   // A profile is its own scanner and its own history: labels and profiles are distinct, and a profile names a scanner of the roster it is a profile of (#764).
   const specs = Object.entries(roster.optionalScanners);
+  const SHA = /^sha256:[0-9a-f]{64}$/;
+  for (const [id, o] of specs) {
+    (o.retainedMeasurements ?? []).forEach((m, i) => {
+      const at = `optionalScanners.${id}.retainedMeasurements[${i}]`;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(m.recordedOn ?? '') || !m.engine?.version || !m.engine?.revision) problems.push(`${at}: needs recordedOn (YYYY-MM-DD) and the engine version and revision`);
+      if (!m.archive?.release || !m.archive?.asset || !/^\d+$/.test(m.archive?.ciRun ?? '')) problems.push(`${at}: needs the archive release, asset and CI run that hold the artifacts`);
+      if (!Array.isArray(m.runs) || m.runs.length === 0) problems.push(`${at}: names no run`);
+      for (const r of m.runs ?? []) if (!r.id || !SHA.test(r.configHash ?? '') || !SHA.test(r.semanticDigest ?? '') || !SHA.test(r.byteDigest ?? '')) problems.push(`${at}: run ${r.id ?? '?'} needs an id and sha256 config, semantic and byte digests`);
+    });
+  }
   if (!unique(specs.map(([, o]) => o.label))) problems.push('optionalScanners: two entries share a label; a profile is labelled separately from the default');
   if (!unique(specs.map(([id, o]) => `${o.profileOf ?? id}/${o.profile}`))) problems.push('optionalScanners: two entries are the same profile of the same scanner');
   for (const [id, o] of specs) if (o.profileOf !== undefined && (o.profileOf === id || !roster.optionalScanners[o.profileOf])) problems.push(`optionalScanners.${id}: profileOf ${o.profileOf} is not another optional scanner`);
@@ -118,7 +150,7 @@ export function rosterFor(roster: ScannerRoster, runClass: string, population?: 
 export const notMeasuredStatement = (label: string) => `${label}: not measured in this run (optional)`;
 
 /** The latest recorded measurement of a scanner: the newest `recordedOn` among the active runs, else among the historical ones. Null when none recorded it. */
-export function lastMeasurementOf(scanner: string, history: MeasurementHistory): LastMeasurement | null {
+export function lastMeasurementOf(scanner: string, history: MeasurementHistory, retained: RetainedMeasurement[] = []): LastMeasurement | null {
   for (const registry of ['runs', 'historicalRuns'] as const) {
     const hits = (history[registry] ?? []).filter(r => r.scanners.some(s => s.id === scanner));
     if (!hits.length) continue;
@@ -127,6 +159,15 @@ export function lastMeasurementOf(scanner: string, history: MeasurementHistory):
     return {
       recordedOn: latest, engine: { version: same[0].engine.version, revision: same[0].engine.revision }, registry,
       runs: same.map(r => { const s = r.scanners.find(x => x.id === scanner)!; return { id: r.id, configHash: r.configHash, scannerVersion: s.version ?? null, scannerConfigurationHash: s.configurationHash ?? null }; }),
+    };
+  }
+  // The registry holds none (a repin drops superseded runs): the roster's own record of a retained measurement, never a guess.
+  const kept = [...retained].sort((a, b) => (a.recordedOn < b.recordedOn ? -1 : a.recordedOn > b.recordedOn ? 1 : 0)).at(-1);
+  if (kept) {
+    return {
+      recordedOn: kept.recordedOn, engine: { version: kept.engine.version, revision: kept.engine.revision }, registry: 'retained',
+      runs: [...kept.runs].sort((a, b) => (a.id < b.id ? -1 : 1)).map(r => ({ id: r.id, configHash: r.configHash, scannerVersion: r.scannerVersion ?? null, scannerConfigurationHash: r.scannerConfigurationHash ?? null })),
+      archive: { ...kept.archive }, ...(kept.nativeLabels ? { nativeLabels: kept.nativeLabels } : {}),
     };
   }
   return null;
@@ -162,7 +203,7 @@ export function assessRoster({ roster, runClass, populations, history = {} }: { 
     const spec = roster.optionalScanners[id];
     notMeasured.push({
       scanner: id, profile: spec.profile, optional: true, label: spec.label, statement: spec.statement ?? notMeasuredStatement(spec.label), reason: spec.reason,
-      lastMeasurement: lastMeasurementOf(id, history),
+      lastMeasurement: lastMeasurementOf(id, history, spec.retainedMeasurements),
       ...(spec.officialMeasurement ? { officialMeasurement: spec.officialMeasurement } : {}), ...(spec.decision ? { decision: spec.decision } : {}),
     });
   }

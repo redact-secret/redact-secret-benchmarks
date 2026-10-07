@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { QualificationOverview } from './QualificationOverview';
-import { overview, reviewDisclosure } from './storyData';
+import { observationOrigins, optionalNotMeasured, overview, reviewDisclosure } from './storyData';
 
 const meta = {
   title: 'Evaluation/Qualification/QualificationOverview',
@@ -49,6 +49,19 @@ export const OptionalScannerNotMeasured: Story = {
       }],
     },
   },
+};
+
+/**
+ * The last measurement is a retained record (the run registry no longer lists its runs): the pointer names the runs, engine, configuration and date, the archive that
+ * keeps the artifacts, and says that a legacy engine's scope counts are Unknown, never zero (#763).
+ */
+export const OptionalScannerRetainedMeasurement: Story = {
+  args: { scanners: { ...overview.scanners, notMeasured: optionalNotMeasured } },
+};
+
+/** Where each observation came from, shown apart from the scope evidence: scanned, reused, not recorded, and an optional scanner with no observation (#724). */
+export const WithObservationOrigins: Story = {
+  args: { scanners: { ...overview.scanners, notMeasured: optionalNotMeasured }, origins: observationOrigins },
 };
 
 /** No earlier measurement is recorded: the note says so instead of pointing at nothing. */

@@ -204,6 +204,12 @@
       "owner": "repository owner"
     },
     {
+      "id": "observation-resolved-by-release",
+      "change": "A legacy review-ledger entry that is still open records a disagreement the published product used to cause (a false alarm on a control, a placeholder read as a secret). The released build no longer reports it: the case is in the evidence and in the methods run, but the methods run holds no occurrence of that case, variant, peer and disagreement, so the generated mapping has nothing to map the entry to. Recognised only when every legacy entry the mapping cannot place is an OPEN entry whose case is joined (no-canonical-occurrence) and their number equals the difference exactly; a settled legacy decision that loses its occurrence stays unexplained. The entry stays in the ledger, open and visible; closing it is a reviewed ledger decision, not made here.",
+      "confirmation": "confirmed",
+      "owner": "repository owner"
+    },
+    {
       "id": "corpus-twin-change",
       "change": "The evidence release changed a twin (a twin of a seed gained sibling_family, or moved to unresolved), so the mutation or metamorphic assertions that flip the seed to that twin read the changed case (a failed assertion the legacy path never had) and the review occurrences of those seeds are keyed by changed content (no legacy mapping holds them). Recognised only when the failed assertions of the seeds whose own case or twin the release changed (its change report) equal the residual exactly.",
       "confirmation": "confirmed",
@@ -259,11 +265,12 @@
       "tally": {
         "compared": 144,
         "equal": 127,
-        "explained": 11,
-        "unexplained": 6,
+        "explained": 17,
+        "unexplained": 0,
         "byCause": {
           "corpus-twin-change": 2,
           "canonical-evidence-membership": 4,
+          "family-not-in-accepted-evidence": 6,
           "pending-not-scored": 2,
           "engine-twin-scoring": 3
         }
@@ -301,7 +308,9 @@
           "field": "status",
           "legacy": "stable/documented",
           "next": "provisional",
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "new-only reasons: family-not-in-accepted-evidence"
         },
         {
           "subject": "github-token",
@@ -335,7 +344,9 @@
           "field": "status",
           "legacy": "stable/documented",
           "next": "provisional",
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "new-only reasons: family-not-in-accepted-evidence"
         },
         {
           "subject": "sendgrid-token",
@@ -351,21 +362,27 @@
           "field": "status",
           "legacy": "stable/documented",
           "next": "provisional",
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "new-only reasons: family-not-in-accepted-evidence"
         },
         {
           "subject": "square-oauth-application-secret",
           "field": "status",
           "legacy": "stable/documented",
           "next": "provisional",
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "new-only reasons: family-not-in-accepted-evidence"
         },
         {
           "subject": "square-token",
           "field": "status",
           "legacy": "stable/documented",
           "next": "provisional",
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "new-only reasons: family-not-in-accepted-evidence"
         },
         {
           "subject": "twilio-api-key-secret",
@@ -381,7 +398,9 @@
           "field": "status",
           "legacy": "stable/documented",
           "next": "provisional",
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "new-only reasons: family-not-in-accepted-evidence"
         },
         {
           "subject": "vercel-app-access-token",
@@ -12340,10 +12359,10 @@
       "tally": {
         "compared": 8,
         "equal": 4,
-        "explained": 1,
-        "unexplained": 3,
+        "explained": 4,
+        "unexplained": 0,
         "byCause": {
-          "canonical-evidence-membership": 1
+          "canonical-evidence-membership": 4
         }
       },
       "differences": [
@@ -12352,21 +12371,27 @@
           "field": "distribution.provisional",
           "legacy": 10,
           "next": 27,
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "17 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, family-not-in-accepted-evidence, pending-not-scored)"
         },
         {
           "subject": "overview",
           "field": "distribution.stable",
           "legacy": 133,
           "next": 116,
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "17 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, family-not-in-accepted-evidence, pending-not-scored)"
         },
         {
           "subject": "overview",
           "field": "stableDistribution.documented",
           "legacy": 95,
           "next": 83,
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "12 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, family-not-in-accepted-evidence, pending-not-scored)"
         },
         {
           "subject": "overview",
@@ -12383,9 +12408,10 @@
       "tally": {
         "compared": 8,
         "equal": 1,
-        "explained": 6,
-        "unexplained": 1,
+        "explained": 7,
+        "unexplained": 0,
         "byCause": {
+          "observation-resolved-by-release": 1,
           "review-occurrence-identity": 2,
           "canonical-evidence-membership": 2,
           "owner-ledger-settlement": 2
@@ -12433,7 +12459,9 @@
           "field": "legacy differential entries, against those mapped to a canonical occurrence",
           "legacy": 4268,
           "next": 4264,
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "observation-resolved-by-release",
+          "note": "4 open legacy entr(ies) record a disagreement the released build no longer reports"
         },
         {
           "subject": "trufflehog",
@@ -12658,17 +12686,13 @@
       "legacyProfile": null,
       "nextProfile": null,
       "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "cerebras-api-key",
@@ -13078,18 +13102,14 @@
       "next": "provisional",
       "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "unexplained",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "verdict": "explained",
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "generic-token",
@@ -13361,17 +13381,13 @@
       "legacyProfile": null,
       "nextProfile": null,
       "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "microsoft-entra-client-secret",
@@ -13677,18 +13693,14 @@
       "next": "provisional",
       "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "unexplained",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "verdict": "explained",
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "pypi-token",
@@ -13854,18 +13866,14 @@
       "next": "provisional",
       "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "unexplained",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "verdict": "explained",
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "square-oauth-application-secret",
@@ -13873,18 +13881,14 @@
       "next": "provisional",
       "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "unexplained",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "verdict": "explained",
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "square-token",
@@ -13892,18 +13896,14 @@
       "next": "provisional",
       "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "unexplained",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "verdict": "explained",
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "stripe-token",
@@ -14058,18 +14058,14 @@
       "next": "provisional",
       "legacyProfile": "documented",
       "nextProfile": null,
-      "verdict": "unexplained",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "verdict": "explained",
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     },
     {
       "family": "vault-token",
@@ -14173,17 +14169,13 @@
       "legacyProfile": null,
       "nextProfile": null,
       "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
-      "unattributedReasons": [
-        "documented.minimumPositiveCases",
-        "documented.minimumPositiveAxes",
-        "documented.minimumBenignCases",
-        "documented.minimumControlAxes",
-        "documented.minimumTwinPairs",
-        "benign.minimumCases",
-        "benign.minimumAxes"
-      ]
+      "causes": [
+        "family-not-in-accepted-evidence"
+      ],
+      "heldBackBy": [
+        "family-not-in-accepted-evidence"
+      ],
+      "unattributedReasons": []
     }
   ],
   "matrix": {
@@ -14229,8 +14221,8 @@
     "canonical-evidence-membership": 4,
     "corpus-twin-change": 2,
     "engine-twin-scoring + pending-not-scored": 3,
-    "pending-not-scored": 2,
-    "unattributed": 6
+    "family-not-in-accepted-evidence": 6,
+    "pending-not-scored": 2
   },
   "outcomeGroups": [
     {
@@ -14835,14 +14827,15 @@
   "summary": {
     "compared": 43363,
     "equal": 36468,
-    "explained": 6885,
-    "unexplained": 10,
+    "explained": 6895,
+    "unexplained": 0,
     "byCause": {
-      "canonical-evidence-membership": 271,
+      "canonical-evidence-membership": 274,
       "corpus-twin-change": 12,
       "engine-twin-scoring": 33,
-      "family-not-in-accepted-evidence": 226,
+      "family-not-in-accepted-evidence": 232,
       "legacy-id-rekey": 156,
+      "observation-resolved-by-release": 1,
       "optional-scanner-not-measured": 5963,
       "owner-ledger-settlement": 2,
       "pending-not-scored": 171,
@@ -14852,12 +14845,12 @@
     },
     "classes": {
       "must-equal": 36468,
-      "expected-structural": 6885,
-      "unexplained": 10
+      "expected-structural": 6895,
+      "unexplained": 0
     }
   },
   "recommendations": [
-    "Status: the legacy path reads 133 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership; 2 by corpus-twin-change; 3 by engine-twin-scoring + pending-not-scored; 2 by pending-not-scored; 6 by unattributed. Not applied: nothing here changes a status.",
+    "Status: the legacy path reads 133 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership; 2 by corpus-twin-change; 3 by engine-twin-scoring + pending-not-scored; 6 by family-not-in-accepted-evidence; 2 by pending-not-scored. Not applied: nothing here changes a status.",
     "Review ledger: 4460 of 7213 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"gitleaks\":1880,\"trufflehog\":2657,\"flare-redact\":2676}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
     "Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.",
     "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 0 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.",

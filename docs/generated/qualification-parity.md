@@ -11,19 +11,19 @@ This repository measures and records. This report states which numbers agree, wh
 
 ## Summary
 
-43363 values compared: **36468 equal** (class 1, must-equal, held), **6885 expected-structural** (class 2, each attributed to a cause), **10 unexplained** (class 3, to investigate).
+43363 values compared: **36468 equal** (class 1, must-equal, held), **6895 expected-structural** (class 2, each attributed to a cause), **0 unexplained** (class 3, to investigate).
 
 | Area | Compared | Equal | Expected-structural | Unexplained |
 | --- | ---: | ---: | ---: | ---: |
 | identity | 5 | 4 | 1 | 0 |
 | membership | 288 | 288 | 0 | 0 |
-| status | 144 | 127 | 11 | 6 |
+| status | 144 | 127 | 17 | 0 |
 | evidence | 4752 | 4532 | 220 | 0 |
 | outcomes | 29810 | 23728 | 6082 | 0 |
 | knownGaps | 416 | 260 | 156 | 0 |
 | supportMatrix | 7932 | 7524 | 408 | 0 |
-| distribution | 8 | 4 | 1 | 3 |
-| review | 8 | 1 | 6 | 1 |
+| distribution | 8 | 4 | 4 | 0 |
+| review | 8 | 1 | 7 | 0 |
 
 ### Differences by cause
 
@@ -37,10 +37,11 @@ This repository measures and records. This report states which numbers agree, wh
 | `legacy-id-rekey` | 156 | confirmed | Legacy fixture ids, ledger ids and disputed-property ids are legacy hashes or slugs; the public snapshot has canonical ids. Stored per-fixture inputs keyed by legacy ids do not resolve until the re-key. |
 | `twin-scope-vocabulary` | 40 | confirmed | A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it. Confirmed by the project twin-scope corpus (#602): the same bytes carried with the parent's family (twin-scope-regressions, a product regression-corpus addition) are read as co-detected, as the legacy path read them, so the public engine verdict on the unscoped copy stays a difference of the public population and the twin gate reads the project case (population-policy.json twinScope). |
 | `pending-not-scored` | 171 | confirmed | A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is in this cause only when the legacy fixture was scored (the release moved it to an unresolved class later; the legacy path counted it and the new one cannot); when the legacy fixture is T0 too, the legacy path drops it, so neither side counts it. |
-| `canonical-evidence-membership` | 271 | confirmed | The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count, and their methods-run variants add review occurrences, failed assertions and unresolved differential disagreements no legacy count or ledger decision covers (#680). Recognised for a method figure only when the residual equals, exactly, the unsettled occurrences or failed assertions of the cases with no legacy counterpart; a review occurrence of such a case stays unreviewed until a decision is made for it. |
-| `family-not-in-accepted-evidence` | 226 | confirmed | A second-wave detector family (registered after the accepted evidence snapshot was cut) has no case in any accepted population: the evidence snapshot, its methods run and the project populations carry none of its fixtures, so the new path has nothing to count, and the legacy path counts the project's own fixtures of the family (benchmarks/lib/beta8). Recognised only for a family whose new-side fixture total is 0 and whose populations hold 0 cases; every figure of it is then unmeasured on the new side and the family stays provisional by contract (T3 placeholder) or by the open ruling it names. It is cleared by an evidence snapshot that carries the family, adopted by the owner. |
+| `canonical-evidence-membership` | 274 | confirmed | The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count, and their methods-run variants add review occurrences, failed assertions and unresolved differential disagreements no legacy count or ledger decision covers (#680). Recognised for a method figure only when the residual equals, exactly, the unsettled occurrences or failed assertions of the cases with no legacy counterpart; a review occurrence of such a case stays unreviewed until a decision is made for it. |
+| `family-not-in-accepted-evidence` | 232 | confirmed | A second-wave detector family (registered after the accepted evidence snapshot was cut) has no case in any accepted population: the evidence snapshot, its methods run and the project populations carry none of its fixtures, so the new path has nothing to count, and the legacy path counts the project's own fixtures of the family (benchmarks/lib/beta8). Recognised only for a family whose new-side fixture total is 0 and whose populations hold 0 cases; every figure of it is then unmeasured on the new side and the family stays provisional by contract (T3 placeholder) or by the open ruling it names. It is cleared by an evidence snapshot that carries the family, adopted by the owner. |
 | `owner-ledger-settlement` | 2 | confirmed | The repository owner decided (2026-10-05, #698) to settle review occurrences of the accepted run by ledger rows keyed by the canonical occurrence id (scripts/apply-ledger-settlements.ts), only where the same occurrence was proposed by the triage of the previous snapshot and the observation is identical. The legacy ledger holds no decision for those occurrences, so the new path reads more of them settled than the legacy mapping. Recognised only when the residual equals, exactly, the occurrences settled by such rows. Not an independent review. |
 | `optional-scanner-not-measured` | 5963 | confirmed | An optional scanner of the evaluation contract (benchmarks/support/scanner-roster.json, #763) was left out of the new run on purpose (omit_optional; its default profile takes too long), so the new side has no outcome for it. The view states it in scannerRoster.notMeasured and fabricates no zero; the legacy path scored it. |
+| `observation-resolved-by-release` | 1 | confirmed | A legacy review-ledger entry that is still open records a disagreement the published product used to cause (a false alarm on a control, a placeholder read as a secret). The released build no longer reports it: the case is in the evidence and in the methods run, but the methods run holds no occurrence of that case, variant, peer and disagreement, so the generated mapping has nothing to map the entry to. Recognised only when every legacy entry the mapping cannot place is an OPEN entry whose case is joined (no-canonical-occurrence) and their number equals the difference exactly; a settled legacy decision that loses its occurrence stays unexplained. The entry stays in the ledger, open and visible; closing it is a reviewed ledger decision, not made here. |
 | `corpus-twin-change` | 12 | confirmed | The evidence release changed a twin (a twin of a seed gained sibling_family, or moved to unresolved), so the mutation or metamorphic assertions that flip the seed to that twin read the changed case (a failed assertion the legacy path never had) and the review occurrences of those seeds are keyed by changed content (no legacy mapping holds them). Recognised only when the failed assertions of the seeds whose own case or twin the release changed (its change report) equal the residual exactly. |
 | `engine-twin-scoring` | 33 | confirmed | A twin control the snapshot scopes to its own family was read as co-detected by the legacy path (a finding of another known family) and is read as flagged by the engine (credential-eval alpha.13 and later, ADR 0018), so it is a twin failure no legacy count holds and the mutation assertions that flip its seed to it fail. Recognised only when the family residual equals the count of such twins (and of their seeds failed assertions) exactly. |
 | `fixture-attribution` | 0 | inferred | The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere. |
@@ -54,15 +55,15 @@ Of the legacy-stable families the new path does not read stable, by what holds e
 - 4: `canonical-evidence-membership`
 - 2: `corpus-twin-change`
 - 3: `engine-twin-scoring` + `pending-not-scored`
+- 6: `family-not-in-accepted-evidence`
 - 2: `pending-not-scored`
-- 6: **unattributed** (a reason no rule recognises)
 
 | Status change | Causes | Families |
 | --- | --- | ---: |
 | stable -> provisional | canonical-evidence-membership | 4 |
 | stable -> provisional | corpus-twin-change | 2 |
 | stable -> provisional | engine-twin-scoring + pending-not-scored | 3 |
-| stable -> provisional | no cause; unattributed: documented.minimumPositiveCases; documented.minimumPositiveAxes; documented.minimumBenignCases; documented.minimumControlAxes; documented.minimumTwinPairs; benign.minimumCases; benign.minimumAxes | 6 |
+| stable -> provisional | family-not-in-accepted-evidence | 6 |
 | stable -> provisional | pending-not-scored | 2 |
 
 ## Support matrix
@@ -112,9 +113,8 @@ The numbers the qualification overview page shows: the family count, the status 
 
 | Field | Cause | Differences | Examples |
 | --- | --- | ---: | --- |
-| distribution.* | **unexplained** | 2 | `overview` |
-| stableDistribution.* | **unexplained** | 1 | `overview` |
-| stableDistribution.* | `canonical-evidence-membership` | 1 | `overview` |
+| distribution.* | `canonical-evidence-membership` | 2 | `overview` |
+| stableDistribution.* | `canonical-evidence-membership` | 2 | `overview` |
 
 ## Review queue and ledger
 
@@ -122,7 +122,7 @@ The differential review occurrences of the methods run against the legacy review
 
 | Field | Cause | Differences | Examples |
 | --- | --- | ---: | --- |
-| legacy differential entries, against those mapped to a canonical occurrence | **unexplained** | 1 | `ledger` |
+| legacy differential entries, against those mapped to a canonical occurrence | `observation-resolved-by-release` | 1 | `ledger` |
 | occurrences | `canonical-evidence-membership` | 2 | `gitleaks`, `trufflehog` |
 | occurrences | `review-occurrence-identity` | 1 | `flare-redact` |
 | settled | `owner-ledger-settlement` | 2 | `gitleaks`, `trufflehog` |
@@ -186,17 +186,11 @@ The differential review occurrences of the methods run against the legacy review
 
 ## Unexplained differences
 
-| Area | Field | Differences | Examples (legacy vs new) |
-| --- | --- | ---: | --- |
-| distribution | distribution.provisional | 1 | `overview: 10 vs 27` |
-| distribution | distribution.stable | 1 | `overview: 133 vs 116` |
-| distribution | stableDistribution.documented | 1 | `overview: 95 vs 83` |
-| review | legacy differential entries, against those mapped to a canonical occurrence | 1 | `ledger: 4268 vs 4264` |
-| status | status | 6 | `fly-token: "stable/documented" vs "provisional"`; `pydantic-logfire-token: "stable/documented" vs "provisional"`; `sourcegraph-token: "stable/documented" vs "provisional"` |
+None.
 
 ## Recommendations (not applied)
 
-- Status: the legacy path reads 133 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership; 2 by corpus-twin-change; 3 by engine-twin-scoring + pending-not-scored; 2 by pending-not-scored; 6 by unattributed. Not applied: nothing here changes a status.
+- Status: the legacy path reads 133 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership; 2 by corpus-twin-change; 3 by engine-twin-scoring + pending-not-scored; 6 by family-not-in-accepted-evidence; 2 by pending-not-scored. Not applied: nothing here changes a status.
 - Review ledger: 4460 of 7213 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {"gitleaks":1880,"trufflehog":2657,"flare-redact":2676}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.
 - Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.
 - Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 0 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.

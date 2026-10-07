@@ -334,7 +334,11 @@ if (existsSync(methodsFile) && reviewDerivation && changedSeeds.size) {
     const peer = String(q.peer ?? 'unknown'); changedUnmappedByPeer[peer] = (changedUnmappedByPeer[peer] ?? 0) + 1;
   }
 }
-const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: new Set(Object.values(product.ledgerRekey?.occurrences ?? {})).size }, reviewMapped, unjoinedByPeer, changedUnmappedByPeer);
+// Legacy differential entries the mapping cannot place: explained as resolved by the release only when every one is an OPEN ledger entry of a joined case with no canonical occurrence (the derivation's own reason).
+const mappedLegacyIds = new Set(Object.values(product.ledgerRekey?.occurrences ?? {}));
+const unplaced = ((JSON.parse(await readFile(path.join(root, 'benchmarks/support/legacy-review-queue.json'), 'utf8')).differential ?? []) as { id: string }[]).filter(q => !mappedLegacyIds.has(q.id));
+const resolvedByRelease = reviewDerivation && unplaced.length > 0 && unplaced.length === (reviewDerivation.legacy.unmatched?.['no-canonical-occurrence'] ?? 0) && unplaced.every(q => product.ledger.entries[q.id]?.status === 'open') ? unplaced.length : 0;
+const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: mappedLegacyIds.size, resolvedByRelease }, reviewMapped, unjoinedByPeer, changedUnmappedByPeer);
 
 // -- identity ----------------------------------------------------------------------------------------------------------
 const nextVersions: Record<string, string | null> = {};

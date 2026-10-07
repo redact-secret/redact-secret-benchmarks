@@ -105,7 +105,7 @@ Twin scope: credential-evidence now gives the 0 cross-provider twins the accepte
 
 ## 4. Legacy-oracle parity (the authority gate)
 
-`qualification:parity --strict` on the accepted view against the legacy oracle at the same release (@redact-secret/core 0.1.0-beta.12): 43,363 values compared, 36,423 equal, 6,940 attributed to a named structural cause, **0 unexplained**. Causes: canonical-evidence-membership 278, corpus-twin-change 12, engine-twin-scoring 33, family-not-in-accepted-evidence 274, legacy-id-rekey 156, optional-scanner-not-measured 5963, owner-ledger-settlement 2, pending-not-scored 171, policy-corpus-bounded 9, review-occurrence-identity 2, twin-scope-vocabulary 40.
+`qualification:parity --strict` on the accepted view against the legacy oracle at the same release (@redact-secret/core 0.1.0-beta.12): 43,363 values compared, 36,468 equal, 6,895 attributed to a named structural cause, **0 unexplained**. Causes: canonical-evidence-membership 274, corpus-twin-change 12, engine-twin-scoring 33, family-not-in-accepted-evidence 232, legacy-id-rekey 156, observation-resolved-by-release 1, optional-scanner-not-measured 5963, owner-ledger-settlement 2, pending-not-scored 171, policy-corpus-bounded 9, review-occurrence-identity 2, twin-scope-vocabulary 40.
 
 ## What is not measured
 

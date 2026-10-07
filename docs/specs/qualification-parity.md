@@ -100,6 +100,17 @@ legacy side names needs regression or policy cases of the family (`population-se
 or an attribution move. A review-occurrence difference is attributed only when the methods run holds differential occurrences of the
 family and none of their ids is in the ledger.
 
+A legacy-stable family the accepted evidence does not carry (`family-not-in-accepted-evidence`) has its evidence differences, its status change
+and the reasons the new path adds attributed to that cause, and the overview and matrix counts that follow from those status changes are explained
+by the usual exact-sum rule. The guard is the same for all of them: the new-side fixture total is 0, the legacy total is greater than 0 and no
+population holds a single case of the family. A family with any case on the new side, or one the legacy path does not count either, is never
+attributed to this cause. Reasons another cause recognises (`methods.*`, `policy.*`, axes, differential) keep that cause.
+
+A legacy review-ledger entry the mapping cannot place is explained as `observation-resolved-by-release` only when every such entry is an open
+entry of a joined case with no canonical occurrence (the derivation's `no-canonical-occurrence`) and their number equals the difference
+exactly: the released build no longer reports the disagreement. A settled decision that loses its occurrence stays unexplained. The entry stays in
+the ledger, open; closing it is a reviewed ledger decision.
+
 ## Not compared, and why
 
 Listed in the report, never silent: a rendered page against a rendered page (no automated page-data diff exists, and the legacy pages are not a data source of this repository; the numbers they display are compared at their source), the per-population per-scanner counts of a family page (sums of the per-case outcomes compared one to one; the legacy path has no per-population denominator), legacy categories with no suite report (calibration-only), the legacy mutation review entries (the canonical review queue holds

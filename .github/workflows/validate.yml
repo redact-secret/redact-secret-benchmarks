@@ -153,6 +153,8 @@ jobs:
         run: npm run pii:authority:check
       - name: The legacy PII measurement code has an inventory of removal candidates, owners, callers and prerequisites that equals the tree (#666)
         run: npm run pii:legacy-inventory:check
+      - name: The PII scorer-basis comparison equals a fresh derivation and the official execution plan equals the pins, pending and not dispatched (#795, #796)
+        run: npm run pii:scorer-basis:check && npm run pii:official-plan:check
       - name: The legacy credential evaluator's file inventory has owner, disposition, prerequisite and current callers for every row (#653, #660)
         run: npm run legacy-inventory:check
       - name: Every taxonomy provider and family has a dossier entry (#473)

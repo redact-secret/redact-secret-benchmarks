@@ -17,10 +17,10 @@
   },
   "piiEval": {
    "repository": "redact-secret/pii-eval",
-   "commit": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+   "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
    "engineVersion": "0.0.0",
-   "artifactSchema": "1.2",
+   "artifactSchema": "1.4",
    "protocolRevision": 2,
    "buildFlags": "--release --locked"
   },
@@ -34,7 +34,7 @@
   "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
   "mode": "exploratory",
   "tooling": {
-   "scripts/lib/pii-population-conversion.mjs": "551c02ab8261c29d18b7845ea22e38e84aa795014c67d71acde43149d8866646",
+   "scripts/lib/pii-population-conversion.mjs": "c44ad88a3cdef7ccd8e352455d480d71acdad2d6cb2e77d95363e0d49b13cba3",
    "scripts/pii-eval-population-parity/population_parity.rs": "4260d346c42cf810e21b6849f692d98da48902e969c69bf7efd75d13e9f84e0a"
   }
  },
@@ -43,109 +43,75 @@
    "view": "oracle-plan",
    "identities": {
     "populationId": "b11-population-v2-oracle-plan",
-    "snapshotDigest": "b9c80deee38229e86287a5fdacdb6eddc516cc5b325e0435b7786a31a7b56116",
-    "manifestDigest": "bd0a8087e46ec2df8389a9962b075a1d8be8a59c4d9805fe6ce9d4159b67fd7e",
-    "observationDigest": "5957975a0a5d9a45eb4ddbe66d19cea157d1947fd5bd9e54f301c7adca72f1fc",
-    "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf",
+    "snapshotDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+    "manifestDigest": "f7a96b75053f460efe87af77f9aebbf1e319522526d4b9fa92a89d76ed1d1a84",
+    "observationDigest": "421319ca78053000f07c520eb62fe22c75a9fbecb5fbfd5268970fcefba53fae",
+    "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c",
     "inputSha256": "c47b0fb693a9c41c17e237fe3428afcf18ec0f71b8a23033e2588c9f28b1db0c",
     "oracleExportSha256": "b3db6f08eb8cf3c972c11f4cb9019c2babb9d29a93b5481b10ef8d598754f811"
    },
    "conversion": {
     "view": "oracle-plan",
     "benchmarkCases": 146,
-    "convertedCases": 95,
-    "excludedCases": 51,
+    "convertedCases": 146,
+    "excludedCases": 0,
     "excludedReason": "identity-not-established",
     "unlocatedOtherFamilyFindings": 0,
     "lineSensitiveFindingsDropped": 0,
     "byFamily": {
      "pii:global:network-address": {
-      "converted": 22,
-      "excluded": 3
+      "converted": 25,
+      "excluded": 0
      },
      "pii:global:email": {
-      "converted": 11,
-      "excluded": 9
+      "converted": 20,
+      "excluded": 0
      },
      "pii:global:payment-card": {
-      "converted": 14,
-      "excluded": 5
+      "converted": 19,
+      "excluded": 0
      },
      "pii:global:iban": {
-      "converted": 8,
-      "excluded": 13
+      "converted": 21,
+      "excluded": 0
      },
      "pii:us:ssn": {
-      "converted": 15,
-      "excluded": 5
+      "converted": 20,
+      "excluded": 0
      },
      "pii:global:phone": {
-      "converted": 25,
-      "excluded": 16
+      "converted": 41,
+      "excluded": 0
      }
     },
     "findings": 36,
     "casesWithSeveralFindings": 0,
-    "excludedIds": [
-     "pii:global:email/adjacent-at-boundary",
-     "pii:global:email/combining-mark-domain-suffix",
-     "pii:global:email/credential-userinfo-collision",
-     "pii:global:email/domain-literal-unsupported",
-     "pii:global:email/quoted-local-unsupported",
-     "pii:global:email/source-route-collision",
-     "pii:global:email/unicode-domain-unsupported",
-     "pii:global:email/uri-userinfo-collision",
-     "pii:global:email/variation-selector-domain-suffix",
-     "pii:global:iban/alnum-left-adjacency",
-     "pii:global:iban/angle-placeholder",
-     "pii:global:iban/environment-reference",
-     "pii:global:iban/governed-invisible-inside",
-     "pii:global:iban/governed-invisible-right-adjacency",
-     "pii:global:iban/hyphen-separator-unsupported",
-     "pii:global:iban/lowercase-unsupported",
-     "pii:global:iban/percent-right-adjacency",
-     "pii:global:iban/repeated-space-unsupported",
-     "pii:global:iban/tab-separator-unsupported",
-     "pii:global:iban/template-reference",
-     "pii:global:iban/underscore-right-adjacency",
-     "pii:global:iban/unicode-mark-right-adjacency",
-     "pii:global:network-address/ipv4-right-boundary",
-     "pii:global:network-address/ipv4-version-collision",
-     "pii:global:network-address/ipv6-right-boundary",
-     "pii:global:payment-card/governed-invisible-interior",
-     "pii:global:payment-card/identifier-suffix-boundary",
-     "pii:global:payment-card/mixed-display-separators",
-     "pii:global:payment-card/unicode-mark-boundary",
-     "pii:global:payment-card/url-query-collision",
-     "pii:global:phone/adjacent-identifier-prefix",
-     "pii:global:phone/adjacent-identifier-suffix",
-     "pii:global:phone/date-collision",
-     "pii:global:phone/extension-line-break",
-     "pii:global:phone/extension-seven-digits",
-     "pii:global:phone/extension-zero-digits",
-     "pii:global:phone/governed-invisible-interior",
-     "pii:global:phone/ipv4-collision",
-     "pii:global:phone/mixed-separators",
-     "pii:global:phone/repeated-extension",
-     "pii:global:phone/repeated-extension-spaced",
-     "pii:global:phone/second-x-extension",
-     "pii:global:phone/unsupported-country-code",
-     "pii:global:phone/unsupported-tel-uri",
-     "pii:global:phone/unsupported-vanity",
-     "pii:global:phone/unsupported-x-extension",
-     "pii:us:ssn/identifier-suffix",
-     "pii:us:ssn/percent-suffix",
-     "pii:us:ssn/unicode-dash",
-     "pii:us:ssn/unicode-mark-suffix",
-     "pii:us:ssn/unicode-space"
-    ]
+    "excludedIds": []
+   },
+   "rangeless": {
+    "cases": 51,
+    "located": 95,
+    "byFamily": {
+     "pii:global:email": 9,
+     "pii:global:iban": 13,
+     "pii:global:network-address": 3,
+     "pii:global:payment-card": 5,
+     "pii:global:phone": 16,
+     "pii:us:ssn": 5
+    },
+    "reportedAs": {
+     "typeIdentity": "unresolved",
+     "sensitivityContext": "unresolved",
+     "range": "unresolved",
+     "action": "not-measured"
+    }
    },
    "artifact": {
-    "schemaVersion": "1.2",
-    "publicArtifactSha256": "8351d46b40ded917e61f412c5ba44b4a14cb9eb4c3c7aece836d228f38085791",
-    "semanticDigest": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
+    "schemaVersion": "1.4",
+    "publicArtifactSha256": "9e8e7f328ebcc795a9097ba9058593449cbd584ea35df3470d441bf05dd090ff",
+    "semanticDigest": "37a74f301c30b854a698b3d4aeb313d24e637d8860c5a49d390f904f1246b868",
     "semanticDigestRecomputed": true,
-    "runArtifactDigest": "5f03f38804a84f79a8fce6ce4fa4602b9d0a479bd1fc1621a7a4c932de8136d3",
+    "runArtifactDigest": "a5956bd3a2c87e94f03fca76945201844069aa9f954e8e2e20f56b1080ef861d",
     "validatedAgainstSnapshotAndRoster": true
    },
    "comparisonDetectsInjectedDifferences": true,
@@ -164,15 +130,17 @@
      "typeIdentity": {
       "correct": 36,
       "invalid-correct": 16,
-      "miss": 43
+      "miss": 43,
+      "unresolved": 51
      },
      "sensitivityContext": {
       "correct": 53,
-      "unresolved": 42
+      "unresolved": 93
      },
      "range": {
       "exact": 36,
-      "miss": 59
+      "miss": 59,
+      "unresolved": 51
      }
     },
     "oracleOutcomeStates": {
@@ -195,12 +163,12 @@
     "failures": 0,
     "methodCoverage": [
      {
-      "cases": 95,
+      "cases": 146,
       "method": {
        "id": "schema-only",
        "version": 1
       },
-      "variants": 95
+      "variants": 146
      }
     ]
    },
@@ -215,8 +183,9 @@
     "outcome-compat": 95,
     "population": 2,
     "projection-cell": 6,
-    "projection-control-class-stratum": 41,
+    "projection-control-class-stratum": 56,
     "projection-language-stratum": 9,
+    "range-less-membership": 51,
     "variant": 95,
     "variant-identity": 95
    },
@@ -260,12 +229,12 @@
     "measurable-share": {
      "status": "partial",
      "numerator": 148,
-     "eligible": 190,
-     "effectiveN": 190,
+     "eligible": 292,
+     "effectiveN": 292,
      "rate": {
       "kind": "value",
-      "point": "0.778947",
-      "bound": "0.714742"
+      "point": "0.506849",
+      "bound": "0.449789"
      }
     },
     "non-sensitive-flag-rate": {
@@ -341,12 +310,12 @@
     "requiredViews": [
      "oracle-plan"
     ],
-    "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf",
+    "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c",
     "bindingsEqualToManifest": true,
     "cellsCompared": 6,
     "languageStrataCompared": 9,
-    "controlClassStrataCompared": 41,
-    "oracleRunsBehindTheProjection": 56
+    "controlClassStrataCompared": 56,
+    "oracleRunsBehindTheProjection": 71
    },
    "classifiedDifferences": [
     {
@@ -375,94 +344,75 @@
    "view": "qualification-plan",
    "identities": {
     "populationId": "b11-population-v2-qualification-plan",
-    "snapshotDigest": "69d6cc26bc9d2d7a9aee4231f5f1e3c7969840fb6407d8f4cc777312836a59d6",
-    "manifestDigest": "7bd499d2622b5c49b8486c69ddff0b443653fa9b3c8503c825b8c4fde8f93fe5",
-    "observationDigest": "3ac26ba4485af8d0c38a82aa6f37c11224684c3070e44231f772375fd0f3c532",
-    "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883",
+    "snapshotDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+    "manifestDigest": "c49f36a2bce27fb47618076c71804aad5e363a0e6572effbec8e1e9191534906",
+    "observationDigest": "afb8690a63b5cbc28f72cc512f161ad6a26bc7424cbc695050fe81de413208b2",
+    "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293",
     "inputSha256": "c52def2cffc72a10e1ecf19bb5195ef4c607c123d49c1ce5f40a82b0e6a99a97",
     "oracleExportSha256": "b213ff959604d800a91c82aac1b8209a9602909c38a7247fa4cea894427845ef"
    },
    "conversion": {
     "view": "qualification-plan",
     "benchmarkCases": 266,
-    "convertedCases": 230,
-    "excludedCases": 36,
+    "convertedCases": 266,
+    "excludedCases": 0,
     "excludedReason": "identity-not-established",
     "unlocatedOtherFamilyFindings": 2,
     "lineSensitiveFindingsDropped": 2,
     "byFamily": {
      "pii:global:network-address": {
-      "converted": 24,
-      "excluded": 1
+      "converted": 25,
+      "excluded": 0
      },
      "pii:global:email": {
-      "converted": 43,
-      "excluded": 9
+      "converted": 52,
+      "excluded": 0
      },
      "pii:global:payment-card": {
-      "converted": 103,
-      "excluded": 11
+      "converted": 114,
+      "excluded": 0
      },
      "pii:global:iban": {
-      "converted": 34,
-      "excluded": 9
+      "converted": 43,
+      "excluded": 0
      },
      "pii:us:ssn": {
-      "converted": 13,
-      "excluded": 2
+      "converted": 15,
+      "excluded": 0
      },
      "pii:global:phone": {
-      "converted": 13,
-      "excluded": 4
+      "converted": 17,
+      "excluded": 0
      }
     },
-    "findings": 176,
+    "findings": 177,
     "casesWithSeveralFindings": 0,
-    "excludedIds": [
-     "pii:global:email/email-b-hangul-domain",
-     "pii:global:email/email-b-ko-joined-suffix",
-     "pii:global:email/email-b-leading-dot",
-     "pii:global:email/email-b-nfd-combining",
-     "pii:global:email/email-b-trailing-at",
-     "pii:global:email/email-b-trailing-dot",
-     "pii:global:email/email-f-comment",
-     "pii:global:email/email-f-domain-literal",
-     "pii:global:email/email-f-quoted-local",
-     "pii:global:iban/iban-print-de22-dot",
-     "pii:global:iban/iban-print-de22-double-space",
-     "pii:global:iban/iban-print-de22-groups-of-five",
-     "pii:global:iban/iban-print-de22-hyphen",
-     "pii:global:iban/iban-print-de22-lowercase",
-     "pii:global:iban/iban-print-de22-mixed-case",
-     "pii:global:iban/iban-print-de22-mixed-compact-and-print",
-     "pii:global:iban/iban-print-de22-nbsp",
-     "pii:global:iban/iban-print-de22-tab",
-     "pii:global:network-address/net-p-port-suffix",
-     "pii:global:payment-card/card-layout-amex-grouping-4443",
-     "pii:global:payment-card/card-layout-visa16-dot",
-     "pii:global:payment-card/card-layout-visa16-double-space",
-     "pii:global:payment-card/card-layout-visa16-fullwidth-digits",
-     "pii:global:payment-card/card-layout-visa16-grouping-466",
-     "pii:global:payment-card/card-layout-visa16-masked",
-     "pii:global:payment-card/card-layout-visa16-mixed-separators",
-     "pii:global:payment-card/card-layout-visa16-nbsp",
-     "pii:global:payment-card/card-layout-visa16-tab",
-     "pii:global:payment-card/card-layout-visa16-unicode-hyphen",
-     "pii:global:payment-card/card-layout-visa19-grouping-44443",
-     "pii:global:phone/qp-ext-repeated",
-     "pii:global:phone/qp-ext-repeated-word",
-     "pii:global:phone/qp-ext-seven-digits",
-     "pii:global:phone/qp-ext-x-marker",
-     "pii:us:ssn/qp-twin-identifier-suffix",
-     "pii:us:ssn/qp-twin-unicode-dash"
-    ]
+    "excludedIds": []
+   },
+   "rangeless": {
+    "cases": 36,
+    "located": 230,
+    "byFamily": {
+     "pii:global:email": 9,
+     "pii:global:iban": 9,
+     "pii:global:network-address": 1,
+     "pii:global:payment-card": 11,
+     "pii:global:phone": 4,
+     "pii:us:ssn": 2
+    },
+    "reportedAs": {
+     "typeIdentity": "unresolved",
+     "sensitivityContext": "unresolved",
+     "range": "unresolved",
+     "action": "not-measured"
+    }
    },
    "artifact": {
-    "schemaVersion": "1.2",
-    "publicArtifactSha256": "a74393a00056926b5fc5c637ae603484934f601c27261bf7d3c00cfec14f0b95",
-    "semanticDigest": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
+    "schemaVersion": "1.4",
+    "publicArtifactSha256": "4b51bc0d7d3f45630af003b50516686f9fe20748a025a4d9ce152a18a29c1835",
+    "semanticDigest": "6f41e411e27de75f48b64ac6a66571ed82dc309643b804ac55ac9a95c791fba9",
     "semanticDigestRecomputed": true,
-    "runArtifactDigest": "e9cc187cce5110faff9f63c81e4457a44f272cc84736b2469d0fef2c7b45fb41",
+    "runArtifactDigest": "34d95b7ab076a1e1bb69f164b478135e39f06ff4fd17458e281eb0a3c0cb3f04",
     "validatedAgainstSnapshotAndRoster": true
    },
    "comparisonDetectsInjectedDifferences": true,
@@ -481,15 +431,17 @@
      "typeIdentity": {
       "correct": 176,
       "invalid-correct": 39,
-      "miss": 15
+      "miss": 15,
+      "unresolved": 36
      },
      "sensitivityContext": {
       "correct": 177,
-      "unresolved": 53
+      "unresolved": 89
      },
      "range": {
       "exact": 176,
-      "miss": 54
+      "miss": 54,
+      "unresolved": 36
      }
     },
     "oracleOutcomeStates": {
@@ -512,12 +464,12 @@
     "failures": 0,
     "methodCoverage": [
      {
-      "cases": 230,
+      "cases": 266,
       "method": {
        "id": "schema-only",
        "version": 1
       },
-      "variants": 230
+      "variants": 266
      }
     ]
    },
@@ -532,8 +484,9 @@
     "outcome-compat": 230,
     "population": 2,
     "projection-cell": 6,
-    "projection-control-class-stratum": 11,
+    "projection-control-class-stratum": 18,
     "projection-language-stratum": 12,
+    "range-less-membership": 36,
     "variant": 230,
     "variant-identity": 230
    },
@@ -577,12 +530,12 @@
     "measurable-share": {
      "status": "partial",
      "numerator": 407,
-     "eligible": 460,
-     "effectiveN": 460,
+     "eligible": 532,
+     "effectiveN": 532,
      "rate": {
       "kind": "value",
-      "point": "0.884783",
-      "bound": "0.852365"
+      "point": "0.765038",
+      "bound": "0.727189"
      }
     },
     "non-sensitive-flag-rate": {
@@ -656,12 +609,12 @@
     "requiredViews": [
      "qualification-plan"
     ],
-    "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883",
+    "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293",
     "bindingsEqualToManifest": true,
     "cellsCompared": 6,
     "languageStrataCompared": 12,
-    "controlClassStrataCompared": 11,
-    "oracleRunsBehindTheProjection": 29
+    "controlClassStrataCompared": 18,
+    "oracleRunsBehindTheProjection": 36
    },
    "classifiedDifferences": [
     {
@@ -690,107 +643,75 @@
    "view": "diagnostic-balanced",
    "identities": {
     "populationId": "b11-population-v2-diagnostic-balanced",
-    "snapshotDigest": "4864e3a4f52d9b4119f97314c6cecb8fb780eec9098270977ce34fd7f29022bb",
-    "manifestDigest": "925d56c824f08fc0ef49a1d9f8ea2d272cc1e4a690f9b5ea7238073ea69b4e7c",
-    "observationDigest": "02538a647a9c79ea784cfdbc49bcd16b5d8526e145664063ea93e60910b2194d",
-    "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63",
+    "snapshotDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+    "manifestDigest": "4dd090d3dd4be6c39657703ac49a4a85b275d62e3a3fdf1099d4a083c877a9e2",
+    "observationDigest": "c1c22536d4dc3db2848c513c4c9f2a5bf71e2b3a37516de9a45465e611641961",
+    "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15",
     "inputSha256": "b5d031de01b2d0d0e6f49fef6cd8f9d475661ebdeb14ac64e09de91dc87c9d26",
     "oracleExportSha256": "73e7f1c2bfee55a919ce7deca3d8aa7dc722b4c3a99241d3e01681e06fe0b824"
    },
    "conversion": {
     "view": "diagnostic-balanced",
     "benchmarkCases": 477,
-    "convertedCases": 428,
-    "excludedCases": 49,
+    "convertedCases": 477,
+    "excludedCases": 0,
     "excludedReason": "identity-not-established",
     "unlocatedOtherFamilyFindings": 2,
     "lineSensitiveFindingsDropped": 7,
     "byFamily": {
      "pii:global:network-address": {
-      "converted": 91,
-      "excluded": 6
+      "converted": 97,
+      "excluded": 0
      },
      "pii:global:email": {
-      "converted": 73,
-      "excluded": 13
+      "converted": 86,
+      "excluded": 0
      },
      "pii:global:payment-card": {
-      "converted": 150,
-      "excluded": 11
+      "converted": 161,
+      "excluded": 0
      },
      "pii:global:iban": {
-      "converted": 77,
-      "excluded": 16
+      "converted": 93,
+      "excluded": 0
      },
      "pii:us:ssn": {
-      "converted": 18,
-      "excluded": 1
+      "converted": 19,
+      "excluded": 0
      },
      "pii:global:phone": {
-      "converted": 19,
-      "excluded": 2
+      "converted": 21,
+      "excluded": 0
      }
     },
     "findings": 213,
     "casesWithSeveralFindings": 0,
-    "excludedIds": [
-     "pii:global:email/email-b-hangul-domain",
-     "pii:global:email/email-b-ko-joined-suffix",
-     "pii:global:email/email-b-leading-dot",
-     "pii:global:email/email-b-nfd-combining",
-     "pii:global:email/email-b-trailing-at",
-     "pii:global:email/email-b-trailing-dot",
-     "pii:global:email/email-f-comment",
-     "pii:global:email/email-f-domain-literal",
-     "pii:global:email/email-f-quoted-local",
-     "pii:global:email/email-k-https-userinfo",
-     "pii:global:email/email-k-postgres-url",
-     "pii:global:email/email-k-proxy-url",
-     "pii:global:email/email-k-ssh-url",
-     "pii:global:iban/iban-ko-ref-masked",
-     "pii:global:iban/iban-print-de22-dot",
-     "pii:global:iban/iban-print-de22-double-space",
-     "pii:global:iban/iban-print-de22-groups-of-five",
-     "pii:global:iban/iban-print-de22-hyphen",
-     "pii:global:iban/iban-print-de22-lowercase",
-     "pii:global:iban/iban-print-de22-mixed-case",
-     "pii:global:iban/iban-print-de22-mixed-compact-and-print",
-     "pii:global:iban/iban-print-de22-nbsp",
-     "pii:global:iban/iban-print-de22-tab",
-     "pii:global:iban/iban-ref-angle-at20",
-     "pii:global:iban/iban-ref-env-at20",
-     "pii:global:iban/iban-ref-env-name",
-     "pii:global:iban/iban-ref-masked",
-     "pii:global:iban/iban-ref-mustache-at20",
-     "pii:global:iban/iban-ref-placeholder-x",
-     "pii:global:network-address/net-v-label-version",
-     "pii:global:network-address/net-v-release-upper",
-     "pii:global:network-address/net-v-version-prefix",
-     "pii:global:network-address/net-w-five-octets",
-     "pii:global:network-address/net-w-letter-prefix",
-     "pii:global:network-address/net-w-letter-suffix",
-     "pii:global:payment-card/card-layout-amex-grouping-4443",
-     "pii:global:payment-card/card-layout-visa16-dot",
-     "pii:global:payment-card/card-layout-visa16-double-space",
-     "pii:global:payment-card/card-layout-visa16-fullwidth-digits",
-     "pii:global:payment-card/card-layout-visa16-grouping-466",
-     "pii:global:payment-card/card-layout-visa16-masked",
-     "pii:global:payment-card/card-layout-visa16-mixed-separators",
-     "pii:global:payment-card/card-layout-visa16-nbsp",
-     "pii:global:payment-card/card-layout-visa16-tab",
-     "pii:global:payment-card/card-layout-visa16-unicode-hyphen",
-     "pii:global:payment-card/card-layout-visa19-grouping-44443",
-     "pii:global:phone/db-ext-line-break",
-     "pii:global:phone/db-ext-second-hash",
-     "pii:us:ssn/db-twin-percent-suffix"
-    ]
+    "excludedIds": []
+   },
+   "rangeless": {
+    "cases": 49,
+    "located": 428,
+    "byFamily": {
+     "pii:global:email": 13,
+     "pii:global:iban": 16,
+     "pii:global:network-address": 6,
+     "pii:global:payment-card": 11,
+     "pii:global:phone": 2,
+     "pii:us:ssn": 1
+    },
+    "reportedAs": {
+     "typeIdentity": "unresolved",
+     "sensitivityContext": "unresolved",
+     "range": "unresolved",
+     "action": "not-measured"
+    }
    },
    "artifact": {
-    "schemaVersion": "1.2",
-    "publicArtifactSha256": "482f75af74622976aebf54a2ca00d4273e66eb4db7eb53434d29fcfd0e8402d5",
-    "semanticDigest": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
+    "schemaVersion": "1.4",
+    "publicArtifactSha256": "203b88a8533076327e6380f03bfc7151a6d679427100ea393adb36f885971185",
+    "semanticDigest": "134d30a3c6f9c21f38ae46fdc74c861eae38feeb1cc3ea6c8b171f800a733166",
     "semanticDigestRecomputed": true,
-    "runArtifactDigest": "43ece7e6abcdb1e59493f2e11a00dc28deb95e52239c744bceff83284df9389c",
+    "runArtifactDigest": "a76daa80e14942daff6054ddc636693fb0a5eec575be6645bdb77e4c380e3635",
     "validatedAgainstSnapshotAndRoster": true
    },
    "comparisonDetectsInjectedDifferences": true,
@@ -809,15 +730,17 @@
      "typeIdentity": {
       "correct": 213,
       "invalid-correct": 72,
-      "miss": 143
+      "miss": 143,
+      "unresolved": 49
      },
      "sensitivityContext": {
       "correct": 250,
-      "unresolved": 178
+      "unresolved": 227
      },
      "range": {
       "exact": 213,
-      "miss": 215
+      "miss": 215,
+      "unresolved": 49
      }
     },
     "oracleOutcomeStates": {
@@ -840,12 +763,12 @@
     "failures": 0,
     "methodCoverage": [
      {
-      "cases": 428,
+      "cases": 477,
       "method": {
        "id": "schema-only",
        "version": 1
       },
-      "variants": 428
+      "variants": 477
      }
     ]
    },
@@ -860,8 +783,9 @@
     "outcome-compat": 428,
     "population": 2,
     "projection-cell": 6,
-    "projection-control-class-stratum": 29,
+    "projection-control-class-stratum": 35,
     "projection-language-stratum": 12,
+    "range-less-membership": 49,
     "variant": 428,
     "variant-identity": 428
    },
@@ -905,12 +829,12 @@
     "measurable-share": {
      "status": "partial",
      "numerator": 678,
-     "eligible": 856,
-     "effectiveN": 856,
+     "eligible": 954,
+     "effectiveN": 954,
      "rate": {
       "kind": "value",
-      "point": "0.792056",
-      "bound": "0.763593"
+      "point": "0.710692",
+      "bound": "0.681118"
      }
     },
     "non-sensitive-flag-rate": {
@@ -986,12 +910,12 @@
     "requiredViews": [
      "diagnostic-balanced"
     ],
-    "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63",
+    "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15",
     "bindingsEqualToManifest": true,
     "cellsCompared": 6,
     "languageStrataCompared": 12,
-    "controlClassStrataCompared": 29,
-    "oracleRunsBehindTheProjection": 47
+    "controlClassStrataCompared": 35,
+    "oracleRunsBehindTheProjection": 53
    },
    "classifiedDifferences": [
     {
@@ -1020,78 +944,73 @@
    "view": "benign-heavy-stress",
    "identities": {
     "populationId": "b11-population-v2-benign-heavy-stress",
-    "snapshotDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
-    "manifestDigest": "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64",
-    "observationDigest": "5183c581669e051203f2f0140eec93f65b083d1d8aca0a00c628e274437a8366",
-    "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b",
+    "snapshotDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+    "manifestDigest": "2de68476d08a82605cb882592aad791e453796fe23ddbe427ad58ddd565aff3d",
+    "observationDigest": "d0b7d4b9020a5e4acb708ceb31103f3b8044a1d7db934e87e85883e31bc0bf72",
+    "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b",
     "inputSha256": "b6c3ef36bb50cd0ff03fa209129d8cd074149b2439147bdf70a9bc156958ad02",
     "oracleExportSha256": "05b37a0279e87f33e85a4188abceb28ac8c9de2ab0c1288aea839f3df2ccd22a"
    },
    "conversion": {
     "view": "benign-heavy-stress",
     "benchmarkCases": 299,
-    "convertedCases": 279,
-    "excludedCases": 20,
+    "convertedCases": 299,
+    "excludedCases": 0,
     "excludedReason": "identity-not-established",
     "unlocatedOtherFamilyFindings": 0,
     "lineSensitiveFindingsDropped": 5,
     "byFamily": {
      "pii:global:network-address": {
-      "converted": 74,
-      "excluded": 6
+      "converted": 80,
+      "excluded": 0
      },
      "pii:global:email": {
-      "converted": 47,
-      "excluded": 4
+      "converted": 51,
+      "excluded": 0
      },
      "pii:global:payment-card": {
       "converted": 55,
       "excluded": 0
      },
      "pii:global:iban": {
-      "converted": 43,
-      "excluded": 7
+      "converted": 50,
+      "excluded": 0
      },
      "pii:us:ssn": {
       "converted": 29,
       "excluded": 0
      },
      "pii:global:phone": {
-      "converted": 31,
-      "excluded": 3
+      "converted": 34,
+      "excluded": 0
      }
     },
     "findings": 68,
     "casesWithSeveralFindings": 0,
-    "excludedIds": [
-     "pii:global:email/email-k-https-userinfo",
-     "pii:global:email/email-k-postgres-url",
-     "pii:global:email/email-k-proxy-url",
-     "pii:global:email/email-k-ssh-url",
-     "pii:global:iban/iban-ko-ref-masked",
-     "pii:global:iban/iban-ref-angle-at20",
-     "pii:global:iban/iban-ref-env-at20",
-     "pii:global:iban/iban-ref-env-name",
-     "pii:global:iban/iban-ref-masked",
-     "pii:global:iban/iban-ref-mustache-at20",
-     "pii:global:iban/iban-ref-placeholder-x",
-     "pii:global:network-address/net-v-label-version",
-     "pii:global:network-address/net-v-release-upper",
-     "pii:global:network-address/net-v-version-prefix",
-     "pii:global:network-address/net-w-five-octets",
-     "pii:global:network-address/net-w-letter-prefix",
-     "pii:global:network-address/net-w-letter-suffix",
-     "pii:global:phone/bh-en-dot-display",
-     "pii:global:phone/bh-en-uk-drama-number",
-     "pii:global:phone/bh-ko-unsupported-country-code"
-    ]
+    "excludedIds": []
+   },
+   "rangeless": {
+    "cases": 20,
+    "located": 279,
+    "byFamily": {
+     "pii:global:email": 4,
+     "pii:global:iban": 7,
+     "pii:global:network-address": 6,
+     "pii:global:phone": 3
+    },
+    "reportedAs": {
+     "typeIdentity": "unresolved",
+     "sensitivityContext": "unresolved",
+     "range": "unresolved",
+     "action": "not-measured"
+    }
    },
    "artifact": {
-    "schemaVersion": "1.2",
-    "publicArtifactSha256": "a7ab60db62bdedb714d726ca7e4afb75b9a00e96468ccf04ed34eed34d8c6f39",
-    "semanticDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19",
+    "schemaVersion": "1.4",
+    "publicArtifactSha256": "3a05e89ff36bb001a7036d994f7d5c98d70648846021e34c54f748809ebf6189",
+    "semanticDigest": "a82ac5144a4ae22336cd66318e37a2010ec7a8fc3129233630b130f3df082767",
     "semanticDigestRecomputed": true,
-    "runArtifactDigest": "37f80262960ef4c9aef4749d6b353df340753e1f4af4c0d7649197ac36e9d5e2",
+    "runArtifactDigest": "f4996ce7c60393f592bc797306193af3b3177a2efa79ed5cda7813610964cbeb",
     "validatedAgainstSnapshotAndRoster": true
    },
    "comparisonDetectsInjectedDifferences": true,
@@ -1110,15 +1029,17 @@
      "typeIdentity": {
       "correct": 68,
       "invalid-correct": 32,
-      "miss": 179
+      "miss": 179,
+      "unresolved": 20
      },
      "sensitivityContext": {
       "correct": 115,
-      "unresolved": 164
+      "unresolved": 184
      },
      "range": {
       "exact": 68,
-      "miss": 211
+      "miss": 211,
+      "unresolved": 20
      }
     },
     "oracleOutcomeStates": {
@@ -1141,12 +1062,12 @@
     "failures": 0,
     "methodCoverage": [
      {
-      "cases": 279,
+      "cases": 299,
       "method": {
        "id": "schema-only",
        "version": 1
       },
-      "variants": 279
+      "variants": 299
      }
     ]
    },
@@ -1161,8 +1082,9 @@
     "outcome-compat": 279,
     "population": 2,
     "projection-cell": 6,
-    "projection-control-class-stratum": 32,
+    "projection-control-class-stratum": 35,
     "projection-language-stratum": 12,
+    "range-less-membership": 20,
     "variant": 279,
     "variant-identity": 279
    },
@@ -1206,12 +1128,12 @@
     "measurable-share": {
      "status": "partial",
      "numerator": 394,
-     "eligible": 558,
-     "effectiveN": 558,
+     "eligible": 598,
+     "effectiveN": 598,
      "rate": {
       "kind": "value",
-      "point": "0.706093",
-      "bound": "0.666989"
+      "point": "0.658863",
+      "bound": "0.619958"
      }
     },
     "non-sensitive-flag-rate": {
@@ -1287,12 +1209,12 @@
     "requiredViews": [
      "benign-heavy-stress"
     ],
-    "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b",
+    "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b",
     "bindingsEqualToManifest": true,
     "cellsCompared": 6,
     "languageStrataCompared": 12,
-    "controlClassStrataCompared": 32,
-    "oracleRunsBehindTheProjection": 50
+    "controlClassStrataCompared": 35,
+    "oracleRunsBehindTheProjection": 53
    },
    "classifiedDifferences": [
     {

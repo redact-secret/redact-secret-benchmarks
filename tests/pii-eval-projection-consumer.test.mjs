@@ -28,8 +28,8 @@ test('the four benchmark populations are accepted with their projections, separa
   assert.deepEqual(report.rejections, []);
   assert.deepEqual(report.populations.map(row => row.label), views);
   for (const population of report.populations) {
-    assert.equal(population.schemaVersion, '1.2');
-    assert.equal(population.unavailable, undefined, 'a 1.2 artifact has nothing to mark unavailable');
+    assert.equal(population.schemaVersion, '1.4');
+    assert.equal(population.unavailable, undefined, 'a 1.4 artifact has nothing to mark unavailable');
     assert.deepEqual(population.productProjection.requiredViews, [population.label]);
     assert.ok(population.productProjection.rows.every(row => row.mode === 'exploratory' && row.view === population.label));
     assert.equal(population.productProjection.rows.reduce((n, row) => n + row.counts.authoredCases, 0), population.populationCounts.authoredCases);

@@ -17,7 +17,7 @@ test('PII migration pins the four product populations separately and changes no 
   assert.equal(new Set(record.benchmarkPopulations.plans.map(row => row.family)).size, 6);
   assert.equal(record.upstreamParity.compatibilityDifferences, 0);
   assert.equal(record.upstreamParity.canonicalClassifications.unexplained, 0);
-  assert.equal(record.acceptance.benchmarkPopulationDualRun, 'accepted-representable-cases');
+  assert.equal(record.acceptance.benchmarkPopulationDualRun, 'accepted');
   const { stdout } = await promisify(execFile)(process.execPath, ['scripts/check-pii-eval-migration.mjs']);
   assert.match(stdout, /consistent/);
 });
@@ -32,7 +32,7 @@ test('the dual run has zero unexplained differences and says exactly what it did
   for (const p of report.populations) {
     assert.equal(p.conversion.convertedCases + p.conversion.excludedCases, p.conversion.benchmarkCases);
     assert.equal(p.unexplained, 0);
-    assert.equal(p.artifact.schemaVersion, '1.2');
+    assert.equal(p.artifact.schemaVersion, '1.4');
     assert.equal(p.artifact.semanticDigestRecomputed, true);
     assert.equal(p.artifact.validatedAgainstSnapshotAndRoster, true);
     assert.equal(p.projection.mode, 'exploratory');
@@ -40,6 +40,8 @@ test('the dual run has zero unexplained differences and says exactly what it did
     assert.equal(p.comparisonDetectsInjectedDifferences, true);
   }
   assert.equal(dual.coverage.carriedCases + dual.coverage.notRepresentableCases, dual.coverage.benchmarkCases);
+  assert.equal(dual.coverage.notRepresentableCases, 0);
+  assert.equal(dual.coverage.locatedCases + dual.coverage.unresolvedRangeCases, dual.coverage.carriedCases);
   assert.equal(record.acceptance.residual.notRepresentableCases, dual.coverage.notRepresentableCases);
 });
 
@@ -75,7 +77,7 @@ test('the conversion is deterministic, keeps populations separate and never inve
     assert.deepEqual(digests[0], digests[1]);
     assert.equal(bucket.cases.length + bucket.excluded.length, record.benchmarkPopulations.views[index].cases);
     assert.ok(bucket.excluded.every(row => row.reason === 'identity-not-established'));
-    assert.ok(bucket.cases.every(row => row.type === 'valid' || row.type === 'invalid'));
+    assert.ok(bucket.cases.every(row => (row.rangeless ? row.type === 'not-established' && row.candidate === null && row.sensitivity === 'not-established' : row.type === 'valid' || row.type === 'invalid')));
     assert.equal(new Set(bucket.cases.map(row => row.id)).size, bucket.cases.length);
     const input = oracleInput(bucket);
     assert.equal(input.population.visibility, 'public-synthetic');
@@ -96,10 +98,10 @@ test('the Markdown report is the rendering of the record and the record holds no
   }
 });
 
-test('the checked-in artifacts are the 1.2 projection of the pinned populations only', () => {
+test('the checked-in artifacts are the 1.4 projection of the pinned populations only', () => {
   for (const item of dual.artifacts) {
     const artifact = JSON.parse(read(item.path));
-    assert.equal(artifact.schemaVersion, '1.2');
+    assert.equal(artifact.schemaVersion, '1.4');
     assert.equal(artifact.semantic.runClass, 'public-synthetic');
     assert.equal(artifact.semantic.population.visibility, 'public-synthetic');
     assert.deepEqual(artifact.semantic.productProjection.requiredViews, [item.view]);

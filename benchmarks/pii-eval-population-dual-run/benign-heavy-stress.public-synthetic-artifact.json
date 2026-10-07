@@ -1,6 +1,6 @@
 {
   "schema": "pii-eval.public-synthetic-artifact",
-  "schemaVersion": "1.2",
+  "schemaVersion": "1.4",
   "semantic": {
     "completeness": "complete",
     "engine": {
@@ -8,7 +8,7 @@
       "version": "0.0.0"
     },
     "failures": [],
-    "manifestDigest": "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64",
+    "manifestDigest": "2de68476d08a82605cb882592aad791e453796fe23ddbe427ad58ddd565aff3d",
     "mechanics": {
       "intervalPrecision": 6,
       "intervalZ": {
@@ -20,12 +20,12 @@
     },
     "methodCoverage": [
       {
-        "cases": 279,
+        "cases": 299,
         "method": {
           "id": "schema-only",
           "version": 1
         },
-        "variants": 279
+        "variants": 299
       }
     ],
     "outcomes": [
@@ -1041,6 +1041,58 @@
       },
       {
         "action": {
+          "state": "not-measured"
+        },
+        "caseId": "email-email-k-https-userinfo",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-8f2fe9a365902077a7578bfb"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "email-email-k-postgres-url",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-f240fd5cac42b4be4f2f4945"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "email-email-k-proxy-url",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-6158b0a9362a3d220bb151db"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "email-email-k-ssh-url",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-3b5d2db02c473b6968327599"
+      },
+      {
+        "action": {
           "state": "no-action-reported"
         },
         "caseId": "email-email-m-mailto",
@@ -1578,6 +1630,19 @@
       },
       {
         "action": {
+          "state": "not-measured"
+        },
+        "caseId": "iban-iban-ko-ref-masked",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-9702e91a29df44385f2248f4"
+      },
+      {
+        "action": {
           "state": "no-action-reported"
         },
         "caseId": "iban-iban-lookalike-de21-short",
@@ -1809,6 +1874,84 @@
         "sensitivityContext": "unresolved",
         "typeIdentity": "invalid-correct",
         "variantId": "authored-d80fa795440d89529c87753b"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "iban-iban-ref-angle-at20",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-9979ae6450d188161ced4c33"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "iban-iban-ref-env-at20",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-9a9daea45291e56725d1c88d"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "iban-iban-ref-env-name",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-7c5612f0a1b35a799fbe2196"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "iban-iban-ref-masked",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-aa1e1d17b2ed2c78525dc470"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "iban-iban-ref-mustache-at20",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-de1d8545febdc831b01a36e8"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "iban-iban-ref-placeholder-x",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-9ac2ca3d9ecf0cb9470bde94"
       },
       {
         "action": {
@@ -2932,6 +3075,84 @@
       },
       {
         "action": {
+          "state": "not-measured"
+        },
+        "caseId": "network-net-v-label-version",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-2a5bee5f131dc73314eff23f"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "network-net-v-release-upper",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-74c973e0144d1c0825842b76"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "network-net-v-version-prefix",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-08bcf7bec4d222902de2eca7"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "network-net-w-five-octets",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-0823b9aa64afd50929345748"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "network-net-w-letter-prefix",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-807a4ac1959b68552577145d"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "network-net-w-letter-suffix",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-70f2233ff1d7cdfb79547e80"
+      },
+      {
+        "action": {
           "state": "no-action-reported"
         },
         "caseId": "phone-b428-compact-555-twin",
@@ -3092,6 +3313,19 @@
       },
       {
         "action": {
+          "state": "not-measured"
+        },
+        "caseId": "phone-bh-en-dot-display",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-2856e9660d99ea7051a587c1"
+      },
+      {
+        "action": {
           "state": "no-action-reported"
         },
         "caseId": "phone-bh-en-example-label",
@@ -3194,6 +3428,19 @@
         "sensitivityContext": "unresolved",
         "typeIdentity": "miss",
         "variantId": "authored-b8b019274e511c2de6dabdc6"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "phone-bh-en-uk-drama-number",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-4d00314f1deba885b6e76b91"
       },
       {
         "action": {
@@ -3313,6 +3560,19 @@
         "sensitivityContext": "unresolved",
         "typeIdentity": "miss",
         "variantId": "authored-11b908a6d7c4b381e41deb1a"
+      },
+      {
+        "action": {
+          "state": "not-measured"
+        },
+        "caseId": "phone-bh-ko-unsupported-country-code",
+        "method": "schema-only",
+        "occurrenceId": "occurrence-1",
+        "range": "unresolved",
+        "scannerId": "redact-secret-core",
+        "sensitivityContext": "unresolved",
+        "typeIdentity": "unresolved",
+        "variantId": "authored-0314d863b9ddfa2091caf11d"
       },
       {
         "action": {
@@ -3726,28 +3986,28 @@
       }
     ],
     "population": {
-      "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+      "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
       "populationId": "b11-population-v2-benign-heavy-stress",
       "populationVersion": 1,
       "visibility": "public-synthetic"
     },
     "populationCounts": {
-      "authoredCases": 279,
-      "occurrences": 279,
-      "variants": 279
+      "authoredCases": 299,
+      "occurrences": 299,
+      "variants": 299
     },
     "productProjection": {
       "requiredViews": [
         "benign-heavy-stress"
       ],
-      "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b",
+      "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b",
       "rows": [
         {
           "binding": {
             "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
             "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
             "population": {
-              "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+              "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
               "populationId": "b11-population-v2-benign-heavy-stress",
               "populationVersion": 1,
               "visibility": "public-synthetic"
@@ -3762,19 +4022,19 @@
             {
               "controlClass": "collision",
               "counts": {
-                "authoredCases": 4,
-                "occurrences": 4,
-                "variants": 4
+                "authoredCases": 8,
+                "occurrences": 8,
+                "variants": 8
               },
               "metrics": [
                 {
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 4,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -3813,10 +4073,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 4,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -3832,15 +4092,15 @@
                 },
                 {
                   "counts": {
-                    "eligible": 8,
+                    "eligible": 16,
                     "measured": 4,
                     "notApplicable": 0,
                     "notMeasured": 0,
                     "numerator": 4,
-                    "total": 8,
-                    "unresolved": 4
+                    "total": 16,
+                    "unresolved": 12
                   },
-                  "effectiveN": 8,
+                  "effectiveN": 16,
                   "metric": {
                     "id": "measurable-share",
                     "version": 1
@@ -3848,12 +4108,12 @@
                   "status": "partial",
                   "value": {
                     "bound": {
-                      "mantissa": 215213,
+                      "mantissa": 101819,
                       "scale": 6
                     },
                     "point": {
-                      "mantissa": 5,
-                      "scale": 1
+                      "mantissa": 25,
+                      "scale": 2
                     },
                     "state": "measured"
                   }
@@ -3862,10 +4122,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 4,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -3883,10 +4143,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 4,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -3904,10 +4164,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 4,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -3925,10 +4185,10 @@
                   "counts": {
                     "eligible": 4,
                     "measured": 4,
-                    "notApplicable": 0,
+                    "notApplicable": 4,
                     "notMeasured": 0,
                     "numerator": 4,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 4,
@@ -3953,10 +4213,10 @@
                   "counts": {
                     "eligible": 4,
                     "measured": 4,
-                    "notApplicable": 0,
+                    "notApplicable": 4,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 4,
@@ -3981,10 +4241,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 4,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 4,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -4734,9 +4994,9 @@
           "byLanguage": [
             {
               "counts": {
-                "authoredCases": 39,
-                "occurrences": 39,
-                "variants": 39
+                "authoredCases": 43,
+                "occurrences": 43,
+                "variants": 43
               },
               "language": "en",
               "metrics": [
@@ -4744,10 +5004,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 39,
+                    "notApplicable": 43,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -4786,10 +5046,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 39,
+                    "notApplicable": 43,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -4805,15 +5065,15 @@
                 },
                 {
                   "counts": {
-                    "eligible": 78,
+                    "eligible": 86,
                     "measured": 60,
                     "notApplicable": 0,
                     "notMeasured": 0,
                     "numerator": 60,
-                    "total": 78,
-                    "unresolved": 18
+                    "total": 86,
+                    "unresolved": 26
                   },
-                  "effectiveN": 78,
+                  "effectiveN": 86,
                   "metric": {
                     "id": "measurable-share",
                     "version": 1
@@ -4821,11 +5081,11 @@
                   "status": "partial",
                   "value": {
                     "bound": {
-                      "mantissa": 66444,
-                      "scale": 5
+                      "mantissa": 593878,
+                      "scale": 6
                     },
                     "point": {
-                      "mantissa": 769231,
+                      "mantissa": 697674,
                       "scale": 6
                     },
                     "state": "measured"
@@ -4835,10 +5095,10 @@
                   "counts": {
                     "eligible": 11,
                     "measured": 11,
-                    "notApplicable": 28,
+                    "notApplicable": 32,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 11,
@@ -4863,10 +5123,10 @@
                   "counts": {
                     "eligible": 10,
                     "measured": 10,
-                    "notApplicable": 29,
+                    "notApplicable": 33,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 10,
@@ -4891,10 +5151,10 @@
                   "counts": {
                     "eligible": 10,
                     "measured": 10,
-                    "notApplicable": 29,
+                    "notApplicable": 33,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 10,
@@ -4919,10 +5179,10 @@
                   "counts": {
                     "eligible": 39,
                     "measured": 39,
-                    "notApplicable": 0,
+                    "notApplicable": 4,
                     "notMeasured": 0,
                     "numerator": 29,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 39,
@@ -4947,10 +5207,10 @@
                   "counts": {
                     "eligible": 39,
                     "measured": 39,
-                    "notApplicable": 0,
+                    "notApplicable": 4,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 39,
@@ -4975,10 +5235,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 39,
+                    "notApplicable": 43,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 39,
+                    "total": 43,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -5237,19 +5497,19 @@
             }
           ],
           "counts": {
-            "authoredCases": 47,
-            "occurrences": 47,
-            "variants": 47
+            "authoredCases": 51,
+            "occurrences": 51,
+            "variants": 51
           },
           "family": "pii:global:email",
           "methodCoverage": [
             {
-              "cases": 47,
+              "cases": 51,
               "method": {
                 "id": "schema-only",
                 "version": 1
               },
-              "variants": 47
+              "variants": 51
             }
           ],
           "metrics": [
@@ -5257,10 +5517,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 47,
+                "notApplicable": 51,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -5299,10 +5559,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 47,
+                "notApplicable": 51,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -5318,15 +5578,15 @@
             },
             {
               "counts": {
-                "eligible": 94,
+                "eligible": 102,
                 "measured": 70,
                 "notApplicable": 0,
                 "notMeasured": 0,
                 "numerator": 70,
-                "total": 94,
-                "unresolved": 24
+                "total": 102,
+                "unresolved": 32
               },
-              "effectiveN": 94,
+              "effectiveN": 102,
               "metric": {
                 "id": "measurable-share",
                 "version": 1
@@ -5334,11 +5594,11 @@
               "status": "partial",
               "value": {
                 "bound": {
-                  "mantissa": 64814,
-                  "scale": 5
+                  "mantissa": 590855,
+                  "scale": 6
                 },
                 "point": {
-                  "mantissa": 744681,
+                  "mantissa": 686275,
                   "scale": 6
                 },
                 "state": "measured"
@@ -5348,10 +5608,10 @@
               "counts": {
                 "eligible": 11,
                 "measured": 11,
-                "notApplicable": 36,
+                "notApplicable": 40,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 11,
@@ -5376,10 +5636,10 @@
               "counts": {
                 "eligible": 12,
                 "measured": 12,
-                "notApplicable": 35,
+                "notApplicable": 39,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 12,
@@ -5404,10 +5664,10 @@
               "counts": {
                 "eligible": 12,
                 "measured": 12,
-                "notApplicable": 35,
+                "notApplicable": 39,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 12,
@@ -5432,10 +5692,10 @@
               "counts": {
                 "eligible": 47,
                 "measured": 47,
-                "notApplicable": 0,
+                "notApplicable": 4,
                 "notMeasured": 0,
                 "numerator": 35,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 47,
@@ -5460,10 +5720,10 @@
               "counts": {
                 "eligible": 47,
                 "measured": 47,
-                "notApplicable": 0,
+                "notApplicable": 4,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 47,
@@ -5488,10 +5748,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 47,
+                "notApplicable": 51,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 47,
+                "total": 51,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -5514,7 +5774,7 @@
             "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
             "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
             "population": {
-              "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+              "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
               "populationId": "b11-population-v2-benign-heavy-stress",
               "populationVersion": 1,
               "visibility": "public-synthetic"
@@ -6688,791 +6948,9 @@
                   }
                 }
               ]
-            }
-          ],
-          "byLanguage": [
-            {
-              "counts": {
-                "authoredCases": 38,
-                "occurrences": 38,
-                "variants": 38
-              },
-              "language": "en",
-              "metrics": [
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 38,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "benign-suppression-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 0,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 0,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "context-discrimination-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 38,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "jurisdiction-collision-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 76,
-                    "measured": 42,
-                    "notApplicable": 0,
-                    "notMeasured": 0,
-                    "numerator": 42,
-                    "total": 76,
-                    "unresolved": 34
-                  },
-                  "effectiveN": 76,
-                  "metric": {
-                    "id": "measurable-share",
-                    "version": 1
-                  },
-                  "status": "partial",
-                  "value": {
-                    "bound": {
-                      "mantissa": 441003,
-                      "scale": 6
-                    },
-                    "point": {
-                      "mantissa": 552632,
-                      "scale": 6
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 38,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "non-sensitive-flag-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 4,
-                    "measured": 4,
-                    "notApplicable": 34,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 4,
-                  "metric": {
-                    "id": "range-collateral-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "bound": {
-                      "mantissa": 4899,
-                      "scale": 4
-                    },
-                    "point": {
-                      "mantissa": 0,
-                      "scale": 0
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 4,
-                    "measured": 4,
-                    "notApplicable": 34,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 4,
-                  "metric": {
-                    "id": "sensitive-miss-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "bound": {
-                      "mantissa": 4899,
-                      "scale": 4
-                    },
-                    "point": {
-                      "mantissa": 0,
-                      "scale": 0
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 20,
-                    "measured": 20,
-                    "notApplicable": 18,
-                    "notMeasured": 0,
-                    "numerator": 16,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 20,
-                  "metric": {
-                    "id": "type-miss-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "bound": {
-                      "mantissa": 919344,
-                      "scale": 6
-                    },
-                    "point": {
-                      "mantissa": 8,
-                      "scale": 1
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 20,
-                    "measured": 20,
-                    "notApplicable": 18,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 20,
-                  "metric": {
-                    "id": "wrong-family-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "bound": {
-                      "mantissa": 16113,
-                      "scale": 5
-                    },
-                    "point": {
-                      "mantissa": 0,
-                      "scale": 0
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 38,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 38,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "wrong-jurisdiction-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                }
-              ]
             },
             {
-              "counts": {
-                "authoredCases": 5,
-                "occurrences": 5,
-                "variants": 5
-              },
-              "language": "ko",
-              "metrics": [
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 5,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "benign-suppression-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 0,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 0,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "context-discrimination-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 5,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "jurisdiction-collision-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 10,
-                    "measured": 6,
-                    "notApplicable": 0,
-                    "notMeasured": 0,
-                    "numerator": 6,
-                    "total": 10,
-                    "unresolved": 4
-                  },
-                  "effectiveN": 10,
-                  "metric": {
-                    "id": "measurable-share",
-                    "version": 1
-                  },
-                  "status": "partial",
-                  "value": {
-                    "bound": {
-                      "mantissa": 31267,
-                      "scale": 5
-                    },
-                    "point": {
-                      "mantissa": 6,
-                      "scale": 1
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 5,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "non-sensitive-flag-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 1,
-                    "measured": 1,
-                    "notApplicable": 4,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 1,
-                  "metric": {
-                    "id": "range-collateral-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "reason": "insufficient-evidence",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 1,
-                    "measured": 1,
-                    "notApplicable": 4,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 1,
-                  "metric": {
-                    "id": "sensitive-miss-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "reason": "insufficient-evidence",
-                    "state": "withheld"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 5,
-                    "measured": 5,
-                    "notApplicable": 0,
-                    "notMeasured": 0,
-                    "numerator": 4,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 5,
-                  "metric": {
-                    "id": "type-miss-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "bound": {
-                      "mantissa": 963777,
-                      "scale": 6
-                    },
-                    "point": {
-                      "mantissa": 8,
-                      "scale": 1
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 5,
-                    "measured": 5,
-                    "notApplicable": 0,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 5,
-                  "metric": {
-                    "id": "wrong-family-rate",
-                    "version": 1
-                  },
-                  "status": "measured",
-                  "value": {
-                    "bound": {
-                      "mantissa": 434491,
-                      "scale": 6
-                    },
-                    "point": {
-                      "mantissa": 0,
-                      "scale": 0
-                    },
-                    "state": "measured"
-                  }
-                },
-                {
-                  "counts": {
-                    "eligible": 0,
-                    "measured": 0,
-                    "notApplicable": 5,
-                    "notMeasured": 0,
-                    "numerator": 0,
-                    "total": 5,
-                    "unresolved": 0
-                  },
-                  "effectiveN": 0,
-                  "metric": {
-                    "id": "wrong-jurisdiction-rate",
-                    "version": 1
-                  },
-                  "status": "not-applicable",
-                  "value": {
-                    "reason": "zero-denominator",
-                    "state": "withheld"
-                  }
-                }
-              ]
-            }
-          ],
-          "counts": {
-            "authoredCases": 43,
-            "occurrences": 43,
-            "variants": 43
-          },
-          "family": "pii:global:iban",
-          "methodCoverage": [
-            {
-              "cases": 43,
-              "method": {
-                "id": "schema-only",
-                "version": 1
-              },
-              "variants": 43
-            }
-          ],
-          "metrics": [
-            {
-              "counts": {
-                "eligible": 0,
-                "measured": 0,
-                "notApplicable": 43,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 0,
-              "metric": {
-                "id": "benign-suppression-rate",
-                "version": 1
-              },
-              "status": "not-applicable",
-              "value": {
-                "reason": "zero-denominator",
-                "state": "withheld"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 0,
-                "measured": 0,
-                "notApplicable": 0,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 0,
-                "unresolved": 0
-              },
-              "effectiveN": 0,
-              "metric": {
-                "id": "context-discrimination-rate",
-                "version": 1
-              },
-              "status": "not-applicable",
-              "value": {
-                "reason": "zero-denominator",
-                "state": "withheld"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 0,
-                "measured": 0,
-                "notApplicable": 43,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 0,
-              "metric": {
-                "id": "jurisdiction-collision-rate",
-                "version": 1
-              },
-              "status": "not-applicable",
-              "value": {
-                "reason": "zero-denominator",
-                "state": "withheld"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 86,
-                "measured": 48,
-                "notApplicable": 0,
-                "notMeasured": 0,
-                "numerator": 48,
-                "total": 86,
-                "unresolved": 38
-              },
-              "effectiveN": 86,
-              "metric": {
-                "id": "measurable-share",
-                "version": 1
-              },
-              "status": "partial",
-              "value": {
-                "bound": {
-                  "mantissa": 452933,
-                  "scale": 6
-                },
-                "point": {
-                  "mantissa": 55814,
-                  "scale": 5
-                },
-                "state": "measured"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 0,
-                "measured": 0,
-                "notApplicable": 43,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 0,
-              "metric": {
-                "id": "non-sensitive-flag-rate",
-                "version": 1
-              },
-              "status": "not-applicable",
-              "value": {
-                "reason": "zero-denominator",
-                "state": "withheld"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 5,
-                "measured": 5,
-                "notApplicable": 38,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 5,
-              "metric": {
-                "id": "range-collateral-rate",
-                "version": 1
-              },
-              "status": "measured",
-              "value": {
-                "bound": {
-                  "mantissa": 434491,
-                  "scale": 6
-                },
-                "point": {
-                  "mantissa": 0,
-                  "scale": 0
-                },
-                "state": "measured"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 5,
-                "measured": 5,
-                "notApplicable": 38,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 5,
-              "metric": {
-                "id": "sensitive-miss-rate",
-                "version": 1
-              },
-              "status": "measured",
-              "value": {
-                "bound": {
-                  "mantissa": 434491,
-                  "scale": 6
-                },
-                "point": {
-                  "mantissa": 0,
-                  "scale": 0
-                },
-                "state": "measured"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 25,
-                "measured": 25,
-                "notApplicable": 18,
-                "notMeasured": 0,
-                "numerator": 20,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 25,
-              "metric": {
-                "id": "type-miss-rate",
-                "version": 1
-              },
-              "status": "measured",
-              "value": {
-                "bound": {
-                  "mantissa": 911395,
-                  "scale": 6
-                },
-                "point": {
-                  "mantissa": 8,
-                  "scale": 1
-                },
-                "state": "measured"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 25,
-                "measured": 25,
-                "notApplicable": 18,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 25,
-              "metric": {
-                "id": "wrong-family-rate",
-                "version": 1
-              },
-              "status": "measured",
-              "value": {
-                "bound": {
-                  "mantissa": 133196,
-                  "scale": 6
-                },
-                "point": {
-                  "mantissa": 0,
-                  "scale": 0
-                },
-                "state": "measured"
-              }
-            },
-            {
-              "counts": {
-                "eligible": 0,
-                "measured": 0,
-                "notApplicable": 43,
-                "notMeasured": 0,
-                "numerator": 0,
-                "total": 43,
-                "unresolved": 0
-              },
-              "effectiveN": 0,
-              "metric": {
-                "id": "wrong-jurisdiction-rate",
-                "version": 1
-              },
-              "status": "not-applicable",
-              "value": {
-                "reason": "zero-denominator",
-                "state": "withheld"
-              }
-            }
-          ],
-          "mode": "exploratory",
-          "view": "benign-heavy-stress"
-        },
-        {
-          "binding": {
-            "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
-            "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
-            "population": {
-              "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
-              "populationId": "b11-population-v2-benign-heavy-stress",
-              "populationVersion": 1,
-              "visibility": "public-synthetic"
-            },
-            "product": {
-              "candidateDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
-              "kind": "candidate"
-            },
-            "scannerId": "redact-secret-core"
-          },
-          "byControlClass": [
-            {
-              "controlClass": "collision",
+              "controlClass": "placeholder",
               "counts": {
                 "authoredCases": 7,
                 "occurrences": 7,
@@ -7545,27 +7023,27 @@
                 {
                   "counts": {
                     "eligible": 14,
-                    "measured": 7,
+                    "measured": 0,
                     "notApplicable": 0,
                     "notMeasured": 0,
-                    "numerator": 7,
+                    "numerator": 0,
                     "total": 14,
-                    "unresolved": 7
+                    "unresolved": 14
                   },
                   "effectiveN": 14,
                   "metric": {
                     "id": "measurable-share",
                     "version": 1
                   },
-                  "status": "partial",
+                  "status": "unresolved",
                   "value": {
                     "bound": {
-                      "mantissa": 267989,
-                      "scale": 6
+                      "mantissa": 0,
+                      "scale": 0
                     },
                     "point": {
-                      "mantissa": 5,
-                      "scale": 1
+                      "mantissa": 0,
+                      "scale": 0
                     },
                     "state": "measured"
                   }
@@ -7635,12 +7113,1021 @@
                 },
                 {
                   "counts": {
-                    "eligible": 7,
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 7,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 7,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "type-miss-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 7,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 7,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-family-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 7,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 7,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-jurisdiction-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                }
+              ]
+            }
+          ],
+          "byLanguage": [
+            {
+              "counts": {
+                "authoredCases": 44,
+                "occurrences": 44,
+                "variants": 44
+              },
+              "language": "en",
+              "metrics": [
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 44,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "benign-suppression-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 0,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "context-discrimination-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 44,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "jurisdiction-collision-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 88,
+                    "measured": 42,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 42,
+                    "total": 88,
+                    "unresolved": 46
+                  },
+                  "effectiveN": 88,
+                  "metric": {
+                    "id": "measurable-share",
+                    "version": 1
+                  },
+                  "status": "partial",
+                  "value": {
+                    "bound": {
+                      "mantissa": 376065,
+                      "scale": 6
+                    },
+                    "point": {
+                      "mantissa": 477273,
+                      "scale": 6
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 44,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "non-sensitive-flag-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 4,
+                    "measured": 4,
+                    "notApplicable": 40,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 4,
+                  "metric": {
+                    "id": "range-collateral-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "bound": {
+                      "mantissa": 4899,
+                      "scale": 4
+                    },
+                    "point": {
+                      "mantissa": 0,
+                      "scale": 0
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 4,
+                    "measured": 4,
+                    "notApplicable": 40,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 4,
+                  "metric": {
+                    "id": "sensitive-miss-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "bound": {
+                      "mantissa": 4899,
+                      "scale": 4
+                    },
+                    "point": {
+                      "mantissa": 0,
+                      "scale": 0
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 20,
+                    "measured": 20,
+                    "notApplicable": 24,
+                    "notMeasured": 0,
+                    "numerator": 16,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 20,
+                  "metric": {
+                    "id": "type-miss-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "bound": {
+                      "mantissa": 919344,
+                      "scale": 6
+                    },
+                    "point": {
+                      "mantissa": 8,
+                      "scale": 1
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 20,
+                    "measured": 20,
+                    "notApplicable": 24,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 20,
+                  "metric": {
+                    "id": "wrong-family-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "bound": {
+                      "mantissa": 16113,
+                      "scale": 5
+                    },
+                    "point": {
+                      "mantissa": 0,
+                      "scale": 0
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 44,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 44,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-jurisdiction-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                }
+              ]
+            },
+            {
+              "counts": {
+                "authoredCases": 6,
+                "occurrences": 6,
+                "variants": 6
+              },
+              "language": "ko",
+              "metrics": [
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 6,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "benign-suppression-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 0,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "context-discrimination-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 6,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "jurisdiction-collision-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 12,
+                    "measured": 6,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 6,
+                    "total": 12,
+                    "unresolved": 6
+                  },
+                  "effectiveN": 12,
+                  "metric": {
+                    "id": "measurable-share",
+                    "version": 1
+                  },
+                  "status": "partial",
+                  "value": {
+                    "bound": {
+                      "mantissa": 253778,
+                      "scale": 6
+                    },
+                    "point": {
+                      "mantissa": 5,
+                      "scale": 1
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 6,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "non-sensitive-flag-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 1,
+                    "measured": 1,
+                    "notApplicable": 5,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 1,
+                  "metric": {
+                    "id": "range-collateral-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "reason": "insufficient-evidence",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 1,
+                    "measured": 1,
+                    "notApplicable": 5,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 1,
+                  "metric": {
+                    "id": "sensitive-miss-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "reason": "insufficient-evidence",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 5,
+                    "measured": 5,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 4,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 5,
+                  "metric": {
+                    "id": "type-miss-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "bound": {
+                      "mantissa": 963777,
+                      "scale": 6
+                    },
+                    "point": {
+                      "mantissa": 8,
+                      "scale": 1
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 5,
+                    "measured": 5,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 5,
+                  "metric": {
+                    "id": "wrong-family-rate",
+                    "version": 1
+                  },
+                  "status": "measured",
+                  "value": {
+                    "bound": {
+                      "mantissa": 434491,
+                      "scale": 6
+                    },
+                    "point": {
+                      "mantissa": 0,
+                      "scale": 0
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 6,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 6,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-jurisdiction-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                }
+              ]
+            }
+          ],
+          "counts": {
+            "authoredCases": 50,
+            "occurrences": 50,
+            "variants": 50
+          },
+          "family": "pii:global:iban",
+          "methodCoverage": [
+            {
+              "cases": 50,
+              "method": {
+                "id": "schema-only",
+                "version": 1
+              },
+              "variants": 50
+            }
+          ],
+          "metrics": [
+            {
+              "counts": {
+                "eligible": 0,
+                "measured": 0,
+                "notApplicable": 50,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 0,
+              "metric": {
+                "id": "benign-suppression-rate",
+                "version": 1
+              },
+              "status": "not-applicable",
+              "value": {
+                "reason": "zero-denominator",
+                "state": "withheld"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 0,
+                "measured": 0,
+                "notApplicable": 0,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 0,
+                "unresolved": 0
+              },
+              "effectiveN": 0,
+              "metric": {
+                "id": "context-discrimination-rate",
+                "version": 1
+              },
+              "status": "not-applicable",
+              "value": {
+                "reason": "zero-denominator",
+                "state": "withheld"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 0,
+                "measured": 0,
+                "notApplicable": 50,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 0,
+              "metric": {
+                "id": "jurisdiction-collision-rate",
+                "version": 1
+              },
+              "status": "not-applicable",
+              "value": {
+                "reason": "zero-denominator",
+                "state": "withheld"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 100,
+                "measured": 48,
+                "notApplicable": 0,
+                "notMeasured": 0,
+                "numerator": 48,
+                "total": 100,
+                "unresolved": 52
+              },
+              "effectiveN": 100,
+              "metric": {
+                "id": "measurable-share",
+                "version": 1
+              },
+              "status": "partial",
+              "value": {
+                "bound": {
+                  "mantissa": 384644,
+                  "scale": 6
+                },
+                "point": {
+                  "mantissa": 48,
+                  "scale": 2
+                },
+                "state": "measured"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 0,
+                "measured": 0,
+                "notApplicable": 50,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 0,
+              "metric": {
+                "id": "non-sensitive-flag-rate",
+                "version": 1
+              },
+              "status": "not-applicable",
+              "value": {
+                "reason": "zero-denominator",
+                "state": "withheld"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 5,
+                "measured": 5,
+                "notApplicable": 45,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 5,
+              "metric": {
+                "id": "range-collateral-rate",
+                "version": 1
+              },
+              "status": "measured",
+              "value": {
+                "bound": {
+                  "mantissa": 434491,
+                  "scale": 6
+                },
+                "point": {
+                  "mantissa": 0,
+                  "scale": 0
+                },
+                "state": "measured"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 5,
+                "measured": 5,
+                "notApplicable": 45,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 5,
+              "metric": {
+                "id": "sensitive-miss-rate",
+                "version": 1
+              },
+              "status": "measured",
+              "value": {
+                "bound": {
+                  "mantissa": 434491,
+                  "scale": 6
+                },
+                "point": {
+                  "mantissa": 0,
+                  "scale": 0
+                },
+                "state": "measured"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 25,
+                "measured": 25,
+                "notApplicable": 25,
+                "notMeasured": 0,
+                "numerator": 20,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 25,
+              "metric": {
+                "id": "type-miss-rate",
+                "version": 1
+              },
+              "status": "measured",
+              "value": {
+                "bound": {
+                  "mantissa": 911395,
+                  "scale": 6
+                },
+                "point": {
+                  "mantissa": 8,
+                  "scale": 1
+                },
+                "state": "measured"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 25,
+                "measured": 25,
+                "notApplicable": 25,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 25,
+              "metric": {
+                "id": "wrong-family-rate",
+                "version": 1
+              },
+              "status": "measured",
+              "value": {
+                "bound": {
+                  "mantissa": 133196,
+                  "scale": 6
+                },
+                "point": {
+                  "mantissa": 0,
+                  "scale": 0
+                },
+                "state": "measured"
+              }
+            },
+            {
+              "counts": {
+                "eligible": 0,
+                "measured": 0,
+                "notApplicable": 50,
+                "notMeasured": 0,
+                "numerator": 0,
+                "total": 50,
+                "unresolved": 0
+              },
+              "effectiveN": 0,
+              "metric": {
+                "id": "wrong-jurisdiction-rate",
+                "version": 1
+              },
+              "status": "not-applicable",
+              "value": {
+                "reason": "zero-denominator",
+                "state": "withheld"
+              }
+            }
+          ],
+          "mode": "exploratory",
+          "view": "benign-heavy-stress"
+        },
+        {
+          "binding": {
+            "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+            "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+            "population": {
+              "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+              "populationId": "b11-population-v2-benign-heavy-stress",
+              "populationVersion": 1,
+              "visibility": "public-synthetic"
+            },
+            "product": {
+              "candidateDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+              "kind": "candidate"
+            },
+            "scannerId": "redact-secret-core"
+          },
+          "byControlClass": [
+            {
+              "controlClass": "collision",
+              "counts": {
+                "authoredCases": 10,
+                "occurrences": 10,
+                "variants": 10
+              },
+              "metrics": [
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 10,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 10,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "benign-suppression-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 0,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "context-discrimination-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 10,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 10,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "jurisdiction-collision-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 20,
                     "measured": 7,
                     "notApplicable": 0,
                     "notMeasured": 0,
                     "numerator": 7,
-                    "total": 7,
+                    "total": 20,
+                    "unresolved": 13
+                  },
+                  "effectiveN": 20,
+                  "metric": {
+                    "id": "measurable-share",
+                    "version": 1
+                  },
+                  "status": "partial",
+                  "value": {
+                    "bound": {
+                      "mantissa": 18119,
+                      "scale": 5
+                    },
+                    "point": {
+                      "mantissa": 35,
+                      "scale": 2
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 10,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 10,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "non-sensitive-flag-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 10,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 10,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "range-collateral-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 10,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 10,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "sensitive-miss-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 7,
+                    "measured": 7,
+                    "notApplicable": 3,
+                    "notMeasured": 0,
+                    "numerator": 7,
+                    "total": 10,
                     "unresolved": 0
                   },
                   "effectiveN": 7,
@@ -7665,10 +8152,10 @@
                   "counts": {
                     "eligible": 7,
                     "measured": 7,
-                    "notApplicable": 0,
+                    "notApplicable": 3,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 7,
+                    "total": 10,
                     "unresolved": 0
                   },
                   "effectiveN": 7,
@@ -7693,10 +8180,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 7,
+                    "notApplicable": 10,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 7,
+                    "total": 10,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8686,19 +9173,19 @@
             {
               "controlClass": "unsupported-syntax",
               "counts": {
-                "authoredCases": 5,
-                "occurrences": 5,
-                "variants": 5
+                "authoredCases": 8,
+                "occurrences": 8,
+                "variants": 8
               },
               "metrics": [
                 {
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8737,10 +9224,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8756,15 +9243,15 @@
                 },
                 {
                   "counts": {
-                    "eligible": 10,
+                    "eligible": 16,
                     "measured": 5,
                     "notApplicable": 0,
                     "notMeasured": 0,
                     "numerator": 5,
-                    "total": 10,
-                    "unresolved": 5
+                    "total": 16,
+                    "unresolved": 11
                   },
-                  "effectiveN": 10,
+                  "effectiveN": 16,
                   "metric": {
                     "id": "measurable-share",
                     "version": 1
@@ -8772,12 +9259,12 @@
                   "status": "partial",
                   "value": {
                     "bound": {
-                      "mantissa": 23659,
-                      "scale": 5
+                      "mantissa": 141644,
+                      "scale": 6
                     },
                     "point": {
-                      "mantissa": 5,
-                      "scale": 1
+                      "mantissa": 3125,
+                      "scale": 4
                     },
                     "state": "measured"
                   }
@@ -8786,10 +9273,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8807,10 +9294,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8828,10 +9315,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8849,10 +9336,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8870,10 +9357,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8891,10 +9378,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 5,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 5,
+                    "total": 8,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8914,9 +9401,9 @@
           "byLanguage": [
             {
               "counts": {
-                "authoredCases": 67,
-                "occurrences": 67,
-                "variants": 67
+                "authoredCases": 73,
+                "occurrences": 73,
+                "variants": 73
               },
               "language": "en",
               "metrics": [
@@ -8924,10 +9411,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 67,
+                    "notApplicable": 73,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8966,10 +9453,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 67,
+                    "notApplicable": 73,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -8985,15 +9472,15 @@
                 },
                 {
                   "counts": {
-                    "eligible": 134,
+                    "eligible": 146,
                     "measured": 107,
                     "notApplicable": 0,
                     "notMeasured": 0,
                     "numerator": 107,
-                    "total": 134,
-                    "unresolved": 27
+                    "total": 146,
+                    "unresolved": 39
                   },
-                  "effectiveN": 134,
+                  "effectiveN": 146,
                   "metric": {
                     "id": "measurable-share",
                     "version": 1
@@ -9001,11 +9488,11 @@
                   "status": "partial",
                   "value": {
                     "bound": {
-                      "mantissa": 72271,
+                      "mantissa": 65581,
                       "scale": 5
                     },
                     "point": {
-                      "mantissa": 798507,
+                      "mantissa": 732877,
                       "scale": 6
                     },
                     "state": "measured"
@@ -9015,10 +9502,10 @@
                   "counts": {
                     "eligible": 19,
                     "measured": 19,
-                    "notApplicable": 48,
+                    "notApplicable": 54,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 19,
@@ -9043,10 +9530,10 @@
                   "counts": {
                     "eligible": 21,
                     "measured": 21,
-                    "notApplicable": 46,
+                    "notApplicable": 52,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 21,
@@ -9071,10 +9558,10 @@
                   "counts": {
                     "eligible": 21,
                     "measured": 21,
-                    "notApplicable": 46,
+                    "notApplicable": 52,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 21,
@@ -9099,10 +9586,10 @@
                   "counts": {
                     "eligible": 62,
                     "measured": 62,
-                    "notApplicable": 5,
+                    "notApplicable": 11,
                     "notMeasured": 0,
                     "numerator": 41,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 62,
@@ -9127,10 +9614,10 @@
                   "counts": {
                     "eligible": 62,
                     "measured": 62,
-                    "notApplicable": 5,
+                    "notApplicable": 11,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 62,
@@ -9155,10 +9642,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 67,
+                    "notApplicable": 73,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 67,
+                    "total": 73,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -9417,19 +9904,19 @@
             }
           ],
           "counts": {
-            "authoredCases": 74,
-            "occurrences": 74,
-            "variants": 74
+            "authoredCases": 80,
+            "occurrences": 80,
+            "variants": 80
           },
           "family": "pii:global:network-address",
           "methodCoverage": [
             {
-              "cases": 74,
+              "cases": 80,
               "method": {
                 "id": "schema-only",
                 "version": 1
               },
-              "variants": 74
+              "variants": 80
             }
           ],
           "metrics": [
@@ -9437,10 +9924,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 74,
+                "notApplicable": 80,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -9479,10 +9966,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 74,
+                "notApplicable": 80,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -9498,15 +9985,15 @@
             },
             {
               "counts": {
-                "eligible": 148,
+                "eligible": 160,
                 "measured": 117,
                 "notApplicable": 0,
                 "notMeasured": 0,
                 "numerator": 117,
-                "total": 148,
-                "unresolved": 31
+                "total": 160,
+                "unresolved": 43
               },
-              "effectiveN": 148,
+              "effectiveN": 160,
               "metric": {
                 "id": "measurable-share",
                 "version": 1
@@ -9514,12 +10001,12 @@
               "status": "partial",
               "value": {
                 "bound": {
-                  "mantissa": 718049,
-                  "scale": 6
+                  "mantissa": 65773,
+                  "scale": 5
                 },
                 "point": {
-                  "mantissa": 790541,
-                  "scale": 6
+                  "mantissa": 73125,
+                  "scale": 5
                 },
                 "state": "measured"
               }
@@ -9528,10 +10015,10 @@
               "counts": {
                 "eligible": 19,
                 "measured": 19,
-                "notApplicable": 55,
+                "notApplicable": 61,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 19,
@@ -9556,10 +10043,10 @@
               "counts": {
                 "eligible": 24,
                 "measured": 24,
-                "notApplicable": 50,
+                "notApplicable": 56,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 24,
@@ -9584,10 +10071,10 @@
               "counts": {
                 "eligible": 24,
                 "measured": 24,
-                "notApplicable": 50,
+                "notApplicable": 56,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 24,
@@ -9612,10 +10099,10 @@
               "counts": {
                 "eligible": 69,
                 "measured": 69,
-                "notApplicable": 5,
+                "notApplicable": 11,
                 "notMeasured": 0,
                 "numerator": 45,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 69,
@@ -9640,10 +10127,10 @@
               "counts": {
                 "eligible": 69,
                 "measured": 69,
-                "notApplicable": 5,
+                "notApplicable": 11,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 69,
@@ -9668,10 +10155,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 74,
+                "notApplicable": 80,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 74,
+                "total": 80,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -9694,7 +10181,7 @@
             "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
             "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
             "population": {
-              "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+              "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
               "populationId": "b11-population-v2-benign-heavy-stress",
               "populationVersion": 1,
               "visibility": "public-synthetic"
@@ -11674,7 +12161,7 @@
             "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
             "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
             "population": {
-              "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+              "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
               "populationId": "b11-population-v2-benign-heavy-stress",
               "populationVersion": 1,
               "visibility": "public-synthetic"
@@ -13089,25 +13576,23 @@
                   }
                 }
               ]
-            }
-          ],
-          "byLanguage": [
+            },
             {
+              "controlClass": "unsupported-country-code",
               "counts": {
-                "authoredCases": 21,
-                "occurrences": 21,
-                "variants": 21
+                "authoredCases": 2,
+                "occurrences": 2,
+                "variants": 2
               },
-              "language": "en",
               "metrics": [
                 {
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 21,
+                    "notApplicable": 2,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 21,
+                    "total": 2,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -13146,10 +13631,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 21,
+                    "notApplicable": 2,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 21,
+                    "total": 2,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -13165,15 +13650,464 @@
                 },
                 {
                   "counts": {
-                    "eligible": 42,
+                    "eligible": 4,
+                    "measured": 0,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 4,
+                    "unresolved": 4
+                  },
+                  "effectiveN": 4,
+                  "metric": {
+                    "id": "measurable-share",
+                    "version": 1
+                  },
+                  "status": "unresolved",
+                  "value": {
+                    "bound": {
+                      "mantissa": 0,
+                      "scale": 0
+                    },
+                    "point": {
+                      "mantissa": 0,
+                      "scale": 0
+                    },
+                    "state": "measured"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 2,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 2,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "non-sensitive-flag-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 2,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 2,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "range-collateral-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 2,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 2,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "sensitive-miss-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 2,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 2,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "type-miss-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 2,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 2,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-family-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 2,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 2,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-jurisdiction-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                }
+              ]
+            },
+            {
+              "controlClass": "unsupported-format",
+              "counts": {
+                "authoredCases": 1,
+                "occurrences": 1,
+                "variants": 1
+              },
+              "metrics": [
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "benign-suppression-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 0,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "context-discrimination-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "jurisdiction-collision-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 2,
+                    "measured": 0,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 2,
+                    "unresolved": 2
+                  },
+                  "effectiveN": 2,
+                  "metric": {
+                    "id": "measurable-share",
+                    "version": 1
+                  },
+                  "status": "unresolved",
+                  "value": {
+                    "reason": "insufficient-evidence",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "non-sensitive-flag-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "range-collateral-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "sensitive-miss-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "type-miss-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-family-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 1,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 1,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "wrong-jurisdiction-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                }
+              ]
+            }
+          ],
+          "byLanguage": [
+            {
+              "counts": {
+                "authoredCases": 23,
+                "occurrences": 23,
+                "variants": 23
+              },
+              "language": "en",
+              "metrics": [
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 23,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 23,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "benign-suppression-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 0,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 0,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "context-discrimination-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 0,
+                    "measured": 0,
+                    "notApplicable": 23,
+                    "notMeasured": 0,
+                    "numerator": 0,
+                    "total": 23,
+                    "unresolved": 0
+                  },
+                  "effectiveN": 0,
+                  "metric": {
+                    "id": "jurisdiction-collision-rate",
+                    "version": 1
+                  },
+                  "status": "not-applicable",
+                  "value": {
+                    "reason": "zero-denominator",
+                    "state": "withheld"
+                  }
+                },
+                {
+                  "counts": {
+                    "eligible": 46,
                     "measured": 31,
                     "notApplicable": 0,
                     "notMeasured": 0,
                     "numerator": 31,
-                    "total": 42,
-                    "unresolved": 11
+                    "total": 46,
+                    "unresolved": 15
                   },
-                  "effectiveN": 42,
+                  "effectiveN": 46,
                   "metric": {
                     "id": "measurable-share",
                     "version": 1
@@ -13181,11 +14115,11 @@
                   "status": "partial",
                   "value": {
                     "bound": {
-                      "mantissa": 58931,
-                      "scale": 5
+                      "mantissa": 529675,
+                      "scale": 6
                     },
                     "point": {
-                      "mantissa": 738095,
+                      "mantissa": 673913,
                       "scale": 6
                     },
                     "state": "measured"
@@ -13195,10 +14129,10 @@
                   "counts": {
                     "eligible": 6,
                     "measured": 6,
-                    "notApplicable": 15,
+                    "notApplicable": 17,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 21,
+                    "total": 23,
                     "unresolved": 0
                   },
                   "effectiveN": 6,
@@ -13223,10 +14157,10 @@
                   "counts": {
                     "eligible": 4,
                     "measured": 4,
-                    "notApplicable": 17,
+                    "notApplicable": 19,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 21,
+                    "total": 23,
                     "unresolved": 0
                   },
                   "effectiveN": 4,
@@ -13251,10 +14185,10 @@
                   "counts": {
                     "eligible": 4,
                     "measured": 4,
-                    "notApplicable": 17,
+                    "notApplicable": 19,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 21,
+                    "total": 23,
                     "unresolved": 0
                   },
                   "effectiveN": 4,
@@ -13279,10 +14213,10 @@
                   "counts": {
                     "eligible": 19,
                     "measured": 19,
-                    "notApplicable": 2,
+                    "notApplicable": 4,
                     "notMeasured": 0,
                     "numerator": 15,
-                    "total": 21,
+                    "total": 23,
                     "unresolved": 0
                   },
                   "effectiveN": 19,
@@ -13307,10 +14241,10 @@
                   "counts": {
                     "eligible": 19,
                     "measured": 19,
-                    "notApplicable": 2,
+                    "notApplicable": 4,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 21,
+                    "total": 23,
                     "unresolved": 0
                   },
                   "effectiveN": 19,
@@ -13335,10 +14269,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 21,
+                    "notApplicable": 23,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 21,
+                    "total": 23,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -13356,9 +14290,9 @@
             },
             {
               "counts": {
-                "authoredCases": 10,
-                "occurrences": 10,
-                "variants": 10
+                "authoredCases": 11,
+                "occurrences": 11,
+                "variants": 11
               },
               "language": "ko",
               "metrics": [
@@ -13366,10 +14300,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 10,
+                    "notApplicable": 11,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -13408,10 +14342,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 10,
+                    "notApplicable": 11,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -13427,15 +14361,15 @@
                 },
                 {
                   "counts": {
-                    "eligible": 20,
+                    "eligible": 22,
                     "measured": 14,
                     "notApplicable": 0,
                     "notMeasured": 0,
                     "numerator": 14,
-                    "total": 20,
-                    "unresolved": 6
+                    "total": 22,
+                    "unresolved": 8
                   },
-                  "effectiveN": 20,
+                  "effectiveN": 22,
                   "metric": {
                     "id": "measurable-share",
                     "version": 1
@@ -13443,12 +14377,12 @@
                   "status": "partial",
                   "value": {
                     "bound": {
-                      "mantissa": 481023,
+                      "mantissa": 429513,
                       "scale": 6
                     },
                     "point": {
-                      "mantissa": 7,
-                      "scale": 1
+                      "mantissa": 636364,
+                      "scale": 6
                     },
                     "state": "measured"
                   }
@@ -13457,10 +14391,10 @@
                   "counts": {
                     "eligible": 1,
                     "measured": 1,
-                    "notApplicable": 9,
+                    "notApplicable": 10,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 1,
@@ -13478,10 +14412,10 @@
                   "counts": {
                     "eligible": 3,
                     "measured": 3,
-                    "notApplicable": 7,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 3,
@@ -13499,10 +14433,10 @@
                   "counts": {
                     "eligible": 3,
                     "measured": 3,
-                    "notApplicable": 7,
+                    "notApplicable": 8,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 3,
@@ -13520,10 +14454,10 @@
                   "counts": {
                     "eligible": 10,
                     "measured": 10,
-                    "notApplicable": 0,
+                    "notApplicable": 1,
                     "notMeasured": 0,
                     "numerator": 7,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 10,
@@ -13548,10 +14482,10 @@
                   "counts": {
                     "eligible": 10,
                     "measured": 10,
-                    "notApplicable": 0,
+                    "notApplicable": 1,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 10,
@@ -13576,10 +14510,10 @@
                   "counts": {
                     "eligible": 0,
                     "measured": 0,
-                    "notApplicable": 10,
+                    "notApplicable": 11,
                     "notMeasured": 0,
                     "numerator": 0,
-                    "total": 10,
+                    "total": 11,
                     "unresolved": 0
                   },
                   "effectiveN": 0,
@@ -13597,19 +14531,19 @@
             }
           ],
           "counts": {
-            "authoredCases": 31,
-            "occurrences": 31,
-            "variants": 31
+            "authoredCases": 34,
+            "occurrences": 34,
+            "variants": 34
           },
           "family": "pii:global:phone",
           "methodCoverage": [
             {
-              "cases": 31,
+              "cases": 34,
               "method": {
                 "id": "schema-only",
                 "version": 1
               },
-              "variants": 31
+              "variants": 34
             }
           ],
           "metrics": [
@@ -13617,10 +14551,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 31,
+                "notApplicable": 34,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -13659,10 +14593,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 31,
+                "notApplicable": 34,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -13678,15 +14612,15 @@
             },
             {
               "counts": {
-                "eligible": 62,
+                "eligible": 68,
                 "measured": 45,
                 "notApplicable": 0,
                 "notMeasured": 0,
                 "numerator": 45,
-                "total": 62,
-                "unresolved": 17
+                "total": 68,
+                "unresolved": 23
               },
-              "effectiveN": 62,
+              "effectiveN": 68,
               "metric": {
                 "id": "measurable-share",
                 "version": 1
@@ -13694,11 +14628,11 @@
               "status": "partial",
               "value": {
                 "bound": {
-                  "mantissa": 604072,
-                  "scale": 6
+                  "mantissa": 54337,
+                  "scale": 5
                 },
                 "point": {
-                  "mantissa": 725806,
+                  "mantissa": 661765,
                   "scale": 6
                 },
                 "state": "measured"
@@ -13708,10 +14642,10 @@
               "counts": {
                 "eligible": 7,
                 "measured": 7,
-                "notApplicable": 24,
+                "notApplicable": 27,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 7,
@@ -13736,10 +14670,10 @@
               "counts": {
                 "eligible": 7,
                 "measured": 7,
-                "notApplicable": 24,
+                "notApplicable": 27,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 7,
@@ -13764,10 +14698,10 @@
               "counts": {
                 "eligible": 7,
                 "measured": 7,
-                "notApplicable": 24,
+                "notApplicable": 27,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 7,
@@ -13792,10 +14726,10 @@
               "counts": {
                 "eligible": 29,
                 "measured": 29,
-                "notApplicable": 2,
+                "notApplicable": 5,
                 "notMeasured": 0,
                 "numerator": 22,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 29,
@@ -13820,10 +14754,10 @@
               "counts": {
                 "eligible": 29,
                 "measured": 29,
-                "notApplicable": 2,
+                "notApplicable": 5,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 29,
@@ -13848,10 +14782,10 @@
               "counts": {
                 "eligible": 0,
                 "measured": 0,
-                "notApplicable": 31,
+                "notApplicable": 34,
                 "notMeasured": 0,
                 "numerator": 0,
-                "total": 31,
+                "total": 34,
                 "unresolved": 0
               },
               "effectiveN": 0,
@@ -13874,7 +14808,7 @@
             "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
             "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
             "population": {
-              "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+              "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
               "populationId": "b11-population-v2-benign-heavy-stress",
               "populationVersion": 1,
               "visibility": "public-synthetic"
@@ -16091,10 +17025,10 @@
             "counts": {
               "eligible": 0,
               "measured": 0,
-              "notApplicable": 279,
+              "notApplicable": 299,
               "notMeasured": 0,
               "numerator": 0,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 0,
@@ -16133,10 +17067,10 @@
             "counts": {
               "eligible": 0,
               "measured": 0,
-              "notApplicable": 279,
+              "notApplicable": 299,
               "notMeasured": 0,
               "numerator": 0,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 0,
@@ -16152,15 +17086,15 @@
           },
           {
             "counts": {
-              "eligible": 558,
+              "eligible": 598,
               "measured": 394,
               "notApplicable": 0,
               "notMeasured": 0,
               "numerator": 394,
-              "total": 558,
-              "unresolved": 164
+              "total": 598,
+              "unresolved": 204
             },
-            "effectiveN": 558,
+            "effectiveN": 598,
             "metric": {
               "id": "measurable-share",
               "version": 1
@@ -16168,11 +17102,11 @@
             "status": "partial",
             "value": {
               "bound": {
-                "mantissa": 666989,
+                "mantissa": 619958,
                 "scale": 6
               },
               "point": {
-                "mantissa": 706093,
+                "mantissa": 658863,
                 "scale": 6
               },
               "state": "measured"
@@ -16182,10 +17116,10 @@
             "counts": {
               "eligible": 47,
               "measured": 47,
-              "notApplicable": 232,
+              "notApplicable": 252,
               "notMeasured": 0,
               "numerator": 0,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 47,
@@ -16210,10 +17144,10 @@
             "counts": {
               "eligible": 68,
               "measured": 68,
-              "notApplicable": 211,
+              "notApplicable": 231,
               "notMeasured": 0,
               "numerator": 0,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 68,
@@ -16238,10 +17172,10 @@
             "counts": {
               "eligible": 68,
               "measured": 68,
-              "notApplicable": 211,
+              "notApplicable": 231,
               "notMeasured": 0,
               "numerator": 0,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 68,
@@ -16266,10 +17200,10 @@
             "counts": {
               "eligible": 247,
               "measured": 247,
-              "notApplicable": 32,
+              "notApplicable": 52,
               "notMeasured": 0,
               "numerator": 179,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 247,
@@ -16294,10 +17228,10 @@
             "counts": {
               "eligible": 247,
               "measured": 247,
-              "notApplicable": 32,
+              "notApplicable": 52,
               "notMeasured": 0,
               "numerator": 0,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 247,
@@ -16322,10 +17256,10 @@
             "counts": {
               "eligible": 26,
               "measured": 26,
-              "notApplicable": 253,
+              "notApplicable": 273,
               "notMeasured": 0,
               "numerator": 0,
-              "total": 279,
+              "total": 299,
               "unresolved": 0
             },
             "effectiveN": 26,
@@ -16414,7 +17348,7 @@
         "status": "complete"
       }
     ],
-    "sourceArtifactDigest": "37f80262960ef4c9aef4749d6b353df340753e1f4af4c0d7649197ac36e9d5e2"
+    "sourceArtifactDigest": "f4996ce7c60393f592bc797306193af3b3177a2efa79ed5cda7813610964cbeb"
   },
-  "semanticDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19"
+  "semanticDigest": "a82ac5144a4ae22336cd66318e37a2010ec7a8fc3129233630b130f3df082767"
 }

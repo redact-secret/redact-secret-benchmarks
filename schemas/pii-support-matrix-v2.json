@@ -92,10 +92,10 @@
       "required": ["label", "populationId", "artifactDigest", "file", "status", "schemaVersion", "population", "populationCounts", "productBinding", "scanners"],
       "oneOf": [
         { "required": ["unavailable"], "properties": { "schemaVersion": { "const": "1.1" }, "unavailable": true, "productProjection": false } },
-        { "required": ["productProjection"], "properties": { "schemaVersion": { "const": "1.2" }, "productProjection": true, "unavailable": false } }
+        { "required": ["productProjection"], "properties": { "schemaVersion": { "enum": ["1.2", "1.4"] }, "productProjection": true, "unavailable": false } }
       ],
       "properties": {
-        "schemaVersion": { "enum": ["1.1", "1.2"] },
+        "schemaVersion": { "enum": ["1.1", "1.2", "1.4"] },
         "productBinding": { "type": "object", "additionalProperties": false, "required": ["state", "candidateSourceCommit"], "properties": {
           "state": { "enum": ["measures-publication-product", "other-product", "publication-product-not-measured"] },
           "candidateSourceCommit": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9]{40}$" }] } } },

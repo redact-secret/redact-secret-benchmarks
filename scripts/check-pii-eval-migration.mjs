@@ -12,7 +12,7 @@ const fail = message => { throw new Error(`PII migration acceptance invalid: ${m
 
 if (record.schemaVersion !== 1 || record.reportType !== 'pii-eval-migration-acceptance' || record.supportClaims !== false || record.authorityChanged !== false)
   fail('top-level boundary');
-if (record.engine?.artifactSchema?.id !== 'pii-eval.public-synthetic-artifact' || record.engine?.artifactSchema?.version !== '1.2' || JSON.stringify(record.engine.artifactSchema.readableVersions) !== JSON.stringify(['1.1', '1.2']) ||
+if (record.engine?.artifactSchema?.id !== 'pii-eval.public-synthetic-artifact' || record.engine?.artifactSchema?.version !== '1.4' || JSON.stringify(record.engine.artifactSchema.readableVersions) !== JSON.stringify(['1.1', '1.2', '1.4']) ||
     record.engine?.protocol?.id !== 'pii-v1' || record.engine?.protocol?.revision !== 2 || record.engine?.compatibilityProtocol?.revision !== 1)
   fail('engine contract');
 if (record.engine.methods?.length !== 7 || new Set(record.engine.methods.map(row => row.id)).size !== 7 ||
@@ -46,10 +46,10 @@ for (const key of ['custodianProjectionV2SchemaSha256', 'custodianRevocationSche
 }
 const dual = record.benchmarkPopulationDualRun;
 const views = record.benchmarkPopulations.views;
-if (record.acceptance?.benchmarkPopulationDualRun !== 'accepted-representable-cases' || dual?.unexplainedDifferences !== 0 ||
+if (record.acceptance?.benchmarkPopulationDualRun !== 'accepted' || dual?.unexplainedDifferences !== 0 ||
     record.acceptance?.residual?.notRepresentableCases !== dual?.coverage?.notRepresentableCases)
   fail('dual-run acceptance state');
-// The dual-run record: pinned report, sealed schema 1.2 artifacts and counts that add up to the frozen populations.
+// The dual-run record: pinned report, sealed schema 1.4 artifacts and counts that add up to the frozen populations.
 if (await digest(dual.report.path) !== dual.report.sha256) fail('dual-run report drift');
 const report = JSON.parse(await readFile(new URL(`../${dual.report.path}`, import.meta.url), 'utf8'));
 if (report.reportType !== 'pii-eval-population-dual-run' || report.supportClaims !== false || report.authorityChanged !== false ||
@@ -70,9 +70,14 @@ for (const item of dual.artifacts) {
       entry.conversion.benchmarkCases !== item.cases || entry.conversion.convertedCases !== item.carriedCases || entry.conversion.excludedCases !== item.notRepresentableCases ||
       item.carriedCases + item.notRepresentableCases !== item.cases || !entry.determinism.equalSemanticDigest || !entry.determinism.byteIdenticalDocuments)
     fail(`dual-run record for ${item.view}`);
+  // Schema 1.4: located plus range-less (authored not-established, no candidate range) memberships are the carried ones, none dropped,
+  // and every range-less membership is an `unresolved` outcome in the artifact (never a pass or a fail).
+  if (entry.rangeless?.cases !== item.unresolvedRangeCases || entry.rangeless.located !== item.locatedCases || item.locatedCases + item.unresolvedRangeCases !== item.carriedCases ||
+      item.notRepresentableCases !== 0 || entry.rangeless.reportedAs?.typeIdentity !== 'unresolved' || entry.rangeless.reportedAs.range !== 'unresolved')
+    fail(`range-less memberships of ${item.view}`);
   if (await digest(item.path) !== item.sha256) fail(`dual-run artifact drift at ${item.path}`);
   const artifact = parseStrictJson(await readFile(new URL(`../${item.path}`, import.meta.url), 'utf8'));
-  if (artifact.schema !== record.engine.artifactSchema.id || artifact.schemaVersion !== '1.2' || semanticDigest(artifact) !== artifact.semanticDigest ||
+  if (artifact.schema !== record.engine.artifactSchema.id || artifact.schemaVersion !== record.engine.artifactSchema.version || semanticDigest(artifact) !== artifact.semanticDigest ||
       artifact.semanticDigest !== item.semanticDigest || artifact.semantic.population.populationDigest !== item.snapshotDigest ||
       artifact.semantic.population.populationId !== item.populationId || artifact.semantic.manifestDigest !== item.manifestDigest)
     fail(`dual-run artifact identity at ${item.path}`);
@@ -85,6 +90,10 @@ for (const item of dual.artifacts) {
     fail(`dual-run projection bindings at ${item.path}`);
   if (projection.rows.reduce((n, row) => n + row.counts.authoredCases, 0) !== item.carriedCases || artifact.semantic.populationCounts.authoredCases !== item.carriedCases)
     fail(`dual-run projection denominators at ${item.path}`);
+  const unresolved = artifact.semantic.outcomes.filter(outcome => outcome.range === 'unresolved');
+  if (unresolved.length !== item.unresolvedRangeCases || unresolved.some(outcome => outcome.typeIdentity !== 'unresolved' || outcome.sensitivityContext !== 'unresolved' || outcome.action.state !== 'not-measured') ||
+      artifact.semantic.outcomes.filter(outcome => outcome.typeIdentity === 'unresolved').length !== item.unresolvedRangeCases)
+    fail(`unresolved outcomes of ${item.path}`);
   carried += item.carriedCases; excluded += item.notRepresentableCases;
 }
 if (carried !== dual.coverage.carriedCases || excluded !== dual.coverage.notRepresentableCases || carried + excluded !== dual.coverage.benchmarkCases ||
@@ -92,13 +101,13 @@ if (carried !== dual.coverage.carriedCases || excluded !== dual.coverage.notRepr
   fail('dual-run coverage');
 if (JSON.stringify(report.populations.flatMap(row => row.classifiedDifferences.map(d => d.class))) !== JSON.stringify(report.populations.flatMap(row => row.classifiedDifferences.map(() => 'compatibility'))))
   fail('an unrecorded difference class');
-// Schema 1.1 and 1.2 files the consumer validates against are the pinned upstream ones.
+// Schema 1.1, 1.2 and 1.4 files the consumer validates against are the pinned upstream ones.
 for (const [version, item] of Object.entries(record.engine.artifactSchema.schemaFiles)) {
   if (!/^[0-9a-f]{40}$/.test(item.upstreamCommit) || await digest(item.path) !== item.sha256) fail(`public artifact schema ${version} drift`);
 }
 // The consumer pins of the four populations are exactly the dual-run artifacts, for the pinned engine, and bind a candidate only by commit.
 const popPins = JSON.parse(await readFile(new URL(`../${dual.consumerPins}`, import.meta.url), 'utf8'));
-if (popPins.schema !== 'pii-eval-consumer-pins/1' || popPins.artifactSchema.version !== '1.2' || popPins.build.commit !== record.pins.piiEvalProjection ||
+if (popPins.schema !== 'pii-eval-consumer-pins/1' || popPins.artifactSchema.version !== record.engine.artifactSchema.version || popPins.build.commit !== record.pins.piiEvalProjection ||
     popPins.build.cargoLockSha256 !== record.pins.piiEvalProjectionCargoLockSha256 || popPins.requireComplete !== true || popPins.populations.length !== dual.artifacts.length)
   fail('population consumer pins');
 for (const item of dual.artifacts) {

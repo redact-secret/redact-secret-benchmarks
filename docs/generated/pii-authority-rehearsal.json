@@ -4,15 +4,15 @@
  "supportClaims": false,
  "authorityChanged": false,
  "writesAcceptance": false,
- "rehearsedOn": "2026-10-05",
+ "rehearsedOn": "2026-10-07",
  "committedAuthority": "legacy",
  "target": {
-  "engineCommit": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+  "engineCommit": "b1c097e40bad456e52f904f626cca00b69c45612",
   "populationDigests": {
-   "oracle-plan": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
-   "qualification-plan": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
-   "diagnostic-balanced": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
-   "benign-heavy-stress": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19"
+   "oracle-plan": "37a74f301c30b854a698b3d4aeb313d24e637d8860c5a49d390f904f1246b868",
+   "qualification-plan": "6f41e411e27de75f48b64ac6a66571ed82dc309643b804ac55ac9a95c791fba9",
+   "diagnostic-balanced": "134d30a3c6f9c21f38ae46fdc74c861eae38feeb1cc3ea6c8b171f800a733166",
+   "benign-heavy-stress": "a82ac5144a4ae22336cd66318e37a2010ec7a8fc3129233630b130f3df082767"
   }
  },
  "method": "the one value flipped in the working tree and restored; the PII support publication (protected route plus the five bound pii-eval artifacts) rebuilt and the gate run under each value",
@@ -20,18 +20,18 @@
   {
    "label": "committed",
    "authority": "legacy",
-   "fileSha256": "ca019a3f0df2b2ead66bea576b068deff4ddb4b557fcdadff62a3901c2b6825e",
-   "matrixSha256": "8f2d9e289b530f5fc26886899555d751aa0d344d7eb6fa66d2edd76119d65d54",
-   "matrixBytes": 594454,
+   "fileSha256": "eda676f2f3dfedcf4504a5fec1da5a00f4b0b129932a50f0f2cf66cb19d0c86a",
+   "matrixSha256": "788bdf983b05272b2fa179f9d278b8fe387345cc830b1bf6a4e21bce72e5f63b",
+   "matrixBytes": 680232,
    "gateAccepted": true,
    "gateProblems": []
   },
   {
    "label": "flipped",
    "authority": "new",
-   "fileSha256": "187c83fda265f8aaba1cc046a7a896979a3d84bd40a50a2880f593ca291f23ea",
-   "matrixSha256": "8f2d9e289b530f5fc26886899555d751aa0d344d7eb6fa66d2edd76119d65d54",
-   "matrixBytes": 594454,
+   "fileSha256": "016620fdaf4098890bf104662aa12dd0af411cd0a4129155a72afde272701f21",
+   "matrixSha256": "788bdf983b05272b2fa179f9d278b8fe387345cc830b1bf6a4e21bce72e5f63b",
+   "matrixBytes": 680232,
    "gateAccepted": false,
    "gateProblems": [
     "authority is new but no owner authorisation is recorded: a credential authority setting is not authorisation for PII, and the repository records no acceptance on the owner's behalf"
@@ -40,9 +40,9 @@
   {
    "label": "rolled-back",
    "authority": "legacy",
-   "fileSha256": "ca019a3f0df2b2ead66bea576b068deff4ddb4b557fcdadff62a3901c2b6825e",
-   "matrixSha256": "8f2d9e289b530f5fc26886899555d751aa0d344d7eb6fa66d2edd76119d65d54",
-   "matrixBytes": 594454,
+   "fileSha256": "eda676f2f3dfedcf4504a5fec1da5a00f4b0b129932a50f0f2cf66cb19d0c86a",
+   "matrixSha256": "788bdf983b05272b2fa179f9d278b8fe387345cc830b1bf6a4e21bce72e5f63b",
+   "matrixBytes": 680232,
    "gateAccepted": true,
    "gateProblems": []
   }

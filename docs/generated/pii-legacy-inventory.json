@@ -57,12 +57,12 @@
    "mixed-split": {
     "disposition": "split-then-decide",
     "files": 15,
-    "externalCallerFiles": 45
+    "externalCallerFiles": 47
    },
    "benchmark-scorer": {
     "disposition": "retain-until-criterion",
     "files": 4,
-    "externalCallerFiles": 6
+    "externalCallerFiles": 7
    },
    "product-policy": {
     "disposition": "retain",
@@ -809,9 +809,9 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 9,
+    "total": 10,
     "withinCandidates": 3,
-    "testCallers": 2,
+    "testCallers": 3,
     "external": 4,
     "externalByClass": {
      "benchmarks": 2,
@@ -867,13 +867,13 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 14,
+    "total": 16,
     "withinCandidates": 4,
     "testCallers": 2,
-    "external": 8,
+    "external": 10,
     "externalByClass": {
-     "benchmarks": 6,
-     "script": 1,
+     "benchmarks": 7,
+     "script": 2,
      "web (Next app)": 1
     },
     "externalFiles": [
@@ -883,7 +883,9 @@
      "benchmarks/evaluation/domains/pii/mixed-parity/mixed-parity-v1.json (benchmarks, path)",
      "benchmarks/evaluation/domains/pii/mixed-parity/mixed-parity-v2.json (benchmarks, path)",
      "benchmarks/pii-authority.json (benchmarks, path)",
+     "benchmarks/pii-eval-official-execution-plan.json (benchmarks, path)",
      "scripts/check-pii-authority.mjs (script, path)",
+     "scripts/pii-official-plan.mjs (script, path)",
      "web/resolvers/domains.ts (web (Next app), path)"
     ]
    }
@@ -1030,15 +1032,16 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 12,
+    "total": 14,
     "withinCandidates": 2,
-    "testCallers": 5,
-    "external": 5,
+    "testCallers": 6,
+    "external": 6,
     "externalByClass": {
-     "benchmarks": 2,
+     "benchmarks": 3,
      "script": 3
     },
     "externalFiles": [
+     "benchmarks/evaluation/domains/pii/metric-basis.mjs (benchmarks, path)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
      "scripts/lib/pii-population-conversion.mjs (script, import+path)",
@@ -1234,9 +1237,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 10,
+    "total": 11,
     "withinCandidates": 0,
-    "testCallers": 4,
+    "testCallers": 5,
     "external": 6,
     "externalByClass": {
      "benchmarks": 1,
@@ -1280,9 +1283,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 5,
+    "total": 6,
     "withinCandidates": 0,
-    "testCallers": 3,
+    "testCallers": 4,
     "external": 2,
     "externalByClass": {
      "package hook": 1,
@@ -1301,9 +1304,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 8,
+    "total": 9,
     "withinCandidates": 0,
-    "testCallers": 6,
+    "testCallers": 7,
     "external": 2,
     "externalByClass": {
      "script": 2

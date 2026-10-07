@@ -14,9 +14,14 @@
   },
   "new": {
     "target": {
-      "engine": "redact-secret/pii-eval@212d500de90ce97461275be1e8b9dd8acd663fb3",
-      "populations": ["oracle-plan", "qualification-plan", "diagnostic-balanced", "benign-heavy-stress"],
-      "artifactSchema": "1.2"
+      "engine": "redact-secret/pii-eval@b1c097e40bad456e52f904f626cca00b69c45612",
+      "populations": [
+        "oracle-plan",
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "artifactSchema": "1.4"
     },
     "authorisation": null
   },
@@ -25,8 +30,8 @@
       "id": "population-dual-run-complete",
       "basis": "computed",
       "statement": "Every case membership of the four frozen populations is carried through both engines: an engine contract can state an authored identity of not-established, or the owner has decided to drop those memberships, and the dual-run acceptance is accepted rather than accepted-representable-cases.",
-      "state": "unmet",
-      "evidence": "benchmarks/pii-eval-migration.json acceptance.benchmarkPopulationDualRun (156 of 1,188 case memberships are not representable)"
+      "state": "met",
+      "evidence": "benchmarks/pii-eval-migration.json acceptance.benchmarkPopulationDualRun (accepted: 1,188 of 1,188 memberships carried under schema 1.4, 156 of them range-less and reported unresolved)"
     },
     {
       "id": "linux-engine-replay-equal",
@@ -68,7 +73,7 @@
       "basis": "owner",
       "statement": "The owner has decided which scorer defines the PII metric values the qualification uses: the benchmark scorer (b11ScoreTable) or pii-v1 accounting. They are different scorers and their numbers are not compared.",
       "state": "unmet",
-      "evidence": "no decision recorded; docs/reports/2026-10-05-pii-eval-population-dual-run.md states the difference"
+      "evidence": "no owner decision recorded; the proposed (pending-owner) decision and the per-metric table are docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md and docs/specs/pii-scorer-basis.md"
     },
     {
       "id": "owner-accepted-verdict",

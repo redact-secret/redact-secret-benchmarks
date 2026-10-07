@@ -21,30 +21,30 @@
     "path": ".github/workflows/ci.yml",
     "event": "push",
     "branch": "main",
-    "runId": 37340150108,
+    "runId": 37551091456,
     "runAttempt": 1,
-    "headSha": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+    "headSha": "b1c097e40bad456e52f904f626cca00b69c45612",
     "conclusion": "success"
   },
   "artifacts": {
     "engine": {
-      "id": 11358475612,
-      "name": "pii-eval-engine-212d500de90ce97461275be1e8b9dd8acd663fb3-linux-x86_64",
-      "sizeInBytes": 1428421,
-      "archiveSha256": "4fed2c9b4145b216c4ed58869a222c1fe9ce890280cb809fa6ee585074c7a3e1",
-      "expiresAt": "2026-11-04T16:22:30Z",
+      "id": 11452747504,
+      "name": "pii-eval-engine-b1c097e40bad456e52f904f626cca00b69c45612-linux-x86_64",
+      "sizeInBytes": 1465708,
+      "archiveSha256": "24620d83e34e0239bb39afa6b8b4277b6fc6f1ece2c06f0adf856e4cca4b9b52",
+      "expiresAt": "2026-11-06T00:17:21Z",
       "members": {
-        "SHA256SUMS": "4a3a6ed6697cb4d5c5d21c3ecca2b4fc74f3c85357b55b52bafb29c53550109f",
-        "build-info.json": "2d1b380390b13db32fef56bdb1301936ce1d2a14acf67b6c4b6ecdf9af8fba20",
-        "pii-eval": "b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af"
+        "SHA256SUMS": "d035907c1c84df5a522063429c83e2f54178614d478734e1f54913b0a56e7aca",
+        "build-info.json": "bb29abe5b8eaa4f1d9a21d4939ba1d4f523e01d455c18585030be1647f81a5c1",
+        "pii-eval": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053"
       }
     },
     "measurement": {
-      "id": 11357099796,
-      "name": "pii-eval-run-37340150108-1-projection",
+      "id": 11453011630,
+      "name": "pii-eval-run-37551091456-1-projection",
       "sizeInBytes": 8655,
-      "archiveSha256": "e849a68da5c2aaad02aee9e15e15f229d88203ec29af80bc6ea425126959dadb",
-      "expiresAt": "2026-10-19T16:22:45Z",
+      "archiveSha256": "867d5b640394ab1f84f9ced59cd9d2720db7a06b125dee82e686d5d23447ba96",
+      "expiresAt": "2026-10-21T00:17:32Z",
       "members": {
         "run/manifest.json": "95b9305a6152a7b9b1eb10c6e39485b3f762b21475310aa1ebb82e634bc6728e",
         "run/observation-redact-secret-core.json": "f7aa16ba09044d5a0027e3a6e5a06cd98b7938e70afa6439a69e0fa437a69ba5",
@@ -56,14 +56,14 @@
   "publicArtifactMember": "run/public-synthetic-artifact.json",
   "pins": "benchmarks/pii-eval-public-synthetic-pins.json",
   "buildInfo": {
-    "binaryBytes": 4387176,
+    "binaryBytes": 4524472,
     "binaryVersion": "pii-eval 0.0.0 (bootstrap)",
     "target": "linux-x86_64",
     "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
     "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167"
   },
   "durableCopy": {
-    "path": "tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json",
+    "path": "tests/fixtures/pii-eval/ci-37551091456-projection.public-synthetic-artifact.json",
     "member": "run/public-synthetic-artifact.json"
   }
 }

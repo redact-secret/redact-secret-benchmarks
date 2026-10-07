@@ -30,9 +30,11 @@ export const INTERNAL_SCHEMA = "pii-eval.run-artifact";
 /** Document size cap of the format (docs/adr/0003). */
 export const MAX_DOCUMENT_BYTES = 32 * 1024 * 1024;
 const MAX_DEPTH = 32;
-// One committed upstream schema per accepted minor. 1.2 is the superset (the optional product projection, ADR 0016) and
-// replaces 1.1 in place upstream; both stay readable here because the committed synthetic artifacts are 1.1.
-const SCHEMA_FILES = { '1.1': 'pii-eval-public-synthetic-artifact-v1.1.json', '1.2': 'pii-eval-public-synthetic-artifact-v1.2.json' };
+// One committed upstream schema per accepted minor. 1.2 is the superset of 1.1 (the optional product projection, ADR 0016); 1.4 adds the
+// `unresolved` observation of an authored not-established identity and range (ADR 0017, 0018) and is the schema of the four benchmark
+// populations. 1.3 (identity only) is not accepted: an artifact that states a not-established occurrence is 1.4. A pin names exactly
+// one version and a document of another version is never read under it.
+const SCHEMA_FILES = { '1.1': 'pii-eval-public-synthetic-artifact-v1.1.json', '1.2': 'pii-eval-public-synthetic-artifact-v1.2.json', '1.4': 'pii-eval-public-synthetic-artifact-v1.4.json' };
 const validators = Object.fromEntries(Object.entries(SCHEMA_FILES).map(([version, file]) => {
   const validator = new Ajv2020({ strict: true, allErrors: true });
   validator.addFormat('uint8', { type: 'number', validate: value => Number.isSafeInteger(value) && value >= 0 && value <= 255 });
@@ -577,8 +579,8 @@ function dedupe(reasons) {
 
 const HEX64 = /^[0-9a-f]{64}$/;
 const HEX40 = /^[0-9a-f]{40}$/;
-/** The schema versions a pin may name. 1.2 adds the optional product projection. */
-export const PUBLIC_SCHEMA_VERSIONS = ["1.1", "1.2"];
+/** The schema versions a pin may name. 1.2 adds the optional product projection; 1.4 the unresolved not-established observations. */
+export const PUBLIC_SCHEMA_VERSIONS = ["1.1", "1.2", "1.4"];
 
 /**
  * Validate and normalize the caller's pin document, strictly: an unusable pin
@@ -621,14 +623,14 @@ export function loadPins(text) {
     if (q.projection !== undefined) {
       const w = q.projection;
       need(
-        p.artifactSchema.version === "1.2" && isObject(w) && keysAre(w, ["requiredViews", "mode", "rosterDigest"], ["requiredViews", "mode", "rosterDigest"]) &&
+        p.artifactSchema.version !== "1.1" && isObject(w) && keysAre(w, ["requiredViews", "mode", "rosterDigest"], ["requiredViews", "mode", "rosterDigest"]) &&
           Array.isArray(w.requiredViews) && w.requiredViews.length > 0 && w.requiredViews.every((v) => PROJECTION_VIEWS.includes(v)) &&
           new Set(w.requiredViews).size === w.requiredViews.length && PROJECTION_MODES.includes(w.mode) && HEX64.test(w.rosterDigest),
         "pins-projection",
       );
     }
     // Under schema 1.2 every population pin names its projection; an artifact of another shape is not a measurement of it.
-    need(p.artifactSchema.version !== "1.2" || q.projection !== undefined, "pins-projection");
+    need(p.artifactSchema.version === "1.1" || q.projection !== undefined, "pins-projection");
     q.retiredArtifactDigests ??= [];
     q.retiredManifestDigests ??= [];
     need(

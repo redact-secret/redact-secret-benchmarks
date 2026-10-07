@@ -42,10 +42,10 @@ const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.js
  * (`benchmarks/evaluation/domains/pii/`, which is the oracle) stays a legacy input.
  */
 export const PII_MIGRATION = [
-  /^scripts\/(replay-pii-populations|run-pii-population-dual-run|convert-pii-populations|check-pii-eval-migration|fetch-pii-eval-public-synthetic|check-custodian-conformance|check-pii-authority|pii-legacy-inventory|rehearse-pii-authority-rollback)\.mjs$/,
+  /^scripts\/(adopt-pii-engine|pii-official-plan|pii-scorer-basis|replay-pii-populations|run-pii-population-dual-run|convert-pii-populations|check-pii-eval-migration|fetch-pii-eval-public-synthetic|check-custodian-conformance|check-pii-authority|pii-legacy-inventory|rehearse-pii-authority-rollback)\.mjs$/,
   /^scripts\/(lib\/pii-population-|pii-eval-population-parity\/)/,
   /^benchmarks\/(pii-eval-|pii-authority\.json$)/,
-  /^benchmarks\/evaluation\/domains\/pii\/(pii-eval-artifact-consumer|custodian-consumer|authority)\./,
+  /^benchmarks\/evaluation\/domains\/pii\/(pii-eval-artifact-consumer|custodian-consumer|authority|metric-basis)\./,
 ]
 
 /** Inputs of the legacy measurement (the oracle): the engine, its adapters, corpora, policy, pins and ledger, and shared scripts. */

@@ -28,13 +28,13 @@ Each `computed` criterion is recomputed from the committed tree by `pii:authorit
 
 | Criterion | Basis | Evidence | At this record |
 | --- | --- | --- | --- |
-| `population-dual-run-complete` | computed | `benchmarks/pii-eval-migration.json` acceptance is `accepted` (an engine contract states `not-established`, or the owner drops those memberships) | unmet: 156 of 1,188 case memberships not representable |
-| `linux-engine-replay-equal` | computed | `benchmarks/pii-eval-population-dual-run/linux-replay.json`, `canonical: true`, pinned binary | met (run 37350920750) |
+| `population-dual-run-complete` | computed | `benchmarks/pii-eval-migration.json` acceptance is `accepted` (an engine contract states `not-established`, or the owner drops those memberships) | met: schema 1.4 carries 1,188 of 1,188 memberships (156 range-less, reported `unresolved`) |
+| `linux-engine-replay-equal` | computed | `benchmarks/pii-eval-population-dual-run/linux-replay.json`, `canonical: true`, pinned binary | met (run 37552998602, engine `b1c097e4`) |
 | `official-mode-measurement` | computed | every population pin has `projection.mode: official` | unmet: all exploratory |
 | `protected-path-live` | computed | migration record `protectedPath.state: live-verified` and a live artifact consumed | unmet: no custodian catalog, transport or production v2 key |
 | `legacy-callers-inventoried` | computed | `docs/generated/pii-legacy-inventory.json` equals the tree | met |
 | `rollback-rehearsed-for-target` | computed | `docs/generated/pii-authority-rehearsal.json` for the pinned engine and population digests | met |
-| `scorer-basis-decided` | owner | which scorer defines the metric values: `b11ScoreTable` or `pii-v1` accounting (different scorers; numbers not compared) | unmet: no decision |
+| `scorer-basis-decided` | owner | which scorer defines the metric values: `b11ScoreTable` or `pii-v1` accounting (different quantities under the same ids: [`pii-scorer-basis.md`](pii-scorer-basis.md)) | unmet: the proposal is recorded as `proposed`, the owner decision is pending |
 | `owner-accepted-verdict` | owner | accepted decision and `new.authorisation` for an explicitly frozen release or candidate | unmet: `authorisation` is null |
 
 ## The oracle period and who decides

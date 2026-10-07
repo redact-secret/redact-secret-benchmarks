@@ -18,6 +18,7 @@ const ROLES: Record<string, Record<string, Role>> = {
   'app/layout.tsx': { 'src/tokens.css': 'keep' },
   'resolvers/evaluation-hub.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/evaluation-methods.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
+  'resolvers/domains.ts': { 'benchmarks/evaluation/domains/pii/metric-basis.mjs': 'other-domain' },
   'resolvers/family-detail.ts': { 'benchmarks/support/taxonomy': 'keep' },
   'resolvers/rc.ts': { 'benchmarks/shared/evaluation-model.ts': 'replace' },
   'services/authority.ts': { 'benchmarks/qualification/authority': 'keep' },

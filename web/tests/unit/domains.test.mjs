@@ -162,9 +162,9 @@ describe('PII view', () => {
         value: { state: 'withheld', reason: 'insufficient-evidence' } },
     ] }] }], build: { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) } };
     const rows = rowsOf(resolvePiiView(pii({ piiEvalMeasurement: measurement })));
-    expect(rows.find(row => row.label === 'measurable-share').value).toBe('5 / 6 effective N');
-    expect(rows.find(row => row.label === 'measurable-share').detail).toContain('0.833333, interval bound 0.436491');
-    expect(rows.find(row => row.label === 'type-miss-rate')).toMatchObject({ statusWord: 'Withheld', detail: expect.stringContaining('insufficient-evidence') });
+    expect(rows.find(row => row.label.endsWith('(pii-v1:measurable-share)')).value).toBe('5 / 6 effective N');
+    expect(rows.find(row => row.label.endsWith('(pii-v1:measurable-share)')).detail).toContain('0.833333, interval bound 0.436491');
+    expect(rows.find(row => row.label.endsWith('(pii-v1:type-miss-rate)'))).toMatchObject({ statusWord: 'Withheld', detail: expect.stringContaining('insufficient-evidence') });
   });
 
   test('a view that is not bound is Not recorded in its cells, and a family with no protected count hides the total', () => {

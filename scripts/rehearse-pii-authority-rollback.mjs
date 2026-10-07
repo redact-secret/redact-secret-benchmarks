@@ -34,7 +34,7 @@ async function probe() {
   const bindings = {
     piiEvalMeasurement: await piiEvalMeasurementFrom(
       ['benchmarks/pii-eval-public-synthetic-pins.json', 'benchmarks/pii-eval-population-pins.json'].map(f => path.join(root, f)),
-      ['tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json', ...['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'].map(v => `${dual}/${v}.public-synthetic-artifact.json`)].map(f => path.join(root, f))),
+      [JSON.parse(readFileSync(path.join(root, 'benchmarks/pii-eval-public-synthetic-source.json'), 'utf8')).durableCopy.path, ...['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'].map(v => `${dual}/${v}.public-synthetic-artifact.json`)].map(f => path.join(root, f))),
   };
   const route = await bindPiiProtectedSupport(root);
   if (route) bindings.protectedRoute = route;

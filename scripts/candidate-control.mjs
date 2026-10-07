@@ -20,6 +20,23 @@ export function controlFor(adoption, { evidenceTag, manifestDigest, requireArchi
     if (ec && (ec.replay?.archive?.release || ec.replay?.state !== 'pending')) return { ...ec, source: 'engineCandidate' };
     // The accepted evidence's own replay is the control once the adoption is accepted: the published product on the accepted engine (its replay copy holds the run records).
     const accepted = adoption.state === 'accepted' ? adoption.candidate : undefined;
+    // A later acceptance of the engine and the product on the SAME evidence (`engineProductAcceptance`, #808: alpha.16 measuring core beta.14) moves what a candidate is compared with: the
+    // engine and the published product the replay runs on are the ones the owner accepted, and the control is a copy measured at exactly those pins (`replay.acceptedPinsCopy`), never the
+    // earlier alpha.15/beta.13 one. A record that has no such acceptance keeps the rule above. The acceptance block itself is read, never written (#657).
+    const acceptance = adoption.state === 'accepted' ? adoption.engineProductAcceptance : undefined;
+    if (accepted && acceptance) {
+      if (acceptance.evidenceRelease !== accepted.evidenceRelease || acceptance.manifestDigest !== accepted.manifestDigest) throw new Error('engineProductAcceptance is for another evidence release than the accepted adoption: a candidate is measured on the accepted evidence');
+      if (!acceptance.engine?.tag || !acceptance.engine?.revision || !acceptance.product?.version) throw new Error('engineProductAcceptance records no engine or no product');
+      const copy = accepted.replay?.acceptedPinsCopy;
+      const at = { ...accepted, engine: acceptance.engine, product: acceptance.product, source: 'engineProductAcceptance' };
+      if (!copy) {
+        if (requireArchive) throw new Error(`no control at the accepted pins (${acceptance.engine.tag}, @redact-secret/core ${acceptance.product.version}): record candidate.replay.acceptedPinsCopy (a control copy measured at those pins) before replaying a product candidate`);
+        return { ...at, replay: { ...accepted.replay, archive: undefined, recordedRuns: undefined } };
+      }
+      if (copy.engineTag !== acceptance.engine.tag || copy.productVersion !== acceptance.product.version) throw new Error(`the recorded control copy is for ${copy.engineTag} and @redact-secret/core ${copy.productVersion}, the accepted pins are ${acceptance.engine.tag} and ${acceptance.product.version}: it is stale, measure a control copy at the accepted pins`);
+      if (requireArchive && (!copy.release || !DIGEST.test(copy.sha256 ?? ''))) throw new Error('the control copy at the accepted pins records no archive (release and sha256)');
+      return { ...at, replay: { ...accepted.replay, archive: copy, recordedRuns: copy.recordedRuns, semanticDigests: copy.semanticDigests } };
+    }
     const copy = accepted?.replay?.replayCopy ?? accepted?.replay?.archive;
     if (accepted && copy?.release && DIGEST.test(copy.sha256 ?? '') && accepted.engine?.tag && accepted.product?.version) return { ...accepted, replay: { ...accepted.replay, archive: copy }, source: 'candidate' };
     throw new Error('benchmarks/evidence-adoption.json records no engineCandidate and no accepted replay to replay a product candidate on');

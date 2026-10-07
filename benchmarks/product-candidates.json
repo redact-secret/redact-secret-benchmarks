@@ -213,6 +213,63 @@
           }
         }
       }
+    },
+    {
+      "id": "core-main-f537059f",
+      "product": {
+        "repository": "redact-secret/redact-secret",
+        "commit": "f537059f07590be28233eca3e3184d5ec5284e1e",
+        "ref": "main",
+        "version": "0.1.0-beta.14",
+        "published": false,
+        "changes": [
+          "redact-secret/redact-secret#1272",
+          "redact-secret/redact-secret#1277"
+        ],
+        "build": "core: npm pack of packages/javascript built from the commit (js:build); node-linux-x64-gnu: bindings/node/npm/linux-x64-gnu with the addon the commit's own CI run built; wasm: bindings/wasm/npm with the wasm-web and wasm-web-common outputs of the same run. Never published. The core and wasm tarballs and the addon are byte-identical to what the commit's own artifact qualification run attested (scripts/qualified-candidate.mjs verify). The commit is 19 commits after the beta.14 release source 0c62fd38bca75c5b28b042dc79789b708ebf1d17 and changes packages/javascript (errors, formatters) among release close-out, workflow and documentation changes: it is the newest main commit that passed qualification and differs from the published build, so a replay shows what core main changed since beta.14, an empty diff being a valid result.",
+        "ci": {
+          "run": "https://github.com/redact-secret/redact-secret/actions/runs/37622345709",
+          "artifacts": [
+            "node-addon-x86_64-unknown-linux-gnu",
+            "wasm-web",
+            "wasm-web-common"
+          ]
+        }
+      },
+      "control": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.14"
+      },
+      "platform": "linux-x64",
+      "runClass": "exploratory",
+      "publication": "internal",
+      "release": {
+        "repository": "redact-secret/redact-secret-benchmarks",
+        "tag": "product-candidate-core-main-f537059f"
+      },
+      "packages": [
+        {
+          "name": "@redact-secret/core",
+          "file": "redact-secret-core-0.1.0-beta.14.tgz",
+          "sha256": "sha256:929393ddc64905093e1a9fa818d9483fae9ae090c5bf5099269e0c0fa82b87a0",
+          "size": 55691,
+          "platform": null
+        },
+        {
+          "name": "@redact-secret/node-linux-x64-gnu",
+          "file": "redact-secret-node-linux-x64-gnu-0.1.0-beta.14.tgz",
+          "sha256": "sha256:69efc0c10ebe2299855b38a865a2ce1a0008d2325119aed4d73385769480d25a",
+          "size": 779615,
+          "platform": "linux-x64"
+        },
+        {
+          "name": "@redact-secret/wasm",
+          "file": "redact-secret-wasm-0.1.0-beta.14.tgz",
+          "sha256": "sha256:d2acc0dd0dcf325799a0ec824f2c5353c56e35a9deaf7b968f0770c226777fc4",
+          "size": 1096324,
+          "platform": null
+        }
+      ]
     }
   ]
 }

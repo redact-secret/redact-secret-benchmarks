@@ -55,7 +55,10 @@ export function problems(registry, adoption) {
       if (name !== 'replay' && !existsSync(path.join(root, r.data ?? '', 'two-by-two.json'))) found.push(`${at}: ${name}.data ${r.data} holds no two-by-two.json`);
     }
     const control = adoption?.engineCandidate?.product ?? (adoption?.state === 'accepted' ? adoption.candidate?.product : undefined);
-    if (control && (c.control?.version !== control.version)) found.push(`${at}: control ${c.control?.version} is not the engine candidate's (or the accepted adoption's) product pin ${control.version}`);
+    // A candidate registered after the engine/product acceptance (#808) is compared with that acceptance's product; an earlier one keeps the adoption's own product pin.
+    const accepted = adoption?.state === 'accepted' ? adoption.engineProductAcceptance?.product : undefined;
+    const allowed = [control?.version, accepted?.version].filter(Boolean);
+    if (allowed.length && !allowed.includes(c.control?.version)) found.push(`${at}: control ${c.control?.version} is not the engine candidate's (or the accepted adoption's) product pin ${allowed.join(' or ')}`);
   }
   return found;
 }

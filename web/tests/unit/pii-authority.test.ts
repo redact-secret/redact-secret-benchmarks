@@ -21,13 +21,21 @@ describe('loadPiiAuthority', () => {
     const state = await authority.loadPiiAuthority();
     expect(['legacy', 'new']).toContain(state.authority);
     expect(state.from).toBe('committed');
-    expect(state.total).toBe(8);
+    expect(state.total).toBeGreaterThan(0);
     expect(state.unmet.length).toBeLessThanOrEqual(state.total);
   });
 
   test.each(['legacy', 'new'] as const)('a root pinned to %s reads %s', async value => {
     const { authority } = await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile(value) }));
     await expect(authority.loadPiiAuthority()).resolves.toMatchObject({ authority: value, from: 'committed' });
+  });
+
+  test('the public criteria are counted apart from the protected path, which never counts against them', async () => {
+    const { authority } = await modules(overlay({ [PII_AUTHORITY_FILE]: edited(PII_AUTHORITY_FILE, f => { f.exitCriteria.forEach((c: { scope: string; state: string }) => { c.state = c.scope === 'protected' ? 'unmet' : 'met'; }); }) }));
+    const state = await authority.loadPiiAuthority();
+    expect(state.unmet).toEqual([]);
+    expect(state.total).toBe(7);
+    expect(state.protectedPending).toEqual(['protected-path-live']);
   });
 
   test('an absent file means legacy', async () => {
@@ -45,7 +53,7 @@ describe('loadPiiAuthority', () => {
   });
 
   test('new without an owner authorisation is refused with the reason, and a credential setting does not change that', async () => {
-    const root = overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new'), [AUTHORITY_FILE]: authorityFile('new') });
+    const root = overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new', false), [AUTHORITY_FILE]: authorityFile('new') });
     const { authority } = await modules(root);
     const state = await authority.loadPiiAuthority();
     expect(state.authority).toBe('new');
@@ -60,13 +68,13 @@ describe('the PII evaluation under each authority', () => {
     const pii = await domains.loadPiiEvaluation();
     expect(pii.authority.authority).toBe('legacy');
     expect(pii.authority.source).toMatch(/benchmark-owned scorer/);
-    expect(pii.authority.total).toBe(8);
+    expect(pii.authority.total).toBe(7);
     expect(pii.authority.decidedBy).toMatch(/owner/);
     expect(pii.state).not.toBe('not-recorded');
   });
 
   test('new is not recorded without an authorisation, says so, and never falls back to the legacy evaluation', async () => {
-    const { domains } = await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new') }));
+    const { domains } = await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new', false) }));
     const pii = await domains.loadPiiEvaluation();
     expect(pii.state).toBe('not-recorded');
     if (pii.state !== 'not-recorded') throw new Error('unreachable');
@@ -74,22 +82,29 @@ describe('the PII evaluation under each authority', () => {
     expect(pii.authority.authority).toBe('new');
   });
 
-  test('new with a recorded authorisation but no validated schema 1.2 projection is not recorded, with no fallback', async () => {
-    const withAuth = edited(PII_AUTHORITY_FILE, f => {
-      f.authority = 'new';
-      f.new.authorisation = { release: 'synthetic-fixture', acceptedOn: '2000-01-01', acceptedBy: 'synthetic-fixture', decision: 'docs/decisions/2000-01-01-synthetic-fixture.md', engineCommit: 'a'.repeat(40), policyDigest: 'b'.repeat(64), populationDigests: { 'oracle-plan': 'c'.repeat(64) } };
-    });
-    const { domains } = await modules(overlay({ [PII_AUTHORITY_FILE]: withAuth }));
+  test('an authorised new reads the pii-eval measurement from the committed durable copies when nothing is published, with the product unbound', async () => {
+    const { domains } = await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new') }));
+    const pii = await domains.loadPiiEvaluation();
+    expect(pii.authority.authority).toBe('new');
+    expect(pii.state).not.toBe('not-recorded');
+    if (pii.state === 'not-recorded') throw new Error('unreachable');
+    expect(pii.piiEvalMeasurement?.populations.length).toBeGreaterThan(0);
+    expect(pii.piiEvalMeasurement?.populations.every(p => p.productProjection && p.productBinding.state === 'publication-product-not-measured')).toBe(true);
+  });
+
+  test('new whose committed copies do not validate is not recorded and never falls back to the legacy evaluation', async () => {
+    const copy = 'benchmarks/pii-eval-official-run/oracle-plan.public-synthetic-artifact.json';
+    const { domains } = await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new'), [copy]: '{}' }));
     const pii = await domains.loadPiiEvaluation();
     expect(pii.state).toBe('not-recorded');
     if (pii.state !== 'not-recorded') throw new Error('unreachable');
-    expect(pii.reason).toMatch(/no validated pii-eval schema 1\.2 projection/);
-    expect(pii.reason).toMatch(/no fallback to the legacy pipeline/);
+    expect(pii.reason).toMatch(/did not validate/);
+    expect(pii.authority.authority).toBe('new');
   });
 
   test('the rollback: flipping the value to new and back to legacy restores the legacy evaluation byte for byte', async () => {
     const legacy = JSON.stringify(await (await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('legacy') }))).domains.loadPiiEvaluation());
-    const flipped = (await (await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new') }))).domains.loadPiiEvaluation());
+    const flipped = (await (await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('new', false) }))).domains.loadPiiEvaluation());
     expect(flipped.state).toBe('not-recorded');
     const rolledBack = JSON.stringify(await (await modules(overlay({ [PII_AUTHORITY_FILE]: piiAuthorityFile('legacy') }))).domains.loadPiiEvaluation());
     expect(rolledBack).toBe(legacy);

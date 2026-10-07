@@ -8,6 +8,8 @@ decided_at: 2026-10-05
 
 # Record PII authority as its own committed value, keep it legacy until a measured exit holds, and rehearse the rollback
 
+> Superseded for the public/synthetic lane by [the 2026-10-07 switch to pii-eval](2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md). The mechanism below stands; the value `legacy` and the single exit list do not.
+
 ## Context
 
 #666, part of #652; after #664 (the four benchmark populations through the oracle and pii-eval) and #665 (the consumer, the support matrix, the UI, the repin). The credential analogue is

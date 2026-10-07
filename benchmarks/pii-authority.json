@@ -1,13 +1,26 @@
 {
   "schema": "redact-secret/pii-authority/v1",
-  "authority": "legacy",
+  "authority": "new",
   "independence": "A credential authority setting (the credential qualification authority file) is not authorisation for PII. This file is read by no credential reader and reads none of theirs; switching one never switches the other.",
+  "authorityModel": {
+    "publicSyntheticMeasurement": "pii-eval",
+    "productQualification": "benchmarks",
+    "protectedExecution": "private-custodian",
+    "privateAudit": "private-ledger",
+    "legacyEvaluator": "bounded-oracle-and-rollback"
+  },
+  "protected": {
+    "state": "pending-not-operational",
+    "authority": "private-custodian",
+    "audit": "private-ledger",
+    "gate": "protected-path-live",
+    "evidence": "benchmarks/pii-eval-migration.json protectedPath (not live-verified). Tracked in pii-eval #30, private-custodian #71 and #72 and private-ledger #9-#12; recorded as pending and not operational, never measured here. It does not gate the public/synthetic cutover."
+  },
   "legacy": {
-    "role": "authority",
-    "source": "The benchmark-owned scorer (b11ScoreTable) over the frozen Beta.11 and Beta.13 evidence and the b11-population-v2 plans, with the product policy in qualification/pii-v1.json.",
+    "source": "The benchmark-owned scorer (b11ScoreTable) over the frozen Beta.11 and Beta.13 evidence and the b11-population-v2 plans, with the product policy in qualification/pii-v1.json. The authority while this file's value is legacy; the bounded oracle and rollback source while it is new.",
     "oracle": {
-      "exitCondition": "The oracle period ends when the owner has authorised the new path for an explicitly frozen release or candidate (every criterion below met, none by hand), the new path has been the authority for at least one further release or candidate that was measured through both pipelines with the dual-run report regenerated and 0 unexplained differences, the rollback has been rehearsed again against that target, and a removal PR lists each legacy file's callers first (docs/generated/pii-legacy-inventory.json) and is reviewed. A lapse of time removes nothing.",
-      "decision": "docs/decisions/2026-10-05-keep-pii-authority-legacy-with-a-measured-exit-and-a-rehearsed-rollback.md",
+      "exitCondition": "The oracle period ends when the owner has authorised the new path for an explicitly frozen release or candidate (recorded in new.authorisation), the new path has been the authority for at least one further release or candidate that was measured through both pipelines with the dual-run report regenerated and 0 unexplained differences, the rollback has been rehearsed again against that target, and a removal PR lists each legacy file's callers first (docs/generated/pii-legacy-inventory.json) and is reviewed. A lapse of time removes nothing.",
+      "decision": "docs/decisions/2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md",
       "decidedBy": "the owner of redact-secret/redact-secret-benchmarks",
       "reviewOn": "2027-01-02"
     }
@@ -23,12 +36,49 @@
       ],
       "artifactSchema": "1.4"
     },
-    "authorisation": null
+    "authorisation": {
+      "release": "@redact-secret/core 0.1.0-beta.13 candidate (source 401158d09a677b110fa60209256ba184b1f08f8f), as measured by official run 37559349070",
+      "acceptedOn": "2026-10-07",
+      "acceptedBy": "Milo Kang (owner of redact-secret/redact-secret-benchmarks)",
+      "decision": "docs/decisions/2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md",
+      "scope": "public-synthetic-measurement-authority",
+      "source": {
+        "kind": "owner-session",
+        "description": "The repository owner's answer in the live Claude Code session on 2026-10-07 to the question 'Record owner approval for #666 and switch the PII public synthetic measurement authority to `new` (pii-eval)?', posted verbatim on #666 (issueComment). Public/synthetic measurement authority only: not protected execution, not private audit, not product thresholds or support verdicts, not credential authority.",
+        "answer": "승인하고 전환",
+        "issueComment": "https://github.com/redact-secret/redact-secret-benchmarks/issues/666#issuecomment-6034993114"
+      },
+      "engineCommit": "b1c097e40bad456e52f904f626cca00b69c45612",
+      "policyDigest": "02e1e012f48f610885b17ba806fd7b47d13de6d5a33ac8b58c094175b57b8df2",
+      "populationDigests": {
+        "oracle-plan": "95a0cbb133c90192a365ad424ea37aaa935fc44b2f59adb0a5a60bf0aeb06049",
+        "qualification-plan": "05bef949f619ebd83117a432667ad251e95d7ab470aa24d9b79c1943d183353c",
+        "diagnostic-balanced": "e6ad841fa5309148e1cb5cf841d8ae2e9bfa48705fa335763130bc353d3c7564",
+        "benign-heavy-stress": "22fa100941840d14e6cc74dbe688a7bca66259ba004ac8d90bf13306a604da25"
+      },
+      "target": {
+        "engineBinarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+        "scannerPackageTreeSha256": "36a596227bd695ccc66f1d98ffc60a34aadf91ccd0c0bbb1d66f0b51bb232a51",
+        "protocol": {
+          "id": "pii-v1",
+          "revision": 2
+        },
+        "artifactSchema": "1.4",
+        "manifestDigests": {
+          "oracle-plan": "49c64e8b0d9d0361eaae22f6f6eff89ba918c30a00b8d8bb99417c24ae934725",
+          "qualification-plan": "6929a53f0c570ece3089c5f24a745c41025a21147cc1afb7b16c475aa26c0b7a",
+          "diagnostic-balanced": "c6f75c0067384f6de88f8afc7d73341d5be12be64c4d9c3d401419aad91306d7",
+          "benign-heavy-stress": "ceed2e0b6df4b4871e01620a55a6e9457ded4a88a027deadaa91b9e400fc7093"
+        },
+        "officialRunId": 37559349070
+      }
+    }
   },
   "exitCriteria": [
     {
       "id": "population-dual-run-complete",
       "basis": "computed",
+      "scope": "public",
       "statement": "Every case membership of the four frozen populations is carried through both engines: an engine contract can state an authored identity of not-established, or the owner has decided to drop those memberships, and the dual-run acceptance is accepted rather than accepted-representable-cases.",
       "state": "met",
       "evidence": "benchmarks/pii-eval-migration.json acceptance.benchmarkPopulationDualRun (accepted: 1,188 of 1,188 memberships carried under schema 1.4, 156 of them range-less and reported unresolved)"
@@ -36,6 +86,7 @@
     {
       "id": "linux-engine-replay-equal",
       "basis": "computed",
+      "scope": "public",
       "statement": "The pinned linux CI engine replays the four populations to the same semantic digests and bytes as the committed artifacts, on the pinned binary.",
       "state": "met",
       "evidence": "benchmarks/pii-eval-population-dual-run/linux-replay.json (receipt of .github/workflows/pii-population-replay.yml)"
@@ -43,20 +94,15 @@
     {
       "id": "official-mode-measurement",
       "basis": "computed",
+      "scope": "public",
       "statement": "The four populations are measured in official mode on the canonical engine: a fresh execution of the pinned scanner package, recorded with its provenance. An official measurement is evidence; it is not an accepted verdict.",
       "state": "met",
-      "evidence": "benchmarks/pii-eval-official-run/record.json (fresh canonical linux-x64 execution, run 37559349070 of .github/workflows/pii-official-run.yml; pins projection.mode official; checked by scripts/lib/pii-official-record.mjs through pii:migration:check). An execution, not an accepted verdict"
-    },
-    {
-      "id": "protected-path-live",
-      "basis": "computed",
-      "statement": "A live protected path exists and has been consumed: a custodian catalog and transport, a production v2 signing key authorised for the projection domain, and a protected artifact verified by the consumer. Synthetic conformance does not count.",
-      "state": "unmet",
-      "evidence": "benchmarks/pii-eval-migration.json protectedPath"
+      "evidence": "benchmarks/pii-eval-official-run/record.json (fresh canonical linux-x64 execution, run 37559349070 of .github/workflows/pii-official-run.yml; pins projection.mode official; checked by scripts/lib/pii-official-record.mjs through pii:migration:check). An execution is evidence; the owner accepted its verdict under owner-accepted-verdict"
     },
     {
       "id": "legacy-callers-inventoried",
       "basis": "computed",
+      "scope": "public",
       "statement": "Every removal candidate of the legacy PII measurement code is named with its owner, its callers and its prerequisite, and the committed inventory equals the tree.",
       "state": "met",
       "evidence": "docs/generated/pii-legacy-inventory.json (node scripts/pii-legacy-inventory.mjs --check)"
@@ -64,6 +110,7 @@
     {
       "id": "rollback-rehearsed-for-target",
       "basis": "computed",
+      "scope": "public",
       "statement": "The rollback was rehearsed against the pinned target: flipping the one value and restoring it changes no byte of the PII support publication, and new is refused without an owner authorisation.",
       "state": "met",
       "evidence": "docs/generated/pii-authority-rehearsal.json (node --import tsx scripts/rehearse-pii-authority-rollback.mjs)"
@@ -71,16 +118,26 @@
     {
       "id": "scorer-basis-decided",
       "basis": "owner",
+      "scope": "public",
       "statement": "The owner has decided which scorer defines the PII metric values the qualification uses: the benchmark scorer (b11ScoreTable) or pii-v1 accounting. They are different scorers and their numbers are not compared.",
       "state": "met",
-      "evidence": "docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md (status accepted; owner Milo Kang, 2026-10-06; source https://github.com/redact-secret/redact-secret-benchmarks/issues/795#issuecomment-6028908779). The scorer, denominator and label decision only: it is not an accepted verdict (owner-accepted-verdict stays unmet) and does not authorise new"
+      "evidence": "docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md (status accepted; owner Milo Kang, 2026-10-06; source https://github.com/redact-secret/redact-secret-benchmarks/issues/795#issuecomment-6028908779). The scorer, denominator and label decision only; the verdict acceptance is owner-accepted-verdict"
     },
     {
       "id": "owner-accepted-verdict",
       "basis": "owner",
-      "statement": "The owner has accepted the measured verdict of an explicitly frozen release or candidate through benchmark policy, recorded in an accepted decision and in new.authorisation. The repository never records this on the owner's behalf.",
+      "scope": "public",
+      "statement": "The owner has accepted the measured verdict of an explicitly frozen release or candidate through benchmark policy, recorded in an accepted decision and in new.authorisation, for the public/synthetic measurement authority only. The repository never records this on the owner's behalf.",
+      "state": "met",
+      "evidence": "docs/decisions/2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md (status accepted) and new.authorisation; owner Milo Kang, 2026-10-07, answer \"승인하고 전환\", source https://github.com/redact-secret/redact-secret-benchmarks/issues/666#issuecomment-6034993114. Public/synthetic measurement authority only: not protected, not product thresholds or support verdicts, not credential authority"
+    },
+    {
+      "id": "protected-path-live",
+      "basis": "computed",
+      "scope": "protected",
+      "statement": "A live protected path exists and has been consumed: a custodian catalog and transport, a production v2 signing key authorised for the projection domain, and a protected artifact verified by the consumer. Synthetic conformance does not count. Tracked separately: it gates the protected path only and never the public/synthetic cutover.",
       "state": "unmet",
-      "evidence": "new.authorisation is null"
+      "evidence": "benchmarks/pii-eval-migration.json protectedPath"
     }
   ]
 }

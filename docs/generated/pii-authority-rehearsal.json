@@ -5,7 +5,7 @@
  "authorityChanged": false,
  "writesAcceptance": false,
  "rehearsedOn": "2026-10-07",
- "committedAuthority": "legacy",
+ "committedAuthority": "new",
  "target": {
   "engineCommit": "b1c097e40bad456e52f904f626cca00b69c45612",
   "populationDigests": {
@@ -19,8 +19,8 @@
  "states": [
   {
    "label": "committed",
-   "authority": "legacy",
-   "fileSha256": "f46e1e709a74178017ec933716c6ceac299e41de978a7f048664130f9cb823d6",
+   "authority": "new",
+   "fileSha256": "9536d4e23b25dee735a24ecf2b443a2031be624431350d330afb36bf51449bbc",
    "matrixSha256": "77ab3e59d92892d956c2df682ee49e9dd0728a0386cd970511629a0c74c994fb",
    "matrixBytes": 778050,
    "gateAccepted": true,
@@ -28,29 +28,40 @@
   },
   {
    "label": "flipped",
-   "authority": "new",
-   "fileSha256": "b60813b9e9120908020f66318f920048de45af5aef17728892a2eb08f78a932b",
-   "matrixSha256": "77ab3e59d92892d956c2df682ee49e9dd0728a0386cd970511629a0c74c994fb",
-   "matrixBytes": 778050,
-   "gateAccepted": false,
-   "gateProblems": [
-    "authority is new but no owner authorisation is recorded: a credential authority setting is not authorisation for PII, and the repository records no acceptance on the owner's behalf"
-   ]
-  },
-  {
-   "label": "rolled-back",
    "authority": "legacy",
-   "fileSha256": "f46e1e709a74178017ec933716c6ceac299e41de978a7f048664130f9cb823d6",
+   "fileSha256": "6d08fb7f0907a098c82d090b2479265f21ccf5fcd66ad4a7787d6af885315d92",
    "matrixSha256": "77ab3e59d92892d956c2df682ee49e9dd0728a0386cd970511629a0c74c994fb",
    "matrixBytes": 778050,
    "gateAccepted": true,
    "gateProblems": []
+  },
+  {
+   "label": "rolled-back",
+   "authority": "new",
+   "fileSha256": "9536d4e23b25dee735a24ecf2b443a2031be624431350d330afb36bf51449bbc",
+   "matrixSha256": "77ab3e59d92892d956c2df682ee49e9dd0728a0386cd970511629a0c74c994fb",
+   "matrixBytes": 778050,
+   "gateAccepted": true,
+   "gateProblems": []
+  },
+  {
+   "label": "new-without-authorisation",
+   "authority": "new",
+   "fileSha256": "ccd4c2b8745a13eaf0ddea6b8a7b52f3db5b732adbbb7008b7104a1c04e18cae",
+   "matrixSha256": "77ab3e59d92892d956c2df682ee49e9dd0728a0386cd970511629a0c74c994fb",
+   "matrixBytes": 778050,
+   "gateAccepted": false,
+   "gateProblems": [
+    "criterion owner-accepted-verdict is recorded met but new.authorisation is null",
+    "authority is new but no owner authorisation is recorded: a credential authority setting is not authorisation for PII, and the repository records no acceptance on the owner's behalf"
+   ]
   }
  ],
  "result": {
   "matrixIdenticalAcrossValues": true,
   "restoredIdentical": true,
   "legacyAccepted": true,
+  "newAcceptedWhenAuthorised": true,
   "newWithoutAuthorisationRefused": true
  }
 }

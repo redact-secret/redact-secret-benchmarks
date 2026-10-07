@@ -21,6 +21,10 @@ import { readFileSync, statSync } from "node:fs";
 import { basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
+// The schemas are imported, not read through `new URL(.., import.meta.url)`, so a bundler (the Next build reads this consumer under the new PII authority, #666) resolves them.
+import schemaV11 from "../../../../schemas/pii-eval-public-synthetic-artifact-v1.1.json" with { type: "json" };
+import schemaV12 from "../../../../schemas/pii-eval-public-synthetic-artifact-v1.2.json" with { type: "json" };
+import schemaV14 from "../../../../schemas/pii-eval-public-synthetic-artifact-v1.4.json" with { type: "json" };
 
 export const REPORT_SCHEMA = "pii-eval-consumer-report/1";
 export const PINS_SCHEMA = "pii-eval-consumer-pins/1";
@@ -34,13 +38,13 @@ const MAX_DEPTH = 32;
 // `unresolved` observation of an authored not-established identity and range (ADR 0017, 0018) and is the schema of the four benchmark
 // populations. 1.3 (identity only) is not accepted: an artifact that states a not-established occurrence is 1.4. A pin names exactly
 // one version and a document of another version is never read under it.
-const SCHEMA_FILES = { '1.1': 'pii-eval-public-synthetic-artifact-v1.1.json', '1.2': 'pii-eval-public-synthetic-artifact-v1.2.json', '1.4': 'pii-eval-public-synthetic-artifact-v1.4.json' };
-const validators = Object.fromEntries(Object.entries(SCHEMA_FILES).map(([version, file]) => {
+const SCHEMAS = { '1.1': schemaV11, '1.2': schemaV12, '1.4': schemaV14 };
+const validators = Object.fromEntries(Object.entries(SCHEMAS).map(([version, schema]) => {
   const validator = new Ajv2020({ strict: true, allErrors: true });
   validator.addFormat('uint8', { type: 'number', validate: value => Number.isSafeInteger(value) && value >= 0 && value <= 255 });
   validator.addFormat('uint32', { type: 'number', validate: value => Number.isSafeInteger(value) && value >= 0 && value <= 0xffffffff });
   validator.addFormat('uint64', { type: 'number', validate: value => Number.isSafeInteger(value) && value >= 0 });
-  return [version, validator.compile(JSON.parse(readFileSync(new URL(`../../../../schemas/${file}`, import.meta.url), 'utf8')))];
+  return [version, validator.compile(structuredClone(schema))];
 }));
 // The public artifact has exactly these members (schemas/public-synthetic-artifact.v1.schema.json,
 // additionalProperties false); `diagnostics` exists only on the internal artifact, which is refused.

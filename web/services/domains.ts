@@ -24,10 +24,11 @@ import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../bench
 import type { CustodianConformance, PiiEvalMeasurement } from '../../benchmarks/evaluation/domains/pii/support-v2';
 import { domainDescriptorV2, evaluationDomainsV2Problem } from '../../benchmarks/shared/evaluation-domains-v2.ts';
 import type { Catalog } from './catalog';
-import { loadPiiAuthority, type PiiAuthority } from './pii-authority';
+import { loadPiiAuthority, type PiiAuthority, type PiiAuthorityState } from './pii-authority';
 import { loadCredentialSource, type CredentialPipeline } from './credential-source';
 import { loadFindings } from './findings';
 import { once, readJsonIfPresent, REPO_ROOT } from './repo';
+import { piiEvalMeasurementFrom } from '../../scripts/pii-publication-inputs';
 import type { RunLoad } from './run';
 import type { KnownGaps } from './findings';
 
@@ -115,11 +116,24 @@ async function loadPublishedPiiEvidence(): Promise<{ piiEvalMeasurement: PiiEval
   return { piiEvalMeasurement: matrix.piiEvalMeasurement ?? null, custodianConformance: matrix.custodianConformance ?? null };
 }
 
+/**
+ * Under the `new` authority the pii-eval measurement is the authority, so a build with no published support artifact (a pull request build, a
+ * local build) reads it from the same committed inputs the publication binds: the pins and the durable copies of the recorded official run (or,
+ * before one is recorded, of the dual-run). This is the new pipeline's own input, not a fallback to the legacy one; the product is not
+ * bound (`null`), so the measurement is never described as measuring the release. An input that does not validate throws and the caller says so.
+ */
+async function committedPiiEvalMeasurement(): Promise<PiiEvalMeasurement> {
+  const dir = (await readJsonIfPresent<unknown>('benchmarks/pii-eval-official-run/record.json')) ? 'benchmarks/pii-eval-official-run' : 'benchmarks/pii-eval-population-dual-run';
+  return piiEvalMeasurementFrom(path.join(REPO_ROOT, 'benchmarks/pii-eval-population-pins.json'),
+    PII_VIEW_IDS.map(view => path.join(REPO_ROOT, `${dir}/${view}.public-synthetic-artifact.json`)), null);
+}
+
 function loadPiiEvidence(): Promise<PiiEvidence> {
   return once('pii-evidence', async () => {
     let published: Awaited<ReturnType<typeof loadPublishedPiiEvidence>>;
     try {
       published = await loadPublishedPiiEvidence();
+      if (!published.piiEvalMeasurement && (await loadPiiAuthority()).authority === 'new') published = { ...published, piiEvalMeasurement: await committedPiiEvalMeasurement() };
     } catch (error) {
       return { state: 'not-recorded', reason: `The published PII artifact did not validate: ${(error as Error).message}` } satisfies PiiEvidence;
     }
@@ -197,6 +211,9 @@ export interface PiiAuthorityStamp {
   /** Exit criteria not yet met, by id; the number met is `total - unmet.length`. */
   unmet: string[];
   total: number;
+  /** Protected-scope criteria not met: the protected path is pending and never gates the public measurement. */
+  protectedPending: string[];
+  authorisation: PiiAuthorityState['authorisation'];
   decidedBy: string | null;
   reviewOn: string | null;
 }
@@ -213,14 +230,14 @@ export function loadPiiEvaluation(): Promise<PiiEvaluation> {
     const state = await loadPiiAuthority();
     const stamp: PiiAuthorityStamp = {
       authority: state.authority, from: state.from, source: state.file?.legacy.source ?? 'No PII authority file is committed, so the legacy pipeline is the authority.',
-      unmet: state.unmet, total: state.total, decidedBy: state.file?.legacy.oracle.decidedBy ?? null, reviewOn: state.file?.legacy.oracle.reviewOn ?? null,
+      unmet: state.unmet, total: state.total, protectedPending: state.protectedPending, authorisation: state.authorisation, decidedBy: state.file?.legacy.oracle.decidedBy ?? null, reviewOn: state.file?.legacy.oracle.reviewOn ?? null,
     };
     if (state.refusal) return { state: 'not-recorded', reason: state.refusal, authority: stamp } satisfies PiiEvaluation;
     const evidence = await loadPiiEvidence();
     if (state.authority === 'new') {
       const measurement = evidence.state === 'not-recorded' ? null : evidence.piiEvalMeasurement;
       if (!measurement || !measurement.populations.some(p => p.productProjection))
-        return { state: 'not-recorded', reason: 'The PII authority is new and no validated pii-eval schema 1.2 projection backs this build. There is no fallback to the legacy pipeline.', authority: stamp } satisfies PiiEvaluation;
+        return { state: 'not-recorded', reason: `The PII authority is new and no validated pii-eval schema 1.2 projection backs this build.${evidence.state === 'not-recorded' ? ` ${evidence.reason}` : ''} There is no fallback to the legacy pipeline.`, authority: stamp } satisfies PiiEvaluation;
     }
     return { ...evidence, authority: stamp } as PiiEvaluation;
   });

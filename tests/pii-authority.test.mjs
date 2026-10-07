@@ -27,11 +27,16 @@ const newFile = () => {
   file.new.target.populations = ['pop-a', 'pop-b'];
   file.new.authorisation = {
     release: 'synthetic-fixture', acceptedOn: '2000-01-01', acceptedBy: 'synthetic-fixture', decision: 'docs/decisions/2000-01-01-synthetic-fixture.md',
+    scope: 'public-synthetic-measurement-authority',
+    source: { kind: 'owner-session', description: 'synthetic fixture', answer: 'synthetic-fixture', issueComment: 'https://github.com/redact-secret/redact-secret-benchmarks/issues/1#issuecomment-1' },
     engineCommit: 'a'.repeat(40), policyDigest: hex('1'), populationDigests: { 'pop-a': hex('2'), 'pop-b': hex('3') },
+    target: { engineBinarySha256: hex('4'), scannerPackageTreeSha256: hex('5'), protocol: { id: 'pii-v1', revision: 2 }, artifactSchema: '1.4', manifestDigests: { 'pop-a': hex('6'), 'pop-b': hex('7') }, officialRunId: 1 },
   };
+  file.new.target.artifactSchema = '1.4';
   return file;
 };
-const context = () => ({ computed: allMet(), policyDigest: hex('1'), engineCommit: 'a'.repeat(40), populationDigests: { 'pop-a': hex('2'), 'pop-b': hex('3') }, decisionStatus: 'accepted' });
+const context = () => ({ computed: allMet(), policyDigest: hex('1'), engineCommit: 'a'.repeat(40), populationDigests: { 'pop-a': hex('2'), 'pop-b': hex('3') }, decisionStatus: 'accepted',
+  target: { engineBinarySha256: hex('4'), scannerPackageTreeSha256: hex('5'), protocol: { id: 'pii-v1', revision: 2 }, artifactSchema: '1.4', manifestDigests: { 'pop-a': hex('6'), 'pop-b': hex('7') }, officialRunId: 1 } });
 
 test('the committed PII authority file is one valid value, and the gate holds', async () => {
   assert.deepEqual(piiAuthorityShapeProblems(committed), []);
@@ -67,7 +72,7 @@ test('the schema and the shape check agree: each refuses the same malformed file
 });
 
 test('every exit criterion is listed once, with the basis the rules give it, and the file cannot reorder or relabel them', () => {
-  assert.deepEqual(committed.exitCriteria.map(c => [c.id, c.basis]), PII_EXIT_CRITERIA.map(c => [c.id, c.basis]));
+  assert.deepEqual(committed.exitCriteria.map(c => [c.id, c.basis, c.scope]), PII_EXIT_CRITERIA.map(c => [c.id, c.basis, c.scope]));
   const swapped = clone(); swapped.exitCriteria.reverse();
   assert.ok(piiAuthorityShapeProblems(swapped).some(p => /exitCriteria must be exactly/.test(p)));
   const relabelled = clone(); relabelled.exitCriteria[0].basis = 'owner';
@@ -97,6 +102,31 @@ test('new needs an owner authorisation, and a credential authority setting does 
   assert.match(problems[0], /credential authority setting is not authorisation for PII/);
 });
 
+test('the protected path never blocks the public cutover, and its record follows the computed gate', () => {
+  const protectedUnmet = { ...allMet(), 'protected-path-live': 'unmet' };
+  const file = newFile();
+  file.exitCriteria.find(c => c.id === 'protected-path-live').state = 'unmet';
+  assert.deepEqual(piiAuthorityFreshnessProblems(file, { ...context(), computed: protectedUnmet }), []);
+  assert.deepEqual(criteriaDriftProblems(file, protectedUnmet), []);
+  // A public criterion unmet does block it.
+  assert.match(piiAuthorityFreshnessProblems(file, { ...context(), computed: { ...protectedUnmet, 'linux-engine-replay-equal': 'unmet' } }).join('\n'), /public exit criterion linux-engine-replay-equal is not met/);
+  // The protected record cannot claim readiness the gate does not compute, nor hide it.
+  const lying = structuredClone(file); lying.protected.state = 'operational';
+  assert.match(criteriaDriftProblems(lying, protectedUnmet).join('\n'), /protected\.state is operational but protected-path-live computes unmet/);
+  // The owner's acceptance is exactly the authorisation.
+  const inconsistent = structuredClone(file); inconsistent.new.authorisation = null;
+  assert.match(criteriaDriftProblems(inconsistent, protectedUnmet).join('\n'), /owner-accepted-verdict is recorded met but new.authorisation is null/);
+  // Only the public-synthetic scope can be authorised, and the target is compared field by field.
+  const wrongScope = structuredClone(file); wrongScope.new.authorisation.scope = 'protected';
+  assert.ok(piiAuthorityShapeProblems(wrongScope).some(p => /scope must be/.test(p)));
+  const target = (mutate) => piiAuthorityFreshnessProblems(file, (() => { const c = context(); mutate(c.target); return c; })()).join('\n');
+  assert.match(target(t => { t.engineBinarySha256 = hex('9'); }), /pinned engine binary/);
+  assert.match(target(t => { t.scannerPackageTreeSha256 = hex('9'); }), /scanner package tree/);
+  assert.match(target(t => { t.protocol.revision = 3; }), /measurement protocol/);
+  assert.match(target(t => { t.officialRunId = 2; }), /recorded official run/);
+  assert.match(target(t => { t.manifestDigests['pop-a'] = hex('9'); }), /population pop-a has manifest digest/);
+});
+
 test('new is stale after a repin, a policy change, a changed population, an unaccepted decision or an unmet criterion', () => {
   const stale = (mutateContext, mutateFile = () => {}) => { const f = newFile(); mutateFile(f); const c = context(); mutateContext(c); return piiAuthorityFreshnessProblems(f, c).join('\n'); };
   assert.match(stale(c => { c.engineCommit = 'b'.repeat(40); }), /a repin needs a new authorisation/);
@@ -105,8 +135,8 @@ test('new is stale after a repin, a policy change, a changed population, an unac
   assert.match(stale(() => {}, f => { delete f.new.authorisation.populationDigests['pop-b']; }), /does not cover population pop-b/);
   assert.match(stale(c => { c.decisionStatus = 'proposed'; }), /is proposed, not accepted/);
   assert.match(stale(c => { c.decisionStatus = undefined; }), /does not exist/);
-  assert.match(stale(c => { c.computed['official-mode-measurement'] = 'unmet'; }), /exit criterion official-mode-measurement is not met/);
-  assert.match(stale(() => {}, f => { f.exitCriteria.find(c => c.id === 'owner-accepted-verdict').state = 'unmet'; }), /exit criterion owner-accepted-verdict is not met/);
+  assert.match(stale(c => { c.computed['official-mode-measurement'] = 'unmet'; }), /public exit criterion official-mode-measurement is not met/);
+  assert.match(stale(() => {}, f => { f.exitCriteria.find(c => c.id === 'owner-accepted-verdict').state = 'unmet'; }), /public exit criterion owner-accepted-verdict is not met/);
   assert.match(stale(() => {}, f => { f.new.target.engine = `redact-secret/pii-eval@${'c'.repeat(40)}`; }), /another engine than new.target/);
 });
 

@@ -3,6 +3,11 @@
  "reportType": "pii-legacy-inventory",
  "supportClaims": false,
  "removesNothing": true,
+ "removalReview": {
+  "authority": "new (public/synthetic), 2026-10-07",
+  "removed": [],
+  "decision": "No legacy file is removed: every removal candidate is either reached by retained code or is held by the oracle-period exit (one further measured release through both pipelines, a repeated rehearsal, a reviewed removal PR)."
+ },
  "source": "redact-secret/pii-eval docs/migration/ownership-map.md at 212d500de90ce97461275be1e8b9dd8acd663fb3, restricted to this repository",
  "groups": [
   {
@@ -76,6 +81,21 @@
    "path": "benchmarks/evaluation/domains/pii/accounting.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 12,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -99,6 +119,21 @@
    "path": "benchmarks/evaluation/domains/pii/assessment.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 11,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -118,6 +153,21 @@
    "path": "benchmarks/evaluation/domains/pii/benign-collision-classes.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 14,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -137,6 +187,21 @@
    "path": "benchmarks/evaluation/domains/pii/benign-collision-evidence.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 13,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -161,6 +226,21 @@
    "path": "benchmarks/evaluation/domains/pii/cases.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 7,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/registry.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs",
+      "scripts/measure-pii-ssn-phone-stress.mjs",
+      "scripts/observe-pii-card-iban-stress.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -176,6 +256,21 @@
    "path": "benchmarks/evaluation/domains/pii/context-evidence.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 13,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -191,6 +286,21 @@
    "path": "benchmarks/evaluation/domains/pii/context-languages.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 15,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -212,6 +322,21 @@
    "path": "benchmarks/evaluation/domains/pii/contract-model.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 14,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -231,6 +356,21 @@
    "path": "benchmarks/evaluation/domains/pii/contract.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 7,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/registry.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs",
+      "scripts/measure-pii-ssn-phone-stress.mjs",
+      "scripts/observe-pii-card-iban-stress.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -252,6 +392,21 @@
    "path": "benchmarks/evaluation/domains/pii/execution.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -267,6 +422,21 @@
    "path": "benchmarks/evaluation/domains/pii/identity.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 16,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -288,6 +458,21 @@
    "path": "benchmarks/evaluation/domains/pii/jurisdictions.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 18,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-semantics.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support.ts",
+      "benchmarks/evaluation/domains/registry.ts"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -312,6 +497,21 @@
    "path": "benchmarks/evaluation/domains/pii/operators.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -327,6 +527,21 @@
    "path": "benchmarks/evaluation/domains/pii/outcome-validation.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 14,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -348,6 +563,21 @@
    "path": "benchmarks/evaluation/domains/pii/types.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 28,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
+      "benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts",
+      "benchmarks/evaluation/domains/pii/email-network-population.ts",
+      "benchmarks/evaluation/domains/pii/metric-basis.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -368,6 +598,21 @@
    "path": "benchmarks/evaluation/domains/pii/validators.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 23,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
+      "benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts",
+      "benchmarks/evaluation/domains/pii/email-network-population.ts",
+      "benchmarks/evaluation/domains/pii/metric-basis.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -383,6 +628,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/benign.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -398,6 +658,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/common.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -413,6 +688,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/context-discrimination.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -428,6 +718,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/index.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -443,6 +748,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/jurisdiction-collision.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -458,6 +778,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/mutation.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -473,6 +808,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/reference-differential.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -488,6 +838,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/schema-only.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -503,6 +868,21 @@
    "path": "benchmarks/evaluation/domains/pii/methods/type-validation.ts",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 10,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -518,6 +898,21 @@
    "path": "schemas/pii-accounting-report-v1.json",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 12,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -533,6 +928,21 @@
    "path": "schemas/pii-assessment-v1.json",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 11,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -552,6 +962,21 @@
    "path": "schemas/pii-benign-collision-evidence-v1.json",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 13,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -567,6 +992,21 @@
    "path": "schemas/pii-context-evidence-v1.json",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 13,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -582,6 +1022,21 @@
    "path": "schemas/pii-population-contract-v1.json",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 11,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -597,6 +1052,21 @@
    "path": "schemas/pii-validator-observation-v1.json",
    "group": "generic-engine",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": true,
+    "informational": {
+     "retainedConsumerCount": 13,
+     "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/registry.ts",
+      "benchmarks/evaluation/release-record.ts",
+      "package.json"
+     ]
+    },
+    "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
+   },
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
@@ -612,6 +1082,15 @@
    "path": "tests/pii-accounting.test.mjs",
    "group": "oracle-behaviour-tests",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": false,
+    "informational": {
+     "retainedConsumerCount": 0,
+     "retainedConsumers": []
+    },
+    "reason": "the test of a retained oracle file; removed with that file"
+   },
    "owner": "redact-secret/pii-eval (its parity vectors replace them)",
    "prerequisite": "removed together with the generic-engine file each one tests, never before it; pii-eval keeps its own oracle-parity vectors",
    "callers": {
@@ -627,6 +1106,15 @@
    "path": "tests/pii-benign-collision-evidence.test.mjs",
    "group": "oracle-behaviour-tests",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": false,
+    "informational": {
+     "retainedConsumerCount": 0,
+     "retainedConsumers": []
+    },
+    "reason": "the test of a retained oracle file; removed with that file"
+   },
    "owner": "redact-secret/pii-eval (its parity vectors replace them)",
    "prerequisite": "removed together with the generic-engine file each one tests, never before it; pii-eval keeps its own oracle-parity vectors",
    "callers": {
@@ -642,6 +1130,15 @@
    "path": "tests/pii-context-evidence.test.mjs",
    "group": "oracle-behaviour-tests",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": false,
+    "informational": {
+     "retainedConsumerCount": 0,
+     "retainedConsumers": []
+    },
+    "reason": "the test of a retained oracle file; removed with that file"
+   },
    "owner": "redact-secret/pii-eval (its parity vectors replace them)",
    "prerequisite": "removed together with the generic-engine file each one tests, never before it; pii-eval keeps its own oracle-parity vectors",
    "callers": {
@@ -657,6 +1154,15 @@
    "path": "tests/pii-domain.test.mjs",
    "group": "oracle-behaviour-tests",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": false,
+    "informational": {
+     "retainedConsumerCount": 0,
+     "retainedConsumers": []
+    },
+    "reason": "the test of a retained oracle file; removed with that file"
+   },
    "owner": "redact-secret/pii-eval (its parity vectors replace them)",
    "prerequisite": "removed together with the generic-engine file each one tests, never before it; pii-eval keeps its own oracle-parity vectors",
    "callers": {
@@ -672,6 +1178,15 @@
    "path": "tests/pii-identity-oracle.test.mjs",
    "group": "oracle-behaviour-tests",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": false,
+    "informational": {
+     "retainedConsumerCount": 0,
+     "retainedConsumers": []
+    },
+    "reason": "the test of a retained oracle file; removed with that file"
+   },
    "owner": "redact-secret/pii-eval (its parity vectors replace them)",
    "prerequisite": "removed together with the generic-engine file each one tests, never before it; pii-eval keeps its own oracle-parity vectors",
    "callers": {
@@ -687,6 +1202,15 @@
    "path": "tests/pii-methods.test.mjs",
    "group": "oracle-behaviour-tests",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": false,
+    "informational": {
+     "retainedConsumerCount": 0,
+     "retainedConsumers": []
+    },
+    "reason": "the test of a retained oracle file; removed with that file"
+   },
    "owner": "redact-secret/pii-eval (its parity vectors replace them)",
    "prerequisite": "removed together with the generic-engine file each one tests, never before it; pii-eval keeps its own oracle-parity vectors",
    "callers": {
@@ -702,6 +1226,15 @@
    "path": "tests/pii-validator-qualification.test.mjs",
    "group": "oracle-behaviour-tests",
    "disposition": "removal-candidate",
+   "retention": {
+    "removalDecision": "retain-for-oracle-period",
+    "reachedByRetainedCode": false,
+    "informational": {
+     "retainedConsumerCount": 0,
+     "retainedConsumers": []
+    },
+    "reason": "the test of a retained oracle file; removed with that file"
+   },
    "owner": "redact-secret/pii-eval (its parity vectors replace them)",
    "prerequisite": "removed together with the generic-engine file each one tests, never before it; pii-eval keeps its own oracle-parity vectors",
    "callers": {
@@ -717,6 +1250,9 @@
    "path": "benchmarks/evaluation/domains/pii/holdout-corpus.ts",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -732,6 +1268,9 @@
    "path": "benchmarks/evaluation/domains/pii/holdout.ts",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -753,6 +1292,9 @@
    "path": "benchmarks/evaluation/domains/pii/identity-oracle.ts",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -782,6 +1324,9 @@
    "path": "benchmarks/evaluation/domains/pii/populations.ts",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -806,6 +1351,9 @@
    "path": "benchmarks/evaluation/domains/pii/profile.ts",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -830,6 +1378,9 @@
    "path": "benchmarks/evaluation/domains/pii/qualification.ts",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -849,6 +1400,9 @@
    "path": "benchmarks/evaluation/domains/pii/validator-qualification.ts",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -864,6 +1418,9 @@
    "path": "qualification/pii-v1.json",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -894,6 +1451,9 @@
    "path": "scanners/candidate.mjs",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -930,6 +1490,9 @@
    "path": "scripts/observe-pii-populations.mjs",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -954,6 +1517,9 @@
    "path": "scripts/score-pii-port-suffix.mjs",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -969,6 +1535,9 @@
    "path": "schemas/pii-population-comparison-v1.json",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -984,6 +1553,9 @@
    "path": "schemas/pii-population-report-v1.json",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -999,6 +1571,9 @@
    "path": "schemas/pii-qualification-profile-v1.json",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -1014,6 +1589,9 @@
    "path": "schemas/pii-validator-qualification-v1.json",
    "group": "mixed-split",
    "disposition": "split-then-decide",
+   "retention": {
+    "removalDecision": "split-then-decide"
+   },
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
@@ -1029,6 +1607,9 @@
    "path": "benchmarks/evaluation/domains/pii/beta11-qualification.ts",
    "group": "benchmark-scorer",
    "disposition": "retain-until-criterion",
+   "retention": {
+    "removalDecision": "retain-until-criterion"
+   },
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
@@ -1054,6 +1635,9 @@
    "path": "benchmarks/evaluation/domains/pii/beta11-population-v2.ts",
    "group": "benchmark-scorer",
    "disposition": "retain-until-criterion",
+   "retention": {
+    "removalDecision": "retain-until-criterion"
+   },
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
@@ -1073,6 +1657,9 @@
    "path": "benchmarks/evaluation/domains/pii/beta11-disposition.ts",
    "group": "benchmark-scorer",
    "disposition": "retain-until-criterion",
+   "retention": {
+    "removalDecision": "retain-until-criterion"
+   },
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
@@ -1092,6 +1679,9 @@
    "path": "benchmarks/evaluation/domains/pii/beta11-protected.ts",
    "group": "benchmark-scorer",
    "disposition": "retain-until-criterion",
+   "retention": {
+    "removalDecision": "retain-until-criterion"
+   },
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
@@ -1113,6 +1703,9 @@
    "path": "benchmarks/evaluation/domains/pii/support.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1128,6 +1721,9 @@
    "path": "benchmarks/evaluation/domains/pii/support-v2.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1156,6 +1752,9 @@
    "path": "benchmarks/evaluation/domains/pii/support-semantics.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1185,6 +1784,9 @@
    "path": "benchmarks/evaluation/domains/pii/product-binding.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1209,6 +1811,9 @@
    "path": "benchmarks/evaluation/domains/pii/protected-support-binding.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1234,6 +1839,9 @@
    "path": "benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1263,6 +1871,9 @@
    "path": "benchmarks/evaluation/domains/pii/custodian-consumer.mjs",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1283,6 +1894,9 @@
    "path": "scripts/publish-pii-support.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
@@ -1304,19 +1918,24 @@
    "path": "scripts/pii-publication-inputs.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 10,
+    "total": 11,
     "withinCandidates": 0,
     "testCallers": 8,
-    "external": 2,
+    "external": 3,
     "externalByClass": {
-     "script": 2
+     "script": 2,
+     "web (Next app)": 1
     },
     "externalFiles": [
      "scripts/publish-pii-support.ts (script, import)",
-     "scripts/rehearse-pii-authority-rollback.mjs (script, import)"
+     "scripts/rehearse-pii-authority-rollback.mjs (script, import)",
+     "web/services/domains.ts (web (Next app), import)"
     ]
    }
   },
@@ -1324,6 +1943,9 @@
    "path": "web/services/domains.ts",
    "group": "product-policy",
    "disposition": "retain",
+   "retention": {
+    "removalDecision": "retain"
+   },
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {

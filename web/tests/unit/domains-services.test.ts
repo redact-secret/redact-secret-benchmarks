@@ -12,9 +12,10 @@ import { piiCurrentProtectedRoute } from '../../../benchmarks/evaluation/domains
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../../benchmarks/evaluation/domains/pii/support-v2';
 import { custodianConformanceFrom, piiEvalMeasurementFrom } from '../../../scripts/pii-publication-inputs';
 import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../../../benchmarks/shared/evaluation-domains-v2.ts';
-import { REAL_ROOT as REAL, overlay } from './overlay';
+import { PII_AUTHORITY_FILE, REAL_ROOT as REAL, overlay, piiAuthorityFile } from './overlay';
 
-async function domains(root: string = REAL) {
+// The default root is the committed tree pinned to the legacy authorities (an overlay), so these tests mean the same whichever value is committed.
+async function domains(root: string = overlay({})) {
   vi.resetModules();
   vi.stubEnv('WEB_REPO_ROOT', root);
   return import('../../services/domains');
@@ -119,6 +120,25 @@ describe('PII evaluation', () => {
     const edited = structuredClone(matrix);
     edited.piiEvalMeasurement!.populations[1].productProjection!.rows.push(structuredClone(edited.piiEvalMeasurement!.populations[1].productProjection!.rows[0]));
     expect(() => validatePiiSupportMatrixV2(edited)).toThrow();
+  });
+
+  test('the authority changes only the stamp: the evaluation (families, verdicts, measurement) is byte-equal under legacy and under an authorised new, and rollback restores it', async () => {
+    const files = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress']
+      .map(view => `${REAL}/benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`);
+    const measurement = await piiEvalMeasurementFrom([`${REAL}/benchmarks/pii-eval-population-pins.json`], files, null);
+    const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement });
+    const index = buildEvaluationDomainsV2(matrix.artifactCommitment, { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) });
+    const href = domainDescriptorV2(index, 'pii')!.support.href!;
+    const under = async (authority: 'legacy' | 'new') => (await (await domains(overlay({
+      'public/results/evaluation-domains-v2.json': JSON.stringify(index), [`public${href}`]: JSON.stringify(matrix), [PII_AUTHORITY_FILE]: piiAuthorityFile(authority),
+    }))).loadPiiEvaluation());
+    const legacy = await under('legacy');
+    const authorised = await under('new');
+    expect(authorised.authority.authority).toBe('new');
+    expect(authorised.state).not.toBe('not-recorded');
+    const withoutStamp = (value: { authority: unknown }) => JSON.stringify({ ...value, authority: undefined });
+    expect(withoutStamp(authorised)).toBe(withoutStamp(legacy));
+    expect(JSON.stringify(await under('legacy'))).toBe(JSON.stringify(legacy));
   });
 });
 

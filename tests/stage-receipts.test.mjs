@@ -164,16 +164,20 @@ test('a receipt of another scanner set is another measurement: with and without 
   assert.ok(receiptProblems({ ...record(), scanners: [{ id: 'gitleaks' }] }, 'sha256:aa', { ...wantRun, scannerIds: ['gitleaks', 'openredaction'] }).length > 0);
 });
 
-test('the driver and the workflow leave an optional scanner out only on request, refuse a required one and a pinned engine without the configuration (#763)', async () => {
+test('the driver and the workflow measure the required scanners by default, take OpenRedaction on an explicit opt-in only, and refuse a pinned engine without the configuration (#763, #812)', async () => {
   const driver = await readFile('scripts/run-official-credential-eval.ts');
-  assert.match(driver, /--omit-optional \$\{omitOptional\}: not an optional scanner of the official run class/);
-  assert.match(driver, /engine release pending, #763/);
-  assert.match(driver, /omittedOptionalScanners: \[omitOptional\]/);
+  const policy = await readFile('benchmarks/qualification/scanner-selection.ts');
+  assert.match(policy, /--omit-optional \$\{id\}: not an optional scanner of the official run class/);
+  assert.match(policy, /has no configuration \$\{configFile\}/);
+  assert.match(driver, /omittedOptionalScanners: selection\.omittedOptionalScanners/);
+  assert.match(driver, /scannerSelection: selectionRecord\(selection/);
   assert.match(driver, /scannerIds: selectedScanners/, 'a receipt is checked against the scanner set of this stage');
+  assert.match(driver, /scannerSelection: \{ configFile: selection\.configFile, includedOptionalScanners: selection\.includedOptionalScanners \}/, 'and against its configuration and opt-in');
   const yml = (await readFile('.github/workflows/official-runs.yml')).replace(/^\s*#.*$/gm, '');
   assert.match(yml, /omit_optional:/);
-  assert.match(yml, /--omit-optional "\$OMIT_OPTIONAL"/);
-  assert.match(yml, /omit_optional is exclusive with diagnostic mode and attribution/);
-  assert.doesNotMatch(driver, /not an attribution or candidate run/, 'a candidate replay may omit the optional scanner its control omitted');
-  assert.match(driver, /--omit-optional is for the accepted official run and a candidate replay, not an attribution run/);
+  assert.match(yml, /--omit-optional "\$OMIT_OPTIONAL"/, 'the deprecated input still reaches the driver');
+  assert.match(yml, /omit_optional is exclusive with diagnostic mode \(it is deprecated/);
+  assert.match(yml, /include_openredaction:/);
+  assert.doesNotMatch(driver, /not an attribution or candidate run/, 'a candidate replay selects like any official run, against its control');
+  assert.match(driver, /controlRosterProblems\(/, 'a candidate replay is compared with its control roster');
 });

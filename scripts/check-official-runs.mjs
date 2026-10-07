@@ -116,6 +116,16 @@ export function officialRunProblems(registry, { schemaDigest, inputs, evaluation
     if (typeof pinnedConfig === 'string' && pinnedConfig !== run.configHash) problems.push(`${at}: configHash differs from the pinned ${pinnedConfig}`);
     const omittedOptional = new Set(run.omittedOptionalScanners ?? []);
     for (const id of omittedOptional) if (!optionalOfficial.has(id) || (run.scanners ?? []).some(x => x.id === id)) problems.push(`${at}: omittedOptionalScanners names ${id}, which is not an optional scanner left out of this run`);
+    // The scanner selection a run was made under (#812) must agree with what the run measured: its scanners, its opted-in optional scanners and the configuration it names are the run's identity.
+    if (run.scannerSelection) {
+      const sel = run.scannerSelection;
+      const ran = (run.scanners ?? []).map(x => x.id).sort().join(','), said = [...(sel.scanners ?? [])].sort().join(',');
+      if (ran !== said) problems.push(`${at}: scannerSelection names the scanners ${said}, the run measured ${ran}`);
+      for (const id of sel.includedOptionalScanners ?? []) if (!optionalOfficial.has(id) || !(run.scanners ?? []).some(x => x.id === id)) problems.push(`${at}: scannerSelection includes ${id}, which is not an optional scanner this run measured`);
+      for (const id of sel.omittedOptionalScanners ?? []) if (!omittedOptional.has(id)) problems.push(`${at}: scannerSelection omits ${id} but omittedOptionalScanners does not say so`);
+      if (typeof sel.configFile !== 'string' || !sel.configFile) problems.push(`${at}: scannerSelection names no configuration file`);
+      else if (sel.configHash !== undefined && sel.configHash !== run.configHash) problems.push(`${at}: scannerSelection configHash differs from the run's configHash`);
+    }
     for (const s of scanners) {
       const got = (run.scanners ?? []).find(x => x.id === s.id);
       // An OPTIONAL scanner of the roster may be left out of a run that says so (#763): never silently, and never a required one.

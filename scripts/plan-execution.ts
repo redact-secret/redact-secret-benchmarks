@@ -2,7 +2,7 @@
  * The cost-aware execution plan and the performance cell register (#709, docs/specs/execution-plan.md). A dry run: it starts no scan, no measurement and no job.
  *
  *   node --import tsx scripts/plan-execution.ts plan --axis <accuracy|performance|both> [--base <git ref> | --files a,b,c] [--lane official|diagnostic]
- *     [--platform linux-x64] [--accuracy-plan <reuse-plan.json>]... [--force-fresh <id,id|all>] [--controlled-comparison] [--out <dir>] [--strict]
+ *     [--platform linux-x64] [--include-openredaction] [--accuracy-plan <reuse-plan.json>]... [--force-fresh <id,id|all>] [--controlled-comparison] [--out <dir>] [--strict]
  *   node --import tsx scripts/plan-execution.ts register --measurement <id> --plan <qualification/plan.json> --artifact <path>[:<setting>]... [--check]
  *
  * `--axis` has no default: `both` is an explicit choice. `plan` writes execution-plan.{json,md} (and prints the markdown); `--strict` exits 3 when the plan needs a
@@ -126,9 +126,16 @@ function plan() {
 
   const reusePlans = repeated('accuracy-plan').map(file => JSON.parse(readFileSync(file, 'utf8')));
   const axes = read('benchmarks/execution-axes.json');
+  // The effective scanner selection of the official lane (#812): optional scanners are omitted unless --include-openredaction opts them in. The engine's configuration availability is the driver's
+  // check at run time (`--dry-run` prints it), not a claim made here.
+  const roster = read('benchmarks/support/scanner-roster.json') as { runClasses: { official: { optional: string[] } } };
+  const decided = roster.runClasses.official.optional.filter(id => registry.scanners.some((s: { id: string }) => s.id === id));
+  const includedOptional = args.includes('--include-openredaction') ? decided.filter(id => id === 'openredaction') : [];
+  if (args.includes('--include-openredaction') && lane === 'diagnostic') fail('--include-openredaction is for the official lane; the diagnostic lane selects its scanners itself');
+  const scannerSelection = { omittedOptional: decided.filter(id => !includedOptional.includes(id)), includedOptional };
   const result = planExecution({
     axis, files, axes,
-    accuracy: { registry, platform, changedScanners, product: 'redact-secret', lane, reusePlans, forceFresh, telemetry, engineRunsFor: population => (population === 'public-evidence-snapshot' ? 4 : 2) },
+    accuracy: { registry, platform, changedScanners, product: 'redact-secret', lane, reusePlans, forceFresh, telemetry, scannerSelection, engineRunsFor: population => (population === 'public-evidence-snapshot' ? 4 : 2) },
     performance: { manifest, current, forceFresh, controlledComparison: args.includes('--controlled-comparison'), invocationsPerCell, telemetry, invalidArtifacts },
   });
   const markdown = renderExecutionPlan(result);

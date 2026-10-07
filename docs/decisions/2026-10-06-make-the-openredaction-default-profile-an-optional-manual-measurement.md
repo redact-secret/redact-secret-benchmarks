@@ -21,6 +21,10 @@ OpenRedaction's default (all-pattern) profile is slow and noisy for credential e
 5. **Selecting the omission is explicit.** `omit_optional` (driver `--omit-optional <id>`) runs the official measurement without the scanner, with the engine configuration the roster names for the platform. The driver records `omittedOptionalScanners`, refuses a required scanner, refuses an attribution or candidate run, and checks a retry receipt against the scanner set so a receipt measured with the scanner is never reused without it. The existing configurations and runs stay reproducible: nothing is edited, only added.
 6. **Engine side (credential-eval).** The without-OpenRedaction official configurations (`credential-public-v1.without-openredaction.json` and its darwin-arm64 variant) are added beside the existing ones, which are unchanged (credential-eval ADR 0017). They ship with a pre-release that needs the owner's approval to tag and pin. Until then the driver refuses `--omit-optional` against the pinned engine with "engine release pending", and the roster says `engineRelease: pending`.
 
+## Update (#812, 2026-10-07)
+
+Items 5 and 6 are superseded in part by [the default four-scanner selection](2026-10-07-run-the-four-required-scanners-by-default-and-make-openredaction-a-positive-opt-in.md): the without-OpenRedaction configurations shipped with credential-eval v0.1.0-alpha.13 and are in the pinned engine, so no engine release is pending; omitting is now the default, `omit_optional` is deprecated, and OpenRedaction is measured only on the explicit `include_openredaction` opt-in. An attribution or candidate run is no longer refused outright: it must match its control's scanner roster.
+
 ## Consequences
 
 - An official run without the default profile can complete, build its view and publish the other scanners and core verification once the engine release is pinned; the pages and reports state the missing optional measurement and link the last one.

@@ -39,7 +39,7 @@ const ROLES: Record<string, Record<string, Role>> = {
   'services/peers.ts': { 'benchmarks/lib/peer-rule-families': 'keep', 'benchmarks/support/taxonomy': 'keep' },
   'services/performance.ts': { 'benchmarks/lib/measured-performance': 'other-domain', 'benchmarks/lib/performance-schema': 'other-domain' },
   'services/product-scope.ts': { 'benchmarks/lib/peer-rule-families': 'keep' },
-  'services/qualification.ts': { 'benchmarks/qualification/canonical': 'keep', 'benchmarks/qualification/scope-accounting': 'keep' },
+  'services/qualification.ts': { 'benchmarks/qualification/canonical': 'keep', 'benchmarks/qualification/observation-origin': 'keep', 'benchmarks/qualification/scope-accounting': 'keep' },
   'services/run.ts': { 'benchmarks/shared/report-model.mjs': 'oracle', 'benchmarks/shared/run-data.ts': 'oracle', 'benchmarks/shared/run-types.ts': 'oracle' },
   'services/runtime.ts': { 'benchmarks/evaluation/domains/pii/peer-runtime-throughput': 'other-domain', 'benchmarks/evaluation/domains/pii/runtime-comparison': 'other-domain' },
   'services/scanners.ts': { 'benchmarks/lib/peer-observations': 'replace', 'benchmarks/lib/peer-rule-families': 'keep' },

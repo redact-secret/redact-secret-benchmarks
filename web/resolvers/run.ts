@@ -10,6 +10,7 @@ import type { CredentialPipeline } from '../services/credential-source';
 import type { PipelineStampProps, ReviewDisclosureProps } from '../components/qualification/types';
 import type { ReviewDisclosureData } from '../services/review-state';
 import { count, int } from './format';
+import { resolveNotMeasuredRows } from './qualification';
 
 /** Every state carries the stamp that names the pipeline behind the page, so no number is shown without it (#608). */
 export type RunState =
@@ -60,6 +61,7 @@ export function resolvePipelineStamp(pipeline: CredentialPipeline, builtFrom: 'l
       link,
     };
   }
+  const notMeasured = resolveNotMeasuredRows(view.notMeasured ?? [], { link: true });
   return {
     pipeline: 'new', role: 'authority', title: 'Built from the new pipeline',
     text: `The new pipeline is the authority for credential qualification. These numbers are read from the qualification view derived from the official credential-eval run of the ${view.population} population. The regression and policy populations keep their own counts on the qualification pages and are not added in here.`,
@@ -74,6 +76,7 @@ export function resolvePipelineStamp(pipeline: CredentialPipeline, builtFrom: 'l
     ],
     link,
     ...(pipeline.reviewDisclosure ? { disclosure: resolveReviewDisclosure(pipeline.reviewDisclosure) } : {}),
+    ...(notMeasured ? { notMeasured } : {}),
   };
 }
 

@@ -19,9 +19,10 @@ import path from 'node:path';
 import { canonical, sha256Digest } from '../../benchmarks/qualification/canonical';
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA } from '../lib/qualification';
 import type { ProfileEffect, ScopeEntry } from '../../benchmarks/qualification/scope-accounting';
+import type { OriginRecord, ScannerOrigin } from '../../benchmarks/qualification/observation-origin';
 import { once, readJson, REPO_ROOT } from './repo';
 
-export type { ProfileEffect, ScopeEntry };
+export type { ProfileEffect, ScopeEntry, OriginRecord, ScannerOrigin };
 export { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA };
 
 export type SupportStatusWord = 'stable' | 'provisional' | 'pending' | 'unsupported';
@@ -62,6 +63,8 @@ export interface PopulationView {
   unmeasured?: { cases: { scanner: string; unmeasured: number; reasons: Record<string, number> }[]; methodsVariants?: { scanner: string; unmeasured: number; reasons: Record<string, number> }[] };
   /** Scope accounting per scanner (#724): the engine's counts, read and never recomputed. Absent in a view built before it. */
   scope?: ScopeEntry[]; methodsScope?: ScopeEntry[]; profileEffects?: ProfileEffect[];
+  /** Where each scanner's observation came from (#724): provenance from the artifact's non-semantic telemetry, apart from the scope evidence above. Absent in a view built before it. */
+  origins?: OriginRecord; methodsOrigins?: OriginRecord;
   artifact: {
     artifactDigest: string; semanticDigest: string; configHash: string; protocolVersion: string; engineRunClass?: string; publication?: string;
     engine: { name: string; version: string }; methods: string[]; caseCount: number;
@@ -91,7 +94,7 @@ export interface QualificationView {
     id: string; runClass: string; required: string[]; optional: string[]; measured: string[];
     notMeasured: {
       scanner: string; profile: string; optional: true; label: string; statement: string; reason: string;
-      lastMeasurement: { recordedOn: string; engine: { version: string; revision: string }; registry: 'runs' | 'historicalRuns'; runs: { id: string; configHash: string; scannerVersion: string | null; scannerConfigurationHash: string | null }[] } | null;
+      lastMeasurement: { recordedOn: string; engine: { version: string; revision: string }; registry: 'runs' | 'historicalRuns' | 'retained'; runs: { id: string; configHash: string; scannerVersion: string | null; scannerConfigurationHash: string | null }[]; archive?: { release: string; asset: string; ciRun: string }; nativeLabels?: 'unavailable' | 'available' } | null;
       officialMeasurement?: string; decision?: string;
     }[];
     /** Every optional scanner, measured or not, labelled as its own profile (#764). */
@@ -107,6 +110,9 @@ export interface QualificationView {
   knownGaps: { id: string; number?: number; status: string; kind?: string; fixtures: { fixture: string; matches: { population: string; flagged: boolean | null; measurement: string; outcomes: string[] | null }[] }[] }[];
   unmappedFamilies: string[];
 }
+
+/** The roster's pointer to an optional scanner a view did not measure, as the view carries it (#763). */
+export type RosterNotMeasured = NonNullable<QualificationView['scannerRoster']>['notMeasured'][number];
 
 export type QualificationLoad =
   | { state: 'ready'; view: QualificationView }
@@ -127,6 +133,7 @@ export function qualificationShapeProblem(value: unknown): string | null {
   for (const p of value.populations) {
     if (!object(p) || typeof p.population !== 'string' || !object(p.artifact) || !object(p.artifact.evidence) || !Array.isArray(p.artifact.scanners) || !Array.isArray(p.artifact.methods)) return 'a population has no artifact identity';
     for (const key of ['scope', 'methodsScope', 'profileEffects']) if (p[key] !== undefined && !Array.isArray(p[key])) return `population ${p.population} has a ${key} that is not a list`;
+    for (const key of ['origins', 'methodsOrigins']) if (p[key] !== undefined && (!object(p[key]) || !Array.isArray(p[key].scanners))) return `population ${p.population} has an ${key} that is not an origin record`;
     if (!Array.isArray(p.cases)) return `population ${p.population} has no cases: the view predates the case rows, rebuild it with npm run qualification:view`;
     for (const c of p.cases) {
       if (!object(c) || typeof c.id !== 'string' || typeof c.kind !== 'string' || !Array.isArray(c.detectors) || !Array.isArray(c.expected) || !Array.isArray(c.results) || c.results.some((r: unknown) => !object(r) || typeof (r as Record<string, unknown>).scanner !== 'string' || typeof (r as Record<string, unknown>).measurement !== 'string')) return `population ${p.population} has a case row that is not readable`;

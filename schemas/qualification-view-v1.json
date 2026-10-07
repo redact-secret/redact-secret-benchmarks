@@ -413,6 +413,126 @@
             "items": {
               "$ref": "#/$defs/profileEffect"
             }
+          },
+          "origins": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scanners",
+              "reuse"
+            ],
+            "properties": {
+              "scanners": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "scanner",
+                    "origin",
+                    "reason"
+                  ],
+                  "properties": {
+                    "scanner": {
+                      "type": "string"
+                    },
+                    "origin": {
+                      "enum": [
+                        "fresh",
+                        "reused",
+                        "not-recorded"
+                      ]
+                    },
+                    "reason": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              "reuse": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false,
+                "required": [
+                  "sourceDigest",
+                  "inputDigest"
+                ],
+                "properties": {
+                  "sourceDigest": {
+                    "type": "string"
+                  },
+                  "inputDigest": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "Where each scanner's observation of the plain artifact came from (#724): provenance read from the artifact's non-semantic telemetry, sorted by scanner id. `not-recorded` is what an artifact says when the run did not offer observations for reuse; it is never read as fresh. Feeds no count, outcome, denominator or status. Additive within v1."
+          },
+          "methodsOrigins": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scanners",
+              "reuse"
+            ],
+            "properties": {
+              "scanners": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "scanner",
+                    "origin",
+                    "reason"
+                  ],
+                  "properties": {
+                    "scanner": {
+                      "type": "string"
+                    },
+                    "origin": {
+                      "enum": [
+                        "fresh",
+                        "reused",
+                        "not-recorded"
+                      ]
+                    },
+                    "reason": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              "reuse": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false,
+                "required": [
+                  "sourceDigest",
+                  "inputDigest"
+                ],
+                "properties": {
+                  "sourceDigest": {
+                    "type": "string"
+                  },
+                  "inputDigest": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "The same for the methods artifact, kept apart from the plain one."
           }
         }
       }
@@ -1413,7 +1533,8 @@
                   "registry": {
                     "enum": [
                       "runs",
-                      "historicalRuns"
+                      "historicalRuns",
+                      "retained"
                     ]
                   },
                   "runs": {
@@ -1448,6 +1569,33 @@
                         }
                       }
                     }
+                  },
+                  "archive": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "release",
+                      "asset",
+                      "ciRun"
+                    ],
+                    "description": "For a retained measurement (the registry no longer lists its runs): the immutable archive release that holds the artifacts.",
+                    "properties": {
+                      "release": {
+                        "type": "string"
+                      },
+                      "asset": {
+                        "type": "string"
+                      },
+                      "ciRun": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "nativeLabels": {
+                    "enum": [
+                      "unavailable",
+                      "available"
+                    ]
                   }
                 }
               },

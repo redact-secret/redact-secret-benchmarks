@@ -18,7 +18,8 @@ const PLATFORMS = ['linux-x64', 'darwin-arm64'];
 const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-corpus'];
 const PRODUCT = ['regression-corpus', 'policy-corpus'];
 /** The scanners the roster lets an official run leave out when it says so (#763): benchmarks/support/scanner-roster.json, the same file the adapter reads. */
-const optionalOfficial = new Set(JSON.parse(readFileSync(new URL('../benchmarks/support/scanner-roster.json', import.meta.url), 'utf8')).runClasses.official.optional);
+const rosterFile = JSON.parse(readFileSync(new URL('../benchmarks/support/scanner-roster.json', import.meta.url), 'utf8'));
+const optionalOfficial = new Set(rosterFile.runClasses.official.optional);
 
 /** Pure consistency check of a parsed registry. `schemaDigest` is the digest of the vendored RunArtifact schema; `inputs` is the parsed qualification-inputs manifest. */
 export function officialRunProblems(registry, { schemaDigest, inputs, evaluationEvidenceDigest }) {
@@ -138,6 +139,27 @@ export function officialRunProblems(registry, { schemaDigest, inputs, evaluation
     }
   }
   problems.push(...historicalRunProblems(registry));
+  problems.push(...retainedMeasurementProblems(registry, rosterFile));
+  return problems;
+}
+
+/**
+ * Retained measurements of the scanner roster (#763): the roster keeps a pointer to the last official measurement of an optional scanner whose runs the registry no
+ * longer lists. A retained run must not also be in the registry (one source per run, so the pointer never disagrees with the registry), must be older than every
+ * active run, and must name an optional scanner of the official run class.
+ */
+export function retainedMeasurementProblems(registry, roster) {
+  const problems = [];
+  const listed = new Set([...(registry.runs ?? []), ...(registry.historicalRuns ?? [])].map(r => `${r.id}|${r.artifact?.semanticDigest}`));
+  const newest = (registry.runs ?? []).map(r => r.recordedOn).filter(Boolean).sort().at(-1);
+  for (const [id, spec] of Object.entries(roster.optionalScanners ?? {})) {
+    if (!(spec.retainedMeasurements ?? []).length) continue;
+    if (!(roster.runClasses?.official?.optional ?? []).includes(id)) problems.push(`scanner-roster retainedMeasurements: ${id} is not an optional scanner of the official run class`);
+    for (const m of spec.retainedMeasurements) {
+      if (newest && m.recordedOn >= newest) problems.push(`scanner-roster retainedMeasurements: ${id} ${m.recordedOn} is not older than the active runs (${newest}); a measurement the registry still holds is read from the registry`);
+      for (const r of m.runs ?? []) if (listed.has(`${r.id}|${r.semanticDigest}`)) problems.push(`scanner-roster retainedMeasurements: ${id} run ${r.id} is also listed by the registry; keep it in one place`);
+    }
+  }
   return problems;
 }
 

@@ -1,5 +1,5 @@
 /** Synthetic story data: made-up populations, families, digests and counts. Nothing here is a ledger value. */
-import type { ScopeAccountingProps, ScopeRow, CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, PipelineStampProps, ReviewDisclosureProps, QualificationUnavailableProps, ScannerRow } from './types';
+import type { ScopeAccountingProps, ScopeRow, CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, PipelineStampProps, ReviewDisclosureProps, QualificationUnavailableProps, ScannerRow, NotMeasuredScanner, ObservationOriginsProps } from './types';
 
 export const populationRows: PopulationRow[] = [
   { id: 'evidence-population', role: 'floors and gates', runClass: 'public', evidence: 'example-evidence · snapshot-0000.00.00', corpusDigest: 'sha256:aaaaaaaaaaaa', configHash: 'sha256:cccccccccccc', semanticDigest: 'sha256:111111111111', engine: 'example-eval 0.0.1 · protocol 1', methods: 'None run', cases: '120' },
@@ -249,4 +249,33 @@ export const scopeAccounting: ScopeAccountingProps = {
     empty: 'No declared profile was measured on the same population as its default.',
     rows: [{ key: 'evidence-population/peer-library-credentials', population: 'evidence-population', pair: 'peer-library-credentials against peer-library', identities: 'sha256:bbbbbbbbbbbb against sha256:aaaaaaaaaaaa', outcomes: 'EXACT +0 · PARTIAL -2 · MISS +2', benign: '-4', findings: '-91', denominators: 'Equal: no case or span was dropped', note: 'Not a speed-up of the default.' }],
   },
+};
+
+/** An optional scanner not measured whose last measurement is a retained archive (the registry no longer lists its runs). Synthetic names. */
+export const optionalNotMeasured: NotMeasuredScanner[] = [{
+  key: 'beta-scan',
+  statement: 'Beta Scan default: not measured in this run (optional)',
+  reason: 'The default profile is a slow, manual measurement and never blocks other scanners or core verification. Its earlier results stay as history with their run identity.',
+  lastMeasurement: 'Last measurement: run-a@linux-x64, run-b@linux-x64 (configuration sha256:0123456789ab) · engine 0.0.1 · recorded 2026-01-01 · retained record, no longer listed by the run registry. It stays labelled with that run identity and is never combined with another profile or another run.',
+  archive: 'Its artifacts are kept in the archive release archive-1234567890 (asset archive-1234567890.tar.gz, CI run 1234567890), each checked by its byte digest.',
+  scope: 'Scope accounting in that run: the engine of that run did not record native labels, so every scope count for it is Unknown, never zero.',
+  link: { label: 'Every population and its qualification', href: '/evaluation/qualification/' },
+}];
+
+const originBase = { population: 'evidence-population', artifact: 'plain run' };
+/** Scanned, reused and not recorded in one table: provenance only, with the reason in the engine's vocabulary. */
+export const observationOrigins: ObservationOriginsProps = {
+  title: 'Where each observation came from',
+  description: 'Whether each scanner was scanned in the run or its observation was taken from an earlier verified run. Provenance from the artifact’s telemetry, apart from the scope evidence.',
+  notes: [
+    'Origin is read from the artifact’s non-semantic telemetry, which is excluded from the semantic digest on purpose: a run that reused an observation and a run that scanned it fresh have the same semantic digest. It changes no count, outcome, denominator or status.',
+    'Not recorded is what the artifact says when the run offered no observations for reuse. It is not read as fresh.',
+  ],
+  rows: [
+    { key: 'e/fresh', ...originBase, scanner: 'alpha-lib', state: 'fresh', origin: 'Scanned in this run', reason: 'forced', receipt: 'None: scanned in this run' },
+    { key: 'e/reused', ...originBase, scanner: 'beta-scan', state: 'reused', origin: 'Reused from an earlier verified run', reason: 'compatible', receipt: 'source sha256:aaaaaaaaaaaa · input sha256:bbbbbbbbbbbb' },
+    { key: 'e/none', ...originBase, artifact: 'methods run', scanner: 'gamma-tool', state: 'not-recorded', origin: 'Not recorded', reason: 'None recorded', receipt: 'None recorded' },
+  ],
+  omitted: [{ key: 'delta-default', statement: 'Delta default: not measured in this run (optional)' }],
+  empty: 'No scanner origin is recorded in this view.',
 };

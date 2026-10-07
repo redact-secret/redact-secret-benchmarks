@@ -3,9 +3,9 @@
  * formatting is here. Nothing is summed across populations or scanners, a population with no case for a family says so, and
  * a gate that did not run is "not measured", never a zero. The support status is the adapter's: it is displayed, never derived.
  */
-import type { ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow, NotMeasuredScanner, ScannerProfiles } from '../components/qualification/types';
+import type { ObservationOriginsProps, OriginRow, ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow, NotMeasuredScanner, ScannerProfiles } from '../components/qualification/types';
 import type { DeclaredConfiguration } from '../services/peers';
-import type { ScopeEntry, FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
+import type { OriginRecord, RosterNotMeasured, ScopeEntry, FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE } from '../lib/qualification';
 import { int } from './format';
 
@@ -63,19 +63,68 @@ const LABELS_SHOWN = 12;
 const STATE_WORD: Record<ScopeEntry['state'], string> = { accounted: 'Accounted', 'legacy-native-label-unavailable': 'Legacy: native labels unavailable', 'not-accounted': 'Not accounted', 'not-measured': 'Not measured' };
 const UNKNOWN = 'Unknown';
 
+/** Where the full pointer is read: the qualification page, which names every optional scanner with its last measurement. */
+const POINTER_LINK = { label: 'Open the qualification page for this pointer', href: QUALIFICATION_HREF };
+
 /**
- * The optional scanners the view did not measure (#763), in the contract's own words, with the pointer to the last recorded measurement (run, engine,
- * configuration, date). A view built before the roster, or one that measured every optional scanner, says nothing here.
+ * The optional scanners a view did not measure (#763), in the contract's own words, with the pointer to the last recorded measurement (run, engine,
+ * configuration, date), where its artifacts are kept when the run registry no longer lists it, and what scope accounting that measurement carries.
+ * `link` adds the link to the page that holds the pointer, for a page that is not that page. A view built before the roster, or one that measured every
+ * optional scanner, says nothing here.
  */
-export function resolveNotMeasured(view: QualificationView): NotMeasuredScanner[] | undefined {
-  const rows = (view.scannerRoster?.notMeasured ?? []).map(n => {
+export function resolveNotMeasuredRows(rows: RosterNotMeasured[], options: { link?: boolean } = {}): NotMeasuredScanner[] | undefined {
+  const out = rows.map((n): NotMeasuredScanner => {
     const last = n.lastMeasurement;
+    const how = last?.registry === 'historicalRuns' ? ' · superseded, kept as history' : last?.registry === 'retained' ? ' · retained record, no longer listed by the run registry' : '';
     const pointer = last
-      ? `Last measurement: ${last.runs.map(r => `${r.id} (configuration ${shortDigest(r.configHash)})`).join(', ')} · engine ${last.engine.version} · recorded ${last.recordedOn}${last.registry === 'historicalRuns' ? ' · superseded, kept as history' : ''}. It stays labelled with that run identity and is never combined with another profile or another run.`
+      ? `Last measurement: ${last.runs.map(r => `${r.id} (configuration ${shortDigest(r.configHash)})`).join(', ')} · engine ${last.engine.version} · recorded ${last.recordedOn}${how}. It stays labelled with that run identity and is never combined with another profile or another run.`
       : 'No earlier measurement of it is recorded. Nothing is shown in its place.';
-    return { key: n.scanner, statement: n.statement, reason: n.reason, lastMeasurement: pointer, ...(n.officialMeasurement ? { officialMeasurement: `Official measurement: ${n.officialMeasurement}.` } : {}) };
+    const archive = last?.archive ? `Its artifacts are kept in the archive release ${last.archive.release} (asset ${last.archive.asset}, CI run ${last.archive.ciRun}); the roster records each run’s artifact digest.` : undefined;
+    const scope = last?.nativeLabels === 'unavailable'
+      ? 'Scope accounting in that measurement: the engine of that run did not record native labels (legacy: native labels unavailable), so every scope count for it is Unknown, never zero, and nothing is classified retrospectively.'
+      : last?.nativeLabels === 'available' ? 'That measurement carries the engine’s scope accounting; it is read on its own run and never added to this one.' : undefined;
+    return {
+      key: n.scanner, statement: n.statement, reason: n.reason, lastMeasurement: pointer,
+      ...(archive ? { archive } : {}), ...(scope ? { scope } : {}),
+      ...(n.officialMeasurement ? { officialMeasurement: `Official measurement: ${n.officialMeasurement}.` } : {}),
+      ...(options.link ? { link: POINTER_LINK } : {}),
+    };
   });
-  return rows.length ? rows : undefined;
+  return out.length ? out : undefined;
+}
+
+export function resolveNotMeasured(view: QualificationView, options: { link?: boolean } = {}): NotMeasuredScanner[] | undefined {
+  return resolveNotMeasuredRows(view.scannerRoster?.notMeasured ?? [], options);
+}
+
+const ORIGIN_WORD: Record<string, string> = { fresh: 'Scanned in this run', reused: 'Reused from an earlier verified run', 'not-recorded': 'Not recorded' };
+
+/**
+ * Where each scanner's observation came from (#724), apart from the scope evidence. Provenance from the artifact's non-semantic telemetry: it feeds nothing
+ * above it. A scanner with no recorded origin reads "Not recorded", never "Scanned in this run"; an optional scanner the view did not measure has no row and is
+ * stated as not measured. A view built before the origin record says nothing.
+ */
+export function resolveObservationOrigins(view: QualificationView): ObservationOriginsProps | undefined {
+  if (!view.populations.some(p => p.origins || p.methodsOrigins)) return undefined;
+  const rowsOf = (population: string, artifact: string, record: OriginRecord | undefined): OriginRow[] => (record?.scanners ?? []).map(e => ({
+    key: `${population}/${artifact}/${e.scanner}`, population, artifact, scanner: e.scanner, state: e.origin, origin: ORIGIN_WORD[e.origin] ?? 'Not recorded',
+    reason: e.reason ?? (e.origin === 'not-recorded' ? 'None recorded' : 'No reason recorded'),
+    receipt: e.origin === 'reused'
+      ? (record?.reuse ? `source ${shortDigest(record.reuse.sourceDigest)} · input ${shortDigest(record.reuse.inputDigest)}` : 'Reuse receipt not recorded')
+      : e.origin === 'fresh' ? 'None: scanned in this run' : 'None recorded',
+  }));
+  return {
+    title: 'Where each observation came from',
+    description: 'Whether each scanner was scanned in the run or its observation was taken from an earlier verified run, per population and per artifact. Provenance, shown apart from the scope evidence above.',
+    notes: [
+      'Origin is read from the artifact’s non-semantic telemetry. That telemetry is excluded from the semantic digest on purpose, so a run that reused an observation and a run that scanned it fresh have the same semantic digest. It changes no count, outcome, denominator, floor or status.',
+      'Not recorded is what the artifact says when the run offered no observations for reuse, and for every artifact of an older engine. It is not read as scanned in this run. The official driver refuses reuse, and an artifact is shown as it records itself.',
+      'A scanner the run did not measure has no observation and so no origin; it is stated as not measured below, never as scanned or reused.',
+    ],
+    rows: view.populations.flatMap(p => [...rowsOf(p.population, 'plain run', p.origins), ...rowsOf(p.population, 'methods run', p.methodsOrigins)]),
+    omitted: (view.scannerRoster?.notMeasured ?? []).map(n => ({ key: n.scanner, statement: n.statement })),
+    empty: 'No scanner origin is recorded in this view.',
+  };
 }
 
 /**
@@ -268,6 +317,7 @@ export function resolveQualificationOverview(view: QualificationView, declared: 
       label: 'Open the unattributed cases',
     },
     ...(resolveScopeAccounting(view, declared) ? { scope: resolveScopeAccounting(view, declared) } : {}),
+    ...(resolveObservationOrigins(view) ? { origins: resolveObservationOrigins(view) } : {}),
     gaps: { title: 'Known-gap inputs', description: 'Each record’s fixtures matched to cases by id, per population. A public fixture keeps its legacy id until the re-key, so it matches nothing here.', rows: gapRows },
   };
 }

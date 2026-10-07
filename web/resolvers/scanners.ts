@@ -7,6 +7,7 @@
  * order. A scanner is described the same way as every other: the same four groups, in the same order.
  */
 import type { ScannerFact, ScannerFactGroup, ScannerLink, ScannerModeNoteData, ScannerOverviewProps, ScannerProfileData, ScannerRosterRow } from '../components/evaluation/scanner';
+import type { NotMeasuredScanner } from '../components/qualification/types';
 import type { PeerProfile } from '../services/peers';
 import type { PeerRuntime, RuntimeTool } from '../services/runtime';
 import type { MeasuredRun, OfficialRun, OfficialScanner, RunScanner } from '../services/run';
@@ -29,6 +30,8 @@ export interface ScannerInput {
   productDetectors: number | null;
   /** The product's own out-of-scope statements and the revision its detector count was read at (#622). */
   productScope?: { outOfScope: string[]; readAt: string; detectors: { count: number; revision: string } | null };
+  /** Optional scanners the official run did not measure (#763), already worded by `resolveNotMeasuredRows`: absent under the legacy pipeline and for a run that measured them all. */
+  notMeasured?: NotMeasuredScanner[];
 }
 
 const short = (digest: string): string => `${digest.slice(0, 12)}…`;
@@ -261,5 +264,6 @@ export function resolveScanners(input: ScannerInput): ScannerOverviewProps {
     },
     modeNote: modeNote(run),
     profiles,
+    ...(input.notMeasured?.length ? { notMeasured: input.notMeasured } : {}),
   };
 }

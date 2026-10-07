@@ -843,3 +843,84 @@ test('the profile run configuration holds exactly the profile scanner, pinned, a
   assert.deepEqual(config.methods, []);
   assert.equal(scanner.adapter.version, prof.identity.adapter.version);
 });
+
+
+// ---- A retained measurement and the origin of each observation (#763, #724). Synthetic roster, synthetic ids, synthetic telemetry. ----
+
+const RETAINED = {
+  recordedOn: '2026-01-02', engine: { version: '0.0.5', revision: 'abc' }, archive: { release: 'syn-release', asset: 'syn.tar.gz', ciRun: '77' }, nativeLabels: 'unavailable',
+  runs: [{ id: 'syn-b@linux-x64', configHash: DIGEST(1), semanticDigest: DIGEST(2), byteDigest: DIGEST(3), scannerVersion: '1.1.5', scannerConfigurationHash: DIGEST(4) }, { id: 'syn-a@linux-x64', configHash: DIGEST(1), semanticDigest: DIGEST(5), byteDigest: DIGEST(6), scannerVersion: '1.1.5', scannerConfigurationHash: DIGEST(4) }],
+};
+
+test('a retained measurement is the last measurement when the registry holds none, and the registry still wins when it holds one (#763)', () => {
+  const last = lastMeasurementOf('peer-opt', {}, [RETAINED]);
+  assert.deepEqual([last.registry, last.recordedOn, last.nativeLabels], ['retained', '2026-01-02', 'unavailable']);
+  assert.deepEqual(last.runs.map(r => r.id), ['syn-a@linux-x64', 'syn-b@linux-x64'], 'sorted by run id');
+  assert.deepEqual(last.archive, RETAINED.archive);
+  assert.deepEqual(last.engine, RETAINED.engine);
+  assert.equal(lastMeasurementOf('peer-opt', { historicalRuns: [historyRecord('h1', '2026-09-01')] }, [RETAINED]).registry, 'historicalRuns');
+  assert.equal(lastMeasurementOf('peer-opt', { runs: [historyRecord('r1', '2026-09-01')] }, [RETAINED]).registry, 'runs');
+  assert.equal(lastMeasurementOf('peer-opt', {}, []), null);
+  assert.equal(lastMeasurementOf('peer-opt', {}, [{ ...RETAINED, recordedOn: '2025-12-01' }, RETAINED]).recordedOn, '2026-01-02', 'the newest retained record');
+});
+
+test('the view points at a retained measurement, with its archive, and still carries no row, count or zero for the scanner (#763)', () => {
+  const r = roster(); r.optionalScanners['peer-opt'].retainedMeasurements = [RETAINED];
+  const opts = { scannerIds: SCANNERS };
+  const view = buildQualificationView({ registry, engine, product: product(), roster: r, artifacts: inputs({ aOptions: opts, bOptions: opts, cOptions: opts }) });
+  assert.deepEqual(validateQualificationView(view), []);
+  const [note] = view.scannerRoster.notMeasured;
+  assert.equal(note.lastMeasurement.registry, 'retained');
+  assert.deepEqual(note.lastMeasurement.archive, RETAINED.archive);
+  assert.ok(!view.scanners.includes('peer-opt'));
+  assert.ok(!JSON.stringify(view.populations.map(p => [p.artifact.scanners, p.aggregates, p.scope, p.origins])).includes('peer-opt'));
+});
+
+test('the roster refuses a retained measurement that names no archive or has malformed digests (#763)', () => {
+  const bad = (patch) => { const r = roster(); r.optionalScanners['peer-opt'].retainedMeasurements = [{ ...RETAINED, ...patch }]; return r; };
+  assert.throws(() => validateRoster(bad({ archive: { release: '', asset: 'a', ciRun: '1' } })), /archive release, asset and CI run/);
+  assert.throws(() => validateRoster(bad({ archive: { release: 'r', asset: 'a', ciRun: 'x' } })), /archive release, asset and CI run/);
+  assert.throws(() => validateRoster(bad({ runs: [] })), /names no run/);
+  assert.throws(() => validateRoster(bad({ runs: [{ ...RETAINED.runs[0], byteDigest: 'sha256:short' }] })), /sha256 config, semantic and byte digests/);
+  assert.throws(() => validateRoster(bad({ recordedOn: 'yesterday' })), /recordedOn/);
+  assert.doesNotThrow(() => validateRoster(bad({})));
+});
+
+test('the committed roster keeps the last official OpenRedaction measurement retained, so the pointer never reads "no earlier measurement" (#763)', () => {
+  const [kept] = readScannerRoster().optionalScanners.openredaction.retainedMeasurements;
+  assert.ok(kept, 'the registry no longer lists the superseded runs; the roster keeps the pointer');
+  assert.ok(kept.runs.length >= 1 && kept.runs.every(r => /^sha256:[0-9a-f]{64}$/.test(r.byteDigest) && r.scannerVersion));
+  assert.equal(kept.nativeLabels, 'unavailable');
+  assert.equal(readScannerRoster().optionalScanners['openredaction-credential-bearing'].retainedMeasurements, undefined, 'the credential profile has no official measurement to point at');
+});
+
+/** Schema-valid execution diagnostics: the artifact schema validates the telemetry, so a synthetic one carries every required field. */
+const timing = extra => ({ prepare_ms: 0, queue_ms: 0, start_ms: 0, end_ms: 0, process_ms: 0, normalize_ms: 0, tasks: 1, fixtures: 1, received_bytes: 0, findings: 0, completion: 'complete', ...extra });
+const executionOf = (scanners, reuse) => ({ jobs: 1, processes: 1, wall_ms: 1, scanner_process_ms: 1, evaluator_ms: 1, scanners: Object.fromEntries(Object.entries(scanners).map(([id, x]) => [id, timing(x)])), ...(reuse ? { reuse } : {}) });
+
+test('the origin of each scanner is provenance read from non_semantic: fresh, reused and not recorded stay three states, and it moves nothing else (#724)', () => {
+  const telemetry = (scanners, reuse) => d => { d.non_semantic = { ...d.non_semantic, execution: executionOf(scanners, reuse) }; };
+  const view = build({ methods: true, aOptions: { mutate: telemetry({ 'redact-secret': { origin: 'fresh', origin_reason: 'forced' }, 'peer-one': { origin: 'reused', origin_reason: 'changed: version, mode' } }, { source_digest: DIGEST(11), input_digest: DIGEST(12) }) } });
+  const a = view.populations.find(p => p.population === 'pop-a');
+  assert.deepEqual(a.origins.scanners, [{ scanner: 'peer-one', origin: 'reused', reason: 'changed: version, mode' }, { scanner: 'redact-secret', origin: 'fresh', reason: 'forced' }]);
+  assert.deepEqual(a.origins.reuse, { sourceDigest: DIGEST(11), inputDigest: DIGEST(12) });
+  assert.deepEqual(validateQualificationView(view), []);
+  // an artifact whose run offered no observations for reuse records no origin: not recorded, never fresh
+  const other = build({ methods: true }).populations.find(p => p.population === 'pop-b');
+  assert.deepEqual(other.origins, { scanners: [{ scanner: 'peer-one', origin: 'not-recorded', reason: null }, { scanner: 'redact-secret', origin: 'not-recorded', reason: null }], reuse: null });
+  assert.ok(a.methodsOrigins && a.methodsOrigins.scanners.every(s => s.origin === 'not-recorded'), 'the methods artifact is read apart from the plain one');
+  // provenance moves no count, status or digest: the same view with another origin differs in the origin record alone
+  const strip = v => JSON.parse(JSON.stringify(v, (k, x) => (k === 'origins' || k === 'methodsOrigins' ? undefined : x)));
+  const same = strip(build({ methods: true }));
+  const moved = strip(view);
+  for (const v of [same, moved]) for (const p of v.populations) { p.artifact.artifactDigest = 'masked'; if (p.methodsArtifact) p.methodsArtifact.artifactDigest = 'masked'; }
+  assert.deepEqual(moved, same);
+});
+
+test('a reason outside the engine vocabulary is dropped, never shown, and a scanner with no telemetry entry is not recorded (#724)', () => {
+  const view = build({ aOptions: { mutate: d => { d.non_semantic = { execution: executionOf({ 'redact-secret': { origin: 'fresh', origin_reason: 'scanner said: SECRET-LOOKING-TEXT' } }) }; } } });
+  const a = view.populations.find(p => p.population === 'pop-a').origins;
+  assert.deepEqual(a.scanners, [{ scanner: 'peer-one', origin: 'not-recorded', reason: null }, { scanner: 'redact-secret', origin: 'fresh', reason: null }]);
+  assert.equal(a.reuse, null);
+  assert.ok(!JSON.stringify(view).includes('SECRET-LOOKING-TEXT'));
+});

@@ -98,11 +98,11 @@ describe('PII view', () => {
     const metric = id => ({ metric: { id }, status: 'measured', effectiveN: 4, counts: { numerator: 1, measured: 4, eligible: 4, unresolved: 0, notMeasured: 0 },
       value: id === 'type-miss-rate' ? { state: 'withheld', reason: 'insufficient-evidence' } : { state: 'measured', point: { mantissa: 25, scale: 2 }, bound: { mantissa: 4, scale: 1 } } });
     const cell = (cases) => ({ counts: { authoredCases: cases, occurrences: cases, variants: cases }, metrics: [metric('type-miss-rate'), metric('measurable-share')] });
-    const population = (state, over = {}) => ({ populationId: 'synthetic-pop', population: { populationDigest: 'c'.repeat(64) },
+    const population = (state, over = {}) => ({ populationId: 'synthetic-pop', population: { populationDigest: 'c'.repeat(64), populationVersion: 1 },
       productBinding: { state, candidateSourceCommit: null }, scanners: [{ scannerId: 's', metrics: [], identity: { product: { kind: 'candidate' }, scannerVersion: '1.2.3' } }],
       productProjection: { requiredViews: ['oracle-plan'], rosterDigest: 'd'.repeat(64), rows: [
-        { family: 'pii:global:email', view: 'oracle-plan', mode: 'exploratory', ...cell(3), byLanguage: [{ language: 'en', ...cell(2) }, { language: 'ko', ...cell(1) }], byControlClass: [{ controlClass: 'test-value', ...cell(1) }] },
-        { family: 'pii:us:ssn', view: 'oracle-plan', mode: 'exploratory', ...cell(2), byLanguage: [{ language: 'en', ...cell(2) }] },
+        { family: 'pii:global:email', view: 'oracle-plan', mode: 'exploratory', binding: { scannerId: 's' }, methodCoverage: [{ method: { id: 'schema-only', version: 1 }, cases: 3, variants: 3 }], ...cell(3), byLanguage: [{ language: 'en', ...cell(2) }, { language: 'ko', ...cell(1) }], byControlClass: [{ controlClass: 'test-value', ...cell(1) }] },
+        { family: 'pii:us:ssn', view: 'oracle-plan', mode: 'exploratory', binding: { scannerId: 's' }, methodCoverage: [{ method: { id: 'schema-only', version: 1 }, cases: 2, variants: 2 }], ...cell(2), byLanguage: [{ language: 'en', ...cell(2) }] },
       ] }, ...over });
     const build = { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) };
     const view = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('other-product')], build } }));

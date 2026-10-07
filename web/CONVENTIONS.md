@@ -244,11 +244,17 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   (pure) over `services/domains.ts`. PII is rebuilt from the reviewed protected binding (candidate mode); the credential stable count is the support
   record of the run's own mode and version. A fact the ledger does not hold is a dashed "Not recorded" with its issue, never a zero. Decision:
   `docs/decisions/2026-10-01-explain-how-pii-and-credentials-are-evaluated-on-one-paired-page-design.md`.
-- `/evaluation/rc` (#613) reads the candidate evidence the build generated (`public/results/candidate-evidence-v1.json`,
-  validated by `candidateProblem`) in `services/candidate.ts`, with the last release from `baselines/` and the pin
-  manifest. A build without it shows "No release candidate is recorded" (the normal state in CI), so its tests
-  build synthetic evidence in the overlay (`tests/unit/rc-fixtures.ts`) and never read a candidate from the ledger. Blocks are
-  `Rc*` in `components/evaluation/rc/`. Decision: `docs/decisions/2026-10-01-show-the-release-candidate-beside-the-last-release.md`.
+- `/evaluation/rc` (#613, #658) shows the candidate beside the last release, read by the authority (`services/candidate.ts`). Under `new` the candidate is the candidate diff of a recorded replay: the internal projection
+  `results-output/candidate-diff-from-artifacts.json` (`qualification:candidate-diff`; never under `public/`, so it is not shipped, only its counts reach the page), validated with `candidateDiffArtifactProblems` and bound to the current pins by
+  `candidateDiffFreshnessProblems` (the function the publication uses). The page shows counts per population (never a sum across populations), the candidate's registered identity and the control release; it lists no case, family or fixture. States:
+  `recorded`, `not-recorded` (the file is absent: the normal state, "No release candidate is recorded"), `invalid` and `stale` (a replay for an earlier release or engine). Under `legacy` (the rollback) `services/candidate-legacy.ts` reads
+  `public/results/candidate-evidence-v1.json` (`candidateProblem`) and `baselines/`, as before; neither authority falls back to the other's file. Tests write a synthetic evidence file or a synthetic diff with a synthetic registry into the overlay
+  (`tests/unit/rc-fixtures.ts`, `rc-diff-fixtures.ts`) and never read a candidate from the ledger. Blocks are `Rc*` in `components/evaluation/rc/`. Decisions:
+  `docs/decisions/2026-10-01-show-the-release-candidate-beside-the-last-release.md` and
+  `docs/decisions/2026-10-07-read-the-release-candidate-page-from-the-candidate-diff-under-the-new-authority.md`.
+- **Retained legacy imports and file reads (#658).** Every import of `src/` or `benchmarks/` and every service read of a legacy data file is listed in `tests/unit/legacy-imports.test.ts` with a role, an owner and a reason; add yours there or it fails.
+  An `oracle` entry is only for a reader the `legacy` authority reaches (the rollback, removed with it by #660); a new service must not read `fixture-index.json`, `fixture-detectors.json`, `scenarios.json`, `peer-observations/`, `baselines/` or `candidate-evidence-v1.json`
+  on the `new` path. The inventory is `docs/specs/qualification-cutover.md#the-consumers-after-the-publish-switch-658`.
 
 - `/evaluation` and `/evaluation/method/<method>/` (#614): the six method pages share one schema (head, how it runs, recorded now,
   how to read it, exact inputs) and one table (`EvidenceTable`: scanners across, checks down, a cell is "n of N did not hold",

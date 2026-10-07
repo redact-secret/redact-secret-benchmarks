@@ -191,6 +191,25 @@ test('a candidate diff is published only when its control is the release and the
   assert.ok(candidateDiffFreshnessProblems({}, registryForDiff).length > 0);
 });
 
+test('the binding reads the control digests where a real candidate diff records them: on its populations and its methods entry (#658)', () => {
+  // `buildCandidateDiff` writes `baseline.archive` as only { release, sha256 }; the control's semantic digests are on each population and on `methods`.
+  const canonical = Object.fromEntries(context.registry.runs.filter(r => r.canonical && r.platform === 'linux-x64').map(r => [r.id.replace(/@linux-x64$/, ''), r.artifact.semanticDigest]));
+  const methodsKey = 'public-evidence-snapshot+methods';
+  const real = () => ({
+    candidate: { version: pinnedVersion },
+    baseline: { productVersion: pinnedVersion, archive: { release: 'official-runs-1', sha256: `sha256:${'a'.repeat(64)}` } },
+    methods: { baselineSemanticDigest: canonical[methodsKey] ?? null },
+    populations: Object.entries(canonical).filter(([key]) => key !== methodsKey).map(([population, baseline]) => ({ population, semanticDigest: { baseline, candidate: D(7) } })),
+  });
+  assert.deepEqual(candidateDiffFreshnessProblems(real(), registryForDiff), []);
+  const stale = real();
+  stale.populations[0].semanticDigest.baseline = D(3);
+  assert.ok(candidateDiffFreshnessProblems(stale, registryForDiff).some(p => p.includes(stale.populations[0].population)));
+  const noMethods = real();
+  noMethods.methods.baselineSemanticDigest = null;
+  if (canonical[methodsKey]) assert.ok(candidateDiffFreshnessProblems(noMethods, registryForDiff).some(p => p.includes(methodsKey)));
+});
+
 test('the candidate step needs a digest and a commit and writes nothing for an unregistered candidate', () => {
   const dir = scratch();
   const out = path.join(dir, 'diff.json');

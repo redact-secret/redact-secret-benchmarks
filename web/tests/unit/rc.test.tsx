@@ -184,14 +184,14 @@ describe('resolveRcPage, no candidate', () => {
   });
 
   test('performance: states for an unpublished accepted run and for a run of the candidate commit itself', () => {
-    const base = { candidate: { state: 'not-recorded' as const, reason: 'x' }, release: { version: 'v', commit: null, baseline: null } };
+    const base = { authority: 'legacy' as const, candidate: { state: 'not-recorded' as const, reason: 'x' }, release: { version: 'v', commit: null, baseline: null } };
     const unpublished = resolveRcPage({ ...base, performance: { state: 'not-published', reason: 'evidence/x is absent.' } });
     expect(unpublished.performance).toMatchObject({ heading: 'No performance run is recorded', text: expect.stringContaining('evidence/x is absent.') });
     const measured = { state: 'measured' as const, sourceCommit: CANDIDATE_COMMIT, repetitions: 5, summaryPath: 'p', runner: null, rows: [] };
-    const recordedCandidate = { state: 'recorded' as const, report: candidateEvidence() as never, against: null };
-    const same = resolveRcPage({ candidate: recordedCandidate, release: base.release, performance: measured });
+    const recordedCandidate = { state: 'recorded' as const, source: 'legacy' as const, report: candidateEvidence() as never, against: null };
+    const same = resolveRcPage({ authority: 'legacy', candidate: recordedCandidate, release: base.release, performance: measured });
     expect(same.performance.heading).toBe('Not recorded as a before and after');
-    const other = resolveRcPage({ candidate: recordedCandidate, release: base.release, performance: { ...measured, sourceCommit: RELEASE_COMMIT } });
+    const other = resolveRcPage({ authority: 'legacy', candidate: recordedCandidate, release: base.release, performance: { ...measured, sourceCommit: RELEASE_COMMIT } });
     expect(other.performance.heading).toBe('No performance run names this candidate');
   });
 });

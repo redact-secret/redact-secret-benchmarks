@@ -10,6 +10,8 @@ recorded separately under `docs/reports/`, not here — see the decision's own
 `Context` section for the link. `npm run decisions:validate` enforces that
 every record here has valid frontmatter and is indexed exactly once.
 
+- [Propose independent pii-evidence population composition](2026-10-08-propose-independent-pii-evidence-population-composition.md)
+
 - [Adopt measurement protocol v4](2026-09-17-adopt-measurement-protocol-v4.md)
 - [Build the Evaluation Engine as benchmark infrastructure now](2026-09-17-build-evaluation-engine-now.md)
 - [Govern benchmark-to-product regression promotion](2026-09-18-govern-benchmark-promotion.md)

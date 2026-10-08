@@ -24,6 +24,11 @@ test('removal references must name a retained archive with a digest and review r
   assert.ok(check([], { archive: { sourceCommit: 'bad' } }).length);
   assert.ok(check([], { removals: { sourceCommit: 'bad', entries: [{ path: 'missing' }] } }).length);
 });
+test('unreachable script cycles cannot count each other as entrypoints', () => {
+  const paths = ['scripts/a.mjs', 'scripts/b.mjs'];
+  const inventory = { entries: paths.map((path, i) => ({ path, callers: [{ path: paths[1 - i], active: true, via: ['import'] }] })) };
+  assert.equal(check(paths.map(path => ({ path, size: 10 })), { inventory }).filter(p => p.includes('orphan')).length, 2);
+});
 test('workflow invocation cannot refer to deleted script and workflow must have trigger', () => {
   assert.equal(check([{ path: '.github/workflows/bad.yml', size: 90, text: 'jobs:\n  check:\n    steps:\n      - run: node scripts/missing.mjs' }]).length, 2);
 });

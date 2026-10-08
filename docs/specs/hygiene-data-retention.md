@@ -1,19 +1,19 @@
 # Data retention for the repository hygiene audit
 
-All benchmark data stays in HEAD in this cleanup. A file being old, generated,
+One superseded pre-relabel candidate payload is archived outside HEAD after scoped review. A file being old, generated,
 large, or superseded does not clear its reproduction or rollback readers.
 This spec records the bounded results of #849 and #850, and the remaining work.
 
 ## Retained source and access
 
-`benchmarks/retention-archive.json` records source commit
+`docs/retention/archive.json` records source commit
 `51d59f1bb27d0c2a129899fadd686e248412be82`, annotated tag
 `hygiene-before-cleanup-845-20261008`, and independent retrieval receipts.
 Maintainers retain this tag indefinitely, never move or delete it, and keep its
 peeled commit pinned. A GitHub permalink or an expiring Actions artifact alone
 is insufficient preservation. This tag keeps already tracked repository bytes;
 it does not authorise copying protected holdout, secret, or custodian material.
-No new benchmark data payload is uploaded by the audit tools.
+The only newly archived benchmark payload is reviewed public metadata: fixture IDs, counts and outcomes, never credential text or scanner stderr.
 
 Regenerate the exhaustive source inventory and the per-file data disposition
 view, including checksums, inferred owners, access classes, known callers,
@@ -33,7 +33,7 @@ scoped review must confirm it before a migration.
 ## Current disposition
 
 At the retained source, `evidence/` holds 685 files and 193,174,661 bytes,
-not the original issue estimate of 678 files. Every one remains present.
+not the original issue estimate of 678 files. 684 remain present; the 1,663,484-byte pre-relabel candidate is independently archived.
 
 - All 11 `baselines/*.json` files (17,444,323 bytes) remain release anchors.
   `scripts/baseline.mjs` reads the entire history for release comparison;
@@ -51,20 +51,13 @@ not the original issue estimate of 678 files. Every one remains present.
   indexes remain unchanged while their active or reproduction readers remain.
   Regenerability alone is not proof that a stored identity can be removed.
 
-No denominator, scanner identity, pin, authority, ledger decision, score or
-measurement byte changes in this work. The per-file output covers 1,164 data
-files and verifies 279,025,738 unchanged bytes at the retained source.
+No denominator, scanner identity, pin, authority, ledger decision or published score changes. The per-file source covers 1,165 entries / 279,025,738 bytes (including the empty public results marker). After migration, 1,164 entries / 277,363,375 bytes stay in HEAD. Payload hashes remain unchanged; the README grows by 1,121 bytes for reviewed archive links and restore instructions, with an explicit before/after digest. The one archived entry retains its source hash and explicit retrieval receipt. Unexpected missing or changed retained files still fail.
 
-## Provisional cold candidates
+## Migrated and provisional cold candidates
 
 These are review leads, not approved deletions:
 
-- `evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json` is a
-  superseded pre-relabel diagnostic (1,663,484 bytes). The local README still
-  links it; indexed code has no matching reader. The product #860 issue is
-  closed and its inspected body/comments contain no matching candidate path
-  or revisions. That narrow check does not clear other external repository
-  references or computed readers, so the payload remains.
+- `evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json` (1,663,484 bytes) was migrated. Exact filename/org default-branch searches, product #860/#994 and benchmark PR #489/#507 references were reviewed. Runtime candidate readers use a different fixed filename, and site enumeration consumes support-status reports. Its schema-valid 4,768 rows contain only fixture IDs, counts and outcomes. The README now links the retained original and separate archive; the canonical post-relabel sibling stays unchanged. Known default-branch searches do not claim knowledge of every private or historical checkout; old bytes stay retrievable.
 - `evidence/286/pii-profile-cost-candidate-v1.json` (1,771,336 bytes) has no
   direct active code reader in the inventory, but the PII gap ledger and
   README still bind its reproduction evidence. Those references block removal.
@@ -116,3 +109,5 @@ bytes, clear all active/indirect/external readers, preserve issue/PR ownership
 and immutable lineage, check public-safety and access conditions, and verify
 same-run report, scanner comparison, candidate diff, UI fallback and rollback
 with unchanged source data. Unresolved prerequisites leave the payload here.
+
+The migrated candidate was freshly downloaded as `evidence-860-pre-relabel-af180a5.json.gz` (42,883 bytes), transport SHA256 `ce72e4464932767391e01a7911716b351223127522d901d691ad8539ccab6523`. Decompression restored 1,663,484 bytes, SHA256 `db98b4a699573c58a1843d9720639f446e2848921df589e5e749b52e11ffdad4`, equal to the pinned source Git blob. `docs/retention/removals.json` records exact scoped prefix exclusions and immutable source references. Broader #849 evidence lineage/access reviews remain open.

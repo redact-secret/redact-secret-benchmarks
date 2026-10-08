@@ -11,7 +11,18 @@
   "dispositions": {
     "command": "node scripts/retained-data-dispositions.mjs",
     "output": "results-output/hygiene/data-retention.json",
-    "payloadsRemoved": []
+    "payloadsRemoved": [
+      "evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json"
+    ],
+    "referenceUpdates": [
+      {
+        "path": "evidence/860/ec9224d/README.md",
+        "sourceSha256": "7c032e27f331930e3e9b4c7722225e31d656df99d14944946571611a7e583dcf",
+        "afterSha256": "f874ac3aaf83d5cbfb577cf47167bc29c7e85db9615ffb6d30e3d7bec7712bd6",
+        "afterBytes": 18166,
+        "reason": "Reviewed migration of a removed historical payload link plus tested restore instructions; existing recorded results unchanged."
+      }
+    ]
   },
   "retention": {
     "policy": "Retain this tag indefinitely; never move or delete it. Verify peeled commit before retrieval.",
@@ -31,8 +42,8 @@
   "coldCandidates": [
     {
       "path": "evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json",
-      "disposition": "retain-pending-review",
-      "reason": "Superseded pre-relabel diagnostic; README still links it. No indexed code caller. External product issue #860 references and indirect readers remain unverified."
+      "disposition": "historical-record-migrated",
+      "reason": "Superseded pre-relabel diagnostic; README now points to retained source and separately byte-verified release payload; canonical sibling unchanged."
     },
     {
       "path": "evidence/286/pii-profile-cost-candidate-v1.json",
@@ -53,5 +64,20 @@
     "verifiedFiles": 5,
     "verification": "Fresh independent release download; exact member set, regular-file types, every manifest byte length and SHA256, and equality with retained source Git blobs verified. Temporary files removed.",
     "verifiedAt": "2026-10-08T20:18:17.022776+00:00"
-  }
+  },
+  "dataPayloadRetrievals": [
+    {
+      "path": "evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "release": "hygiene-before-cleanup-845-20261008",
+      "asset": "evidence-860-pre-relabel-af180a5.json.gz",
+      "assetBytes": 42883,
+      "assetSha256": "ce72e4464932767391e01a7911716b351223127522d901d691ad8539ccab6523",
+      "fileBytes": 1663484,
+      "fileSha256": "db98b4a699573c58a1843d9720639f446e2848921df589e5e749b52e11ffdad4",
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/evidence-860-pre-relabel-af180a5.json.gz",
+      "verifiedAt": "2026-10-08T20:52:14.546184+00:00",
+      "verification": "Independent fresh download; compressed and original SHA256/length matched, bytes equal retained source Git blob, current candidate schema/completeness validation passed. Temporary files removed."
+    }
+  ]
 }

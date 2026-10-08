@@ -51,6 +51,18 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
   }
   const entries = new Map(inventory.entries.map(e => [e.path, e]));
   const paths = new Set(files.map(f => f.path));
+  const hasEntrypoint = target => {
+    const queue = [target], seen = new Set(queue);
+    while (queue.length) {
+      for (const c of entries.get(queue.pop())?.callers ?? []) {
+        if (!(c.via ?? ['literal-path']).some(v => ['import', 'literal-path'].includes(v))) continue;
+        if (/^(?:tests\/|web\/tests\/|\.github\/workflows\/|README\.md$|docs\/specs\/|(?:web\/)?package\.json$)/.test(c.path)) return true;
+        if (known.has(c.path) && c.active && c.path.startsWith('scripts/')) return true;
+        if (!seen.has(c.path) && c.active) { seen.add(c.path); queue.push(c.path); }
+      }
+    }
+    return false;
+  };
   for (const f of files) {
     if (SCRATCH.test(f.path)) problems.push(`${f.path}: regenerable scratch belongs in ignored results-output/`);
     const exception = exceptions.get(f.path);
@@ -59,8 +71,7 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
     const max = exception?.maxBytes ?? large.get(f.path) ?? policy.maxNewPayloadBytes;
     if (f.size > max) problems.push(`${f.path}: ${f.size} bytes exceeds ${max}; preserve externally or review a size exception`);
     if (f.path.startsWith('scripts/') && /\.(?:[cm]?[jt]s|py|sh)$/.test(f.path) && !known.has(f.path) && !exception) {
-      const callers = entries.get(f.path)?.callers ?? [];
-      if (!callers.some(c => c.active || /^(?:README\.md|docs\/specs\/)/.test(c.path)))
+      if (!hasEntrypoint(f.path))
         problems.push(`${f.path}: orphan script; wire it into a command/workflow/test or document its manual entrypoint`);
     }
     if (f.path.startsWith('.github/workflows/') && !exception) {
@@ -94,7 +105,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const paths = execFileSync('git', ['ls-files', '-z'], { cwd: root }).toString().split('\0').filter(Boolean);
   const files = paths.map(path => ({ path, size: lstatSync(resolve(root, path)).size, ...(path.startsWith('.github/workflows/') ? { text: readFileSync(resolve(root, path), 'utf8') } : {}) }));
   const json = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
-  const problems = hygieneProblems({ files, policy: json('benchmarks/retention-policy.json'), inventory: inventoryAt(root), archive: json('benchmarks/retention-archive.json'), removals: json('benchmarks/retention-removals.json'), today: new Date().toISOString().slice(0, 10) });
+  const problems = hygieneProblems({ files, policy: json('docs/retention/policy.json'), inventory: inventoryAt(root), archive: json('docs/retention/archive.json'), removals: json('docs/retention/removals.json'), today: new Date().toISOString().slice(0, 10) });
   if (problems.length) { console.error(problems.join('\n')); process.exitCode = 1; }
   else console.log(`Repository hygiene: ${files.length} tracked files checked; generated outputs, payload sizes and new script/workflow entrypoints valid.`);
 }

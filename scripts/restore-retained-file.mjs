@@ -73,7 +73,7 @@ async function main() {
     if (!allowed.has(args[i])) throw new Error('Usage: restore-retained-file.mjs --file <path> [--inventory <json>] [--fetch]');
     if (args[i] !== '--fetch') { if (!args[i + 1] || args[i + 1].startsWith('--')) throw new Error('Missing argument value'); i++; }
   }
-  const manifest = JSON.parse(await readFile(path.join(ROOT, 'benchmarks/retention-archive.json'), 'utf8'));
+  const manifest = JSON.parse(await readFile(path.join(ROOT, 'docs/retention/archive.json'), 'utf8'));
   const inventory = JSON.parse(await readFile(path.resolve(ROOT, value('--inventory') ?? 'results-output/hygiene/inventory.json'), 'utf8'));
   const receipt = await restoreRetainedFile({ manifest, inventory, file: value('--file'), fetch });
   console.log(JSON.stringify(receipt));

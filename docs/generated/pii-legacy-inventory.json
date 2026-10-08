@@ -62,7 +62,7 @@
    "mixed-split": {
     "disposition": "split-then-decide",
     "files": 15,
-    "externalCallerFiles": 51
+    "externalCallerFiles": 50
    },
    "benchmark-scorer": {
     "disposition": "retain-until-criterion",
@@ -72,7 +72,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 42
+    "externalCallerFiles": 41
    }
   }
  },
@@ -85,13 +85,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 13,
+     "retainedConsumerCount": 12,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -123,13 +123,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 12,
+     "retainedConsumerCount": 11,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -157,13 +157,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 15,
+     "retainedConsumerCount": 14,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -191,13 +191,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 14,
+     "retainedConsumerCount": 13,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -230,13 +230,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 8,
+     "retainedConsumerCount": 7,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/registry.ts",
-      "benchmarks/retention-policy.json",
       "package.json",
       "scripts/measure-pii-mixed-parity.mjs",
-      "scripts/measure-pii-ssn-phone-stress.mjs"
+      "scripts/measure-pii-ssn-phone-stress.mjs",
+      "scripts/observe-pii-card-iban-stress.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -260,13 +260,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 14,
+     "retainedConsumerCount": 13,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -290,13 +290,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 16,
+     "retainedConsumerCount": 15,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -326,7 +326,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 15,
+     "retainedConsumerCount": 14,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
@@ -360,13 +360,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 8,
+     "retainedConsumerCount": 7,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/registry.ts",
-      "benchmarks/retention-policy.json",
       "package.json",
       "scripts/measure-pii-mixed-parity.mjs",
-      "scripts/measure-pii-ssn-phone-stress.mjs"
+      "scripts/measure-pii-ssn-phone-stress.mjs",
+      "scripts/observe-pii-card-iban-stress.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -396,13 +396,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -426,7 +426,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 17,
+     "retainedConsumerCount": 16,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
@@ -462,7 +462,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 19,
+     "retainedConsumerCount": 18,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-semantics.ts",
@@ -501,13 +501,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -531,7 +531,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 15,
+     "retainedConsumerCount": 14,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
@@ -567,7 +567,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 30,
+     "retainedConsumerCount": 29,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
@@ -602,7 +602,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 25,
+     "retainedConsumerCount": 24,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
@@ -632,13 +632,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -662,13 +662,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -692,13 +692,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -722,13 +722,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -752,13 +752,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -782,13 +782,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -812,13 +812,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -842,13 +842,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -872,13 +872,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 10,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -902,13 +902,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 13,
+     "retainedConsumerCount": 12,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -932,13 +932,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 12,
+     "retainedConsumerCount": 11,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -966,13 +966,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 14,
+     "retainedConsumerCount": 13,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -996,13 +996,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 14,
+     "retainedConsumerCount": 13,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -1026,13 +1026,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 12,
+     "retainedConsumerCount": 11,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
-      "benchmarks/retention-policy.json",
-      "package.json"
+      "package.json",
+      "scripts/measure-pii-mixed-parity.mjs"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -1056,13 +1056,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 14,
+     "retainedConsumerCount": 13,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
-      "benchmarks/retention-policy.json"
+      "package.json"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -1499,17 +1499,15 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 7,
+    "total": 6,
     "withinCandidates": 0,
     "testCallers": 1,
-    "external": 6,
+    "external": 5,
     "externalByClass": {
-     "benchmarks": 1,
      "package hook": 1,
      "script": 4
     },
     "externalFiles": [
-     "benchmarks/retention-policy.json (benchmarks, path)",
      "package.json (package hook, path)",
      "scripts/measure-pii-mixed-parity.mjs (script, import)",
      "scripts/measure-pii-ssn-phone-stress.mjs (script, import)",
@@ -1528,16 +1526,12 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 2,
+    "total": 1,
     "withinCandidates": 0,
     "testCallers": 1,
-    "external": 1,
-    "externalByClass": {
-     "benchmarks": 1
-    },
-    "externalFiles": [
-     "benchmarks/retention-policy.json (benchmarks, path)"
-    ]
+    "external": 0,
+    "externalByClass": {},
+    "externalFiles": []
    }
   },
   {
@@ -1921,17 +1915,15 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 7,
+    "total": 6,
     "withinCandidates": 0,
     "testCallers": 4,
-    "external": 3,
+    "external": 2,
     "externalByClass": {
-     "benchmarks": 1,
      "script": 1,
      "web (Next app)": 1
     },
     "externalFiles": [
-     "benchmarks/retention-policy.json (benchmarks, path)",
      "scripts/publish-pii-support-with-evidence.mjs (script, path)",
      "web/services/domains.ts (web (Next app), path)"
     ]
@@ -1947,17 +1939,15 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 12,
+    "total": 11,
     "withinCandidates": 0,
     "testCallers": 8,
-    "external": 4,
+    "external": 3,
     "externalByClass": {
-     "benchmarks": 1,
      "script": 2,
      "web (Next app)": 1
     },
     "externalFiles": [
-     "benchmarks/retention-policy.json (benchmarks, path)",
      "scripts/publish-pii-support.ts (script, import)",
      "scripts/rehearse-pii-authority-rollback.mjs (script, import)",
      "web/services/domains.ts (web (Next app), import)"

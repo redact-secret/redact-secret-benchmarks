@@ -57,7 +57,7 @@ secret material never migrate into public archives or issue bodies.
 ## Prevention
 
 `node scripts/check-repository-hygiene.mjs` runs in the existing source-validation
-job, with no extra CI job. `benchmarks/retention-policy.json` records the existing
+job, with no extra CI job. `docs/retention/policy.json` records the existing
 retained-path baseline and explicit large-file limits. New evidence/reports/
 generated files require an exact-path exception or belong in ignored
 `results-output/`. New scripts need a caller or a documented manual entrypoint;

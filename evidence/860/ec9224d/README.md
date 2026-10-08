@@ -36,7 +36,7 @@ The maintainer decided that product PR #994 (merge `ec9224d9`) ships in Beta.11:
 | `redact-secret-benchmarks` | re-pin `af180a5abc28e64b456aa431455de66da016d061`; relabel `5b03068ae5f1d34ae52549cf05d13c97aaf4ed0f` (both on branch `beta11/rebind-ec9224d-credentials`, clean); lockfile `14dbaa9e…3939` |
 | Candidate artifacts (`benchmark:candidate`, darwin-arm64) | core `467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c`, node `9ceabe011fb58b259fe79bc9b25a0ba3b96b6cfc028d9257844207aaf0a083d6`, wasm `c3f5478881e3cac1d038543a331e5d4b3c47bceb076ab71d99f2c43f8d2c7d78` |
 | Candidate run of record | `589527ab-8df1-4ae7-a517-26f7567ffb3b` at `5b03068`: complete, full suite, 4,777 fixtures, corpus `d88c19f7b57b61a484045851c28962b243c92e800b99fc49130fc4f6bb843e2f` ([`candidate-evidence-v1.json`](candidate-evidence-v1.json), `eval:validate` passed) |
-| Candidate run, labels before the relabel | `2852d0eb-fcce-4025-864d-597636210c4d` at `af180a5`: complete, 4,768 fixtures, corpus `a89a8d11…6d75` ([`candidate-evidence-v1-labels-af180a5.json`](candidate-evidence-v1-labels-af180a5.json)) |
+| Candidate run, labels before the relabel | `2852d0eb-fcce-4025-864d-597636210c4d` at `af180a5`: complete, 4,768 fixtures, corpus `a89a8d11…6d75` ([retained original](https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json); [verified archive](https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008)) |
 | Classification of record (`5b03068`, clean) | candidate `aced36e8-2bb6-434c-84a2-ef2a84444a22` ([`support-status-candidate.json`](support-status-candidate.json)); published `3cef0f0c-0b23-4612-9b69-13dde0e38501` ([`support-status-published.json`](support-status-published.json)); fixture index `085358df…c29e`, taxonomy `86380e35…60dc` |
 | Classification, labels before the relabel (`af180a5`, clean) | candidate `4dbd7c8a-99c9-4196-aca1-9de972e00006` ([`support-status-candidate-labels-af180a5.json`](support-status-candidate-labels-af180a5.json)) |
 | Pinned peers | trufflehog 3.97.4, gitleaks 8.30.1 (`npm run peers:provision`, read-only `.peer-bin` first on `PATH`); snapshots refreshed at `5b03068` because the corpus changed |
@@ -232,3 +232,9 @@ npm run eval:classify -- --output=<dir>/support-status-published.json
 gh workflow run performance-evaluation.yml --ref beta11/rebind-ec9224d-credentials -f candidate_revision=ec9224d9743066fe73d6e61e9843ef52bd853833
 # paired/A-A check of one row: add -f baseline_revision=<commit> -f rounds=20
 ```
+
+## Restoring the historical pre-relabel candidate
+
+The pre-relabel JSON left HEAD under #849 after scoped runtime, organization-code and issue-reference review. Its canonical post-relabel sibling remains here. The retained tag keeps source `51d59f1bb27d0c2a129899fadd686e248412be82`; separate asset `evidence-860-pre-relabel-af180a5.json.gz` restores 1,663,484 original bytes with SHA256 `db98b4a699573c58a1843d9720639f446e2848921df589e5e749b52e11ffdad4`. A fresh release download and tag restoration both matched original Git bytes.
+
+Run `node scripts/retention-inventory.mjs --ref 51d59f1bb27d0c2a129899fadd686e248412be82`, then `node scripts/restore-retained-file.mjs --fetch --file evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json`. Output stays under ignored `results-output/retained/`. This historical darwin candidate never substitutes for a canonical official linux run.

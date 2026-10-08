@@ -6,7 +6,7 @@ import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { retainedEntry, restoreRetainedFile } from '../scripts/restore-retained-file.mjs';
-import { dataDispositions } from '../scripts/retained-data-dispositions.mjs';
+import { dataDispositions, verifyDataState } from '../scripts/retained-data-dispositions.mjs';
 
 const file = 'evidence/test/record.json';
 const text = '{"synthetic":true}\n';
@@ -117,4 +117,36 @@ test('data disposition preserves release, rollback and policy inputs and never a
   assert.deepEqual(result.map(entry => entry.disposition), ['retain-release-anchor', 'retain-active-rollback', 'retain-policy-input', 'retain-pending-review']);
   assert.ok(result.every(entry => entry.removalAllowed === false && entry.after.sha256 === entry.sha256));
   assert.throws(() => dataDispositions(manifest, { ...inventory, sourceCommit: 'c'.repeat(40) }), /differs/);
+});
+
+test('only an explicit checksum-bound archived payload may be absent', async () => {
+  const options = await fixture();
+  try {
+    const { manifest, inventory, root } = options;
+    inventory.entries[0].callers = [];
+    manifest.coldCandidates = [];
+    manifest.dispositions = { payloadsRemoved: [file] };
+    const row = { ...inventory.entries[0], disposition: 'historical-record-migrated', removalApproved: true, reason: 'Scoped synthetic history', preservation: { sha256: digest, ref: `refs/tags/${tag}`, verifiedAt: '2026-10-08' } };
+    const removals = { sourceCommit: manifest.sourceCommit, preservationTag: tag, entries: [row] };
+    assert.throws(() => dataDispositions(manifest, inventory, removals), /byte-verified/);
+    manifest.dataPayloadRetrievals = [{ path: file, sourceCommit: manifest.sourceCommit, fileBytes: Buffer.byteLength(text), fileSha256: digest, assetSha256: 'b'.repeat(64), verifiedAt: '2026-10-08' }];
+    const entries = dataDispositions(manifest, inventory, removals);
+    assert.equal(entries[0].after.present, false);
+    await assert.rejects(verifyDataState(root, entries, manifest.sourceCommit), /unexpectedly present/);
+    await rm(path.join(root, file));
+    await verifyDataState(root, entries, manifest.sourceCommit);
+    const retained = [{ ...entries[0], after: { ...entries[0].after, present: true } }];
+    await assert.rejects(verifyDataState(root, retained, manifest.sourceCommit), /missing/);
+    assert.throws(() => dataDispositions(manifest, inventory, { ...removals, entries: [{ ...row, sha256: 'c'.repeat(64) }] }), /byte-verified/);
+  } finally { await rm(options.root, { recursive: true, force: true }); }
+});
+
+test('reference migrations cannot authorize measurement payload drift', () => {
+  const sourceCommit = 'a'.repeat(40), markdown = 'evidence/test/README.md';
+  const manifest = { schema: 'redact-secret/retention-archive/v1', sourceCommit, retainedTag: tag, coldCandidates: [], dispositions: { referenceUpdates: [{ path: markdown, sourceSha256: digest, afterSha256: 'b'.repeat(64), afterBytes: 20, reason: 'Retained link migration' }] } };
+  const inventory = { schemaVersion: 1, sourceCommit, entries: [{ path: markdown, size: 10, sha256: digest, callers: [] }] };
+  assert.equal(dataDispositions(manifest, inventory)[0].after.size, 20);
+  assert.throws(() => dataDispositions({ ...manifest, dispositions: { referenceUpdates: [{ ...manifest.dispositions.referenceUpdates[0], sourceSha256: 'c'.repeat(64) }] } }, inventory), /Markdown digest/);
+  assert.throws(() => dataDispositions({ ...manifest, dispositions: { referenceUpdates: [{ ...manifest.dispositions.referenceUpdates[0], path: file }] } }, { ...inventory, entries: [{ ...inventory.entries[0], path: file }] }), /Markdown digest/);
+  assert.throws(() => dataDispositions({ ...manifest, dispositions: { referenceUpdates: [manifest.dispositions.referenceUpdates[0], manifest.dispositions.referenceUpdates[0]] } }, inventory), /Duplicate/);
 });

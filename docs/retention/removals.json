@@ -1,0 +1,2447 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+  "preservationTag": "hygiene-before-cleanup-845-20261008",
+  "entries": [
+    {
+      "path": "docs/decisions/2026-09-19-redesign-benchmark-site.md",
+      "sha256": "6a60d0cd312780c99cd995ab65e4030ab63aa92b712b54b640d351823e71d469",
+      "size": 5559,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "readers": [],
+      "issue": 847,
+      "reason": "Vite site implementation replaced by Next static export; preserve boundary/accounting rationale in issue ruling",
+      "currentContract": "docs/decisions/2026-09-30-build-the-new-site-as-a-next-static-export-with-mui.md",
+      "preservationTag": "hygiene-before-cleanup-845-20261008",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-19-redesign-benchmark-site.md",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/847#issuecomment-6068276143",
+      "approval": "user-requested #845 cleanup; root reviewed scoped preservation and callers",
+      "owner": "benchmarks maintainers",
+      "review": {
+        "dynamicReaders": "Scoped records audit #847/#848; diagnostic README brace reference migrated; no runtime consumer.",
+        "externalReferences": "Full ruling moved to owning issue; full-SHA originals retained and byte-verified archive; existing reference links preserved.",
+        "authorityGates": "Not an authority/owner decision or official run; reviewed current contracts remain.",
+        "excludedCallers": [
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory. The pure gate validates named authority records; neither retired ADR/report is named by PII authority."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/** classifies change execution axes; it is a path category, not an input-file read."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "CONTRIBUTING.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Lists ADR/report conventions and specific unrelated research/handoff contracts; no removed record reference."
+          },
+          {
+            "path": "docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs appears as provider-documentation prose, not a repository-record reference."
+          },
+          {
+            "path": "docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a prose count of historical fixture-link references; no input-record identity."
+          },
+          {
+            "path": "docs/generated/qualification-parity.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Stored family status rationale mentions docs/decisions/ generally; no removed ADR identity or file access."
+          },
+          {
+            "path": "docs/generated/qualification-parity.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Parity report rationale points to current qualification specs and decision-directory prose, not removed ADRs."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/measurement-v4.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names beta-4 results/corpus-audit and the ADR directory convention; neither removed ADR or UI report is a named methodology input."
+          },
+          {
+            "path": "docs/specs/qualification-cutover.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Examples allow arbitrary ADR paths but committed authority uses retained acceptance/oracle-exit decisions; neither removed ADR is bound."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/543",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #543 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #845 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/847",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #847 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "schemas/pii-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex validates allowed decision path shape; does not require every matching historical ADR to exist."
+          },
+          {
+            "path": "schemas/pii-support-matrix-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes an oracle decision field; it does not bind either removed implementation ADR."
+          },
+          {
+            "path": "schemas/qualification-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes decision/report/rehearsal path fields; committed authority identities remain unchanged and name no removed record."
+          },
+          {
+            "path": "scripts/build-qualification-parity.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Writes qualification-parity outputs and cites current specs; generated status rationale contains generic decision-directory prose, not these ADR identities."
+          },
+          {
+            "path": "scripts/check-evidence-adoption.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Checks ownerAcceptance.decision from the committed adoption record; that identity is an acceptance ADR, neither removed implementation ADR."
+          },
+          {
+            "path": "scripts/check-ledger-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Reads only ADR files named in benchmarks/ledger-decisions.json; neither removed ADR is mapped."
+          },
+          {
+            "path": "scripts/prepare-acceptance-package.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Generates dated accept-${tag}-on-credential-eval ADRs, appends DECISIONS and reads qualification-parity; does not read retired implementation ADRs or local diagnostic."
+          },
+          {
+            "path": "scripts/validate-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Enumerates surviving ADRs and validates selected entry links; neither migrated ADR is required by the active entry index."
+          },
+          {
+            "path": "src/pages/how-to-read.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Directory path appears as explanatory HTML text only; page reads no individual ADR file."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "tests/pii-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic dated decision path and authority-reader allowlist tests; no removed ADR is a fixture dependency."
+          },
+          {
+            "path": "tests/qualification-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic decision/report paths and reader allowlist tests; no removed record is a fixture dependency."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "6a60d0cd312780c99cd995ab65e4030ab63aa92b712b54b640d351823e71d469",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008"
+      }
+    },
+    {
+      "path": "docs/decisions/2026-09-21-correct-the-five-twins-553-ruled-untenable.md",
+      "sha256": "b3b4cd2cc4852d4701e043a6c8fcab1c33e71c84ee862d7727ddc9510593c51a",
+      "size": 6789,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "readers": [],
+      "issue": 78,
+      "reason": "Completed five-fixture correction; negative-twin family scope remains current",
+      "currentContract": "docs/specs/evaluation-methods/02-negative-twin.md",
+      "preservationTag": "hygiene-before-cleanup-845-20261008",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-21-correct-the-five-twins-553-ruled-untenable.md",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/78#issuecomment-6068276434",
+      "approval": "user-requested #845 cleanup; root reviewed scoped preservation and callers",
+      "owner": "benchmarks maintainers",
+      "review": {
+        "dynamicReaders": "Scoped records audit #847/#848; diagnostic README brace reference migrated; no runtime consumer.",
+        "externalReferences": "Full ruling moved to owning issue; full-SHA originals retained and byte-verified archive; existing reference links preserved.",
+        "authorityGates": "Not an authority/owner decision or official run; reviewed current contracts remain.",
+        "excludedCallers": [
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory. The pure gate validates named authority records; neither retired ADR/report is named by PII authority."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/** classifies change execution axes; it is a path category, not an input-file read."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "CONTRIBUTING.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Lists ADR/report conventions and specific unrelated research/handoff contracts; no removed record reference."
+          },
+          {
+            "path": "docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs appears as provider-documentation prose, not a repository-record reference."
+          },
+          {
+            "path": "docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a prose count of historical fixture-link references; no input-record identity."
+          },
+          {
+            "path": "docs/generated/qualification-parity.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Stored family status rationale mentions docs/decisions/ generally; no removed ADR identity or file access."
+          },
+          {
+            "path": "docs/generated/qualification-parity.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Parity report rationale points to current qualification specs and decision-directory prose, not removed ADRs."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/measurement-v4.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names beta-4 results/corpus-audit and the ADR directory convention; neither removed ADR or UI report is a named methodology input."
+          },
+          {
+            "path": "docs/specs/qualification-cutover.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Examples allow arbitrary ADR paths but committed authority uses retained acceptance/oracle-exit decisions; neither removed ADR is bound."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/543",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #543 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #845 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/847",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #847 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "schemas/pii-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex validates allowed decision path shape; does not require every matching historical ADR to exist."
+          },
+          {
+            "path": "schemas/pii-support-matrix-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes an oracle decision field; it does not bind either removed implementation ADR."
+          },
+          {
+            "path": "schemas/qualification-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes decision/report/rehearsal path fields; committed authority identities remain unchanged and name no removed record."
+          },
+          {
+            "path": "scripts/build-qualification-parity.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Writes qualification-parity outputs and cites current specs; generated status rationale contains generic decision-directory prose, not these ADR identities."
+          },
+          {
+            "path": "scripts/check-evidence-adoption.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Checks ownerAcceptance.decision from the committed adoption record; that identity is an acceptance ADR, neither removed implementation ADR."
+          },
+          {
+            "path": "scripts/check-ledger-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Reads only ADR files named in benchmarks/ledger-decisions.json; neither removed ADR is mapped."
+          },
+          {
+            "path": "scripts/prepare-acceptance-package.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Generates dated accept-${tag}-on-credential-eval ADRs, appends DECISIONS and reads qualification-parity; does not read retired implementation ADRs or local diagnostic."
+          },
+          {
+            "path": "scripts/validate-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Enumerates surviving ADRs and validates selected entry links; neither migrated ADR is required by the active entry index."
+          },
+          {
+            "path": "src/pages/how-to-read.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Directory path appears as explanatory HTML text only; page reads no individual ADR file."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "tests/pii-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic dated decision path and authority-reader allowlist tests; no removed ADR is a fixture dependency."
+          },
+          {
+            "path": "tests/qualification-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic decision/report paths and reader allowlist tests; no removed record is a fixture dependency."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "b3b4cd2cc4852d4701e043a6c8fcab1c33e71c84ee862d7727ddc9510593c51a",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008"
+      }
+    },
+    {
+      "path": "docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.json",
+      "sha256": "78b00e2188e9243f16858c47fefca5677c608c072b2e7b8e740233d0002077ba",
+      "size": 73751,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "readers": [],
+      "issue": 848,
+      "reason": "Exploratory darwin local diagnostic, not official evidence",
+      "currentContract": "docs/specs/official-runs.md",
+      "preservationTag": "hygiene-before-cleanup-845-20261008",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.json",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/848#issuecomment-6068342396",
+      "approval": "user-requested #845 cleanup; root reviewed scoped preservation and callers",
+      "owner": "benchmarks maintainers",
+      "review": {
+        "dynamicReaders": "Scoped records audit #847/#848; diagnostic README brace reference migrated; no runtime consumer.",
+        "externalReferences": "Full ruling moved to owning issue; full-SHA originals retained and byte-verified archive; existing reference links preserved.",
+        "authorityGates": "Not an authority/owner decision or official run; reviewed current contracts remain.",
+        "excludedCallers": [
+          {
+            "path": ".github/workflows/adopt-evidence-snapshot.yml",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Copies top-level evidence-adoption/*.json and snapshot acceptance patches; nonrecursive glob does not read engine-alpha.11/local-diagnostic files."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory. The pure gate validates named authority records; neither retired ADR/report is named by PII authority."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/** classifies change execution axes; it is a path category, not an input-file read."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "docs/decisions/2026-10-04-attribute-methods-gate-evidence-of-added-cases-to-canonical-evidence-membership.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names tag-bound comparison.json accounting, not an exploratory local scope-accounting pair."
+          },
+          {
+            "path": "docs/specs/ci-validation.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Describes docs/generated/ as a site input surface; scoped site consumers read accepted reports, not exploratory local diagnostic."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/evidence-adoption.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Contract names root tag-bound adoption/acceptance reports; exploratory engine-alpha.11/local-diagnostic is not such a record."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #845 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/848",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #848 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "schemas/qualification-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes decision/report/rehearsal path fields; committed authority identities remain unchanged and name no removed record."
+          },
+          {
+            "path": "scripts/candidate-control.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Constructs ${evidenceRelease}.triage-queue.json at adoption root, not engine-alpha.11/local-diagnostic."
+          },
+          {
+            "path": "scripts/candidate-replay-pipeline.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Reads adoption.evidenceRelease triage queue at adoption root, not engine-alpha.11/local-diagnostic."
+          },
+          {
+            "path": "scripts/compare-adoption-views.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Renders ${evidenceRelease}.acceptance.patch instructions; no local-diagnostic path or engine-alpha.11 report input."
+          },
+          {
+            "path": "scripts/evidence-adoption.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Constructs root ${tag}.json and ${release}.engine-${engine}.json change reports; does not read engine-alpha.11/local-diagnostic."
+          },
+          {
+            "path": "scripts/export-triage-queue.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses tag-bound change/comparison/triage reports and engine artifacts, not this local scope-accounting record."
+          },
+          {
+            "path": "scripts/prepare-acceptance-package.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Generates dated accept-${tag}-on-credential-eval ADRs, appends DECISIONS and reads qualification-parity; does not read retired implementation ADRs or local diagnostic."
+          },
+          {
+            "path": "scripts/render-snapshot-contrast.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Renders tag-bound contrast JSON/Markdown; the local-diagnostic accounting pair is neither source nor output."
+          },
+          {
+            "path": "scripts/run-candidate-replay.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses product-${id}/ and root ${evidence.tag}.json; no engine-alpha.11/local-diagnostic consumer."
+          },
+          {
+            "path": "scripts/run-evidence-replay.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses root tag-bound replay patches/contrast files and product-${id}/ branches; no engine-alpha.11/local-diagnostic input."
+          },
+          {
+            "path": "tests/adoption-report-sync.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Constructs synthetic tag-bound adoption files in temp roots and uses qualification-parity; no engine-alpha.11 diagnostic fixture."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "tests/expectation-corrections.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Checks snapshot expectation-correction records at adoption root; local diagnostic pair is not selected."
+          },
+          {
+            "path": "tests/qualification-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic decision/report paths and reader allowlist tests; no removed record is a fixture dependency."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "78b00e2188e9243f16858c47fefca5677c608c072b2e7b8e740233d0002077ba",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008"
+      }
+    },
+    {
+      "path": "docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.md",
+      "sha256": "772e60ddc43bb059a7cf120dbad91b38ec2963c1d0bcdbb112da1884110af286",
+      "size": 5462,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "readers": [],
+      "issue": 848,
+      "reason": "Narrative companion of the exploratory darwin diagnostic",
+      "currentContract": "docs/specs/official-runs.md",
+      "preservationTag": "hygiene-before-cleanup-845-20261008",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.md",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/848#issuecomment-6068342396",
+      "approval": "user-requested #845 cleanup; root reviewed scoped preservation and callers",
+      "owner": "benchmarks maintainers",
+      "review": {
+        "dynamicReaders": "Scoped records audit #847/#848; diagnostic README brace reference migrated; no runtime consumer.",
+        "externalReferences": "Full ruling moved to owning issue; full-SHA originals retained and byte-verified archive; existing reference links preserved.",
+        "authorityGates": "Not an authority/owner decision or official run; reviewed current contracts remain.",
+        "excludedCallers": [
+          {
+            "path": ".github/workflows/adopt-evidence-snapshot.yml",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Copies top-level evidence-adoption/*.json and snapshot acceptance patches; nonrecursive glob does not read engine-alpha.11/local-diagnostic files."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory. The pure gate validates named authority records; neither retired ADR/report is named by PII authority."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/** classifies change execution axes; it is a path category, not an input-file read."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "docs/decisions/2026-10-04-attribute-methods-gate-evidence-of-added-cases-to-canonical-evidence-membership.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names tag-bound comparison.json accounting, not an exploratory local scope-accounting pair."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Companion JSON is itself in the removal set and preserved with Markdown; no surviving consumer dependency."
+          },
+          {
+            "path": "docs/specs/ci-validation.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Describes docs/generated/ as a site input surface; scoped site consumers read accepted reports, not exploratory local diagnostic."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/evidence-adoption.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Contract names root tag-bound adoption/acceptance reports; exploratory engine-alpha.11/local-diagnostic is not such a record."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #845 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/848",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #848 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "schemas/qualification-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes decision/report/rehearsal path fields; committed authority identities remain unchanged and name no removed record."
+          },
+          {
+            "path": "scripts/candidate-control.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Constructs ${evidenceRelease}.triage-queue.json at adoption root, not engine-alpha.11/local-diagnostic."
+          },
+          {
+            "path": "scripts/candidate-replay-pipeline.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Reads adoption.evidenceRelease triage queue at adoption root, not engine-alpha.11/local-diagnostic."
+          },
+          {
+            "path": "scripts/compare-adoption-views.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Renders ${evidenceRelease}.acceptance.patch instructions; no local-diagnostic path or engine-alpha.11 report input."
+          },
+          {
+            "path": "scripts/evidence-adoption.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Constructs root ${tag}.json and ${release}.engine-${engine}.json change reports; does not read engine-alpha.11/local-diagnostic."
+          },
+          {
+            "path": "scripts/export-triage-queue.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses tag-bound change/comparison/triage reports and engine artifacts, not this local scope-accounting record."
+          },
+          {
+            "path": "scripts/prepare-acceptance-package.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Generates dated accept-${tag}-on-credential-eval ADRs, appends DECISIONS and reads qualification-parity; does not read retired implementation ADRs or local diagnostic."
+          },
+          {
+            "path": "scripts/render-snapshot-contrast.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Renders tag-bound contrast JSON/Markdown; the local-diagnostic accounting pair is neither source nor output."
+          },
+          {
+            "path": "scripts/run-candidate-replay.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses product-${id}/ and root ${evidence.tag}.json; no engine-alpha.11/local-diagnostic consumer."
+          },
+          {
+            "path": "scripts/run-evidence-replay.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses root tag-bound replay patches/contrast files and product-${id}/ branches; no engine-alpha.11/local-diagnostic input."
+          },
+          {
+            "path": "tests/adoption-report-sync.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Constructs synthetic tag-bound adoption files in temp roots and uses qualification-parity; no engine-alpha.11 diagnostic fixture."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "tests/expectation-corrections.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Checks snapshot expectation-correction records at adoption root; local diagnostic pair is not selected."
+          },
+          {
+            "path": "tests/qualification-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic decision/report paths and reader allowlist tests; no removed record is a fixture dependency."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "772e60ddc43bb059a7cf120dbad91b38ec2963c1d0bcdbb112da1884110af286",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008"
+      }
+    },
+    {
+      "path": "docs/reports/2026-09-18/evaluation-ui-verification.md",
+      "sha256": "fe06f48ada883646c8a02fa5c90a8dbe232328c887fe3ed3d1c3910fd160f8c2",
+      "size": 2467,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "readers": [],
+      "issue": 848,
+      "reason": "One-off local verification of the retired Vite UI",
+      "currentContract": "web/CONVENTIONS.md",
+      "preservationTag": "hygiene-before-cleanup-845-20261008",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/reports/2026-09-18/evaluation-ui-verification.md",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/848#issuecomment-6068342396",
+      "approval": "user-requested #845 cleanup; root reviewed scoped preservation and callers",
+      "owner": "benchmarks maintainers",
+      "review": {
+        "dynamicReaders": "Scoped records audit #847/#848; diagnostic README brace reference migrated; no runtime consumer.",
+        "externalReferences": "Full ruling moved to owning issue; full-SHA originals retained and byte-verified archive; existing reference links preserved.",
+        "authorityGates": "Not an authority/owner decision or official run; reviewed current contracts remain.",
+        "excludedCallers": [
+          {
+            "path": ".agents/skills/scan-secrets-in-history/SKILL.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/reports/ is a credential-leak triage location in guidance, not a specific report dependency."
+          },
+          {
+            "path": "adversarial/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/reports/ is where intake review narrative may be recorded; this UI verification report is not an intake record."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory. The pure gate validates named authority records; neither retired ADR/report is named by PII authority."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/** classifies change execution axes; it is a path category, not an input-file read."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "CONTRIBUTING.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Lists ADR/report conventions and specific unrelated research/handoff contracts; no removed record reference."
+          },
+          {
+            "path": "docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Discusses report-directory policy and beta-5 results; no Sept 18 UI verification identity."
+          },
+          {
+            "path": "docs/decisions/2026-10-02-rename-the-corroborated-evidence-basis.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "States frozen docs/reports/ retain prior vocabulary; does not require this unrelated UI report."
+          },
+          {
+            "path": "docs/decisions/DECISIONS.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical report-directory prose in original index does not name Sept 18 UI verification; active index preserves current contract entry points."
+          },
+          {
+            "path": "docs/reports/2026-09-24-beta8-207-remeasure.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Links profile coverage and empirical-qualification contracts; no Sept 18 UI report identity."
+          },
+          {
+            "path": "docs/reports/2026-09-27/beta-10-credential-corpus-handoff.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Links beta8 evidence and promotion contracts; docs token is narrative, not UI verification input."
+          },
+          {
+            "path": "docs/reports/2026-09-28-beta11-380-unit-diagnostics.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Describes unit-diagnostic reports under docs/reports/ and named Sept28 JSON; not UI verification."
+          },
+          {
+            "path": "docs/specs/blind-evaluation-report-template.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Output pattern is date/milestone-142-blind-evaluation and aggregate; Sept18 UI verification is not a matching blind result."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/unit-diagnostics.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Describes date-bound unit-diagnostic output prefix; unrelated UI verification file is not a diagnostic source."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "evidence/901/428/final-core-8b6a5fde.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/reports/ describes forbidden custodian access; no dependency on individual UI verification report."
+          },
+          {
+            "path": "evidence/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Explains report/evidence taxonomy and beta-5 narrative; no Sept18 UI verification consumer."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #845 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/848",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #848 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Links corpus-audit and release-comparison, not Sept 18 UI verification; report directory mention is descriptive."
+          },
+          {
+            "path": "scripts/run-pii-population-dual-run.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Only report path is docs/reports/2026-10-05-pii-eval-population-dual-run.md; the Sept 18 UI report is unrelated."
+          },
+          {
+            "path": "tests/blind-evaluation.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temp blind.json/scored.json/embedded.md reports; no Sept 18 UI verification input."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "fe06f48ada883646c8a02fa5c90a8dbe232328c887fe3ed3d1c3910fd160f8c2",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008"
+      }
+    },
+    {
+      "path": "evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json",
+      "sha256": "db98b4a699573c58a1843d9720639f446e2848921df589e5e749b52e11ffdad4",
+      "size": 1663484,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "owner": "benchmarks maintainers",
+      "originIssue": "https://github.com/redact-secret/redact-secret/issues/860",
+      "issue": 849,
+      "reason": "Superseded pre-relabel candidate diagnostic; canonical post-relabel sibling and official records remain active.",
+      "currentContract": "docs/specs/official-runs.md",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json",
+      "preservationTag": "hygiene-before-cleanup-845-20261008",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/849#issuecomment-6068724789",
+      "approval": "user-requested #845 cleanup; scoped metadata, readers and archive retrieval reviewed",
+      "review": {
+        "dynamicReaders": "Canonical candidate/UI readers use a different fixed filename; site evidence enumeration reads support-status only; no exact import or filename glob.",
+        "externalReferences": "Product #860/#994 and benchmark PRs #489/#507 reviewed; org default-branch code search exact filename only retained README; source af180a5 ancestry preserved. Historical outside refs remain byte-retrievable.",
+        "authorityGates": "Exploratory darwin historical candidate only; no official run, policy, baseline or authority binding. Schema validates 4768 rows, no credential text/error payload.",
+        "excludedCallers": [
+          {
+            "path": ".agents/skills/promote-finding/SKILL.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "adversarial/packs/beta9-external-inputs/adjudication.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "adversarial/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/batch2/sources.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/gap-ledger.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/evaluation/release-source-equivalences-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/group-c/FROZEN-group-c.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/group-d/FROZEN-group-d.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/group-d/traceability.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/known-gaps.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/lib/adversarial-adjudication.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/lib/promotion.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/official-runs.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/pii-authority.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/pii-evidence-comparison/plan.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/pii-evidence/preflight.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/product-candidates.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/qualification/adapter.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/qualification/parity.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/support/legacy-review-queue.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "CONTRIBUTING.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/2026-10-01-show-the-release-candidate-beside-the-last-release.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/2026-10-02-rename-the-corroborated-evidence-basis.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/2026-10-07-retire-the-support-matrix-drift-contract-and-keep-the-legacy-rollback.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/DECISIONS.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/engine-alpha.11/baseline-alpha.5.scope-accounting.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/engine-alpha.5/triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-1e45cecf/candidate-effect.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-1e45cecf/snapshot-2026.10.04.4/candidate-effect.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-1e45cecf/snapshot-2026.10.04.4/triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-1e45cecf/snapshot-2026.10.05/candidate-effect.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-1e45cecf/snapshot-2026.10.05/triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-1e45cecf/triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-422e43e3/candidate-effect.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-422e43e3/snapshot-2026.10.05.2/candidate-effect.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-422e43e3/snapshot-2026.10.05.2/triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-422e43e3/triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-f537059f/candidate-effect.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/product-core-main-f537059f/triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.expectation-corrections.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/evidence-adoption/snapshot-2026.10.05.triage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/pii-protected-readiness.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/qualification-parity.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/qualification-parity.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/reports/2026-09-21/resweep-differential-queue-against-pinned-trufflehog.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/reports/2026-09-23/pin-drift-detector-merges.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/reports/2026-09-28/beta-11-credential-evidence-final.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/reports/2026-09-29/beta-11-credential-evidence-final-8b6a5fd.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/reports/2026-09-29/beta-11-credential-evidence-final-ec9224d.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/reports/2026-09-29/beta-11-credential-evidence-final.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/specs/ci-validation.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/specs/performance-acceptance.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/specs/qualification-adapter.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/specs/qualification-cutover.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/1046/da69ebf/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/449/release-record-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/449/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/449/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/528/4fb7882/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/528/4fb7882/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/528/99c8c2b/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/528/99c8c2b/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/575/clean-main/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/575/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/583/3b1a5aa/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/583/3b1a5aa/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/583/second-wave/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/642/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/752/lineage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/753/lineage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/754/lineage.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/26efbba/published/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/26efbba/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/3ddfc29/published/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/3ddfc29/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/735797a/published/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/735797a/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/f26dee2-fixed/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/f26dee2/published/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/f26dee2/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/published/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/774/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/0c62fd3-published/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/0c62fd3-published/support-status-release-artifacts.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/1127bf9/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/1127bf9/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/1db8ff3/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/1db8ff3/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/4227160-published/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/4227160-published/support-status-release-artifacts.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/66b492b-published/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/66b492b-published/support-status-release-artifacts.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/8b6a5fd/support-status-candidate-feed-safe.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/8b6a5fd/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/8b6a5fd/support-status-published-feed-safe.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/8b6a5fd/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/8f97f14/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/8f97f14/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/94fc18a-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/94fc18a-published/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/94fc18a-published/support-status-release-artifacts.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/bfc608c/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/bfc608c/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/ec9224d/README.md",
+            "via": [
+              "basename-possible"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/ec9224d/support-status-candidate-labels-af180a5.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/ec9224d/support-status-candidate.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/ec9224d/support-status-published.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/860/feb7aea/support-status.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-1127bf913237/pii-beta11-observation-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-1127bf913237/pii-beta11-report-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-1db8ff38b16e/pii-beta11-observation-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-1db8ff38b16e/pii-beta11-report-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-401158d09a67/pii-beta11-observation-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-401158d09a67/pii-beta11-report-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-79c0a66119fb/pii-beta11-observation-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-79c0a66119fb/pii-beta11-observation-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-79c0a66119fb/pii-beta11-report-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-79c0a66119fb/pii-beta11-report-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-8b6a5fde52ec/pii-beta11-observation-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-8b6a5fde52ec/pii-beta11-report-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-8f97f14d97d7/pii-beta11-observation-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-8f97f14d97d7/pii-beta11-report-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-ec9224d97430/pii-beta11-observation-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/core-ec9224d97430/pii-beta11-report-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/428/final-core-8b6a5fde.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/901/pii-gap-ledger-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/credential-eval-run-artifact-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/dossier-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/pii-accounting-report-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/pii-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/pii-gap-ledger-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/pii-qualification-report-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/provider-dossiers-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/qualification-view-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/support-status-report-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "scripts/compare-adoption-views.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "scripts/observe-us-ssn-populations.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "scripts/publish-pii-support.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "scripts/rekey-review-ledger.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "scripts/render-groups-cde-final.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "scripts/run-official-credential-eval.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "scripts/run-pii-evidence-comparison.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "tests/execution-plan.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "tests/groups-cde-final.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "tests/pii-population-publication.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "tests/pii-ui.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "tests/research-issue-form.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "web/components/qualification/QualificationCases.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "web/components/qualification/QualificationOverview.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "web/resolvers/domains.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "web/services/credential-bridge.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "web/services/domains.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "db98b4a699573c58a1843d9720639f446e2848921df589e5e749b52e11ffdad4",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008"
+      }
+    }
+  ]
+}

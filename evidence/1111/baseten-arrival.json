@@ -1,0 +1,435 @@
+{
+  "schema": "baseten-arrival/v1",
+  "status": "complete",
+  "supportClaims": false,
+  "scope": "focused-independent-development",
+  "peerComparison": false,
+  "startedAt": "2026-10-08T15:08:30.919Z",
+  "finishedAt": "2026-10-08T15:08:31.817Z",
+  "candidate": {
+    "sourceCommit": "502eaab6771529130b7f9ca2ac77cd7203ff55ba",
+    "declaredVersion": "0.1.0-beta.14",
+    "profile": "full",
+    "backend": "addon",
+    "published": false,
+    "embeddedSourceRevision": null,
+    "packages": [
+      {
+        "role": "core",
+        "sha256": "25adb88bce8e6e60d6c8b55372cb418d1b8603aa6138019915c0433cdf3fd8b2"
+      },
+      {
+        "role": "node",
+        "sha256": "6ef3995f92d02e4e0f4ba5ce71e6351b703316f0c7141130c2f60397e18a0367"
+      },
+      {
+        "role": "wasm",
+        "sha256": "77af5822255f28f13b4fc6e2de3ce393abdfe6ce205e7d2e61cb858808c4c037"
+      }
+    ],
+    "nativeBinarySha256": "05ad684eee54b47acb39916b65220ca628bde50f0965f9ca536382dca9b51bb2",
+    "qualificationRun": "37789349223",
+    "inventorySha256": "1de320cae44ff8c28b9bb6786b226381a007515fda08522c3a50a37aed2d744d",
+    "artifactManifestSha256": "c3f06465564525dd11deff484f97a0fb08a3b6a7b1b90abeca908047f513620f"
+  },
+  "benchmark": {
+    "sourceCommit": "83748e8a8a233661ff87b32549c6ed5b4d1c12e3",
+    "dirty": false,
+    "lockfileSha256": "91090ff8efbb9a9b6a6ac7804ad2586cf9053346afac8c6116fc0ea25eb55ede"
+  },
+  "corpus": {
+    "contract": {
+      "tier": "T1",
+      "observedAt": "2026-10-08",
+      "source": "https://docs.baseten.co/organization/api-keys.md",
+      "pattern": "^b10_[A-Za-z0-9]{8}\\.[A-Za-z0-9]{32}$",
+      "scope": "Keys created on or after 2026-10-01 15:00 GMT only. Earlier keys have no documented grammar and remain a false negative."
+    },
+    "sha256": "3e2f4aeb46ec1f9f01a7b2be52abf25bb067150cb5181a872160994312733c08",
+    "selected": 28,
+    "scanned": 28,
+    "generatorSha256": "f5418ea6a9ea81a6e3cf0a613151ded653e798d7677bad1bff1fdc2d3d39af80"
+  },
+  "scanner": {
+    "version": "0.1.0-beta.14",
+    "configuration": "default/full/native; PII off",
+    "replays": 2,
+    "host": {
+      "platform": "darwin",
+      "arch": "arm64",
+      "node": "v22.16.0"
+    }
+  },
+  "groups": {
+    "must-not-flag/T1": {
+      "files": 14,
+      "flaggedFiles": 0,
+      "findings": 0,
+      "falseAlarmRate": {
+        "point": 0,
+        "bound": 0.215317,
+        "n": 14,
+        "direction": "upper"
+      },
+      "meanFindingsPerFlagged": null,
+      "diagnostics": {
+        "exact": {
+          "fp": 0,
+          "tn": 14
+        },
+        "comparable": false
+      }
+    },
+    "must-not-flag/T3": {
+      "files": 8,
+      "flaggedFiles": 0,
+      "findings": 0,
+      "falseAlarmRate": {
+        "point": 0,
+        "bound": 0.324416,
+        "n": 8,
+        "direction": "upper"
+      },
+      "meanFindingsPerFlagged": null,
+      "diagnostics": {
+        "exact": {
+          "fp": 0,
+          "tn": 8
+        },
+        "comparable": false
+      }
+    },
+    "must-redact/T1": {
+      "files": 6,
+      "spans": 6,
+      "secretBytes": 270,
+      "outcomes": {
+        "EXACT": 6,
+        "COVERED": 0,
+        "OVERBROAD": 0,
+        "PARTIAL": 0,
+        "MISS": 0
+      },
+      "pendingFiles": 0,
+      "measurableShare": {
+        "point": 1,
+        "bound": 0.609657,
+        "n": 6,
+        "direction": "lower"
+      },
+      "envelopeWidth": {
+        "spans": 0,
+        "bytes": 0
+      },
+      "leakedSpans": 0,
+      "leakedSpanRate": {
+        "point": 0,
+        "bound": 0.390343,
+        "n": 6,
+        "direction": "upper"
+      },
+      "leakedBytes": 0,
+      "leakedByteRate": {
+        "point": 0,
+        "bound": 0.390343,
+        "n": 6,
+        "direction": "upper"
+      },
+      "collateralBytes": 0,
+      "collateralRatio": {
+        "point": 0,
+        "bound": null,
+        "n": 270,
+        "direction": null
+      },
+      "twins": {
+        "positives": 6,
+        "pairs": 14,
+        "discriminated": 14,
+        "coDetected": 0,
+        "coverage": {
+          "point": 2.333333,
+          "bound": null,
+          "n": 6,
+          "direction": "lower"
+        },
+        "rate": {
+          "point": 1,
+          "bound": 0.784683,
+          "n": 14,
+          "direction": "lower"
+        }
+      },
+      "diagnostics": {
+        "exact": {
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "comparable": false
+      }
+    }
+  },
+  "rows": [
+    {
+      "fixtureId": "bare",
+      "kind": "must-redact",
+      "tier": "T1",
+      "expectedSpans": 1,
+      "outcome": "EXACT",
+      "actual": [
+        {
+          "start": 0,
+          "end": 45,
+          "action": "redact"
+        }
+      ]
+    },
+    {
+      "fixtureId": "env",
+      "kind": "must-redact",
+      "tier": "T1",
+      "expectedSpans": 1,
+      "outcome": "EXACT",
+      "actual": [
+        {
+          "start": 16,
+          "end": 61,
+          "action": "redact"
+        }
+      ]
+    },
+    {
+      "fixtureId": "shell",
+      "kind": "must-redact",
+      "tier": "T1",
+      "expectedSpans": 1,
+      "outcome": "EXACT",
+      "actual": [
+        {
+          "start": 24,
+          "end": 69,
+          "action": "redact"
+        }
+      ]
+    },
+    {
+      "fixtureId": "json",
+      "kind": "must-redact",
+      "tier": "T1",
+      "expectedSpans": 1,
+      "outcome": "EXACT",
+      "actual": [
+        {
+          "start": 12,
+          "end": 57,
+          "action": "redact"
+        }
+      ]
+    },
+    {
+      "fixtureId": "header",
+      "kind": "must-redact",
+      "tier": "T1",
+      "expectedSpans": 1,
+      "outcome": "EXACT",
+      "actual": [
+        {
+          "start": 23,
+          "end": 68,
+          "action": "redact"
+        }
+      ]
+    },
+    {
+      "fixtureId": "sdk",
+      "kind": "must-redact",
+      "tier": "T1",
+      "expectedSpans": 1,
+      "outcome": "EXACT",
+      "actual": [
+        {
+          "start": 25,
+          "end": 70,
+          "action": "redact"
+        }
+      ]
+    },
+    {
+      "fixtureId": "id-short",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "id-long",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "body-short",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "body-long",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "id-dash",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "id-underscore",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "body-dash",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "body-underscore",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "separator-colon",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "prefix-0",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "prefix-1",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "prefix-2",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "prefix-3",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "prefix-4",
+      "kind": "must-not-flag",
+      "tier": "T1",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "id-only",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "prefix-only",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "unprefixed-sibling",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "placeholder",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "masked",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "reference",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "guidance",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    },
+    {
+      "fixtureId": "identifier",
+      "kind": "must-not-flag",
+      "tier": "T3",
+      "expectedSpans": 0,
+      "outcome": "clean",
+      "actual": []
+    }
+  ]
+}

@@ -24,10 +24,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 123 | 150 |
-| Stable / documented | 123 | 150 |
-| Stable / empirical | 42 | 150 |
-| Context-constrained empirical | 26 | 150 |
+| Arrival / provisional | 123 | 152 |
+| Stable / documented | 123 | 152 |
+| Stable / empirical | 42 | 152 |
+| Context-constrained empirical | 26 | 152 |
 
 ## Per family
 
@@ -47,6 +47,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | axiom-personal-token | T1 | stable-documented | 25 | 5 | 8 | 6 | 6 | 5 | 9 | positive/context cases 5/6 |
 | axiom-token | T1 | stable-documented | 37 | 8 | 13 | 8 | 8 | 5 | 9 | none |
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
+| baseten-api-key | T3 | arrival-provisional | 6 | 3 | 3 | 0 | 1 | 3 | 3 | total fixtures 6/24; positive/context cases 3/6; non-twin benign controls 3/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | bitwarden-secrets-manager-access-token | T1 | stable-documented | 46 | 3 | 16 | 14 | 11 | 6 | 10 | positive/context cases 3/6 |
 | browserbase-api-key | T1 | stable-documented | 38 | 9 | 15 | 7 | 9 | 5 | 8 | none |
@@ -130,6 +131,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | openai-admin-api-key | T2 | stable-empirical | 43 | 10 | 15 | 9 | 17 | 6 | 10 | none |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
+| ory-token | T3 | arrival-provisional | 12 | 6 | 6 | 0 | 1 | 3 | 3 | total fixtures 12/24; non-twin benign controls 6/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | otpauth-uri | T3 | arrival-provisional | 24 | 2 | 8 | 7 | 1 | 3 | 4 | positive/context cases 2/6; positive-context axes 1/4; control axes 3/4 |
 | paddle-api-key | T1 | stable-documented | 41 | 3 | 14 | 12 | 8 | 6 | 10 | positive/context cases 3/6 |
 | perplexity-api-key | T2 | stable-empirical | 41 | 10 | 15 | 8 | 15 | 6 | 10 | none |

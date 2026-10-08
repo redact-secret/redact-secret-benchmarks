@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { inputFiles, keyOf, planChecks, routeOfPage, selectBrowserChecks } from '../scripts/ci-plan.mjs';
+import { importersOf } from '../scripts/legacy-callers.mjs';
 
 // Structure of the changed-path dependency map (#655, #656). Synthetic file lists and a synthetic import graph: nothing here reads a ledger, a
 // run or a count from the corpus.
@@ -67,6 +68,29 @@ test('workflows, lockfiles, schemas and the plan itself select everything', () =
     const plan = pr([f], importers);
     assert.deepEqual([plan.legacy, plan.web, plan.webScope], [true, true, 'full'], f);
   }
+});
+
+const fixtureMetadataPaths = ['scripts/evidence-case-metadata.mjs', 'benchmarks/evidence-case-metadata.json', 'benchmarks/fixture-descriptions.json', 'benchmarks/lib/fixture-metadata.ts'];
+
+test('fixture metadata alone keeps the full site validation and changes only the view cache key', () => {
+  for (const f of fixtureMetadataPaths) {
+    const plan = pr([f]);
+    assert.deepEqual([plan.legacy, plan.web, plan.browser, plan.webScope], [false, true, true, 'full'], f);
+    const tracked = [...fixtureMetadataPaths, 'benchmarks/run.ts'];
+    const read = changed => path => Buffer.from(path === changed ? 'changed' : 'same');
+    assert.equal(keyOf('legacy', tracked, read(f)), keyOf('legacy', tracked, read()), `${f} cannot re-key a measurement`);
+    assert.notEqual(keyOf('view', tracked, read(f)), keyOf('view', tracked, read()), `${f} rebuilds the display data`);
+    assert.equal(pr([f, 'benchmarks/registry.json']).legacy, true, 'a mixed change still measures');
+  }
+  for (const f of ['scripts/evidence-case-metadata-extra.mjs', 'scripts/evidence-case-metadata.mjs.bak', 'benchmarks/evidence-case-metadata.json.bak', 'benchmarks/fixture-descriptions-extra.json', 'benchmarks/lib/fixture-metadata-measure.ts']) {
+    assert.equal(pr([f]).legacy, true, `${f} is not a display-only exemption`);
+  }
+});
+
+test('fixture metadata importers are confined to display services, the projection script and tests', () => {
+  const allowed = new Set(['scripts/evidence-case-metadata.mjs', 'tests/fixture-metadata.test.mjs', 'web/services/catalog.ts', 'web/services/credential-bridge.ts', 'web/services/credential-source.ts']);
+  for (const importer of importersOf('benchmarks/lib/fixture-metadata.ts')) assert.ok(allowed.has(importer), `${importer} needs a CI dependency review before consuming fixture metadata`);
+  assert.deepEqual(importersOf('scripts/evidence-case-metadata.mjs'), [], 'the display projection is not imported by measurement tooling');
 });
 
 test('a path the map does not know runs everything', () => {
@@ -149,6 +173,11 @@ test('validate.yml takes its flags from the plan and accepts a skipped job only 
   assert.match(yml, /workflow_dispatch:/);
   const gate = yml.slice(yml.indexOf('  validate:'), yml.indexOf('  changes:'));
   for (const job of ['changes', 'validate-sources', 'unit-tests', 'legacy-oracle', 'legacy-results', 'view', 'web-build', 'web-unit', 'web-browser']) assert.match(gate, new RegExp(`needs\\.${job}\\.result`), `${job} is judged by the gate`);
+  const units = yml.slice(yml.indexOf('  unit-tests:'), yml.indexOf('  validate-sources:'));
+  const sources = yml.slice(yml.indexOf('  validate-sources:'), yml.indexOf('  legacy-oracle:'));
+  assert.doesNotMatch(units, /^\s+if:/m, 'root unit tests cannot be skipped by the changed-path plan');
+  assert.doesNotMatch(sources, /^\s+if:/m, 'source validation cannot be skipped by the changed-path plan');
+  for (const command of ['npm run fixture-metadata:check', 'npm run research:check']) assert.ok(sources.includes(command), `${command} always validates display metadata`);
   // Only success passes, or a skip of a job the plan did not select; a failure, a cancellation or a missing plan never does.
   assert.match(gate, /\[ "\$2" = success \]/);
   assert.match(gate, /\[ "\$2" = skipped \] && \[ "\$3" = false \]/);

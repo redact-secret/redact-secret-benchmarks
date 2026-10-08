@@ -5,6 +5,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import YAML from 'yaml';
 import { loadPins } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 import { checkFiles, validateSource, verifyArchiveMembers, verifyArtifactMetadata, verifyRunMetadata } from '../scripts/fetch-pii-eval-public-synthetic.mjs';
@@ -16,7 +17,7 @@ const pins = loadPins(readFileSync(pinsFile, 'utf8'));
 const clone = value => structuredClone(value);
 
 test('committed transport and semantic pins bind one exact successful public-synthetic run', () => {
-  const checked = checkFiles(sourceFile.pathname, pinsFile.pathname);
+  const checked = checkFiles(fileURLToPath(sourceFile), fileURLToPath(pinsFile));
   assert.equal(checked.source.workflow.headSha, checked.pins.build.commit);
   assert.equal(checked.source.artifacts.engine.members['pii-eval'], checked.pins.build.binarySha256);
   assert.equal(checked.source.supportClaims, false);

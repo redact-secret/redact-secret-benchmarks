@@ -401,6 +401,14 @@
     {
       "id": "fly",
       "name": "Fly.io"
+    },
+    {
+      "id": "ory",
+      "name": "Ory"
+    },
+    {
+      "id": "baseten",
+      "name": "Baseten"
     }
   ],
   "families": [
@@ -2608,6 +2616,32 @@
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md"
       ],
       "note": "Beta.12 arrival family axiom-personal-token (#528, product redact-secret#1035), contract in benchmarks/lib/beta8/528j.ts from the #1014 handoff axiom.md. T1 (SDK runtime check R6; R5 layout). Shares the axiom-token detector (finding type axiom_personal_token). Neither pinned scanner has an Axiom rule. Since the 4fb7882 re-pin (product PR #1039) it is an arrival family scored by that finding type (scanners/families.mjs arrivalFindingTypes), so the row maps to its own id."
+    },
+    {
+      "id": "ory:network-api-key",
+      "provider": "ory",
+      "name": "Session and OAuth2 sibling tokens",
+      "description": "Adopted upstream detector; registry-wide synthetic policy coverage only. Reviewed benchmark contract and dedicated corpus pending.",
+      "detectors": [
+        "ory-token"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf/docs/audits/evidence/1110/README.md"
+      ],
+      "note": "Registry ahead of published beta.14 at 5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf. No measured support promotion or T1 benchmark claim."
+    },
+    {
+      "id": "baseten:api-key",
+      "provider": "baseten",
+      "name": "API key (b10_)",
+      "description": "Adopted upstream detector; registry-wide synthetic policy coverage only. Reviewed benchmark contract and dedicated corpus pending.",
+      "detectors": [
+        "baseten-api-key"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf/docs/audits/evidence/1111/README.md"
+      ],
+      "note": "Registry ahead of published beta.14 at 5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf. No measured support promotion or T1 benchmark claim."
     }
   ]
 }

@@ -159,3 +159,7 @@ every record here has valid frontmatter and is indexed exactly once.
 
 - [Show research review, format revisions and facts from pinned credential-evidence](2026-10-08-show-the-research-review-state-format-revision-and-format-facts-from-the-pinned-credential-evidence-records.md) (#590, #591).
 - [Take a public case's title from its credential-evidence record, author only product-owned fixtures here, and keep both out of every identity](2026-10-08-take-public-case-titles-from-credential-evidence-and-author-only-product-fixtures-here.md) (#593, #543; `benchmarks/evidence-case-metadata.json` derived from the pinned release and bound to the measured snapshot, `benchmarks/fixture-descriptions.json` for product-owned fixtures; no index, corpus or pin identity changes)
+
+- [Pin the Ory and Baseten registry ahead of the published release with pending benchmark contracts](2026-10-08-pin-the-registry-with-ory-and-baseten-ahead-of-the-release.md)
+
+- [Re-authorise the credential policy revision for Ory and Baseten registry intake](2026-10-08-reauthorise-the-policy-revision-for-ory-and-baseten-registry-intake.md), accepted 2026-10-08.

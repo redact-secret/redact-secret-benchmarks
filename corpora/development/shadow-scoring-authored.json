@@ -8652,6 +8652,100 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/584"
         ]
       }
+    },
+    {
+      "id": "ory-token-positive",
+      "path": "ory-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ORY_SESSION_TOKEN=\u006fry_st_reviewalpha7beta9reviewalpha7beta9\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 59,
+          "role": "secret",
+          "note": "Never-issued policy calibration value; no format or support claim."
+        }
+      ],
+      "detectors": [
+        "ory-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "ory-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf/docs/audits/evidence/1110/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1110"
+        ]
+      }
+    },
+    {
+      "id": "ory-token-negative",
+      "path": "ory-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ORY_SESSION_TOKEN=${ORY_SESSION_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "ory-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "ory-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf/docs/audits/evidence/1110/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1110"
+        ]
+      }
+    },
+    {
+      "id": "baseten-api-key-positive",
+      "path": "baseten-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BASETEN_API_KEY=\u006210_reviewa7.reviewalpha7beta9reviewalpha7beta9\n",
+      "expected": [
+        {
+          "start": 16,
+          "end": 63,
+          "role": "secret",
+          "note": "Never-issued policy calibration value; no format or support claim."
+        }
+      ],
+      "detectors": [
+        "baseten-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "baseten-api-key",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf/docs/audits/evidence/1111/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1111"
+        ]
+      }
+    },
+    {
+      "id": "baseten-api-key-negative",
+      "path": "baseten-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BASETEN_API_KEY=${BASETEN_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "baseten-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "baseten-api-key",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf/docs/audits/evidence/1111/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1111"
+        ]
+      }
     }
   ]
 }

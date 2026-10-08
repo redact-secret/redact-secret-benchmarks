@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "profilesVersion": 1,
-  "familyCount": 150,
+  "familyCount": 152,
   "cellsMetByProfile": {
     "arrival-provisional": 123,
     "stable-documented": 123,
@@ -870,6 +870,84 @@
       },
       "requiredButEmptyAxisIds": [],
       "debt": []
+    },
+    {
+      "family": "baseten-api-key",
+      "tier": "T3",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 6,
+        "positiveCases": 3,
+        "benignControls": 3,
+        "twinPairs": 0,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "baseten-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 6,
+          "required": 24,
+          "shortfall": 18
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 3,
+          "required": 8,
+          "shortfall": 5
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "bearer-token",
@@ -6139,6 +6217,78 @@
       },
       "requiredButEmptyAxisIds": [],
       "debt": []
+    },
+    {
+      "family": "ory-token",
+      "tier": "T3",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 12,
+        "positiveCases": 6,
+        "benignControls": 6,
+        "twinPairs": 0,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "ory-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 12,
+          "required": 24,
+          "shortfall": 12
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "otpauth-uri",

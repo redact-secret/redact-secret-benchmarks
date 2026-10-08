@@ -1117,6 +1117,19 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, "label-prose", [`Documentation mentions a ${label} without embedding the key value.`]);
   }
 
+  // Adopted provider handoffs at core 5fddf1a; registry-only policy coverage, not a reviewed T1 corpus.
+  const pendingRegistry = [
+    ["ory-token", "session", `ory_st_${synthetic("coverage:ory:session", 32, AI_ALNUM)}`, "ory_st_", "ORY_SESSION_TOKEN"],
+    ["ory-token", "oauth2", `ory_at_${synthetic("coverage:ory:key", 43, `${AI_ALNUM}_-`)}.${synthetic("coverage:ory:signature", 43, `${AI_ALNUM}_-`)}`, "ory_at_", "ORY_ACCESS_TOKEN"],
+    ["baseten-api-key", "key", `b10_${synthetic("coverage:baseten:id", 8, AI_ALNUM)}.${synthetic("coverage:baseten:secret", 32, AI_ALNUM)}`, "b10_", "BASETEN_API_KEY"],
+  ];
+  for (const [detector, variant, value, prefix, env] of pendingRegistry) {
+    positive(detector, variant, [{ secret: value }]);
+    add(detector, `${variant}-prefix-only`, [prefix]);
+    add(detector, `${variant}-mask`, [`${prefix}${"*".repeat(value.length - prefix.length)}`]);
+    add(detector, `${variant}-reference`, [`${env}=\${${env}}\n`]);
+  }
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

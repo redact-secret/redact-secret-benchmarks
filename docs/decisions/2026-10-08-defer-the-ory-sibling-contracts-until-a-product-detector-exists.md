@@ -26,28 +26,31 @@ Upstream state, re-read 2026-10-08 after core PR #1282 merged:
   reconciles the historical #1014 handoff with pinned provider sources and adopts `ory-token`, with finding types
   `ory_session_token` and `ory_oauth2_token`. Core includes implementation, registration and conformance tests;
   independent benchmark measurement and support promotion remain separate.
-- **Not in the published or pinned build.** npm `latest` remains `@redact-secret/core` 0.1.0-beta.14. This repository's
-  registry snapshot (`benchmarks/detectors.json`, `detector-inventory.json`, `detector-finding-types.json`) pins
-  `0c62fd38bca75c5b28b042dc79789b708ebf1d17`, has no Ory detector or finding type, and `ory` is not a taxonomy family.
+- **Registry intake ahead of the published build.** npm `latest` remains `@redact-secret/core` 0.1.0-beta.14.
+  The registry snapshot now pins `5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf`, including Ory and Baseten, while
+  `redactSecretReleaseRevision` remains beta.14 `0c62fd38bca75c5b28b042dc79789b708ebf1d17`. T3 pending
+  benchmark contracts and synthetic policy coverage record their registry presence. The reviewed sibling corpus
+  and independent measurement are still deferred to #827.
 - **Admin keys** (`ory_pat_`, `ory_apikey_`, `ory_wak_`) stay blocked: no source gives a body length or alphabet.
   The adopted sibling contract also excludes `ory_lo_`, JWT access tokens and enterprise custom prefixes.
 
 The initial disposition read core `f6f481b` before #1282 merged. Its implementation and adoption blockers are now
-resolved. In this owner session on 2026-10-08, the owner authorised pinning the new version and proceeding with
-owner approval. This satisfies readiness to proceed; the released build, repin, official replay and exact resulting
-policy-revision authorisation remain technical prerequisites. It is not an authorisation for an unspecified revision.
+resolved. In the 2026-10-08 owner session, the owner authorised the new-version pin and owner approval. The
+registry-only policy revision is `rs-policy-1:sha256:94c247cf72ea74fa1f226af3392764e58a3bf64ad7af5056c3d68926a844f0da`;
+its policy-only acceptance records that approval against the actual derived evidence after parity verification.
+This approval persists through the authorised work. An Ory-capable published release and its measurement identities
+are still unavailable; no future release or run identity is asserted.
 
 ## Decision
 
-1. **Deferred, not out of scope.** The Ory siblings get no contract, corpus, taxonomy family or dossier in this repository
-   until all three hold: #1110 has a posted adoption ruling; an `ory-token` detector (types `ory_session_token`,
-   `ory_oauth2_token`) is in a core build this repository pins; and the owner is ready to re-authorise the policy revision
-   the new contract moves. The work is tracked in #827, with the corpus outline and the start condition.
-2. **Coordinate the contract with the build repin.** The other second-wave contracts were authored with their detectors
-   in the pinned registry. Ory is now adopted upstream, but the published measurement still reads beta.14 without this
-   detector. #827 coordinates the contract, corpus and registry repin to an Ory-capable build, under the owner
-   session approval to proceed. Official replay and authorisation for the exact resulting policy revision are still
-   required. A core merge alone does not update this repository's measurement or support status.
+1. **The full reviewed intake remains in #827.** Adoption and registry intake are complete. The existing taxonomy,
+   dossier, T3 pending contract and synthetic policy probes do not complete the provider-backed contracts, dedicated
+   corpus or independent measurement. Those remain follow-up work, with no issuance prerequisite for the siblings.
+2. **Keep published measurement identity explicit.** The registry-only intake uses the existing T3 pending-contract
+   route. Full T1 contract/corpus authoring can proceed from the adopted provider evidence. A published-mode run
+   against beta.14 measures its limitations because that package has no Ory detector. A later Ory-capable released
+   package needs an exact release repin and official replay under the existing owner approval, recorded against
+   the actual resulting policy and evidence identities. A core merge alone does not establish measured support.
 3. **Issuance does not gate the siblings.** Their adopted shapes are T1 from provider source (the Kratos generator and
    `randx` alphabet, the fosite HMAC strategy). Only the admin keys are issuance-gated; they stay unclaimed (T0) when
    the contract arrives.
@@ -59,8 +62,9 @@ policy-revision authorisation remain technical prerequisites. It is not an autho
 
 ## Consequences
 
-When the registry snapshot moves to a build with the adopted `ory-token` (that repin needs a contract for the new
-detector, as the #757 repin did), #827 follows the new-family intake (taxonomy family `ory:network-api-key` for the siblings only, dossier,
-one contract per finding type, a seeded corpus in the #860 contexts with one-property twins and benign cookie-name
-controls) and measures published mode with trufflehog 3.97.4 first on `PATH`. The adoption ruling is complete; #827
-remains deferred for the released build repin, official replay and exact policy-revision authorisation.
+#827 follows the new-family intake for the existing taxonomy family `ory:network-api-key` (siblings only) and dossier:
+one reviewed contract per finding type, a seeded corpus in the #860 contexts with one-property twins and benign
+cookie-name controls. It replaces the T3 pending contract and measures published mode with trufflehog 3.97.4 first
+on `PATH`, naming the measured release and its absence of a dedicated detector where applicable. Stable support
+still requires the conformance and arrival gates plus the measured qualification floors. An Ory-capable published
+release is a later repin with actual artifact identities; the registry-only intake does not promise its delivery.

@@ -552,13 +552,13 @@ The corpus adds one authored calibration row pair per family to
 The benchmarks side of the #1014 second wave (Xata, Sourcegraph, Unkey, Buildkite, Pydantic Logfire, Square, Mapbox, Fly,
 Ory siblings; product issues redact-secret#1102 to #1110). **Square** (slice `583a`) and the seven other registered
 detectors (slices `583b` to `583h`) have a contract, a corpus and arrival evidence; the Ory siblings (#1110) are not in
-the pinned registry and are deferred to #827 pending an Ory-capable released build repin, official replay and exact
-policy-revision authorisation. The owner authorised proceeding with the new-version repin in the 2026-10-08 session.
+the published beta.14 build. The registry-only intake at `5fddf1a` gives Ory and Baseten T3 pending contracts and
+synthetic coverage minimums in `detector-coverage`; the full reviewed Ory corpus and measurement remain in #827. The owner authorised proceeding with the new-version repin in the 2026-10-08 session.
 Core [PR #1282](https://github.com/redact-secret/redact-secret/pull/1282) merged the adopted `ory-token`
 detector at `5fddf1a`; issuance gates only the admin keys, per the
-[decision](../decisions/2026-10-08-defer-the-ory-sibling-contracts-until-a-product-detector-exists.md). Slice `583p` is empty now and stays as the place a future registered
-detector without a slice would be recorded as "detector present in the registry, benchmark contract/corpus pending (#583)". The registry snapshot
-(`benchmarks/detectors.json`, `detector-inventory.json`, `detector-finding-types.json`) is pinned to published `@redact-secret/core` 0.1.0-beta.14 at
+[decision](../decisions/2026-10-08-defer-the-ory-sibling-contracts-until-a-product-detector-exists.md). Slice `583p` records those two pending contracts; neither is a T1 benchmark format claim or a support promotion. The registry snapshot
+(`benchmarks/detectors.json`, `detector-inventory.json`, `detector-finding-types.json`) pins core `main`
+`5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf`; its release revision and published package remain beta.14
 `0c62fd38bca75c5b28b042dc79789b708ebf1d17`; the earlier ahead-of-release registry decision is
 [historical](../decisions/2026-10-05-claim-square-stable-widths-under-q8-and-pin-the-registry-ahead-of-the-release.md).
 

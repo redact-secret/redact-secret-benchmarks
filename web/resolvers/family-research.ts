@@ -82,13 +82,13 @@ export function resolveResearchRecord(research: Research, familyId: string): Fam
   if (research.state === 'absent') {
     return {
       provenance: 'credential-evidence', facts: EMPTY_FACTS, revisions: [], blockers: [], rulings: [],
-      absent: { title: 'No research record', text: 'No research projection is committed, so nothing is stated about this family\'s research. npm run research:project writes it from the pinned evidence release.' },
+      absent: { title: 'No research record', text: 'No research projection is available from the pinned evidence release, so this family\'s research is not recorded here.' },
     };
   }
   if (research.state === 'stale') {
     return {
       provenance: provenanceText(research.release), facts: EMPTY_FACTS, revisions: [], blockers: [], rulings: [],
-      absent: { title: 'No research record for the pinned release', text: `The projection is from ${research.release.release}, and the benchmark pins ${research.pinned}; an older record is not shown as current. npm run research:project rewrites it.` },
+      absent: { title: 'No research record for the pinned release', text: `The projection is from ${research.release.release}, and the benchmark pins ${research.pinned}; an older record is not shown as current.` },
     };
   }
   const family = research.families.get(familyId);

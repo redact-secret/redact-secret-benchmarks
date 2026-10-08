@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { parse } from 'yaml';
+import { spawnSync } from 'node:child_process';
 import { inputFiles, keyOf, planChecks, routeOfPage, selectBrowserChecks } from '../scripts/ci-plan.mjs';
 import { importersOf } from '../scripts/legacy-callers.mjs';
 
@@ -8,6 +10,66 @@ import { importersOf } from '../scripts/legacy-callers.mjs';
 // run or a count from the corpus.
 
 const pr = (files, importers) => planChecks({ files, event: 'pull_request', importers });
+
+// Interpret only the boolean/string subset used by job gates, with no executable evaluation.
+function conditionOf(expression) {
+  const source = expression.replace(/^\s*\$\{\{\s*|\s*\}\}\s*$/g, '');
+  const tokens = [];
+  let rest = source.trim();
+  while (rest) {
+    const token = /^(?:&&|\|\||==|!=|[()]|'[^']*'|[A-Za-z_][A-Za-z0-9_.-]*)/.exec(rest)?.[0];
+    assert.ok(token, `unsupported condition syntax: ${rest}`);
+    tokens.push(token);
+    rest = rest.slice(token.length).trimStart();
+  }
+  let index = 0;
+  const atom = () => {
+    const token = tokens[index++];
+    if (token === '(') {
+      const result = or();
+      assert.equal(tokens[index++], ')');
+      return result;
+    }
+    if (token === 'always') {
+      assert.equal(tokens[index++], '(');
+      assert.equal(tokens[index++], ')');
+      return () => true;
+    }
+    if (token?.startsWith("'")) return () => token.slice(1, -1);
+    if (token === 'true' || token === 'false') return () => token === 'true';
+    assert.match(token ?? '', /^(?:needs|inputs)\.[A-Za-z0-9_.-]+$/);
+    return context => token.split('.').reduce((value, key) => value?.[key], context);
+  };
+  const comparison = () => {
+    const left = atom();
+    const operator = tokens[index];
+    if (!['==', '!='].includes(operator)) return left;
+    index++;
+    const right = atom();
+    return context => operator === '==' ? left(context) === right(context) : left(context) !== right(context);
+  };
+  const and = () => {
+    let result = comparison();
+    while (tokens[index] === '&&') {
+      index++;
+      const left = result, right = comparison();
+      result = context => left(context) && right(context);
+    }
+    return result;
+  };
+  const or = () => {
+    let result = and();
+    while (tokens[index] === '||') {
+      index++;
+      const left = result, right = and();
+      result = context => left(context) || right(context);
+    }
+    return result;
+  };
+  const result = or();
+  assert.equal(index, tokens.length, 'the complete condition must be interpreted');
+  return result;
+}
 
 // A tiny import graph: a primitive used by two blocks, one block per page, and the shell used by the layout.
 const graph = {
@@ -208,4 +270,81 @@ test('the legacy oracle is an explicit workflow with no secret and nothing but c
   for (const step of ['npm run eval -- --scanner=redact-secret', 'npm run eval:classify', 'npm run queue:check', 'npm run bench -- --strict', 'with-authority.mjs legacy']) assert.ok(yml.includes(step), `${step} stays in the oracle`);
   const routine = await readFile(new URL('../.github/workflows/validate.yml', import.meta.url), 'utf8');
   for (const step of ['npm run eval:classify', 'npm run queue:check', 'npm run bench -- --strict', 'npm run eval -- --scanner=redact-secret']) assert.ok(!routine.includes(step), `${step} is not on the routine path`);
+});
+
+test('legacy report reuse is same-run, optional and cannot hide a selected producer failure', async () => {
+  const routine = parse(await readFile(new URL('../.github/workflows/validate.yml', import.meta.url), 'utf8'));
+  const oracle = parse(await readFile(new URL('../.github/workflows/legacy-oracle.yml', import.meta.url), 'utf8'));
+  const caller = routine.jobs['legacy-oracle'];
+  assert.deepEqual(caller.needs, ['changes', 'legacy-results']);
+  const selected = conditionOf(caller.if);
+  const reuse = conditionOf(caller.with['reuse-legacy-results']);
+  for (const producer of ['success', 'skipped', 'failure', 'cancelled', undefined]) {
+    for (const web of ['true', 'false', undefined]) {
+      const needs = { changes: { result: 'success', outputs: { legacy: 'true', web } }, 'legacy-results': { result: producer } };
+      const expected = producer === 'success' || (web === 'false' && producer === 'skipped');
+      assert.equal(selected({ needs }), expected, `producer=${producer}, web=${web}`);
+      if (expected) assert.equal(reuse({ needs }), producer === 'success');
+    }
+  }
+  for (const changes of ['failure', 'cancelled', 'skipped', undefined])
+    assert.equal(selected({ needs: { changes: { result: changes, outputs: { legacy: 'true', web: 'true' } }, 'legacy-results': { result: 'success' } } }), false);
+  for (const legacy of ['false', undefined])
+    assert.equal(selected({ needs: { changes: { result: 'success', outputs: { legacy, web: 'true' } }, 'legacy-results': { result: 'success' } } }), false);
+  assert.deepEqual(oracle.on.workflow_call.inputs['reuse-legacy-results'], {
+    description: 'Reuse the legacy-results artifact produced by this same validation run.',
+    type: 'boolean', required: false, default: false,
+  });
+  const steps = oracle.jobs['web-legacy'].steps;
+  const download = steps.find(step => step.with?.name === 'legacy-results');
+  assert.equal(download.if, 'inputs.reuse-legacy-results == true');
+  assert.equal(download.uses, 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c');
+  assert.deepEqual(download.with, { name: 'legacy-results', path: 'public/results' });
+  assert.equal(download['continue-on-error'], undefined);
+  const generation = steps.find(step => step.run?.includes('npm run eval:discover'));
+  assert.equal(generation.if, 'inputs.reuse-legacy-results != true');
+  for (const command of ['npm run bench', 'npm run eval:discover -- --scanner=redact-secret', 'npm run eval:publish -- --legacy-v1']) assert.ok(generation.run.includes(command));
+  const producer = routine.jobs['legacy-results'];
+  const measurement = producer.steps.find(step => step.run?.includes('npm run eval:discover'));
+  const commands = run => run.split('\n').map(line => line.trim()).filter(line => line.startsWith('npm run '));
+  assert.deepEqual(commands(measurement.run), commands(generation.run), 'reused reports must use the same scanner/profile commands as standalone generation');
+  assert.equal(measurement.env, undefined, 'the producer must not introduce a candidate/scanner environment');
+  assert.equal(producer['runs-on'], oracle.jobs['web-legacy']['runs-on']);
+  assert.deepEqual(producer.steps.find(step => step.uses?.startsWith('actions/upload-artifact@')).with, {
+    name: download.with.name, path: download.with.path, 'retention-days': 1,
+  });
+  const install = steps.findIndex(step => step.name === 'Repository dependencies and generated fixtures');
+  assert.equal(steps[install].run, 'npm ci');
+  assert.equal(steps[install].if, undefined);
+  assert.ok(install < steps.indexOf(download));
+  for (const command of ['npm run check:routes', 'npm run check:layout', 'npm run test:e2e']) {
+    const check = steps.find(step => step.run?.includes(command));
+    assert.ok(check, `${command} is independently checked`);
+    assert.ok(!check.if?.includes('reuse-legacy-results'), `${command} cannot be skipped by reuse`);
+  }
+  assert.ok(routine.jobs['validate-sources'].steps.some(step => step.run === 'node scripts/check-repository-hygiene.mjs' && !step.if));
+  const downloaded = conditionOf(download.if), measured = conditionOf(generation.if);
+  for (const input of [true, false, undefined]) {
+    const context = { inputs: { 'reuse-legacy-results': input } };
+    assert.equal(downloaded(context), input === true);
+    assert.equal(measured(context), input !== true);
+    assert.notEqual(downloaded(context), measured(context), 'exactly one data path is selected');
+  }
+});
+
+test('the actual validate shell gate refuses failed or missing reuse dependencies', async () => {
+  const workflow = parse(await readFile(new URL('../.github/workflows/validate.yml', import.meta.url), 'utf8'));
+  const script = workflow.jobs.validate.steps.find(step => step.run).run;
+  const success = Object.fromEntries(['CHANGES', 'SOURCES', 'TESTS', 'ORACLE', 'LEGACY_RESULTS', 'VIEW', 'WEB_BUILD', 'WEB_UNIT', 'WEB_BROWSER'].map(name => [name, 'success']));
+  const run = overrides => spawnSync('bash', ['-c', script], { env: { ...process.env, ...success, LEGACY: 'true', WEB: 'true', BROWSER: 'true', ...overrides }, encoding: 'utf8' });
+  assert.equal(run({}).status, 0);
+  for (const dependency of ['ORACLE', 'LEGACY_RESULTS', 'CHANGES']) {
+    for (const result of ['failure', 'cancelled', 'skipped', '']) {
+      const output = run({ [dependency]: result });
+      assert.equal(output.status, 1, `${dependency}=${result} must fail: ${output.stdout}`);
+    }
+  }
+  assert.equal(run({ WEB: 'false', BROWSER: 'false', LEGACY_RESULTS: 'skipped', VIEW: 'skipped', WEB_BUILD: 'skipped', WEB_UNIT: 'skipped', WEB_BROWSER: 'skipped' }).status, 0, 'legacy-only generation still completes');
+  assert.equal(run({ LEGACY: 'false', ORACLE: 'skipped' }).status, 0, 'an explicitly unselected oracle may skip');
+  assert.equal(run({ LEGACY: '', ORACLE: 'skipped' }).status, 1, 'a missing plan does not authorise a skip');
 });

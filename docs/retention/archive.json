@@ -1,0 +1,127 @@
+{
+  "schema": "redact-secret/retention-archive/v1",
+  "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+  "retainedTag": "hygiene-before-cleanup-845-20261008",
+  "tagObject": "12dccb0a79496c52529a8a5b99d470a489236b4d",
+  "inventory": {
+    "schemaVersion": 1,
+    "command": "node scripts/retention-inventory.mjs --ref 51d59f1bb27d0c2a129899fadd686e248412be82",
+    "output": "results-output/hygiene/inventory.json"
+  },
+  "dispositions": {
+    "command": "node scripts/retained-data-dispositions.mjs",
+    "output": "results-output/hygiene/data-retention.json",
+    "payloadsRemoved": [
+      "evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json"
+    ],
+    "referenceUpdates": [
+      {
+        "path": "evidence/860/ec9224d/README.md",
+        "sourceSha256": "7c032e27f331930e3e9b4c7722225e31d656df99d14944946571611a7e583dcf",
+        "afterSha256": "f874ac3aaf83d5cbfb577cf47167bc29c7e85db9615ffb6d30e3d7bec7712bd6",
+        "afterBytes": 18166,
+        "reason": "Reviewed migration of a removed historical payload link plus tested restore instructions; existing recorded results unchanged."
+      }
+    ]
+  },
+  "retention": {
+    "policy": "Retain this tag indefinitely; never move or delete it. Verify peeled commit before retrieval.",
+    "access": "Existing tracked repository bytes only; no private or protected payload migration.",
+    "owner": "redact-secret-benchmarks maintainers",
+    "externalReview": "Unresolved external/indirect references block all provisional cold removals."
+  },
+  "officialRetrieval": {
+    "release": "official-runs-registry-37630100920",
+    "asset": "official-runs-37630100920.tar.gz",
+    "assetBytes": 7894468,
+    "assetSha256": "134034335039cb8a191137ec54a1f8c16e1b1090b2d25bfdf8e3a7f8d9f6f2a9",
+    "verification": "Independent release download, archive digest matched, official-run-archive fetch and verify matched every registry byteDigest. Temporary files removed.",
+    "artifactFilesVerified": 4,
+    "registrySourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82"
+  },
+  "coldCandidates": [
+    {
+      "path": "evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json",
+      "disposition": "historical-record-migrated",
+      "reason": "Superseded pre-relabel diagnostic; README now points to retained source and separately byte-verified release payload; canonical sibling unchanged."
+    },
+    {
+      "path": "evidence/286/pii-profile-cost-candidate-v1.json",
+      "disposition": "retain-pending-review",
+      "reason": "No direct active code caller in inventory; gap-ledger and README reproduction references remain."
+    },
+    {
+      "path": "evidence/449/credential-candidate-8b6a5fd-v1.json",
+      "disposition": "retain-release-anchor",
+      "reason": "release-source-equivalences and release record require this historical identity."
+    }
+  ],
+  "historicalRecordsRetrieval": {
+    "release": "hygiene-before-cleanup-845-20261008",
+    "asset": "hygiene-records-845.tar.gz",
+    "assetSha256": "54355d69449e623c5c37037d9cabb27037b4a857d1d8bef602ae8190c1192d17",
+    "assetBytes": 17308,
+    "verifiedFiles": 5,
+    "verification": "Fresh independent release download; exact member set, regular-file types, every manifest byte length and SHA256, and equality with retained source Git blobs verified. Temporary files removed.",
+    "verifiedAt": "2026-10-08T20:18:17.022776+00:00"
+  },
+  "dataPayloadRetrievals": [
+    {
+      "path": "evidence/860/ec9224d/candidate-evidence-v1-labels-af180a5.json",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "release": "hygiene-before-cleanup-845-20261008",
+      "asset": "evidence-860-pre-relabel-af180a5.json.gz",
+      "assetBytes": 42883,
+      "assetSha256": "ce72e4464932767391e01a7911716b351223127522d901d691ad8539ccab6523",
+      "fileBytes": 1663484,
+      "fileSha256": "db98b4a699573c58a1843d9720639f446e2848921df589e5e749b52e11ffdad4",
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/evidence-860-pre-relabel-af180a5.json.gz",
+      "verifiedAt": "2026-10-08T20:52:14.546184+00:00",
+      "verification": "Independent fresh download; compressed and original SHA256/length matched, bytes equal retained source Git blob, current candidate schema/completeness validation passed. Temporary files removed."
+    }
+  ],
+  "historicalAdrRetrievals": [
+    {
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "release": "hygiene-before-cleanup-845-20261008",
+      "asset": "historical-adr-rulings-847.tar.gz",
+      "assetSha256": "38ea5ac0c814a94818732a926eb1473150bf3347f7dc2ee74c0ff93e851d1e09",
+      "assetBytes": 23640,
+      "verifiedFiles": 7,
+      "removedAdrs": [
+        "docs/decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md",
+        "docs/decisions/2026-09-21-produce-first-four-stable-families.md",
+        "docs/decisions/2026-09-24-amend-207-scope-to-348-assignments.md"
+      ],
+      "originalBacklinks": [
+        "docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md",
+        "docs/reports/2026-09-22/settle-differential-disagreements-on-pending-fixtures.md",
+        "docs/reports/2026-09-21/resweep-differential-mutation-queue-d7.md",
+        "docs/reports/2026-09-24-beta8-207-remeasure.md"
+      ],
+      "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json",
+      "verification": "fresh gh release download; exact archive digest, all 7 member SHA256 and byte-identical git show sourceCommit:path",
+      "verifiedAt": "2026-10-08"
+    }
+  ],
+  "sourceRevisionPreservation": [
+    {
+      "tag": "hygiene-baseline-beta10-845-20261008",
+      "sourceCommit": "1460bfb69722c0721a50885615026b31673cddb9",
+      "tagObject": "f18a295e08d4aa02f0e1505e1778341485cd8aaa",
+      "verification": "Fresh isolated depth-1 fetch matched tag object and peeled commit; full source-tree connectivity checked; temporary objects removed."
+    },
+    {
+      "tag": "hygiene-peer-source-845-20261008",
+      "sourceCommit": "f73d12fdde199ed0a6eaec85b60e7b73c36b2400",
+      "tagObject": "703c579c46424a884abce43b46633d97a8cf9f52",
+      "verification": "Fresh isolated depth-1 fetch matched tag object and peeled commit; full source-tree connectivity checked; temporary objects removed."
+    }
+  ],
+  "peerSnapshotProvenance": {
+    "declaredSourceRevision": "f73d12fdde199ed0a6eaec85b60e7b73c36b2400",
+    "snapshotContentRevision": "722f0b7368b76f5c12050a9acf95757fb6be4ed6",
+    "snapshotContentRetainedBy": "hygiene-before-cleanup-845-20261008",
+    "limitation": "Existing pre-cleanup snapshot refresh recorded the base revision while using working metadata/corpus. Preserve both source identities and unchanged snapshot bytes; the declared base tree alone is not a complete reproduction of snapshot inputs."
+  }
+}

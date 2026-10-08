@@ -1,0 +1,773 @@
+{
+ "schema": "pii-candidate-comparison-receipt/1",
+ "supportClaims": false,
+ "authorityChanged": false,
+ "ownerAcceptance": null,
+ "planDigest": "39ad1d86b862e70e79ccb9f94e684e5e6bfe7507e774a861c98f602f33121693",
+ "mode": "official",
+ "engine": {
+  "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+  "binarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+  "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8",
+  "canonical": true,
+  "platform": "linux-x64"
+ },
+ "activation": {
+  "baseline": {
+   "state": "available",
+   "scope": "installed-product-configuration-only",
+   "supportClaims": false,
+   "surfaces": [
+    {
+     "surface": "node-addon",
+     "checks": [
+      {
+       "requestedSelectors": [],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:us"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global",
+        "pii:us"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:email"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:iban"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:network-address"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:network-address;families=pii:global:network-address;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:payment-card"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:payment-card;families=pii:global:payment-card;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:phone"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:phone;families=pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:us:ssn"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v2"
+      }
+     ]
+    },
+    {
+     "surface": "node-forced-wasm",
+     "checks": [
+      {
+       "requestedSelectors": [],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:us"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global",
+        "pii:us"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:email"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:iban"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:network-address"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:network-address;families=pii:global:network-address;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:payment-card"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:payment-card;families=pii:global:payment-card;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:phone"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:phone;families=pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:us:ssn"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v2"
+      }
+     ]
+    }
+   ]
+  },
+  "candidate": {
+   "state": "available",
+   "scope": "installed-product-configuration-only",
+   "supportClaims": false,
+   "surfaces": [
+    {
+     "surface": "node-addon",
+     "checks": [
+      {
+       "requestedSelectors": [],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:us"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global",
+        "pii:us"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:email"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:iban"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:network-address"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:network-address;families=pii:global:network-address;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:payment-card"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:payment-card;families=pii:global:payment-card;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:phone"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:phone;families=pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:us:ssn"
+       ],
+       "artifact": "addon",
+       "activationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v2"
+      }
+     ]
+    },
+    {
+     "surface": "node-forced-wasm",
+     "checks": [
+      {
+       "requestedSelectors": [],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:us"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:global",
+        "pii:us"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:email"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:iban"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:network-address"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:network-address;families=pii:global:network-address;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:payment-card"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:payment-card;families=pii:global:payment-card;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:global:phone"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:global:phone;families=pii:global:phone;vocabulary=pii-context/v2"
+      },
+      {
+       "requestedSelectors": [
+        "pii:family:us:ssn"
+       ],
+       "artifact": "wasm",
+       "activationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v2"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "pins": {
+  "baseline": {
+   "artifactSchema": {
+    "id": "pii-eval.public-synthetic-artifact",
+    "version": "1.4"
+   },
+   "build": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "binarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+    "sourceArchiveSha256": "de7bebc2ca12a404b9d9141cd2c4f9da439012b96bab36582e26031b71b3b77b"
+   },
+   "engine": {
+    "name": "pii-eval",
+    "version": "0.0.0"
+   },
+   "populations": [
+    {
+     "artifactDigest": "3c83ba9e1f51dee4aea82e691585fc9293bbb9228fa537ba18a42f2616122113",
+     "label": "oracle-plan",
+     "manifestDigest": "03ccdab0ee2cdf591e3f5ee568907cf856f6f2823c1c9ebe7809ec1993cea21f",
+     "population": {
+      "populationDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+      "populationId": "b11-population-v2-oracle-plan",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "oracle-plan"
+      ],
+      "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+      }
+     ]
+    },
+    {
+     "artifactDigest": "ff2e5202a3b7aa5ae728c038c1a86fa2cb73468ebc8e66eddb4b0759ccf64dde",
+     "label": "qualification-plan",
+     "manifestDigest": "b04d08de4b8210cb447d36d975a91768dcf28a9cd4d79496e4505da30dc4fe16",
+     "population": {
+      "populationDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+      "populationId": "b11-population-v2-qualification-plan",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "qualification-plan"
+      ],
+      "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+      }
+     ]
+    },
+    {
+     "artifactDigest": "6c13dc3f75d70d3584b9f52bc1929262039bbec830fc65a3bd5d9d33a8172e31",
+     "label": "diagnostic-balanced",
+     "manifestDigest": "408bf4a9e25c024c50ff52ff883dd51e14f1bdb09fe94e1a7947b8379a5ae641",
+     "population": {
+      "populationDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+      "populationId": "b11-population-v2-diagnostic-balanced",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "diagnostic-balanced"
+      ],
+      "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+      }
+     ]
+    },
+    {
+     "artifactDigest": "534cd7c1a00c6d4ccb349fb0ce067fc97cd50ebe5588063a0de3bc4f0b92fb29",
+     "label": "benign-heavy-stress",
+     "manifestDigest": "7ffd8590a9901eeba11273bf29592d0ebf551fc3c555e86260d4bbd444c0d5e9",
+     "population": {
+      "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+      "populationId": "b11-population-v2-benign-heavy-stress",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "benign-heavy-stress"
+      ],
+      "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+      }
+     ]
+    }
+   ],
+   "protocol": {
+    "accounting": "pii-v1",
+    "id": "pii-v1",
+    "rules": {
+     "accounting": {
+      "id": "pii-v1-canonical-accounting",
+      "revision": 2
+     },
+     "matching": {
+      "id": "pii-v1-canonical",
+      "revision": 2
+     },
+     "statistics": {
+      "id": "pii-v1-wilson-exact",
+      "revision": 1
+     }
+    },
+    "version": 2
+   },
+   "requireComplete": true,
+   "schema": "pii-eval-consumer-pins/1"
+  },
+  "candidate": {
+   "artifactSchema": {
+    "id": "pii-eval.public-synthetic-artifact",
+    "version": "1.4"
+   },
+   "build": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "binarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+    "sourceArchiveSha256": "de7bebc2ca12a404b9d9141cd2c4f9da439012b96bab36582e26031b71b3b77b"
+   },
+   "engine": {
+    "name": "pii-eval",
+    "version": "0.0.0"
+   },
+   "populations": [
+    {
+     "artifactDigest": "911428cd4a8d39e7424b37a61bcdd13319386f2295de0af108260bbb55d70651",
+     "label": "oracle-plan",
+     "manifestDigest": "66188038bf2b58c0b584c502cf10c673dcbafdd562db2a2d4ef8bc4f5596970b",
+     "population": {
+      "populationDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+      "populationId": "b11-population-v2-oracle-plan",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "oracle-plan"
+      ],
+      "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25"
+      }
+     ]
+    },
+    {
+     "artifactDigest": "3e6410ea3e142093bdf76938fac339e88ec87bc9b66c4ebc885cc85505ee0446",
+     "label": "qualification-plan",
+     "manifestDigest": "a2952b2bd6f8fc524539c75adcf8e440fdcdb363d3d57bc242ec138c593f187d",
+     "population": {
+      "populationDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+      "populationId": "b11-population-v2-qualification-plan",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "qualification-plan"
+      ],
+      "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25"
+      }
+     ]
+    },
+    {
+     "artifactDigest": "4e6e02c8ba1360548fbd1f1aba86f0e3e28d29c938f859a1e692ce11b70e2c41",
+     "label": "diagnostic-balanced",
+     "manifestDigest": "9b3493367eeb32ebbde2a8171b40e89069617d798f6299ccf713f59b562fa12d",
+     "population": {
+      "populationDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+      "populationId": "b11-population-v2-diagnostic-balanced",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "diagnostic-balanced"
+      ],
+      "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25"
+      }
+     ]
+    },
+    {
+     "artifactDigest": "bf1bd6975f8843a42ed730657a60bac0c30cf2dd9f9c9f6cd7e24a2a073b0d42",
+     "label": "benign-heavy-stress",
+     "manifestDigest": "9cb5d187e7840fbcc30571d05893238b1866b7d4793e5226330153b34af7c796",
+     "population": {
+      "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+      "populationId": "b11-population-v2-benign-heavy-stress",
+      "populationVersion": 1,
+      "visibility": "public-synthetic"
+     },
+     "projection": {
+      "mode": "official",
+      "requiredViews": [
+       "benign-heavy-stress"
+      ],
+      "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b"
+     },
+     "retiredArtifactDigests": [],
+     "retiredManifestDigests": [],
+     "runClass": "public-synthetic",
+     "scanners": [
+      {
+       "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+       "adapter": {
+        "adapterId": "redact-secret-core-node",
+        "adapterVersion": "1.0.0",
+        "normalizationVersion": 1
+       },
+       "artifactDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c",
+       "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+       "product": {
+        "kind": "candidate",
+        "candidateDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c"
+       },
+       "scannerId": "redact-secret-core",
+       "scannerVersion": "0.1.0-beta.14",
+       "candidateSourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25"
+      }
+     ]
+    }
+   ],
+   "protocol": {
+    "accounting": "pii-v1",
+    "id": "pii-v1",
+    "rules": {
+     "accounting": {
+      "id": "pii-v1-canonical-accounting",
+      "revision": 2
+     },
+     "matching": {
+      "id": "pii-v1-canonical",
+      "revision": 2
+     },
+     "statistics": {
+      "id": "pii-v1-wilson-exact",
+      "revision": 1
+     }
+    },
+    "version": 2
+   },
+   "requireComplete": true,
+   "schema": "pii-eval-consumer-pins/1"
+  }
+ },
+ "github": {
+  "repository": "redact-secret/redact-secret-benchmarks",
+  "runId": 37785871226,
+  "runAttempt": 1,
+  "headSha": "9c1b82cc3b98396f2b5db89a1aff7bec97a702ae",
+  "workflowRef": "redact-secret/redact-secret-benchmarks/.github/workflows/pii-official-run.yml@refs/heads/feat/647-pii-eval-requalification"
+ },
+ "baseline": {
+  "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+  "version": "0.1.0-beta.14",
+  "packageTreeSha256": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+  "addonTreeSha256": "ac23cff4c37dcab8835ad9ae2e30793b3d6fc7a96adc30df5b28fde1f7b1ba67",
+  "wasmTreeSha256": "bb7560b0da5695f88ccd4146e03187032f9cdf34bbae3c38a60519f7289e1562",
+  "nativePackageProvenance": "published-npm-lockfile",
+  "tarballs": {
+   "core": "5908f85933cd322b741f6e067b261b7827e3d16dece9d1b645cabae8f3a866a2",
+   "node": "69efc0c10ebe2299855b38a865a2ce1a0008d2325119aed4d73385769480d25a",
+   "wasm": "d2acc0dd0dcf325799a0ec824f2c5353c56e35a9deaf7b968f0770c226777fc4"
+  },
+  "tarballIntegrity": {
+   "core": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+   "node": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+   "wasm": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ=="
+  }
+ },
+ "candidate": {
+  "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
+  "version": "0.1.0-beta.14",
+  "packageTreeSha256": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c",
+  "addonTreeSha256": "9cbf760725ac5f1f9840deef435308da58be61b0a90bc855d9dac09032384c1c",
+  "wasmTreeSha256": "9059d6736b94e4a286396ef6aa2b51192e6ae065cde9b56072ff68f137a83981",
+  "nativePackageProvenance": "qualified-inventory-whole-package",
+  "tarballs": {
+   "core": "42c0447c124ace12c128768b30e33d83b4c58b8af2d0d8502c6d42f795c62c35",
+   "node": "cc9bda9802092fdc60d1458657f27f04d74f4789b64f31685a3abb721a43ea72",
+   "wasm": "77af5822255f28f13b4fc6e2de3ce393abdfe6ce205e7d2e61cb858808c4c037"
+  },
+  "tarballIntegrity": {
+   "core": "sha512-8CrZi6TJSVOo5ZFSFqSbotM9En3stzv5nHBn64AYdN0F3uWR9xpDXnvaMBgyLmlsie6fYTamhH2qej/Ox7GmxA==",
+   "node": "sha512-usaYmbUqmUX2vlcJamm9MzbMe8hsgswCCIzNlRhY+Du1xLl2Rk9NqAbnsMwJNL3UwvJz2SdEsOgejAanr7X9xA==",
+   "wasm": "sha512-iw5sdqtbhbJ72i8vpzSzlxh/5aCKPTB/2ph/jNb1HNALLLcV1FKdez1bhRIx3kq9Eg0FJI5xc21a1+xsnavguA=="
+  }
+ },
+ "durationMs": 7080
+}

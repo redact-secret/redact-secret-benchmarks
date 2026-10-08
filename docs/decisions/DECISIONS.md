@@ -163,3 +163,5 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Pin the Ory and Baseten registry ahead of the published release with pending benchmark contracts](2026-10-08-pin-the-registry-with-ory-and-baseten-ahead-of-the-release.md)
 
 - [Re-authorise the credential policy revision for Ory and Baseten registry intake](2026-10-08-reauthorise-the-policy-revision-for-ory-and-baseten-registry-intake.md), accepted 2026-10-08.
+
+- [Link PII family values in the existing evaluation page](2026-10-08-link-pii-family-values-in-the-existing-evaluation-page.md) (#618; stable family/view/scanner links, exact public identities and historical b11 quantities kept separate).

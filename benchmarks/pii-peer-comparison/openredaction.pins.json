@@ -1,0 +1,192 @@
+{
+ "artifactSchema": {
+  "id": "pii-eval.public-synthetic-artifact",
+  "version": "1.4"
+ },
+ "build": {
+  "repository": "redact-secret/pii-eval",
+  "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+  "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+  "binarySha256": "3bb255edc4775cfd7f92ab937f126c478d8aaa9c2437ea88c59236202e98d4d9",
+  "sourceArchiveSha256": "de7bebc2ca12a404b9d9141cd2c4f9da439012b96bab36582e26031b71b3b77b"
+ },
+ "engine": {
+  "name": "pii-eval",
+  "version": "0.0.0"
+ },
+ "populations": [
+  {
+   "artifactDigest": "38b88b969120b36fd00e50a606372822e0044c053b4492b129d68ab1b5a2833b",
+   "label": "oracle-plan",
+   "manifestDigest": "cbdc5d373addb78eeb90d9b219b804e3615398847b8d2e3877bdf9f6d79bc498",
+   "population": {
+    "populationDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+    "populationId": "b11-population-v2-oracle-plan",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "oracle-plan"
+    ],
+    "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "9e5eff7e2036d792c1ab988bbf567a201966d4c3874d8d6d75a00478efe2ed67",
+     "configurationDigest": "4263f02c805c8e1bc93564546db9f084ad51a0aabe5ea83157d2b571007ae11a",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "openredaction",
+     "scannerVersion": "1.1.5"
+    }
+   ]
+  },
+  {
+   "artifactDigest": "191f4a11543c5c52f1f451eee0eddb424e9374e4671f24910cfd28d7e1eb6701",
+   "label": "qualification-plan",
+   "manifestDigest": "4ec3de231f2607ead34571c9eaa692aafd592bf3e615ef96fc11cb1ffda68a46",
+   "population": {
+    "populationDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+    "populationId": "b11-population-v2-qualification-plan",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "qualification-plan"
+    ],
+    "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "9e5eff7e2036d792c1ab988bbf567a201966d4c3874d8d6d75a00478efe2ed67",
+     "configurationDigest": "4263f02c805c8e1bc93564546db9f084ad51a0aabe5ea83157d2b571007ae11a",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "openredaction",
+     "scannerVersion": "1.1.5"
+    }
+   ]
+  },
+  {
+   "artifactDigest": "ad6f2ce645451b512c28e55c11d546c767b5f14b9ef4b730198b350045f5c1dc",
+   "label": "diagnostic-balanced",
+   "manifestDigest": "3ff6e4de3eb6da583eabd35ab3cdd05e6a838edd7e5bf7222dafee5608a4c3a5",
+   "population": {
+    "populationDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+    "populationId": "b11-population-v2-diagnostic-balanced",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "diagnostic-balanced"
+    ],
+    "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "9e5eff7e2036d792c1ab988bbf567a201966d4c3874d8d6d75a00478efe2ed67",
+     "configurationDigest": "4263f02c805c8e1bc93564546db9f084ad51a0aabe5ea83157d2b571007ae11a",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "openredaction",
+     "scannerVersion": "1.1.5"
+    }
+   ]
+  },
+  {
+   "artifactDigest": "220fd21289ee8294508ba7fdf54862989ffc2864c40df533808e8d45db48510f",
+   "label": "benign-heavy-stress",
+   "manifestDigest": "f497c717e2182234897de14b69b0c6c2a1c281ab4a83053083bd31cfaeaf4b63",
+   "population": {
+    "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+    "populationId": "b11-population-v2-benign-heavy-stress",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "benign-heavy-stress"
+    ],
+    "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "9e5eff7e2036d792c1ab988bbf567a201966d4c3874d8d6d75a00478efe2ed67",
+     "configurationDigest": "4263f02c805c8e1bc93564546db9f084ad51a0aabe5ea83157d2b571007ae11a",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "openredaction",
+     "scannerVersion": "1.1.5"
+    }
+   ]
+  }
+ ],
+ "protocol": {
+  "accounting": "pii-v1",
+  "id": "pii-v1",
+  "rules": {
+   "accounting": {
+    "id": "pii-v1-canonical-accounting",
+    "revision": 2
+   },
+   "matching": {
+    "id": "pii-v1-canonical",
+    "revision": 2
+   },
+   "statistics": {
+    "id": "pii-v1-wilson-exact",
+    "revision": 1
+   }
+  },
+  "version": 2
+ },
+ "requireComplete": true,
+ "schema": "pii-eval-consumer-pins/1"
+}

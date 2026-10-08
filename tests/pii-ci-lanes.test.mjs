@@ -15,7 +15,9 @@ const plan = files => planChecks({ files, event: 'pull_request' });
 
 test('a change to PII migration tooling or data skips the legacy credential measurement and still builds and tests the site', () => {
   for (const file of ['scripts/replay-pii-populations.mjs', 'benchmarks/pii-authority.json', 'benchmarks/pii-eval-migration.json', 'benchmarks/pii-eval-population-dual-run/report.json',
-    'scripts/check-pii-authority.mjs', 'benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs', 'scripts/lib/pii-population-conversion.mjs']) {
+    'scripts/check-pii-authority.mjs', 'benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs', 'scripts/lib/pii-population-conversion.mjs',
+    'scripts/run-pii-candidate-comparison.mjs', 'scripts/record-pii-candidate-comparison.mjs',
+    'benchmarks/pii-candidate-comparison/receipt.json', 'benchmarks/evaluation/domains/pii/candidate-comparison.mjs']) {
     const p = plan([file]);
     assert.equal(p.legacy, false, `${file} must not select the legacy oracle`);
     assert.equal(p.web, true, `${file} is read by the site build`);
@@ -33,7 +35,8 @@ test('the PII oracle code, the credential measurement and an unknown path still 
 
 test('no legacy-measurement file depends on a carved-out file: the only non-test, non-web callers are publish-time PII code and workflows', () => {
   assert.ok(migrationFiles.length >= 20, 'the carve-out matches the files it names');
-  const allowed = new Set(['package.json', 'scripts/pii-publication-inputs.ts']);
+  // This projection reads committed comparison evidence after measurement; it launches no scanner.
+  const allowed = new Set(['package.json', 'scripts/pii-publication-inputs.ts', 'benchmarks/support/pii-current-qualification.ts']);
   const offenders = [];
   for (const file of migrationFiles) {
     for (const caller of callersOf(file)) {

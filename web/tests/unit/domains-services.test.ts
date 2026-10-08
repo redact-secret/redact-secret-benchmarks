@@ -26,6 +26,22 @@ beforeEach(() => { vi.unstubAllEnvs(); });
 const STATUSES = ['pending', 'provisional', 'stable', 'unsupported'];
 
 describe('PII evaluation', () => {
+  test('bounded peer observations and fresh current qualification keep their own source and scope', async () => {
+    const pii = await (await domains()).loadPiiEvaluation();
+    expect(pii.peerComparison).toMatchObject({ state: 'recorded', mode: 'exploratory', qualified: false, supportClaims: false,
+      scope: 'local-default-family-type-and-range-only' });
+    expect(pii.currentQualification).toMatchObject({ state: 'recorded', qualified: false, supportClaims: false });
+    expect(pii.currentQualification?.distribution.pending).toBe(pii.currentQualification?.families.length);
+    expect(pii.currentQualification?.families.every(family => family.status === 'pending')).toBe(true);
+  });
+
+  test('missing or unreadable local peer inputs expose no peer counts', async () => {
+    const absent = await (await domains(overlay({ 'benchmarks/pii-peer-comparison/record.json': null }))).loadPiiEvaluation();
+    expect(absent.peerComparison).toMatchObject({ state: 'absent', reason: 'local-peer-comparison-not-recorded' });
+    const invalid = await (await domains(overlay({ 'benchmarks/pii-peer-comparison/flare-redact.pins.json': null }))).loadPiiEvaluation();
+    expect(invalid.peerComparison).toMatchObject({ state: 'invalid', reason: 'local-peer-inputs-unreadable' });
+  });
+
   test('is rebuilt from the reviewed binding: families, a distribution that recounts, views bound to the report', async () => {
     const pii = await (await domains()).loadPiiEvaluation();
     if (pii.state !== 'recorded') throw new Error(`the committed PII binding did not validate: ${pii.state}`);
@@ -34,6 +50,12 @@ describe('PII evaluation', () => {
       expect(family.id.startsWith('pii:')).toBe(true);
       expect(STATUSES).toContain(family.status);
       expect(family.views, `${family.id} has no views: the report is not bound to the matrix`).not.toBeNull();
+      for (const view of Object.values(family.views ?? {})) for (const metric of view.metrics ?? []) {
+        if (typeof metric.value === 'object' && metric.value !== null) {
+          expect(Number.isFinite(metric.value.point)).toBe(true);
+          expect(Number.isFinite(metric.value.bound)).toBe(true);
+        } else expect([null, 'insufficient-evidence']).toContain(metric.value);
+      }
     }
     expect(Object.values(pii.distribution).reduce((a, b) => a + b, 0)).toBe(pii.families.length);
     expect(pii.metrics.map(m => m.id)).toEqual([...PII_METRIC_IDS]);
@@ -49,6 +71,16 @@ describe('PII evaluation', () => {
     const pii = await (await domains(overlay({ [`${dir}/pii-beta11-report-v2.json`]: JSON.stringify(real) }))).loadPiiEvaluation();
     expect(pii.state).toBe('not-recorded');
     if (pii.state === 'not-recorded') expect(pii.reason).toMatch(/did not validate/);
+  });
+
+  test('a reordered ledger retains its values but cannot replace the frozen entry serialization', async () => {
+    const ledger = JSON.parse(readFileSync(`${REAL}/benchmarks/accepted-pii-profile-cost.json`, 'utf8'));
+    const reordered = ledger.map((entry: Record<string, unknown>) => Object.fromEntries(Object.entries(entry).reverse()));
+    expect(reordered).toEqual(ledger);
+    const rejected = await (await domains(overlay({ 'benchmarks/accepted-pii-profile-cost.json': JSON.stringify(reordered) }))).loadPiiEvaluation();
+    expect(rejected).toMatchObject({ state: 'not-recorded', reason: expect.stringContaining('cost-acceptance-ledger-mismatch') });
+    const exact = await (await domains()).loadPiiEvaluation();
+    expect(exact.state).toBe('recorded');
   });
 
   test('a missing evidence file is not recorded, with the reason', async () => {
@@ -219,4 +251,24 @@ describe('credential evaluation', () => {
     expect(credential.support).toBeUndefined();
     expect(credential.catalog.fixtures.length).toBeGreaterThan(0);
   });
+});
+
+
+test('current public comparison has independent explicit absent and malformed states', async () => {
+  const absent = await (await domains(overlay({
+    'benchmarks/pii-candidate-comparison/plan.json': null,
+    'benchmarks/pii-candidate-comparison/receipt.json': null,
+  }))).loadPiiEvaluation();
+  expect(absent.candidateComparison).toMatchObject({ state: 'absent', publicOnly: true, qualified: false, supportClaims: false });
+  const invalid = await (await domains(overlay({
+    'benchmarks/pii-candidate-comparison/plan.json': '{bad-json',
+  }))).loadPiiEvaluation();
+  expect(invalid.candidateComparison).toMatchObject({ state: 'invalid', reason: 'comparison-inputs-unreadable', qualified: false });
+});
+
+test('peer readiness is independently fail-closed for absent and invented measured data', async () => {
+  const absent = await (await domains(overlay({ 'benchmarks/pii-peer-readiness-v1.json': null }))).loadPiiEvaluation();
+  expect(absent.peerReadiness).toMatchObject({ state: 'absent' });
+  const invalid = await (await domains(overlay({ 'benchmarks/pii-peer-readiness-v1.json': JSON.stringify({ measurementState: 'measured' }) }))).loadPiiEvaluation();
+  expect(invalid.peerReadiness).toMatchObject({ state: 'invalid' });
 });

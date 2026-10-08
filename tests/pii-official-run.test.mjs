@@ -7,22 +7,34 @@ import { createHash } from 'node:crypto';
 import { chmodSync, mkdirSync, mkdtempSync, readFileSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
+import YAML from 'yaml';
 import { semanticDigest } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 import { artifactProblems, metricParity, runConfig, runOfficial } from '../scripts/run-pii-official.mjs';
 import { treeSha256 } from '../scripts/lib/pii-tree-digest.mjs';
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const read = file => readFileSync(path.join(root, file), 'utf8');
 const readJson = file => JSON.parse(read(file));
 const plan = readJson('benchmarks/pii-eval-official-execution-plan.json');
 const sha256 = value => createHash('sha256').update(value).digest('hex');
-const workflow = read('.github/workflows/pii-official-run.yml');
+const completeWorkflow = read('.github/workflows/pii-official-run.yml');
+const workflow = completeWorkflow.split('\n  candidate-comparison:')[0];
 
-test('the workflow is dispatch only, takes no input, and holds least privilege', () => {
+test('the workflow is dispatch only, selects only a committed lane, and holds least privilege', () => {
+  const parsed = YAML.parse(completeWorkflow);
+  assert.deepEqual(Object.keys(parsed.on), ['workflow_dispatch']);
+  assert.deepEqual(parsed.on.workflow_dispatch.inputs, { lane: {
+    description: 'Committed measurement plan to execute', type: 'choice', default: 'pinned-official',
+    options: ['pinned-official', 'candidate-comparison'],
+  } });
+  assert.deepEqual(parsed.jobs['candidate-comparison'].permissions, { contents: 'read', actions: 'read' });
+  assert.equal(parsed.jobs['candidate-comparison'].uses, '$/.github/workflows/pii-candidate-comparison.yml');
+  assert.match(parsed.jobs['official-run'].if, /inputs\.lane != 'candidate-comparison'/);
+  assert.match(parsed.jobs['candidate-comparison'].if, /inputs\.lane == 'candidate-comparison'/);
   const header = workflow.split('\njobs:')[0];
-  assert.match(header, /^on:\n {2}workflow_dispatch:\n\npermissions: \{\}/m);
-  assert.doesNotMatch(header.replace(/^#.*$/gm, ''), /inputs:|pull_request|push:|schedule:|workflow_run/);
+  assert.doesNotMatch(header.replace(/^#.*$/gm, ''), /pull_request|push:|schedule:|workflow_run/);
   assert.equal([...workflow.matchAll(/^ {4}permissions:\n((?: {6}.+\n)+)/gm)].map(m => m[1].trim()).join('|'), 'contents: read', 'one job, contents: read only');
   assert.match(workflow, /concurrency:\n {2}group: pii-official-run\n {2}cancel-in-progress: false/);
 });
@@ -38,7 +50,7 @@ test('every action is pinned by commit SHA, credentials are not persisted and no
   assert.equal(checkouts.length, 2);
   for (const block of checkouts) assert.match(block.split('\n      - ')[0].split('\n      # ')[0], /persist-credentials: false/);
   const code = workflow.replace(/^\s*#.*$/gm, '');
-  assert.doesNotMatch(code, /github\.event|github\.head_ref|inputs\./, 'no untrusted context is interpolated');
+  assert.doesNotMatch(code, /github\.event|github\.head_ref/, 'no untrusted context is interpolated');
   for (const run of code.split(/^\s+run: /m).slice(1)) assert.doesNotMatch(run.split('\n      - ')[0], /\$\{\{/, 'a run script holds no expression: values arrive through env');
 });
 

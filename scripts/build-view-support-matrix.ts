@@ -11,6 +11,7 @@
  * attributes every legitimate difference by rule and fails on an unexplained one; a plain equality check would erase the architecture change.
  * Spec: docs/specs/qualification-adapter.md. This script asserts nothing about product output; it carries what the view holds.
  */
+import { buildPiiCurrentQualification } from '../benchmarks/support/pii-current-qualification.ts';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { buildMatrixArtifact, matrixArtifactProblems, type MatrixMode, type ViewForMatrix } from '../benchmarks/qualification/matrix-artifact.ts';
@@ -43,6 +44,7 @@ for (const pin of pins) if (!view.populations.some((p: any) => p.population === 
 if (stale.length) throw new Error(`The view is not the one this checkout pins: ${stale.join('; ')}`);
 
 const artifact = buildMatrixArtifact(view, mode);
+artifact.piiCurrentQualification = await buildPiiCurrentQualification(process.cwd());
 const problems = matrixArtifactProblems(artifact, registry);
 if (problems.length) throw new Error(`Refusing to write a ${mode} matrix: ${problems.join('; ')}`);
 

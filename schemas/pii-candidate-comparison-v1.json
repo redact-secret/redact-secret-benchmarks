@@ -1,0 +1,469 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pii-candidate-comparison-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "pii-candidate-comparison-receipt/1"
+    },
+    "supportClaims": {
+      "const": false
+    },
+    "authorityChanged": {
+      "const": false
+    },
+    "ownerAcceptance": {
+      "type": "null"
+    },
+    "planDigest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "mode": {
+      "enum": [
+        "exploratory",
+        "official"
+      ]
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "binarySha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "shimSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "canonical": {
+          "type": "boolean"
+        },
+        "platform": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "commit",
+        "binarySha256",
+        "shimSha256",
+        "canonical",
+        "platform"
+      ]
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "packageTreeSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "addonTreeSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "wasmTreeSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "nativePackageProvenance": {
+          "enum": [
+            "qualified-inventory-whole-package",
+            "local-repacked-qualified-payloads",
+            "published-npm-lockfile"
+          ]
+        },
+        "tarballs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "core": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "node": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "wasm": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "core",
+            "node",
+            "wasm"
+          ]
+        },
+        "tarballIntegrity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "core": {
+              "type": "string",
+              "minLength": 1
+            },
+            "node": {
+              "type": "string",
+              "minLength": 1
+            },
+            "wasm": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "core",
+            "node",
+            "wasm"
+          ]
+        }
+      },
+      "required": [
+        "sourceCommit",
+        "version",
+        "packageTreeSha256",
+        "addonTreeSha256",
+        "wasmTreeSha256",
+        "nativePackageProvenance",
+        "tarballs",
+        "tarballIntegrity"
+      ]
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "packageTreeSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "addonTreeSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "wasmTreeSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "nativePackageProvenance": {
+          "enum": [
+            "qualified-inventory-whole-package",
+            "local-repacked-qualified-payloads",
+            "published-npm-lockfile"
+          ]
+        },
+        "tarballs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "core": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "node": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "wasm": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "core",
+            "node",
+            "wasm"
+          ]
+        },
+        "tarballIntegrity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "core": {
+              "type": "string",
+              "minLength": 1
+            },
+            "node": {
+              "type": "string",
+              "minLength": 1
+            },
+            "wasm": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "core",
+            "node",
+            "wasm"
+          ]
+        }
+      },
+      "required": [
+        "sourceCommit",
+        "version",
+        "packageTreeSha256",
+        "addonTreeSha256",
+        "wasmTreeSha256",
+        "nativePackageProvenance",
+        "tarballs",
+        "tarballIntegrity"
+      ]
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "baseline": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "state": {
+              "const": "available"
+            },
+            "scope": {
+              "const": "installed-product-configuration-only"
+            },
+            "supportClaims": {
+              "const": false
+            },
+            "surfaces": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "surface": {
+                    "enum": [
+                      "node-addon",
+                      "node-forced-wasm"
+                    ]
+                  },
+                  "checks": {
+                    "type": "array",
+                    "minItems": 10,
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "requestedSelectors": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "maxItems": 2,
+                          "uniqueItems": true
+                        },
+                        "artifact": {
+                          "enum": [
+                            "addon",
+                            "wasm"
+                          ]
+                        },
+                        "activationIdentity": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "requestedSelectors",
+                        "artifact",
+                        "activationIdentity"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "surface",
+                  "checks"
+                ]
+              }
+            }
+          },
+          "required": [
+            "state",
+            "scope",
+            "supportClaims",
+            "surfaces"
+          ]
+        },
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "state": {
+              "const": "available"
+            },
+            "scope": {
+              "const": "installed-product-configuration-only"
+            },
+            "supportClaims": {
+              "const": false
+            },
+            "surfaces": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "surface": {
+                    "enum": [
+                      "node-addon",
+                      "node-forced-wasm"
+                    ]
+                  },
+                  "checks": {
+                    "type": "array",
+                    "minItems": 10,
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "requestedSelectors": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "maxItems": 2,
+                          "uniqueItems": true
+                        },
+                        "artifact": {
+                          "enum": [
+                            "addon",
+                            "wasm"
+                          ]
+                        },
+                        "activationIdentity": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "requestedSelectors",
+                        "artifact",
+                        "activationIdentity"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "surface",
+                  "checks"
+                ]
+              }
+            }
+          },
+          "required": [
+            "state",
+            "scope",
+            "supportClaims",
+            "surfaces"
+          ]
+        }
+      },
+      "required": [
+        "baseline",
+        "candidate"
+      ]
+    },
+    "pins": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "baseline": {
+          "type": "object"
+        },
+        "candidate": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "baseline",
+        "candidate"
+      ]
+    },
+    "durationMs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "github": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "runId",
+        "runAttempt",
+        "headSha",
+        "workflowRef"
+      ],
+      "properties": {
+        "repository": {
+          "const": "redact-secret/redact-secret-benchmarks"
+        },
+        "runId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "runAttempt": {
+          "const": 1
+        },
+        "headSha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "workflowRef": {
+          "type": "string",
+          "pattern": "^redact-secret/redact-secret-benchmarks/\\.github/workflows/pii-official-run\\.yml@refs/heads/.+$"
+        }
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "supportClaims",
+    "authorityChanged",
+    "ownerAcceptance",
+    "planDigest",
+    "mode",
+    "engine",
+    "baseline",
+    "candidate",
+    "activation",
+    "pins",
+    "durationMs"
+  ]
+}

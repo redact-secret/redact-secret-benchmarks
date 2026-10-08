@@ -20,7 +20,7 @@ const D = n => `sha256:${String(n).padStart(64, '0')}`;
 
 const populationsOf = (ctx, over = {}) => ctx.registry.runs.filter(r => r.canonical && r.platform === 'linux-x64' && r.kind !== 'methods').map(r => ({
   population: r.population, runClass: 'public',
-  artifact: { semanticDigest: r.artifact.semanticDigest, artifactDigest: D(9), engine: { name: 'credential-eval', version: ctx.registry.engine.version }, scanners: ctx.roster.required.map(id => ({ id, version: '1', build: 'released' })) },
+  artifact: { semanticDigest: r.artifact.semanticDigest, artifactDigest: D(9), engine: { name: 'credential-eval', version: ctx.registry.engine.version }, scanners: ctx.roster.required.map(id => ({ id, version: ctx.registry.scanners.find(s => s.id === id).version, build: 'released' })) },
   ...over,
 }));
 const entry = f => ({ provider: f.provider, family: f.id, familyName: f.name, status: 'pending', evidenceTier: null, evidenceBasis: 'none', qualificationProfile: null, detectors: [], reason: 'synthetic' });
@@ -84,7 +84,7 @@ test('the scanner roster binds the matrix: a run that skipped a required scanner
   // An optional scanner of the roster may be present: the default full run is the four required scanners, OpenRedaction is a positive opt-in.
   const optional = context.roster.optional[0];
   if (optional) {
-    const withOptional = populationsOf(context).map((p, i) => i === 0 ? { ...p, artifact: { ...p.artifact, scanners: [...p.artifact.scanners, { id: optional, version: '1', build: 'released' }] } } : p);
+    const withOptional = populationsOf(context).map((p, i) => i === 0 ? { ...p, artifact: { ...p.artifact, scanners: [...p.artifact.scanners, { id: optional, version: context.registry.scanners.find(s => s.id === optional).version, build: 'released' }] } } : p);
     assert.deepEqual(problems(published(view(context, { populations: withOptional }))), []);
   }
 });

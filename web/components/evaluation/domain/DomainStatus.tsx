@@ -25,9 +25,12 @@ export function DomainStatus({ title, groups, links, className }: DomainStatusPr
       {groups.map(group => (
         <div key={group.title} className={styles.group}>
           <Eyebrow tone="muted">{group.title}</Eyebrow>
+          {group.navigation && <ul className={styles.links} aria-label={`${group.title} navigation`}>
+            {group.navigation.map(link => <li key={link.href}><Anchor link={link} /></li>)}
+          </ul>}
           <ul className={styles.rows} aria-label={group.title}>
             {group.rows.map(row => (
-              <li key={row.id} className={styles.row}>
+              <li key={row.id} id={row.anchor} className={styles.row}>
                 <b className={styles.label}>{row.label}</b>
                 <span className={styles.badge}><StatusBadge status={row.status}>{row.statusWord}</StatusBadge></span>
                 <span className={styles.text}>

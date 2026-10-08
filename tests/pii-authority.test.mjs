@@ -160,6 +160,12 @@ test('the computed criteria are recomputed from the tree, each one met or unmet,
 import { readFileSync } from 'node:fs';
 function readJsonSync(path) { return JSON.parse(readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')); }
 
+test('the committed official measurement criterion resolves the repository filesystem path', async () => {
+  // A URL pathname percent-encodes Unicode workspace names and cannot locate the receipt.
+  const criteria = await computeCriteria();
+  assert.equal(criteria.state['official-mode-measurement'], 'met');
+});
+
 test('the PII authority is independent of the credential authority: neither names or imports the other', async () => {
   const credentialFile = await readFile(new URL(`../benchmarks/${['qualification', 'authority.json'].join('-')}`, import.meta.url), 'utf8');
   assert.ok(!credentialFile.includes('pii-authority'));

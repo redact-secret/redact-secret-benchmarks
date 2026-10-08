@@ -62,17 +62,17 @@
    "mixed-split": {
     "disposition": "split-then-decide",
     "files": 15,
-    "externalCallerFiles": 47
+    "externalCallerFiles": 49
    },
    "benchmark-scorer": {
     "disposition": "retain-until-criterion",
     "files": 4,
-    "externalCallerFiles": 7
+    "externalCallerFiles": 8
    },
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 29
+    "externalCallerFiles": 37
    }
   }
  },
@@ -567,7 +567,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 28,
+     "retainedConsumerCount": 29,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
@@ -602,7 +602,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 23,
+     "retainedConsumerCount": 24,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
@@ -1424,13 +1424,13 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 16,
+    "total": 17,
     "withinCandidates": 4,
     "testCallers": 2,
-    "external": 10,
+    "external": 11,
     "externalByClass": {
      "benchmarks": 7,
-     "script": 2,
+     "script": 3,
      "web (Next app)": 1
     },
     "externalFiles": [
@@ -1442,6 +1442,7 @@
      "benchmarks/pii-authority.json (benchmarks, path)",
      "benchmarks/pii-eval-official-execution-plan.json (benchmarks, path)",
      "scripts/check-pii-authority.mjs (script, path)",
+     "scripts/check-pii-protected-readiness.mjs (script, path)",
      "scripts/pii-official-plan.mjs (script, path)",
      "web/resolvers/domains.ts (web (Next app), path)"
     ]
@@ -1457,13 +1458,13 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 25,
+    "total": 26,
     "withinCandidates": 2,
     "testCallers": 6,
-    "external": 17,
+    "external": 18,
     "externalByClass": {
      "benchmarks": 5,
-     "script": 12
+     "script": 13
     },
     "externalFiles": [
      "benchmarks/blind.ts (benchmarks, import+path)",
@@ -1482,6 +1483,7 @@
      "scripts/pii-beta11.mjs (script, import+path)",
      "scripts/qualify-pii-family-candidate.mjs (script, import+path)",
      "scripts/rerun-adversarial-candidate.mjs (script, import+path)",
+     "scripts/run-pii-candidate-comparison.mjs (script, import+path)",
      "scripts/run-us-ssn-protected-holdout.mjs (script, import+path)"
     ]
    }
@@ -1663,14 +1665,15 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 3,
+    "total": 4,
     "withinCandidates": 0,
     "testCallers": 2,
-    "external": 1,
+    "external": 2,
     "externalByClass": {
-     "script": 1
+     "script": 2
     },
     "externalFiles": [
+     "scripts/check-pii-protected-readiness.mjs (script, path)",
      "scripts/pii-beta11.mjs (script, import+path)"
     ]
    }
@@ -1727,16 +1730,18 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 20,
+    "total": 22,
     "withinCandidates": 2,
     "testCallers": 10,
-    "external": 8,
+    "external": 10,
     "externalByClass": {
-     "benchmarks": 2,
+     "benchmarks": 4,
      "script": 5,
      "web (Next app)": 1
     },
     "externalFiles": [
+     "benchmarks/evaluation/domains/pii/candidate-comparison.d.mts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/peer-comparison.d.mts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
      "scripts/pii-publication-inputs.ts (script, import+path)",
@@ -1845,24 +1850,30 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 15,
+    "total": 24,
     "withinCandidates": 0,
-    "testCallers": 6,
-    "external": 9,
+    "testCallers": 9,
+    "external": 15,
     "externalByClass": {
-     "benchmarks": 1,
+     "benchmarks": 3,
      "package hook": 1,
-     "script": 7
+     "script": 11
     },
     "externalFiles": [
+     "benchmarks/evaluation/domains/pii/candidate-comparison.mjs (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/custodian-consumer.mjs (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/peer-comparison.mjs (benchmarks, import)",
      "package.json (package hook, path)",
+     "scripts/check-pii-comparison-dispatch.mjs (script, import+path)",
      "scripts/check-pii-eval-migration.mjs (script, import+path)",
      "scripts/fetch-pii-eval-public-synthetic.mjs (script, import+path)",
      "scripts/lib/pii-official-record.mjs (script, import+path)",
      "scripts/lib/pii-population-conversion.mjs (script, import+path)",
+     "scripts/pii-candidate-comparison-plan.mjs (script, import+path)",
+     "scripts/pii-peer-observations.mjs (script, import+path)",
      "scripts/pii-publication-inputs.ts (script, import+path)",
      "scripts/record-pii-official-run.mjs (script, import+path)",
+     "scripts/run-pii-candidate-comparison.mjs (script, import+path)",
      "scripts/run-pii-official.mjs (script, import+path)"
     ]
    }

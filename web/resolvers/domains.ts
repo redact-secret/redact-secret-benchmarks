@@ -7,6 +7,7 @@
  */
 import type { CoverageNotRecorded, CoverageRow, CoverageTable, DefinitionRow, DomainViewData, GlanceItem, StatusGroup, StatusRowData } from '../components/evaluation/domain';
 import type { CredentialEvaluation, PiiEvaluation, PiiFamilyRecord, PiiViewCounts, PiiViewId, SupportRecord } from '../services/domains';
+import type { PiiComparisonMetric } from '../../benchmarks/evaluation/domains/pii/candidate-comparison.mjs';
 import { quantityOf } from '../../benchmarks/evaluation/domains/pii/metric-basis.mjs';
 import { count, int, isoDate } from './format';
 import { modeText } from './report';
@@ -32,6 +33,17 @@ export function distributionText(distribution: Record<string, number>): string {
 }
 
 const modeWord = (mode: 'candidate' | 'published'): string => (mode === 'candidate' ? 'Candidate' : 'Published');
+
+/** Values never enter the address: a repin preserves the family/view link. */
+export const piiFamilyAnchor = (protocol: string, population: string, scanner: string, view: string, family: string) =>
+  [protocol, population, scanner, view, family].map(part => `${part.length}:${part}`).join('|');
+const familyHref = (anchor: string) => `${DOMAIN_HREF.pii}#${encodeURIComponent(anchor)}`;
+const identityText = (value: unknown) => typeof value === 'string' && value ? value.match(/.{1,8}/g)!.join(' ') : 'Not recorded';
+const comparisonMetricText = (metric: PiiComparisonMetric) => {
+  const fixed = (value: { mantissa: number; scale: number }) => (value.mantissa / 10 ** value.scale).toFixed(value.scale);
+  return `${int(metric.counts.numerator)}/${int(metric.effectiveN)} effective N; ${metric.value.state === 'withheld'
+    ? `withheld (${metric.value.reason})` : `point ${fixed(metric.value.point)}, interval bound ${fixed(metric.value.bound)}`}; eligible ${int(metric.counts.eligible)}, unresolved ${int(metric.counts.unresolved)}, not measured ${int(metric.counts.notMeasured)}`;
+};
 
 // ---- Shared prose ---------------------------------------------------------------------------------
 
@@ -191,8 +203,8 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
     const protectedMet = families.filter(f => f.protectedRun.state === 'met').length;
     const recordedRows: StatusRowData[] = [
       {
-        id: 'family-status', label: 'Family status', status: 'info', statusWord: 'Recorded', value: distributionText(recorded.distribution),
-        detail: `${modeLine}${recorded.mode === 'candidate' ? ', unreleased' : ''}. ${pending.length ? `Pending: ${pending.map(f => `${f.name} (${f.reasonCodes.join(', ') || 'no reason code'})`).join('; ')}. ` : ''}The route gives ${recorded.route.maximumStatus} at most.`,
+        id: 'family-status', label: 'Family status (historical)', status: 'info', statusWord: 'Recorded', value: distributionText(recorded.distribution),
+        detail: `${modeLine}${recorded.mode === 'candidate' ? ', unreleased' : ''}. This historical reviewed binding is not the current candidate's qualification. ${pending.length ? `Pending: ${pending.map(f => `${f.name} (${f.reasonCodes.join(', ') || 'no reason code'})`).join('; ')}. ` : ''}The route gives ${recorded.route.maximumStatus} at most.`,
         link: { label: 'Evidence record', href: blob(recorded.route.record), external: true },
       },
       sameGates && gates[0]
@@ -256,6 +268,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
   if (piiEval) {
     for (const population of piiEval.populations) {
       for (const scanner of population.scanners ?? []) {
+        const adapter = scanner.identity?.adapter as { adapterId?: string; adapterVersion?: string; normalizationVersion?: number } | undefined;
         const productKind = (scanner.identity?.product as { kind?: string } | undefined)?.kind ?? 'Not recorded';
         const fixed = (value: { mantissa: number; scale: number }) => {
           const digits = String(value.mantissa).padStart(value.scale + 1, '0');
@@ -263,7 +276,9 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
         };
         status.push({
           title: `${population.populationId} · ${scanner.scannerId} ${String(scanner.identity?.scannerVersion ?? '')} · ${productKind} · public synthetic`,
-          rows: scanner.metrics.map(raw => {
+          rows: [{ id: `${population.populationId}:${scanner.scannerId}:identity`, label: 'Exact scanner identity', status: 'info' as const, statusWord: 'Recorded',
+            detail: `SHA-256 values, grouped in eight-character blocks. Artifact ${identityText(scanner.identity?.artifactDigest)}. Configuration ${identityText(scanner.identity?.configurationDigest)}. Activation ${identityText(scanner.identity?.activationDigest)}. Adapter ${String(adapter?.adapterId ?? 'Not recorded')} ${String(adapter?.adapterVersion ?? '')}; normalization ${String(adapter?.normalizationVersion ?? 'Not recorded')}.`,
+          }, ...scanner.metrics.map(raw => {
             // The service accepts these rows only after the strict public schema and semantic consumer validate them.
             const metric = raw as { metric: { id: string }; status: string; effectiveN: number;
               counts: { numerator: number; measured: number; eligible: number; unresolved: number; notMeasured: number };
@@ -275,18 +290,15 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
               value: `${int(metric.counts.numerator)} / ${int(metric.effectiveN)} effective N`,
               detail: `${metric.value.state === 'withheld' ? metric.value.reason : `Point ${fixed(metric.value.point)}, interval bound ${fixed(metric.value.bound)}`}. Measured ${int(metric.counts.measured)}, eligible ${int(metric.counts.eligible)}, unresolved ${int(metric.counts.unresolved)}, not measured ${int(metric.counts.notMeasured)}. Population and scanner counts remain separate; no qualification verdict.`,
             };
-          }),
+          })],
         });
       }
     }
   }
   for (const population of projected) {
     const projection = population.productProjection!;
-    const scanner = population.scanners[0];
     const mode = projection.rows[0].mode;
     const modeLabel = mode === 'official' ? 'Official' : 'Exploratory';
-    const identity = scanner?.identity as { product?: { kind?: string }; scannerVersion?: string } | undefined;
-    const kind = identity?.product?.kind === 'candidate' ? 'Candidate' : identity?.product?.kind === 'released' ? 'Released' : 'Not recorded';
     const relation = population.productBinding.state === 'measures-publication-product' ? 'It measures the product this publication measured.'
       : population.productBinding.state === 'other-product' ? 'It is another product than the one this publication measured; it says nothing about that product.'
       : 'This publication measured no product, so no product is claimed.';
@@ -302,17 +314,124 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       strata?.length ? ` ${label}: ${strata.map(item => `${String(item[key])} ${int(item.counts.authoredCases)}`).join(', ')}.` : ` ${label}: none authored.`;
     status.push({
       title: `${population.populationId} · product projection · ${modeLabel} · public synthetic`,
+      navigation: projection.rows.map(row => ({ label: `${row.family} · ${row.view} · ${row.binding.scannerId}`,
+        href: familyHref(piiFamilyAnchor('pii-v1', population.populationId, row.binding.scannerId, row.view, row.family)) })),
       rows: [
         { id: `${population.populationId}:projection-binding`, label: 'Measured product', status: 'info', statusWord: modeLabel,
-          value: `${kind} ${String(identity?.scannerVersion ?? '')} · ${projection.requiredViews.join(', ')}`,
-          detail: `${relation} ${mode === 'official' ? 'This is an official-mode execution under the pinned engine contract. It is evidence, not a qualification verdict: statuses still come from the benchmark scorer and nothing here is an accepted verdict.' : `The ${mode} run is a verification, never an official qualification run.`} Roster ${projection.rosterDigest.slice(0, 12)}, population ${population.population.populationDigest.slice(0, 12)}. Each row below keeps its own denominators; nothing is pooled across families, views or populations.` },
-        ...projection.rows.map(row => ({
-          id: `${population.populationId}:${row.view}:${row.family}`, label: `${row.family} · ${row.view}`, status: 'info' as const, statusWord: modeLabel,
+          value: `${projection.requiredViews.join(', ')} · schema ${population.schemaVersion ?? 'Not recorded'}`,
+          detail: `${relation} ${mode === 'official' ? 'This is an official-mode execution under the pinned engine contract. It is evidence, not a qualification verdict: statuses still come from the benchmark scorer and nothing here is an accepted verdict.' : `The ${mode} run is a verification, never an official qualification run.`} Roster SHA-256 ${identityText(projection.rosterDigest)}, population SHA-256 ${identityText(population.population.populationDigest)}. Each row below keeps its own denominators; nothing is pooled across families, views or populations.` },
+        ...projection.rows.map(row => {
+          const scanner = population.scanners.find(scanner => scanner.scannerId === row.binding.scannerId);
+          const identity = scanner?.identity as { product?: { kind?: string }; scannerVersion?: string; configurationDigest?: string; artifactDigest?: string } | undefined;
+          const source = scanner === population.scanners[0] ? population.productBinding?.candidateSourceCommit : null;
+          const kind = identity?.product?.kind === 'candidate' ? 'Candidate' : identity?.product?.kind === 'released' ? 'Released' : 'Not recorded';
+          return {
+          id: `${population.populationId}:${row.binding.scannerId}:${row.view}:${row.family}`,
+          anchor: piiFamilyAnchor('pii-v1', population.populationId, row.binding.scannerId, row.view, row.family),
+          label: `${row.family} · ${row.view}`, status: 'info' as const, statusWord: modeLabel,
           value: `${int(row.counts.authoredCases)} ${row.counts.authoredCases === 1 ? 'case' : 'cases'} · ${int(row.counts.variants)} ${row.counts.variants === 1 ? 'variant' : 'variants'}`,
-          detail: `${metricText(row)}.${strataText('Languages', row.byLanguage as never, 'language')}${strataText('Control classes', row.byControlClass as never, 'controlClass')} No qualification verdict.`,
-        })),
+          detail: `${kind} ${row.binding.scannerId} ${String(identity?.scannerVersion ?? 'Not recorded')}. Source commit ${identityText(source)}. ${metricText(row)}.${strataText('Languages', row.byLanguage as never, 'language')}${strataText('Control classes', row.byControlClass as never, 'controlClass')} No qualification verdict.`,
+          ...(source ? { link: { label: 'Measured source commit', href: `https://github.com/redact-secret/redact-secret/commit/${source}`, external: true } } : {}),
+        }; }),
       ],
     });
+  }
+  for (const family of recorded?.families ?? []) {
+    for (const view of PII_VIEWS) {
+      const metrics = family.views?.[view.id]?.metrics;
+      if (!metrics) continue;
+      const anchor = piiFamilyAnchor('b11', recorded!.core.commit, 'benchmark-scorer', view.id, family.id);
+      status.push({ title: `${family.id} · ${view.id} · historical benchmark qualification quantities`,
+        navigation: [{ label: `${family.id} · ${view.id} · b11`, href: familyHref(anchor) }],
+        rows: [{ id: anchor, anchor, label: 'Historical bound report', status: 'info', statusWord: modeWord(recorded!.mode),
+          detail: `Source commit ${identityText(recorded!.core.commit)}. Bound report ${recorded!.route.report ?? recorded!.route.record}; SHA-256 ${identityText(recorded!.route.reportCommitment)}. These b11 case quantities belong to this historical report; they are not the current public pii-v1 measurement or a new qualification.`,
+          link: { label: 'Bound historical report', href: blob(recorded!.route.report ?? recorded!.route.record), external: true } },
+          ...metrics.map(metric => ({ id: `${anchor}:${metric.id}`, label: `${quantityOf('b11', metric.id).name} (b11:${metric.id})`,
+            status: typeof metric.value === 'object' && metric.value !== null ? 'info' as const : 'not-measured' as const, statusWord: metric.status,
+            value: `${int(metric.numerator)} / ${int(metric.denominator)}`,
+            detail: `${typeof metric.value === 'object' && metric.value !== null ? `Point ${metric.value.point}, ${metric.direction} interval bound ${metric.value.bound}` : metric.value === 'insufficient-evidence' ? 'Not measured: insufficient-evidence, the bound report withholds the interval' : 'Not measured: the bound report records no interval'}. Historical b11 threshold ${metric.threshold}, ${metric.direction} bound. Population: ${quantityOf('b11', metric.id).denominator}. No threshold is applied to pii-v1 occurrence quantities.`,
+          }))],
+      });
+    }
+  }
+  if (pii.peerReadiness) {
+    const readiness = pii.peerReadiness;
+    status.push({ title: 'PII peer accuracy readiness', rows: readiness.state === 'recorded'
+      ? readiness.inventory.peers.map(peer => ({ id: `pii-peer:${peer.scannerId}`, label: `${peer.scannerId} ${peer.version}`,
+          status: 'not-measured' as const, statusWord: 'Not measured',
+          detail: `Full family, range and sensitivity qualification remains unready at evaluator ${identityText(readiness.inventory.reviewedEvaluator.commit)}. Required: ${peer.required.join(', ')}. Bounded local type/range observations are separate; the runtime preview counts changed text.`,
+          link: { label: 'Neutral expectations and coverage gaps', href: blob('docs/specs/pii-peer-accuracy-readiness.md'), external: true } }))
+      : [{ id: 'pii-peer:unavailable', label: 'Peer accuracy', status: 'not-measured', statusWord: 'Not measured', detail: readiness.reason }],
+    });
+  }
+  if (pii.peerComparison) {
+    const peers = pii.peerComparison;
+    status.push({ title: 'Local default peer observations', rows: peers.state !== 'recorded'
+      ? [{ id: 'local-peer:unavailable', label: 'Family, type and range observations', status: 'not-measured', statusWord: 'Unavailable', detail: peers.reason }]
+      : [{ id: 'local-peer:scope', label: 'Bounded local measurement', status: 'info', statusWord: 'Exploratory',
+          detail: `${peers.engine.platform}, evaluator ${identityText(peers.engine.commit)}. Default family/type/range observations on the frozen public populations. Withheld: ${peers.withheld.join(', ')}. No qualification, ranking or pooled total.`,
+          link: { label: 'Local execution and provenance', href: blob('benchmarks/pii-peer-comparison/record.json'), external: true } },
+        ...peers.peers.flatMap(peer => [
+          { id: `local-peer:${peer.peer}`, label: `${peer.peer} ${peer.version}`, status: 'info' as const, statusWord: 'Defaults',
+            detail: `Limits: ${peer.limitations.join('; ')}. Package SHA-256 ${identityText(peer.identity.artifactDigest)}. Configuration SHA-256 ${identityText(peer.identity.configurationDigest)}.` },
+          ...peer.measurement.populations.map(population => ({ id: `local-peer:${peer.peer}:${population.label}`, label: `${peer.peer} · ${population.label}`,
+            status: 'info' as const, statusWord: 'Exploratory', value: `${int(population.populationCounts.authoredCases)} authored memberships`,
+            detail: `Family, language and control-class quantities retain their own denominators and withheld reasons in this validated artifact. No comparison with the official product run is inferred.`,
+            link: { label: 'Full local public artifact', href: blob(`benchmarks/pii-peer-comparison/${peer.peer}.${population.label}.public-synthetic-artifact.json`), external: true } })),
+        ])],
+    });
+  }
+  if (pii.currentQualification) {
+    const current = pii.currentQualification;
+    status.push({ title: 'Current candidate qualification, separate from historical status', rows: [
+      { id: 'current-pii:status', label: 'Current exact target', status: 'not-measured', statusWord: 'Not qualified',
+        value: distributionText(current.distribution),
+        detail: `Source ${identityText(current.sourceCommit)}. Public measurement ${current.publicMeasurement.state}; preparation ${current.state}. Protected execution and remaining gates are unresolved. Historical provisional status does not transfer.` },
+      ...current.families.map(family => ({ id: `current-pii:${family.family}`, label: family.family, status: 'not-measured' as const, statusWord: 'Pending', detail: family.reasonCodes.join(', ') })),
+    ] });
+  }
+  if (pii.candidateComparison) {
+    const comparison = pii.candidateComparison;
+    if (comparison.state !== 'recorded') {
+      status.push({ title: 'Current public candidate comparison', rows: [{ id: 'current-public-comparison', label: 'Baseline and candidate',
+        status: 'not-measured', statusWord: comparison.state === 'invalid' ? 'Unavailable' : 'Not measured',
+        detail: `${comparison.reason}. No current activation, validator measurement or population delta is inferred from the historical qualification report.`,
+        link: { label: 'Public comparison plan', href: blob('benchmarks/pii-candidate-comparison/plan.json'), external: true } }] });
+    } else {
+      status.push({ title: 'Current public candidate comparison', rows: [
+        ...(['baseline', 'candidate'] as const).map(side => ({ id: `current-public:${side}`, label: side === 'baseline' ? 'Published baseline source' : 'Unreleased candidate source',
+          status: 'info' as const, statusWord: comparison.mode === 'official' ? 'Official' : 'Exploratory', value: comparison[side].version,
+          detail: `Source ${identityText(comparison[side].sourceCommit)}. Package SHA-256 ${identityText(comparison[side].packageTreeSha256)}. The engine records this pinned execution package as candidate kind; published baseline source provenance is recorded separately in the plan. This separate public execution does not replace the authority's recorded run.`,
+          link: { label: 'Exact measured source', href: `https://github.com/redact-secret/redact-secret/commit/${comparison[side].sourceCommit}`, external: true } })),
+        ...(['baseline', 'candidate'] as const).map(side => ({ id: `current-public:${side}:activation`, label: `${side} installed activation`, status: 'info' as const, statusWord: 'Recorded',
+          detail: `${comparison.activation[side].surfaces.map(surface => `${surface.surface}: ${surface.checks.map(check => check.requestedSelectors.length ? check.requestedSelectors.join(' + ') : 'PII off').join('; ')}`).join('. ')}. Installed product configuration only; no trusted qualification activation or support claim.` })),
+        { id: 'current-public:validator', label: 'Product validator primitive', status: 'not-measured', statusWord: 'Not measured', detail: `${comparison.validator.reason}. Public findings do not measure a validator primitive independently.` },
+        { id: 'current-public:qualification', label: 'Current qualification', status: 'not-measured', statusWord: 'Not qualified',
+          detail: 'Public comparison evidence does not satisfy protected execution, profile cost or other qualification gates. No historical provisional status is carried to this candidate.' },
+      ] });
+      for (const population of comparison.populations) {
+        for (const family of new Set(population.metrics.map(metric => metric.family))) {
+          const anchor = piiFamilyAnchor('pii-v1-comparison', population.population.populationId, 'redact-secret-core', population.view, family);
+          const familyMetrics = population.metrics.filter(metric => metric.family === family);
+          const strata = new Set(familyMetrics.filter(metric => metric.stratum !== 'family').map(metric => metric.stratum));
+          status.push({ title: `${family} · ${population.view} · current public comparison`,
+            navigation: [{ label: `${family} · ${population.view} · baseline/candidate`, href: familyHref(anchor) }],
+            rows: [{ id: anchor, anchor, label: 'Same authored population', status: 'info', statusWord: comparison.mode === 'official' ? 'Official' : 'Exploratory',
+              value: `${int(population.memberships)} authored memberships`,
+              detail: `${population.population.populationId}; SHA-256 ${identityText(population.population.populationDigest)}. Counts remain separate for this family and stratum. Replays add no samples; no pooled total, threshold or qualification verdict.` },
+            ...familyMetrics.filter(metric => metric.stratum === 'family').map(metric => ({ id: `${anchor}:${metric.key}`,
+              label: `${quantityOf('pii-v1', metric.metricId).name} · ${metric.stratum} (pii-v1:${metric.metricId})`,
+              status: metric.delta === null ? 'not-measured' as const : 'info' as const, statusWord: metric.delta === null ? 'Delta withheld' : 'Recorded',
+              detail: `Baseline ${comparisonMetricText(metric.baseline)}. Candidate ${comparisonMetricText(metric.candidate)}. ${metric.delta === null ? 'Delta unavailable: one or both quantities are withheld or not measured' : `Candidate minus baseline point delta ${Number(metric.delta.toFixed(6))}`}.`,
+            })),
+            ...(['baseline', 'candidate'] as const).map(side => ({ id: `${anchor}:${side}:strata`, label: `${side} language and control-class strata`,
+              status: 'info' as const, statusWord: 'Recorded',
+              detail: `${int(strata.size)} separate strata for this family are recorded in the full ${population.view} artifact. The page displays family quantities; per-stratum numerators, denominators and withheld reasons remain in these exact artifacts. The strict paired consumer checks every stratum.`,
+              link: { label: `${side} full public artifact`, href: blob(`benchmarks/pii-candidate-comparison/${side}.${population.view}.public-synthetic-artifact.json`), external: true } }))],
+          });
+        }
+      }
+    }
   }
   status.push({
     title: 'Known gaps',

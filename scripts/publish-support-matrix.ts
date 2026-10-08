@@ -1,6 +1,7 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildPiiCurrentQualification } from '../benchmarks/support/pii-current-qualification.ts';
 import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
 
 /**
@@ -37,6 +38,10 @@ if (fromView) {
   const problem = supportMatrixProblem(matrix);
   if (problem) throw new Error(`Refusing to publish ${path.relative(root, inputPath)}: ${problem}`);
 }
+
+const current = (matrix as { piiCurrentQualification?: unknown }).piiCurrentQualification;
+if (current && JSON.stringify(current) !== JSON.stringify(await buildPiiCurrentQualification(root)))
+  throw new Error('Refusing to publish current PII qualification that disagrees with verified public comparison evidence');
 
 const target = path.resolve(root, options.output ?? (fromView ? 'public/results/support-matrix-view-v1.json' : 'public/results/support-matrix-v1.json'));
 await mkdir(path.dirname(target), { recursive: true });

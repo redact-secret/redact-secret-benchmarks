@@ -59,6 +59,8 @@ export interface DomainCoverageData {
 export interface StatusLink { label: string; href: string; external?: boolean }
 export interface StatusRowData {
   id: string;
+  /** A stable address for this recorded family/view, independent of its values. */
+  anchor?: string;
   label: string;
   status: Status;
   /** The status word. */
@@ -68,7 +70,7 @@ export interface StatusRowData {
   detail: string;
   link?: StatusLink;
 }
-export interface StatusGroup { title: string; rows: StatusRowData[] }
+export interface StatusGroup { title: string; rows: StatusRowData[]; navigation?: StatusLink[] }
 export interface DomainStatusData {
   title: string;
   groups: StatusGroup[];

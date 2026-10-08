@@ -146,7 +146,7 @@ if (html) {
             if (!t.includes(`${n} of ${w.lines.length} hidden Hidden ${n} Left some or all ${w.lines.length - n}`)) fail(`pii.${id}: ${tool} on ${w.id} is not stated as ${n} of ${w.lines.length}`);
           }
         }
-        if (!t.includes('Preview, not yet a measurement')) fail(`pii.${id}: the preview is not labelled`);
+        if (!t.includes('Runtime preview, not peer accuracy measurement')) fail(`pii.${id}: the preview is not labelled`);
       }
     } catch (error) {
       if (error.code !== 'ENOENT') throw error;

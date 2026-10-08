@@ -41,7 +41,7 @@ records both numbers in its receipt (`candidate.equalsRecordedArtifactSetCommitm
 
 ## The workflow
 
-[`.github/workflows/pii-official-run.yml`](../../.github/workflows/pii-official-run.yml), dispatch only and with no inputs: what it runs is this plan at the dispatched commit (`pii-official-plan.mjs --check` equals the pins, `--github-output` names the exact commit, qualification run and core tarball). It
+[`.github/workflows/pii-official-run.yml`](../../.github/workflows/pii-official-run.yml), dispatch only: its default `pinned-official` lane runs this plan at the dispatched commit (`pii-official-plan.mjs --check` equals the pins, `--github-output` names the exact commit, qualification run and core tarball). The separate `candidate-comparison` lane uses [its own exact paired plan](pii-candidate-comparison.md) and requires a fresh owner cost decision. The historical #796 waiver does not authorise that lane. The default lane
 
 1. mints a read-only pii-eval installation token, downloads the pinned linux engine artifact (digest of the archive, of each member and of the binary against the pin) and fetches the Node shim at the pinned engine commit (its digest is compiled into the engine);
 2. mints a read-only redact-secret token, requires the planned run to be a successful `artifact-qualification` push of the planned commit on `main`, downloads and verifies the qualified binaries, checks out the commit and repacks with the product's own script, requires every tarball to equal the bytes the product qualified and the core tarball to equal the recorded one;

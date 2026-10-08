@@ -1,10 +1,12 @@
 import { spawnSync } from 'node:child_process';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const root = fileURLToPath(new URL('../', import.meta.url));
 // Forward the existing publisher's options without passing them to the sidecar.
 for (const args of [
-  ['--import', 'tsx', fileURLToPath(new URL('./publish-pii-support.ts', import.meta.url)), ...process.argv.slice(2)],
-  [fileURLToPath(new URL('./pii-evidence-publication.mjs', import.meta.url)), '--write'],
+  ['--import', 'tsx', resolve(root, 'scripts/publish-pii-support.ts'), ...process.argv.slice(2)],
+  [resolve(root, 'scripts/pii-evidence-publication.mjs'), '--write'],
 ]) {
   const result = spawnSync(process.execPath, args, { stdio: 'inherit' });
   if (result.error) throw result.error;

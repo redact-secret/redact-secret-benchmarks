@@ -72,7 +72,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 37
+    "externalCallerFiles": 41
    }
   }
  },
@@ -1851,23 +1851,25 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 24,
+    "total": 30,
     "withinCandidates": 0,
-    "testCallers": 9,
-    "external": 15,
+    "testCallers": 12,
+    "external": 18,
     "externalByClass": {
-     "benchmarks": 3,
+     "benchmarks": 4,
      "package hook": 1,
-     "script": 11
+     "script": 13
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/candidate-comparison.mjs (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/custodian-consumer.mjs (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/evidence-comparison.mjs (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/peer-comparison.mjs (benchmarks, import)",
      "package.json (package hook, path)",
      "scripts/check-pii-comparison-dispatch.mjs (script, import+path)",
      "scripts/check-pii-eval-migration.mjs (script, import+path)",
      "scripts/fetch-pii-eval-public-synthetic.mjs (script, import+path)",
+     "scripts/lib/pii-evidence-contract.mjs (script, import+path)",
      "scripts/lib/pii-official-record.mjs (script, import+path)",
      "scripts/lib/pii-population-conversion.mjs (script, import+path)",
      "scripts/pii-candidate-comparison-plan.mjs (script, import+path)",
@@ -1875,6 +1877,7 @@
      "scripts/pii-publication-inputs.ts (script, import+path)",
      "scripts/record-pii-official-run.mjs (script, import+path)",
      "scripts/run-pii-candidate-comparison.mjs (script, import+path)",
+     "scripts/run-pii-evidence-comparison.mjs (script, import+path)",
      "scripts/run-pii-official.mjs (script, import+path)"
     ]
    }
@@ -1917,11 +1920,11 @@
     "testCallers": 4,
     "external": 2,
     "externalByClass": {
-     "package hook": 1,
+     "script": 1,
      "web (Next app)": 1
     },
     "externalFiles": [
-     "package.json (package hook, path)",
+     "scripts/publish-pii-support-with-evidence.mjs (script, path)",
      "web/services/domains.ts (web (Next app), path)"
     ]
    }

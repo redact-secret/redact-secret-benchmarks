@@ -72,7 +72,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 36
+    "externalCallerFiles": 37
    }
   }
  },
@@ -1730,17 +1730,18 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 21,
+    "total": 22,
     "withinCandidates": 2,
     "testCallers": 10,
-    "external": 9,
+    "external": 10,
     "externalByClass": {
-     "benchmarks": 3,
+     "benchmarks": 4,
      "script": 5,
      "web (Next app)": 1
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/candidate-comparison.d.mts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/peer-comparison.d.mts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
      "scripts/pii-publication-inputs.ts (script, import+path)",

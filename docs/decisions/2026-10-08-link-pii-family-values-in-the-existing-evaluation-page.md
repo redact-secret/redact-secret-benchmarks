@@ -38,8 +38,15 @@ evidence is stated, never inferred from historical reports or runtime previews.
 The page displays paired family quantities. Language and control-class strata
 remain inspectable through links to both exact public artifacts, and the strict
 consumer recomputes every stratum. Repeating every stratum inline exceeded the
-1.5 MB export budget; the source links preserve access without expanding the
+1.5 MiB export budget (1,572,864 bytes); the source links preserve access without expanding the
 initial page.
+
+Show the exact current target's pending families separately from historical
+provisional status. Local default peer type/range observations get their own
+exploratory scope, configuration identity and full-artifact links. Sensitivity,
+action, context and independent diversity qualification remain withheld. These
+records do not turn the runtime preview into an accuracy comparison or rank
+peers against the official product run.
 
 ## Consequences
 

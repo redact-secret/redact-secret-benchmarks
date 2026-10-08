@@ -1,0 +1,71 @@
+{
+ "schema": "pii-candidate-comparison-record/1",
+ "supportClaims": false,
+ "authorityChanged": false,
+ "ownerAcceptance": null,
+ "planDigest": "39ad1d86b862e70e79ccb9f94e684e5e6bfe7507e774a861c98f602f33121693",
+ "workflow": {
+  "repository": "redact-secret/redact-secret-benchmarks",
+  "path": ".github/workflows/pii-official-run.yml",
+  "reusablePath": ".github/workflows/pii-candidate-comparison.yml",
+  "runId": 37785871226,
+  "runAttempt": 1,
+  "event": "workflow_dispatch",
+  "headSha": "9c1b82cc3b98396f2b5db89a1aff7bec97a702ae",
+  "headBranch": "feat/647-pii-eval-requalification",
+  "conclusion": "success"
+ },
+ "actionsArtifact": {
+  "id": 11554820104,
+  "name": "pii-candidate-comparison",
+  "digest": "sha256:3b812b019556018e18c1c80592ba8195f983fbf769e98a93d1f7df14a935b656",
+  "archiveSha256": "3b812b019556018e18c1c80592ba8195f983fbf769e98a93d1f7df14a935b656",
+  "sizeInBytes": 358098
+ },
+ "receipt": {
+  "sha256": "71b500d39119868895668f11dfd7b8963002b5d150254963c77cee2ffd3abab7",
+  "documentDigest": "01e43abbd4cf912cbc832703b3e636aca2cd75df422bc2a7dd7fce7c9843faae"
+ },
+ "artifacts": [
+  {
+   "side": "baseline",
+   "view": "oracle-plan",
+   "sha256": "7d0ab058f6910386413fe1893fef98ba445b4b455bbb0872f3dff7588855a939"
+  },
+  {
+   "side": "baseline",
+   "view": "qualification-plan",
+   "sha256": "fb519f696f22e97c51cdd652ec545e47234ded98b0fede5d0d0dcb4c98e4341f"
+  },
+  {
+   "side": "baseline",
+   "view": "diagnostic-balanced",
+   "sha256": "0b382cadd4cb866f890ea12d95e712351d7549c6fba82236d6eff2ff6767590e"
+  },
+  {
+   "side": "baseline",
+   "view": "benign-heavy-stress",
+   "sha256": "68aeeec2687672e9c561cbeab555de80ed8216ed249c6150d0f20cd106b9ed1f"
+  },
+  {
+   "side": "candidate",
+   "view": "oracle-plan",
+   "sha256": "556f6074ec9eeb3811770074618417b67b43c85fc4607fa4ccea816de7cdba9b"
+  },
+  {
+   "side": "candidate",
+   "view": "qualification-plan",
+   "sha256": "c2b057fb8b56b285e6add60e2c3bf16f33b17b7e14b958bfcf8261523f84b1d5"
+  },
+  {
+   "side": "candidate",
+   "view": "diagnostic-balanced",
+   "sha256": "8b4dce86976d6d6fa9db6debbe28f130b04747bc54dafe5ff9ae824376a5f677"
+  },
+  {
+   "side": "candidate",
+   "view": "benign-heavy-stress",
+   "sha256": "3a60998f22ffe2c7f2d44aac4a26457f708261567455af7065fcbfceb4bb1bb1"
+  }
+ ]
+}

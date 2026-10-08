@@ -1,0 +1,74 @@
+{
+  "schema": "pii-evidence-consumer-pin/1",
+  "state": "candidate",
+  "supportClaims": false,
+  "source": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "74b35e4aeffeef9c8679f3d7809cfe4415a0bc42",
+    "sourceArchiveSha256": "8c801b3ef64af5f59c8aef4adfd91062dc33a9fd960d3a78a4af9010c5be8bd4",
+    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+    "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
+    "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+  },
+  "contract": {
+    "engineVersion": "0.0.0",
+    "protocol": {
+      "id": "pii-v1",
+      "revision": 2
+    },
+    "corpusSchema": "1.4",
+    "artifactSchema": "1.4",
+    "mapping": {
+      "id": "pii-evidence-to-corpus",
+      "revision": 2
+    }
+  },
+  "executionEngine": {
+    "platform": "linux-x64",
+    "binarySha256": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
+    "workflow": {
+      "runId": 37637513834,
+      "runAttempt": 1,
+      "path": ".github/workflows/ci.yml",
+      "event": "push",
+      "branch": "main",
+      "conclusion": "success"
+    },
+    "archive": {
+      "id": 11490276889,
+      "name": "pii-eval-engine-e99128f5633c5905497342623e249ad90d902800-linux-x86_64",
+      "sha256": "eeddad4deba3a7c28a0d5d3bfc28a6a0f4f27d1403818e9de7c103b3f209a1b0",
+      "members": {
+        "pii-eval": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
+        "build-info.json": "c172a059c7380680026a053da1165cb2f5a293f1a9a35454bf78014a9468410f",
+        "SHA256SUMS": "bcd492c124f16f43fef8ba33fa741ae4ffc5dc93056d7f18ebc81e61b2aad746"
+      }
+    }
+  },
+  "evidenceConsumer": {
+    "binary": "pii-eval-evidence",
+    "canonicalLinux": {
+      "state": "pending-source-build",
+      "reason": "upstream-ci-does-not-archive-evidence-consumer",
+      "binarySha256": null,
+      "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+      "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+      "receiptRequiredBeforeUse": true,
+      "scannerGate": "sealed-build-receipt-and-exact-import-semantics"
+    },
+    "localVerification": {
+      "platform": "darwin-arm64",
+      "binarySha256": "42fdfda23ba649810f48f74b2c9555bd364070c1f6d15d8c8993791253e185e9",
+      "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+      "canonical": false
+    }
+  },
+  "importedPopulation": {
+    "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+    "version": 2,
+    "digest": "2bff16441b6e3ef3be72ecb8cacedfdb404053981d1d086546a00f2c4c407d52",
+    "bindingDigest": "299c406c1f7e5ae49dfd819e42c713da54d99952b1b3219db3451bdcbcc6e864"
+  },
+  "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
+}

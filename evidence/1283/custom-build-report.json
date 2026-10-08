@@ -1,0 +1,144 @@
+{
+  "schema": "custom-artifact-report/v1",
+  "version": "0.1.0-beta.14",
+  "engine": {
+    "sourceRevision": "95293414dbd2dbdd21103a921a746cf346b28d94",
+    "sourceTreeDirty": false
+  },
+  "toolchain": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "wasmBindgen": "0.2.128",
+    "node": "v22.23.3",
+    "esbuild": "0.28.2",
+    "target": "wasm32-unknown-unknown",
+    "profile": "release"
+  },
+  "composition": {
+    "name": "config-journeys",
+    "id": "custom:a8f9f008c1482448f2ae49eab0684a9fda6dca590ee2b613d066507791ea88e3",
+    "document": {
+      "include": [
+        "github-token",
+        "jwt",
+        "generic-token"
+      ],
+      "name": "config-journeys",
+      "pii": "none",
+      "schema": "composition/v1"
+    }
+  },
+  "manifest": {
+    "file": "artifact-manifest.custom.json",
+    "digest": "sha256:0951cb74d59577a15c096cc32300ab25ed8989bcfcfa15e4071c266d3e1c6961"
+  },
+  "artifact": {
+    "kind": "wasm",
+    "variant": "custom",
+    "pii": false,
+    "exports": [
+      "__abort_handler",
+      "__externref_drop_slice",
+      "__externref_table_alloc",
+      "__externref_table_dealloc",
+      "__instance_terminated",
+      "__wbg_finding_free",
+      "__wbg_incrementalresult_free",
+      "__wbg_incrementalsanitizer_free",
+      "__wbg_range_free",
+      "__wbg_scanandredactresult_free",
+      "__wbindgen_exn_store",
+      "__wbindgen_externrefs",
+      "__wbindgen_free",
+      "__wbindgen_malloc",
+      "__wbindgen_realloc",
+      "__wbindgen_start",
+      "artifactManifest",
+      "compareActionPolicies",
+      "createIncrementalSanitizer",
+      "defaultPolicy",
+      "finding_action",
+      "finding_confidence",
+      "finding_detector",
+      "finding_end",
+      "finding_id",
+      "finding_obfuscation",
+      "finding_range",
+      "finding_start",
+      "finding_type",
+      "incrementalresult_findings",
+      "incrementalresult_takeFindings",
+      "incrementalresult_takeText",
+      "incrementalresult_text",
+      "incrementalsanitizer_abort",
+      "incrementalsanitizer_append",
+      "incrementalsanitizer_finalize",
+      "incrementalsanitizer_state",
+      "initialize",
+      "memory",
+      "piiActivation",
+      "profile",
+      "range_end",
+      "range_start",
+      "redact",
+      "resolveConfig",
+      "scan",
+      "scanAndRedact",
+      "scanConfigurationSide",
+      "scanandredactresult_findings",
+      "scanandredactresult_takeFindings",
+      "scanandredactresult_takeText",
+      "scanandredactresult_text",
+      "start",
+      "version"
+    ]
+  },
+  "files": {
+    "redact_secret_wasm_custom.js": "a011958025f4ee7b72b7ae017539426e90e5e1f212cccbd151794ca041662085",
+    "redact_secret_wasm_custom.d.ts": "33e8479f4d75255a8dc015ad793ab34ec13c0f7c2b31754d4aaf3970a64cc8a5",
+    "redact_secret_wasm_custom_bg.wasm": "76087d228dbcadab2a9de28799cf49e5b37939e15458d27b2d10843e0c566c87",
+    "redact_secret_wasm_custom_bg.wasm.d.ts": "6ba00979c36ba593dc340d6cec6d65e14fc25aa18e7dc733938df9efef5ca12b",
+    "index.js": "60885308f287823848cb49ec112eafe60f13111467b88e9b5bd41b1ed77b8a34",
+    "index.d.ts": "3567a4c67b79cf90c7ada108526560d6f089bf6da6dfbc5db8144bbbb1364e55"
+  },
+  "bundledDefaults": {
+    "actionPolicy": "artifact-default",
+    "detection": "all-included",
+    "limits": "artifact-default",
+    "pii": {
+      "selectors": []
+    },
+    "schema": "build-defaults/v1"
+  },
+  "elimination": {
+    "measured": true,
+    "baseline": {
+      "sha256": "87361c668a1d278a089af18997cbe39a40d420978b7aff8c5f40bc20331ac264"
+    },
+    "custom": {
+      "raw": 554411,
+      "gzip": 195912,
+      "brotli": 153436
+    },
+    "full": {
+      "raw": 775001,
+      "gzip": 271849,
+      "brotli": 208706
+    },
+    "ratio": {
+      "raw": 0.7153681092024398,
+      "brotli": 0.735177714105009
+    },
+    "words": {
+      "full": 1544,
+      "custom": 1287,
+      "inFullButNotInCustom": 565
+    },
+    "probes": []
+  },
+  "reproduction": [
+    "Same engine source revision, same toolchain versions and the same composition document reproduce the artifact.",
+    "Byte-identical output is not promised across machines; the manifest digest and composition identity are."
+  ],
+  "isolation": "generated and built under the workspace directory; no repository source file was written"
+}

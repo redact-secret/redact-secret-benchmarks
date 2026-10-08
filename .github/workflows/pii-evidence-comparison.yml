@@ -4,6 +4,10 @@ name: PII evidence snapshot comparison (public synthetic)
 # both product artifacts remain exact pins, and one fresh cost decision gates the job.
 on:
   workflow_call:
+    inputs:
+      plan_path:
+        type: string
+        default: benchmarks/pii-evidence-comparison/plan.json
     secrets:
       PII_EVAL_APP_PRIVATE_KEY:
         required: true
@@ -21,6 +25,8 @@ jobs:
     if: github.repository == 'redact-secret/redact-secret-benchmarks'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    env:
+      EVIDENCE_PLAN: ${{ inputs.plan_path }}
     permissions:
       contents: read
       actions: read
@@ -39,9 +45,9 @@ jobs:
         id: plan
         run: |
           set -euo pipefail
-          node scripts/pii-evidence-comparison-plan.mjs --check
-          node scripts/pii-evidence-comparison-plan.mjs --github-output >> "$GITHUB_OUTPUT"
-          node scripts/pii-evidence-comparison-plan.mjs --snapshot-pin-output="$RUNNER_TEMP/pii-evidence-snapshot-pin.json"
+          node scripts/pii-evidence-comparison-plan.mjs --plan="$EVIDENCE_PLAN" --check
+          node scripts/pii-evidence-comparison-plan.mjs --plan="$EVIDENCE_PLAN" --github-output >> "$GITHUB_OUTPUT"
+          node scripts/pii-evidence-comparison-plan.mjs --plan="$EVIDENCE_PLAN" --snapshot-pin-output="$RUNNER_TEMP/pii-evidence-snapshot-pin.json"
       - name: Refuse a second dispatch or rerun of the approved tuple
         env:
           GH_TOKEN: ${{ github.token }}
@@ -161,6 +167,7 @@ jobs:
         run: |
           set -euo pipefail
           node --import tsx scripts/run-pii-evidence-comparison.mjs --require-canonical \
+            --plan="$EVIDENCE_PLAN" \
             --engine="$ENGINE" --source="$SOURCE_DIR" --source-archive="$SOURCE_ARCHIVE" \
             --snapshot-dir="$RUNNER_TEMP/pii-evidence-snapshot" \
             --consumer="$RUNNER_TEMP/pii-evidence-build/release/pii-eval-evidence" \

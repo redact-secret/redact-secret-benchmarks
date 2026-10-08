@@ -552,7 +552,9 @@ The corpus adds one authored calibration row pair per family to
 The benchmarks side of the #1014 second wave (Xata, Sourcegraph, Unkey, Buildkite, Pydantic Logfire, Square, Mapbox, Fly,
 Ory siblings; product issues redact-secret#1102 to #1110). **Square** (slice `583a`) and the seven other registered
 detectors (slices `583b` to `583h`) have a contract, a corpus and arrival evidence; the Ory siblings (#1110) are not in
-the registry and wait for the issuance check (#584). Slice `583p` is empty now and stays as the place a future registered
+the registry and are deferred to #827 until core ships an adopted `ory-token` detector (the gate is core adoption, not
+issuance; only the admin keys are issuance-gated), per the
+[decision](../decisions/2026-10-08-defer-the-ory-sibling-contracts-until-a-product-detector-exists.md). Slice `583p` is empty now and stays as the place a future registered
 detector without a slice would be recorded as "detector present in the registry, benchmark contract/corpus pending (#583)". The registry snapshot
 (`benchmarks/detectors.json`, `detector-inventory.json`, `detector-finding-types.json`) is pinned to product main
 `3b1a5aa` (redact-secret PR #1214 and #1227), ahead of the published `@redact-secret/core` 0.1.0-beta.13; see the

@@ -4,10 +4,12 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'no
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { preflightReport, validateEvidencePins, validateProposedSnapshotPin, validatePreflightReport, verifyConsumerRuntime, sha256 } from './lib/pii-evidence-contract.mjs';
+import { checkActiveEvidenceFiles } from './lib/pii-evidence-adoption-apply.mjs';
+import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
+import { SNAPSHOT_PIN, preflightReport, validateProposedSnapshotPin, verifyConsumerRuntime, sha256 } from './lib/pii-evidence-contract.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const read = file => JSON.parse(readFileSync(file, 'utf8'));
+const read = file => parseEvidenceJson(readFileSync(file, 'utf8'));
 const pinned = name => path.join(ROOT, 'benchmarks/pii-evidence', `${name}.json`);
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
 
@@ -15,7 +17,8 @@ export function runPreflight({ sourceDir, consumerBin, snapshotDir, out, fetch =
   const policy = read(path.join(ROOT, 'benchmarks/pii-population-policy.json'));
   const snapshotFile = candidateSnapshotPin ?? pinned('snapshot-pin');
   const snapshotPin = read(snapshotFile), consumerPin = read(pinned('consumer-pin'));
-  validateEvidencePins(read(pinned('snapshot-pin')), consumerPin);
+  checkActiveEvidenceFiles(ROOT);
+  const futureActive = snapshotPin.snapshot.id !== SNAPSHOT_PIN.snapshot.id;
   if (candidateSnapshotPin) validateProposedSnapshotPin(snapshotPin);
   if (!sourceDir || !consumerBin || !out || (!fetch && !snapshotDir)) throw new Error('preflight requires source, pinned consumer binary, snapshot and new report paths');
   if (existsSync(out)) throw new Error('preflight report output already exists');
@@ -45,7 +48,7 @@ export function runPreflight({ sourceDir, consumerBin, snapshotDir, out, fetch =
       digest: imported.semantic?.population?.semanticDigest, bindingDigest: imported.semantic?.binding?.semanticDigest,
     } } : consumerPin;
     const report = preflightReport({ policy, snapshotPin, consumerPin: proposedConsumer, verified, imported, outputs,
-      proposed: Boolean(candidateSnapshotPin),
+      proposed: Boolean(candidateSnapshotPin) || futureActive,
       populationPins: readFileSync(path.join(ROOT, 'benchmarks/pii-eval-population-pins.json')) });
     writeFileSync(out, json(report), { flag: 'wx' });
     return report;
@@ -54,10 +57,7 @@ export function runPreflight({ sourceDir, consumerBin, snapshotDir, out, fetch =
 
 export function main(args) {
   if (args.length === 1 && args[0] === '--check') {
-    validateEvidencePins(read(pinned('snapshot-pin')), read(pinned('consumer-pin')));
-    validatePreflightReport(read(pinned('preflight')), read(path.join(ROOT, 'benchmarks/pii-population-policy.json')));
-    if (sha256(readFileSync(path.join(ROOT, 'benchmarks/pii-eval-population-pins.json'))) !== read(pinned('consumer-pin')).preservedPopulationPinsSha256)
-      throw new Error('existing four population pins changed');
+    checkActiveEvidenceFiles(ROOT);
     console.log('PII evidence candidate pins/preflight valid; this check does not execute or authorise a measurement');
     return;
   }

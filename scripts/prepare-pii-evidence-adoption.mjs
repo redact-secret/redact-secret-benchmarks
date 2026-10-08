@@ -1,3 +1,4 @@
+import { applyEvidenceAdoption, prepareEvidenceAdoptionReview } from './lib/pii-evidence-adoption-apply.mjs';
 import { parseEvidenceJson as parseProposalJson } from './lib/pii-evidence-json.mjs';
 export { parseEvidenceJson as parseProposalJson } from './lib/pii-evidence-json.mjs';
 import { readFileSync, existsSync, lstatSync, mkdirSync, writeFileSync, rmSync, realpathSync } from 'node:fs';
@@ -57,8 +58,9 @@ export function prepareAdoptionFiles({ root = ROOT, preflightFile, previousFile,
   return candidate;
 }
 
-export function prepareAcceptedAdoptionFiles({ root = ROOT, bundleFile, outDir }) {
+export function prepareAcceptedAdoptionFiles({ root = ROOT, bundleFile, costDecisionFile, outDir }) {
   const input = readPublicRecord(bundleFile, 32 * 1024 * 1024), validated = validateActiveEvidenceAdoption(input);
+  const review = costDecisionFile ? prepareEvidenceAdoptionReview({ root, bundle: input, costDecision: readPublicRecord(costDecisionFile) }) : null;
   const latest = input.history.at(-1);
   const entry = { preflight: input.preflight, candidate: input.candidate, acceptance: input.acceptance, comparison: input.comparison, retainedFiles: input.retainedFiles };
   const destination = newScratchDirectory(root, outDir);
@@ -76,6 +78,7 @@ export function prepareAcceptedAdoptionFiles({ root = ROOT, bundleFile, outDir }
         proposedTargets: ['benchmarks/pii-evidence/snapshot-pin.json', 'benchmarks/pii-evidence/consumer-pin.json', 'benchmarks/pii-evidence/preflight.json'],
         prerequisites: ['authenticate-external-maintainer-record', 'review-active-pins-and-retained-history', 'separate-authorized-local-update'] },
     };
+    if (review) files['review-package.json'] = review;
     for (const [name, content] of Object.entries(files)) writeFileSync(join(destination, name), json(content), { flag: 'wx', mode: 0o600 });
   } catch (error) { rmSync(destination, { recursive: true, force: true }); throw error; }
   return validated;
@@ -83,20 +86,26 @@ export function prepareAcceptedAdoptionFiles({ root = ROOT, bundleFile, outDir }
 
 export function main(argv, { root = ROOT, out = console.log, err = console.error } = {}) {
   try {
-    const known = new Set(['preflight', 'previous', 'scanner', 'previous-scanner', 'acceptance', 'out-dir', 'validate-adoption']);
+    const known = new Set(['preflight', 'previous', 'scanner', 'previous-scanner', 'acceptance', 'out-dir', 'validate-adoption', 'apply-adoption', 'cost-decision']);
     const options = {};
     for (let index = 0; index < argv.length; index += 2) {
       const key = argv[index]?.slice(2), value = argv[index + 1];
       if (!argv[index]?.startsWith('--') || !known.has(key) || options[key] !== undefined || !value || value.startsWith('--')) refuse('invalid-arguments');
       options[key] = value;
     }
+    if (options['apply-adoption']) {
+      if (Object.keys(options).length !== 1) refuse('invalid-arguments');
+      const result = applyEvidenceAdoption({ root, reviewPackage: readPublicRecord(resolve(root, options['apply-adoption']), 32 * 1024 * 1024) });
+      out(`Applied external adoption ${result.candidateDigest}; authority and owner criteria unchanged.`); return 0;
+    }
     if (!options['out-dir'] || (!options.preflight && !options['validate-adoption'])) refuse('missing-arguments');
     const file = name => options[name] ? resolve(root, options[name]) : undefined;
     if (options['validate-adoption']) {
-      if (Object.keys(options).some(key => !['validate-adoption', 'out-dir'].includes(key))) refuse('invalid-arguments');
-      const result = prepareAcceptedAdoptionFiles({ root, bundleFile: file('validate-adoption'), outDir: options['out-dir'] });
+      if (Object.keys(options).some(key => !['validate-adoption', 'out-dir', 'cost-decision'].includes(key))) refuse('invalid-arguments');
+      const result = prepareAcceptedAdoptionFiles({ root, bundleFile: file('validate-adoption'), costDecisionFile: file('cost-decision'), outDir: options['out-dir'] });
       out(`Validated external adoption ${result.candidateDigest}; proposed local changes only.`); return 0;
     }
+    if (options['cost-decision']) refuse('invalid-arguments');
     const result = prepareAdoptionFiles({ root, preflightFile: file('preflight'), previousFile: file('previous'), scannerFile: file('scanner'),
       previousScannerFile: file('previous-scanner'), acceptanceFile: file('acceptance'), outDir: options['out-dir'] });
     out(`Prepared public proposal ${result.candidateDigest}; no active writes.`);

@@ -1,8 +1,8 @@
 # PII evidence adoption preparation (#841)
 
 Status: proposal preparation and pure acceptance/history validation are implemented.
-The CLI produces reversible local proposed updates; applying them to active
-repository files remains a separate reviewed operation.
+The CLI prepares a review package and applies an explicitly supplied external
+acceptance with guarded fixed-file updates and rollback on replacement failure.
 
 ```sh
 node scripts/prepare-pii-evidence-adoption.mjs \
@@ -53,7 +53,7 @@ authenticity of its claim. It never generates this record or turns it into
 `ownerAcceptance`. A reviewer must verify the cited maintainer decision.
 
 Even with that record, `canApply: false` and an unapplied acceptance plan remain.
-The separate future accept command must validate a canonical execution receipt,
+The separate guarded apply command validates a canonical execution receipt,
 the explicit maintainer decision, snapshot/measurement identity and retention of
 historical records before changing the dedicated active evidence pin. It must
 refuse missing measurement and never infer product support, authority repin or
@@ -90,14 +90,15 @@ measurement digests. It has `activeWritesApplied: false`, `authorityChanged:
 false`, `supportClaims: false` and `qualified: false`. The external acceptance
 record remains a maintainer-supplied trust boundary; the helper validates its
 binding and does not authenticate a GitHub commenter or manufacture a decision.
-The separate reviewed active update must retain this complete chain before an
-active snapshot update. No preparation command applies it.
+The guarded apply command retains this complete chain before an active snapshot
+update. Preparation itself applies no repository updates.
 
 ## Prepare a reversible accepted update
 
 ```sh
 node scripts/prepare-pii-evidence-adoption.mjs \
   --validate-adoption path/to/externally-accepted-bundle.json \
+  --cost-decision path/to/approved-exact-cost-decision.json \
   --out-dir results-output/pii-evidence-adoption/accepted-release
 ```
 
@@ -116,18 +117,61 @@ It writes only a new scratch directory:
 - `rollback.json`: the preceding accepted snapshot/consumer/preflight and history,
   or the unchanged initial records for a first adoption.
 - `apply-plan.json`: unapplied target paths and review prerequisites.
+- `review-package.json`: when `--cost-decision` is supplied, the validated bundle,
+  unchanged external cost record and SHA-256 preimages of every fixed target.
 
 The rollback describes the validated history, not the current working tree.
 Before applying the local proposal, a maintainer must authenticate the external
 acceptance, compare the actual active files to the expected prior records and
-retain the complete history. Existing output refuses overwrite. The CLI does
+retain the complete history. Existing output refuses overwrite. The preparation command does
 not write active pins, generate an approval, launch measurement or alter any of
 the existing four populations. Future release identity comes from CLI records,
 without editing the initial archive constants; changing the reviewed importer,
 engine or product pair still requires a separate compatibility/cost review.
 
+## Apply the reviewed package
+
+```sh
+node scripts/prepare-pii-evidence-adoption.mjs \
+  --apply-adoption results-output/pii-evidence-adoption/accepted-release/review-package.json
+node scripts/preflight-pii-evidence.mjs --check
+```
+
+The review package contains `schema: pii-evidence-adoption-review-package/1`,
+`bundle`, `costDecision` and `expectedPriorSha256`. Preparation derives the
+preimage map from the current repository, without hand-editing target files.
+Every existing target requires its exact prior byte hash; a missing target uses
+`null`. There are exactly 19 fixed targets: three evidence pins/preflight,
+`adoption.json`, `history.json`, all eleven retained comparison upload members,
+comparison record, population index and the supplied cost decision. The command
+cannot target authority, qualification criteria or the four existing population
+pins. It preserves the initial immutable anchor and complete accepted history.
+
+Apply validates the strict canonical comparison, external acceptance, exact
+approved cost scope/digest, current role policy, unchanged four-population pins,
+actual active predecessor and existing historical prefix before writes. Stale
+preimages, missing acceptance/measurement, malformed history or symlink targets
+and parents refuse. An exclusive lock prevents two cooperating apply commands.
+All replacement and original bytes are staged before the first replacement;
+each individual rename is atomic. A replacement failure restores the original
+bytes and modes and removes newly created files. This is not a globally atomic
+multi-file update. An interrupted process leaves the lock and transaction
+backups for reviewed recovery; the active source check rejects partial state.
+If rollback itself fails, the backups remain rather than being silently deleted.
+
+The future-active preflight gate reads `adoption.json`, reruns the complete
+strict acceptance/history validation and checks every active target byte against
+that record. A future pin without this validated chain refuses. Initial candidate
+pins continue to use the exact immutable initial contract. Applying a new release
+uses CLI records, not edits to those initial archive constants.
+
+Approval authenticity remains an external review responsibility. These commands
+never generate an approval or infer one from a matching name or URL. Supplying an
+externally authenticated acceptance is the explicit apply authorization; a public
+measurement cost approval alone does not authorize evidence adoption. The command
+records the supplied decision unchanged and creates no authority owner decision.
+
 Receipt reuse remains conservatively unavailable: proposal preparation always
 requires fresh execution. A complete strict canonical receipt can satisfy the
-accepted-update validator but never supplies a new dispatch allowance. The
-remaining lifecycle operation is applying the reviewed proposed files and
-retained history through the separately authorised repository change.
+accepted-update validator but never supplies a new dispatch allowance. The applied records still require ordinary source gates and a reviewed repository
+commit before publication. Applying them launches no scanner or CI workflow.

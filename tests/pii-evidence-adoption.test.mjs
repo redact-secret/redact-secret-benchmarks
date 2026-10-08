@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { sha256, expectedPreflightReport } from '../scripts/lib/pii-evidence-contract.mjs';
 import { preparePiiEvidenceAdoption, validateMaintainerAcceptance, adoptionDigest, validateAdoptionScanner, validateActiveEvidenceAdoption } from '../scripts/lib/pii-evidence-adoption.mjs';
+import { applyEvidenceAdoption, adoptionUpdateFiles, checkActiveEvidenceFiles, prepareEvidenceAdoptionReview } from '../scripts/lib/pii-evidence-adoption-apply.mjs';
 import { collectEvidenceComparison } from '../scripts/record-pii-evidence-comparison.mjs';
 import { loadPiiEvidenceComparison } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
 import { syntheticEvidenceOfficialUpload, syntheticFutureEvidenceOfficialUpload } from './helpers/pii-evidence-comparison-fixture.mjs';
@@ -232,4 +233,75 @@ test('acceptance CLI prepares reversible reviewed changes and preserves raw hist
   const bad = structuredClone(next); bad.acceptance = null; writeFileSync(join(root, 'bad.json'), JSON.stringify(bad));
   assert.equal(run(root, ['--validate-adoption', 'bad.json', '--out-dir', 'results-output/pii-evidence-adoption/rejected']).code, 1);
   assert.equal(existsSync(join(root, 'results-output/pii-evidence-adoption/rejected')), false);
+}));
+
+
+function appliedSandbox(body) {
+  sandbox(root => {
+    const initial = activeInput(); mkdirSync(join(root, 'benchmarks/pii-evidence'));
+    for (const [name, value] of [['snapshot-pin', initial.snapshotPin], ['consumer-pin', initial.consumerPin], ['preflight', initial.preflight]])
+      writeFileSync(join(root, `benchmarks/pii-evidence/${name}.json`), JSON.stringify(value));
+    writeFileSync(join(root, 'benchmarks/pii-eval-population-pins.json'), readFileSync(new URL('../benchmarks/pii-eval-population-pins.json', import.meta.url)));
+    const e = syntheticFutureEvidenceOfficialUpload(), next = activeInput(e, initial);
+    next.history = [{ preflight: initial.preflight, candidate: initial.candidate, acceptance: initial.acceptance,
+      comparison: initial.comparison, retainedFiles: initial.retainedFiles }];
+    const files = adoptionUpdateFiles(next, e.costDecision).files;
+    const expectedPriorSha256 = Object.fromEntries(Object.keys(files).map(name => [name,
+      existsSync(join(root, name)) ? sha256(readFileSync(join(root, name))) : null]));
+    body({ root, next, reviewPackage: { schema: 'pii-evidence-adoption-review-package/1', bundle: next, costDecision: e.costDecision, expectedPriorSha256 }, files });
+  });
+}
+
+test('guarded apply updates every fixed file, retains complete history, and enables the future-active check', () => appliedSandbox(({ root, next, reviewPackage, files }) => {
+  const beforeFour = readFileSync(join(root, 'benchmarks/pii-eval-population-pins.json'), 'utf8');
+  writeFileSync(join(root, 'accepted-bundle.json'), JSON.stringify(reviewPackage.bundle));
+  writeFileSync(join(root, 'cost.json'), JSON.stringify(reviewPackage.costDecision));
+  assert.equal(run(root, ['--validate-adoption', 'accepted-bundle.json', '--cost-decision', 'cost.json', '--out-dir', 'results-output/pii-evidence-adoption/reviewed']).code, 0);
+  const preparedFile = 'results-output/pii-evidence-adoption/reviewed/review-package.json';
+  assert.equal(adoptionDigest(JSON.parse(readFileSync(join(root, preparedFile), 'utf8'))), adoptionDigest(reviewPackage));
+  assert.equal(run(root, ['--apply-adoption', preparedFile]).code, 0);
+  for (const [name, text] of Object.entries(files)) assert.equal(readFileSync(join(root, name), 'utf8'), text);
+  assert.equal(checkActiveEvidenceFiles(root).snapshotPin.snapshot.id, next.snapshotPin.snapshot.id);
+  assert.equal(readFileSync(join(root, 'benchmarks/pii-eval-population-pins.json'), 'utf8'), beforeFour);
+  assert.equal(existsSync(join(root, 'benchmarks/pii-authority.json')), false);
+  assert.equal(run(root, ['--apply-adoption', preparedFile]).code, 1);
+  writeFileSync(join(root, 'benchmarks/pii-evidence-comparison/replay-inputs/candidate/observation.json'), 'tampered');
+  assert.throws(() => checkActiveEvidenceFiles(root));
+}));
+
+test('apply refuses missing acceptance, stale preimages, mismatched cost and symlink targets before writes', () => {
+  for (const mutate of [value => { value.bundle.acceptance = null; }, value => { value.costDecision.scope.runs = 4; },
+    value => { delete value.expectedPriorSha256['benchmarks/pii-evidence/history.json']; },
+    value => { value.expectedPriorSha256['benchmarks/pii-evidence/snapshot-pin.json'] = 'a'.repeat(64); }])
+    appliedSandbox(({ root, reviewPackage }) => {
+      const before = readFileSync(join(root, 'benchmarks/pii-evidence/snapshot-pin.json'), 'utf8');
+      mutate(reviewPackage); assert.throws(() => applyEvidenceAdoption({ root, reviewPackage }));
+      assert.equal(readFileSync(join(root, 'benchmarks/pii-evidence/snapshot-pin.json'), 'utf8'), before);
+      assert.equal(existsSync(join(root, 'benchmarks/pii-evidence/adoption.json')), false);
+    });
+  appliedSandbox(({ root, reviewPackage }) => {
+    mkdirSync(join(root, 'outside')); symlinkSync(join(root, 'outside'), join(root, 'benchmarks/pii-evidence-comparison'));
+    assert.throws(() => applyEvidenceAdoption({ root, reviewPackage }));
+    assert.deepEqual(readdirSync(join(root, 'outside')), []);
+  });
+});
+
+test('dangling destination and parent symlinks refuse rather than satisfying a missing preimage', () => {
+  for (const target of ['benchmarks/pii-evidence/history.json', 'benchmarks/pii-evidence-comparison']) appliedSandbox(({ root, reviewPackage }) => {
+    symlinkSync(join(root, 'does-not-exist'), join(root, target));
+    assert.throws(() => applyEvidenceAdoption({ root, reviewPackage }), /unsafe-(target|parent)/);
+    assert.equal(existsSync(join(root, 'benchmarks/pii-evidence/adoption.json')), false);
+    assert.equal(existsSync(join(root, 'does-not-exist')), false);
+  });
+});
+
+test('an injected mid-transaction failure restores every prior byte and removes newly created files', () => appliedSandbox(({ root, reviewPackage, files }) => {
+  const before = Object.fromEntries(Object.keys(files).map(name => [name, existsSync(join(root, name)) ? readFileSync(join(root, name), 'utf8') : null]));
+  assert.throws(() => applyEvidenceAdoption({ root, reviewPackage, beforeReplace: (_name, index) => { if (index === 4) throw new Error('synthetic-write-failure'); } }));
+  for (const [name, text] of Object.entries(before)) {
+    if (text === null) assert.equal(existsSync(join(root, name)), false);
+    else assert.equal(readFileSync(join(root, name), 'utf8'), text);
+  }
+  assert.deepEqual(readdirSync(join(root, 'benchmarks/pii-evidence')).sort(), ['consumer-pin.json', 'preflight.json', 'snapshot-pin.json']);
+  checkActiveEvidenceFiles(root);
 }));

@@ -16,7 +16,7 @@ const hex = (value, length) => typeof value === 'string' && new RegExp(`^[a-f0-9
 export function validateAdoptionScanner(value) {
   if (!exact(value, ['schema', 'sourceCommit', 'version', 'kind', 'coreTarballSha256', 'nativeTarballSha256', 'wasmTarballSha256',
     'packageTreeSha256', 'adapterDigest', 'configurationDigest', 'activationDigest']) || value.schema !== 'pii-evidence-scanner-identity/1' ||
-      !hex(value.sourceCommit, 40) || typeof value.version !== 'string' || !/^\d+\.\d+\.\d+(?:-[a-z0-9.]+)?$/.test(value.version) ||
+      !hex(value.sourceCommit, 40) || typeof value.version !== 'string' || value.version.length > 64 || !/^\d+\.\d+\.\d+(?:-[A-Za-z0-9]+(?:[.-][A-Za-z0-9]+)*)?$/.test(value.version) ||
       !['published-npm', 'qualified-candidate'].includes(value.kind) ||
       ['coreTarballSha256', 'nativeTarballSha256', 'wasmTarballSha256', 'packageTreeSha256', 'adapterDigest', 'configurationDigest', 'activationDigest']
         .some(key => !hex(value[key], 64))) refuse('scanner-identity-invalid');

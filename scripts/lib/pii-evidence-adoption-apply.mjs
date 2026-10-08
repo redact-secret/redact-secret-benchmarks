@@ -12,7 +12,7 @@ const read = file => parseEvidenceJson(readFileSync(file, 'utf8'));
 
 export function adoptionUpdateFiles(bundle, costDecision) {
   const checked = validateActiveEvidenceAdoption(bundle), comparison = bundle.comparison;
-  validateEvidenceCostDecision(costDecision, { preflight: bundle.preflight, policy: bundle.policy, populationIndex: comparison.populationIndex });
+  validateEvidenceCostDecision(costDecision, { preflight: bundle.preflight, policy: bundle.policy, populationIndex: comparison.populationIndex, productTuple: comparison.plan.productTuple, executionPaths: comparison.plan.executionPaths });
   if (costDecision.state !== 'approved' || evidenceDigest(costDecision) !== comparison.plan.dispatch.costDecisionSha256) refuse('accepted-cost-mismatch');
   const entry = { preflight: bundle.preflight, candidate: bundle.candidate, acceptance: bundle.acceptance,
     comparison, retainedFiles: bundle.retainedFiles };

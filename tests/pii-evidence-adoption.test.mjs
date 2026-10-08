@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { sha256, expectedPreflightReport } from '../scripts/lib/pii-evidence-contract.mjs';
 import { preparePiiEvidenceAdoption, validateMaintainerAcceptance, adoptionDigest, validateAdoptionScanner, validateActiveEvidenceAdoption } from '../scripts/lib/pii-evidence-adoption.mjs';
+import { validateEvidenceExecutionSelection } from '../scripts/lib/pii-evidence-comparison-plan.mjs';
 import { applyEvidenceAdoption, adoptionUpdateFiles, checkActiveEvidenceFiles, prepareEvidenceAdoptionReview } from '../scripts/lib/pii-evidence-adoption-apply.mjs';
 import { collectEvidenceComparison } from '../scripts/record-pii-evidence-comparison.mjs';
 import { loadPiiEvidenceComparison } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
@@ -59,6 +60,13 @@ test('invalid preflight, owner claims, raw extra fields and unbound scanner iden
     assert.throws(() => preparePiiEvidenceAdoption(value));
   }
   assert.throws(() => validateAdoptionScanner({ ...scanner(), binary: 'unbound' }));
+});
+
+test('reviewed scanner versions retain valid bounded prerelease identity without normalization', () => {
+  const value = { ...scanner(), version: '0.1.0-RC.1-beta' };
+  assert.equal(validateAdoptionScanner(value).version, value.version);
+  for (const version of ['0.1.0-rc..1', '0.1.0-' + 'a'.repeat(65), '0.1.0-rc/1', '0.1.0-rc\n1'])
+    assert.throws(() => validateAdoptionScanner({ ...value, version }));
 });
 
 test('external acceptance binds the proposal but cannot waive missing measurement or write an active pin', () => {
@@ -254,6 +262,8 @@ function appliedSandbox(body) {
 
 test('guarded apply updates every fixed file, retains complete history, and enables the future-active check', () => appliedSandbox(({ root, next, reviewPackage, files }) => {
   const beforeFour = readFileSync(join(root, 'benchmarks/pii-eval-population-pins.json'), 'utf8');
+  const unrelated = join(root, 'benchmarks/unrelated-policy.json');
+  writeFileSync(unrelated, 'synthetic untouched policy\n');
   writeFileSync(join(root, 'accepted-bundle.json'), JSON.stringify(reviewPackage.bundle));
   writeFileSync(join(root, 'cost.json'), JSON.stringify(reviewPackage.costDecision));
   assert.equal(run(root, ['--validate-adoption', 'accepted-bundle.json', '--cost-decision', 'cost.json', '--out-dir', 'results-output/pii-evidence-adoption/reviewed']).code, 0);
@@ -263,7 +273,7 @@ test('guarded apply updates every fixed file, retains complete history, and enab
   for (const [name, text] of Object.entries(files)) assert.equal(readFileSync(join(root, name), 'utf8'), text);
   assert.equal(checkActiveEvidenceFiles(root).snapshotPin.snapshot.id, next.snapshotPin.snapshot.id);
   assert.equal(readFileSync(join(root, 'benchmarks/pii-eval-population-pins.json'), 'utf8'), beforeFour);
-  assert.equal(existsSync(join(root, 'benchmarks/pii-authority.json')), false);
+  assert.equal(readFileSync(unrelated, 'utf8'), 'synthetic untouched policy\n');
   assert.equal(run(root, ['--apply-adoption', preparedFile]).code, 1);
   writeFileSync(join(root, 'benchmarks/pii-evidence-comparison/replay-inputs/candidate/observation.json'), 'tampered');
   assert.throws(() => checkActiveEvidenceFiles(root));
@@ -304,4 +314,32 @@ test('an injected mid-transaction failure restores every prior byte and removes 
   }
   assert.deepEqual(readdirSync(join(root, 'benchmarks/pii-evidence')).sort(), ['consumer-pin.json', 'preflight.json', 'snapshot-pin.json']);
   checkActiveEvidenceFiles(root);
+}));
+
+
+test('a changed reviewed product and original execution paths survive future adoption as a non-executable active copy', () => appliedSandbox(({ root, reviewPackage }) => {
+  const initial = reviewPackage.bundle.history[0], future = syntheticFutureEvidenceOfficialUpload();
+  const original = syntheticEvidenceOfficialUpload().plan;
+  const productTuple = { schema: 'pii-evidence-reviewed-products/1', reviewedBy: 'Synthetic Reviewer', reviewedAt: '2026-10-08T12:00:00Z',
+    baseline: structuredClone(original.baseline), candidate: structuredClone(original.candidate) };
+  productTuple.candidate.sourceCommit = '8'.repeat(40); productTuple.candidate.version = '0.1.0-RC.1-beta';
+  productTuple.candidate.qualificationRunId = '10';
+  for (const key of Object.keys(productTuple.candidate).filter(key => key.endsWith('Sha256'))) productTuple.candidate[key] = '9'.repeat(64);
+  const e = syntheticEvidenceOfficialUpload({ preflight: future.plan.preflight, policy: future.plan.policy,
+    populationIndex: future.populationIndex, productTuple });
+  const bundle = activeInput(e, initial); bundle.history = [initial];
+  const prepared = prepareEvidenceAdoptionReview({ root, bundle, costDecision: e.costDecision });
+  const applied = applyEvidenceAdoption({ root, reviewPackage: prepared });
+  assert.equal(applied.authorityChanged, false);
+  const checked = checkActiveEvidenceFiles(root);
+  assert.equal(checked.preflight.evidence.snapshot.id, bundle.snapshotPin.snapshot.id);
+  const copied = JSON.parse(readFileSync(join(root, 'benchmarks/pii-evidence-comparison/plan.json'), 'utf8'));
+  assert.deepEqual(copied.executionPaths, e.plan.executionPaths);
+  assert.equal(copied.candidate.sourceCommit, productTuple.candidate.sourceCommit);
+  assert.equal(copied.candidate.version, productTuple.candidate.version);
+  assert.throws(() => validateEvidenceExecutionSelection(copied, { planPath: 'benchmarks/pii-evidence-comparison/plan.json' }));
+  validateEvidenceExecutionSelection(copied, { planPath: e.plan.executionPaths.planPath });
+  const retained = JSON.parse(readFileSync(join(root, 'benchmarks/pii-evidence/history.json'), 'utf8'));
+  assert.equal(retained.entries[1].retainedFiles['plan.json'], e.files['plan.json']);
+  assert.equal(retained.entries[0].retainedFiles['plan.json'], initial.retainedFiles['plan.json']);
 }));

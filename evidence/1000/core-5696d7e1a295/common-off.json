@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
+  "artifactSourceRevision": null,
+  "productVersion": "0.1.0-beta.14",
+  "published": false,
+  "runtime": {
+    "name": "cloudflare-workers",
+    "engine": "workerd",
+    "wranglerVersion": "4.147.0",
+    "workerdVersion": "1.20261001.1",
+    "compatibilityDate": "2026-10-01"
+  },
+  "detectorProfile": "common",
+  "pii": false,
+  "status": "qualified",
+  "checks": [
+    {
+      "name": "artifact() reports wasm",
+      "ok": true
+    },
+    {
+      "name": "piiActivation() reports the requested activation",
+      "ok": true
+    },
+    {
+      "name": "VERSION/PROFILE match the built package",
+      "ok": true
+    },
+    {
+      "name": "scan matches the canonical fixture's finding count",
+      "ok": true
+    },
+    {
+      "name": "scanAndRedact agrees with scan then redact",
+      "ok": true
+    },
+    {
+      "name": "compareActionPolicies compares sides over one detection pass (#1220)",
+      "ok": true
+    },
+    {
+      "name": "an incremental session matches the whole-input result",
+      "ok": true
+    },
+    {
+      "name": "Web Streams matches whole-input result",
+      "ok": true
+    }
+  ],
+  "fixture": {
+    "id": "jwt-positive-structured",
+    "path": "conformance/fixtures/synchronous-corpus.json",
+    "sha256": "ce1850c7700cd360968e7883e3790c04055f85376390dd8fd65850db1ab9bb1b"
+  },
+  "packageArtifacts": [
+    {
+      "name": "@redact-secret/core",
+      "version": "0.1.0-beta.14",
+      "file": "redact-secret-core-0.1.0-beta.14.tgz",
+      "sha256": "42c0447c124ace12c128768b30e33d83b4c58b8af2d0d8502c6d42f795c62c35",
+      "packedBytes": 77163
+    },
+    {
+      "name": "@redact-secret/wasm",
+      "version": "0.1.0-beta.14",
+      "file": "redact-secret-wasm-0.1.0-beta.14.tgz",
+      "sha256": "77af5822255f28f13b4fc6e2de3ce393abdfe6ce205e7d2e61cb858808c4c037",
+      "packedBytes": 1239966
+    }
+  ],
+  "binaries": [
+    {
+      "package": "@redact-secret/wasm",
+      "file": "redact_secret_wasm_common_bg.wasm",
+      "sha256": "ec27a53fa19bdcd39f1ce04510fcc23daf807b6c4d668fa3102e540c072d3ea3"
+    }
+  ],
+  "measurements": {
+    "initializeMs": 6,
+    "scanAndRedactMs": [
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.02,
+      0.01,
+      0.01,
+      0.01,
+      0,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01
+    ],
+    "scanBatchMs": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      1,
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "callsPerSample": 100,
+    "repetitions": 21,
+    "inputBytes": 79,
+    "inputCodeUnits": 79,
+    "memory": {
+      "status": "unavailable",
+      "reason": "workerd does not expose process or isolate memory counters to the worker"
+    },
+    "wasmBytes": 564541,
+    "wasmGzipBytes": 202510,
+    "timingKind": "first worker initialization and 21 warm batches of 100 scanAndRedact calls; per-call samples divide batch by 100; excludes bundler and process startup",
+    "clock": "performance.now wall clock; quantized zero samples are below clock resolution, not zero cost",
+    "bundle": {
+      "status": "measured",
+      "kind": "Wrangler deploy --dry-run qualification worker JS/WASM modules, including smoke checks; sum of independent per-module gzip, no transport overhead",
+      "modules": [
+        {
+          "file": "911955a84e779e19e39dfe93eee9597c58f2aabc-redact_secret_wasm_common_bg.wasm",
+          "sha256": "ec27a53fa19bdcd39f1ce04510fcc23daf807b6c4d668fa3102e540c072d3ea3",
+          "bytes": 564541,
+          "gzipBytes": 202510
+        },
+        {
+          "file": "c67691d3a2038288acf770d5d689473dcefc00b9-redact_secret_wasm_common_pii_bg.wasm",
+          "sha256": "2194c9282d9e887f7e8fcf46a03efcfe6586380f322f20d090c2436edae112d5",
+          "bytes": 863534,
+          "gzipBytes": 326429
+        },
+        {
+          "file": "worker.js",
+          "sha256": "46d4b4660d51c7d482c931c6903b762629c6d8a873db7b8b60632eb5b69f7e63",
+          "bytes": 144683,
+          "gzipBytes": 27371
+        }
+      ],
+      "bytes": 1572758,
+      "gzipBytes": 556310
+    }
+  },
+  "limits": {
+    "qualification": "local workerd, not an account deployment",
+    "maxInputCodeUnits": 1000000,
+    "maxBufferedCodeUnits": 16512,
+    "maxTokenCodeUnits": 8192,
+    "maxMultilineCodeUnits": 16384
+  }
+}

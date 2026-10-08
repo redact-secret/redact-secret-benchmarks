@@ -2,7 +2,7 @@
 
 Date: 2026-09-22 · Extends: [`resweep-differential-queue-against-pinned-trufflehog.md`](../2026-09-21/resweep-differential-queue-against-pinned-trufflehog.md),
 [`resweep-differential-queue-post-axis-refactor-issue-120.md`](../2026-09-21/resweep-differential-queue-post-axis-refactor-issue-120.md) (#120/#122),
-[`2026-09-21-settle-mechanical-mutation-review-classes.md`](../../decisions/2026-09-21-settle-mechanical-mutation-review-classes.md) (D7), [`2026-09-21-clear-digitalocean-benign-axis-diversity.md`](../../decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md) (#105)
+[`2026-09-21-settle-mechanical-mutation-review-classes.md`](../../decisions/2026-09-21-settle-mechanical-mutation-review-classes.md) (D7), [historical DigitalOcean ruling](https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md) (#105)
 
 This is a measurement report, not a decision record (#135): it is the
 evidence behind the one policy §4 settled. That policy's authoritative

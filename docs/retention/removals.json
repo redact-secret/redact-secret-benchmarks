@@ -2442,6 +2442,835 @@
         "verifiedAt": "2026-10-08",
         "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008"
       }
+    },
+    {
+      "path": "docs/decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md",
+      "sha256": "51e03b9916a7d8d1f77227571215305df31b37d3cf7f815c6d6e6be4ef3f54db",
+      "size": 8430,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "issue": 105,
+      "owner": "benchmarks maintainers",
+      "currentContract": "docs/specs/support-status.md",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/105#issuecomment-6068945696",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json",
+      "review": {
+        "dynamicReaders": "Historical report/ADR backlinks migrated with checksum-bound source and after text; no active import, authority path or ledger mapping names this ADR.",
+        "externalReferences": "Complete original accepted ruling preserved in owning issue and byte-verified archive; original source commit stays reachable.",
+        "authorityGates": "No owner acceptance rewritten; historical #207 maintainer approval preserved verbatim. Current thresholds, policy revision, ledger and pins unchanged.",
+        "excludedCallers": [
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "CONTRIBUTING.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs appears as provider-documentation prose, not a repository-record reference."
+          },
+          {
+            "path": "docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a prose count of historical fixture-link references; no input-record identity."
+          },
+          {
+            "path": "docs/generated/qualification-parity.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/qualification-parity.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/measurement-v4.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names beta-4 results/corpus-audit and the ADR directory convention; neither removed ADR or UI report is a named methodology input."
+          },
+          {
+            "path": "docs/specs/qualification-cutover.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/543",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #543 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/847",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #847 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "schemas/pii-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/pii-support-matrix-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes an oracle decision field; it does not bind either removed implementation ADR."
+          },
+          {
+            "path": "schemas/qualification-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes decision/report/rehearsal path fields; committed authority identities remain unchanged and name no removed record."
+          },
+          {
+            "path": "scripts/build-qualification-parity.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Writes qualification-parity outputs and cites current specs; generated status rationale contains generic decision-directory prose, not these ADR identities."
+          },
+          {
+            "path": "scripts/check-evidence-adoption.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Checks ownerAcceptance.decision from the committed adoption record; that identity is an acceptance ADR, neither removed implementation ADR."
+          },
+          {
+            "path": "scripts/check-ledger-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Reads only ADR files named in benchmarks/ledger-decisions.json; neither removed ADR is mapped."
+          },
+          {
+            "path": "scripts/prepare-acceptance-package.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Generates dated accept-${tag}-on-credential-eval ADRs, appends DECISIONS and reads qualification-parity; does not read retired implementation ADRs or local diagnostic."
+          },
+          {
+            "path": "scripts/validate-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Enumerates surviving ADRs and validates selected entry links; neither migrated ADR is required by the active entry index."
+          },
+          {
+            "path": "src/pages/how-to-read.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Directory path appears as explanatory HTML text only; page reads no individual ADR file."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "tests/pii-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic dated decision path and authority-reader allowlist tests; no removed ADR is a fixture dependency."
+          },
+          {
+            "path": "tests/qualification-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic decision/report paths and reader allowlist tests; no removed record is a fixture dependency."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "51e03b9916a7d8d1f77227571215305df31b37d3cf7f815c6d6e6be4ef3f54db",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json"
+      }
+    },
+    {
+      "path": "docs/decisions/2026-09-21-produce-first-four-stable-families.md",
+      "sha256": "f23728c8caa099c63b638de5cbaee7076b35bee6a084f9ee263710c0c7918c27",
+      "size": 6434,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "issue": 62,
+      "owner": "benchmarks maintainers",
+      "currentContract": "docs/specs/support-status.md",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-21-produce-first-four-stable-families.md",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/62#issuecomment-6068946138",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json",
+      "review": {
+        "dynamicReaders": "Historical report/ADR backlinks migrated with checksum-bound source and after text; no active import, authority path or ledger mapping names this ADR.",
+        "externalReferences": "Complete original accepted ruling preserved in owning issue and byte-verified archive; original source commit stays reachable.",
+        "authorityGates": "No owner acceptance rewritten; historical #207 maintainer approval preserved verbatim. Current thresholds, policy revision, ledger and pins unchanged.",
+        "excludedCallers": [
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "CONTRIBUTING.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs appears as provider-documentation prose, not a repository-record reference."
+          },
+          {
+            "path": "docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a prose count of historical fixture-link references; no input-record identity."
+          },
+          {
+            "path": "docs/generated/qualification-parity.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/qualification-parity.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/measurement-v4.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names beta-4 results/corpus-audit and the ADR directory convention; neither removed ADR or UI report is a named methodology input."
+          },
+          {
+            "path": "docs/specs/qualification-cutover.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/543",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #543 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/847",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #847 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "schemas/pii-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/pii-support-matrix-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes an oracle decision field; it does not bind either removed implementation ADR."
+          },
+          {
+            "path": "schemas/qualification-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes decision/report/rehearsal path fields; committed authority identities remain unchanged and name no removed record."
+          },
+          {
+            "path": "scripts/build-qualification-parity.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Writes qualification-parity outputs and cites current specs; generated status rationale contains generic decision-directory prose, not these ADR identities."
+          },
+          {
+            "path": "scripts/check-evidence-adoption.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Checks ownerAcceptance.decision from the committed adoption record; that identity is an acceptance ADR, neither removed implementation ADR."
+          },
+          {
+            "path": "scripts/check-ledger-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Reads only ADR files named in benchmarks/ledger-decisions.json; neither removed ADR is mapped."
+          },
+          {
+            "path": "scripts/prepare-acceptance-package.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Generates dated accept-${tag}-on-credential-eval ADRs, appends DECISIONS and reads qualification-parity; does not read retired implementation ADRs or local diagnostic."
+          },
+          {
+            "path": "scripts/validate-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Enumerates surviving ADRs and validates selected entry links; neither migrated ADR is required by the active entry index."
+          },
+          {
+            "path": "src/pages/how-to-read.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Directory path appears as explanatory HTML text only; page reads no individual ADR file."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "tests/pii-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic dated decision path and authority-reader allowlist tests; no removed ADR is a fixture dependency."
+          },
+          {
+            "path": "tests/qualification-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic decision/report paths and reader allowlist tests; no removed record is a fixture dependency."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "f23728c8caa099c63b638de5cbaee7076b35bee6a084f9ee263710c0c7918c27",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json"
+      }
+    },
+    {
+      "path": "docs/decisions/2026-09-24-amend-207-scope-to-348-assignments.md",
+      "sha256": "d9284e6827b661f6d81b60b46a25db018ffe8c500a1fc3eddb8e6cad81ea34d1",
+      "size": 5432,
+      "disposition": "historical-record-migrated",
+      "removalApproved": true,
+      "issue": 207,
+      "owner": "benchmarks maintainers",
+      "currentContract": "docs/specs/beta8-evidence.md",
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "sourceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-24-amend-207-scope-to-348-assignments.md",
+      "issueRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/207#issuecomment-6068946510",
+      "archiveReceipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json",
+      "review": {
+        "dynamicReaders": "Historical report/ADR backlinks migrated with checksum-bound source and after text; no active import, authority path or ledger mapping names this ADR.",
+        "externalReferences": "Complete original accepted ruling preserved in owning issue and byte-verified archive; original source commit stays reachable.",
+        "authorityGates": "No owner acceptance rewritten; historical #207 maintainer approval preserved verbatim. Current thresholds, policy revision, ledger and pins unchanged.",
+        "excludedCallers": [
+          {
+            "path": "benchmarks/batch2/FROZEN-r2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names batch-2 research handoffs; docs directory inference does not identify the removed records."
+          },
+          {
+            "path": "benchmarks/batch2/FROZEN.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names product docs/audits/evidence/1223-1226 and batch-2 handoff; these explicit frozen identities are outside removed paths."
+          },
+          {
+            "path": "benchmarks/evaluation/domains/pii/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Own fixed artifact/authority/provenance filename or evidence URL; not this pre-relabel payload. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/execution-axes.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "benchmarks/qualification/authority.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ is the permitted-reader directory; decision/report shape checks operate on named authority records, which name none of the five removed records."
+          },
+          {
+            "path": "CONTRIBUTING.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs appears as provider-documentation prose, not a repository-record reference."
+          },
+          {
+            "path": "docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a prose count of historical fixture-link references; no input-record identity."
+          },
+          {
+            "path": "docs/generated/qualification-parity.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/generated/qualification-parity.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "docs/specs/evaluation-report-storage.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Inventory describes docs/decisions/* and reports as historical callers; explicit normative ADR/baseline references name retained files."
+          },
+          {
+            "path": "docs/specs/measurement-v4.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Names beta-4 results/corpus-audit and the ADR directory convention; neither removed ADR or UI report is a named methodology input."
+          },
+          {
+            "path": "docs/specs/qualification-cutover.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "evidence/603/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product source-only change and branch name; named performance ADRs remain retained."
+          },
+          {
+            "path": "evidence/860/66b492b-published/README.md",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs/ describes product commits differing in documentation only; not a benchmarks-file input."
+          },
+          {
+            "path": "fixtures/generated/beta8/208.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic prose-control identifier and beta8-evidence.md is the cited contract; generator does not read a historical ADR, diagnostic or UI report."
+          },
+          {
+            "path": "fixtures/generated/beta8/209.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic MCP server name; generator cites beta8-evidence.md and computes fixtures without reading removed records."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/543",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #543 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/845",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "https://github.com/redact-secret/redact-secret-benchmarks/issues/847",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Issue #847 describes directory-level cleanup/legacy scope; original body names no selected deleted file, and immutable source records remain preserved."
+          },
+          {
+            "path": "schemas/pii-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Historical prose/issue directory mention; old source remains pinned and reachable. Scoped #849 review: candidate readers use candidate-evidence-v1.json; site enumeration uses support-status-{candidate,published}.json; exact filename/org searches identify only the migrated README."
+          },
+          {
+            "path": "schemas/pii-support-matrix-v2.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes an oracle decision field; it does not bind either removed implementation ADR."
+          },
+          {
+            "path": "schemas/qualification-authority-v1.json",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Regex describes decision/report/rehearsal path fields; committed authority identities remain unchanged and name no removed record."
+          },
+          {
+            "path": "scripts/build-qualification-parity.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Writes qualification-parity outputs and cites current specs; generated status rationale contains generic decision-directory prose, not these ADR identities."
+          },
+          {
+            "path": "scripts/check-evidence-adoption.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Checks ownerAcceptance.decision from the committed adoption record; that identity is an acceptance ADR, neither removed implementation ADR."
+          },
+          {
+            "path": "scripts/check-ledger-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Reads only ADR files named in benchmarks/ledger-decisions.json; neither removed ADR is mapped."
+          },
+          {
+            "path": "scripts/prepare-acceptance-package.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Generates dated accept-${tag}-on-credential-eval ADRs, appends DECISIONS and reads qualification-parity; does not read retired implementation ADRs or local diagnostic."
+          },
+          {
+            "path": "scripts/validate-decisions.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Enumerates surviving ADRs and validates selected entry links; neither migrated ADR is required by the active entry index."
+          },
+          {
+            "path": "src/pages/how-to-read.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Directory path appears as explanatory HTML text only; page reads no individual ADR file."
+          },
+          {
+            "path": "tests/decisions-validate.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Creates temporary docs/decisions fixtures; real-tree test enumerates surviving ADRs and expects no particular historical implementation record."
+          },
+          {
+            "path": "tests/pii-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic dated decision path and authority-reader allowlist tests; no removed ADR is a fixture dependency."
+          },
+          {
+            "path": "tests/qualification-authority.test.mjs",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "Uses synthetic decision/report paths and reader allowlist tests; no removed record is a fixture dependency."
+          },
+          {
+            "path": "web/components/family/FamilyFormat.stories.tsx",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic source identifier pointing to example.invalid provider documentation, not repository filesystem access."
+          },
+          {
+            "path": "web/tests/unit/family-format.test.ts",
+            "via": [
+              "directory-or-computed-prefix"
+            ],
+            "reason": "docs is a synthetic research-source map key; unit fixture does not access removed repository files."
+          }
+        ]
+      },
+      "preservation": {
+        "ref": "refs/tags/hygiene-before-cleanup-845-20261008",
+        "sha256": "d9284e6827b661f6d81b60b46a25db018ffe8c500a1fc3eddb8e6cad81ea34d1",
+        "verifiedAt": "2026-10-08",
+        "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json"
+      }
+    }
+  ],
+  "readerMigrations": [
+    {
+      "path": "docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md",
+      "sourceSha256": "1802e00dbca740b15dd78479848ce42270c7a84fced449283dc09838a669877a",
+      "afterSha256": "89300c560aaf10a89ff5e078adac557db34989ef0ea3e30d8dc39ba3c8547aa8",
+      "owner": "benchmarks maintainers",
+      "issue": 847,
+      "reason": "Migrate only the historical ADR backlink to the immutable source commit; preserve all original measurement, status and approval prose unchanged."
+    },
+    {
+      "path": "docs/reports/2026-09-22/settle-differential-disagreements-on-pending-fixtures.md",
+      "sourceSha256": "1bf42e55ea03ea5fb96c68b0df714c01a4ce84127f702b09fbeae1873f49d519",
+      "afterSha256": "ff1b75e15e9c332a53bf1aca42ebd8db74e8fc20d4bae6f48b6e15daacf020b4",
+      "owner": "benchmarks maintainers",
+      "issue": 847,
+      "reason": "Migrate only the historical ADR backlink to the immutable source commit; preserve all original measurement, status and approval prose unchanged."
+    },
+    {
+      "path": "docs/reports/2026-09-21/resweep-differential-mutation-queue-d7.md",
+      "sourceSha256": "702aa5a64ef1dd1e442dee37d9abf0a9491dd4d686e8201fe4332c61df275b7c",
+      "afterSha256": "85bcadba67a66ddf88774cee19caf105c54fd9df11c23252a5811f0d70c47bda",
+      "owner": "benchmarks maintainers",
+      "issue": 847,
+      "reason": "Migrate only the historical ADR backlink to the immutable source commit; preserve all original measurement, status and approval prose unchanged."
+    },
+    {
+      "path": "docs/reports/2026-09-24-beta8-207-remeasure.md",
+      "sourceSha256": "0043719ed01dff0e502ac03fdc3e89926e26b97323d5f1d8c6342368b96c7af7",
+      "afterSha256": "bcbea3101a9a32b33df84558faf8bcca151d37bb7b1e0466a01703fc5723d680",
+      "owner": "benchmarks maintainers",
+      "issue": 847,
+      "reason": "Migrate only the historical ADR backlink to the immutable source commit; preserve all original measurement, status and approval prose unchanged."
     }
   ]
 }

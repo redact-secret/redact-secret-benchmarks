@@ -9,7 +9,7 @@ decided_at: 2026-09-22
 # Settle differential disagreements on pending fixtures as not-assertable
 
 Extends: [`2026-09-21-settle-mechanical-mutation-review-classes.md`](2026-09-21-settle-mechanical-mutation-review-classes.md) (D7),
-[`2026-09-21-clear-digitalocean-benign-axis-diversity.md`](2026-09-21-clear-digitalocean-benign-axis-diversity.md) (#105)
+[historical DigitalOcean ruling](https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md) (#105)
 
 ## Context
 

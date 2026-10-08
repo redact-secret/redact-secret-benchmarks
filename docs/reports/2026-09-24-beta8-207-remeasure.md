@@ -241,7 +241,7 @@ does not exist yet.
 
 The 348 added assignments are 28 above #207's 280–320 range. The reviewed
 amendment is drafted as
-[a proposed decision](../decisions/2026-09-24-amend-207-scope-to-348-assignments.md),
+[a proposed decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-24-amend-207-scope-to-348-assignments.md),
 awaiting maintainer review. The count, from the corpus:
 
 - baseline correction −4 (`bearer-token` started at 15, not 11);

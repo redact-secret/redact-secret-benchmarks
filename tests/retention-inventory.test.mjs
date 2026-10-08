@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeFiles, removalDryRun } from '../scripts/lib/retention-inventory.mjs';
+import { analyzeFiles, removalDryRun, applyReaderMigrations } from '../scripts/lib/retention-inventory.mjs';
+import { createHash } from 'node:crypto';
 
 const files = pairs => pairs.map(([path, text]) => ({ path, bytes: Buffer.from(text) }));
 test('inventory finds imports, indirect callers, dynamic directories, npm, workflows and remote references', () => {
@@ -47,4 +48,24 @@ test('a scoped prefix exclusion cannot override an exact import or literal reade
   const entry = result.entries.find(e => e.path === 'docs/record.json');
   const dry = removalDryRun(result, { entries: [{ ...entry, review: { excludedCallers: [{ path: 'scripts/read.mjs', via: ['literal-path'], reason: 'cannot suppress this' }] } }] });
   assert.ok(dry.errors.some(e => e.includes('active consumer')));
+});
+
+test('reviewed Markdown link migrations change edges without changing original source identities', () => {
+  const original = files([['docs/decisions/old.md', 'historical ruling'], ['docs/reports/run.md', '`docs/decisions/old.md`'], ['scripts/read.mjs', "readFile('docs/reports/run.md')"]]);
+  const after = Buffer.from('[ruling](https://github.com/redact-secret/redact-secret-benchmarks/blob/' + 'a'.repeat(40) + '/docs/decisions/old.md)');
+  const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+  const row = { path: original[1].path, sourceSha256: digest(original[1].bytes), afterSha256: digest(after), owner: 'maintainers', issue: 847, reason: 'Preserved historical original linked explicitly' };
+  const before = analyzeFiles(original), reviewed = analyzeFiles(applyReaderMigrations(original, [row], () => after));
+  assert.ok(before.entries[0].callers.some(c => c.path === row.path));
+  assert.deepEqual(reviewed.entries[0].callers, []);
+  assert.equal(reviewed.entries[1].sha256, before.entries[1].sha256);
+  assert.equal(reviewed.entries[1].size, before.entries[1].size);
+  assert.throws(() => applyReaderMigrations(original, [row, row], () => after), /Invalid/);
+  assert.throws(() => applyReaderMigrations(original, [{ ...row, sourceSha256: 'b'.repeat(64) }], () => after), /Invalid/);
+  assert.throws(() => applyReaderMigrations(original, [row], () => Buffer.from('unreviewed changes')), /bytes differ/);
+  assert.throws(() => applyReaderMigrations(original, [{ ...row, path: 'scripts/read.mjs' }], () => after), /Invalid/);
+  // A code caller still reading the retired record cannot be masked by a documentation migration.
+  const active = [...original, ...files([['scripts/active.mjs', "readFile('docs/decisions/old.md')"]])];
+  const guarded = analyzeFiles(applyReaderMigrations(active, [row], () => after));
+  assert.ok(removalDryRun(guarded, { entries: [{ ...guarded.entries[0], review: {} }] }).errors.some(e => e.includes('scripts/active.mjs')));
 });

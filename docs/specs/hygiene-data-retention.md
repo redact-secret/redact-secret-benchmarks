@@ -111,3 +111,11 @@ same-run report, scanner comparison, candidate diff, UI fallback and rollback
 with unchanged source data. Unresolved prerequisites leave the payload here.
 
 The migrated candidate was freshly downloaded as `evidence-860-pre-relabel-af180a5.json.gz` (42,883 bytes), transport SHA256 `ce72e4464932767391e01a7911716b351223127522d901d691ad8539ccab6523`. Decompression restored 1,663,484 bytes, SHA256 `db98b4a699573c58a1843d9720639f446e2848921df589e5e749b52e11ffdad4`, equal to the pinned source Git blob. `docs/retention/removals.json` records exact scoped prefix exclusions and immutable source references. Broader #849 evidence lineage/access reviews remain open.
+
+## Historical source revision reachability
+
+The retained cleanup tag does not contain every historical measurement revision. Beta.10 baseline source `1460bfb69722c0721a50885615026b31673cddb9` and all 302 peer observations declared source `f73d12fdde199ed0a6eaec85b60e7b73c36b2400` were independently preserved as annotated tags `hygiene-baseline-beta10-845-20261008` and `hygiene-peer-source-845-20261008`. Never move or delete these source tags. `docs/retention/archive.json` records their tag objects, original commits and fresh isolated-fetch verification. Source tree connectivity was verified and temporary checkout objects removed.
+
+The other ten baseline source revisions are ancestors of the main retained cleanup source. All 11 baselines and all 302 peer snapshots retain their exact original bytes and recorded scanner identities. The beta.5 baseline records historical trufflehog 3.97.5; preserving it does not reinterpret it as the current 3.97.4 measurement. Historical source retention does not authorise new measurements, authority changes or owner acceptance.
+
+The peer snapshots were refreshed in pre-cleanup commit `722f0b7368b76f5c12050a9acf95757fb6be4ed6`, already reachable through the retained cleanup source. That refresh used working metadata/corpus while recording base revision `f73d12f`: semantic-index identities differ between the declared base tree and snapshot inputs. Retention preserves both identities and exact snapshot bytes; it does not claim the declared base tree alone reproduces those inputs. Resolving this historical provenance limitation is outside a byte-preserving cleanup.

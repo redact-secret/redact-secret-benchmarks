@@ -101,11 +101,35 @@ export function analyzeFiles(files, { sourceCommit = null, remoteReferences = []
   };
 }
 
-export function inventoryAt(root, ref = null, remoteReferences = []) {
+export function applyReaderMigrations(files, migrations, readAfter) {
+  const byPath = new Map(files.map(file => [file.path, file]));
+  const reviewed = new Map();
+  for (const row of migrations) {
+    const original = byPath.get(row.path);
+    if (reviewed.has(row.path) || !/^docs\/(?:decisions|reports)\/[\w./-]+\.md$/.test(row.path) || row.path.split('/').includes('..') ||
+        !original || !/^[a-f0-9]{64}$/.test(row.afterSha256 ?? '') || row.sourceSha256 !== sha256(original.bytes) ||
+        !row.owner || !row.issue || !row.reason?.trim()) throw new Error('Invalid checksum-bound historical reader migration');
+    const after = readAfter(row.path);
+    if (sha256(after) !== row.afterSha256) throw new Error(`Historical reader migration bytes differ: ${row.path}`);
+    reviewed.set(row.path, after.toString('utf8'));
+  }
+  // Keep original inventories/hashes; only the reviewed documentation's edges use current bytes.
+  return files.map(file => reviewed.has(file.path) ? { ...file, text: reviewed.get(file.path) } : file);
+}
+
+export function inventoryAt(root, ref = null, remoteReferences = [], readerMigrations = []) {
   const git = args => execFileSync('git', args, { cwd: root, maxBuffer: 512 * 1024 * 1024 });
   const paths = git(ref ? ['ls-tree', '-r', '--name-only', '-z', ref] : ['ls-files', '-z']).toString().split('\0').filter(Boolean);
   const files = paths.map(path => ({ path, bytes: ref ? git(['show', `${ref}:${path}`]) : lstatSync(resolve(root, path)).isSymbolicLink() ? Buffer.from(readlinkSync(resolve(root, path))) : readFileSync(resolve(root, path)) }));
-  return analyzeFiles(files, { sourceCommit: git(['rev-parse', `${ref ?? 'HEAD'}^{commit}`]).toString().trim(), remoteReferences });
+  if (readerMigrations.length && !ref) throw new Error('Reader migrations require an original source ref');
+  const reviewed = applyReaderMigrations(files, readerMigrations, file => {
+    const location = resolve(root, file);
+    if (!lstatSync(location).isFile() || lstatSync(location).isSymbolicLink()) throw new Error('Historical reader must be a regular file');
+    return readFileSync(location);
+  });
+  const inventory = analyzeFiles(reviewed, { sourceCommit: git(['rev-parse', `${ref ?? 'HEAD'}^{commit}`]).toString().trim(), remoteReferences });
+  inventory.coverage.reviewedReaderMigrations = readerMigrations;
+  return inventory;
 }
 
 export function removalDryRun(inventory, manifest = { entries: [] }) {

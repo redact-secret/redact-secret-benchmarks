@@ -79,5 +79,49 @@
       "verifiedAt": "2026-10-08T20:52:14.546184+00:00",
       "verification": "Independent fresh download; compressed and original SHA256/length matched, bytes equal retained source Git blob, current candidate schema/completeness validation passed. Temporary files removed."
     }
-  ]
+  ],
+  "historicalAdrRetrievals": [
+    {
+      "sourceCommit": "51d59f1bb27d0c2a129899fadd686e248412be82",
+      "release": "hygiene-before-cleanup-845-20261008",
+      "asset": "historical-adr-rulings-847.tar.gz",
+      "assetSha256": "38ea5ac0c814a94818732a926eb1473150bf3347f7dc2ee74c0ff93e851d1e09",
+      "assetBytes": 23640,
+      "verifiedFiles": 7,
+      "removedAdrs": [
+        "docs/decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md",
+        "docs/decisions/2026-09-21-produce-first-four-stable-families.md",
+        "docs/decisions/2026-09-24-amend-207-scope-to-348-assignments.md"
+      ],
+      "originalBacklinks": [
+        "docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md",
+        "docs/reports/2026-09-22/settle-differential-disagreements-on-pending-fixtures.md",
+        "docs/reports/2026-09-21/resweep-differential-mutation-queue-d7.md",
+        "docs/reports/2026-09-24-beta8-207-remeasure.md"
+      ],
+      "receipt": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json",
+      "verification": "fresh gh release download; exact archive digest, all 7 member SHA256 and byte-identical git show sourceCommit:path",
+      "verifiedAt": "2026-10-08"
+    }
+  ],
+  "sourceRevisionPreservation": [
+    {
+      "tag": "hygiene-baseline-beta10-845-20261008",
+      "sourceCommit": "1460bfb69722c0721a50885615026b31673cddb9",
+      "tagObject": "f18a295e08d4aa02f0e1505e1778341485cd8aaa",
+      "verification": "Fresh isolated depth-1 fetch matched tag object and peeled commit; full source-tree connectivity checked; temporary objects removed."
+    },
+    {
+      "tag": "hygiene-peer-source-845-20261008",
+      "sourceCommit": "f73d12fdde199ed0a6eaec85b60e7b73c36b2400",
+      "tagObject": "703c579c46424a884abce43b46633d97a8cf9f52",
+      "verification": "Fresh isolated depth-1 fetch matched tag object and peeled commit; full source-tree connectivity checked; temporary objects removed."
+    }
+  ],
+  "peerSnapshotProvenance": {
+    "declaredSourceRevision": "f73d12fdde199ed0a6eaec85b60e7b73c36b2400",
+    "snapshotContentRevision": "722f0b7368b76f5c12050a9acf95757fb6be4ed6",
+    "snapshotContentRetainedBy": "hygiene-before-cleanup-845-20261008",
+    "limitation": "Existing pre-cleanup snapshot refresh recorded the base revision while using working metadata/corpus. Preserve both source identities and unchanged snapshot bytes; the declared base tree alone is not a complete reproduction of snapshot inputs."
+  }
 }

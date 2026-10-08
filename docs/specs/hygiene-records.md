@@ -79,7 +79,7 @@ The diagnostic README's brace-path reference was migrated explicitly.
 - `docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.md`: 5462 bytes; SHA-256 `772e60ddc43bb059a7cf120dbad91b38ec2963c1d0bcdbb112da1884110af286`; owning issue #848; current contract `docs/specs/official-runs.md`.
 - `docs/reports/2026-09-18/evaluation-ui-verification.md`: 2467 bytes; SHA-256 `fe06f48ada883646c8a02fa5c90a8dbe232328c887fe3ed3d1c3910fd160f8c2`; owning issue #848; current contract `web/CONVENTIONS.md`.
 
-Total removed: 5 files, 94,028 bytes. [Archive receipt](https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008) was independently retrieved and every file matched both its SHA-256 and its retained Git blob. Complete rulings: [site redesign](https://github.com/redact-secret/redact-secret-benchmarks/issues/847#issuecomment-6068276143), [five-twin correction](https://github.com/redact-secret/redact-secret-benchmarks/issues/78#issuecomment-6068276434). The machine removal manifest is `docs/retention/removals.json`. All other records remain retained pending review.
+Total removed: 5 files, 94,028 bytes. [Archive receipt](https://github.com/redact-secret/redact-secret-benchmarks/releases/tag/hygiene-before-cleanup-845-20261008) was independently retrieved and every file matched both its SHA-256 and its retained Git blob. Complete rulings: [site redesign](https://github.com/redact-secret/redact-secret-benchmarks/issues/847#issuecomment-6068276143), [five-twin correction](https://github.com/redact-secret/redact-secret-benchmarks/issues/78#issuecomment-6068276434). The machine removal manifest is `docs/retention/removals.json`. Other records are retained according to the semantic classification below.
 
 Historical evidence-adoption acceptance patches retain their original bytes and
 context. Replay a historical patch only on its original candidate/base commit,
@@ -87,54 +87,47 @@ restoring that tree's exact records and pins first. Applying it to current HEAD
 is not a reproduction: the active decision index and other inputs have changed.
 Do not regenerate or rewrite an old patch to fit the current tree.
 
-## Complete remaining-ADR classification
-
-The semantic pass covers all 150 ADRs remaining after the two scoped migrations:
-125 current normative records, 17 binding owner/provenance records, five proposed
-normative records and three historical one-off rulings. The proposed records
-remain proposed. A dated record can still carry a standing rule; an amended
-record is not wholly superseded by one changed implementation detail. Owner and
-immutable replay evidence retains its original identity.
-
-The per-file review artifact is `adr-classification.json`, with decision
-identities, original statuses, SHA-256 values, substantive decision excerpts,
-named readers and migration actions. Its review distinguishes real named readers
-from directory-prefix candidates. The classification itself approves no further
-deletions and changes no owner criterion.
-
-Three historical rulings remain at HEAD until their surviving links are migrated:
-
-- `2026-09-21-clear-digitalocean-benign-axis-diversity.md`, completed control
-  authoring for #105/#369. It is named by
-  `docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md`
-  and `docs/reports/2026-09-22/settle-differential-disagreements-on-pending-fixtures.md`.
-  Preserve the complete ruling and repoint these links to its immutable original;
-  current axis qualification remains in `docs/specs/support-status.md`.
-- `2026-09-21-produce-first-four-stable-families.md`, completed #62 settlement and
-  corpus work. It is named by the DigitalOcean ADR above and
-  `docs/reports/2026-09-21/resweep-differential-mutation-queue-d7.md`. Preserve the
-  dated settlement and original peer/source identities before repointing those
-  links; current qualification remains in `docs/specs/support-status.md`.
-- `2026-09-24-amend-207-scope-to-348-assignments.md`, the one-time #207 frozen-corpus
-  scope amendment. It is named by
-  `docs/reports/2026-09-24-beta8-207-remeasure.md`. Preserve the complete amendment
-  and migrate that historical report link; current corpus rules remain in
-  `docs/specs/beta8-evidence.md`.
-
-The full inventoried named-reader sets of these three contain historical
-ADRs/reports, not active code imports, authority paths or ledger decision mappings.
-Directory-prefix readers and external records still need the same explicit scoped
-review and byte-verified preservation as the completed migrations. Do not rewrite
-an old measurement to use current pins while moving its reference.
-
-#847's all-ADR classification and small entry-index work is complete; its
-retain-only-current-contract work remains open for these three link migrations.
-The 17 owner/provenance records and five proposals are deliberate retention, not
-three more deletion queues. #848 continues to own the wider report/generated
-output review and producer-path migrations.
-
 ## Remaining ADR classification
 
-All 150 surviving ADRs were reviewed: 125 current normative records, 17 binding owner/provenance records, five proposed normative records, and three historical one-offs. The complete per-file classification, decision-section crux, checksum, callers and remaining migration action is archived as [`adr-classification.json`](https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/adr-classification.json). Unindexed current rules remain valid; title or date alone never determined disposition.
+The complete semantic pass classified 150 ADRs after the first two migrations:
+125 current normative, 17 binding owner/provenance, five proposed normative and
+three historical one-offs. The three historical rulings below have now been
+preserved and migrated, leaving 147 retained ADRs. Original proposal statuses and
+owner authorisation identities are unchanged. Amended records retain their
+standing rules; date and absent literal readers alone never determined removal.
 
-The three outstanding historical migrations cover DigitalOcean benign-axis controls (#105/#369), the first stable-family settlement (#62), and the #207 scope amendment. Their surviving report/document links must be migrated before retirement. #847 remains open for these explicit migrations. Binding owner/provenance records stay available for current acceptance and audit consumers; proposed records cannot be silently presented as accepted policy.
+The original per-file semantic review is archived as
+[`adr-classification.json`](https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/adr-classification.json).
+It records the pre-migration classification, decision excerpts, SHA-256 values,
+named readers and migration actions. The current removal manifest records the
+completed follow-up; the semantic artifact is not silently rewritten.
+
+### Historical rulings migrated
+
+- `2026-09-21-clear-digitalocean-benign-axis-diversity.md`: [complete ruling in #105](https://github.com/redact-secret/redact-secret-benchmarks/issues/105#issuecomment-6068945696); current contract `docs/specs/support-status.md`.
+- `2026-09-21-produce-first-four-stable-families.md`: [complete ruling in #62](https://github.com/redact-secret/redact-secret-benchmarks/issues/62#issuecomment-6068946138); current contract `docs/specs/support-status.md`.
+- `2026-09-24-amend-207-scope-to-348-assignments.md`: [complete ruling in #207](https://github.com/redact-secret/redact-secret-benchmarks/issues/207#issuecomment-6068946510); current contract `docs/specs/beta8-evidence.md`.
+
+The [separate historical ADR archive](https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.tar.gz)
+retains all three complete original rulings and the four original backlink
+documents. Archive SHA-256 is `38ea5ac0c814a94818732a926eb1473150bf3347f7dc2ee74c0ff93e851d1e09`.
+A fresh download verified every member against its checksum and original Git
+blob; [the receipt](https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-adr-rulings-847.receipt.json)
+records the exact archive and file identities. The three ADRs total 20,296 bytes.
+
+Four historical backlinks now point to full-SHA originals: the pending-fixture
+settlement ADR, its report, the D7 resweep report and the #207 remeasurement
+report. Original measurement numbers, then-current status prose, source pins and
+maintainer approval remain unchanged. The DigitalOcean-to-first-stable backlink
+is inside the migrated original records and remains in their archive/issue text.
+
+The removal planner checks source and replacement hashes for these four passive
+Markdown readers and recomputes their edges from verified replacement text. It
+does not override active source imports or literal file dependencies. Current
+ledger mappings and authority records name none of the three retired ADRs.
+
+#847's semantic classification, historical ruling migration and active index work
+are complete, subject to the final source/site/CI checks. Binding owner/provenance
+records stay available for acceptance and audit consumers; proposed records are
+not accepted criteria. #848 continues to own wider report/generated producer
+migrations. Historical patches require their original base as documented above.

@@ -1,6 +1,6 @@
 # Re-sweep the differential/mutation review queue against post-D1/D6 content
 
-Date: 2026-09-21 · Status: accepted · Extends: `2026-09-21-settle-mechanical-mutation-review-classes.md` (D2), `2026-09-21-produce-first-four-stable-families.md` (D1)
+Date: 2026-09-21 · Status: accepted · Extends: `2026-09-21-settle-mechanical-mutation-review-classes.md` (D2), [historical first-stable settlement](https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/decisions/2026-09-21-produce-first-four-stable-families.md) (D1)
 
 ## Context
 

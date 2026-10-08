@@ -90,6 +90,14 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
     if (!archive || removals.sourceCommit !== archive.sourceCommit || removals.preservationTag !== archive.retainedTag || !Array.isArray(removals.entries))
       problems.push('retention-removals.json: source/tag differs from archive');
     const seen = new Set();
+    const migratedReaders = new Set();
+    for (const row of removals.readerMigrations ?? []) {
+      if (migratedReaders.has(row.path) || !/^docs\/(?:decisions|reports)\/[\w./-]+\.md$/.test(row.path) || row.path.split('/').includes('..') ||
+          !/^[a-f0-9]{64}$/.test(row.sourceSha256 ?? '') || !/^[a-f0-9]{64}$/.test(row.afterSha256 ?? '') ||
+          entries.get(row.path)?.sha256 !== row.afterSha256 || !row.owner || !row.issue || !row.reason?.trim())
+        problems.push(`${row.path}: invalid or drifted checksum-bound historical reader migration`);
+      migratedReaders.add(row.path);
+    }
     for (const row of removals.entries ?? []) {
       if (seen.has(row.path)) problems.push(`${row.path}: duplicate removal record`);
       seen.add(row.path);

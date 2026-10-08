@@ -24,6 +24,16 @@ test('removal references must name a retained archive with a digest and review r
   assert.ok(check([], { archive: { sourceCommit: 'bad' } }).length);
   assert.ok(check([], { removals: { sourceCommit: 'bad', entries: [{ path: 'missing' }] } }).length);
 });
+test('historical Markdown reader migrations stay checksum-bound and cannot mask source readers', () => {
+  const archive = { schema: 'redact-secret/retention-archive/v1', sourceCommit: 'a'.repeat(40), retainedTag: 'hygiene-retained', tagObject: 'b'.repeat(40) };
+  const row = { path: 'docs/reports/history.md', sourceSha256: 'c'.repeat(64), afterSha256: 'd'.repeat(64), owner: 'maintainers', issue: 847, reason: 'Archived source link' };
+  const inventory = { entries: [{ path: row.path, sha256: row.afterSha256, callers: [] }] };
+  const removals = { sourceCommit: archive.sourceCommit, preservationTag: archive.retainedTag, entries: [], readerMigrations: [row] };
+  assert.deepEqual(check([{ path: row.path, size: 20 }], { archive, inventory, removals, policy: { ...policy, existingPaths: [...policy.existingPaths, row.path] } }), []);
+  assert.ok(check([], { archive, inventory, removals: { ...removals, readerMigrations: [row, row] } }).some(p => p.includes('reader migration')));
+  assert.ok(check([], { archive, inventory: { entries: [] }, removals }).some(p => p.includes('reader migration')));
+  assert.ok(check([], { archive, inventory, removals: { ...removals, readerMigrations: [{ ...row, path: 'scripts/read.mjs' }] } }).some(p => p.includes('reader migration')));
+});
 test('unreachable script cycles cannot count each other as entrypoints', () => {
   const paths = ['scripts/a.mjs', 'scripts/b.mjs'];
   const inventory = { entries: paths.map((path, i) => ({ path, callers: [{ path: paths[1 - i], active: true, via: ['import'] }] })) };

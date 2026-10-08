@@ -1,7 +1,8 @@
 /**
  * CI gate: every ADR under `docs/decisions/` carries valid frontmatter
  * (`decision_id`, `status`, `scope`), an accepted ADR states its Decision,
- * and `docs/decisions/DECISIONS.md` indexes every record exactly once.
+ * and the active entry index links to valid records without duplicates.
+ * Retained provenance records need not appear in the active entry index.
  * Adopted from redact-secret's `scripts/validate-decisions.py`
  * (redact-secret#592/#597), adapted to this repo's `benchmarks` scope and
  * to the `Decision`/`Decisions`/`Decision N` heading variants this corpus
@@ -49,7 +50,7 @@ function parseFrontmatter(text, label) {
   return { fields, body: lines.slice(end + 1).join('\n'), errors };
 }
 
-/** Validate every ADR under `decisionsDir` plus its index. Returns a list of error strings. */
+/** Validate retained ADR identities and the active entry index. */
 export async function validate(decisionsDir = DECISIONS_DIR) {
   const errors = [];
   let names;
@@ -102,11 +103,13 @@ export async function validate(decisionsDir = DECISIONS_DIR) {
       errors.push(`${fileLabel(indexUrl)}: decision link leaves docs/decisions: ${target}`);
   }
 
-  for (const name of names) {
-    const recordPath = new URL(name, decisionsDir).pathname;
+  const records = new Set(names.map(name => new URL(name, decisionsDir).pathname));
+  for (const recordPath of new Set(resolved)) {
+    if (!records.has(recordPath)) errors.push(`${fileLabel(indexUrl)}: indexed target is not a decision record: ${recordPath}`);
     const count = resolved.filter(p => p === recordPath).length;
-    if (count !== 1) errors.push(`${fileLabel(indexUrl)}: ${name} is indexed ${count} times`);
+    if (count > 1) errors.push(`${fileLabel(indexUrl)}: ${recordPath} is indexed ${count} times`);
   }
+  if (!resolved.length) errors.push(`${fileLabel(indexUrl)}: active decision index is empty`);
 
   return errors;
 }

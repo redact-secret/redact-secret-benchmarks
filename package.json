@@ -180,7 +180,10 @@
     "pii:evidence:comparison-plan:check": "node scripts/pii-evidence-comparison-plan.mjs --check",
     "pii:evidence:comparison:check": "node scripts/record-pii-evidence-comparison.mjs --check",
     "pii:evidence:publish": "node scripts/pii-evidence-publication.mjs --write",
-    "pii:evidence:publication:check": "node scripts/pii-evidence-publication.mjs --check"
+    "pii:evidence:publication:check": "node scripts/pii-evidence-publication.mjs --check",
+    "hygiene:inventory": "node scripts/retention-inventory.mjs",
+    "hygiene:check": "node scripts/check-repository-hygiene.mjs",
+    "hygiene:restore": "node scripts/restore-retained-file.mjs"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",

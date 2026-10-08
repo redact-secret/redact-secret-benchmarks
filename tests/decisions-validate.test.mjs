@@ -40,7 +40,7 @@ const addRecord = async (root, name, content) => {
   await writeFile(indexPath, `${existing}- [${name}](${name})\n`, 'utf8');
 };
 
-test('the real tree has valid ADR frontmatter, a Decision heading, and a complete index', async () => {
+test('the real tree has valid ADR frontmatter, a Decision heading, and a valid active index', async () => {
   assert.deepEqual(await validate(), []);
 });
 
@@ -79,11 +79,11 @@ test('"Decisions" (plural) and "Decision N" headings both satisfy the requiremen
   assert.deepEqual(await validate(decisionsDir), []);
 }));
 
-test('a record missing from the index is reported', () => withDecisionsDir(async (root, decisionsDir) => {
+test('an empty active index is reported', () => withDecisionsDir(async (root, decisionsDir) => {
   await writeFile(path.join(root, 'docs', 'decisions', '2026-09-09-use-thing.md'), record(), 'utf8');
   await writeFile(path.join(root, 'docs', 'decisions', 'DECISIONS.md'), '# Decisions\n', 'utf8');
   const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('is indexed 0 times')), errors.join('\n'));
+  assert.ok(errors.some(e => e.includes('active decision index is empty')), errors.join('\n'));
 }));
 
 test('a duplicate decision_id is reported', () => withDecisionsDir(async (root, decisionsDir) => {
@@ -91,4 +91,28 @@ test('a duplicate decision_id is reported', () => withDecisionsDir(async (root, 
   await addRecord(root, '2026-09-10-b.md', record());
   const errors = await validate(decisionsDir);
   assert.ok(errors.some(e => e.includes('duplicate decision_id')), errors.join('\n'));
+}));
+
+
+test('retained records may be absent from the active index, but still require valid metadata', () => withDecisionsDir(async (root, decisionsDir) => {
+  await addRecord(root, 'active.md', record());
+  const retained = path.join(root, 'docs', 'decisions', 'retained.md');
+  await writeFile(retained, record({ decision_id: 'decision-retained' }));
+  assert.deepEqual(await validate(decisionsDir), []);
+  await writeFile(retained, record({ decision_id: 'decision-retained', scope: undefined }));
+  assert.ok((await validate(decisionsDir)).some(e => e.includes('missing required field scope')));
+}));
+
+test('missing and duplicate active entry links fail', () => withDecisionsDir(async (root, decisionsDir) => {
+  await addRecord(root, 'active.md', record());
+  await writeFile(path.join(root, 'docs', 'decisions', 'DECISIONS.md'), '# Decisions\n\n- [A](active.md)\n- [Again](active.md)\n- [Missing](missing.md)\n');
+  const errors = await validate(decisionsDir);
+  assert.ok(errors.some(e => e.includes('is indexed 2 times')));
+  assert.ok(errors.some(e => e.includes('broken decision link missing.md')));
+}));
+
+test('an index cannot cite itself as a decision record', () => withDecisionsDir(async (root, decisionsDir) => {
+  await addRecord(root, 'active.md', record());
+  await writeFile(path.join(root, 'docs', 'decisions', 'DECISIONS.md'), '# Decisions\n\n- [Index](DECISIONS.md)\n');
+  assert.ok((await validate(decisionsDir)).some(e => e.includes('not a decision record')));
 }));

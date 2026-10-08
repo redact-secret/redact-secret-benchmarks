@@ -121,6 +121,8 @@ jobs:
           python-version: '3.12'
       - run: npm ci
       - run: npm run fixtures:check
+      - name: Repository retention and hygiene contracts
+        run: node scripts/check-repository-hygiene.mjs
       - name: Fixture semantic index is complete, reviewed, and current (#340)
         run: npm run fixture-index:check
       - name: Fixture titles are the pinned evidence release's case records and this repository's product-owned overlay, nothing else (#593)
@@ -214,11 +216,14 @@ jobs:
   # The legacy measurement, kept as the oracle (legacy-oracle.yml). Selected when a pull request changes one of its inputs, and always on a
   # push to develop or main, on the schedule and on dispatch.
   legacy-oracle:
-    needs: changes
-    if: needs.changes.outputs.legacy == 'true'
+    needs: [changes, legacy-results]
+    # A legacy-only change may skip the producer; a selected producer must succeed before its artifact is consumed.
+    if: always() && needs.changes.result == 'success' && needs.changes.outputs.legacy == 'true' && (needs.legacy-results.result == 'success' || (needs.changes.outputs.web == 'false' && needs.legacy-results.result == 'skipped'))
     permissions:
       contents: read
     uses: ./.github/workflows/legacy-oracle.yml
+    with:
+      reuse-legacy-results: ${{ needs.legacy-results.result == 'success' }}
 
   # The legacy files the pages that still compare scanners read (the run, the evaluation, the report files). They are a function of the legacy
   # inputs, so they are restored from the cache keyed by those inputs and measured only when an input changed (a UI-only or docs-only change

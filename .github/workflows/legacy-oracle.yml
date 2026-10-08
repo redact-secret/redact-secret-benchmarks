@@ -12,6 +12,12 @@ name: Legacy oracle
 # rollback state, #608). It reads no secret and holds no token beyond contents: read, so a fork's pull request runs it unchanged.
 on:
   workflow_call:
+    inputs:
+      reuse-legacy-results:
+        description: Reuse the legacy-results artifact produced by this same validation run.
+        type: boolean
+        required: false
+        default: false
   workflow_dispatch:
 permissions:
   contents: read
@@ -99,10 +105,19 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci --ignore-scripts
         working-directory: web
-      # The pages read the benchmark run and the evaluation the legacy pipeline writes (about a minute with the product alone and no peer).
-      - name: Repository dependencies, generated fixtures, one benchmark run for the report pages and one evaluation for the evaluation pages
+      - name: Repository dependencies and generated fixtures
+        run: npm ci
+      # Same-run download has no run-id override. A missing artifact fails, without falling back to a new measurement.
+      - name: Reuse the reports already measured by this validation run
+        if: inputs.reuse-legacy-results == true
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: legacy-results
+          path: public/results
+      # Standalone dispatch and callers without a selected producer still measure locally.
+      - name: One benchmark run for the report pages and one evaluation for the evaluation pages
+        if: inputs.reuse-legacy-results != true
         run: |
-          npm ci
           npm run bench
           npm run eval:discover -- --scanner=redact-secret
           npm run eval:publish

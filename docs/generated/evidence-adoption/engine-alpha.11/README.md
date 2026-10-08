@@ -22,7 +22,7 @@ Plain run of `openredaction` (default), `openredaction-credentials` and `openred
 
 Profile against default (same engine, same corpus, separate configuration identities, denominators equal): `openredaction-credential-bearing` EXACT -7, PARTIAL -91, MISS +98, benign controls flagged -629, retained findings -359,389; `openredaction-credentials` EXACT -5, COVERED -5, OVERBROAD -4, PARTIAL -91, MISS +105, flagged -629. A profile is a different configuration, not a speed-up and not better accuracy: it loses detected spans and removes personal-data flags. Both results are kept.
 
-Full files: `local-diagnostic.scope-accounting.{json,md}`. Regenerate with `scripts/summarize-scope-accounting.ts`.
+Historical full files are preserved for #725 under tag `hygiene-before-cleanup-845-20261008`: [JSON](https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.json) and [Markdown](https://github.com/redact-secret/redact-secret-benchmarks/blob/51d59f1bb27d0c2a129899fadd686e248412be82/docs/generated/evidence-adoption/engine-alpha.11/local-diagnostic.scope-accounting.md). Restore those exact bytes with `git show <tag>:<path>`; a new local diagnostic belongs under ignored `results-output/` and does not replace this historical measurement. See `docs/specs/hygiene-records.md` for the preservation manifest and archive receipt.
 
 ## The official replay was refused (run 37379546479)
 

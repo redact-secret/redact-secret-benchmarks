@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import { parseEvidenceJson } from './pii-evidence-json.mjs';
 import { validatePiiPopulationPolicy } from './pii-population-policy.mjs';
 import { parseStrictJson, semanticDigest } from '../../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 
@@ -87,7 +88,7 @@ export const MAPPED_FAMILIES = {
 const runtimeIdentity = pin => ({ ...pin, importedPopulation: CONSUMER_PIN.importedPopulation });
 const familiesOf = value => Array.isArray(value) ? value : [value];
 function reviewedCandidateRuntime(pin) {
-  const registry = parseStrictJson(readFileSync(new URL('../../benchmarks/pii-evidence/candidate-runtimes.json', import.meta.url), 'utf8'));
+  const registry = parseEvidenceJson(readFileSync(new URL('../../benchmarks/pii-evidence/candidate-runtimes.json', import.meta.url), 'utf8'));
   if (!closed(registry, ['schema', 'runtimes']) || registry.schema !== 'pii-evidence-reviewed-candidate-runtimes/1' || !Array.isArray(registry.runtimes)) refuse('candidate-runtime-registry-invalid');
   const entry = registry.runtimes.find(runtime => same(runtime.consumerIdentity, runtimeIdentity(pin)));
   if (!entry || !closed(entry, ['schema', 'consumerIdentity', 'buildReceipt', 'mappingKinds']) || entry.schema !== 'pii-evidence-reviewed-candidate-runtime/1' ||
@@ -147,7 +148,7 @@ export function validateProposedConsumerPin(pin, snapshotPin) {
   if (!closed(pin, Object.keys(CONSUMER_PIN)) ||
       !closed(pin.importedPopulation, Object.keys(CONSUMER_PIN.importedPopulation)) ||
       pin.importedPopulation.id !== `pii-evidence-${snapshotPin.snapshot.id.replaceAll('/', '-')}` ||
-      pin.importedPopulation.version !== 1 || !hex(pin.importedPopulation.digest) || !hex(pin.importedPopulation.bindingDigest))
+      pin.importedPopulation.version !== pin.contract?.mapping?.revision || !hex(pin.importedPopulation.digest) || !hex(pin.importedPopulation.bindingDigest))
     refuse('proposed-consumer-pin-invalid');
   try { validateRuntimePin(pin); } catch { refuse('proposed-consumer-pin-invalid'); }
   return structuredClone(pin);
@@ -207,7 +208,7 @@ export function preflightReport({ policy, snapshotPin, consumerPin, verified, im
       imported.exit?.code !== 0 || imported.engine?.version !== '0.0.0' ||
       mapped?.snapshotId !== sem.snapshotId || mapped.contentDigest !== sem.contentDigest || mapped.manifestSha256 !== sem.manifestSha256 ||
       !same(mapped.contract, sem.contract) || !same(mapped.counts, sem.counts) ||
-      !same(mapped.population, { id: consumerPin.importedPopulation.id, version: 1, visibility: 'public-synthetic',
+      !same(mapped.population, { id: consumerPin.importedPopulation.id, version: consumerPin.importedPopulation.version, visibility: 'public-synthetic',
         schemaVersion: '1.4', semanticDigest: consumerPin.importedPopulation.digest }) ||
       mapped.binding?.semanticDigest !== consumerPin.importedPopulation.bindingDigest ||
       (!proposed && (!same(mapped.binding.counts, COUNTS) || !same(mapped.binding.losses, LOSSES) ||

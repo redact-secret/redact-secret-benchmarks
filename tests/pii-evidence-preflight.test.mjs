@@ -6,6 +6,7 @@ import { SNAPSHOT_PIN, CONSUMER_PIN, validateEvidencePins, validateProposedSnaps
   validateProposedConsumerPin, validatePreflightReport, expectedPreflightReport, verifyConsumerRuntime,
   preflightReport, verifyImportDigests, validateSourceBuiltConsumerReceipt, COUNTS, LOSSES, IMPORT_OUTPUTS } from '../scripts/lib/pii-evidence-contract.mjs';
 import { semanticDigest } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
+import { preparePiiEvidenceAdoption } from '../scripts/lib/pii-evidence-adoption.mjs';
 
 const read = file => JSON.parse(readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'));
 const policy = read('benchmarks/pii-population-policy.json');
@@ -154,4 +155,57 @@ test('an auxiliary Linux build receipt binds reviewed source, toolchain and comm
     const bad = structuredClone(receipt); mutate(bad);
     assert.throws(() => validateSourceBuiltConsumerReceipt(bad), /consumer-build-receipt-invalid/);
   }
+});
+
+test('reviewed candidate runtime permits scoped DOB families while exact receipt and runtime tampering refuse', () => {
+  const runtime = read('benchmarks/pii-evidence/candidate-runtimes.json').runtimes[0];
+  const snapshotPin = structuredClone(SNAPSHOT_PIN);
+  snapshotPin.snapshot.id = 'public-pii-phi/2026-10-08/aaaaaaaaaaaa';
+  snapshotPin.snapshot.contentDigest = 'a'.repeat(64);
+  snapshotPin.release.tag = 'snapshot-public-pii-phi-2026-10-08-aaaaaaaaaaaa';
+  snapshotPin.release.archive.name = 'pii-evidence-public-pii-phi-2026-10-08-aaaaaaaaaaaa.tar.gz';
+  const pin = structuredClone(runtime.consumerIdentity);
+  pin.importedPopulation.id = 'pii-evidence-public-pii-phi-2026-10-08-aaaaaaaaaaaa';
+  pin.importedPopulation.version = 2;
+  assert.doesNotThrow(() => validateProposedConsumerPin(pin, snapshotPin));
+  for (const mutate of [
+    value => { value.source.commit = '0'.repeat(40); },
+    value => { value.source.sourceArchiveSha256 = '0'.repeat(64); },
+    value => { value.evidenceConsumer.localVerification.binarySha256 = '0'.repeat(64); },
+    value => { value.evidenceConsumer.localVerification.canonical = true; },
+    value => { value.contract.mapping.revision++; },
+    value => { value.importedPopulation.version = 1; },
+    value => { value.executionEngine.binarySha256 = '0'.repeat(64); },
+    value => { value.supportClaims = true; },
+  ]) {
+    const bad = structuredClone(pin); mutate(bad);
+    assert.throws(() => validateProposedConsumerPin(bad, snapshotPin), /proposed-consumer-pin-invalid/);
+  }
+  const future = expectedPreflightReport(policy, { snapshotPin, consumerPin: pin,
+    counts: { ...COUNTS, evidenceCases: 1, evidenceCasesCarried: 1, evidenceCasesWithoutFixtures: 0, evidenceFixtures: 2,
+      corpusCases: 2, corpusVariants: 2, occurrences: 2, locatedOccurrences: 2, rangeLessOccurrences: 0 },
+    losses: Object.fromEntries(Object.keys(LOSSES).map(key => [key, 0])),
+    mappedKinds: ['date-of-birth/global/labeled-field'],
+    mappedFamilies: { 'pii:global:date-of-birth': { cases: 1, variants: 1 }, 'pii:gb:date-of-birth': { cases: 1, variants: 1 } } });
+  assert.equal(future.mappedKinds.length, 1);
+  assert.equal(Object.keys(future.mappedFamilies).length, 2);
+  assert.doesNotThrow(() => validatePreflightReport(future, policy, { snapshotPin, consumerPin: pin }));
+  const bad = structuredClone(future); bad.mappedFamilies['pii:gb:date-of-birth'].variants++;
+  assert.throws(() => validatePreflightReport(bad, policy, { snapshotPin, consumerPin: pin }), /mapping-accounting-invalid/);
+});
+
+test('recorded v2 preflight and helper proposal remain reproducible without active pin updates', () => {
+  const base = 'docs/reports/pii-evidence-snapshot-v2-candidate';
+  const future = read(`${base}/preflight.json`);
+  const candidate = read(`${base}/candidate.json`);
+  assert.deepEqual(validatePreflightReport(future, policy, { snapshotPin: future.evidence, consumerPin: future.consumer }), future);
+  assert.deepEqual(preparePiiEvidenceAdoption({ policy, preflight: future, previousPreflight: report }), candidate);
+  assert.deepEqual(read(`${base}/snapshot-pin.json`), future.evidence);
+  assert.deepEqual(read(`${base}/consumer-pin.json`), future.consumer);
+  assert.equal(candidate.activePinsChanged, false);
+  assert.equal(candidate.authorityChanged, false);
+  assert.equal(candidate.ownerAcceptance, null);
+  assert.equal(candidate.measurement.scannerExecutions, 0);
+  assert.equal(candidate.adoption.canApply, false);
+  assert.deepEqual(validateEvidencePins(read('benchmarks/pii-evidence/snapshot-pin.json'), read('benchmarks/pii-evidence/consumer-pin.json')), { snapshotPin: SNAPSHOT_PIN, consumerPin: CONSUMER_PIN });
 });

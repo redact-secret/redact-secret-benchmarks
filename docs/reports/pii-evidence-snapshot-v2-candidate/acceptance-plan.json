@@ -1,16 +1,44 @@
 {
-  "schema": "pii-evidence-reviewed-candidate-runtimes/1",
-  "runtimes": [
-    {
-      "schema": "pii-evidence-reviewed-candidate-runtime/1",
-      "consumerIdentity": {
+  "schema": "pii-evidence-acceptance-plan/1",
+  "candidateDigest": "5732aed798ea7da0cb484c6b14fe76e04bd8ee6efc3ff84773322d18ffcf78cc",
+  "canApply": false,
+  "state": "proposal",
+  "activeWrites": [],
+  "preserveHistorical": {
+    "preflightDigest": "e7a97c3700a7c80163202bce6cd171125f7c63dbdf555d40ac08200ea4192ccd",
+    "identity": {
+      "evidence": {
+        "schema": "pii-eval-evidence-pin/1",
+        "contract": {
+          "name": "pii-evidence-consumer-contract",
+          "version": "1",
+          "digestSpec": "files-v1"
+        },
+        "release": {
+          "repository": "redact-secret/pii-evidence",
+          "tag": "snapshot-public-pii-phi-2026-10-07-9d4e8e036bbb",
+          "commit": "c436ae013011b9c8b1126f589d1b14d99a84baf5",
+          "archive": {
+            "name": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb.tar.gz",
+            "tarGzSha256": "8962f02ec04687c3b26bc70a95c57629eb31161b809f8b8317851ff1baa7498b",
+            "tarSha256": "05d9dcd1483c70c5e763338a70366364b650658af1883b6a98bae0f4ab08b5a6"
+          }
+        },
+        "snapshot": {
+          "id": "public-pii-phi/2026-10-07/9d4e8e036bbb",
+          "contentDigest": "9d4e8e036bbb180fb3a09569a2993e51ad10fbc183765882325f2bc10b321ba2",
+          "manifestSha256": "a9e24b6dc73bc876f9fce341c7305421b054ae399df83d198513bede03555ca9",
+          "sourceManifestDigest": "e6f26033e83341c9a106dfa2542573e956912266cacfae0fcc1a6fb46d07c47c"
+        }
+      },
+      "consumer": {
         "schema": "pii-evidence-consumer-pin/1",
         "state": "candidate",
         "supportClaims": false,
         "source": {
           "repository": "redact-secret/pii-eval",
-          "commit": "74b35e4aeffeef9c8679f3d7809cfe4415a0bc42",
-          "sourceArchiveSha256": "8c801b3ef64af5f59c8aef4adfd91062dc33a9fd960d3a78a4af9010c5be8bd4",
+          "commit": "e99128f5633c5905497342623e249ad90d902800",
+          "sourceArchiveSha256": "da47d780545ccdefe65258cf6f0cbe77b06e1ec77610b6ccdb94994ce173d84d",
           "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
           "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
           "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
@@ -26,7 +54,7 @@
           "artifactSchema": "1.4",
           "mapping": {
             "id": "pii-evidence-to-corpus",
-            "revision": 2
+            "revision": 1
           }
         },
         "executionEngine": {
@@ -64,7 +92,7 @@
           },
           "localVerification": {
             "platform": "darwin-arm64",
-            "binarySha256": "42fdfda23ba649810f48f74b2c9555bd364070c1f6d15d8c8993791253e185e9",
+            "binarySha256": "53add85cecefb9fb10ccc82e735d09ae8d36381edb014dd6790a95d41bf5e591",
             "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
             "canonical": false
           }
@@ -77,34 +105,31 @@
         },
         "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
       },
-      "buildReceipt": {
-        "schema": "pii-evidence-consumer-build-receipt/1",
-        "sourceCommit": "74b35e4aeffeef9c8679f3d7809cfe4415a0bc42",
-        "sourceArchiveSha256": "8c801b3ef64af5f59c8aef4adfd91062dc33a9fd960d3a78a4af9010c5be8bd4",
-        "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
-        "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
-        "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
-        "command": "cargo build --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
-        "platform": "darwin-arm64",
-        "binarySha256": "42fdfda23ba649810f48f74b2c9555bd364070c1f6d15d8c8993791253e185e9"
+      "population": {
+        "id": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb",
+        "version": 1,
+        "digest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
+        "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb"
       },
-      "mappingKinds": {
-        "email/global/basic": "pii:global:email",
-        "phone/global/basic": "pii:global:phone",
-        "payment-card/global/basic": "pii:global:payment-card",
-        "iban/global/basic": "pii:global:iban",
-        "us-ssn/us/structured": "pii:us:ssn",
-        "medical-record-number/us/labeled-field": "pii:us:medical-record-number",
-        "health-plan-member-id/us/member-field": "pii:us:health-plan-member-id",
-        "health-claim-identifier/us/claim-field": "pii:us:health-claim-identifier",
-        "prescription-order-identifier/us/order-field": "pii:us:prescription-order-identifier",
-        "date-of-birth/global/labeled-field": [
-          "pii:global:date-of-birth",
-          "pii:us:date-of-birth",
-          "pii:gb:date-of-birth"
-        ],
-        "uk-nino/uk/structured": "pii:gb:national-insurance-number"
-      }
-    }
-  ]
+      "importOutputs": {
+        "snapshot.json": {
+          "bytes": 132062,
+          "sha256": "7396c86b3683c51999a22978bc3a007b32d31eb0fc0cd55378c54f0aa42f3067"
+        },
+        "binding.json": {
+          "bytes": 154912,
+          "sha256": "723090ce467a09d453d9f154e26abfa393e952538a9092573dcde9a02a88f928"
+        }
+      },
+      "scanner": null
+    },
+    "preservation": "retain-immutable-snapshot-and-run-records-before-active-update"
+  },
+  "required": [
+    "strict-canonical-measurement-receipt",
+    "external-maintainer-acceptance",
+    "reviewed-active-pin-update"
+  ],
+  "authorityChanged": false,
+  "ownerAcceptanceGenerated": false
 }

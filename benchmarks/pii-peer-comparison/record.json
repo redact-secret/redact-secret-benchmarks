@@ -1,0 +1,203 @@
+{
+ "schema": "pii-peer-local-comparison/1",
+ "mode": "exploratory",
+ "publicOnly": true,
+ "qualified": false,
+ "supportClaims": false,
+ "engine": {
+  "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+  "binarySha256": "3bb255edc4775cfd7f92ab937f126c478d8aaa9c2437ea88c59236202e98d4d9",
+  "platform": "darwin-arm64"
+ },
+ "peers": [
+  {
+   "peer": "flare-redact",
+   "version": "1.6.1",
+   "npmIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ==",
+   "npmArchiveSha256": "e68ca1bd3705e375ba9f77d2f6da211a44099fe684f98e43477fb97cab28a3cd",
+   "installedTreeSha256": "161be897bf69b70f62d378192fcd68bf1a32143542dd59b9a43a63d063f0107f",
+   "configuration": {
+    "constructor": "default",
+    "includeValues": false,
+    "mapping": {
+     "email": "pii:global:email",
+     "obfuscated_email": "pii:global:email",
+     "credit_card": "pii:global:payment-card"
+    },
+    "normalization": "utf16-exclusive-to-utf8/1"
+   },
+   "limitations": [
+    "default-email-obfuscated-email-payment-card",
+    "default-phone-network-disabled",
+    "iban-ssn-detectors-absent",
+    "undeclared-families-retain-authored-denominators"
+   ],
+   "capabilities": {
+    "action": "unavailable",
+    "families": [],
+    "familyClassification": "supported",
+    "jurisdictionReporting": "supported",
+    "jurisdictions": [],
+    "ranges": "supported",
+    "sensitivityClassification": "unsupported"
+   },
+   "results": [
+    {
+     "view": "oracle-plan",
+     "memberships": 146,
+     "unresolved": 51,
+     "snapshotDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+     "unmappedTypes": {
+      "url_credentials": 1,
+      "iban": 12
+     },
+     "artifactSha256": "6ae21fe75131c63fa719b247d67a4867ddca9fcb07043c30e32d22b566c6abf0"
+    },
+    {
+     "view": "qualification-plan",
+     "memberships": 266,
+     "unresolved": 36,
+     "snapshotDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+     "unmappedTypes": {
+      "iban": 22
+     },
+     "artifactSha256": "fadcc27bd95253906e719eee5874b27c15acc8b4e7f968a29ceaa1126262bf9b"
+    },
+    {
+     "view": "diagnostic-balanced",
+     "memberships": 477,
+     "unresolved": 49,
+     "snapshotDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+     "unmappedTypes": {
+      "url_credentials": 3,
+      "generic_assignment": 2,
+      "iban": 61
+     },
+     "artifactSha256": "37d24e0f644c82a53c99bdbf245bc56620c98e7ab71a76be13d4107fbd956a20"
+    },
+    {
+     "view": "benign-heavy-stress",
+     "memberships": 299,
+     "unresolved": 20,
+     "snapshotDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+     "unmappedTypes": {
+      "url_credentials": 3,
+      "generic_assignment": 2,
+      "iban": 39
+     },
+     "artifactSha256": "197a42c770422de350ed8b69c26fb743989a0858ae082e69338c023eb8907f79"
+    }
+   ],
+   "pinsSha256": "0001f5f5c3f9587234f0f1ae6d65143e32567a1f4bdd27743e8c1723ecdf6d8e"
+  },
+  {
+   "peer": "openredaction",
+   "version": "1.1.5",
+   "npmIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ==",
+   "npmArchiveSha256": "8adc413d62d52bdcef8b83ea56447999c7505f6451f15668d9d319d2afc20c1c",
+   "installedTreeSha256": "9e5eff7e2036d792c1ab988bbf567a201966d4c3874d8d6d75a00478efe2ed67",
+   "configuration": {
+    "constructor": "default",
+    "mapping": {
+     "EMAIL": "pii:global:email",
+     "CREDIT_CARD": "pii:global:payment-card",
+     "IBAN": "pii:global:iban",
+     "PHONE_UK_MOBILE": "pii:global:phone",
+     "PHONE_UK": "pii:global:phone",
+     "PHONE_US": "pii:global:phone",
+     "PHONE_INTERNATIONAL": "pii:global:phone",
+     "SSN": "pii:us:ssn",
+     "IPV4": "pii:global:network-address",
+     "IPV6": "pii:global:network-address"
+    },
+    "normalization": "utf16-exclusive-to-utf8/1"
+   },
+   "limitations": [
+    "default-context-analysis-and-false-positive-filter",
+    "international-phone-scope-compared-with-authored-nanp-truth",
+    "original-reported-spans-retained",
+    "undeclared-families-retain-authored-denominators"
+   ],
+   "capabilities": {
+    "action": "unavailable",
+    "families": [],
+    "familyClassification": "supported",
+    "jurisdictionReporting": "supported",
+    "jurisdictions": [],
+    "ranges": "supported",
+    "sensitivityClassification": "unsupported"
+   },
+   "results": [
+    {
+     "view": "oracle-plan",
+     "memberships": 146,
+     "unresolved": 51,
+     "snapshotDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+     "unmappedTypes": {
+      "NAME": 1,
+      "DATABASE_CONNECTION": 1,
+      "BRAZILIAN_CNPJ": 1,
+      "UK_BANK_ACCOUNT_IBAN": 1,
+      "DATE": 1
+     },
+     "artifactSha256": "347426315aef24dd64163a6cd423a0b1e84f27539aa5dbf1330ba9e3839370a6"
+    },
+    {
+     "view": "qualification-plan",
+     "memberships": 266,
+     "unresolved": 36,
+     "snapshotDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+     "unmappedTypes": {
+      "CLABE": 1,
+      "AUSTRALIAN_MEDICARE": 1,
+      "NAME": 4,
+      "DATE": 3
+     },
+     "artifactSha256": "84f010bf8dbda68079e9888bb77c4278a885156e356d802c64ad3e54419cde67"
+    },
+    {
+     "view": "diagnostic-balanced",
+     "memberships": 477,
+     "unresolved": 49,
+     "snapshotDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+     "unmappedTypes": {
+      "JUDGMENT_NUMBER": 1,
+      "CLABE": 1,
+      "AUSTRALIAN_MEDICARE": 1,
+      "NAME": 7,
+      "DATABASE_CONNECTION": 2,
+      "URL_WITH_AUTH": 1,
+      "INSTAGRAM_USERNAME": 6,
+      "GENERIC_SECRET": 1,
+      "PAYMENT_REFERENCE": 1,
+      "DATE": 5
+     },
+     "artifactSha256": "b704b6e87df9189e793645caa7697286c914dcc75005a915498c53f0ce6d7651"
+    },
+    {
+     "view": "benign-heavy-stress",
+     "memberships": 299,
+     "unresolved": 20,
+     "snapshotDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+     "unmappedTypes": {
+      "JUDGMENT_NUMBER": 1,
+      "DATABASE_CONNECTION": 2,
+      "URL_WITH_AUTH": 1,
+      "INSTAGRAM_USERNAME": 6,
+      "GENERIC_SECRET": 1,
+      "PAYMENT_REFERENCE": 1,
+      "NAME": 4,
+      "DATE": 2,
+      "LAB_TEST_ID": 1,
+      "WORK_ORDER_NUMBER": 1,
+      "AUSTRALIAN_MEDICARE": 1,
+      "EMPLOYEE_ID": 1,
+      "HOTEL_LOYALTY_NUMBER": 1
+     },
+     "artifactSha256": "8a6f0e0866c3992fdf184d6130d586536666c508a038687379d922db4c077018"
+    }
+   ],
+   "pinsSha256": "1c274e4b6627fa3009d770d71896b5364e66457dd36f959c95cec735260c931f"
+  }
+ ]
+}

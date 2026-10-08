@@ -1,0 +1,192 @@
+{
+ "artifactSchema": {
+  "id": "pii-eval.public-synthetic-artifact",
+  "version": "1.4"
+ },
+ "build": {
+  "repository": "redact-secret/pii-eval",
+  "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+  "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+  "binarySha256": "3bb255edc4775cfd7f92ab937f126c478d8aaa9c2437ea88c59236202e98d4d9",
+  "sourceArchiveSha256": "de7bebc2ca12a404b9d9141cd2c4f9da439012b96bab36582e26031b71b3b77b"
+ },
+ "engine": {
+  "name": "pii-eval",
+  "version": "0.0.0"
+ },
+ "populations": [
+  {
+   "artifactDigest": "8cf670d6b806fa9acb4f3f772e52db1d70afc146490c291aae31ca9d4869fdcd",
+   "label": "oracle-plan",
+   "manifestDigest": "9d4b84bd1b1627b23879a01be4ec0f8893b6434c3a5fd8dceaeb0c7649c5f7ef",
+   "population": {
+    "populationDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+    "populationId": "b11-population-v2-oracle-plan",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "oracle-plan"
+    ],
+    "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "161be897bf69b70f62d378192fcd68bf1a32143542dd59b9a43a63d063f0107f",
+     "configurationDigest": "a1b27ef5a4164e57abb66c979b295907c73c4ab730472344b282474da3cf68a7",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "flare-redact",
+     "scannerVersion": "1.6.1"
+    }
+   ]
+  },
+  {
+   "artifactDigest": "7f4599bdff53449078672dacc905c6fff154e1707b03ec8c5b195e315fd84b6c",
+   "label": "qualification-plan",
+   "manifestDigest": "345d17591b337783b2dba193c86fa36d5710e909cfbee997e103368e64577fad",
+   "population": {
+    "populationDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+    "populationId": "b11-population-v2-qualification-plan",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "qualification-plan"
+    ],
+    "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "161be897bf69b70f62d378192fcd68bf1a32143542dd59b9a43a63d063f0107f",
+     "configurationDigest": "a1b27ef5a4164e57abb66c979b295907c73c4ab730472344b282474da3cf68a7",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "flare-redact",
+     "scannerVersion": "1.6.1"
+    }
+   ]
+  },
+  {
+   "artifactDigest": "9022c4223d355916fc2fbe75b1107b3631741d6f377a913ba2ea1ac7da5ee801",
+   "label": "diagnostic-balanced",
+   "manifestDigest": "4ebbac9e5c9ac556b58371aaf2f7e66e6ee273a95311227ff7e155c0b3933840",
+   "population": {
+    "populationDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+    "populationId": "b11-population-v2-diagnostic-balanced",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "diagnostic-balanced"
+    ],
+    "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "161be897bf69b70f62d378192fcd68bf1a32143542dd59b9a43a63d063f0107f",
+     "configurationDigest": "a1b27ef5a4164e57abb66c979b295907c73c4ab730472344b282474da3cf68a7",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "flare-redact",
+     "scannerVersion": "1.6.1"
+    }
+   ]
+  },
+  {
+   "artifactDigest": "b4690c67ae043f0f4ef264c5ffe57290488df5e7da70b7c9cdecfc750fc040ba",
+   "label": "benign-heavy-stress",
+   "manifestDigest": "8f12c70eb797168da5ad73351f85cc85872fd8bbbdf4337cfb61750f773dbda7",
+   "population": {
+    "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+    "populationId": "b11-population-v2-benign-heavy-stress",
+    "populationVersion": 1,
+    "visibility": "public-synthetic"
+   },
+   "projection": {
+    "mode": "exploratory",
+    "requiredViews": [
+     "benign-heavy-stress"
+    ],
+    "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b"
+   },
+   "retiredArtifactDigests": [],
+   "retiredManifestDigests": [],
+   "runClass": "public-synthetic",
+   "scanners": [
+    {
+     "activationDigest": "68c1a25d9ef0c94fcea062e763a76da531e9a6d830357d2de396c7b9b6a1802e",
+     "adapter": {
+      "adapterId": "benchmarks-pii-peer",
+      "adapterVersion": "1.0.0",
+      "normalizationVersion": 1
+     },
+     "artifactDigest": "161be897bf69b70f62d378192fcd68bf1a32143542dd59b9a43a63d063f0107f",
+     "configurationDigest": "a1b27ef5a4164e57abb66c979b295907c73c4ab730472344b282474da3cf68a7",
+     "product": {
+      "kind": "released"
+     },
+     "scannerId": "flare-redact",
+     "scannerVersion": "1.6.1"
+    }
+   ]
+  }
+ ],
+ "protocol": {
+  "accounting": "pii-v1",
+  "id": "pii-v1",
+  "rules": {
+   "accounting": {
+    "id": "pii-v1-canonical-accounting",
+    "revision": 2
+   },
+   "matching": {
+    "id": "pii-v1-canonical",
+    "revision": 2
+   },
+   "statistics": {
+    "id": "pii-v1-wilson-exact",
+    "revision": 1
+   }
+  },
+  "version": 2
+ },
+ "requireComplete": true,
+ "schema": "pii-eval-consumer-pins/1"
+}

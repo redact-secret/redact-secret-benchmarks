@@ -1,13 +1,11 @@
 /**
  * The one place the web app reads design-system tokens from.
  *
- * Until cutover the vendored copy lives in the existing site's `src/`
- * (guarded by tests/design-tokens.test.mjs there). At cutover the old UI is
- * removed and this import moves with the file; nothing else in `web/` imports
- * tokens.json, so that is a one-line change. #544 adds the token drift test for
- * `web/`.
+ * Next and the retained Vite oracle share the vendored files in
+ * shared/design-tokens/. The root design-token test guards their values;
+ * tests/web-tokens.test.mjs guards their use by this app.
  */
-import system from '../../src/tokens.json';
+import system from '../../shared/design-tokens/tokens.json';
 
 type Theme = 'light' | 'dark';
 interface ColorToken { name: string; value: Record<Theme, string> }

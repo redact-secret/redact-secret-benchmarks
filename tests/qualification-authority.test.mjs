@@ -117,6 +117,8 @@ test('a recorded oracle exit holds only for the authorised release, its parity r
 test('only listed readers may name the file; a new reader is a decision', () => {
   assert.deepEqual(unlistedReaders([AUTHORITY_FILE, 'web/services/authority.ts', 'docs/specs/qualification-cutover.md', 'web/scripts/check-export.mjs', 'web/tests/unit/overlay.ts']), []);
   assert.deepEqual(unlistedReaders(['scripts/publish-site.mjs', 'web/services/run.ts', '.github/workflows/publish-site.yml']), ['scripts/publish-site.mjs', 'web/services/run.ts', '.github/workflows/publish-site.yml']);
+  assert.deepEqual(unlistedReaders(['tests/generated-output.test.mjs']), []);
+  assert.deepEqual(unlistedReaders(['tests/generated-output-other.test.mjs']), ['tests/generated-output-other.test.mjs'], 'approval is exact, not every generated-output test');
   assert.ok(AUTHORITY_READERS.every(r => r.why.length > 10), 'every reader says why it reads the file');
   const texts = new Map([['a.mjs', 'reads benchmarks/qualification-authority.json'], ['b.mjs', 'nothing'], ['c.png', 'qualification-authority.json']]);
   assert.deepEqual(filesNamingTheAuthorityFile([...texts.keys()], path => texts.get(path)), ['a.mjs']);

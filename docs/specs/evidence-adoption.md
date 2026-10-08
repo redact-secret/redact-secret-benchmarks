@@ -59,6 +59,32 @@ What used to be hand work between the candidate pull request and the owner's dec
 | `node scripts/prepare-acceptance-package.mjs --tag <tag> --manifest-digest <digest> --peers-dir <dir>` | on a transient worktree: `repin`, the four runs recorded, the registry-format archive stored in a release and fetched back, the derived inputs regenerated and proved by their `--check` commands, the candidate view, the legacy oracle with the pinned trufflehog (refused unless it prints the pin) and the strict parity report, the authority file and the accepted record with the owner fields `OWNER-TO-SET`, the draft decision (`status: proposed`); then in this checkout the owner report, its data, the triage queue (exported with the ledger as it was before the owner's settlement rows) and the re-evaluation of the ledger settlements on this run's identities | `<tag>.acceptance.patch` and `.sha256`, `<tag>.md`, `.comparison.json`, `.triage-queue.{json,md}`, `.ledger-settlements.json`, `evidenceCandidate.acceptance` |
 | `node scripts/record-deployment-receipt.mjs --environment staging\|production --run <publish-site.yml run id> [--write]` | the deployment receipt of an ACCEPTED adoption, built only from what can be checked: the publish run (success, a push, on `develop` for staging and `main` for production, at a commit that holds the owner acceptance of this release) and the deployed pages (the evidence release, the engine, the scanned product and the maintainer-review disclosure in both languages must be on every listed page). A failed check writes nothing; a receipt is never typed in; a different receipt already recorded for the environment needs `--replace`. It also re-renders the comparison state and the Markdown report from the updated record (frozen measurements, identity-checked) and commits all three files with one recoverable commit; without `--write` it renders, validates and writes nothing; the same run again repairs a stale report (#792, #793) | `candidate.deployment.<environment>`, the active `<tag>.comparison.json` and `<tag>.md` |
 
+Generated output boundaries (#848): branch planning writes its replay patch to
+`results-output/evidence-adoption/<tag>.[engine-]replay-pins.patch`. A control
+`collect` preserves that exact patch under `docs/generated/evidence-adoption`
+only after the archive round trip and a byte comparison with the measured
+commit's Git diff. Reusing a remote replay branch recovers its original diff,
+not a patch regenerated under today's pins. Engine-effect preparation reads the
+ignored planning patch or the retained historical path.
+
+Candidate collection, strict contrasts and acceptance-package preparation build
+into ignored `results-output/generated-stage-*` directories. All validations
+finish before prepared reports and their registry receipt are published. Missing
+staged files refuse before writing; a publication failure restores prior report
+and registry bytes. Staging directories are removed on success and failure.
+Registered `changeReport`, candidate data directories, accepted comparisons and
+owner-bound acceptance patches retain their committed paths because clean
+checkout validation and review consume them. They are provenance records, not
+ad hoc output defaults.
+
+Ad hoc `qualification:parity` writes `results-output/qualification-parity.{json,md}`.
+Preparing an acceptance explicitly chooses `--out docs/generated/qualification-parity`
+in its isolated candidate tree. It preserves the historical report and old pins
+in the main checkout. A local PII population dual run writes its artifacts,
+`record.json` and `summary.md` under `results-output/pii-population-dual-run`;
+only its explicit `--write` records the canonical population receipt and Markdown
+companion. Canonical PII and credential records do not share authority.
+
 Still the owner's, by design: setting `acceptedBy`, `acceptedOn` and the decision, renewing the authority file, applying the patch, `go-production`, and the decision to apply a ledger settlement.
 
 ## What a candidate pull request holds

@@ -1,7 +1,7 @@
 /**
  * Token drift test for web/ (#544). Pure node, no web/ install needed, run by
  * the root `npm test`. The design system's values are vendored once
- * (src/tokens.json + src/tokens.css, guarded by tests/design-tokens.test.mjs);
+ * (shared/design-tokens/tokens.json + shared/design-tokens/tokens.css, guarded by tests/design-tokens.test.mjs);
  * this file guards how web/ *uses* them, so a component cannot drift from the
  * system by inventing a colour, a length or a variable:
  *
@@ -14,7 +14,7 @@
  *  4. every component has a story, a CSS Module and a barrel export, and none
  *     imports data (components are pure render).
  *
- * At cutover the tokens move into web/; only TOKENS_CSS / TOKENS_JSON change.
+ * Both the Next app and the retained Vite oracle read the same neutral token files.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -24,8 +24,8 @@ import path from 'node:path';
 const ROOT = new URL('../', import.meta.url);
 const WEB = new URL('web/', ROOT);
 const read = url => readFile(url, 'utf8');
-const TOKENS_CSS = new URL('src/tokens.css', ROOT);
-const TOKENS_JSON = new URL('src/tokens.json', ROOT);
+const TOKENS_CSS = new URL('shared/design-tokens/tokens.css', ROOT);
+const TOKENS_JSON = new URL('shared/design-tokens/tokens.json', ROOT);
 const MEASURES_CSS = new URL('theme/measures.css', WEB);
 
 async function* walk(dir) {
@@ -142,7 +142,7 @@ test('layout and Storybook preview load the same token and measure sheets', asyn
   for (const file of ['app/layout.tsx', '.storybook/preview.tsx']) {
     const src = await read(new URL(file, WEB));
     assert.match(src, /theme\/measures\.css/, `${file} imports measures.css`);
-    assert.match(src, /src\/tokens\.css/, `${file} imports tokens.css`);
+    assert.match(src, /shared\/design-tokens\/tokens\.css/, `${file} imports tokens.css`);
   }
 });
 

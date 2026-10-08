@@ -31,6 +31,8 @@ import { packagesDigest } from './check-evidence-adoption.mjs';
 import { sha256Digest } from './evidence-adoption.mjs';
 import { fetchArchive, listKept, pack, sha256File } from './replay-archive.mjs';
 
+import { generatedStage, publishGeneratedFiles } from './lib/generated-output.mjs';
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
 const WORKFLOW = 'official-runs.yml';
@@ -145,6 +147,18 @@ function cleanTree() {
   return { branch, sha };
 }
 
+export function replayPatchPaths(tag, engineOnly = false) {
+  if (!/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(tag ?? '')) throw new Error('invalid replay patch tag');
+  const file = `${tag}.${engineOnly ? 'engine-' : ''}replay-pins.patch`;
+  return { transient: `results-output/evidence-adoption/${file}`, retained: `${GENERATED_DIR}/${file}` };
+}
+
+export function replayPatchFile(root, tag, engineOnly = false) {
+  const paths = replayPatchPaths(tag, engineOnly);
+  for (const file of [paths.transient, paths.retained]) if (existsSync(path.join(root, file))) return path.join(root, file);
+  throw new Error(`the replay patch is missing: ${paths.transient} (historical fallback: ${paths.retained})`);
+}
+
 function context(tag, manifestDigest) {
   if (!/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(tag ?? '') || !DIGEST.test(manifestDigest ?? '')) throw new Error('--tag snapshot-YYYY.MM.DD[.N] and --manifest-digest sha256:<64 hex> are required');
   const ec = replayablePin({ adoption: readJson(ADOPTION), registry: readJson('benchmarks/official-runs.json'), tag, manifestDigest });
@@ -161,10 +175,16 @@ export function branch(tag, manifestDigest, { engineOnly = false } = {}) {
   const context0 = context(tag, manifestDigest);
   const ec = context0.ec;
   const name = engineOnly ? context0.branch.replace(/-control$/, '-engine') : context0.branch;
-  const patchPath = engineOnly ? context0.patchPath.replace('.replay-pins.patch', '.engine-replay-pins.patch') : context0.patchPath;
+  const patchPath = replayPatchPaths(tag, engineOnly).transient;
   if (engineOnly && !ec.engineChange) throw new Error(`${tag} does not move the engine: there is no engine effect to replay`);
   const existing = remoteSha(name);
-  if (existing) return { branch: name, sha: existing, reused: true };
+  if (existing) {
+    run('git', ['fetch', '--no-tags', 'origin', name]);
+    const patch = run('git', ['diff', `${existing}^`, existing]);
+    mkdirSync(path.dirname(path.join(root, patchPath)), { recursive: true });
+    writeFileSync(path.join(root, patchPath), patch);
+    return { branch: name, sha: existing, reused: true };
+  }
   cleanTree();
   const scratch = mkdtempSync(path.join(os.tmpdir(), 'evidence-replay-'));
   const tree = path.join(scratch, 'tree');
@@ -258,7 +278,16 @@ export function collect(tag, manifestDigest, runId, { keepBranch = false, includ
     for (const rel of listKept(into)) if (sha256File(path.join(into, rel)) !== sha256File(path.join(check, rel))) throw new Error(`the archive round trip differs for ${rel}`);
     const replay = replayEntry({ records, ec, tag, runId, sha, branch: name, archive: { release: archiveTag, sha256: archived.digest }, patchPath, includeOpenRedaction });
     const adoption = readJson(ADOPTION);
-    writeFileSync(path.join(root, ADOPTION), `${JSON.stringify({ ...adoption, evidenceCandidate: { ...adoption.evidenceCandidate, replay } }, null, 2)}\n`);
+    try { run('git', ['cat-file', '-e', `${sha}^{commit}`], { stdio: ['ignore', 'ignore', 'ignore'] }); }
+    catch { run('git', ['fetch', '--no-tags', 'origin', sha]); }
+    const expected = run('git', ['diff', `${sha}^`, sha]);
+    const paths = replayPatchPaths(tag);
+    const available = [paths.transient, paths.retained].find(file => existsSync(path.join(root, file)));
+    const source = available ? path.join(root, available) : path.join(scratch, 'measured-replay.patch');
+    if (!available) writeFileSync(source, expected);
+    if (readFileSync(source, 'utf8') !== expected) throw new Error('the replay patch differs from the exact measured commit');
+    publishGeneratedFiles({ root, files: [{ source, target: patchPath }], record: { path: ADOPTION, value: { ...adoption, evidenceCandidate: { ...adoption.evidenceCandidate, replay } } } });
+    rmSync(path.join(root, replayPatchPaths(tag).transient), { force: true });
     if (!keepBranch && remoteSha(name)) run('git', ['push', 'origin', '--delete', name]);
     return { runId, archive: replay.archive, semanticDigests: replay.semanticDigests };
   } finally { rmSync(scratch, { recursive: true, force: true }); }
@@ -291,7 +320,7 @@ export function contrast(tag, manifestDigest, candidateId, note) {
   const adoption = readJson(ADOPTION);
   const ec = adoption.evidenceCandidate;
   if (ec?.evidenceRelease !== tag || !ec.replay?.archive) throw new Error(`${tag} has no recorded control replay: run the control first`);
-  const scratch = mkdtempSync(path.join(os.tmpdir(), 'evidence-contrast-'));
+  const scratch = generatedStage(root);
   try {
     const cell = (name, a) => { const to = path.join(scratch, name); fetchArchive({ release: a.release, sha256: a.sha256, out: to, repository: REPOSITORY }); return to; };
     const accepted = controlFor(adoption, {});
@@ -308,8 +337,9 @@ export function contrast(tag, manifestDigest, candidateId, note) {
     }
     const specFile = path.join(scratch, 'spec.json');
     writeFileSync(specFile, JSON.stringify({ evidenceRelease: tag, comparisons }));
-    node(['scripts/render-snapshot-contrast.mjs', '--spec', specFile, '--out-json', `docs/generated/evidence-adoption/${tag}.contrast.json`, '--out-md', `docs/generated/evidence-adoption/${tag}.contrast.md`, '--strict'], { env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=8192' } });
-    return { json: `docs/generated/evidence-adoption/${tag}.contrast.json`, md: `docs/generated/evidence-adoption/${tag}.contrast.md`, comparisons: comparisons.length };
+    node(['scripts/render-snapshot-contrast.mjs', '--spec', specFile, '--out-json', path.join(scratch, 'contrast.json'), '--out-md', path.join(scratch, 'contrast.md'), '--strict'], { env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=8192' } });
+    publishGeneratedFiles({ root, files: ['json', 'md'].map(ext => ({ source: path.join(scratch, `contrast.${ext}`), target: `${GENERATED_DIR}/${tag}.contrast.${ext}` })) });
+    return { json: `${GENERATED_DIR}/${tag}.contrast.json`, md: `${GENERATED_DIR}/${tag}.contrast.md`, comparisons: comparisons.length };
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 }
 

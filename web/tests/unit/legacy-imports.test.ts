@@ -27,7 +27,6 @@ const move = (reason: string): Retained => ({ role: 'move', owner: 'relocation',
 const PII = (what: string) => other('pii', `the PII evaluation reads ${what}; its authority is independent of the credential authority (#666)`);
 
 const ROLES: Record<string, Record<string, Entry>> = {
-  'app/layout.tsx': { 'src/tokens.css': 'keep' },
   'resolvers/evaluation-checks.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/evaluation-hub.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/evaluation-methods.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
@@ -52,9 +51,10 @@ const ROLES: Record<string, Record<string, Entry>> = {
   'services/contracts.ts': { 'benchmarks/lib/assessment': 'keep' },
   'services/credential-bridge.ts': {
     'benchmarks/accounting/index': 'keep', 'benchmarks/evaluation/domains/credential/run-summary': 'keep', 'benchmarks/support/taxonomy': 'keep', 'benchmarks/lib/fixture-metadata': 'keep',
-    'benchmarks/types': move('`AccountingConfig` still lives in the legacy engine\'s type module'),
+    'benchmarks/shared/accounting-types': 'keep',
+    'benchmarks/types': move('`ScoredRow` still lives in the legacy engine\'s type module'),
   },
-  'services/credential-source.ts': { 'benchmarks/accounting/index': 'keep', 'benchmarks/lib/fixture-metadata': 'keep', 'benchmarks/types': move('`AccountingConfig` still lives in the legacy engine\'s type module') },
+  'services/credential-source.ts': { 'benchmarks/accounting/index': 'keep', 'benchmarks/lib/fixture-metadata': 'keep', 'benchmarks/shared/accounting-types': 'keep' },
   'services/domains.ts': {
     'benchmarks/evaluation/domains/pii/peer-readiness.mjs': PII('the reviewed neutral-expectation and peer-adapter readiness inventory'),
     'benchmarks/evaluation/domains/pii/candidate-comparison.mjs': PII('the independent public baseline/candidate measurement sidecar'),
@@ -83,7 +83,6 @@ const ROLES: Record<string, Record<string, Entry>> = {
     'benchmarks/lib/peer-observations': oracle('validates the committed peer snapshots, which the scanner page reads only under `legacy`; under `new` it reads the official run'),
     'benchmarks/lib/peer-rule-families': 'keep',
   },
-  'theme/tokens.ts': { 'src/tokens.json': 'keep' },
 };
 
 /**

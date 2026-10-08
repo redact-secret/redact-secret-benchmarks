@@ -1,6 +1,6 @@
 import '../theme/layers.css';
 import '../theme/measures.css';
-import '../../src/tokens.css';
+import '../../shared/design-tokens/tokens.css';
 import '../app/globals.css';
 import { useEffect } from 'react';
 import type { Preview } from '@storybook/nextjs-vite';

@@ -21,7 +21,7 @@ import type { ProviderDossiersFile } from './providers-model';
 import { domainDescriptor, evaluationDomainsProblem, type EvaluationDomainId } from './evaluation-domains';
 import { domainDescriptorV2, evaluationDomainsV2Problem } from './evaluation-domains-v2';
 import { piiSupportMatrixProblem, type PiiSupportMatrixFile } from './pii-support-model';
-import './tokens.css';
+import '../shared/design-tokens/tokens.css';
 import './style.css';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;

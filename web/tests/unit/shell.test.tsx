@@ -157,11 +157,11 @@ describe('token references', () => {
       [{ name: 'a', value: { light: '{b}', dark: '#000000' } }, { name: 'b', value: { light: '{a}', dark: '#000000' } }],
     ]) {
       vi.resetModules();
-      vi.doMock('../../../src/tokens.json', () => ({ default: { color: { tokens } } }));
+      vi.doMock('../../../shared/design-tokens/tokens.json', () => ({ default: { color: { tokens } } }));
       const fresh = await import('../../theme/tokens');
       expect(() => fresh.colorsFor('light')).toThrow(/Unresolvable token reference/);
       expect(fresh.colorsFor('dark')).toBeTruthy();
-      vi.doUnmock('../../../src/tokens.json');
+      vi.doUnmock('../../../shared/design-tokens/tokens.json');
     }
   });
 });

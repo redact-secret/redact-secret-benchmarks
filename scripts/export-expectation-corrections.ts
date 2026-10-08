@@ -7,7 +7,9 @@
  *
  * Deterministic. The three cases core fixed (a product change, not an evidence change) are listed apart as post-release replays, never as corrections.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+
+import { dirname } from 'node:path';
 
 const args = process.argv.slice(2);
 const option = (name: string) => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
@@ -37,8 +39,11 @@ const out = {
   postReleaseReplays: afterRelease,
 };
 if (corrections.length === 0) throw new Error('no evidence proposal in the triage');
-writeFileSync(option('out-json') ?? (() => { throw new Error('--out-json is required'); })(), `${JSON.stringify(out, null, 1)}\n`);
+const outJson = option('out-json') ?? 'results-output/expectation-corrections.json';
+mkdirSync(dirname(outJson), { recursive: true });
+writeFileSync(outJson, `${JSON.stringify(out, null, 1)}\n`);
 if (option('out-md')) {
+  mkdirSync(dirname(option('out-md')!), { recursive: true });
   const cell = (s: string) => s.replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\n/g, ' '); // backslashes first, then the pipe (CodeQL js/incomplete-sanitization)
   writeFileSync(option('out-md')!, [
     '# Expectation corrections proposed to credential-evidence (#698, core #1203)', '',

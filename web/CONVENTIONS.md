@@ -44,7 +44,7 @@ Components are pure render: props in, elements out.
   (`npm run check:no-sx`). Accept a `className` prop and merge it with `cx()`.
 - Every rule sits inside `@layer components { ... }`, which outranks MUI's
   `@layer mui`. No `!important`, no specificity hacks.
-- Tokens only. Colours, spacing, type and radii come from `src/tokens.css`; shared
+- Tokens only. Colours, spacing, type and radii come from `shared/design-tokens/tokens.css`; shared
   measures (`--hairline`, `--rule-strong`, `--page-max`, type roles such as
   `--text-small-strong`) come from `web/theme/measures.css`, derived from tokens.
   No hex, no raw `px` (except in `@media` conditions), no shadows, nothing round.

@@ -4,7 +4,7 @@
  *   npm run qualification:parity -- --legacy-status results-output/support-status.json --legacy-results public/results \
  *     --view public/results/qualification-v1.json --artifacts <dir> [--public-snapshot <credential-eval-corpus-snapshot.json>] \
  *     --change-report <active-adoption-change-report.json> \
- *     [--out docs/generated/qualification-parity] [--strict]
+ *     [--out results-output/qualification-parity] [--strict]
  *
  * Inputs: the legacy support status (`npm run eval:classify`) and per-suite reports (`npm run bench`), the new
  * qualification view and the official RunArtifacts (`npm run qualification:view`), and, to compare the public
@@ -425,7 +425,7 @@ const report: ParityReport = {
   summary: summarise(sections), recommendations,
 };
 
-const prefix = resolve(option('out') ?? 'docs/generated/qualification-parity');
+const prefix = resolve(option('out') ?? 'results-output/qualification-parity');
 await mkdir(path.dirname(prefix), { recursive: true });
 await writeFile(`${prefix}.json`, `${JSON.stringify(report, null, 2)}\n`);
 await writeFile(`${prefix}.md`, renderMarkdown(report));

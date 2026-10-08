@@ -158,7 +158,7 @@ jobs:
       - name: The PII scorer-basis comparison equals a fresh derivation and the official execution plan equals the pins, pending and not dispatched (#795, #796)
         run: npm run pii:scorer-basis:check && npm run pii:official-plan:check
       - name: Current PII comparison inputs and protected and peer readiness match their public contracts (#615, #616, #647)
-        run: npm run pii:comparison-plan:check && npm run pii:comparison:check && npm run pii:protected-readiness:check && npm run pii:peer-readiness:check
+        run: npm run qualification:matrix-schema:check && npm run pii:comparison-plan:check && npm run pii:comparison:check && npm run pii:protected-readiness:check && npm run pii:peer-readiness:check
       - name: The legacy credential evaluator's file inventory has owner, disposition, prerequisite and current callers for every row (#653, #660)
         run: npm run legacy-inventory:check
       - name: Every taxonomy provider and family has a dossier entry (#473)

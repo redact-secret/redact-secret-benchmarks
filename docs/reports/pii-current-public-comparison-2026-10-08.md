@@ -77,3 +77,21 @@ public, cost and membership prerequisites. A preparation inventory does not
 approve a deferral, create an epoch, spend an attempt, or permit the historical
 local custodian to impersonate the new route. #576 requires reviewed actual peer
 adapters and same-population observations before an accuracy comparison.
+
+## Core consumption contract
+
+The dedicated committed `benchmarks/support-matrix-from-view.json` carries the
+canonical credential qualification view, its policy revision and three exact
+population identities. Each population preserves the four measured scanner
+versions and build kinds; the published package identity is derived only when
+all product manifests agree on a released version. Finding-type keys use the
+pinned detector inventory and existing reviewed arrival table, never observed
+scanner output. The separate `schemas/support-matrix-from-view-v1.json` shares
+the existing family/current-PII contracts and validates this source envelope.
+
+No measurement timestamp or product source commit is inferred from a release
+label. Core retains the historical legacy matrix and v1 distribution feed;
+canonical qualification-view consumption uses a distinct v2 feed because the
+old contract requires a non-null measurement timestamp. Current PII comparison
+identity is separate from the released credential manifests and leaves all six
+current PII family qualifications pending.

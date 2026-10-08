@@ -92,12 +92,12 @@ test('view publication permits a strict optional current section without changin
   const current = projectPiiCurrentQualification({ state: 'absent', reason: 'current-comparison-not-recorded' });
   const view = { schema: 'synthetic-view', publication: 'public', policy: { revision: 'synthetic-policy' }, adapter: { id: 'synthetic', version: 1 },
     populations: [{ population: 'synthetic-population', runClass: 'public', artifact: { semanticDigest: 'synthetic-digest', artifactDigest: 'synthetic-bytes',
-      engine: { name: 'synthetic', version: 'synthetic-version' }, scanners: [] } }],
+      engine: { name: 'synthetic', version: 'synthetic-version' }, scanners: [{ id: 'redact-secret', version: '0.0.1', build: 'released' }] } }],
     supportMatrix: { families: [], distribution: { stable: 0, provisional: 0, pending: 0, unsupported: 0 },
       stableDistribution: { documented: 0, empirical: 0, 'policy-qualified': 0 } } };
   const context = { registry: { engine: { version: 'synthetic-version' }, runs: [{ id: 'synthetic-run', population: 'synthetic-population',
     canonical: true, platform: 'linux-x64', runClass: 'public', artifact: { semanticDigest: 'synthetic-digest' } }] },
-    taxonomy: [], policyRevision: 'synthetic-policy', roster: { required: [], optional: [] } };
+    taxonomy: [], policyRevision: 'synthetic-policy', roster: { required: ["redact-secret"], optional: [] } };
   const matrix = buildMatrixArtifact(view, 'published');
   assert.deepEqual(viewMatrixProblems(matrix, context), []);
   matrix.piiCurrentQualification = current;

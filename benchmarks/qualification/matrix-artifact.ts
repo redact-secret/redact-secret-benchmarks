@@ -14,6 +14,7 @@
  */
 import type { SupportMatrix } from './support-matrix.ts';
 import type { PiiCurrentQualification } from '../support/pii-current-qualification.ts';
+import { findingTypeSource, findingTypesFor, type FindingTypeKey, type FindingTypeSource } from '../support/finding-types.ts';
 
 export const MATRIX_ARTIFACT_SCHEMA = 'redact-secret/support-matrix-from-view/v1';
 export type MatrixMode = 'published' | 'candidate-projection';
@@ -28,6 +29,7 @@ export interface ViewForMatrix {
 }
 export interface RegistryForMatrix {
   engine: { version: string };
+  scanners?: { id: string; version: string }[];
   runs: { id: string; population: string; canonical?: boolean; kind?: string; platform: string; runClass: string; artifact: { semanticDigest: string } }[];
 }
 
@@ -38,13 +40,15 @@ export interface MatrixArtifact {
   publication: 'public' | 'internal';
   source: {
     view: { schema: string; adapter: { id: string; version: number }; policyRevision: string };
-    populations: { population: string; runClass: string; semanticDigest: string; artifactDigest: string; engineVersion: string; scannerBuilds: Record<string, string | null> }[];
+    populations: { population: string; runClass: string; semanticDigest: string; artifactDigest: string; engineVersion: string; scannerBuilds: Record<string, string | null>; scannerVersions: Record<string, string | null> }[];
+    publishedPackage?: { packageName: '@redact-secret/core'; version: string };
   };
   providerCount: number;
   familyCount: number;
   distribution: SupportMatrix['distribution'];
   stableDistribution: SupportMatrix['stableDistribution'];
-  families: SupportMatrix['families'];
+  families: (SupportMatrix['families'][number] & { findingTypes: FindingTypeKey[] | null })[];
+  findingTypeSource: FindingTypeSource;
   /** Separate exact-target PII preparation; it never changes credential populations or counts. */
   piiCurrentQualification?: PiiCurrentQualification;
 }
@@ -56,6 +60,9 @@ const project = (entry: SupportMatrix['families'][number]) => Object.fromEntries
 const providersOf = (families: SupportMatrix['families']) => new Set(families.map(f => f.provider)).size;
 
 export function buildMatrixArtifact(view: ViewForMatrix, mode: MatrixMode): MatrixArtifact {
+  const productVersions = view.populations.map(p => p.artifact.scanners.find(s => s.id === 'redact-secret')?.version);
+  const released = view.populations.every(p => p.artifact.scanners.find(s => s.id === 'redact-secret')?.build === 'released');
+  const version = productVersions[0];
   return {
     schema: MATRIX_ARTIFACT_SCHEMA,
     mode,
@@ -65,14 +72,18 @@ export function buildMatrixArtifact(view: ViewForMatrix, mode: MatrixMode): Matr
       populations: view.populations.map(p => ({
         population: p.population, runClass: p.runClass, semanticDigest: p.artifact.semanticDigest, artifactDigest: p.artifact.artifactDigest,
         engineVersion: p.artifact.engine.version, scannerBuilds: Object.fromEntries(p.artifact.scanners.map(s => [s.id, s.build])),
+        scannerVersions: Object.fromEntries(p.artifact.scanners.map(s => [s.id, s.version])),
       })),
+      ...(mode === 'published' && released && version && productVersions.every(v => v === version)
+        ? { publishedPackage: { packageName: '@redact-secret/core' as const, version } } : {}),
     },
     providerCount: providersOf(view.supportMatrix.families),
     familyCount: view.supportMatrix.families.length,
     distribution: view.supportMatrix.distribution,
     stableDistribution: view.supportMatrix.stableDistribution,
     // The allowlist: exactly the matrix entry fields, nothing from the cases.
-    families: view.supportMatrix.families.map(project),
+    families: view.supportMatrix.families.map(entry => ({ ...project(entry), findingTypes: findingTypesFor(entry.detectors) })),
+    findingTypeSource,
   };
 }
 
@@ -83,6 +94,9 @@ export function matrixArtifactProblems(artifact: MatrixArtifact, registry: Regis
   if (artifact.mode !== 'published' && artifact.mode !== 'candidate-projection') return [`unknown mode ${String(artifact.mode)}`];
   if ((artifact.mode === 'published') !== (artifact.publication === 'public')) problems.push(`mode ${artifact.mode} cannot be ${artifact.publication}`);
   const families = artifact.families ?? [];
+  if (JSON.stringify(artifact.findingTypeSource) !== JSON.stringify(findingTypeSource)) problems.push('finding-type source is not the pinned inventory');
+  for (const entry of families) if (!Array.isArray(entry.detectors) || JSON.stringify(entry.findingTypes) !== JSON.stringify(findingTypesFor(entry.detectors)))
+    problems.push(`${entry.family} finding-type keys differ from the pinned inventory`);
   if (artifact.familyCount !== families.length) problems.push('family count does not match its families');
   if (new Set(families.map(f => f.family)).size !== families.length) problems.push('a family is repeated');
   const counted: Record<string, number> = { stable: 0, provisional: 0, pending: 0, unsupported: 0 };
@@ -96,9 +110,17 @@ export function matrixArtifactProblems(artifact: MatrixArtifact, registry: Regis
   const populations = artifact.source?.populations ?? [];
   if (!populations.length) problems.push('no population identity');
   if (artifact.mode === 'published') {
+    const product = artifact.source?.publishedPackage;
+    if (!product || product.packageName !== '@redact-secret/core' || !product.version ||
+      populations.some(p => p.scannerBuilds?.['redact-secret'] !== 'released' || p.scannerVersions?.['redact-secret'] !== product.version))
+      problems.push('published package identity is absent or differs across the measured populations');
     const recorded = new Set(registry.runs.filter(r => r.canonical && r.platform === 'linux-x64' && r.kind !== 'methods').map(r => `${r.population}|${r.artifact.semanticDigest}`));
     const seen = new Set<string>();
     for (const p of populations) {
+      if (JSON.stringify(Object.keys(p.scannerVersions ?? {}).sort()) !== JSON.stringify(Object.keys(p.scannerBuilds ?? {}).sort()))
+        problems.push(`${p.population} scanner version roster differs from the measured builds`);
+      for (const pin of registry.scanners ?? []) if (Object.hasOwn(p.scannerVersions ?? {}, pin.id) && p.scannerVersions[pin.id] !== pin.version)
+        problems.push(`${p.population} scanner version ${pin.id} differs from the recorded pin`);
       seen.add(p.population);
       if (p.runClass !== 'public') problems.push(`${p.population} is ${p.runClass}: a published matrix reads public runs only`);
       if (!recorded.has(`${p.population}|${p.semanticDigest}`)) problems.push(`${p.population} artifact ${p.semanticDigest} is not a canonical official run of the registry`);

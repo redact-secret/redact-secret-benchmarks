@@ -25,7 +25,7 @@ export interface ViewSupportContext {
 
 export const isViewMatrix = (value: unknown): value is MatrixArtifact => (value as { schema?: unknown } | null)?.schema === MATRIX_ARTIFACT_SCHEMA;
 
-const TOP_LEVEL_KEYS = ['schema', 'mode', 'publication', 'source', 'providerCount', 'familyCount', 'distribution', 'stableDistribution', 'families', 'piiCurrentQualification'];
+const TOP_LEVEL_KEYS = ['schema', 'mode', 'publication', 'source', 'providerCount', 'familyCount', 'distribution', 'stableDistribution', 'families', 'findingTypeSource', 'piiCurrentQualification'];
 
 /** Every reason a view matrix must not be published or read by a publisher as it stands (empty: it is a public, current, canonical matrix). Pure. */
 export function viewMatrixProblems(value: unknown, context: ViewSupportContext): string[] {

@@ -110,6 +110,7 @@
     "qualification:evidence":"node --import tsx scripts/export-evaluation-evidence.ts",
     "qualification:export":"node --import tsx scripts/export-qualification-population.ts",
     "qualification:view": "node --import tsx scripts/build-qualification-view.ts",
+    "qualification:matrix-schema:check": "node scripts/generate-view-matrix-schema.mjs",
     "qualification:matrix": "node --import tsx scripts/build-view-support-matrix.ts",
     "qualification:candidate-diff": "node --max-old-space-size=8192 --import tsx scripts/build-candidate-diff.ts",
     "qualification:parity":"node --import tsx scripts/build-qualification-parity.ts",

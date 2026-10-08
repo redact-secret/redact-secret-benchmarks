@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import Ajv from 'ajv';
+import { viewMatrixSchema } from '../scripts/generate-view-matrix-schema.mjs';
 import { MATRIX_ARTIFACT_SCHEMA, buildMatrixArtifact, matrixArtifactProblems } from '../benchmarks/qualification/matrix-artifact.ts';
 
 // Synthetic only (#657): the view, the registry and every digest are built here; no committed ledger value or count is read.
@@ -32,6 +34,22 @@ test('a view of public canonical runs yields a published matrix with no problem 
   assert.equal(artifact.publication, 'public');
   assert.deepEqual(matrixArtifactProblems(artifact, registry), []);
   assert.deepEqual(artifact.source.populations.map(p => p.population), ['pop-a', 'pop-b']);
+  assert.deepEqual(artifact.source.publishedPackage, { packageName: '@redact-secret/core', version: '1' });
+  assert.equal(artifact.source.populations[0].scannerVersions['redact-secret'], '1');
+  assert.equal(artifact.families[0].findingTypes, null, 'an unknown synthetic detector never receives a guessed finding type');
+});
+
+test('released package and scanner versions must agree with every population and registry pin', () => {
+  const good = published(view());
+  assert.ok(matrixArtifactProblems(good, { ...registry, scanners: [{ id: 'redact-secret', version: '2' }] }).some(p => p.includes('differs from the recorded pin')));
+  const changed = structuredClone(good);
+  changed.source.populations[0].scannerVersions['redact-secret'] = '2';
+  assert.ok(matrixArtifactProblems(changed, registry).some(p => p.includes('package identity')));
+  delete changed.source.populations[0].scannerVersions;
+  assert.ok(matrixArtifactProblems(changed, registry).some(p => p.includes('version roster')));
+  const types = structuredClone(good);
+  types.families[0].findingTypes = [{ detector: 'a', type: 'invented', basis: 'sole-type-of-detector' }];
+  assert.ok(matrixArtifactProblems(types, registry).some(p => p.includes('finding-type keys')));
 });
 
 test('the matrix carries the entry fields and nothing from the cases', () => {
@@ -39,7 +57,7 @@ test('the matrix carries the entry fields and nothing from the cases', () => {
   v.supportMatrix.families[0].cases = [{ id: 'x', secret: 'bytes' }];
   const artifact = published(v);
   assert.ok(!JSON.stringify(artifact).includes('bytes'));
-  assert.deepEqual(Object.keys(artifact).sort(), ['distribution', 'families', 'familyCount', 'mode', 'providerCount', 'publication', 'schema', 'source', 'stableDistribution']);
+  assert.deepEqual(Object.keys(artifact).sort(), ['distribution', 'families', 'familyCount', 'findingTypeSource', 'mode', 'providerCount', 'publication', 'schema', 'source', 'stableDistribution']);
 });
 
 test('the wrong artifact fails: an unrecorded digest, an internal run, a candidate build, another engine, a missing population', () => {
@@ -71,4 +89,22 @@ test('a candidate projection names itself internal, is never public, and needs a
   assert.deepEqual(matrixArtifactProblems(artifact, registry), []);
   assert.ok(matrixArtifactProblems({ ...artifact, publication: 'public' }, registry).some(p => p.includes('cannot be')));
   assert.ok(matrixArtifactProblems(buildMatrixArtifact(view(), 'candidate-projection'), registry).some(p => p.includes('no internal run')));
+});
+
+test('the distinct view schema preserves the family contract and refuses invented source fields', () => {
+  const v = view({ policy: { revision: 'rs-policy-1:sha256:' + 'a'.repeat(64) } });
+  const validate = new Ajv({ strict: false, allErrors: true }).compile(viewMatrixSchema());
+  const artifact = published(v);
+  artifact.families = [];
+  artifact.familyCount = 0;
+  artifact.providerCount = 0;
+  artifact.distribution = { stable: 0, provisional: 0, pending: 0, unsupported: 0 };
+  artifact.stableDistribution = { documented: 0, empirical: 0, "policy-qualified": 0 };
+  assert.equal(validate(artifact), true, JSON.stringify(validate.errors));
+  const missing = structuredClone(artifact);
+  delete missing.source.publishedPackage;
+  assert.equal(validate(missing), false);
+  const invented = structuredClone(artifact);
+  invented.source.generatedAt = '2026-10-08T00:00:00Z';
+  assert.equal(validate(invented), false);
 });

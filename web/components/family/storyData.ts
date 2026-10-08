@@ -2,7 +2,7 @@
  * Synthetic data for the family blocks' stories. The names, prefixes and counts are made up for the stories;
  * no real credential, no value from a fixture.
  */
-import type { FamilyBenchmarkData, FamilyNoteItem, FamilyRulesData, FamilySourcesData } from './types';
+import type { FamilyBenchmarkData, FamilyNoteItem, FamilyResearchRecordData, FamilyRulesData, FamilySourcesData } from './types';
 
 export const notes: FamilyNoteItem[] = [
   { term: 'Shape', parts: ['prefix ', { code: 'acme_pat_' }, ', then 22 alphanumeric characters, ', { code: '_' }, ', and 59 alphanumeric characters. No checksum is claimed.'] },
@@ -108,4 +108,47 @@ export const manySources: FamilySourcesData = {
   sources: [...sources.sources, ...Array.from({ length: 11 }, (_, i) => ({
     href: `https://example.com/very/long/path/segments/that/keep/going/${'segment-'.repeat(8)}${i}`, label: 'example.com', detail: `/very/long/path/segments/that/keep/going/${'segment-'.repeat(8)}${i}`,
   }))],
+};
+
+// ---- Research record (#591): synthetic, from a made-up release ----------------------------------------
+
+const PROVENANCE = 'credential-evidence snapshot-2099.01.01 · records at 0123456 · schema 1.8.0';
+
+export const researchRecord: FamilyResearchRecordData = {
+  provenance: PROVENANCE,
+  facts: [
+    { label: 'Review state', value: 'Draft, not reviewed' },
+    { label: 'Format revision', value: '2 · current' },
+    { label: 'Research', value: 'Researched' },
+    { label: 'Researched', value: '2099-01-02' },
+  ],
+  revisions: [
+    { id: 'acme:personal-token@1', label: 'Revision 1', detail: 'historical · draft, not reviewed · superseded by @2 · issued until 2098-12-31', current: false },
+    { id: 'acme:personal-token@2', label: 'Revision 2', detail: 'current · draft, not reviewed · supersedes @1 · issued from 2099-01-01 · the family\'s current revision', current: true },
+  ],
+  blockers: [
+    { ref: 'Issuance-gated', text: 'The body length and alphabet are not documented; one issued token would settle them.' },
+    { ref: 'Documentation-gated', text: 'Whether the self-hosted product issues the same body is not stated by the pages read.' },
+  ],
+  rulings: [{ ref: 'review-acme-personal-token#3', at: '2099-01-03', text: 'The maintainer decided that a provider staff answer in the community forum counts as a provider statement for the prefix only.' }],
+  review: '4 events in the review history: 1 authored, 2 observed, 1 decided. Latest: decided on 2099-01-03 by maintainer, project maintainer. Project-maintained review is not independent validation.',
+  recordHref: 'https://github.com/example/evidence/blob/0123456789abcdef0123456789abcdef01234567/records/families/acme/personal-token.json',
+};
+
+/** One revision, nothing blocking, nothing ruled: the bar and the review line only. */
+export const researchRecordSimple: FamilyResearchRecordData = {
+  ...researchRecord,
+  facts: [researchRecord.facts[0], { label: 'Format revision', value: '1 · current' }, ...researchRecord.facts.slice(2)],
+  revisions: [], blockers: [], rulings: [],
+  review: '1 event in the review history: 1 authored. Latest: authored on 2099-01-02 by author, project maintainer. Project-maintained review is not independent validation.',
+};
+
+const NOT_RECORDED = (label: string) => ({ label, value: 'Not recorded', tone: 'not-measured' as const });
+
+/** The release holds no record of the family: every cell dashed, and the reason. */
+export const researchRecordAbsent: FamilyResearchRecordData = {
+  provenance: PROVENANCE,
+  facts: [NOT_RECORDED('Review state'), NOT_RECORDED('Format revision'), NOT_RECORDED('Research'), NOT_RECORDED('Researched')],
+  revisions: [], blockers: [], rulings: [],
+  absent: { title: 'No research record for this family', text: 'snapshot-2099.01.01 has no family record for acme:new-token, so its review state, format revision and format facts are not recorded here.' },
 };

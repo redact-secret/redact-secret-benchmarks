@@ -1,0 +1,64 @@
+@layer components {
+  .record {
+    min-width: 0;
+  }
+
+  .groups {
+    display: grid;
+    gap: var(--space-8);
+    margin-top: var(--space-6);
+    min-width: 0;
+  }
+
+  .h3 {
+    margin: 0 0 var(--space-2);
+    font: var(--text-h3);
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--hairline) solid var(--ink);
+  }
+
+  .row {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3) 0;
+    border-bottom: var(--hairline) solid var(--line);
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  /* The current revision is marked by a solid rule and its words, never by colour alone. */
+  .current {
+    border-left: var(--rule-strong) solid var(--ink);
+    padding-left: var(--space-3);
+  }
+
+  .ref {
+    font: var(--text-body-strong);
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .ref small {
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .text {
+    max-width: var(--measure);
+    font: var(--text-body);
+    overflow-wrap: break-word;
+  }
+
+  .review {
+    max-width: var(--measure);
+    margin: 0;
+    color: var(--ink-muted);
+    font: var(--text-small);
+    overflow-wrap: break-word;
+  }
+}

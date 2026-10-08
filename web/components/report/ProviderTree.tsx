@@ -22,7 +22,8 @@ export interface ProviderTreeProps {
 
 /**
  * Providers as rows that open onto their families. Each provider carries its
- * fixture-row counts; each family links to its rows. Native disclosure, no state.
+ * fixture-row counts; each family links to its rows and, when given, names its research record (review state and
+ * format revision, #591), which describes the research and is never a status. Native disclosure, no state.
  */
 export function ProviderTree({ providers, expanded = false, label, emptyText = 'Clear the search or choose All.', footnote, className }: ProviderTreeProps) {
   if (providers.length === 0) {
@@ -55,6 +56,7 @@ export function ProviderTree({ providers, expanded = false, label, emptyText = '
                 <Link href={family.href} className={styles.name}>
                   <b>{family.name}</b>
                   <small><Code>{family.id}</Code></small>
+                  {family.research && <small className={styles.research}>{family.research}</small>}
                 </Link>
                 <span className={styles.n}>{family.fixturesLabel}</span>
                 <FixtureCountsLine counts={family.counts} />

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "source": {
     "repository": "redact-secret/redact-secret",
-    "revision": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+    "revision": "5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf",
     "path": "docs/coverage/detector-inventory.json",
-    "sha256": "4f18fa1e19ecdd6cd7310a67f1e38afb0d0dca6a17956f9eb64ec0334b4d8ec7"
+    "sha256": "af6063e5a58e6e87f4d2fa7c114fd67c46a5dc116ff5684c2cb93a1acdf52a1f"
   },
   "note": "Finding types per registered detector, copied from the core detector inventory at one revision. A detector with several types is a shared detector; the support matrix keys each row by these types (docs/specs/support-matrix.md).",
   "detectors": {
@@ -40,6 +40,9 @@
     ],
     "azure-devops-personal-access-token": [
       "azure_devops_personal_access_token"
+    ],
+    "baseten-api-key": [
+      "baseten_api_key"
     ],
     "bearer-token": [
       "bearer_token"
@@ -265,6 +268,10 @@
     ],
     "openrouter-api-key": [
       "openrouter_api_key"
+    ],
+    "ory-token": [
+      "ory_oauth2_token",
+      "ory_session_token"
     ],
     "otpauth-uri": [
       "otpauth_secret"

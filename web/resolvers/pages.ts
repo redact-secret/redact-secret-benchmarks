@@ -7,11 +7,13 @@
  *
  * Server-only. Client components import `./filters` and the types, never this.
  */
+import { createHash } from 'node:crypto';
 import { loadDetectorTitles, type Catalog } from '../services/catalog';
 import { loadCredentialSource, NO_VIEW_SUITE } from '../services/credential-source';
 import { loadDetectorContracts } from '../services/contracts';
 import { loadAccountingFloors } from '../services/floors';
 import { loadDossiers } from '../services/dossiers';
+import { loadResearch } from '../services/research';
 import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
 import { loadPeerProfiles } from '../services/peers';
@@ -24,13 +26,15 @@ import {
   resolveFamily, resolveFamilyList, familyHref, familySlug, type FamilyDetail, type FamilyList, type LevelList,
 } from './families';
 import type { StatusBarItem } from '../components/feedback';
-import type { FamilyBenchmarkData, FamilyNoteItem, FamilyRulesData, FamilySourcesData } from '../components/family/types';
+import type { FamilyBenchmarkData, FamilyFormatData, FamilyNoteItem, FamilyResearchRecordData, FamilyRulesData, FamilySourcesData } from '../components/family/types';
 import {
   LEVELS, isLevel, LEVEL_SHORT as SHORT_LABEL, LEVEL_TITLE as TIER_LABEL, answerMeta, levelHref, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
   type FindingsBlock, type LevelAnswers, type Level, type PeersBlock,
 } from './report';
 import { count, int, isoDate } from './format';
 import { resolveBenchmark, resolveNotes, resolveRules, resolveSources, resolveStatus } from './family-detail';
+import { resolveFamilyFormat } from './family-format';
+import { researchLine, resolveResearchRecord } from './family-research';
 import { LIST_LEVELS } from './filters';
 import { buildSuiteRecords, type SuiteRecordsFile } from './fixtures';
 import { NOT_PROVIDER_SPECIFIC } from './families';
@@ -66,9 +70,9 @@ export type { FamilyDetail, FamilyList, FindingsBlock, LevelAnswers, PeersBlock,
  * #608), with the stamp that says which. Rolling back is changing that one value; nothing here changes.
  */
 async function context() {
-  const { pipeline, catalog, run, fixtureBytes, fixtureHashes } = await loadCredentialSource();
+  const { pipeline, catalog, run, fixtureBytes, fixtureHashes, fixtureTextProblem } = await loadCredentialSource();
   const measured: MeasuredRun | undefined = run.state === 'measured' ? run : undefined;
-  return { catalog, run, measured, rows: measured?.productRows, pipeline, stamp: resolvePipelineStamp(pipeline), fixtureBytes, fixtureHashes };
+  return { catalog, run, measured, rows: measured?.productRows, pipeline, stamp: resolvePipelineStamp(pipeline), fixtureBytes, fixtureHashes, fixtureTextProblem };
 }
 
 export interface HeadData { eyebrow: string; title: string; lede: string; meta: MetaItem[] }
@@ -125,9 +129,11 @@ const footnoteOf = (totals: FamilyList['totals']): string =>
   `${int(totals.global)} fixtures are global or not tied to one family. They count in no provider or family row.`;
 
 async function listPage(title: 'Providers' | 'Families'): Promise<ListPageData> {
-  const { catalog, run, stamp, measured, rows } = await context();
+  const [{ catalog, run, stamp, measured, rows }, research] = await Promise.all([context(), loadResearch()]);
   const levels: LevelList[] = LIST_LEVELS.map(({ level, label }) => {
     const list = resolveFamilyList(catalog, rows, level);
+    // The provider list names each family's research record (#591): review state and format revision, or "not recorded".
+    if (title === 'Providers') for (const p of list.providers) p.group.families = p.group.families.map(f => ({ ...f, research: researchLine(research.state === 'recorded' ? research.families.get(f.id) : undefined) }));
     const unit = title === 'Providers' ? count(list.totals.providersWithFixtures, 'provider') : count(list.totals.familiesWithFixtures, 'family', 'families');
     return { level, optionLabel: level === 'all' ? label : `${label} · ${unit}`, list, footnote: footnoteOf(list.totals) };
   });
@@ -208,26 +214,47 @@ export async function resolveRowsFileParams(): Promise<{ kind: RowsKind; id: str
   return files.length ? files : [{ kind: 'suite' as const, id: NO_VIEW_SUITE }];
 }
 
+/**
+ * What a reported range's source records besides its place (#595), by pipeline. Inventoried in docs/specs/fixture-metadata.md: the official
+ * RunArtifact records optional actions but no scanner rule id; legacy rows record neither. Older views omit ranges and actions. A recorded field is
+ * added here only when its source records it and it passes an allowlist; it is never read from expected spans or a detector name.
+ */
+const REPORTED_FIELDS: Record<'new' | 'legacy', string> = {
+  new: 'This historical view records only the reported count. Rebuild the view from the retained artifact to expose recorded ranges and allowlisted actions. No scanner rule identifier is recorded.',
+  legacy: 'Not recorded by the benchmark run. Its rows record each reported range\'s place and outcome, not the scanner\'s rule id or the action it took.',
+};
+
+/** Bind all emitted records and shared metadata, including the run, to this page's build (#595). */
+const recordsIdentity = (file: SuiteRecordsFile): string => {
+  const { identity: _identity, ...shared } = file.shared;
+  return `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`;
+};
+
 /** A suite's fixture records and shared text: what `?fixture=<id>` builds one fixture's page from. */
 export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsFile | undefined> {
-  const [{ catalog, run, stamp, measured, fixtureBytes: bytes, fixtureHashes: hashes }, gaps] = await Promise.all([context(), loadFindings()]);
+  const [{ catalog, run, stamp, measured, pipeline, fixtureBytes: bytes, fixtureHashes: hashes, fixtureTextProblem }, gaps] = await Promise.all([context(), loadFindings()]);
   const suite = catalog.suites.find(s => s.id === id);
   if (!suite) return undefined;
   const runProblem = run.state !== 'measured'
     ? 'No benchmark run is published for this checkout.'
     : run.excludedSuites.find(s => s.id === id)?.problem ? `The report for these bytes is left out: ${run.excludedSuites.find(s => s.id === id)!.problem}. The expectation stands on its own; lanes appear once a report re-validates against these bytes.`
     : run.staleSuites.includes(id) ? 'The report for these bytes is from an older run and is left out.' : undefined;
-  return buildSuiteRecords({
+  const file = buildSuiteRecords({
     suite, fixtures: catalog.fixturesBySuite.get(id) ?? [], bytes, hashes,
     scanners: measured ? measured.scanners : [],
     ...(measured ? { run: { date: isoDate(measured.generatedAt), mode: measured.mode, ...(measured.candidate ? { commit: measured.candidate.sourceCommit } : {}) } } : {}),
     ...(runProblem ? { runProblem } : {}),
+    ...(fixtureTextProblem ? { textProblem: fixtureTextProblem } : {}),
+
+    reported: { rule: 'unavailable', action: 'unavailable', reason: REPORTED_FIELDS[pipeline.authority] },
     findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(i.candidate?.version ?? gaps.milestone), fixtures: i.fixtures })),
     detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
     familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),
     providerNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.provider === null ? NOT_PROVIDER_SPECIFIC.name : catalog.providerById.get(f.provider)!.name])),
     scenarioTitles: catalog.scenarioTitles,
   });
+  file.shared.identity = recordsIdentity(file);
+  return file;
 }
 
 // ---- /report/families/[family] ---------------------------------------------------
@@ -243,6 +270,9 @@ export interface FamilyPageData {
   levels: { value: string; label: string }[];
   /** What the page says above the rows (#589): research status, dossier notes, benchmark counts, peer rules, sources. */
   status: StatusBarItem[];
+  /** The canonical research record (#591): review state, format revision, research state, blockers, revisions, rulings. */
+  research: FamilyResearchRecordData;
+  canonicalFormat: FamilyFormatData;
   format: FamilyNoteItem[];
   lookAlikes: FamilyNoteItem[];
   open: FamilyNoteItem[];
@@ -266,7 +296,7 @@ export async function resolveFamilySlugs(): Promise<string[]> {
 }
 
 export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | undefined> {
-  const [{ catalog, run, stamp, measured, rows }, dossiers, peers] = await Promise.all([context(), loadDossiers(), loadPeerProfiles()]);
+  const [{ catalog, run, stamp, measured, rows }, dossiers, peers, research] = await Promise.all([context(), loadDossiers(), loadPeerProfiles(), loadResearch()]);
   const id = catalog.taxonomy.families.find(f => familySlug(f.id) === slug)?.id;
   const family = id ? resolveFamily(catalog, id, rows) : undefined;
   if (!family) return undefined;
@@ -293,6 +323,8 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
     rows: await rowsFor('family', slug),
     levels: levels.length > 2 ? levels : [],
     status: resolveStatus(dossier),
+    research: resolveResearchRecord(research, family.id),
+    canonicalFormat: resolveFamilyFormat(research, family.id),
     format: notes.format,
     lookAlikes: notes.lookAlikes,
     open: notes.open,
@@ -373,6 +405,8 @@ export interface SuitePageData {
   /** The fixture records (`SuiteRecordsFile`) the browser fetches for `?fixture=<id>`, by path, and how many there are. */
   recordsSrc: string;
   fixtureCount: number;
+  /** The build identity the records file must carry (`SuiteShared.identity`). */
+  recordsIdentity: string;
 }
 
 export async function resolveSuiteSlugs(): Promise<string[]> {
@@ -398,6 +432,7 @@ export async function resolveSuitePage(id: string): Promise<SuitePageData | unde
     description: `${int(fixtures.length)} fixtures in this suite. Open a fixture for its bytes, expected spans and what each scanner reported.`,
     recordsSrc: recordsDataPath(id),
     fixtureCount: fixtures.length,
+    recordsIdentity: (await resolveSuiteRecordsFile(id))!.shared.identity!,
   };
 }
 

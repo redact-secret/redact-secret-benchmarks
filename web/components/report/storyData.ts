@@ -136,9 +136,9 @@ export const providers: ProviderGroupData[] = [
   {
     id: 'aws', name: 'Amazon Web Services', familiesLabel: '5 families', fixturesLabel: '31 fixtures', counts: c('2', '0', '1'),
     families: [
-      { id: 'aws:iam-user-access-key', name: 'IAM user access key', href: '/report/providers?family=aws:iam-user-access-key', fixturesLabel: '24 fixtures', counts: c('0', '0', '1') },
-      { id: 'aws:sts-temporary-access-key', name: 'STS temporary access key', href: '/report/providers?family=aws:sts-temporary-access-key', fixturesLabel: '7 fixtures', counts: c('2', '0', '0', '3') },
-      { id: 'aws:sts-service-bearer-token', name: 'STS service bearer token', href: '/report/providers?family=aws:sts-service-bearer-token', fixturesLabel: '0 fixtures', counts: null },
+      { id: 'aws:iam-user-access-key', name: 'IAM user access key', href: '/report/providers?family=aws:iam-user-access-key', fixturesLabel: '24 fixtures', counts: c('0', '0', '1'), research: 'Draft, not reviewed · format revision 1 · current' },
+      { id: 'aws:sts-temporary-access-key', name: 'STS temporary access key', href: '/report/providers?family=aws:sts-temporary-access-key', fixturesLabel: '7 fixtures', counts: c('2', '0', '0', '3'), research: 'Draft, not reviewed · format revision 2 · proposed, none current' },
+      { id: 'aws:sts-service-bearer-token', name: 'STS service bearer token', href: '/report/providers?family=aws:sts-service-bearer-token', fixturesLabel: '0 fixtures', counts: null, research: 'Research record not recorded' },
     ],
   },
   {

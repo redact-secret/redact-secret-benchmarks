@@ -25,3 +25,12 @@ declare module '*/scripts/scaffold-dossiers.mjs' {
 declare module '*/scanners/index.mjs' {
   export const scanners: readonly { id: string; name: string; mode: string; configuration: Record<string, unknown> }[];
 }
+
+// The research projection's validators (benchmarks/support/research-projection.mjs, #590/#591): the same functions
+// `npm run research:check` runs. The projection's types are in services/research.ts.
+declare module '*/benchmarks/support/research-projection.mjs' {
+  export interface EvidencePin { revision: string; evidenceSchema: string; release: { tag: string; manifestDigest: string } }
+  export function evidencePin(registry: unknown): EvidencePin;
+  export function projectionProblems(projection: unknown, options: { familyIds: string[] }): string[];
+  export function bindingProblems(projection: unknown, pin: EvidencePin): string[];
+}

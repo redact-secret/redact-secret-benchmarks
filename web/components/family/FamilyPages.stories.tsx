@@ -28,14 +28,14 @@ type Story = StoryObj<typeof meta>;
 const runMeta = [{ label: 'Run', value: '2026-09-30' }, { label: 'Mode', value: 'published · redact-secret 0.1.0-beta.11' }];
 
 const researched: StatusBarItem[] = [
-  { label: 'Research', value: 'Ready' },
-  { label: 'Evidence level', value: 'T2 · Tool-corroborated' },
-  { label: 'Researched', value: '2026-09-29' },
+  { label: 'Dossier verdict', value: 'Ready' },
+  { label: 'Dossier evidence level', value: 'T2 · Tool-corroborated' },
+  { label: 'Dossier researched', value: '2026-09-29' },
 ];
 const unresearched: StatusBarItem[] = [
-  { label: 'Research', value: 'Not researched', tone: 'not-measured' },
-  { label: 'Evidence level', value: 'Not recorded', tone: 'not-measured' },
-  { label: 'Researched', value: 'Not recorded', tone: 'not-measured' },
+  { label: 'Dossier verdict', value: 'Not researched', tone: 'not-measured' },
+  { label: 'Dossier evidence level', value: 'Not recorded', tone: 'not-measured' },
+  { label: 'Dossier researched', value: 'Not recorded', tone: 'not-measured' },
 ];
 
 interface PageProps {
@@ -66,7 +66,7 @@ function FamilyPage({ title, provider, lede, status, note, format, open = [], lo
           meta={[{ value: provider }, { label: 'Detectors:', value: 'acme-tokens' }, ...runMeta]}
           actions={<Link href="/report/providers/">All providers</Link>}
         />
-        <StatusBar label={`Research record for ${title}`} items={status} />
+        <StatusBar label={`Benchmark dossier for ${title}`} items={status} />
         {note && <Note>{note}</Note>}
         <FamilyNotes title="Format facts" description="From the provider dossier, as written. The evidence level above says how well the format is backed; a fact the dossier does not record is not shown." items={format} emptyTitle="No format notes recorded" emptyText="The provider dossier has no shape, basis or issuance note for this family, so nothing is stated about its format here." />
         <FamilyBenchmark {...benchmarkData} />

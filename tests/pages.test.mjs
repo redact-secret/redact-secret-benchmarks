@@ -188,8 +188,8 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   const measured = text(coveragePage(fixtures, 'all', data));
   assert.ok(measured.includes(`${probe.counts.discriminated} discriminated · ${probe.counts['not-discriminated']} not discriminated · ${probe.counts['un-probeable']} un-probeable`), 'three separate lines');
   // #207 lifted seven un-probeable records (supabase, discord, telegram, both Sentry and both Twilio families); vercel-token remains.
-  // #583: the seven second-wave registry detectors were recorded un-probeable until their slice landed (583p.ts); slices 583b-583h authored them.
-  assert.equal(probe.counts['un-probeable'], 1);
+  // Ory and Baseten registry-only pending contracts join vercel-token as un-probeable.
+  assert.equal(probe.counts['un-probeable'], 3);
   assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 117, 'the test product reports every secret exactly and nothing else');
   for (const entry of probe.entries.filter(x => x.status === 'un-probeable')) assert.ok(measured.replaceAll('&quot;', '"').replaceAll('&#39;', "'").includes(entry.reason), entry.id);
   assert.ok(text(coveragePage(fixtures, 'all')).includes('117 not measured'), 'without a run nothing is claimed');

@@ -376,8 +376,14 @@ function renderMarkdown(o: Json, parity: Json | null): string {
       ['Review-ledger re-key', `${o.overlayAndPolicy.ledgerRekey.accepted.occurrences} legacy decisions mapped`, `${o.overlayAndPolicy.ledgerRekey.candidate.occurrences} legacy decisions mapped (all 4,268, re-keyed to the ${tagShort(engineTo)} occurrence ids)`],
     ]), '',
     `Twin scope: ${o.overlayAndPolicy.twinScope.why} Unchanged policy parts: ${o.overlayAndPolicy.unchangedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}; changed (derived from the corpus): ${o.overlayAndPolicy.changedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}. The review occurrence ids of ${tagShort(engineTo)} all differ from ${tagShort(engineFrom)} (the peer configuration identity is part of the id), which is why the re-key is regenerated; every legacy decision still maps (4,268 of 4,268).`, '');
-  if (parity) lines.push('## 4. Legacy-oracle parity (the authority gate)', '',
-    `\`qualification:parity --strict\` on the ${currentLower} view against the legacy oracle at the same release (@redact-secret/core 0.1.0-beta.12): ${n(parity.summary.compared)} values compared, ${n(parity.summary.equal)} equal, ${n(parity.summary.explained)} attributed to a named structural cause, **${parity.summary.unexplained} unexplained**. Causes: ${Object.entries(parity.summary.byCause).map(([k, c]) => `${k} ${c}`).join(', ')}.`, '');
+  if (parity) {
+    const legacyProduct = parity.identities?.legacy?.package;
+    const nextVersion = parity.identities?.new?.scanners?.['redact-secret'];
+    const productText = (product: unknown) => typeof product === 'string' && product.length ? `\`${product}\`` : 'not recorded in the parity artifact';
+    lines.push('## 4. Legacy-oracle parity (current regenerated authority gate)', '',
+      `This section reads the current regenerated parity artifact; the adoption comparison and its measured product above remain historical. Legacy product: ${productText(legacyProduct)}. New-path product: ${productText(typeof nextVersion === 'string' && nextVersion.length ? `@redact-secret/core@${nextVersion}` : null)}.`, '',
+      `\`qualification:parity --strict\`: ${n(parity.summary.compared)} values compared, ${n(parity.summary.equal)} equal, ${n(parity.summary.explained)} attributed to a named structural cause, **${parity.summary.unexplained} unexplained**. Causes: ${Object.entries(parity.summary.byCause).map(([k, c]) => `${k} ${c}`).join(', ')}.`, '');
+  }
   const sup = o.supersededCandidate, re = o.representationEffect, rel = o.releaseRepresentation;
   if (sup) lines.push(`## ${parity ? 5 : 4}. Against the superseded candidate (${sup.evidenceRelease}, ${tagShort(sup.engine ?? 'previous engine')})`, '',
     `${sup.note.replace(/ The owner (accepts|decides on) .*$/, '')} The owner ${st.accepted ? 'accepted' : 'decides on'} this candidate, never the superseded one.`, '',

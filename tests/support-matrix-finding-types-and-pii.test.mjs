@@ -38,8 +38,8 @@ test('the finding-type snapshot is the registered detectors at one product revis
   assert.equal(findingTypeSource.revision, detectors.sourceRevision);
   assert.deepEqual(Object.keys(snapshot.detectors).sort(), detectors.detectors.map(d => d.id).sort());
   for (const types of Object.values(snapshot.detectors)) assert.ok(types.length > 0 && new Set(types).size === types.length);
-  assert.equal(Object.values(snapshot.detectors).flat().length, 157);
-  assert.equal(Object.values(snapshot.detectors).filter(types => types.length > 1).length, 19, 'the 19 shared detectors');
+  assert.equal(Object.values(snapshot.detectors).flat().length, 160);
+  assert.equal(Object.values(snapshot.detectors).filter(types => types.length > 1).length, 20, 'the 20 shared detectors, including Ory session and OAuth2 finding types');
 });
 
 test('every arrival finding-type pair names a type the snapshot holds', () => {
@@ -56,7 +56,7 @@ test('the rule: no detector is empty, an arrival id keys its one pair, a detecto
   assert.equal(findingTypesFor(['a', 'b']), null);
 });
 
-test('every detector-bearing taxonomy family has a grounded key, and together the keys own every one of the 157 finding types', () => {
+test('every detector-bearing taxonomy family has a grounded key, and together the keys own every one of the 160 finding types', () => {
   const owned = new Set();
   for (const family of taxonomy.families) {
     if (!family.detectors.length) continue;

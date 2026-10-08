@@ -102,6 +102,8 @@ export interface CaseScannerResult {
   scanner: string; measurement: 'positive' | 'control' | 'pending' | 'not-measured';
   /** Findings the scanner reported on the case (the length of `actual`). */
   observed: number;
+  /** Safe recorded ranges and actions; absent on older views. Family attribution is not a scanner rule. */
+  reported?: { start: number; end: number; action?: 'redact' | 'warn' | 'block' | 'allow' }[];
   /** A positive case: one outcome per expected span, and the bytes left exposed and over-redacted. */
   outcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number;
   /** A control: whether the scanner flagged it, how many findings, and whether another detector also reported it. */
@@ -379,6 +381,7 @@ const scannerResult = (scanner: string, c: CaseResult): CaseScannerResult => {
   // Only what the measurement has: a field that does not apply is absent, so "not measured" and "pending" never read as a zero.
   return {
     scanner, measurement: m.type, observed: c.actual.length,
+    reported: c.actual.map(f => ({ start: f.start, end: f.end, ...(actionOf(f.action) ? { action: actionOf(f.action)! } : {}) })),
     ...(m.type === 'positive' ? { outcomes: m.span_outcomes, leakedBytes: m.leaked_bytes, collateralBytes: m.collateral_bytes } : {}),
     ...(m.type === 'control' ? { flagged: m.flagged, findings: m.findings, ...(m.co_detected === undefined ? {} : { coDetected: m.co_detected }) } : {}),
     ...(m.type === 'not-measured' && m.status ? { status: m.status } : {}),

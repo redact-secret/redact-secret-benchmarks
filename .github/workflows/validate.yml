@@ -123,6 +123,8 @@ jobs:
       - run: npm run fixtures:check
       - name: Fixture semantic index is complete, reviewed, and current (#340)
         run: npm run fixture-index:check
+      - name: Fixture titles are the pinned evidence release's case records and this repository's product-owned overlay, nothing else (#593)
+        run: npm run fixture-metadata:check
       - name: Validate published engine qualification evidence (frozen Beta.11 report, against the suite snapshot it was produced with)
         run: npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=evidence/449/suite-v1.json
       - name: The UI carries no support status the generated matrix cannot
@@ -159,6 +161,8 @@ jobs:
         run: npm run legacy-inventory:check
       - name: Every taxonomy provider and family has a dossier entry (#473)
         run: npm run dossiers:check
+      - name: The research projection is valid, names only taxonomy families and comes from the pinned evidence release (#590, #591)
+        run: npm run research:check
       - name: Peer scanner rules map to real taxonomy families, and the peer registry ranks nothing (#558)
         run: npm run peer-rules:check
       - name: Contribution readiness next actions, advisory only (#534)

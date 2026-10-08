@@ -22,12 +22,12 @@ test('scenario registry, reviewed semantics, and generated index satisfy their v
   }
 });
 
-test('the committed index is the deterministic projection of all 6,423 public fixtures', () => {
+test('the committed index is the deterministic projection of all 6,441 public fixtures', () => {
   assert.deepEqual(committed, build());
-  assert.equal(committed.identity.fixtureCount, 6423);
+  assert.equal(committed.identity.fixtureCount, 6441);
   assert.deepEqual(fixtureIndexProblems(committed), []);
   assert.deepEqual(fixtureSemanticIdentity(committed), committed.identity);
-  assert.equal(new Set(committed.fixtures.map(f => f.slug)).size, 6423);
+  assert.equal(new Set(committed.fixtures.map(f => f.slug)).size, 6441);
   assert.equal(committed.fixtures.filter(f => !f.scenarioIds.length).length, 0);
   assert.equal(committed.fixtures.filter(f => !f.familyIds.length && !f.unscopedReason).length, 0);
   assert.ok(committed.fixtures.every(f => !Object.hasOwn(f, 'content') && !Object.hasOwn(f, 'expected') && !Object.hasOwn(f, 'assessment')));

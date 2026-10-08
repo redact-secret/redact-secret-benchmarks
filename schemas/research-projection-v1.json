@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:redact-secret:research-projection:1",
+  "title": "Research projection (#590, #591)",
+  "description": "A read-only presentation copy of the canonical credential-evidence records for the taxonomy's families, from the pinned evidence release (docs/specs/research-records.md). Field values are the records' own; nothing is derived. It carries no scanner result, product output or support status.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "spec", "source", "families", "sources"],
+  "properties": {
+    "schema": { "const": "redact-secret/research-projection/v1" },
+    "spec": { "const": "docs/specs/research-records.md" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "release", "manifestDigest", "recordsBundleDigest", "commit", "recordsTree", "schemaRevision"],
+      "properties": {
+        "repository": { "const": "redact-secret/credential-evidence" },
+        "release": { "type": "string", "minLength": 1 },
+        "manifestDigest": { "$ref": "#/$defs/digest" },
+        "recordsBundleDigest": { "$ref": "#/$defs/digest" },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "recordsTree": { "type": "string", "pattern": "^records-tree-sha256:[0-9a-f]{64}$" },
+        "schemaRevision": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+      }
+    },
+    "families": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/familyId" },
+      "additionalProperties": { "$ref": "#/$defs/family" }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/source" }
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "familyId": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*:[a-z0-9]+(-[a-z0-9]+)*$" },
+    "contractId": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*:[a-z0-9]+(-[a-z0-9]+)*@[1-9][0-9]{0,5}$" },
+    "lifecycle": { "enum": ["draft", "maintainer-only", "reviewed", "deprecated", "withdrawn"] },
+    "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "lifecycle", "record", "research", "review", "currentContract", "revisions", "contract"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "aliases": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "lifecycle": { "$ref": "#/$defs/lifecycle" },
+        "record": { "type": "string", "pattern": "^records/families/[^\\s]+\\.json$" },
+        "research": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "researchedAt", "blockers", "issues"],
+          "properties": {
+            "state": { "enum": ["unresearched", "researched", "not-found", "rejected"] },
+            "researchedAt": { "oneOf": [{ "$ref": "#/$defs/date" }, { "type": "null" }] },
+            "blockers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["kind", "summary"],
+                "properties": {
+                  "kind": { "enum": ["issuance-gated", "date-gated", "documentation-gated", "other"] },
+                  "summary": { "type": "string", "minLength": 1, "maxLength": 240 }
+                }
+              }
+            },
+            "issues": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[1-9][0-9]*$" } }
+          }
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["history", "events", "byType", "latest", "decided"],
+          "properties": {
+            "history": { "type": ["string", "null"] },
+            "events": { "type": "integer", "minimum": 0 },
+            "byType": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 1 } },
+            "latest": {
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["seq", "type", "at", "role", "affiliation"],
+                  "properties": {
+                    "seq": { "type": "integer", "minimum": 1 },
+                    "type": { "enum": ["authored", "observed", "reviewed", "decided", "disputed", "resolved", "corrected", "withdrawn", "superseded"] },
+                    "at": { "$ref": "#/$defs/date" },
+                    "role": { "enum": ["author", "reviewer", "maintainer", "contributor", "automation"] },
+                    "affiliation": { "enum": ["project-maintainer", "external", "unknown"] }
+                  }
+                }
+              ]
+            },
+            "decided": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["ref", "at", "note"],
+                "properties": { "ref": { "type": "string", "pattern": "^[a-z0-9-]+#[1-9][0-9]*$" }, "at": { "$ref": "#/$defs/date" }, "note": { "$ref": "#/$defs/text" } }
+              }
+            }
+          }
+        },
+        "currentContract": { "oneOf": [{ "$ref": "#/$defs/contractId" }, { "type": "null" }] },
+        "revisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "revision", "period", "lifecycle", "supersedes", "validity", "current"],
+            "properties": {
+              "id": { "$ref": "#/$defs/contractId" },
+              "revision": { "type": "integer", "minimum": 1 },
+              "period": { "enum": ["current", "historical", "proposed"] },
+              "lifecycle": { "$ref": "#/$defs/lifecycle" },
+              "supersedes": { "oneOf": [{ "$ref": "#/$defs/contractId" }, { "type": "null" }] },
+              "validity": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["from", "until"],
+                "properties": { "from": { "oneOf": [{ "$ref": "#/$defs/date" }, { "type": "null" }] }, "until": { "oneOf": [{ "$ref": "#/$defs/date" }, { "type": "null" }] } }
+              },
+              "current": { "type": "boolean" }
+            }
+          }
+        },
+        "contract": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "structure", "claims", "openQuestions"],
+              "properties": {
+                "id": { "$ref": "#/$defs/contractId" },
+                "structure": { "$ref": "#/$defs/structure" },
+                "claims": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["id", "statement", "evidenceClass", "temporality", "observedAt", "sources"],
+                    "properties": {
+                      "id": { "type": "string", "minLength": 1 },
+                      "statement": { "$ref": "#/$defs/text" },
+                      "evidenceClass": { "enum": ["provider-documented", "tool-corroborated", "project-policy", "unresolved"] },
+                      "temporality": { "enum": ["current", "historical"] },
+                      "observedAt": { "$ref": "#/$defs/date" },
+                      "sources": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": ["sourceId", "supports"],
+                          "properties": { "sourceId": { "type": "string", "minLength": 1 }, "supports": { "$ref": "#/$defs/text" }, "locator": { "type": "string", "minLength": 1 } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "openQuestions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["id", "question", "raisedAt"],
+                    "properties": { "id": { "type": "string", "minLength": 1 }, "question": { "$ref": "#/$defs/text" }, "raisedAt": { "$ref": "#/$defs/date" } }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "structure": {
+      "description": "The contract's structure as written (credential-evidence format-contract schema 1.8.0).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "prefixes": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "alphabet": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "name": { "type": "string" }, "characters": { "type": "string" } }
+        },
+        "length": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "exact": { "type": "integer" }, "min": { "type": "integer" }, "max": { "type": "integer" } }
+        },
+        "separators": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "role"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "role": { "enum": ["prefix", "body", "separator", "checksum", "version", "suffix", "companion", "other"] },
+              "description": { "$ref": "#/$defs/text" }
+            }
+          }
+        },
+        "descriptivePattern": { "type": "string", "minLength": 1 },
+        "checksum": { "$ref": "#/$defs/text" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "sourceType", "url", "pin", "lastReadAt", "lastOutcome"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "publisher": { "type": "string", "minLength": 1 },
+        "sourceType": { "enum": ["provider-documentation", "provider-sdk-source", "scanner-rule-source", "third-party-writeup", "issue-or-discussion", "standard-or-rfc", "project-research-note", "other"] },
+        "url": { "type": "string", "pattern": "^https://[^\\s]+$" },
+        "pin": { "enum": ["commit-permalink", "archive-snapshot", "content-digest", "live-unpinned"] },
+        "lastReadAt": { "oneOf": [{ "$ref": "#/$defs/date" }, { "type": "null" }] },
+        "lastOutcome": { "enum": ["read", "unchanged", "changed", "unreachable", "superseded"] }
+      }
+    }
+  }
+}

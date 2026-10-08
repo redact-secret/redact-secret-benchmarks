@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "2a6fcfd63ff9369aec8e6cb8be2d1e05f3ba8a94be03625e67f199da1e8d9222"
+      "digest": "505fbb61b72a865de434ef9fe1b95e9b2941ffb251852604b46e36df7e495648"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -21,7 +21,7 @@
     },
     "taxonomy": {
       "algorithm": "sha256",
-      "digest": "41d23792c6a99862ce14620d391a74ce0057638597c9aea7be70bed14d124f05"
+      "digest": "fdef3e2dbe493582ccd4acc9b7be7e2ee4369e5ca21584d40205914a8a03947a"
     }
   },
   "fixtures": [
@@ -101537,6 +101537,117 @@
       }
     },
     {
+      "slug": "detector-coverage--baseten-api-key-key-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "baseten-api-key-key-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/baseten-api-key-key-bare.txt"
+      },
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "baseten-api-key-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/baseten-api-key-key-mask.txt"
+      },
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "baseten-api-key-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/baseten-api-key-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "baseten-api-key-key-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/baseten-api-key-key-quoted.txt"
+      },
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "baseten-api-key-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/baseten-api-key-key-reference.txt"
+      },
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "baseten-api-key-key-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/baseten-api-key-key-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--bearer-token-header-bare",
       "source": {
         "categoryId": "detector-coverage",
@@ -117072,6 +117183,228 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-oauth2-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-oauth2-bare.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-oauth2-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-oauth2-mask.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-oauth2-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-oauth2-prefix-only.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-oauth2-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-oauth2-quoted.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-oauth2-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-oauth2-reference.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-oauth2-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-oauth2-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-session-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-session-bare.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-session-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-session-mask.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-session-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-session-prefix-only.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-session-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-session-quoted.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-session-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-session-reference.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ory-token-session-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ory-token-session-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
         "credential-shape-grammar"
       ],
       "provenance": {
@@ -132805,7 +133138,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
-    "fixtureCount": 6423
+    "digest": "0ea31ebccaff6e8ec1f051edc3e1e06e596f4710f75df856cd6b657c4fed585c",
+    "fixtureCount": 6441
   }
 }

@@ -19,11 +19,11 @@
  * and its digest, the benchmark revision and the verdict counts; `npm run product-candidates:check` verifies its shape.
  */
 import { execFileSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { buildReport } from './candidate-replay-pipeline.mjs';
+import { generatedStage, publishGeneratedFiles } from './lib/generated-output.mjs';
 import { controlFor } from './candidate-control.mjs';
 import { fetchArchive, listKept, pack, sha256File } from './replay-archive.mjs';
 import { controlRosterProblems, controlScannerIds, effectiveScannerIds } from './official-run-selection.mjs';
@@ -98,7 +98,7 @@ function wait(runId) {
 }
 
 function collect(id, runId, evidence) {
-  const scratch = mkdtempSync(path.join(os.tmpdir(), 'candidate-collect-'));
+  const scratch = generatedStage(root);
   try {
     const into = path.join(scratch, 'replay');
     for (const population of ['public-evidence-snapshot', 'regression-corpus', 'policy-corpus']) gh(['run', 'download', runId, '-R', REPOSITORY, '-n', `candidate-run-${population}`, '-D', path.join(into, population)]);
@@ -135,7 +135,7 @@ function collect(id, runId, evidence) {
     fetchArchive({ release: `candidate-runs-${runId}`, sha256: archived.digest, out: check, repository: REPOSITORY });
     for (const rel of listKept(into)) if (sha256File(path.join(into, rel)) !== sha256File(path.join(check, rel))) throw new Error(`the archive round trip differs for ${rel}`);
     const dir = evidence ? `${dataDir(id)}/${evidence.tag}` : dataDir(id);
-    const out = path.join(root, dir);
+    const out = path.join(scratch, 'prepared');
     mkdirSync(out, { recursive: true });
     for (const f of ['candidate-effect.json', 'candidate-effect.md', 'effect.json', 'triage.json', 'triage.md']) if (existsSync(path.join(scratch, 'report', f))) copyFileSync(path.join(scratch, 'report', f), path.join(out, f));
     // A new snapshot completes the 2x2: control and candidate on the accepted evidence (A, B) next to control and candidate on the new one (C, D), by their recorded archives.
@@ -166,7 +166,7 @@ function collect(id, runId, evidence) {
       ...(includedOptional.length ? { includedOptionalScanners: includedOptional } : {}),
       ...(evidence ? { evidence: { tag: evidence.tag, manifestDigest: evidence.digest } } : {}),
     }, evidence?.tag);
-    writeFileSync(registryFile, `${JSON.stringify(next, null, 2)}\n`);
+    publishGeneratedFiles({ root, files: readdirSync(out).map(f => ({ source: path.join(out, f), target: `${dir}/${f}` })), record: { path: 'benchmarks/product-candidates.json', value: next } });
     return { effect, digest: archived.digest };
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 }

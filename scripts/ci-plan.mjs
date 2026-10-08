@@ -56,7 +56,7 @@ export const PII_MIGRATION = [
 /** Inputs of the legacy measurement (the oracle): the engine, its adapters, corpora, policy, pins and ledger, and shared scripts. */
 const LEGACY = [
   (f) => /^benchmarks\//.test(f) && !NEW_PATH_BENCHMARKS.test(f) && !matches(PII_MIGRATION, f),
-  (f) => /^(scanners|corpora|fixtures|peer-observations|qualification|holdout|adversarial|baselines|evidence|src)\//.test(f),
+  (f) => /^(scanners|corpora|fixtures|peer-observations|qualification|holdout|adversarial|baselines|evidence|src|shared\/design-tokens)\//.test(f),
   (f) => /^scripts\//.test(f) && !NEW_PATH_SCRIPTS.test(f) && !matches(PII_MIGRATION, f),
   (f) => /^(vite\.config\.ts|index\.html)$/.test(f),
 ]
@@ -64,7 +64,7 @@ const LEGACY = [
 /** What the Next build reads besides web/: services read the benchmark files, the corpora, the legacy site's validators and the committed evidence. */
 const WEB_INPUTS = [
   (f) => /^web\//.test(f),
-  (f) => /^(benchmarks|src|scanners|corpora|fixtures|peer-observations|qualification|evidence|baselines|holdout|adversarial|public|scripts)\//.test(f),
+  (f) => /^(benchmarks|src|scanners|corpora|fixtures|peer-observations|qualification|evidence|baselines|holdout|adversarial|public|scripts|shared\/design-tokens)\//.test(f),
   (f) => /^docs\/(specs\/qualification\/|generated\/)/.test(f),
   (f) => /^(vite\.config\.ts|index\.html)$/.test(f),
 ]

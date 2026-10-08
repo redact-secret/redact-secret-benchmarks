@@ -21,7 +21,8 @@
  */
 import { selectionGroups } from '../../benchmarks/evaluation/domains/credential/run-summary';
 import { ACCOUNTING_VERSION } from '../../benchmarks/accounting/index';
-import type { AccountingConfig, ScoredRow } from '../../benchmarks/types';
+import type { AccountingConfig } from '../../benchmarks/shared/accounting-types';
+import type { ScoredRow } from '../../benchmarks/types';
 import type { RunSummary } from '../../benchmarks/evaluation/domains/credential/run-summary';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
 import { caseMetadataBindingProblem, type EvidenceCaseMetadata } from '../../benchmarks/lib/fixture-metadata';

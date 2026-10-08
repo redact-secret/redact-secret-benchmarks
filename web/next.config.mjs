@@ -16,7 +16,7 @@ const nextConfig = {
   images: { unoptimized: true },
   // `next/image` with `unoptimized` does not add the base path to a public file; components read this to do it.
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
-  // tokens.css and tokens.json are read from the existing site's src/ until cutover (theme/tokens.ts).
+  // Both site implementations read the neutral shared/design-tokens files (theme/tokens.ts).
   experimental: { externalDir: true },
   // The repo root, so files read from ../src resolve and the parent lockfile is not mistaken for a second workspace.
   turbopack: { root: path.resolve(import.meta.dirname, '..') },

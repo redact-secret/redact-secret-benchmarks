@@ -19,12 +19,12 @@
 // regenerates everything and fails on any byte of difference in the recorded, platform-independent part.
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeConversion } from './convert-pii-populations.mjs';
 import { ROOT, SCANNER_ID, VIEWS, readMigration, semanticDigest } from './lib/pii-population-conversion.mjs';
+import { generatedStage } from './lib/generated-output.mjs';
 import { renderReport } from './lib/pii-population-report.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -434,56 +434,63 @@ export async function main(argv) {
   const arg = name => argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
   const piiEval = resolve(arg('pii-eval') ?? process.env.PII_EVAL_DIR ?? '');
   if (!piiEval || !existsSync(join(piiEval, '.git'))) throw new Error('--pii-eval=<git checkout of redact-secret/pii-eval> is required');
-  const work = resolve(arg('work') ?? mkdtempSync(join(tmpdir(), 'pii-dual-run-')));
+  const work = resolve(arg('work') ?? generatedStage(ROOT));
   mkdirSync(work, { recursive: true });
-  const migration = readMigration();
-  const ctx = { work, ...prepareSources({ piiEval, work, migration }) };
-  ctx.tools = ctx.nodeTools;
-  const { ctx: conversion, summary } = writeConversion(join(work, 'conv'));
+  try {
+    const migration = readMigration();
+    const ctx = { work, ...prepareSources({ piiEval, work, migration }) };
+    ctx.tools = ctx.nodeTools;
+    const { ctx: conversion, summary } = writeConversion(join(work, 'conv'));
 
-  const populations = conversion.populations.map((bucket, i) => runPopulation(ctx, bucket, i));
-  const rejections = bindingRejections(ctx);
-  const countAgreement = benchmarkReportCounts(migration, populations.map(p => ({ view: p.view, conversion: p.conversion })));
-  const scriptDigest = file => sha256(readFileSync(join(HERE, file)));
-  const record = {
-    schemaVersion: 1, reportType: 'pii-eval-population-dual-run', supportClaims: false, authorityChanged: false,
-    identities: {
-      oracle: { repository: 'redact-secret/redact-secret-benchmarks', commit: ctx.spec.pin, filesTreeDigest: ctx.spec.treeDigest, fileCount: ctx.spec.files.length, runsUnmodified: true, stubs: ['ajv (accepts every document)', 'benign-collision-evidence (no entries)'] },
-      piiEval: { repository: 'redact-secret/pii-eval', commit: migration.pins.piiEvalProjection, cargoLockSha256: ctx.lock, engineVersion: '0.0.0', artifactSchema: '1.4', protocolRevision: 2, buildFlags: '--release --locked' },
-      candidate: migration.benchmarkPopulations.candidate, activationDigest: migration.scanner.activationDigest, configurationDigest: migration.scanner.configurationDigest, mode: 'exploratory',
-      tooling: { 'scripts/lib/pii-population-conversion.mjs': scriptDigest('lib/pii-population-conversion.mjs'), 'scripts/pii-eval-population-parity/population_parity.rs': scriptDigest('pii-eval-population-parity/population_parity.rs') },
-    },
-    populations: populations.map(({ publicPath, ...p }) => p),
-    benchmarkReportCounts: countAgreement,
-    bindingRejections: rejections,
-  };
-  record.verdict = {
-    populations: record.populations.length,
-    unexplainedDifferences: record.populations.reduce((n, p) => n + p.unexplained, 0),
-    reportCountDisagreements: countAgreement.filter(r => !r.equal).length,
-    bindingsRefused: rejections.filter(r => r.case !== 'control-same-population').every(r => r.exit !== 0 && !r.outputWritten) && rejections.find(r => r.case === 'control-same-population').exit === 0,
-    comparisonDetectsInjectedDifferences: record.populations.every(p => p.comparisonDetectsInjectedDifferences),
-    deterministic: record.populations.every(p => p.determinism.equalSemanticDigest && p.determinism.byteIdenticalDocuments),
-  };
-  const environment = { platform: `${process.platform}-${process.arch}`, node: process.version, binarySha256: sha256(readFileSync(ctx.binary)), cargo: sh('cargo', ['--version']).trim() };
+    const populations = conversion.populations.map((bucket, i) => runPopulation(ctx, bucket, i));
+    const rejections = bindingRejections(ctx);
+    const countAgreement = benchmarkReportCounts(migration, populations.map(p => ({ view: p.view, conversion: p.conversion })));
+    const scriptDigest = file => sha256(readFileSync(join(HERE, file)));
+    const record = {
+      schemaVersion: 1, reportType: 'pii-eval-population-dual-run', supportClaims: false, authorityChanged: false,
+      identities: {
+        oracle: { repository: 'redact-secret/redact-secret-benchmarks', commit: ctx.spec.pin, filesTreeDigest: ctx.spec.treeDigest, fileCount: ctx.spec.files.length, runsUnmodified: true, stubs: ['ajv (accepts every document)', 'benign-collision-evidence (no entries)'] },
+        piiEval: { repository: 'redact-secret/pii-eval', commit: migration.pins.piiEvalProjection, cargoLockSha256: ctx.lock, engineVersion: '0.0.0', artifactSchema: '1.4', protocolRevision: 2, buildFlags: '--release --locked' },
+        candidate: migration.benchmarkPopulations.candidate, activationDigest: migration.scanner.activationDigest, configurationDigest: migration.scanner.configurationDigest, mode: 'exploratory',
+        tooling: { 'scripts/lib/pii-population-conversion.mjs': scriptDigest('lib/pii-population-conversion.mjs'), 'scripts/pii-eval-population-parity/population_parity.rs': scriptDigest('pii-eval-population-parity/population_parity.rs') },
+      },
+      populations: populations.map(({ publicPath, ...p }) => p),
+      benchmarkReportCounts: countAgreement,
+      bindingRejections: rejections,
+    };
+    record.verdict = {
+      populations: record.populations.length,
+      unexplainedDifferences: record.populations.reduce((n, p) => n + p.unexplained, 0),
+      reportCountDisagreements: countAgreement.filter(r => !r.equal).length,
+      bindingsRefused: rejections.filter(r => r.case !== 'control-same-population').every(r => r.exit !== 0 && !r.outputWritten) && rejections.find(r => r.case === 'control-same-population').exit === 0,
+      comparisonDetectsInjectedDifferences: record.populations.every(p => p.comparisonDetectsInjectedDifferences),
+      deterministic: record.populations.every(p => p.determinism.equalSemanticDigest && p.determinism.byteIdenticalDocuments),
+    };
+    const environment = { platform: `${process.platform}-${process.arch}`, node: process.version, binarySha256: sha256(readFileSync(ctx.binary)), cargo: sh('cargo', ['--version']).trim() };
 
-  writeJson(join(work, 'record.json'), record);
-  if (argv.includes('--write')) {
-    mkdirSync(OUT_DIR, { recursive: true });
-    for (const p of populations) writeFileSync(join(OUT_DIR, `${p.view}.public-synthetic-artifact.json`), readFileSync(p.publicPath));
-    writeJson(REPORT_JSON, record);
-    writeFileSync(REPORT_MD, renderReport(record));
-    console.log(`wrote ${REPORT_JSON}`);
-  }
-  if (argv.includes('--check')) {
-    const recorded = readFileSync(REPORT_JSON, 'utf8');
-    if (recorded !== `${JSON.stringify(record, null, 1)}\n`) throw new Error('benchmarks/pii-eval-population-dual-run/report.json differs from a fresh run');
-    for (const p of populations) if (!readFileSync(p.publicPath).equals(readFileSync(join(OUT_DIR, `${p.view}.public-synthetic-artifact.json`)))) throw new Error(`${p.view} public artifact differs from a fresh run`);
-    if (readFileSync(REPORT_MD, 'utf8') !== renderReport(record)) throw new Error('the Markdown report differs from the record');
-    console.log('the recorded dual run equals a fresh run');
-  }
-  console.log(JSON.stringify({ verdict: record.verdict, environment }, null, 1));
-  return record;
+    writeJson(join(work, 'record.json'), record);
+    const transient = join(ROOT, 'results-output/pii-population-dual-run');
+    mkdirSync(transient, { recursive: true });
+    for (const p of populations) writeFileSync(join(transient, `${p.view}.public-synthetic-artifact.json`), readFileSync(p.publicPath));
+    writeJson(join(transient, 'record.json'), record);
+    writeFileSync(join(transient, 'summary.md'), renderReport(record));
+    if (argv.includes('--write')) {
+      mkdirSync(OUT_DIR, { recursive: true });
+      for (const p of populations) writeFileSync(join(OUT_DIR, `${p.view}.public-synthetic-artifact.json`), readFileSync(p.publicPath));
+      writeJson(REPORT_JSON, record);
+      writeFileSync(REPORT_MD, renderReport(record));
+      console.log(`wrote ${REPORT_JSON}`);
+    }
+    if (argv.includes('--check')) {
+      const recorded = readFileSync(REPORT_JSON, 'utf8');
+      if (recorded !== `${JSON.stringify(record, null, 1)}\n`) throw new Error('benchmarks/pii-eval-population-dual-run/report.json differs from a fresh run');
+      for (const p of populations) if (!readFileSync(p.publicPath).equals(readFileSync(join(OUT_DIR, `${p.view}.public-synthetic-artifact.json`)))) throw new Error(`${p.view} public artifact differs from a fresh run`);
+      if (readFileSync(REPORT_MD, 'utf8') !== renderReport(record)) throw new Error('the Markdown report differs from the record');
+      console.log('the recorded dual run equals a fresh run');
+    }
+    console.log(JSON.stringify({ verdict: record.verdict, environment }, null, 1));
+    return record;
+  } finally { if (!arg('work')) rmSync(work, { recursive: true, force: true }); }
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

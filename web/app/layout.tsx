@@ -8,7 +8,7 @@ import { THEME_ATTRIBUTE, THEME_STORAGE_KEY } from '../theme/theme';
 import { ThemeRoot } from '../theme/ThemeRoot';
 import { resolveSiteBuild } from '../resolvers/pages';
 import { AppChrome } from './AppChrome';
-import '../../src/tokens.css';
+import '../../shared/design-tokens/tokens.css';
 import './globals.css';
 
 export const metadata: Metadata = {

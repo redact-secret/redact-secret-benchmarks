@@ -182,5 +182,7 @@ test('a path that names the file and is not a listed reader is a new reader, and
   assert.deepEqual(unlistedPiiAuthorityReaders(['web/services/other.ts', 'scripts/publish-pii-support.ts']), ['web/services/other.ts', 'scripts/publish-pii-support.ts']);
   const naming = filesNamingTheAuthorityFile(['a.ts', 'b.ts', 'logo.png'], path => ({ 'a.ts': 'reads benchmarks/pii-authority.json', 'b.ts': 'nothing', 'logo.png': 'benchmarks/pii-authority.json' })[path]);
   assert.deepEqual(naming, ['a.ts']);
+  assert.deepEqual(unlistedPiiAuthorityReaders(['tests/generated-output.test.mjs']), []);
+  assert.deepEqual(unlistedPiiAuthorityReaders(['tests/generated-output-other.test.mjs']), ['tests/generated-output-other.test.mjs'], 'approval is exact, not every generated-output test');
   assert.ok(PII_AUTHORITY_READERS.every(r => r.why.length > 10));
 });

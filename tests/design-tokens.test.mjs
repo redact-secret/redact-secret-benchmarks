@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 
 const read = path => readFile(new URL('../' + path, import.meta.url), 'utf8');
-const system = JSON.parse(await read('src/tokens.json'));
-const tokensCss = await read('src/tokens.css');
+const system = JSON.parse(await read('shared/design-tokens/tokens.json'));
+const tokensCss = await read('shared/design-tokens/tokens.css');
 const styleCss = await read('src/style.css');
 
 /** Declarations of one theme block, by selector prefix. */

@@ -13,7 +13,7 @@
  * Rolling back is changing the one committed value; this module is where it takes effect for the Next app.
  */
 import { validateAccounting } from '../../benchmarks/accounting/index';
-import type { AccountingConfig } from '../../benchmarks/types';
+import type { AccountingConfig } from '../../benchmarks/shared/accounting-types';
 import { loadAuthority, type Authority, type QualificationAuthority } from './authority';
 import { assembleCatalog, loadCatalog, loadDetectorTitles, loadFixtureBytes, loadFixtureHashes, loadTaxonomy, type BuiltFixture, type Catalog } from './catalog';
 import { bridgeQualificationView, withCaseText } from './credential-bridge';

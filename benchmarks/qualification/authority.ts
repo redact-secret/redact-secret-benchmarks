@@ -174,6 +174,7 @@ export const AUTHORITY_READERS: readonly { path: string; why: string }[] = [
   { path: 'web/services/authority.ts', why: 'the only reader in the Next app; every page asks it, never the file' },
   { path: 'schemas/qualification-authority-v1.json', why: 'the JSON schema of the file' },
   { path: 'tests/qualification-authority.test.mjs', why: 'the validator tests' },
+  { path: 'tests/generated-output.test.mjs', why: 'synthetic negative controls prove generated publication refuses authority targets without reading or writing the committed value (#848)' },
   { path: 'web/tests/unit/', why: 'the service, bridge and page tests choose the pipeline by a committed-shaped file in an overlay root' },
   { path: 'web/scripts/', why: 'the post-build checks read the committed value, independently of the services, to know which recount applies' },
   { path: 'package.json', why: 'the authority:check script' },

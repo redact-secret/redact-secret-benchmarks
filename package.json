@@ -105,7 +105,6 @@
     "qualification:axis-overlay": "node --import tsx scripts/build-axis-overlay.ts",
     "qualification:twin-scope": "node --import tsx scripts/build-twin-scope-map.ts",
     "qualification:ledger-rekey": "node --import tsx scripts/build-ledger-rekey.ts",
-    "adoption:expectation-corrections": "node --import tsx scripts/export-expectation-corrections.ts --triage docs/generated/evidence-adoption/product-core-main-1e45cecf/triage.json --out-json docs/generated/evidence-adoption/snapshot-2026.10.04.3.expectation-corrections.json --out-md docs/generated/evidence-adoption/snapshot-2026.10.04.3.expectation-corrections.md",
     "adoption:triage-queue": "node --import tsx scripts/export-triage-queue.ts",
     "qualification:derive-inputs": "node --import tsx scripts/derive-snapshot-inputs.ts",
     "qualification:evidence":"node --import tsx scripts/export-evaluation-evidence.ts",
@@ -182,6 +181,7 @@
     "pii:evidence:publish": "node scripts/pii-evidence-publication.mjs --write",
     "pii:evidence:publication:check": "node scripts/pii-evidence-publication.mjs --check",
     "hygiene:inventory": "node scripts/retention-inventory.mjs",
+    "hygiene:ci-invocations": "node scripts/ci-invocations.mjs",
     "hygiene:check": "node scripts/check-repository-hygiene.mjs",
     "hygiene:restore": "node scripts/restore-retained-file.mjs"
   },

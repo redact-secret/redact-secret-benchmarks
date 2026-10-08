@@ -53,7 +53,7 @@ scanner results; unknown formats default to T0.
 
 ## Code style
 
-- `src/tokens.css`, `src/tokens.json`: Redact Secret design tokens, copied
+- `shared/design-tokens/tokens.css`, `shared/design-tokens/tokens.json`: Redact Secret design tokens, copied
   from the design system — a test fails on drift.
 - `src/style.css`: tokens only, no hex, no raw px, no shadows.
 - Keep scanner execution separate from measurement logic. A scanner adapter

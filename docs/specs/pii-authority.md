@@ -33,7 +33,11 @@ only while every PUBLIC exit criterion is met and every named part equals the tr
 ## Readers
 
 `web/services/pii-authority.ts` is the only reader in the app; `loadPiiEvaluation` carries its stamp (authority, legacy source, unmet criteria, who decides, review date) to `/evaluation/pii/` as the last row of the first status group ("PII authority"), so the page keeps its shape. The gate fails on any other file that names `benchmarks/pii-authority.json`
-(`PII_AUTHORITY_READERS` in `benchmarks/evaluation/domains/pii/authority.ts`). A new reader is a decision. Web tests choose the authority by an overlay root (`web/tests/unit/overlay.ts` pins `legacy` unless a test chooses), so the suite means the same whichever value is committed.
+(`PII_AUTHORITY_READERS` in `benchmarks/evaluation/domains/pii/authority.ts`). A new reader is a decision. `tests/generated-output.test.mjs` is an exact approved
+synthetic negative-control reference (#848): it proves generated-output publication
+rejects the PII authority destination, without reading or writing the committed
+value. It is registered in `PII_AUTHORITY_READERS`; other test paths remain refused.
+Web tests choose the authority by an overlay root (`web/tests/unit/overlay.ts` pins `legacy` unless a test chooses), so the suite means the same whichever value is committed.
 
 ## Exit criteria
 

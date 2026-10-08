@@ -170,6 +170,20 @@ test('shared web inputs are the full browser suite', () => {
   }
 });
 
+test('shared design tokens invalidate legacy and current exports and both cached data input sets', () => {
+  for (const file of ['shared/design-tokens/tokens.css', 'shared/design-tokens/tokens.json']) {
+    const plan = pr([file]);
+    assert.equal(plan.legacy, true);
+    assert.equal(plan.web, true);
+    assert.equal(plan.browser, true);
+    assert.equal(plan.webScope, 'full');
+    for (const kind of ['legacy', 'view']) {
+      assert.deepEqual(inputFiles(kind, [file]), [file]);
+      assert.notEqual(keyOf(kind, [file], () => 'old'), keyOf(kind, [file], () => 'new'));
+    }
+  }
+});
+
 test('data the pages are built from is the full browser suite, not a selection', () => {
   const plan = pr(['web/components/leaf/Leaf.tsx', 'benchmarks/support/taxonomy.json'], importers);
   assert.equal(plan.webScope, 'full');

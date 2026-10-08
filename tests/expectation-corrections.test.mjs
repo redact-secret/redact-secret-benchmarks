@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -25,5 +25,18 @@ test('the committed queue is what the exporter derives from the committed triage
     const out = path.join(scratch, 'q.json');
     execFileSync('node', ['--import', 'tsx', 'scripts/export-expectation-corrections.ts', '--triage', triage, '--out-json', out], { stdio: 'ignore' });
     assert.deepEqual(JSON.parse(readFileSync(out, 'utf8')), committed);
+  } finally { rmSync(scratch, { recursive: true, force: true }); }
+});
+
+
+test('an ad hoc exporter uses ignored output defaults and creates explicit Markdown output parents', () => {
+  const scratch = mkdtempSync(path.join(tmpdir(), 'expectation-corrections-default-'));
+  const canonicalBytes = readFileSync(`${dir}/snapshot-2026.10.04.3.expectation-corrections.json`);
+  try {
+    execFileSync(process.execPath, ['--import', import.meta.resolve('tsx'), path.resolve('scripts/export-expectation-corrections.ts'), '--triage', path.resolve(triage), '--out-md', 'results-output/nested/summary.md'], { cwd: scratch, stdio: 'ignore' });
+    assert.deepEqual(JSON.parse(readFileSync(path.join(scratch, 'results-output/expectation-corrections.json'), 'utf8')), committed);
+    assert.ok(existsSync(path.join(scratch, 'results-output/nested/summary.md')));
+    assert.equal(existsSync(path.join(scratch, 'docs')), false);
+    assert.ok(readFileSync(`${dir}/snapshot-2026.10.04.3.expectation-corrections.json`).equals(canonicalBytes));
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 });

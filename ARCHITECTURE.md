@@ -99,7 +99,7 @@ public/results/summary.json    Cross-suite and per-detector groups for the run, 
 benchmarks/evaluation/domains/credential/run-summary.ts  Builds summary.json with the same accountGroups that accounts each suite
 src/main.ts                   Data loading, history routing and report refresh
 src/shell.ts                  Top bar, global search, theme switch, bottom tabs at 360px
-src/tokens.css, tokens.json   Redact Secret design tokens, copied from the design system (a test fails on drift)
+shared/design-tokens/tokens.css, tokens.json   Redact Secret design tokens, copied from the design system (a test fails on drift)
 src/style.css                 App styles: tokens only, no hex, no raw px, no shadows
 src/components/*.ts           Figure, Interval, StatusMark, ByteView, RedactionLane, EvidenceCrumb, ActionEmptyState
 src/catalog.ts                Synthetic corpus imports and byte-identity hashes

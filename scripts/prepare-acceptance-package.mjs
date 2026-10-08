@@ -18,12 +18,12 @@
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { generatedStage, publishGeneratedFiles } from './lib/generated-output.mjs';
 import { fetchArchive } from './replay-archive.mjs';
-import { moveEngineInTree } from './run-evidence-replay.mjs';
+import { moveEngineInTree, replayPatchFile } from './run-evidence-replay.mjs';
 import { acceptanceSelection, archiveProblems, controlRecordProblems, derivedInputProblems, packageSelection, parityProblems, recordedRunProblems, viewProblems } from './acceptance-roster.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -95,7 +95,10 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
   const env = { ...process.env, PATH: `${peersDir ? `${path.resolve(peersDir)}:` : ''}${process.env.PATH}`, NODE_OPTIONS: '--max-old-space-size=8192' };
   const truffle = sh('trufflehog', ['--version'], { env, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   if (!truffle.includes(pinnedTruffle)) throw new Error(`trufflehog prints "${truffle}", the pin is ${pinnedTruffle}: put the pinned binary first on PATH (--peers-dir) before the legacy oracle runs`);
-  const scratch = mkdtempSync(path.join(os.tmpdir(), 'acceptance-'));
+  const scratch = generatedStage(root);
+  const prepared = path.join(scratch, 'prepared');
+  mkdirSync(prepared, { recursive: true });
+  const preparedFile = name => path.join(prepared, path.basename(name));
   const tree = path.join(scratch, 'tree');
   const run = (command, args, options = {}) => sh(command, args, { cwd: tree, env, ...options });
   try {
@@ -152,7 +155,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     // 6. The legacy oracle and the parity report (strict).
     run('npm', ['run', '-s', 'bench'], { stdio: ['ignore', 'ignore', 'inherit'] });
     run('npm', ['run', '-s', 'eval:classify'], { stdio: ['ignore', 'ignore', 'inherit'] });
-    run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--change-report', ec.changeReport, '--strict']);
+    run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--change-report', ec.changeReport, '--out', 'docs/generated/qualification-parity', '--strict']);
     reconciled('the parity report', parityProblems({ parity: readJson('docs/generated/qualification-parity.json', tree), selection, replay: ec.replay }));
     // 7. The prepared-acceptance block is part of the base the patch applies to (the patch removes the evidence candidate it lives in), so it is committed to the transient tree first and
     //    written to this checkout's record at the end, by the same code from the same record.
@@ -189,11 +192,9 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     rmSync(path.join(tree, 'node_modules'), { force: true }); // the link to this checkout's modules is not part of the change
     run('git', ['add', '-A']);
     const patch = run('git', ['diff', '--cached', '--binary', 'HEAD']);
-    mkdirSync(path.join(root, GENERATED), { recursive: true });
-    writeFileSync(path.join(root, patchFile), patch);
+    writeFileSync(preparedFile(patchFile), patch);
     const digest = createHash('sha256').update(patch).digest('hex');
-    writeFileSync(path.join(root, `${patchFile}.sha256`), `${digest}  ${path.basename(patchFile)}\n`);
-    writeJson('benchmarks/evidence-adoption.json', withAcceptance);
+    writeFileSync(preparedFile(`${patchFile}.sha256`), `${digest}  ${path.basename(patchFile)}\n`);
     symlinkSync(path.join(root, 'node_modules'), path.join(tree, 'node_modules'), 'dir'); // back for the comparison, which runs in the tree (the patch is already taken)
     // 10. The views A and C for the owner report: the accepted runs of this checkout and the candidate's, with the product populations' case metadata (a deterministic export of the checkout).
     const dirA = path.join(scratch, 'accepted');
@@ -213,7 +214,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
         sh('gh', ['run', 'download', engineReplayRun, '-R', REPOSITORY, '-n', `official-run-${population}`, '-D', into], { cwd: root });
         cpSync(into, path.join(dirB, population), { recursive: true });
       }
-      const enginePatch = path.join(root, `${GENERATED}/${tag}.engine-replay-pins.patch`);
+      const enginePatch = replayPatchFile(root, tag, true);
       if (!existsSync(enginePatch)) throw new Error(`${enginePatch} is missing: cut the engine-effect branch first (run-evidence-replay.mjs branch --engine-only)`);
       sh('git', ['apply', enginePatch], { cwd: root });
       try {
@@ -227,7 +228,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     const comparison = (out, extra = []) => sh('node', ['--import', 'tsx', 'scripts/compare-adoption-views.ts', '--accepted', viewA, '--replay-old', viewB, '--candidate', view, '--candidate-methods', methods, '--candidate-inputs', derived,
       '--report', changeReport, '--record', candidateRecord, '--engine-from', adoption.candidate.engine.tag, '--engine-to', ec.engine.tag, ...out, '--strict', ...extra], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
     // The comparison and the triage queue read the candidate's artifacts, whose schema is the moved engine's: they run in the transient tree, whose pins match, and write into this checkout by absolute path.
-    comparison(['--out-json', path.join(root, `${GENERATED}/${tag}.comparison.json`), '--out-md', path.join(root, `${GENERATED}/${tag}.md`)]);
+    comparison(['--out-json', preparedFile(`${tag}.comparison.json`), '--out-md', preparedFile(`${tag}.md`)]);
     // 11. The triage queue, exported with the ledger as it was before the owner's settlement rows (so it does not depend on them), and the re-evaluation of the settlements on this run's identities.
     const ledger = readJson('benchmarks/review-ledger.json');
     const preOwner = path.join(scratch, 'ledger-pre-owner.json');
@@ -236,14 +237,15 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     comparison(['--out-json', queueComparison, '--out-md', path.join(scratch, 'comparison-pre-owner.md')], ['--ledger', preOwner]);
     const baseReport = adoption.candidate.changeReport;
     sh('node', ['--import', 'tsx', 'scripts/export-triage-queue.ts', '--artifacts', replay, '--snapshot', snapshotFile, '--record', candidateRecord, '--report', baseReport, '--comparison', queueComparison, '--run-records', replay,
-      '--out-json', path.join(root, `${GENERATED}/${tag}.triage-queue.json`), '--out-md', path.join(root, `${GENERATED}/${tag}.triage-queue.md`)], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
+      '--out-json', preparedFile(`${tag}.triage-queue.json`), '--out-md', preparedFile(`${tag}.triage-queue.md`)], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
     const previousQueue = `${GENERATED}/${adoption.candidate.supersedes?.evidenceRelease}.triage-queue.json`;
     const reauthored = new Set();
     for (const t of [adoption.candidate.supersedes?.evidenceRelease, adoption.candidate.evidenceRelease, tag].filter(Boolean)) for (const f of ['snapshot-2026.10.04.4', t]) if (existsSync(path.join(root, `${GENERATED}/${f}.json`))) for (const c of readJson(`${GENERATED}/${f}.json`).diff?.changed ?? []) if ((c.fields ?? []).includes('content')) reauthored.add(c.id);
     const reauthoredFile = path.join(scratch, 'reauthored.json');
     writeFileSync(reauthoredFile, JSON.stringify([...reauthored].sort()));
-    if (existsSync(path.join(root, previousQueue))) sh('node', ['--import', 'tsx', 'scripts/apply-ledger-settlements.ts', '--previous-queue', previousQueue, '--queue', `${GENERATED}/${tag}.triage-queue.json`, '--accepted-run', runId, '--decided-on', adoption.candidate.ownerAcceptance.acceptedOn,
-      '--evidence-url', 'https://github.com/redact-secret/redact-secret-benchmarks/issues/698', '--reauthored', reauthoredFile, '--out-json', `${GENERATED}/${tag}.ledger-settlements.json`], { cwd: root, env, stdio: ['ignore', 'inherit', 'inherit'] });
+    if (existsSync(path.join(root, previousQueue))) sh('node', ['--import', 'tsx', 'scripts/apply-ledger-settlements.ts', '--previous-queue', previousQueue, '--queue', preparedFile(`${tag}.triage-queue.json`), '--accepted-run', runId, '--decided-on', adoption.candidate.ownerAcceptance.acceptedOn,
+      '--evidence-url', 'https://github.com/redact-secret/redact-secret-benchmarks/issues/698', '--reauthored', reauthoredFile, '--out-json', preparedFile(`${tag}.ledger-settlements.json`)], { cwd: root, env, stdio: ['ignore', 'inherit', 'inherit'] });
+    publishGeneratedFiles({ root, files: readdirSync(prepared).map(f => ({ source: path.join(prepared, f), target: `${GENERATED}/${f}` })), record: { path: 'benchmarks/evidence-adoption.json', value: withAcceptance } });
     return { patch: patchFile, sha256: digest, distribution };
   } finally {
     try { sh('git', ['worktree', 'remove', '--force', tree], { cwd: root }); } catch { /* removed with the scratch directory */ }

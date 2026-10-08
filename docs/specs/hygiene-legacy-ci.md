@@ -12,6 +12,13 @@ this epic. `npm run legacy-inventory:check` recomputes the 94 retained inventory
 rows in [qualification cutover](qualification-cutover.md#file-level-inventory-and-cleanup-order-653).
 Before proposing removal, run `node scripts/legacy-callers.mjs <file>` again.
 
+The shared `AccountingConfig` and `Floor` declarations now live in
+`benchmarks/shared/accounting-types.ts`. The Next credential source and bridge
+read that neutral module; `benchmarks/types.ts` re-exports both for the retained
+evaluator and rollback. This is a type-only relocation: no policy value,
+calculation, authority or runtime output changes. The bridge still imports the
+legacy `ScoredRow` type, so that remaining prerequisite stays explicit.
+
 The credential runner, contract, cases, methods, operators, classification,
 reporting and baseline paths still have supported rollback callers through
 `publish-site.yml`, `legacy-oracle.yml` and Next legacy services. The recorded
@@ -44,14 +51,19 @@ Next is already the root of staging and production publication. Neither
 `benchmarks/legacy-url-redirects.json` and the Next fixture lookup preserve old
 URLs. This change alters no routes, redirects, metric denominators or export.
 
-Only the shared design tokens are imported directly from `src/` by Next:
-`tokens.css` and `tokens.json`. The remaining source still serves inventoried
-oracle and test consumers under [#543](https://github.com/redact-secret/redact-secret-benchmarks/issues/543).
+The shared design tokens now live in `shared/design-tokens/`, outside either
+site implementation. Both their CSS and JSON are byte-identical to the former
+`src/` files; Next layout, Storybook, the MUI theme and the retained Vite entry
+read those same files. Next has no remaining direct `src/` imports. Existing
+design-token tests still check both themes, contrast and theme mapping, and the
+legacy-import guard rejects a new unreviewed `src/` dependency.
+
+The remaining source still serves inventoried oracle and test consumers under
+[#543](https://github.com/redact-secret/redact-secret-benchmarks/issues/543).
 Root `start`, `dev`, `build` and `preview` remain local oracle commands;
 `web/` owns the published app commands. Vite also serves the browser bundle
 measurement tooling, so retiring the old site would not alone permit removing
-the root Vite dependency. Source deletion and browser/screenshot parity are
-deferred until those retirement callers and prerequisites are resolved.
+the root Vite dependency. Source deletion remains gated by those consumers.
 
 ## Same-run report reuse (#853)
 
@@ -79,19 +91,30 @@ change, including root installation and fixture preparation:
 | [37836513491](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37836513491) | 49s | 69s | 118s |
 | [37822251101](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37822251101) | 58s | 68s | 126s |
 
-These are measured baseline costs, not achieved savings or controlled cold/warm
-measurements. Dependency installation and fixture preparation still run in
-each browser job, artifact transfer adds cost, and waiting for the producer can
-increase elapsed latency. After CI, compare runner duration and the download,
-install, build and browser step durations against these runs. Cache warmth is
-not established by job duration alone; report it only from explicit cache-hit
-receipts. Do not report a dollar saving without runner/billing evidence.
+Successful PR run 37842782484 replaced that repeated generation with 9s of
+installation and same-run artifact transfer, a 109s/117s reduction in that
+segment. Both consumers downloaded the producer's matching artifact digest
+and passed independent route/data recounts, 196 e2e tests and 800 layout
+stories/pages. Integration run 37845614212 also passed. Complete browser jobs
+totaled 639s in the PR versus 638s/652s before, so these samples do not establish
+a whole-job or billing saving.
+
+[The invocation reconciliation](hygiene-ci-invocations.md#actual-runtime-and-cache-receipts)
+records every job's before/after runtime from five successful full runs,
+explicit same-lock dependency-cold/warm receipts, same-key view-result
+cold/warm receipts, artifact transfer and Chromium installation costs.
+Routine validation installs no external peer binary. Dependency installation,
+fixture preparation and browser checks still run; cache state is identified
+from logs rather than duration. This completes #853's observed measurement
+scope, without inventing a controlled-experiment prerequisite.
 
 Weekly full validation and manual official, population replay, peer refresh,
 profile-cost and profile-cost-v2 workflows remain. These lanes have distinct
 measurement and provenance contracts; dispatch-only lanes incur no recurring
-cost while idle. Root script aliases remain because a historical name or lack
-of a routine CI caller does not prove their measurement tooling obsolete.
+cost while idle. The caller-free, archived-input-specific
+`adoption:expectation-corrections` shortcut is removed; the generic exporter
+remains. Other aliases remain where their callers or manual measurement
+contracts still apply, as documented in the invocation reconciliation.
 
 The repository hygiene guard runs in `validate-sources`, so its failures feed
 the existing required `validate` status instead of adding a workflow or check.

@@ -129,5 +129,45 @@ ledger mappings and authority records name none of the three retired ADRs.
 #847's semantic classification, historical ruling migration and active index work
 are complete, subject to the final source/site/CI checks. Binding owner/provenance
 records stay available for acceptance and audit consumers; proposed records are
-not accepted criteria. #848 continues to own wider report/generated producer
-migrations. Historical patches require their original base as documented above.
+not accepted criteria. Historical patches require their original base as documented above.
+
+
+## Generated output separation (#848)
+
+The report/generated audit covers all 229 files at the preserved source commit:
+101 reports and 128 generated records, with exact original hashes, byte sizes,
+caller candidates, registry JSON pointers and introducing/last-changing commits.
+Every original file and its history was checked. The separately retrieved
+[full-history classification](https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/report-generated-classification-v2.json)
+is 655,969 bytes, SHA256
+`98854ef952fc677a49133e784db93732ff21ed8c5342a7872ce2972880b3759d`.
+It supplements the first classification without overwriting its archival asset.
+Retaining a historical authored report does not imply that a reproducible
+report-writing command exists.
+
+Regenerable ad hoc parity and expectation-correction output defaults now use
+ignored `results-output`. Replay branch planning patches also start there; a
+recorded control replay promotes its exact measured-commit patch only after
+archive verification. Candidate effects/triage/2x2, strict contrasts and complete
+acceptance packages stage in ignored directories before any committed reports or
+registry receipt change. The publication operation restores previous bytes after
+a late filesystem failure. Automatic staging directories are cleaned even when
+validation fails; PII replay preserves its local diagnostic artifacts and summary
+under ignored output while reserving canonical writes for `--write`.
+
+The five reviewed producer contracts are resolved according to their consumers:
+`run-candidate-replay.mjs` and `run-evidence-replay.mjs` stage first and promote
+archive-bound records; `prepare-acceptance-package.mjs` publishes only the complete
+owner-bound package; `adopt-evidence-snapshot.mjs` keeps its explicitly registered
+change report and adoption manifest together; `run-pii-population-dual-run.mjs`
+separates local output from its explicit canonical receipt write. Accepted
+machine inputs and historical provenance remain committed and are never silently
+regenerated under different pins.
+
+Sample retained URLs were checked through GitHub's exact-ref contents API:
+`evaluation-ui-verification.md` (2,467 bytes), the accepted
+`snapshot-2026.10.06.4.comparison.json` (267,961 bytes), and the Beta.11 family-axis
+ledger (63,889 bytes), all at `51d59f1bb27d0c2a129899fadd686e248412be82`.
+The existing release archive and original issue records remain the independent
+preservation sources for the three migrated transient reports. No additional
+report removal was needed to separate future transient output paths.

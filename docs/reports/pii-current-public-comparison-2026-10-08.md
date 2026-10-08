@@ -75,8 +75,10 @@ qualification view.
 #667 and #619 remain unexecuted pending operational custody and their exact
 public, cost and membership prerequisites. A preparation inventory does not
 approve a deferral, create an epoch, spend an attempt, or permit the historical
-local custodian to impersonate the new route. #576 requires reviewed actual peer
-adapters and same-population observations before an accuracy comparison.
+local custodian to impersonate the new route. #576 now has reviewed default peer
+adapters and [local same-population observations](pii-peer-local-defaults.md).
+Independent ground-truth/diversity review, sensitivity semantics and canonical
+release comparison remain open before a qualified accuracy comparison.
 
 ## Core consumption contract
 

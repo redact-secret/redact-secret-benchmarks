@@ -59,7 +59,10 @@ validate the resulting pii-eval public artifacts. Replays are reproducibility
 checks, not extra samples. Publication must preserve scanner identity, authored
 counts, effective N, absent/unsupported/withheld states and per-family strata.
 
-Until those artifacts exist, `/comparison/accuracy/?data=pii` retains its labelled
-runtime preview. Neither timing observations nor “every value replaced” counts
+The [bounded local observations](../reports/pii-peer-local-defaults.md) now
+record reviewed default adapters and eight validated same-population artifacts.
+Independent ground-truth/diversity review, sensitivity semantics and a canonical
+release comparison remain unavailable. `/comparison/accuracy/?data=pii` therefore
+retains its labelled runtime preview and links the separate exploratory record. Neither timing observations nor “every value replaced” counts
 are relabelled as accuracy. Protected execution and support qualification are
 separate and do not gate this public work.

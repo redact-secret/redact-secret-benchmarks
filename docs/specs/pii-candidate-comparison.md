@@ -82,8 +82,10 @@ Protected readiness is [a preparation inventory](pii-protected-requalification-r
 not a receipt. #667 waits for current public/cost gates and operational custody;
 #619 additionally reconciles and freezes credential-policy membership. #647
 prepares these targets first and later records results or owner-approved holds.
-The [peer accuracy inventory](pii-peer-accuracy-readiness.md) keeps #576 open
-until reviewed adapters and actual same-population peer measurements exist.
+The [peer accuracy inventory](pii-peer-accuracy-readiness.md) now links reviewed
+default adapters and eight validated local artifacts over the same populations.
+#576 remains open for independent ground-truth/diversity review, sensitivity
+semantics and a canonical release comparison.
 
 The reusable workflow uses GitHub's same-repository `$/` syntax to bind the
 running revision ([GitHub announcement](https://github.blog/changelog/2026-07-30-reference-same-repository-actions-with-self-repository-syntax/)).

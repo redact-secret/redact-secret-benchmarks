@@ -16,7 +16,8 @@ import { validateAccounting } from '../../benchmarks/accounting/index';
 import type { AccountingConfig } from '../../benchmarks/types';
 import { loadAuthority, type Authority, type QualificationAuthority } from './authority';
 import { assembleCatalog, loadCatalog, loadDetectorTitles, loadFixtureBytes, loadFixtureHashes, loadTaxonomy, type BuiltFixture, type Catalog } from './catalog';
-import { bridgeQualificationView } from './credential-bridge';
+import { bridgeQualificationView, withCaseText } from './credential-bridge';
+import { EVIDENCE_CASE_METADATA_FILE, evidenceCaseMetadataProblems, type EvidenceCaseMetadata, type EvidencePin } from '../../benchmarks/lib/fixture-metadata';
 import { loadQualificationView, measurementHostProblems, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type MeasurementHost, type QualificationView, type RosterNotMeasured } from './qualification';
 import { once, readJson } from './repo';
 import { loadReviewDisclosure, type ReviewDisclosureData } from './review-state';
@@ -61,6 +62,8 @@ export interface CredentialSource {
   fixtureBytes: Map<string, BuiltFixture>;
   /** sha256 of each fixture's bytes by slug; empty when the pipeline records no bytes. */
   fixtureHashes: Map<string, string>;
+  /** Why the public evidence cases' titles are not shown (#593): a projection of another snapshot, or one that is not well formed. Absent when they are, and on the legacy pipeline. */
+  fixtureTextProblem?: string;
   /**
    * The status distribution of the families, as the new pipeline's view records it, for the page that states a stable count. Absent
    * on the legacy pipeline, whose count is the committed support record that `services/domains.ts` finds for the run's own mode and build.
@@ -94,7 +97,18 @@ export function viewAuthorisationProblems(file: QualificationAuthority, view: Qu
   return problems;
 }
 
-interface Registry { runs: { id: string; canonical: boolean; recordedOn?: string; measurementHost?: unknown }[] }
+interface Registry { runs: { id: string; canonical: boolean; recordedOn?: string; measurementHost?: unknown }[]; populations?: { id: string; evidence?: EvidencePin }[] }
+
+/** The public cases' titles on the bridged fixtures, or the reason they are left out. A projection that fails its own check is never shown; it does not fail the build (`fixture-metadata:check` does, in CI). */
+async function caseText(fixtureBytes: Map<string, BuiltFixture>, registry: Registry, evidence: Parameters<typeof withCaseText>[2]): Promise<{ fixtureBytes: Map<string, BuiltFixture>; problem?: string }> {
+  const file = await readJson<EvidenceCaseMetadata>(EVIDENCE_CASE_METADATA_FILE).catch(() => undefined);
+  if (!file) return { fixtureBytes, problem: `${EVIDENCE_CASE_METADATA_FILE} cannot be read.` };
+  const pin = registry.populations?.find(p => p.id === 'public-evidence-snapshot')?.evidence;
+  const problems = pin ? evidenceCaseMetadataProblems(file, pin) : ['the registry pins no public evidence release'];
+  if (problems.length) return { fixtureBytes, problem: `${EVIDENCE_CASE_METADATA_FILE} is not usable: ${problems.slice(0, 3).join('; ')}.` };
+  const bound = withCaseText(fixtureBytes, file, evidence);
+  return bound.problem ? { fixtureBytes, problem: `The case titles are not shown: ${bound.problem}.` } : bound;
+}
 
 /** The host facts a recorded run carries (#620, #621), validated; `null` when it has none (a run recorded before they were captured). A malformed record is refused, never shown. */
 function recordedHost(run: Registry['runs'][number] | undefined): MeasurementHost | null {
@@ -142,7 +156,7 @@ async function newSource(authority: QualificationAuthority): Promise<CredentialS
   const bridged = bridgeQualificationView(load.view, { taxonomy, detectorTitles, accounting, recordedOn: recorded?.recordedOn ?? null, measurementHost: recordedHost(recorded) });
   if ('problem' in bridged) return unavailable(authority, 'incompatible', `${QUALIFICATION_FILE} cannot be read as a report: ${bridged.problem}.`);
   const { population } = bridged;
-  const reviewDisclosure = await loadReviewDisclosure(population.artifact.evidence.release?.tag);
+  const [reviewDisclosure, text] = await Promise.all([loadReviewDisclosure(population.artifact.evidence.release?.tag), caseText(bridged.fixtureBytes, registry, population.artifact.evidence)]);
   return {
     pipeline: {
       authority: 'new', from: 'committed', ...(reviewDisclosure ? { reviewDisclosure } : {}),
@@ -153,7 +167,7 @@ async function newSource(authority: QualificationAuthority): Promise<CredentialS
         ...(load.view.scannerRoster?.notMeasured.length ? { notMeasured: load.view.scannerRoster.notMeasured } : {}),
       },
     },
-    catalog: bridged.catalog, run: bridged.run, fixtureBytes: bridged.fixtureBytes, fixtureHashes: new Map(),
+    catalog: bridged.catalog, run: bridged.run, fixtureBytes: text.fixtureBytes, fixtureHashes: new Map(), ...(text.problem ? { fixtureTextProblem: text.problem } : {}),
     support: {
       version: bridged.run.productVersion, recordedOn: recorded?.recordedOn ?? null, familyCount: load.view.families.length,
       distribution: { stable: load.view.distribution.stable ?? 0, provisional: load.view.distribution.provisional ?? 0, pending: load.view.distribution.pending ?? 0, unsupported: load.view.distribution.unsupported ?? 0 },

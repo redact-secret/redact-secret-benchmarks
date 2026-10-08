@@ -13,6 +13,7 @@
  */
 import { buildCatalog } from '../../benchmarks/shared/report-model.mjs';
 import { fixtureIndexProblems, type FixtureIndex } from '../../benchmarks/lib/fixture-index';
+import { FIXTURE_DESCRIPTIONS_FILE, fixtureDescriptionsProblems, type FixtureDescriptions } from '../../benchmarks/lib/fixture-metadata';
 import type { Family, Provider, Taxonomy } from '../../benchmarks/support/taxonomy';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -74,6 +75,11 @@ export type BuiltFixture = {
   contextAxis?: string; expectedAction?: string;
   /** `false` when the source carries no bytes for the fixture (the qualification view carries none, by design): `content` is then empty and the page says the bytes are not recorded. */
   contentRecorded?: false;
+  /**
+   * An authored title and one-sentence description, and who authored them (#593; docs/specs/fixture-metadata.md): a public evidence case's are
+   * credential-evidence's case record, a product-owned fixture's are `benchmarks/fixture-descriptions.json`. Absent when neither records one.
+   */
+  title?: string; description?: string; describedBy?: string;
   assessment: { kind: Kind; tier: Tier; contract?: string; reason?: string; sources?: string[] };
 };
 
@@ -110,6 +116,24 @@ interface Loaded extends CatalogSources {
 }
 
 interface Corpora { categories: CategoryEntry[]; corpora: Record<string, CorpusFile>; hashes: Record<string, string> }
+
+/**
+ * The titles and descriptions this repository authors for its own product-owned fixtures (`benchmarks/fixture-descriptions.json`), validated: a slug
+ * outside a product-owned category is refused, since a public evidence case's text belongs to credential-evidence. Display text: it changes no hash.
+ */
+export async function applyFixtureDescriptions(built: BuiltFixture[]): Promise<BuiltFixture[]> {
+  const [file, populations] = await Promise.all([
+    readJson<FixtureDescriptions>(FIXTURE_DESCRIPTIONS_FILE),
+    readJson<{ populations: { ownership: string; categories?: string[] }[] }>('benchmarks/generated-populations.json'),
+  ]);
+  const owned = new Set(populations.populations.filter(p => p.ownership === 'product').flatMap(p => p.categories ?? []));
+  const problems = fixtureDescriptionsProblems(file, new Set(built.filter(f => owned.has(f.category)).map(f => f.slug)));
+  if (problems.length) throw new Error(`${FIXTURE_DESCRIPTIONS_FILE} is invalid: ${problems.join('; ')} (npm run fixture-metadata:check)`);
+  return built.map(f => {
+    const d = file.fixtures[f.slug];
+    return d ? { ...f, title: d.title, description: d.description, describedBy: `Authored in this repository for a product-owned fixture (${FIXTURE_DESCRIPTIONS_FILE}, ${d.authoredOn}).` } : f;
+  });
+}
 
 /**
  * The published corpus files and their sha256, read from `benchmarks/categories.json` and the corpora it names, and nothing else: no fixture index, detector
@@ -149,7 +173,7 @@ function loadSources(): Promise<Loaded> {
     const taxonomyIssues = taxonomyProblems(taxonomy);
     if (taxonomyIssues.length) throw new Error(`benchmarks/support/taxonomy.json is invalid: ${taxonomyIssues.join('; ')}`);
 
-    const built = buildCatalog(categories, corpora, assignments, registry.detectors) as BuiltFixture[];
+    const built = await applyFixtureDescriptions(buildCatalog(categories, corpora, assignments, registry.detectors) as BuiltFixture[]);
     if (index.identity.fixtureCount !== built.length) throw new Error('Fixture semantic index membership does not match the fixture corpora');
     const suites = categories.map(c => ({ id: c.id, title: c.title, description: c.description, reviewStatus: corpora[c.id].reviewStatus ?? '' }));
     return { categories: categories.map(c => c.id), hashes, fixtures: built, index, taxonomy, registry, suites, scenarios: scenarioRegistry.scenarios.map(s => ({ id: s.id, title: s.title })) };

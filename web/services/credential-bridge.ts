@@ -24,6 +24,7 @@ import { ACCOUNTING_VERSION } from '../../benchmarks/accounting/index';
 import type { AccountingConfig, ScoredRow } from '../../benchmarks/types';
 import type { RunSummary } from '../../benchmarks/evaluation/domains/credential/run-summary';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
+import { caseMetadataBindingProblem, type EvidenceCaseMetadata } from '../../benchmarks/lib/fixture-metadata';
 import { assembleCatalog, type BuiltFixture, type Catalog, type CatalogFixture, type CatalogSuite, type Tier } from './catalog';
 import type { CaseRow, CaseScannerResult, MeasurementHost, PopulationView, QualificationView } from './qualification';
 import type { MeasuredRun, OfficialRun, Outcome, RowResult, RunScanner } from './run';
@@ -174,4 +175,22 @@ export function bridgeQualificationView(view: QualificationView, input: BridgeIn
     hosts: [], revision: null, dirty: null, excludedSuites: [], staleSuites: [], suiteCount: categories.length,
   };
   return { population, catalog, run, fixtureBytes };
+}
+
+/**
+ * The public evidence cases' own titles and summaries (#593), on the bridged fixtures: credential-evidence's case record for each fixture the
+ * pinned release attaches to a case (`benchmarks/evidence-case-metadata.json`). Only when the projection describes the snapshot the run measured
+ * (release tag, manifest digest and corpus digest all the run's own); otherwise no fixture gets a title and `problem` says why. A fixture the
+ * release attaches to a scenario rather than a case keeps no title. Pure: nothing is re-read or re-derived here.
+ */
+export function withCaseText(fixtureBytes: Map<string, BuiltFixture>, file: EvidenceCaseMetadata, evidence: PopulationView['artifact']['evidence']): { fixtureBytes: Map<string, BuiltFixture>; problem?: string } {
+  const problem = caseMetadataBindingProblem(file, evidence);
+  if (problem) return { fixtureBytes, problem };
+  const out = new Map<string, BuiltFixture>();
+  for (const [slug, built] of fixtureBytes) {
+    const caseId = Object.hasOwn(file.fixtures, slug) ? file.fixtures[slug] : undefined;
+    const c = caseId ? file.cases[caseId] : undefined;
+    out.set(slug, c ? { ...built, title: c.title, description: c.summary, describedBy: `credential-evidence case record ${caseId} (${c.lifecycle}), release ${file.source.tag}.` } : built);
+  }
+  return { fixtureBytes: out };
 }

@@ -8,7 +8,9 @@
  * [start, end). The marks follow the run's own outcomes: a reported range is a bar, hatched where the
  * row's outcome for the span it touches is `PARTIAL`; secret bytes no range covers are a dashed frame.
  * Nothing is re-scored, and matched values of a scanner's raw output are never read (a row holds ranges
- * only). A value the corpus does not hold is stated as "Not recorded", never filled in.
+ * only). A value the corpus does not hold is stated as "Not recorded", never filled in. An authored title and description
+ * (#593) are shown only as their owner recorded them, with who that is: credential-evidence's case record for a public case, this
+ * repository's overlay for a product-owned fixture (docs/specs/fixture-metadata.md); otherwise the page says none is recorded.
  */
 import type { BuiltFixture, CatalogFixture, CatalogSuite } from '../services/catalog';
 import type { RowResult, RunScanner } from '../services/run';
@@ -166,6 +168,10 @@ export interface FixtureRecord {
   milestone?: number;
   /** Indexes into `SuiteShared.scenarios`. */
   scenarios: number[];
+  /** Indexes into `SuiteShared.texts`: the authored title and one-sentence description (#593), and who authored them. Absent when neither owner records one. */
+  title?: number;
+  about?: number;
+  aboutBy?: number;
   /** The first 12 hex digits of the sha256 of the file's UTF-8 bytes. */
   sha: string;
 }
@@ -186,6 +192,8 @@ export interface SuiteShared {
   /** The run the rows come from: its date and which build of the product it measured. */
   run?: { date: string; mode: 'published' | 'candidate'; commit?: string };
   runProblem?: string;
+  /** Why the owner's titles are not shown for this build (a projection of another snapshot): said beside "What it tests" (#593). */
+  textProblem?: string;
 }
 
 /** What `data/fixtures/<suite>/records.json` holds: the records and the shared text they refer to. */
@@ -207,6 +215,7 @@ export interface SuiteBuild {
   scanners: (Pick<RunScanner, 'id' | 'name' | 'version' | 'mode' | 'status' | 'rows'> & { observations?: { observedAt: string }[] })[];
   run?: SuiteShared['run'];
   runProblem?: string;
+  textProblem?: string;
   /** Findings, each with the fixtures it rests on and its milestone label. */
   findings: { number: number; url: string; milestone: string; fixtures: string[] }[];
   detectorTitles: Map<string, string>;
@@ -262,6 +271,8 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       return at;
     });
     const group = text(built.group), axis = text(built.contextAxis), action = text(built.expectedAction), unscoped = text(entry.unscopedReason), milestone = text(entry.milestone);
+    // A title is shown only with its description and its author: a half-recorded pair is not recorded.
+    const authored = built.title && built.description && built.describedBy ? { title: text(built.title)!, about: text(built.description)!, aboutBy: text(built.describedBy)! } : {};
     return {
       id: entry.id, path: built.path, kind: entry.kind, tier: entry.tier,
       ...(built.assessment.contract ? { contract: built.assessment.contract } : {}),
@@ -277,6 +288,7 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       ...(group !== undefined ? { group } : {}), ...(axis !== undefined ? { axis } : {}), ...(action !== undefined ? { action } : {}),
       ...(unscoped !== undefined ? { unscoped } : {}), ...(milestone !== undefined ? { milestone } : {}),
       scenarios: scenarioIds,
+      ...authored,
       sha: (input.hashes.get(entry.slug) ?? '').slice(0, 12),
     };
   });
@@ -289,6 +301,7 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       assessments, followUps, detectorTitles, familyNames, providerNames, scenarios, texts,
       ...(input.run ? { run: input.run } : {}),
       ...(input.runProblem ? { runProblem: input.runProblem } : {}),
+      ...(input.textProblem ? { textProblem: input.textProblem } : {}),
     },
   };
 }
@@ -641,6 +654,8 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
   const axis = text(record.axis);
   const action = text(record.action);
   const milestone = text(record.milestone);
+  const title = text(record.title);
+  const about = title ? text(record.about) : undefined;
   const scenarioTitles = record.scenarios.map(i => shared.scenarios[i]?.title).filter(Boolean) as string[];
   // The old site read the issue from the group label ("#211 · …") when the fixture names none.
   const issueNumber = record.issue ?? (Number(/#(\d+)/.exec(group ?? '')?.[1]) || undefined);
@@ -649,7 +664,9 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     ...record.followUps.map(i => shared.followUps[i]).filter(Boolean).map(i => ({ label: `${i.milestone} #${i.number}`, href: i.url, external: true })),
   ];
   const factList: FixtureFactData[] = [
-    { term: 'What it tests', notRecorded: true, note: group ? `The corpus records a group label, “${group}”, and no description.` : 'The corpus records no description of this fixture.' },
+    about
+      ? { term: 'What it tests', value: about, ...(text(record.aboutBy) ? { note: text(record.aboutBy) } : {}) }
+      : { term: 'What it tests', notRecorded: true, note: `${group ? `The corpus records a group label, “${group}”, and no description.` : 'The corpus records no description of this fixture.'}${shared.textProblem ? ` ${shared.textProblem}` : ''}` },
     assessment.reason ? { term: REASON_TERM[record.kind] ?? 'Reason', value: assessment.reason } : { term: REASON_TERM[record.kind] ?? 'Reason', notRecorded: true },
     ...(record.contract ? [{ term: 'Contract', value: record.contract, mono: true }] : []),
     { term: 'Evidence level', value: evidence, ...(record.tier === 'T0' ? { note: 'Pending review: excluded from comparative scores.' } : {}) },
@@ -723,7 +740,8 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     id: record.id,
     head: {
       eyebrow: `Fixture · ${KIND_EYEBROW[record.kind] ?? record.kind}`,
-      title: record.id,
+      // The authored title when its owner records one; otherwise the id, which is never dressed up as a title.
+      title: title && about ? title : record.id,
       slug,
       tags: [
         { label: kindWord },

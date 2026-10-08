@@ -69,9 +69,9 @@ export type { FamilyDetail, FamilyList, FindingsBlock, LevelAnswers, PeersBlock,
  * #608), with the stamp that says which. Rolling back is changing that one value; nothing here changes.
  */
 async function context() {
-  const { pipeline, catalog, run, fixtureBytes, fixtureHashes } = await loadCredentialSource();
+  const { pipeline, catalog, run, fixtureBytes, fixtureHashes, fixtureTextProblem } = await loadCredentialSource();
   const measured: MeasuredRun | undefined = run.state === 'measured' ? run : undefined;
-  return { catalog, run, measured, rows: measured?.productRows, pipeline, stamp: resolvePipelineStamp(pipeline), fixtureBytes, fixtureHashes };
+  return { catalog, run, measured, rows: measured?.productRows, pipeline, stamp: resolvePipelineStamp(pipeline), fixtureBytes, fixtureHashes, fixtureTextProblem };
 }
 
 export interface HeadData { eyebrow: string; title: string; lede: string; meta: MetaItem[] }
@@ -215,7 +215,7 @@ export async function resolveRowsFileParams(): Promise<{ kind: RowsKind; id: str
 
 /** A suite's fixture records and shared text: what `?fixture=<id>` builds one fixture's page from. */
 export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsFile | undefined> {
-  const [{ catalog, run, stamp, measured, fixtureBytes: bytes, fixtureHashes: hashes }, gaps] = await Promise.all([context(), loadFindings()]);
+  const [{ catalog, run, stamp, measured, fixtureBytes: bytes, fixtureHashes: hashes, fixtureTextProblem }, gaps] = await Promise.all([context(), loadFindings()]);
   const suite = catalog.suites.find(s => s.id === id);
   if (!suite) return undefined;
   const runProblem = run.state !== 'measured'
@@ -227,6 +227,7 @@ export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsF
     scanners: measured ? measured.scanners : [],
     ...(measured ? { run: { date: isoDate(measured.generatedAt), mode: measured.mode, ...(measured.candidate ? { commit: measured.candidate.sourceCommit } : {}) } } : {}),
     ...(runProblem ? { runProblem } : {}),
+    ...(fixtureTextProblem ? { textProblem: fixtureTextProblem } : {}),
     findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(i.candidate?.version ?? gaps.milestone), fixtures: i.fixtures })),
     detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
     familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),

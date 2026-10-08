@@ -88,16 +88,22 @@ export const onlyFontHosts =(watch: Watch): string[] => [...new Set(watch.extern
 
 const dirs = (relative: string): string[] => readdirSync(path.join(out, relative), { withFileTypes: true }).filter(e => e.isDirectory()).map(e => e.name);
 
-/** A suite with a fixture page: its id, and the id of its first fixture. */
-function aSuite(): { suite: string; fixture: string } {
+/**
+ * A suite with a fixture page: its id, the id of its first fixture, and the title its loaded page shows: the authored title when its owner
+ * records one with a description (#593), otherwise the id. Read from the build, never assumed.
+ */
+function aSuite(): { suite: string; fixture: string; title: string } {
   const suite = dirs('report/fixtures').includes('common-formats') ? 'common-formats' : dirs('report/fixtures')[0];
-  const file = JSON.parse(readFileSync(path.join(out, 'data/fixtures', suite, 'records.json'), 'utf8')) as { records: { id: string }[] };
-  return { suite, fixture: file.records[0].id };
+  const file = JSON.parse(readFileSync(path.join(out, 'data/fixtures', suite, 'records.json'), 'utf8')) as { records: { id: string; title?: number; about?: number }[]; shared: { texts: string[] } };
+  const first = file.records[0];
+  return { suite, fixture: first.id, title: first.title !== undefined && first.about !== undefined ? file.shared.texts[first.title] : first.id };
 }
 
-const { suite, fixture } = aSuite();
+const { suite, fixture, title } = aSuite();
 export const SUITE = suite;
 export const FIXTURE = fixture;
+/** The heading of FIXTURE's loaded page. While it loads, and when it fails, the heading is the id. */
+export const FIXTURE_TITLE = title;
 export const FAMILY = dirs('report/families')[0];
 
 /** The first list behind a method count (#623) the export holds a file for, as its address; none when no evaluation was published. */

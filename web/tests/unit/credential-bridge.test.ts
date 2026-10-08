@@ -5,7 +5,7 @@
  * every expectation is recounted here from the synthetic cases.
  */
 import { describe, expect, test } from 'vitest';
-import { REPORT_ROLE, bridgeQualificationView, reportPopulation, rowOf, type Bridged } from '../../services/credential-bridge';
+import { REPORT_ROLE, bridgeQualificationView, reportPopulation, rowOf, withCaseText, type Bridged } from '../../services/credential-bridge';
 import { resolveRunState, resolvePipelineStamp } from '../../resolvers/run';
 import { syntheticView } from './qualification-data';
 import type { CaseRow } from '../../services/qualification';
@@ -201,4 +201,41 @@ test('a cross-suite twin keeps its slug on the catalog and has no twin inside it
   const { catalog, fixtureBytes } = bridged(view);
   expect(catalog.bySlug.get(twin.id)!.twinOf).toBe('another-suite--parent');
   expect(fixtureBytes.get(twin.id)!.twinOf).toBeUndefined();
+});
+
+describe('the public cases\' own titles (#593)', () => {
+  const caseMetadata = (view: ReturnType<typeof syntheticView>, over: { tag?: string; manifestDigest?: string; corpusDigest?: string } = {}) => {
+    const evidence = reportPopulation(view)!.artifact.evidence;
+    const first = reportPopulation(view)!.cases[0].id;
+    const file = {
+      schema: 'redact-secret/evidence-case-metadata/v1', spec: '', note: '',
+      source: {
+        repository: 'redact-secret/credential-evidence', tag: over.tag ?? evidence.release!.tag, manifestDigest: over.manifestDigest ?? evidence.release!.manifest_digest,
+        corpusDigest: over.corpusDigest ?? evidence.corpus_digest, sourceCommit: '0'.repeat(40),
+        recordsBundle: { asset: 'records-bundle.json', sha256: '0'.repeat(64) }, materializedManifest: { asset: 'fixtures-materialized-manifest.json', sha256: '0'.repeat(64), digest: '0'.repeat(64) },
+      },
+      cases: { 'synthetic-case': { title: 'A synthetic title', summary: 'A synthetic summary.', lifecycle: 'draft', record: 'records/cases/synthetic-case.json', sha256: '0'.repeat(64) } },
+      fixtures: { [first]: 'synthetic-case' },
+    };
+    return { file: file as unknown as Parameters<typeof withCaseText>[1], evidence, first };
+  };
+
+  test('a fixture the release attaches to a case gets that case record\'s title and summary, named with the record, its lifecycle and the release', () => {
+    const view = syntheticView();
+    const { file, evidence, first } = caseMetadata(view);
+    const out = withCaseText(bridged(view).fixtureBytes, file, evidence);
+    expect(out.problem).toBeUndefined();
+    expect(out.fixtureBytes.get(first)).toMatchObject({ title: 'A synthetic title', description: 'A synthetic summary.', describedBy: `credential-evidence case record synthetic-case (draft), release ${evidence.release!.tag}.` });
+    // A fixture the release does not attach to a case keeps none.
+    for (const [slug, built] of out.fixtureBytes) if (slug !== first) expect(built.title).toBeUndefined();
+  });
+
+  test.each([['tag', { tag: 'snapshot-other' }], ['manifest digest', { manifestDigest: `sha256:${'1'.repeat(64)}` }], ['corpus digest', { corpusDigest: `sha256:${'2'.repeat(64)}` }]] as const)(
+    'a projection of another snapshot (%s) gives no fixture a title and says why', (_what, over) => {
+      const view = syntheticView();
+      const { file, evidence } = caseMetadata(view, over);
+      const out = withCaseText(bridged(view).fixtureBytes, file, evidence);
+      expect(out.problem).toMatch(/the case titles are (from|bound to)/);
+      for (const built of out.fixtureBytes.values()) expect(built.title).toBeUndefined();
+    });
 });

@@ -75,6 +75,11 @@ if (!view) {
   const category = c => c.id.slice(0, c.id.indexOf('--') < 0 ? c.id.length : c.id.indexOf('--'));
   const idOf = c => c.id.slice(c.id.indexOf('--') < 0 ? 0 : c.id.indexOf('--') + 2);
   const leaked = o => o === 'PARTIAL' || o === 'MISS';
+  // The public cases' titles (#593): the committed projection, used only when it names the release, manifest and corpus this run measured.
+  const projection = await readJson('benchmarks/evidence-case-metadata.json').catch(() => undefined);
+  const measuredEvidence = report.artifact.evidence;
+  const caseText = projection && projection.source.tag === measuredEvidence.release?.tag && projection.source.manifestDigest === measuredEvidence.release?.manifest_digest
+    && projection.source.corpusDigest === measuredEvidence.corpus_digest ? projection : undefined;
 
   // ---- Stamps ---------------------------------------------------------------------------------------------------------
   for (const route of [...REPORT_PAGES, `report/families/${slugOf(taxonomy.families[0].id)}`, `report/detectors/${[...new Set(cases.flatMap(c => c.detectors))].sort()[0]}`, `report/fixtures/${category(cases[0])}`, 'evaluation/credential']) {
@@ -264,6 +269,7 @@ if (!view) {
     if (JSON.stringify(file.shared.scanners.map(s => s.id)) !== JSON.stringify(report.artifact.scanners.map(s => s.id))) fail(`${where} has scanners ${file.shared.scanners.map(s => s.id)}`);
     const byRecord = new Map(group.map(c => [idOf(c), c]));
     let differs = 0;
+    const textOf = i => (i === undefined ? undefined : file.shared.texts?.[i]);
     for (const record of file.records) {
       const c = byRecord.get(record.id);
       if (!c) { differs++; continue; }
@@ -272,8 +278,12 @@ if (!view) {
       if (JSON.stringify(record.expected) !== JSON.stringify(c.expected) || record.path !== c.path || record.kind !== c.kind || record.tier !== c.tier) differs++;
       if (record.rows.length !== report.artifact.scanners.length) differs++;
       else record.rows.forEach((packed, k) => { if (packed !== packRow(resultOf(c, report.artifact.scanners[k].id))) differs++; });
+      // The title and description are the pinned case record's own, and only when the projection is of the snapshot this run measured (#593).
+      const caseId = caseText && Object.hasOwn(caseText.fixtures, c.id) ? caseText.fixtures[c.id] : undefined;
+      const want = caseId ? caseText.cases[caseId] : undefined;
+      if (textOf(record.title) !== want?.title || textOf(record.about) !== want?.summary) differs++;
     }
-    if (differs) fail(`${where}: ${differs} records differ from the view's expected spans, paths, levels or rows`);
+    if (differs) fail(`${where}: ${differs} records differ from the view's expected spans, paths, levels, rows or the case records' titles`);
   }
 
   // ---- What a visitor downloads: limits (the totals are information only) --------------------------------------------

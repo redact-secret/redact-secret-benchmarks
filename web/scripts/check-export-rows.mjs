@@ -302,6 +302,8 @@ for (const table of tables) {
 
 // A suite's records: every fixture with the corpus bytes and expected spans, one packed row per scanner.
 const corpora = new Map();
+// The titles this repository authors for its product-owned fixtures (#593): shown exactly as authored, and no other fixture has one on this pipeline.
+const authoredText = (await readJson('benchmarks/fixture-descriptions.json')).fixtures;
 for (const c of categories) {
   const slugs = slugsOfSuite.get(c.id) ?? [];
   const where = `data/fixtures/${c.id}/records.json`;
@@ -335,8 +337,10 @@ for (const c of categories) {
     if (record.sha !== sha || textOf(record.group) !== source?.group || textOf(record.axis) !== source?.contextAxis || textOf(record.action) !== source?.expectedAction
       || textOf(record.milestone) !== entry?.provenance?.milestone || textOf(record.unscoped) !== entry?.unscopedReason
       || JSON.stringify(gotScenarios) !== JSON.stringify(wantScenarios) || JSON.stringify(record.families) !== JSON.stringify(entry?.familyIds)) differs++;
+    const authored = Object.hasOwn(authoredText, slug) ? authoredText[slug] : undefined;
+    if (textOf(record.title) !== authored?.title || textOf(record.about) !== authored?.description) differs++;
   }
-  if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans, hashes, labels or the run's rows`);
+  if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans, hashes, labels, authored titles or the run's rows`);
   if (run && file.shared.run?.date !== summaryForData?.generatedAt?.slice(0, 10)) fail(`${where}: shared.run.date ${file.shared.run?.date} is not the run's date`);
   if (!run && file.shared.run) fail(`${where} names a run, but none was published`);
   const html = await readHtml(`report/fixtures/${c.id}`);

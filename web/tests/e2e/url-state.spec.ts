@@ -4,7 +4,7 @@
  * checks the address, the page and the history.
  */
 import type { Page } from '@playwright/test';
-import { BASE, FIXTURE, SUITE, expect, fixtureReady, test } from './fixtures';
+import { BASE, FIXTURE, FIXTURE_TITLE, SUITE, expect, fixtureReady, test } from './fixtures';
 
 const status = (page: Page) => page.getByRole('status').filter({ visible: true }).first();
 
@@ -209,10 +209,11 @@ test.describe('one fixture (?fixture=)', () => {
     await fixtureReady(page);
   });
 
-  test('a direct visit shows the fixture: its title is the id, with a breadcrumb back to the report', async ({ page }) => {
+  test('a direct visit shows the fixture: its title is the authored one or else the id, with the id beside it and a breadcrumb back to the report', async ({ page }) => {
     await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
     const view = page.locator('[data-fixture-state="ready"]');
-    await expect(view.getByRole('heading', { level: 1 })).toHaveText(FIXTURE);
+    await expect(view.getByRole('heading', { level: 1 })).toHaveText(FIXTURE_TITLE);
+    await expect(view).toContainText(`${SUITE}--${FIXTURE}`);
     // The way back to the report is the first crumb of every fixture page; the crumbs after it depend on the suite (a provider suite names its provider, a qualification-view suite names the suites index).
     await expect(view.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Report', exact: true })).toBeVisible();
     // Exactly one fixture page is visible, not the list and the fixture at once.

@@ -123,6 +123,8 @@ jobs:
       - run: npm run fixtures:check
       - name: Fixture semantic index is complete, reviewed, and current (#340)
         run: npm run fixture-index:check
+      - name: Fixture titles are the pinned evidence release's case records and this repository's product-owned overlay, nothing else (#593)
+        run: npm run fixture-metadata:check
       - name: Validate published engine qualification evidence (frozen Beta.11 report, against the suite snapshot it was produced with)
         run: npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=evidence/449/suite-v1.json
       - name: The UI carries no support status the generated matrix cannot

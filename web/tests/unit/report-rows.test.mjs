@@ -308,6 +308,25 @@ test('what the corpus does not hold is stated as not recorded, and what it holds
   assert.equal(records[0].sha.length, 12);
 });
 
+test('an authored title and description are shown with who authored them; a half-recorded pair, or none, stays not recorded (#593)', () => {
+  const by = 'credential-evidence case record demo-case (draft), release snapshot-x.';
+  const authored = suiteOf([{ entry: demoEntry(), built: built({ title: 'A token in a Terraform provider block', description: 'What the bytes exercise, in one sentence.', describedBy: by }) }], []);
+  const detail = authored.page('demo');
+  assert.equal(detail.head.title, 'A token in a Terraform provider block');
+  assert.equal(detail.head.slug, 's--demo', 'the id stays on the page beside the title');
+  assert.deepEqual(detail.facts.find(f => f.term === 'What it tests'), { term: 'What it tests', value: 'What the bytes exercise, in one sentence.', note: by });
+  assert.equal(detail.crumbs.at(-1).label, 'demo', 'the crumb names the fixture by its id');
+  // Shared once per suite, like every other label.
+  assert.equal(authored.shared.texts.filter(t => t === by).length, 1);
+  for (const half of [{ title: 'Only a title', describedBy: by }, { description: 'Only a description.', describedBy: by }, { title: 'No author', description: 'Text.' }]) {
+    const page = suiteOf([{ entry: demoEntry(), built: built(half) }], []).page('demo');
+    assert.equal(page.head.title, 'demo', `${JSON.stringify(half)}: the id, never a partial title`);
+    assert.equal(page.facts.find(f => f.term === 'What it tests').notRecorded, true);
+  }
+  const stale = suiteOf([{ entry: demoEntry(), built: built() }], [], { textProblem: 'The case titles are not shown: the case titles are from snapshot-a, the run measured snapshot-b.' }).page('demo');
+  assert.match(stale.facts.find(f => f.term === 'What it tests').note, /group label, .* and no description\. The case titles are not shown: the case titles are from snapshot-a/);
+});
+
 test('the exact bytes can be taken as a file, and text that cannot be encoded says so', () => {
   const detail = suiteOf([{ entry: demoEntry(), built: built() }], []).page('demo');
   assert.equal(detail.actions.download.filename, 'demo.txt');

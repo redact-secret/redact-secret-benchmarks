@@ -40,8 +40,8 @@ export interface DomainMethodData {
   recorded: { title: string; text: string };
 }
 
-/** A table cell: the figure, and a second line that says what it is made of. A `null` figure is "Not recorded". */
-export interface CoverageCell { figure: string | null; detail?: string }
+/** A table cell: the figure, and a second line that says what it is made of. A `null` figure is "Not recorded" unless its explicit unavailable label states a recorded withheld value. */
+export interface CoverageCell { figure: string | null; detail?: string; unavailableLabel?: 'Not measured' | 'Not applicable' | 'Withheld' }
 export interface CoverageRow { id: string; label: string; detail?: string; cells: CoverageCell[] }
 export interface CoverageTable { id: string; caption: string; rowHeader: string; columns: string[]; rows: CoverageRow[]; note?: string }
 /** A table the ledger has no record for: a dashed box with the words, and the issue that owns it. */

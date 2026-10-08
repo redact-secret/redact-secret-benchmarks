@@ -291,6 +291,8 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `check-export-method-checks.mjs` recounts every list from the bundle. Decision:
   `docs/decisions/2026-10-07-link-method-cells-to-the-checks-behind-each-count.md`.
 
+- `/evaluation/pii/evidence/` (#839) is a separate public pii-evidence population, read at build time by `services/pii-evidence.ts` through the strict comparison consumer and `scripts/pii-evidence-publication.mjs`. Its pure resolver is `resolvers/pii-evidence.ts`; `pii-evidence-pages.ts` is the page-level service boundary. The existing `DomainView` blocks render it. The four benchmark-owned PII views are unchanged and the main PII page links here without appending these rows. Each scanner-neutral metric retains its own denominator; no figure is summed with another population. An absent record says "Not recorded", an invalid identity says "Unusable", and unavailable family projections, PHI/context semantics and protected qualification remain explicit. The independent public index and view sidecars under `public/results/` retain source-file and view digests; the publication source gate recomputes them from the strict consumer. No authority file is read by this path.
+
 ## Tests
 
 Decision: `docs/decisions/2026-10-01-test-the-web-app-with-vitest-and-playwright.md`.

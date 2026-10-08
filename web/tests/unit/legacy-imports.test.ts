@@ -33,6 +33,7 @@ const ROLES: Record<string, Record<string, Entry>> = {
   'resolvers/evaluation-methods.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/domains.ts': { 'benchmarks/evaluation/domains/pii/metric-basis.mjs': PII('its metric basis'),
     'benchmarks/evaluation/domains/pii/candidate-comparison.mjs': PII('the public comparison metric types, no runtime import') },
+  'resolvers/pii-evidence.ts': { 'benchmarks/evaluation/domains/pii/evidence-comparison.mjs': PII('the separate public evidence comparison types, no runtime import') },
   'resolvers/family-detail.ts': { 'benchmarks/support/taxonomy': 'keep' },
   'resolvers/rc-artifact.ts': { 'benchmarks/qualification/candidate-diff': 'keep' },
   'resolvers/rc.ts': { 'benchmarks/shared/evaluation-model.ts': oracle('classifies a saved-baseline candidate report (`changeRows`, `candidatePairs`), the evidence `eval:candidate` writes under `legacy`') },

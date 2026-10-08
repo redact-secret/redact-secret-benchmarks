@@ -488,7 +488,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
         { term: 'Jurisdictions', text: recorded ? `${int(jurisdictional.length)} registered${jurisdictional.length ? ` (${jurisdictional.map(f => f.jurisdiction).join(', ')})` : ''}. The ${recorded.jurisdictionStandard.id} list of ${int(recorded.jurisdictionStandard.codeCount)} codes checks an identity; its size is not a coverage target.` : 'Not recorded.' },
       ],
     },
-    status: { title: 'Where this stands', groups: status, links: [{ label: 'Accuracy comparison, PII view', href: '/comparison/accuracy/?data=pii' }, { label: 'Runtime comparison, PII', href: '/comparison/runtime/?domain=pii' }] },
+    status: { title: 'Where this stands', groups: status, links: [{ label: 'Independent public PII evidence population', href: '/evaluation/pii/evidence/' }, { label: 'Accuracy comparison, PII view', href: '/comparison/accuracy/?data=pii' }, { label: 'Runtime comparison, PII', href: '/comparison/runtime/?domain=pii' }] },
     reading: {
       title: 'How to read the numbers',
       items: piiStatic.reading,

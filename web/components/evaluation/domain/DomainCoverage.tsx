@@ -14,7 +14,10 @@ export interface DomainCoverageProps extends DomainCoverageData {
 const isNotRecorded = (table: CoverageTable | CoverageNotRecorded): table is CoverageNotRecorded => 'text' in table;
 
 function Cell({ cell }: { cell: CoverageCell }) {
-  if (cell.figure === null) return <StatusBadge status="not-measured">Not recorded</StatusBadge>;
+  if (cell.figure === null) return <>
+    <StatusBadge status="not-measured">{cell.unavailableLabel ?? 'Not recorded'}</StatusBadge>
+    {cell.unavailableLabel && cell.detail && <small className={styles.detail}>{cell.detail}</small>}
+  </>;
   return (
     <>
       <b className={styles.figure}>{cell.figure}</b>

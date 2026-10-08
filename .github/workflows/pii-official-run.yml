@@ -1,9 +1,10 @@
 name: Official PII run (fresh execution, public synthetic)
 
-# #796. Dispatch only, no inputs. One fresh `pii-eval run --config` with `mode: official` per population (the four b11-population-v2 views, 1,188 memberships)
+# #796. Dispatch only. The default pinned-official lane performs one fresh `pii-eval run --config` with `mode: official` per population (the four b11-population-v2 views, 1,188 memberships)
 # against the pinned @redact-secret/core candidate package, on the canonical linux-x64 platform with the pinned engine binary. What it runs is frozen by
 # benchmarks/pii-eval-official-execution-plan.json (derived from the committed pins; the workflow refuses a plan that differs from them): no input can
 # name another plan, engine, commit or package. Spec: docs/specs/pii-official-execution-plan.md.
+# The candidate-comparison lane uses its own committed plan and requires a fresh, tuple-bound owner cost decision; the #796 waiver does not cover it.
 #
 # It is an execution, not a replay (the scanner is launched) and not an acceptance: it records nothing in the repository, writes no pin, threshold,
 # status or authority and no owner acceptance. A difference, a missing pin or a failed validation fails the job and is never normalised. The cost gate was
@@ -21,6 +22,14 @@ name: Official PII run (fresh execution, public synthetic)
 #   - nothing from a dispatch event is interpolated into a script: every value reaches a step through env or a step output.
 on:
   workflow_dispatch:
+    inputs:
+      lane:
+        description: Committed measurement plan to execute
+        type: choice
+        default: pinned-official
+        options:
+          - pinned-official
+          - candidate-comparison
 
 permissions: {}
 
@@ -30,7 +39,7 @@ concurrency:
 
 jobs:
   official-run:
-    if: github.repository == 'redact-secret/redact-secret-benchmarks'
+    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane != 'candidate-comparison'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -196,3 +205,13 @@ jobs:
             ${{ runner.temp }}/pii-official/run-config.*.json
           if-no-files-found: warn
           retention-days: 90
+
+  candidate-comparison:
+    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane == 'candidate-comparison'
+    permissions:
+      contents: read
+      actions: read
+    uses: $/.github/workflows/pii-candidate-comparison.yml
+    secrets:
+      PII_EVAL_APP_PRIVATE_KEY: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
+      BENCHMARKS_DISPATCH_APP_PRIVATE_KEY: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}

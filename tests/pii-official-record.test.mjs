@@ -4,13 +4,14 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { OFFICIAL_ARTIFACT, OFFICIAL_RECEIPT, OFFICIAL_RECORD, officialRecordProblems } from '../scripts/lib/pii-official-record.mjs';
 import { deriveOfficialPins } from '../scripts/run-pii-official.mjs';
 import { computeCriteria } from '../scripts/check-pii-authority.mjs';
 import { PII_AUTHORITY_FILE } from '../benchmarks/evaluation/domains/pii/authority.ts';
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const bytes = file => readFileSync(path.join(root, file));
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const views = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'];

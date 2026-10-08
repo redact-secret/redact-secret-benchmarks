@@ -58,7 +58,7 @@ export function main(args) {
     validatePreflightReport(read(pinned('preflight')), read(path.join(ROOT, 'benchmarks/pii-population-policy.json')));
     if (sha256(readFileSync(path.join(ROOT, 'benchmarks/pii-eval-population-pins.json'))) !== read(pinned('consumer-pin')).preservedPopulationPinsSha256)
       throw new Error('existing four population pins changed');
-    console.log('PII evidence candidate pins/preflight valid; Linux importer receipt and fresh execution decision pending');
+    console.log('PII evidence candidate pins/preflight valid; this check does not execute or authorise a measurement');
     return;
   }
   const options = {};

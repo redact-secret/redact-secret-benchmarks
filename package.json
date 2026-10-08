@@ -20,7 +20,7 @@
     "eval": "node --import tsx benchmarks/evaluate.ts",
     "eval:publish": "node --import tsx scripts/publish-evaluation.ts",
     "eval:publish:domains": "node --import tsx scripts/publish-evaluation-domains.ts",
-    "eval:publish:pii-support": "node --import tsx scripts/publish-pii-support.ts",
+    "eval:publish:pii-support": "node scripts/publish-pii-support-with-evidence.mjs",
     "eval:discover": "node --import tsx benchmarks/evaluate.ts",
     "start": "npm run bench && vite --host 127.0.0.1",
     "dev": "vite --host 127.0.0.1",
@@ -175,7 +175,12 @@
     "peers:snapshots:refresh": "npm run bench -- --strict --refresh-peer-snapshots && npm run eval:classify -- --refresh-peer-snapshots",
     "peers:snapshots:live": "npm run bench -- --strict --live-peers && npm run eval:classify -- --live-peers",
     "peer-pii-runtime-throughput": "node --import tsx scripts/measure-peer-pii-runtime-throughput.mjs",
-    "runtime-comparison": "node --import tsx scripts/measure-runtime-comparison.mjs"
+    "runtime-comparison": "node --import tsx scripts/measure-runtime-comparison.mjs",
+    "pii:evidence:preflight:check": "node scripts/preflight-pii-evidence.mjs --check",
+    "pii:evidence:comparison-plan:check": "node scripts/pii-evidence-comparison-plan.mjs --check",
+    "pii:evidence:comparison:check": "node scripts/record-pii-evidence-comparison.mjs --check",
+    "pii:evidence:publish": "node scripts/pii-evidence-publication.mjs --write",
+    "pii:evidence:publication:check": "node scripts/pii-evidence-publication.mjs --check"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",

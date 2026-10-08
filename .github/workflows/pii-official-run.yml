@@ -30,6 +30,7 @@ on:
         options:
           - pinned-official
           - candidate-comparison
+          - evidence-comparison
 
 permissions: {}
 
@@ -39,7 +40,7 @@ concurrency:
 
 jobs:
   official-run:
-    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane != 'candidate-comparison'
+    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane == 'pinned-official'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -212,6 +213,16 @@ jobs:
       contents: read
       actions: read
     uses: $/.github/workflows/pii-candidate-comparison.yml
+    secrets:
+      PII_EVAL_APP_PRIVATE_KEY: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
+      BENCHMARKS_DISPATCH_APP_PRIVATE_KEY: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+
+  evidence-comparison:
+    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane == 'evidence-comparison'
+    permissions:
+      contents: read
+      actions: read
+    uses: $/.github/workflows/pii-evidence-comparison.yml
     secrets:
       PII_EVAL_APP_PRIVATE_KEY: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
       BENCHMARKS_DISPATCH_APP_PRIVATE_KEY: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}

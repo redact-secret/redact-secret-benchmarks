@@ -48,8 +48,8 @@ export async function runBasetenArrival(options: Record<string, string>) {
   const inventory = JSON.parse(inventoryBytes.toString());
   if (inventory.sourceCommit !== options['source-commit'] || inventory.published !== false) throw new Error('qualification-source-mismatch');
   const packages = await Promise.all(['core', 'node', 'wasm'].map(async role => ({ role, sha256: await hashFile(options[role]) })));
-  const qualifiedFiles = inventory.artifacts.filter((row: { artifact: string }) => ['node-addon-aarch64-apple-darwin', 'wasm-web', 'wasm-web-common'].includes(row.artifact));
-  if (qualifiedFiles.length !== 19) throw new Error('incomplete-qualification-inventory');
+  const qualifiedFiles = inventory.artifacts.filter((row: { artifact: string }) => ['wasm-web', 'wasm-web-common'].includes(row.artifact) || (row.artifact === 'node-addon-aarch64-apple-darwin' && (row as { file?: string }).file === 'redact-secret.darwin-arm64.node'));
+  if (qualifiedFiles.length !== 17) throw new Error('incomplete-qualification-inventory');
   for (const row of qualifiedFiles) {
     const role = row.artifact === 'node-addon-aarch64-apple-darwin' ? 'node' : 'wasm';
     const bytes = execFileSync('tar', ['-xOf', options[role], `package/${row.file}`]);

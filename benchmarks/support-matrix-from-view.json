@@ -21954,19 +21954,19 @@
   },
   "piiCurrentQualification": {
     "schemaVersion": 1,
-    "state": "invalid",
+    "state": "recorded",
     "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
     "supportClaims": false,
     "qualified": false,
     "evidenceScope": "public-synthetic-only",
     "publicMeasurement": {
-      "state": "invalid",
-      "mode": null,
-      "reason": "comparison-document-invalid",
-      "receiptDigest": null,
-      "productArtifactDigest": null,
-      "baselineSourceCommit": null,
-      "engineBinaryDigest": null
+      "state": "recorded",
+      "mode": "official",
+      "reason": null,
+      "receiptDigest": "01e43abbd4cf912cbc832703b3e636aca2cd75df422bc2a7dd7fce7c9843faae",
+      "productArtifactDigest": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c",
+      "baselineSourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+      "engineBinaryDigest": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053"
     },
     "gates": {
       "publicQualification": "not-evaluated",
@@ -21988,7 +21988,7 @@
         "family": "pii:global:email",
         "status": "pending",
         "reasonCodes": [
-          "current-public-comparison-invalid",
+          "product-validator-primitive-seam-unavailable",
           "public-qualification-gates-not-evaluated",
           "runtime-and-package-cost-unmeasured",
           "size-regression-budget-unmeasured",
@@ -22001,7 +22001,7 @@
         "family": "pii:global:iban",
         "status": "pending",
         "reasonCodes": [
-          "current-public-comparison-invalid",
+          "product-validator-primitive-seam-unavailable",
           "public-qualification-gates-not-evaluated",
           "runtime-and-package-cost-unmeasured",
           "size-regression-budget-unmeasured",
@@ -22014,7 +22014,7 @@
         "family": "pii:global:network-address",
         "status": "pending",
         "reasonCodes": [
-          "current-public-comparison-invalid",
+          "product-validator-primitive-seam-unavailable",
           "public-qualification-gates-not-evaluated",
           "runtime-and-package-cost-unmeasured",
           "size-regression-budget-unmeasured",
@@ -22027,7 +22027,7 @@
         "family": "pii:global:payment-card",
         "status": "pending",
         "reasonCodes": [
-          "current-public-comparison-invalid",
+          "product-validator-primitive-seam-unavailable",
           "public-qualification-gates-not-evaluated",
           "runtime-and-package-cost-unmeasured",
           "size-regression-budget-unmeasured",
@@ -22040,7 +22040,7 @@
         "family": "pii:global:phone",
         "status": "pending",
         "reasonCodes": [
-          "current-public-comparison-invalid",
+          "product-validator-primitive-seam-unavailable",
           "public-qualification-gates-not-evaluated",
           "runtime-and-package-cost-unmeasured",
           "size-regression-budget-unmeasured",
@@ -22053,7 +22053,7 @@
         "family": "pii:us:ssn",
         "status": "pending",
         "reasonCodes": [
-          "current-public-comparison-invalid",
+          "product-validator-primitive-seam-unavailable",
           "public-qualification-gates-not-evaluated",
           "runtime-and-package-cost-unmeasured",
           "size-regression-budget-unmeasured",

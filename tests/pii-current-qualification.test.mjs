@@ -106,3 +106,11 @@ test('view publication permits a strict optional current section without changin
   matrix.piiCurrentQualification = { ...current, qualified: true };
   assert.ok(viewMatrixProblems(matrix, context).some(reason => reason.includes('Invalid current PII')));
 });
+
+test('recorded public receipt projects its identity even when owner acceptance is null', async () => {
+  const current = await buildPiiCurrentQualification(path.resolve('.'));
+  assert.equal(current.state, 'recorded');
+  assert.equal(current.publicMeasurement.state, 'recorded');
+  assert.match(current.publicMeasurement.receiptDigest, /^[a-f0-9]{64}$/);
+  assert.equal(current.qualified, false);
+});

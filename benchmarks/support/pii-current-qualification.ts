@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import readiness from '../../docs/generated/pii-protected-readiness.json';
 import registry from '../evaluation/domains/pii/support-registry-v1.json';
-import { loadPiiCandidateComparison, comparisonDigest } from '../evaluation/domains/pii/candidate-comparison.mjs';
+import { loadPiiCandidateComparison, documentDigest } from '../evaluation/domains/pii/candidate-comparison.mjs';
 
 export interface PiiCurrentQualification {
   schemaVersion: 1;
@@ -42,7 +42,7 @@ export function projectPiiCurrentQualification(comparison: any, receipt: unknown
     supportClaims: false, qualified: false, evidenceScope: 'public-synthetic-only',
     publicMeasurement: { state: recorded ? 'recorded' : state === 'invalid' ? 'invalid' : 'not-recorded',
       mode: recorded ? comparison.mode : null, reason: recorded ? null : comparison.reason,
-      receiptDigest: recorded ? comparisonDigest(receipt) : null,
+      receiptDigest: recorded ? documentDigest(receipt) : null,
       productArtifactDigest: recorded ? comparison.candidate.packageTreeSha256 : null,
       baselineSourceCommit: recorded ? comparison.baseline.sourceCommit : null,
       engineBinaryDigest: recorded ? comparison.engine.binarySha256 : null },

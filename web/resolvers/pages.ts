@@ -7,6 +7,7 @@
  *
  * Server-only. Client components import `./filters` and the types, never this.
  */
+import { createHash } from 'node:crypto';
 import { loadDetectorTitles, type Catalog } from '../services/catalog';
 import { loadCredentialSource, NO_VIEW_SUITE } from '../services/credential-source';
 import { loadDetectorContracts } from '../services/contracts';
@@ -213,27 +214,47 @@ export async function resolveRowsFileParams(): Promise<{ kind: RowsKind; id: str
   return files.length ? files : [{ kind: 'suite' as const, id: NO_VIEW_SUITE }];
 }
 
+/**
+ * What a reported range's source records besides its place (#595), by pipeline. Inventoried in docs/specs/fixture-metadata.md: the official
+ * RunArtifact records optional actions but no scanner rule id; legacy rows record neither. Older views omit ranges and actions. A recorded field is
+ * added here only when its source records it and it passes an allowlist; it is never read from expected spans or a detector name.
+ */
+const REPORTED_FIELDS: Record<'new' | 'legacy', string> = {
+  new: 'This historical view records only the reported count. Rebuild the view from the retained artifact to expose recorded ranges and allowlisted actions. No scanner rule identifier is recorded.',
+  legacy: 'Not recorded by the benchmark run. Its rows record each reported range\'s place and outcome, not the scanner\'s rule id or the action it took.',
+};
+
+/** Bind all emitted records and shared metadata, including the run, to this page's build (#595). */
+const recordsIdentity = (file: SuiteRecordsFile): string => {
+  const { identity: _identity, ...shared } = file.shared;
+  return `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`;
+};
+
 /** A suite's fixture records and shared text: what `?fixture=<id>` builds one fixture's page from. */
 export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsFile | undefined> {
-  const [{ catalog, run, stamp, measured, fixtureBytes: bytes, fixtureHashes: hashes, fixtureTextProblem }, gaps] = await Promise.all([context(), loadFindings()]);
+  const [{ catalog, run, stamp, measured, pipeline, fixtureBytes: bytes, fixtureHashes: hashes, fixtureTextProblem }, gaps] = await Promise.all([context(), loadFindings()]);
   const suite = catalog.suites.find(s => s.id === id);
   if (!suite) return undefined;
   const runProblem = run.state !== 'measured'
     ? 'No benchmark run is published for this checkout.'
     : run.excludedSuites.find(s => s.id === id)?.problem ? `The report for these bytes is left out: ${run.excludedSuites.find(s => s.id === id)!.problem}. The expectation stands on its own; lanes appear once a report re-validates against these bytes.`
     : run.staleSuites.includes(id) ? 'The report for these bytes is from an older run and is left out.' : undefined;
-  return buildSuiteRecords({
+  const file = buildSuiteRecords({
     suite, fixtures: catalog.fixturesBySuite.get(id) ?? [], bytes, hashes,
     scanners: measured ? measured.scanners : [],
     ...(measured ? { run: { date: isoDate(measured.generatedAt), mode: measured.mode, ...(measured.candidate ? { commit: measured.candidate.sourceCommit } : {}) } } : {}),
     ...(runProblem ? { runProblem } : {}),
     ...(fixtureTextProblem ? { textProblem: fixtureTextProblem } : {}),
+
+    reported: { rule: 'unavailable', action: 'unavailable', reason: REPORTED_FIELDS[pipeline.authority] },
     findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(i.candidate?.version ?? gaps.milestone), fixtures: i.fixtures })),
     detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
     familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),
     providerNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.provider === null ? NOT_PROVIDER_SPECIFIC.name : catalog.providerById.get(f.provider)!.name])),
     scenarioTitles: catalog.scenarioTitles,
   });
+  file.shared.identity = recordsIdentity(file);
+  return file;
 }
 
 // ---- /report/families/[family] ---------------------------------------------------
@@ -384,6 +405,8 @@ export interface SuitePageData {
   /** The fixture records (`SuiteRecordsFile`) the browser fetches for `?fixture=<id>`, by path, and how many there are. */
   recordsSrc: string;
   fixtureCount: number;
+  /** The build identity the records file must carry (`SuiteShared.identity`). */
+  recordsIdentity: string;
 }
 
 export async function resolveSuiteSlugs(): Promise<string[]> {
@@ -409,6 +432,7 @@ export async function resolveSuitePage(id: string): Promise<SuitePageData | unde
     description: `${int(fixtures.length)} fixtures in this suite. Open a fixture for its bytes, expected spans and what each scanner reported.`,
     recordsSrc: recordsDataPath(id),
     fixtureCount: fixtures.length,
+    recordsIdentity: (await resolveSuiteRecordsFile(id))!.shared.identity!,
   };
 }
 

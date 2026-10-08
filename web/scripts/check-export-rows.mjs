@@ -339,10 +339,15 @@ for (const c of categories) {
       || JSON.stringify(gotScenarios) !== JSON.stringify(wantScenarios) || JSON.stringify(record.families) !== JSON.stringify(entry?.familyIds)) differs++;
     const authored = Object.hasOwn(authoredText, slug) ? authoredText[slug] : undefined;
     if (textOf(record.title) !== authored?.title || textOf(record.about) !== authored?.description) differs++;
+    // The release beside the milestone is the index's own `provenance.release` (#595), never derived from the milestone.
+    if (textOf(record.release) !== entry?.provenance?.release) differs++;
   }
   if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans, hashes, labels, authored titles or the run's rows`);
   if (run && file.shared.run?.date !== summaryForData?.generatedAt?.slice(0, 10)) fail(`${where}: shared.run.date ${file.shared.run?.date} is not the run's date`);
   if (!run && file.shared.run) fail(`${where} names a run, but none was published`);
+  const { identity, ...shared } = file.shared;
+  if (identity !== `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`) fail(`${where}: records identity does not bind its metadata and run payload`);
+  if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: the run records no rule or action per range, and the records file must say so`);
   const html = await readHtml(`report/fixtures/${c.id}`);
   if (!text(html).includes(`${int(slugs.length)} fixture`)) fail(`/report/fixtures/${c.id}/ does not state ${slugs.length} fixtures`);
   if (!html.includes(`fixtures/${c.id}/records.json`)) fail(`/report/fixtures/${c.id}/ does not name its records file`);

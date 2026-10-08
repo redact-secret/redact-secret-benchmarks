@@ -68,7 +68,7 @@ export default async function Page({ params }: { params: Promise<{ suite: string
       </div>
       {/* The fallback is what a direct visit to ?fixture= shows until the page has hydrated; it is hidden when no fixture is named. */}
       <Suspense fallback={<div className={styles.fixtureView}><FixtureSkeleton suiteTitle={data.title} suiteHref={suiteHref} /></div>}>
-        <FixtureView suiteTitle={data.title} suiteHref={suiteHref} src={data.recordsSrc} fixtureCount={data.fixtureCount} />
+        <FixtureView suiteTitle={data.title} suiteHref={suiteHref} src={data.recordsSrc} fixtureCount={data.fixtureCount} suite={data.id} identity={data.recordsIdentity} />
       </Suspense>
     </>
   );

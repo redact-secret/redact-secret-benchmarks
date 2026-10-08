@@ -181,6 +181,11 @@ describe('the official run behind the figures (#658)', () => {
   });
 });
 
+test('the bridge carries only reported ranges and recorded actions from an additive view (#595)', () => {
+  const reported = [{ start: 1, end: 4, action: 'warn' as const }];
+  expect(rowOf({ scanner: 's', measurement: 'pending', observed: 1, reported })).toEqual({ observed: 1, actual: reported });
+});
+
 describe('rowOf', () => {
   test.each([
     [{ scanner: 's', measurement: 'positive', observed: 2, outcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 1 }, { spanOutcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 1, observed: 2 }],

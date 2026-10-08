@@ -14,7 +14,7 @@ import { BUILD_DATA_PATH, recordsDataPath, rowsDataPath } from '../../lib/data-p
 import { PAGE_SIZE, filterRows, rowsQueryOf, rowsQueryString } from '../../resolvers/filters.ts';
 import { boundText, resolveDetector, resolveDetectorList } from '../../resolvers/detectors.ts';
 import { milestoneLabel, resolveFindingsInventory, ledgerStamp, resolveSuiteRows } from '../../resolvers/inventory.ts';
-import { buildSuiteRecords, byteLines, changedRanges, isSuiteRecordsFile, packRow, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../../resolvers/fixtures.ts';
+import { buildSuiteRecords, byteLines, changedRanges, isRecordsOfBuild, isSuiteRecordsFile, packRow, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../../resolvers/fixtures.ts';
 const WEB = path.resolve(import.meta.dirname, '../..');
 
 const fx = (slug, kind, tier, familyIds, extra = {}) => ({ slug: `s--${slug}`, category: 's', id: slug, group: 'g', kind, tier, familyIds, detectors: [], ...extra });
@@ -325,6 +325,54 @@ test('an authored title and description are shown with who authored them; a half
   }
   const stale = suiteOf([{ entry: demoEntry(), built: built() }], [], { textProblem: 'The case titles are not shown: the case titles are from snapshot-a, the run measured snapshot-b.' }).page('demo');
   assert.match(stale.facts.find(f => f.term === 'What it tests').note, /group label, .* and no description\. The case titles are not shown: the case titles are from snapshot-a/);
+});
+
+test('the release the index records is shown beside the milestone; a missing one is said, never derived (#595)', () => {
+  const added = over => suiteOf([{ entry: demoEntry(over), built: built() }], []).page('demo').facts.find(f => f.term === 'Added');
+  assert.deepEqual(added({ release: '0.1.0-beta.8' }), { term: 'Added', value: 'Beta.8 · 0.1.0-beta.8 · suite Suite S', note: 'Suite s' });
+  assert.deepEqual(added({}), { term: 'Added', value: 'Beta.8 · suite Suite S', note: 'Suite s · no release recorded for this milestone' });
+  assert.deepEqual(added({ milestone: undefined, release: '0.1.0-beta.8' }), { term: 'Added', value: '0.1.0-beta.8 · suite Suite S', note: 'Suite s · no milestone recorded' });
+  assert.deepEqual(added({ milestone: undefined }), { term: 'Added', value: 'suite Suite S', note: 'Suite s · no milestone or release recorded' });
+});
+
+test('a reported range\'s rule and action are stated as not recorded, with the source\'s reason, and never read from the expectation (#595)', () => {
+  const reported = { rule: 'unavailable', action: 'unavailable', reason: 'Not recorded by the synthetic source.' };
+  const policyBuilt = built({ expectedAction: 'redact', assessment: { kind: 'policy', tier: 'T3', reason: 'Policy.', sources: [] } });
+  const row = { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 };
+  const page = suiteOf([{ entry: demoEntry({ kind: 'policy', tier: 'T3' }), built: policyBuilt }], [scanner('redact-secret', 'redact-secret', [['s--demo', row]])], { reported }).page('demo');
+  const fact = term => page.facts.find(f => f.term === term);
+  assert.equal(fact('Scanner rule').notRecorded, true);
+  assert.equal(fact('Reported range 1 action').notRecorded, true);
+  assert.equal(fact('Expected action').value, 'redact');
+  assert.match(fact('Expected action').note, /Not what a scanner did/);
+  assert.ok(!JSON.stringify(page).includes('· redact'), 'the expected action is never shown as what a scanner did');
+  // Nothing reported, or nothing measured: there is no range to attribute.
+  const quiet = suiteOf([{ entry: demoEntry(), built: built() }], [scanner('redact-secret', 'redact-secret', [['s--demo', { spanOutcomes: ['MISS'], actual: [], leakedBytes: 8, collateralBytes: 0 }]])], { reported }).page('demo');
+  assert.equal(quiet.facts.find(f => f.term === 'Scanner rule'), undefined);
+  const none = suiteOf([{ entry: demoEntry(), built: built() }], [], { reported }).page('demo');
+  assert.equal(none.facts.find(f => f.term === 'Scanner rule'), undefined);
+});
+
+test('recorded actions survive packing and display without a rule inferred from expectations (#595)', () => {
+  const row = { actual: [{ start: 2, end: 10, action: 'warn' }], spanOutcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 0 };
+  assert.deepEqual(unpackRow(packRow(row)), row);
+  const page = suiteOf([{ entry: demoEntry(), built: built({ expectedAction: 'redact' }) }], [scanner('redact-secret', 'redact-secret', [['s--demo', row]])], { reported: { rule: 'unavailable', action: 'unavailable', reason: 'Historical.' } }).page('demo');
+  assert.equal(page.facts.find(f => f.term === 'Reported range 1 action').value, 'warn');
+  assert.equal(page.facts.find(f => f.term === 'Scanner rule').notRecorded, true);
+});
+
+test('a records file is used only by the page of its own suite and build (#595)', () => {
+  const { records, shared } = suiteOf([{ entry: demoEntry(), built: built() }], [], { identity: 'run-1' });
+  const file = JSON.parse(JSON.stringify({ records, shared }));
+  const expected = { suite: 's', fixtureCount: 1, identity: 'run-1' };
+  assert.equal(isRecordsOfBuild(file, expected), true);
+  assert.equal(isRecordsOfBuild(file, { ...expected, suite: 'other' }), false, 'another suite');
+  assert.equal(isRecordsOfBuild(file, { ...expected, identity: 'run-2' }), false, 'another build');
+  assert.equal(isRecordsOfBuild(file, { ...expected, fixtureCount: 2 }), false, 'another number of fixtures');
+  assert.equal(isRecordsOfBuild({ ...file, records: [file.records[0], file.records[0]] }, { ...expected, fixtureCount: 2 }), false, 'a duplicated id');
+  assert.equal(isRecordsOfBuild({ records: [] }, expected), false, 'not a records file');
+  assert.equal(isRecordsOfBuild({ ...file, records: [null] }, expected), false, 'malformed record does not throw');
+  assert.equal(isSuiteRecordsFile(file), true, 'the legacy link lookup (#594) keeps its own shape check');
 });
 
 test('the exact bytes can be taken as a file, and text that cannot be encoded says so', () => {

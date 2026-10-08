@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url';
 import { readAuthority, stampOf } from './lib/authority.mjs';
 import { linkResolves } from './lib/links.mjs';
 
+import { createHash } from 'node:crypto';
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
 const basePath = process.env.BASE_PATH ?? '';
@@ -216,7 +217,7 @@ if (!view) {
   const packRow = r => !r || r.measurement === 'not-measured' ? null : [
     r.measurement === 'positive' ? r.outcomes.map(o => LETTER[o]).join('') || '=' : '-',
     r.measurement === 'control' ? (r.flagged ? '1' : '0') : '-',
-    '', r.measurement === 'positive' ? r.leakedBytes ?? '' : '', r.measurement === 'positive' ? r.collateralBytes ?? '' : '', r.measurement === 'control' ? r.findings ?? '' : '', r.observed,
+    (r.reported ?? []).map(f => `${f.start}-${f.end}${f.action ? `:${f.action}` : ''}`).join(','), r.measurement === 'positive' ? r.leakedBytes ?? '' : '', r.measurement === 'positive' ? r.collateralBytes ?? '' : '', r.measurement === 'control' ? r.findings ?? '' : '', ...(r.reported === undefined ? [r.observed] : []),
   ].join('|');
   const wordOf = r => (!r || r.measurement === 'not-measured' ? 'Not measured'
     : r.measurement === 'positive' ? (r.outcomes.some(leaked) ? 'Left readable' : r.outcomes.includes('OVERBROAD') ? 'Too much' : 'Redacted')
@@ -282,7 +283,12 @@ if (!view) {
       const caseId = caseText && Object.hasOwn(caseText.fixtures, c.id) ? caseText.fixtures[c.id] : undefined;
       const want = caseId ? caseText.cases[caseId] : undefined;
       if (textOf(record.title) !== want?.title || textOf(record.about) !== want?.summary) differs++;
+      // The view records no milestone or release per case (#595): none is shown.
+      if (record.milestone !== undefined || record.release !== undefined) differs++;
     }
+    const { identity, ...shared } = file.shared;
+    if (identity !== `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`) fail(`${where}: records identity does not bind its metadata and run payload`);
+    if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: the official run records no rule or action per range, and the records file must say so`);
     if (differs) fail(`${where}: ${differs} records differ from the view's expected spans, paths, levels, rows or the case records' titles`);
   }
 

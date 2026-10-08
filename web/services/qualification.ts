@@ -43,6 +43,7 @@ export interface ArtifactScanner { id: string; version: string | null; mode: str
 /** One scanner's measurement of one case as the artifact recorded it (the adapter's `CaseScannerResult`). A field that does not apply to the measurement is absent. */
 export interface CaseScannerResult {
   scanner: string; measurement: 'positive' | 'control' | 'pending' | 'not-measured'; observed: number;
+  reported?: { start: number; end: number; action?: 'redact' | 'warn' | 'block' | 'allow' }[];
   outcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number;
   flagged?: boolean; findings?: number; coDetected?: boolean; status?: string;
 }
@@ -142,6 +143,7 @@ export function qualificationShapeProblem(value: unknown): string | null {
     if (!Array.isArray(p.cases)) return `population ${p.population} has no cases: the view predates the case rows, rebuild it with npm run qualification:view`;
     for (const c of p.cases) {
       if (!object(c) || typeof c.id !== 'string' || typeof c.kind !== 'string' || !Array.isArray(c.detectors) || !Array.isArray(c.expected) || !Array.isArray(c.results) || c.results.some((r: unknown) => !object(r) || typeof (r as Record<string, unknown>).scanner !== 'string' || typeof (r as Record<string, unknown>).measurement !== 'string')) return `population ${p.population} has a case row that is not readable`;
+      for (const result of c.results) if (result.reported !== undefined && (!Array.isArray(result.reported) || result.reported.length !== result.observed || result.reported.some((f: any) => !object(f) || Object.keys(f).some(k => !['start', 'end', 'action'].includes(k)) || !Number.isSafeInteger(f.start) || !Number.isSafeInteger(f.end) || f.start < 0 || f.end <= f.start || (f.action !== undefined && !['redact', 'warn', 'block', 'allow'].includes(f.action))))) return `population ${p.population} has unsafe reported ranges`;
     }
   }
   if (!Array.isArray(value.scanners) || !object(value.distribution) || !object(value.stableDistribution)) return 'scanners or the status distribution is missing';

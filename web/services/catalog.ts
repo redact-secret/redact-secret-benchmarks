@@ -40,6 +40,8 @@ export interface CatalogFixture {
   scenarioIds?: string[];
   /** The release milestone that added the fixture ("beta.8"), when the fixture index records one. */
   milestone?: string;
+  /** The release the fixture index records with that milestone (`provenance.release`, "0.1.0-beta.8"), when it records one (#595). Never inferred from the milestone. */
+  release?: string;
 }
 
 /** A published suite of the corpus, in registry order. */
@@ -268,6 +270,7 @@ export function loadCatalog(): Promise<Catalog> {
         detectors: f.detectors,
         ...(entry.scenarioIds.length ? { scenarioIds: entry.scenarioIds } : {}),
         ...(entry.provenance.milestone ? { milestone: entry.provenance.milestone } : {}),
+        ...(entry.provenance.release ? { release: entry.provenance.release } : {}),
       };
     });
 

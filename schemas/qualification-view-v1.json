@@ -2153,6 +2153,35 @@
         "status": {
           "type": "string",
           "description": "A case that was not measured: the scanner status that prevented the measurement, as the artifact names it."
+        },
+        "reported": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "start",
+              "end"
+            ],
+            "properties": {
+              "start": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "action": {
+                "enum": [
+                  "redact",
+                  "warn",
+                  "block",
+                  "allow"
+                ]
+              }
+            }
+          }
         }
       }
     },

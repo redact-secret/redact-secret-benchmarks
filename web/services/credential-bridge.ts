@@ -63,10 +63,11 @@ const TIERS = new Set(['T0', 'T1', 'T2', 'T3']);
 /** One scanner's measurement of one case as the pages read it; `undefined` when the scanner did not measure it. */
 export function rowOf(result: CaseScannerResult | undefined): RowResult | undefined {
   if (!result) return undefined;
+  const actual = result.reported === undefined ? {} : { actual: result.reported };
   switch (result.measurement) {
-    case 'positive': return { spanOutcomes: (result.outcomes ?? []) as Outcome[], leakedBytes: result.leakedBytes ?? 0, collateralBytes: result.collateralBytes ?? 0, observed: result.observed };
-    case 'control': return { flagged: result.flagged ?? false, findings: result.findings ?? 0, observed: result.observed };
-    case 'pending': return { observed: result.observed };
+    case 'positive': return { ...actual, spanOutcomes: (result.outcomes ?? []) as Outcome[], leakedBytes: result.leakedBytes ?? 0, collateralBytes: result.collateralBytes ?? 0, observed: result.observed };
+    case 'control': return { ...actual, flagged: result.flagged ?? false, findings: result.findings ?? 0, observed: result.observed };
+    case 'pending': return { ...actual, observed: result.observed };
     default: return undefined;
   }
 }

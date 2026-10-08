@@ -37,7 +37,7 @@ export interface RowResult {
   /** A control row: did the scanner flag it. */
   flagged?: boolean;
   /** The byte ranges the scanner reported, as recorded (never the matched values). Read by the fixture page. */
-  actual?: { start: number; end: number }[];
+  actual?: { start: number; end: number; action?: 'redact' | 'warn' | 'block' | 'allow' }[];
   /** Bytes of a secret left readable, and bytes redacted outside the allowed envelope, as the row recorded them. */
   leakedBytes?: number;
   collateralBytes?: number;

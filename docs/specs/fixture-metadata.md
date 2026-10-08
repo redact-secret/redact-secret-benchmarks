@@ -72,3 +72,34 @@ The arrival cases that credential-evidence already authored carry the pilot: eve
 record's title and summary (snapshot-2026.10.06.4: 1,169 fixtures of 292 case records; fixtures generated against a scenario keep the absent state).
 Their stable ids and source commitments are unchanged: the projection keys by the release's own fixture ids and binds the case record's sha256.
 Six product-owned policy fixtures carry authored text in the overlay, to exercise the second owner on the rollback path.
+
+## Recorded release and reported actions (#595)
+
+The legacy catalog carries the fixture index's `provenance.release` through the suite records. The Added fact displays each recorded milestone
+and release independently, including a release with no milestone. Neither is derived from the other. The canonical public case view records neither;
+its fixture pages keep the explicit absent state. The credential-evidence snapshot release named with authored text is its source release, not a product milestone.
+
+Inventory of the byte-verified official artifacts pinned on 2026-10-08:
+
+| Source | Recorded fields | What the fixture detail may show |
+| --- | --- | --- |
+| RunArtifact `scanners[].cases[].actual[]` | `start`, `end`, optional `family`, optional `action`; gitleaks may also record `mapping` | exact offsets and an allowlisted recorded action; no family-as-rule, mapping, matched value or raw output |
+| legacy scanner rows | offsets and outcomes, no per-range rule/action | offsets with action and scanner rule explicitly not recorded |
+| public evaluation bundle (#785) | `scanner`, `variant`, `count`, `flagged`, optional aggregate `actionCounts` | counts; an aggregate never supplies a range's action |
+
+The public-evidence-snapshot product artifact records 3,765 findings: 3,662 `redact`, 78 `warn`, 25 `block`. Regression records 83 product findings
+(79 `redact`, 4 `warn`), policy records nine (eight `redact`, one `warn`). Each population is inventoried independently. The peer findings have no action;
+none of these artifacts records a scanner rule identifier. These counts describe retained evidence, not a new measurement or qualification.
+
+The additive qualification-view `cases[].results[].reported` projection copies only `start`, `end` and actions in `redact`, `warn`, `block`, `allow`.
+Unknown, null and absent actions stay absent. The source `family` is attribution, never a scanner rule. Historical views may omit `reported` and remain
+compatible; their pages say the ranges/actions are unavailable until the view is rebuilt from retained artifacts. No RunArtifact, pin, authority or source
+digest is rewritten. The fixture page names each recorded action beside its exact range and marks an absent action and scanner rule Not recorded.
+Expected policy action stays a separately labelled expectation.
+
+## Records identity and bounded reads
+
+A fixture opens one `data/fixtures/<suite>/records.json` file. Its SHA256 identity binds the complete records and shared display metadata, excluding
+only the identity field itself. The suite page carries that digest. Its client refuses a different suite, record count, digest, malformed id or duplicate
+id. Thus even a text-only deployment over the same measured run rejects an older records file. Export checks independently recompute this digest and
+recount release and compact observed ranges/actions. The existing per-file export budget remains the limit; no browser fetch of artifacts or bundles is added.

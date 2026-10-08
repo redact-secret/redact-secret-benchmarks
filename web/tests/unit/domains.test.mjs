@@ -393,6 +393,9 @@ test('current public paired quantities preserve both denominators, withheld delt
   expect(rows.find(row => row.id === 'current-public:baseline:activation').detail).toContain('no trusted qualification activation');
   const group = view.status.groups.find(group => group.title.includes('current public comparison') && group.title.includes('email'));
   expect(group.rows[1]).toMatchObject({ status: 'not-measured', statusWord: 'Delta withheld' });
+  expect(group.rows[1].id).toBe('sensitive-miss-rate');
+  expect(group.rows[0].anchor).toBeDefined();
+  expect(group.navigation[0].href).toContain(encodeURIComponent(group.rows[0].anchor));
   expect(group.rows[1].detail).toContain('Baseline 1/4 effective N');
   expect(group.rows[1].detail).toContain('Candidate 1/3 effective N');
   expect(group.rows[1].detail).toContain('withheld (insufficient-evidence)');
@@ -407,6 +410,24 @@ test('current public paired quantities preserve both denominators, withheld delt
   expect(officialRows.find(row => row.id === 'current-public:baseline').statusWord).toBe('Official');
   expect(officialRows.find(row => row.id === 'current-public:qualification').statusWord).toBe('Not qualified');
   expect(value.distribution).toEqual({ pending: 1, provisional: 1, stable: 0, unsupported: 0 });
+});
+
+test('compact historical metric keys preserve group anchors, quantities and one protocol warning per group', () => {
+  const metric = { id: 'type-miss-rate', status: 'met', numerator: 1, denominator: 4, threshold: 0.5, direction: 'upper',
+    value: { point: 0.25, bound: 0.4 } };
+  const value = pii({ families: [family('pii:global:email', { views: Object.fromEntries(Object.entries(views).map(([id, view]) => [id, { ...view, metrics: [metric] }])) })] });
+  const groups = resolvePiiView(value).status.groups.filter(group => group.title.includes('historical benchmark qualification quantities'));
+  expect(groups).toHaveLength(Object.keys(views).length);
+  for (const group of groups) {
+    expect(group.rows[1].id).toBe(metric.id);
+    expect(group.rows[0].anchor).toBeDefined();
+    expect(group.navigation[0].href).toContain(encodeURIComponent(group.rows[0].anchor));
+    expect(group.rows[1].value).toBe('1 / 4');
+    expect(group.rows[1].detail).toContain('Point 0.25, upper interval bound 0.4');
+    expect(group.rows[1].detail).toContain('threshold 0.5, upper bound');
+    expect(group.rows[0].detail).toContain('No threshold is applied to pii-v1 occurrence quantities');
+    expect(group.rows[1].detail).not.toContain('No threshold is applied');
+  }
 });
 
 test('local default peer observations expose bounded provenance and artifact links without a winner or sensitivity claim', () => {

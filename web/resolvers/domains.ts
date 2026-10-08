@@ -277,18 +277,19 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
         status.push({
           title: `${population.populationId} · ${scanner.scannerId} ${String(scanner.identity?.scannerVersion ?? '')} · ${productKind} · public synthetic`,
           rows: [{ id: `${population.populationId}:${scanner.scannerId}:identity`, label: 'Exact scanner identity', status: 'info' as const, statusWord: 'Recorded',
-            detail: `SHA-256 values, grouped in eight-character blocks. Artifact ${identityText(scanner.identity?.artifactDigest)}. Configuration ${identityText(scanner.identity?.configurationDigest)}. Activation ${identityText(scanner.identity?.activationDigest)}. Adapter ${String(adapter?.adapterId ?? 'Not recorded')} ${String(adapter?.adapterVersion ?? '')}; normalization ${String(adapter?.normalizationVersion ?? 'Not recorded')}.`,
+            detail: `SHA-256 values, grouped in eight-character blocks. Artifact ${identityText(scanner.identity?.artifactDigest)}. Configuration ${identityText(scanner.identity?.configurationDigest)}. Activation ${identityText(scanner.identity?.activationDigest)}. Adapter ${String(adapter?.adapterId ?? 'Not recorded')} ${String(adapter?.adapterVersion ?? '')}; normalization ${String(adapter?.normalizationVersion ?? 'Not recorded')}. Population and scanner counts remain separate; no qualification verdict.`,
           }, ...scanner.metrics.map(raw => {
             // The service accepts these rows only after the strict public schema and semantic consumer validate them.
             const metric = raw as { metric: { id: string }; status: string; effectiveN: number;
               counts: { numerator: number; measured: number; eligible: number; unresolved: number; notMeasured: number };
               value: { state: 'withheld'; reason: string } | { state: 'measured'; point: { mantissa: number; scale: number }; bound: { mantissa: number; scale: number } } };
             return {
-              id: `${population.populationId}:${scanner.scannerId}:${metric.metric.id}`, label: `${quantityOf('pii-v1', metric.metric.id).name} (pii-v1:${metric.metric.id})`,
+              // React keys are scoped to this group; only anchor carries the public address.
+              id: metric.metric.id, label: `${quantityOf('pii-v1', metric.metric.id).name} (pii-v1:${metric.metric.id})`,
               status: metric.value.state === 'withheld' ? 'not-measured' as const : 'info' as const,
               statusWord: metric.value.state === 'withheld' ? 'Withheld' : metric.status,
               value: `${int(metric.counts.numerator)} / ${int(metric.effectiveN)} effective N`,
-              detail: `${metric.value.state === 'withheld' ? metric.value.reason : `Point ${fixed(metric.value.point)}, interval bound ${fixed(metric.value.bound)}`}. Measured ${int(metric.counts.measured)}, eligible ${int(metric.counts.eligible)}, unresolved ${int(metric.counts.unresolved)}, not measured ${int(metric.counts.notMeasured)}. Population and scanner counts remain separate; no qualification verdict.`,
+              detail: `${metric.value.state === 'withheld' ? metric.value.reason : `Point ${fixed(metric.value.point)}, interval bound ${fixed(metric.value.bound)}`}. Measured ${int(metric.counts.measured)}, eligible ${int(metric.counts.eligible)}, unresolved ${int(metric.counts.unresolved)}, not measured ${int(metric.counts.notMeasured)}.`,
             };
           })],
         });
@@ -344,12 +345,12 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       status.push({ title: `${family.id} · ${view.id} · historical benchmark qualification quantities`,
         navigation: [{ label: `${family.id} · ${view.id} · b11`, href: familyHref(anchor) }],
         rows: [{ id: anchor, anchor, label: 'Historical bound report', status: 'info', statusWord: modeWord(recorded!.mode),
-          detail: `Source commit ${identityText(recorded!.core.commit)}. Bound report ${recorded!.route.report ?? recorded!.route.record}; SHA-256 ${identityText(recorded!.route.reportCommitment)}. These b11 case quantities belong to this historical report; they are not the current public pii-v1 measurement or a new qualification.`,
+          detail: `Source commit ${identityText(recorded!.core.commit)}. Bound report ${recorded!.route.report ?? recorded!.route.record}; SHA-256 ${identityText(recorded!.route.reportCommitment)}. These b11 case quantities belong to this historical report; they are not the current public pii-v1 measurement or a new qualification. No threshold is applied to pii-v1 occurrence quantities.`,
           link: { label: 'Bound historical report', href: blob(recorded!.route.report ?? recorded!.route.record), external: true } },
-          ...metrics.map(metric => ({ id: `${anchor}:${metric.id}`, label: `${quantityOf('b11', metric.id).name} (b11:${metric.id})`,
+          ...metrics.map(metric => ({ id: metric.id, label: `${quantityOf('b11', metric.id).name} (b11:${metric.id})`,
             status: typeof metric.value === 'object' && metric.value !== null ? 'info' as const : 'not-measured' as const, statusWord: metric.status,
             value: `${int(metric.numerator)} / ${int(metric.denominator)}`,
-            detail: `${typeof metric.value === 'object' && metric.value !== null ? `Point ${metric.value.point}, ${metric.direction} interval bound ${metric.value.bound}` : metric.value === 'insufficient-evidence' ? 'Not measured: insufficient-evidence, the bound report withholds the interval' : 'Not measured: the bound report records no interval'}. Historical b11 threshold ${metric.threshold}, ${metric.direction} bound. Population: ${quantityOf('b11', metric.id).denominator}. No threshold is applied to pii-v1 occurrence quantities.`,
+            detail: `${typeof metric.value === 'object' && metric.value !== null ? `Point ${metric.value.point}, ${metric.direction} interval bound ${metric.value.bound}` : metric.value === 'insufficient-evidence' ? 'Not measured: insufficient-evidence, the bound report withholds the interval' : 'Not measured: the bound report records no interval'}. Historical b11 threshold ${metric.threshold}, ${metric.direction} bound. Population: ${quantityOf('b11', metric.id).denominator}.`,
           }))],
       });
     }
@@ -419,7 +420,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
             rows: [{ id: anchor, anchor, label: 'Same authored population', status: 'info', statusWord: comparison.mode === 'official' ? 'Official' : 'Exploratory',
               value: `${int(population.memberships)} authored memberships`,
               detail: `${population.population.populationId}; SHA-256 ${identityText(population.population.populationDigest)}. Counts remain separate for this family and stratum. Replays add no samples; no pooled total, threshold or qualification verdict.` },
-            ...familyMetrics.filter(metric => metric.stratum === 'family').map(metric => ({ id: `${anchor}:${metric.key}`,
+            ...familyMetrics.filter(metric => metric.stratum === 'family').map(metric => ({ id: metric.metricId,
               label: `${quantityOf('pii-v1', metric.metricId).name} · ${metric.stratum} (pii-v1:${metric.metricId})`,
               status: metric.delta === null ? 'not-measured' as const : 'info' as const, statusWord: metric.delta === null ? 'Delta withheld' : 'Recorded',
               detail: `Baseline ${comparisonMetricText(metric.baseline)}. Candidate ${comparisonMetricText(metric.candidate)}. ${metric.delta === null ? 'Delta unavailable: one or both quantities are withheld or not measured' : `Candidate minus baseline point delta ${Number(metric.delta.toFixed(6))}`}.`,

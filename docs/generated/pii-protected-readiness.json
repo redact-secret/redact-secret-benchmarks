@@ -1,0 +1,761 @@
+{
+  "schemaVersion": 1,
+  "recordType": "protected-requalification-preparation",
+  "supportClaims": false,
+  "execution": "none",
+  "epochCreated": false,
+  "attemptSpent": false,
+  "target": {
+    "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
+    "productPullRequest": 1284,
+    "qualificationRun": "37772337995",
+    "artifactQualification": "success",
+    "artifactVersion": "0.1.0-beta.14",
+    "released": false,
+    "inventorySha256": "ce4e59de91d00514f29a0035333912d2ec470a8d56a1a0ecbb12fbcc9fd1cb74",
+    "evidence": "https://github.com/redact-secret/redact-secret-benchmarks/issues/667#issuecomment-6059642093"
+  },
+  "pii": {
+    "issues": [
+      667
+    ],
+    "gateEvidence": "unmeasured-for-target",
+    "protectedPath": "pending-not-operational",
+    "publicGateIds": [
+      "exact-candidate-binding",
+      "activation-v2",
+      "pii-off-invariance",
+      "oracle-plan-public-stream",
+      "identity-only-classification",
+      "source-artifact-equivalence",
+      "cross-surface-determinism",
+      "diagnostic-population",
+      "benign-heavy-population",
+      "population-no-regression",
+      "population-mass-resolved",
+      "authored-truth-agreement",
+      "contract-fixture-discrepancy",
+      "cross-surface-output",
+      "default-wasm-excludes-pii",
+      "runtime-and-package-cost",
+      "size-regression-budget",
+      "profile-cost",
+      "trusted-accounting-source",
+      "independent-evidence"
+    ],
+    "conditionalGates": {
+      "default-wasm-excludes-pii": "applicable-to-split-pii-wasm-artifacts"
+    },
+    "qualification": {
+      "mechanics": {
+        "minDenominator": 4,
+        "replays": 2,
+        "intervalZ": 1.96,
+        "intervalPrecision": 6
+      },
+      "metrics": {
+        "type-miss-rate": {
+          "direction": "upper",
+          "threshold": 0.5,
+          "applicability": "required"
+        },
+        "wrong-family-rate": {
+          "direction": "upper",
+          "threshold": 0.5,
+          "applicability": "required"
+        },
+        "wrong-jurisdiction-rate": {
+          "direction": "upper",
+          "threshold": 0.5,
+          "applicability": "jurisdictional"
+        },
+        "sensitive-miss-rate": {
+          "direction": "upper",
+          "threshold": 0.5,
+          "applicability": "required"
+        },
+        "non-sensitive-flag-rate": {
+          "direction": "upper",
+          "threshold": 0.5,
+          "applicability": "required"
+        },
+        "context-discrimination-rate": {
+          "direction": "lower",
+          "threshold": 0.5,
+          "applicability": "required"
+        },
+        "benign-suppression-rate": {
+          "direction": "lower",
+          "threshold": 0.5,
+          "applicability": "required"
+        },
+        "jurisdiction-collision-rate": {
+          "direction": "lower",
+          "threshold": 0.5,
+          "applicability": "jurisdictional"
+        },
+        "range-collateral-rate": {
+          "direction": "upper",
+          "threshold": 0.5,
+          "applicability": "reported-spans"
+        },
+        "measurable-share": {
+          "direction": "lower",
+          "threshold": 0.5,
+          "applicability": "required"
+        }
+      },
+      "gates": {
+        "requiredMethods": [
+          "type-validation",
+          "context-discrimination",
+          "pii-benign"
+        ],
+        "minBenignCases": 6,
+        "minBenignAxes": 3,
+        "requireProtectedEvidence": true,
+        "requireIndependentEvidence": true,
+        "requireTrustedAccountingSource": true
+      }
+    },
+    "ssnPreparation": {
+      "minimumFreshCases": 20,
+      "review": "genuine-custodian-and-reviewer-attestation-required",
+      "epoch": "not-created",
+      "attemptLimit": 1,
+      "unresolvedAllowed": 0,
+      "maximumResult": "provisional"
+    },
+    "arrivalCost": {
+      "profiles": [
+        "credentials-only",
+        "pii-global",
+        "pii-family-us-ssn",
+        "pii-us"
+      ],
+      "surfaces": [
+        "node-addon",
+        "node-wasm"
+      ],
+      "profileSelections": {
+        "credentials-only": {
+          "logicalRequestedAddition": false,
+          "baseline": {
+            "effectiveSelectors": [],
+            "selectionState": "pii-off"
+          },
+          "candidate": {
+            "effectiveSelectors": [],
+            "selectionState": "pii-off"
+          }
+        },
+        "pii-global": {
+          "logicalRequestedAddition": false,
+          "baseline": {
+            "effectiveSelectors": [
+              "pii:global"
+            ],
+            "selectionState": "global-reference"
+          },
+          "candidate": {
+            "effectiveSelectors": [
+              "pii:global"
+            ],
+            "selectionState": "global-reference"
+          }
+        },
+        "pii-family-us-ssn": {
+          "logicalRequestedAddition": true,
+          "baseline": {
+            "effectiveSelectors": [
+              "pii:global"
+            ],
+            "selectionState": "baseline-global-reference"
+          },
+          "candidate": {
+            "effectiveSelectors": [
+              "pii:us"
+            ],
+            "selectionState": "candidate-family-added"
+          }
+        },
+        "pii-us": {
+          "logicalRequestedAddition": true,
+          "baseline": {
+            "effectiveSelectors": [
+              "pii:global"
+            ],
+            "selectionState": "baseline-global-reference"
+          },
+          "candidate": {
+            "effectiveSelectors": [
+              "pii:us"
+            ],
+            "selectionState": "candidate-family-added"
+          }
+        }
+      },
+      "minimumPairedSamples": 10,
+      "warmupSamples": 2,
+      "metricScope": "child-operation-only-after-module-import",
+      "runtime": {
+        "statistic": "paired-median",
+        "maximumRelativeIncrease": 0.5,
+        "maximumAbsoluteIncreaseMilliseconds": 5
+      },
+      "packageBytes": {
+        "corePackedMaximumIncrease": 32768,
+        "nodePackedMaximumIncrease": 32768,
+        "wasmPackedMaximumIncrease": 32768
+      },
+      "wasmPayloadPolicy": {
+        "accounting": "aggregate-named-payloads",
+        "members": {
+          "full": {
+            "fileName": "redact_secret_wasm_bg.wasm",
+            "maximumIncrease": {
+              "raw": 65536,
+              "gzip": 32768,
+              "brotli": 32768
+            }
+          },
+          "common": {
+            "fileName": "redact_secret_wasm_common_bg.wasm",
+            "maximumIncrease": {
+              "raw": 0,
+              "gzip": 0,
+              "brotli": 0
+            }
+          }
+        },
+        "aggregateMaximumIncrease": {
+          "raw": 65536,
+          "gzip": 32768,
+          "brotli": 32768
+        }
+      }
+    },
+    "sizeBudgets": [
+      {
+        "id": "size/browser-bundle/quickstart/gzip",
+        "baselineValue": 144501,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 4096
+        }
+      },
+      {
+        "id": "size/cli/aarch64-apple-darwin",
+        "baselineValue": 762560,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/cli/aarch64-pc-windows-msvc",
+        "baselineValue": 496640,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/cli/aarch64-unknown-linux-gnu",
+        "baselineValue": 863848,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/cli/x86_64-apple-darwin",
+        "baselineValue": 798416,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/cli/x86_64-pc-windows-msvc",
+        "baselineValue": 547328,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/cli/x86_64-unknown-linux-gnu",
+        "baselineValue": 868280,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/aarch64-apple-darwin",
+        "baselineValue": 1004128,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/aarch64-pc-windows-msvc",
+        "baselineValue": 709120,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/aarch64-unknown-linux-gnu",
+        "baselineValue": 1149600,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/aarch64-unknown-linux-musl",
+        "baselineValue": 1148696,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/x86_64-apple-darwin",
+        "baselineValue": 1046848,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/x86_64-pc-windows-msvc",
+        "baselineValue": 783872,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/x86_64-unknown-linux-gnu",
+        "baselineValue": 1121416,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/node-addon/x86_64-unknown-linux-musl",
+        "baselineValue": 1126864,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/npm/core/packed",
+        "baselineValue": 39461,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 4096
+        }
+      },
+      {
+        "id": "size/npm/node-darwin-arm64/packed",
+        "baselineValue": 424514,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 4096
+        }
+      },
+      {
+        "id": "size/npm/wasm/packed",
+        "baselineValue": 254413,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 4096
+        }
+      },
+      {
+        "id": "size/python-wheel/aarch64-apple-darwin",
+        "baselineValue": 443493,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/python-wheel/aarch64-pc-windows-msvc",
+        "baselineValue": 340669,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/python-wheel/aarch64-unknown-linux-gnu",
+        "baselineValue": 474269,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/python-wheel/aarch64-unknown-linux-musl",
+        "baselineValue": 653409,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/python-wheel/x86_64-apple-darwin",
+        "baselineValue": 454825,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/python-wheel/x86_64-pc-windows-msvc",
+        "baselineValue": 356875,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/python-wheel/x86_64-unknown-linux-gnu",
+        "baselineValue": 482525,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/python-wheel/x86_64-unknown-linux-musl",
+        "baselineValue": 695123,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 16384
+        }
+      },
+      {
+        "id": "size/wasm/common/gzip",
+        "baselineValue": 100058,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 4096
+        }
+      },
+      {
+        "id": "size/wasm/full/gzip",
+        "baselineValue": 137639,
+        "threshold": {
+          "relative": 0.05,
+          "absoluteFloor": 4096
+        }
+      }
+    ],
+    "profileCost": {
+      "state": "unmeasured-for-target",
+      "currentPlanTarget": "8b6a5fde52ecb4dfce13f09c7a947062d21483c7",
+      "requiresReviewedTargetRefreeze": true,
+      "sampleProtocol": {
+        "environment": "github-hosted-ubuntu-24.04-x86_64-release",
+        "minimumSamplesPerSide": 12,
+        "warmupSamples": 2,
+        "processIsolation": "fresh-process-per-sample",
+        "pairing": "same-job",
+        "roundOrder": "ABBA",
+        "aaRunsRequiredBeforeCandidate": 3,
+        "cpuModelRequired": true,
+        "candidateBlockedUntilThresholdFreeze": true,
+        "transientRetryLimit": 2
+      },
+      "thresholds": {
+        "source": "benchmarks/lib/regression-budgets.ts#RULES",
+        "latency": {
+          "medianRelative": "ceil5(max(0.10,2*largest-aa-median-deviation))",
+          "tailRelative": "ceil5(max(0.15,2*largest-aa-p95-deviation))",
+          "absoluteFloorMilliseconds": 1,
+          "minimumSamples": 10
+        },
+        "initialization": {
+          "medianRelative": "ceil5(max(0.25,2*largest-aa-median-deviation))",
+          "tailRelative": "ceil5(max(0.50,2*largest-aa-p95-deviation))",
+          "absoluteFloorMilliseconds": 2,
+          "minimumSamples": 10
+        },
+        "memory": {
+          "relative": "ceil5(max(0.10,2*max(ci-cross-run-spread,rerun-spread)))",
+          "absoluteFloorBytes": 1048576,
+          "minimumSamples": 5
+        },
+        "size": {
+          "relative": 0.05,
+          "compressedAndNpmFloorBytes": 4096,
+          "nativeFloorBytes": 16384,
+          "minimumSamples": 1
+        },
+        "throughput": {
+          "verdict": "informational",
+          "reasonCode": "regression-budget-v1-has-no-independent-throughput-trigger"
+        }
+      },
+      "phases": [
+        "reviewed-freeze-commit",
+        "three-distinct-full-matrix-aa-runs",
+        "threshold-freeze-from-aa-only",
+        "candidate-full-matrix-with-frozen-thresholds",
+        "distribution-size-collection",
+        "sanitized-evidence-validation"
+      ],
+      "artifactRoster": {
+        "qualificationFamilies": [
+          "browser",
+          "browser-common",
+          "cli",
+          "crate",
+          "node-addon",
+          "python-sdist",
+          "python-wheel"
+        ],
+        "npmPackages": [
+          "core",
+          "node",
+          "wasm"
+        ],
+        "browserBundle": [
+          "full",
+          "common"
+        ],
+        "wasmCompression": [
+          "raw",
+          "gzip-9",
+          "brotli-11"
+        ],
+        "requireExactBaselineCandidateRoster": true,
+        "candidateOnlyPiiArtifacts": "reported apart, without a pre-existing budget (redact-secret#937)"
+      },
+      "dispatch": "requires-authorised-official-linux-plan-no-dispatch-by-this-record"
+    }
+  },
+  "credentialPolicy": {
+    "issue": 619,
+    "state": "scope-reconciliation-before-freeze",
+    "profileId": "credential-policy-v1",
+    "candidate": "not-frozen",
+    "membership": [
+      {
+        "detector": "bearer-token",
+        "taxonomyFamily": "generic:bearer-token",
+        "requiredAction": "redact",
+        "allowedActions": [
+          "redact"
+        ],
+        "exclusions": [
+          "placeholders",
+          "repeated filler",
+          "wider identifiers",
+          "newline-separated carriers",
+          "secret-token URI syntax"
+        ],
+        "blindSpots": [
+          "short values",
+          "unsupported encodings"
+        ]
+      },
+      {
+        "detector": "connection-string",
+        "taxonomyFamily": "generic:connection-string-password",
+        "requiredAction": "redact",
+        "allowedActions": [
+          "redact"
+        ],
+        "exclusions": [
+          "empty values",
+          "tutorial values",
+          "references",
+          "templates",
+          "malformed encoding",
+          "malformed hosts",
+          "multiple at-signs",
+          "unsupported schemes",
+          "oversize authority or value"
+        ],
+        "blindSpots": [
+          "query password forms",
+          "property password forms",
+          "Azure Storage AccountKey"
+        ]
+      },
+      {
+        "detector": "otpauth-uri",
+        "taxonomyFamily": "generic:otp-seed",
+        "requiredAction": "redact",
+        "allowedActions": [
+          "redact"
+        ],
+        "exclusions": [
+          "bare seeds",
+          "lowercase or mixed-case seeds",
+          "encoded padding",
+          "invalid or duplicate-first secret parameters",
+          "unsupported OTP types"
+        ],
+        "blindSpots": [
+          "seed validity or liveness",
+          "envelopes outside otpauth URI"
+        ]
+      },
+      {
+        "detector": "generic-token",
+        "taxonomyFamily": "generic:unclassified-assignment-literal",
+        "requiredAction": "fixture-resolved",
+        "allowedActions": [
+          "warn",
+          "redact"
+        ],
+        "exclusions": [
+          "placeholders",
+          "references",
+          "interpolations",
+          "secret-manager references",
+          "keychain references",
+          "SQL binds",
+          "code expressions",
+          "filler",
+          "public identifiers",
+          "provider-owned names",
+          "unsupported field names"
+        ],
+        "blindSpots": [
+          "arbitrary assignments",
+          "all credential-like values",
+          "block enforcement"
+        ]
+      }
+    ],
+    "floorsAndGates": {
+      "minimumPositiveCases": 6,
+      "minimumPositiveAxes": 4,
+      "minimumBenignCases": 8,
+      "minimumBenignAxes": 4,
+      "minimumTwinPairs": 5,
+      "exactSpanMisses": 0,
+      "leakedSpans": 0,
+      "overbroadSpans": 0,
+      "collateralBytes": 0,
+      "redactFalseAlarms": 0,
+      "blockFalseAlarms": 0,
+      "unexpectedPositiveActions": 0,
+      "unresolvedActionCases": 0,
+      "unresolvedCriticalFailures": 0,
+      "requirePublicConformance": true,
+      "requireProtectedHoldout": true,
+      "rationale": "A T3 family may qualify only inside a bounded project-policy contract, with exact value-only spans, resolved actions, independent controls and twins, no critical behavioral debt, and holdout evidence from a frozen product build. Tier and evidence basis never change."
+    },
+    "genericSlices": [
+      "high-signal-high-confidence-redact",
+      "high-signal-below-high-confidence-warn",
+      "ambiguous-name-stronger-contract-warn",
+      "excluded-or-unsupported-control"
+    ],
+    "sliceMeaning": "contract-review-slices-not-new-taxonomy-families-or-measured-cells",
+    "pendingT3OutsideProfile": [
+      "ory",
+      "baseten"
+    ],
+    "receiptDraft": {
+      "state": "not-a-receipt",
+      "schemaVersion": 2,
+      "profileId": "credential-policy-v1",
+      "productRevision": null,
+      "benchmarkRevision": null,
+      "report": null,
+      "requirements": [
+        "exact-product-and-benchmark-revisions",
+        "validated-credential-policy-holdout-report",
+        "complete-report",
+        "protected-purpose",
+        "custodian-declared",
+        "complete-product-scanner",
+        "current-membership-reconciled-before-freeze",
+        "public-prerequisites-met",
+        "authorised-fresh-epoch-attempt"
+      ]
+    }
+  },
+  "custody": {
+    "currentTarget": "private-custodian-selected-ec2-path-not-operational",
+    "historicalLocal": {
+      "contract": "docs/specs/blind-evaluation.md",
+      "evidenceClass": "custodian-blind",
+      "independence": "procedural-separation",
+      "organisationalIndependence": false,
+      "sandbox": false,
+      "budget": "one-attempt-per-candidate-identity-per-epoch-spent-at-reservation",
+      "newPiiEvalReadiness": false,
+      "handoff": "not-performed"
+    },
+    "approvalBoundary": [
+      "restricted-activation",
+      "exact-first-protected-evaluation",
+      "benchmark-authority-cutover",
+      "exact-projection-release-and-destination"
+    ],
+    "holds": [
+      "host-isolation-not-verified",
+      "operational-catalog-and-seal-not-ready",
+      "operator-and-disclosure-policy-not-activated",
+      "production-signing-trust-not-ready",
+      "approved-transport-and-revocation-not-ready",
+      "operational-ledger-and-checkpoints-not-ready",
+      "exact-target-public-and-cost-gates-unmeasured"
+    ],
+    "publicSyntheticMeasurementBlocked": false
+  },
+  "provenance": [
+    {
+      "path": "benchmarks/support/policy-qualified-credentials.json",
+      "sha256": "d4b059a67bc67084152fa645f0b235ef5d094afe52c28a5dd3f0edbf4860b7fd"
+    },
+    {
+      "path": "benchmarks/support/taxonomy.json",
+      "sha256": "d319a424f8f2724e82e0f2de7ab84f03d16ec0e116bf7eb9dcf363aa88fb95c8"
+    },
+    {
+      "path": "qualification/pii-v1.json",
+      "sha256": "02e1e012f48f610885b17ba806fd7b47d13de6d5a33ac8b58c094175b57b8df2"
+    },
+    {
+      "path": "qualification/pii-national-id-arrival-v1.json",
+      "sha256": "f223c85549db4c19822ea80517a3faab675fd73b29c2df1c59bdbd633288b054"
+    },
+    {
+      "path": "qualification/pii-profile-cost-v2.json",
+      "sha256": "4127a1aa69218569f659570da0b8b5c69d12cc87270864365272b9985af3270d"
+    },
+    {
+      "path": "benchmarks/regression-budgets.json",
+      "sha256": "8a6eaa78b3a886e875d2c61d7e90b79867ec7a41f80d373db8d94456a15212b2"
+    },
+    {
+      "path": "benchmarks/evaluation/domains/credential-policy/holdout.ts",
+      "sha256": "14ead2489018fe864b7a8afe78cfaf77f8003f965ddca0da284ce07968112567"
+    },
+    {
+      "path": "benchmarks/support/policy-holdout-receipt.ts",
+      "sha256": "b2d57151a9d72f4ded45686c90a71fa03fef0c57a4783e70a62e35deacdb73d5"
+    },
+    {
+      "path": "benchmarks/evaluation/domains/pii/beta11-disposition.ts",
+      "sha256": "4d8e05c84cb02b7cdb8048b929c7a968d8b381aff0350c2fc2408e8e669a8f99"
+    }
+  ]
+}

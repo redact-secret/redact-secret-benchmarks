@@ -8,6 +8,7 @@
  * file holds the allowlisted keys and nothing else. The legacy matrix keeps its own validator (`supportMatrixProblem`), which asks for provenance the
  * view cannot carry; neither validator accepts the other's file (tests/publication-switch.test.mjs). Spec: docs/specs/qualification-adapter.md.
  */
+import { piiCurrentQualificationProblem } from '../shared/support-model.ts';
 import { taxonomy } from '../support/taxonomy.ts';
 import { MATRIX_ARTIFACT_SCHEMA, matrixArtifactProblems, type MatrixArtifact, type RegistryForMatrix } from './matrix-artifact.ts';
 import { readScannerRoster, rosterFor, type RosterEntry } from './scanner-roster.ts';
@@ -24,7 +25,7 @@ export interface ViewSupportContext {
 
 export const isViewMatrix = (value: unknown): value is MatrixArtifact => (value as { schema?: unknown } | null)?.schema === MATRIX_ARTIFACT_SCHEMA;
 
-const TOP_LEVEL_KEYS = ['schema', 'mode', 'publication', 'source', 'providerCount', 'familyCount', 'distribution', 'stableDistribution', 'families'];
+const TOP_LEVEL_KEYS = ['schema', 'mode', 'publication', 'source', 'providerCount', 'familyCount', 'distribution', 'stableDistribution', 'families', 'piiCurrentQualification'];
 
 /** Every reason a view matrix must not be published or read by a publisher as it stands (empty: it is a public, current, canonical matrix). Pure. */
 export function viewMatrixProblems(value: unknown, context: ViewSupportContext): string[] {
@@ -34,6 +35,8 @@ export function viewMatrixProblems(value: unknown, context: ViewSupportContext):
   if (extra.length) problems.push(`carries keys outside the allowlist: ${extra.join(', ')}`);
   if (value.mode !== 'published' || value.publication !== 'public') problems.push(`is a ${String(value.mode)} matrix (${String(value.publication)}): only a published, public matrix is read by a publication`);
   problems.push(...matrixArtifactProblems(value, context.registry));
+  const currentProblem = piiCurrentQualificationProblem(value.piiCurrentQualification);
+  if (currentProblem) problems.push(currentProblem);
   if (value.source?.view?.policyRevision !== context.policyRevision) problems.push(`was built under policy ${String(value.source?.view?.policyRevision)}, this checkout computes ${context.policyRevision}`);
   // The scanner configuration binding: every recorded population measured all the official required scanners and no scanner outside the roster.
   for (const population of value.source?.populations ?? []) {

@@ -8,6 +8,8 @@ import fixtureIndex from '../fixture-index.json';
 import detectorFindingTypes from '../detector-finding-types.json';
 import type { FindingTypeKey, FindingTypeSource } from '../support/finding-types.ts';
 import type { PiiMatrixSection } from '../support/pii-families.ts';
+import readiness from '../../docs/generated/pii-protected-readiness.json';
+import piiRegistry from '../evaluation/domains/pii/support-registry-v1.json';
 
 /** An empirical entry's basis must be one its recorded evidence can carry, never an asserted label. */
 function empiricalBasisHolds(entry: SupportMatrixEntry): boolean {
@@ -52,6 +54,7 @@ export interface SupportMatrixFile {
   piiQualification: PiiMatrixSection['piiQualification'];
   piiDistribution: PiiMatrixSection['piiDistribution'];
   piiFamilies: PiiMatrixSection['piiFamilies'];
+  piiCurrentQualification?: PiiMatrixSection['piiCurrentQualification'];
 }
 
 /** One published family row: the build's entry plus its finding-type key (`null` when no recorded source grounds one). */
@@ -105,8 +108,31 @@ function piiFamiliesProblem(matrix: SupportMatrixFile): string | null {
     if (row.status === 'pending' && protectedMet && !row.failedGates.length) return `Support matrix PII family ${row.family} is pending with no failed gate`;
     if (protectedMet === row.failedGates.includes('protected-partition')) return `Support matrix PII family ${row.family} disagrees with its protected gate`;
   }
+  const currentProblem = piiCurrentQualificationProblem(matrix.piiCurrentQualification);
+  if (currentProblem) return currentProblem;
   const q = matrix.piiQualification;
   if ((q.requalification.requalifiedOnCoreCommit === null) !== (q.requalification.state === 'not-requalified')) return 'Support matrix PII requalification state disagrees with its core commit';
+  return null;
+}
+
+const validCurrentQualification = ajv.compile({ ...schema.properties.piiCurrentQualification, definitions: schema.definitions });
+
+/** Validate the additive current-target section independently of credential matrix generation. */
+export function piiCurrentQualificationProblem(current: SupportMatrixFile['piiCurrentQualification']): string | null {
+  if (current) {
+    if (!validCurrentQualification(current)) return 'Invalid current PII qualification contract';
+    const recorded = current.publicMeasurement.state === 'recorded';
+    const state = recorded ? 'recorded' : current.publicMeasurement.state === 'invalid' ? 'invalid' : 'prepared';
+    if (current.sourceCommit !== readiness.target.sourceCommit || current.state !== state) return 'Support matrix current PII target or measurement state disagrees';
+    const ids = current.families.map(row => row.family).sort();
+    if (JSON.stringify(ids) !== JSON.stringify(piiRegistry.families.map(row => row.family).sort()) || new Set(ids).size !== ids.length ||
+        current.distribution.pending !== ids.length) return 'Support matrix current PII membership or distribution disagrees';
+    const reasons = [recorded ? 'product-validator-primitive-seam-unavailable' : state === 'invalid' ?
+      'current-public-comparison-invalid' : 'current-public-comparison-not-recorded',
+      'public-qualification-gates-not-evaluated', 'runtime-and-package-cost-unmeasured', 'size-regression-budget-unmeasured', 'profile-cost-unmeasured',
+      'protected-path-not-operational', 'protected-partition-not-run'];
+    if (current.families.some(row => JSON.stringify(row.reasonCodes) !== JSON.stringify(reasons))) return 'Support matrix current PII gate reasons disagree';
+  }
   return null;
 }
 

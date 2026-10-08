@@ -190,6 +190,8 @@ export async function checkSupportUi() {
   try {
     const matrix = JSON.parse(await readFile(published, 'utf8'));
     const invalid = supportMatrixProblem(matrix);
+    if (matrix.piiCurrentQualification && JSON.stringify(matrix.piiCurrentQualification) !== JSON.stringify(piiSection.piiCurrentQualification))
+      problems.push('Published current PII qualification does not reconcile with the verified public comparison package');
     if (invalid) problems.push(`public/results/support-matrix-v1.json is published but the UI would reject it: ${invalid}`);
     else for (const value of rendered(supportPage(matrix, null, 'all'))) if (!Object.hasOwn(matrix.distribution, value)) problems.push(`The published matrix does not carry "${value}", and the page renders it`);
   } catch (error) {

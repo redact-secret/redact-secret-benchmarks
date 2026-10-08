@@ -202,6 +202,93 @@
         "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
       }
     },
+    "piiCurrentQualification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "state", "sourceCommit", "supportClaims", "qualified", "evidenceScope", "publicMeasurement", "gates", "distribution", "families"],
+      "properties": {
+        "schemaVersion": {"const": 1},
+        "state": {"enum": ["prepared", "recorded", "invalid"]},
+        "sourceCommit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "supportClaims": {"const": false},
+        "qualified": {"const": false},
+        "evidenceScope": {"const": "public-synthetic-only"},
+        "publicMeasurement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "mode", "reason", "receiptDigest", "productArtifactDigest", "baselineSourceCommit", "engineBinaryDigest"],
+          "properties": {
+            "state": {"enum": ["not-recorded", "recorded", "invalid"]},
+            "mode": {"enum": ["exploratory", "official", null]},
+            "reason": {"type": ["string", "null"], "minLength": 1},
+            "receiptDigest": {"anyOf": [{"$ref": "#/definitions/digest"}, {"type": "null"}]},
+            "productArtifactDigest": {"anyOf": [{"$ref": "#/definitions/digest"}, {"type": "null"}]},
+            "baselineSourceCommit": {"anyOf": [{"type": "string", "pattern": "^[a-f0-9]{40}$"}, {"type": "null"}]},
+            "engineBinaryDigest": {"anyOf": [{"$ref": "#/definitions/digest"}, {"type": "null"}]}
+          },
+          "allOf": [
+            {
+              "if": {"properties": {"state": {"const": "recorded"}}},
+              "then": {
+                "properties": {
+                  "mode": {"enum": ["exploratory", "official"]},
+                  "reason": {"type": "null"},
+                  "receiptDigest": {"$ref": "#/definitions/digest"},
+                  "productArtifactDigest": {"$ref": "#/definitions/digest"},
+                  "baselineSourceCommit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+                  "engineBinaryDigest": {"$ref": "#/definitions/digest"}
+                }
+              },
+              "else": {
+                "properties": {
+                  "mode": {"type": "null"},
+                  "reason": {"type": "string", "minLength": 1},
+                  "receiptDigest": {"type": "null"},
+                  "productArtifactDigest": {"type": "null"},
+                  "baselineSourceCommit": {"type": "null"},
+                  "engineBinaryDigest": {"type": "null"}
+                }
+              }
+            }
+          ]
+        },
+        "gates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["publicQualification", "validator", "runtimeAndPackageCost", "sizeRegressionBudget", "profileCost", "protectedPath", "protectedPartition"],
+          "properties": {
+            "publicQualification": {"const": "not-evaluated"},
+            "validator": {"const": "not-measured"},
+            "runtimeAndPackageCost": {"const": "unmeasured"},
+            "sizeRegressionBudget": {"const": "unmeasured"},
+            "profileCost": {"const": "unmeasured"},
+            "protectedPath": {"const": "pending-not-operational"},
+            "protectedPartition": {"const": "not-run"}
+          }
+        },
+        "distribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["stable", "provisional", "pending", "unsupported"],
+          "properties": {"stable": {"const": 0}, "provisional": {"const": 0}, "pending": {"type": "integer", "minimum": 1}, "unsupported": {"const": 0}}
+        },
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["family", "status", "reasonCodes"],
+            "properties": {
+              "family": {"type": "string", "minLength": 1},
+              "status": {"const": "pending"},
+              "reasonCodes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+            }
+          }
+        }
+      },
+      "description": "Exact current target and separate public measurement; never relabels historical piiFamilies or qualifies protected support."
+    },
     "piiQualification": {
       "description": "Identity of the single qualification the piiFamilies statuses come from. The PII statuses are at that core commit and are not re-qualified on any later one.",
       "type": "object", "additionalProperties": false,

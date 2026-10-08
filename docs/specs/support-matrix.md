@@ -171,3 +171,38 @@ status this artifact cannot (see [support-ui.md](support-ui.md)). The
 baseline was removed in #660: the drift between two matrices is the parity report's
 `matrix` section (`qualification:parity`) and, for a product candidate, the candidate
 diff (`qualification:candidate-diff`).
+
+### Current target beside historical qualification
+
+Optional `piiCurrentQualification` records the exact prepared source commit independently of the historical
+`piiQualification`, `piiDistribution` and `piiFamilies`. Older matrices without it remain valid. The generator
+adds it through `buildPiiMatrixSection`; it does not change credential rows, measured-product provenance,
+provider/family denominators or stable counts. The historical `not-requalified` identity remains unchanged.
+
+`benchmarks/support/pii-current-qualification.ts` validates the separate public comparison plan, receipt and
+eight baseline/candidate population artifacts with `loadPiiCandidateComparison` before projecting evidence.
+Absent evidence yields `prepared` with `not-recorded` measurement and null artifact identities. Malformed,
+incomplete or mismatched evidence yields `invalid`; it cannot retain a claimed measured identity. A verified
+package yields `recorded` with its receipt digest, exact candidate package-tree digest, baseline source and
+engine binary digest. This state records public measurement only, with `qualified: false` and
+`supportClaims: false`, never owner acceptance or an authority change.
+
+Current family rows stay `pending`: public qualification gates are not evaluated by this comparison, the
+product validator primitive seam is unmeasured, exact-target runtime/package, size and profile cost are
+unmeasured, and protected execution is pending/not run. Their reason codes are derived from those gate
+states, not copied from historical protected results. The current distribution counts its own rows only.
+The strict schema and semantic validator reject qualification, cost acceptance, invented fields, wrong current
+targets, inconsistent membership/distributions or omitted reasons. The publisher and support UI source gate
+reconcile a present current section against the verified comparison package again.
+
+[Protected readiness preparation](pii-protected-requalification-readiness.md) preserves the prerequisite
+checklist and the distinction between local historical custody and the unready new operational path. Public
+measurement can proceed while that protected path remains pending. Core consumers must keep historical and
+current qualification separate, bind the current source revision explicitly and retain the credential
+measurement's recorded release identity when vendoring this additive contract.
+
+The NEW authority projection (`support-matrix-view-v1.json`) carries the same optional
+`piiCurrentQualification` section. `build-view-support-matrix.ts` derives it from the verified
+comparison package, `viewMatrixProblems` applies the shared strict section validator, and both
+publishing paths rederive the projection before accepting its bytes. Credential family counts,
+canonical population identities and historical PII disposition remain separate.

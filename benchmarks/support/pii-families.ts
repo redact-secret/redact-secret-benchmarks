@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { buildPiiCurrentQualification, type PiiCurrentQualification } from './pii-current-qualification.ts';
 import bindingsFile from '../evaluation/domains/pii/protected-support-bindings-v1.json';
 import registryFile from '../evaluation/domains/pii/support-registry-v1.json';
 import { PII_ORACLE_PLANS } from '../evaluation/domains/pii/identity-oracle.ts';
@@ -53,7 +54,7 @@ export interface PiiQualification {
   costAcceptance: { id: string; entryCommitment: string; status: 'accepted'; cells: number; sizeRows: number };
   requalification: { state: 'not-requalified'; requalifiedOnCoreCommit: null; statement: string };
 }
-export interface PiiMatrixSection { piiQualification: PiiQualification; piiDistribution: Record<'stable' | 'provisional' | 'pending' | 'unsupported', number>; piiFamilies: PiiMatrixRow[] }
+export interface PiiMatrixSection { piiCurrentQualification?: PiiCurrentQualification; piiQualification: PiiQualification; piiDistribution: Record<'stable' | 'provisional' | 'pending' | 'unsupported', number>; piiFamilies: PiiMatrixRow[] }
 
 export const PII_REQUALIFICATION_STATEMENT =
   'These statuses were qualified at the Beta.11 core commit above and have not been re-qualified on any later core commit, including the Beta.13 candidate. '
@@ -126,6 +127,7 @@ export async function buildPiiMatrixSection(root: string): Promise<PiiMatrixSect
       costAcceptance: { id: binding.costAcceptance.id, entryCommitment: binding.costAcceptance.entryCommitment, status: 'accepted', cells: disposition.costAcceptance.accepted.cells, sizeRows: disposition.costAcceptance.accepted.sizeRows },
       requalification: { state: 'not-requalified', requalifiedOnCoreCommit: null, statement: PII_REQUALIFICATION_STATEMENT },
     },
+    piiCurrentQualification: await buildPiiCurrentQualification(root),
     piiDistribution,
     piiFamilies: rows,
   };

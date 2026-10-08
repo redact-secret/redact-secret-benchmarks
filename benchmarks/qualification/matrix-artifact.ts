@@ -13,6 +13,7 @@
  * the families and binds the identity to the registry. Spec: docs/specs/qualification-adapter.md.
  */
 import type { SupportMatrix } from './support-matrix.ts';
+import type { PiiCurrentQualification } from '../support/pii-current-qualification.ts';
 
 export const MATRIX_ARTIFACT_SCHEMA = 'redact-secret/support-matrix-from-view/v1';
 export type MatrixMode = 'published' | 'candidate-projection';
@@ -44,6 +45,8 @@ export interface MatrixArtifact {
   distribution: SupportMatrix['distribution'];
   stableDistribution: SupportMatrix['stableDistribution'];
   families: SupportMatrix['families'];
+  /** Separate exact-target PII preparation; it never changes credential populations or counts. */
+  piiCurrentQualification?: PiiCurrentQualification;
 }
 
 /** The matrix entry fields, and only these, leave the view: an extra key a view might carry (a case row, a span, a raw observation) is dropped, never copied. */

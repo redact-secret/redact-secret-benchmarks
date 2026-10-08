@@ -10,7 +10,7 @@ export interface PinManifestPins {
 
 export interface PinManifest {
   schemaVersion: 1;
-  /** This repository's commit as of the last generation that changed pins, corpus hashes, or the fixture list. */
+  /** Repository ancestor recorded when content changed, or explicitly repaired after a squash. */
   revision: string;
   pins: PinManifestPins;
   corpusHashes: Record<string, string>;
@@ -19,16 +19,24 @@ export interface PinManifest {
 
 export type PinManifestContent = Pick<PinManifest, 'schemaVersion' | 'pins' | 'corpusHashes' | 'fixtureIds'>;
 
+/** Refresh only a proven non-ancestor, never incomplete or failed git evidence. */
+export function pinManifestRevisionRefresh(shallow: boolean, ancestryStatus: number | null): boolean {
+  if (shallow) throw new Error('--refresh-revision requires complete git history; fetch --unshallow first');
+  if (ancestryStatus !== 0 && ancestryStatus !== 1) throw new Error('Cannot verify pin manifest revision ancestry');
+  return ancestryStatus === 1;
+}
+
 /**
  * `revision` cannot reference the commit that carries this very file (a commit cannot embed its own
  * hash), so it only advances when the meaningful content actually changes; otherwise the previous
  * commit's file is reproduced byte-for-byte, which is what lets `git diff --exit-code` catch drift
- * without also flagging every unrelated commit.
+ * without also flagging every unrelated commit. An explicit ancestry repair can refresh a squash-orphaned revision.
  */
 export function buildPinManifest(
   input: { pins: PinManifestPins; corpusHashes: Record<string, string>; fixtureIds: string[] },
   current: PinManifest | null,
   revisionIfChanged: string,
+  refreshRevision = false,
 ): PinManifest {
   const content: PinManifestContent = {
     schemaVersion: 1,
@@ -37,7 +45,7 @@ export function buildPinManifest(
     fixtureIds: [...input.fixtureIds].sort(),
   };
   const unchanged = current !== null && contentEqual(current, content);
-  const revision = unchanged ? current!.revision : revisionIfChanged;
+  const revision = unchanged && !refreshRevision ? current!.revision : revisionIfChanged;
   return { schemaVersion: content.schemaVersion, revision, pins: content.pins, corpusHashes: content.corpusHashes, fixtureIds: content.fixtureIds };
 }
 

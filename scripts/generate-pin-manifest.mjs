@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { buildPinManifest, mergePinSources, packPinEntries } from '../benchmarks/lib/pin-manifest.ts';
+import { buildPinManifest, mergePinSources, packPinEntries, pinManifestRevisionRefresh } from '../benchmarks/lib/pin-manifest.ts';
 import { loadPacks } from '../benchmarks/lib/adversarial-packs.ts';
 
 const root = new URL('../', import.meta.url);
@@ -35,13 +35,22 @@ const currentText = await readFile(target, 'utf8').catch(error => {
 });
 const current = currentText ? JSON.parse(currentText) : null;
 const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: fileURLToPath(root), encoding: 'utf8' }).trim();
+let refreshRevision = false;
+if (process.argv.includes('--refresh-revision') && current) {
+  const git = args => execFileSync('git', args, { cwd: fileURLToPath(root), encoding: 'utf8' }).trim();
+  // A shallow checkout cannot prove an old revision is unrelated.
+  pinManifestRevisionRefresh(git(['rev-parse', '--is-shallow-repository']) !== 'false', 0);
+  git(['cat-file', '-e', `${current.revision}^{commit}`]);
+  const ancestry = spawnSync('git', ['merge-base', '--is-ancestor', current.revision, revision], { cwd: fileURLToPath(root) });
+  refreshRevision = pinManifestRevisionRefresh(false, ancestry.status);
+}
 
 // Frozen adversarial packs are pinned alongside the corpus categories (#310).
 const sources = mergePinSources(
   { corpusHashes, fixtureIds: Object.keys(assignments) },
   packPinEntries(loadPacks(fileURLToPath(root)).map(pack => pack.record)),
 );
-const manifest = buildPinManifest({ pins, ...sources }, current, revision);
+const manifest = buildPinManifest({ pins, ...sources }, current, revision, refreshRevision);
 const serialized = `${JSON.stringify(manifest, null, 2)}\n`;
 
 if (process.argv.includes('--check')) {

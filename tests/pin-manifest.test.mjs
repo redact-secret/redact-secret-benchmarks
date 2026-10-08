@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { buildPinManifest, mergePinSources, packPinEntries } from '../benchmarks/lib/pin-manifest.ts';
+import { buildPinManifest, mergePinSources, packPinEntries, pinManifestRevisionRefresh } from '../benchmarks/lib/pin-manifest.ts';
 import { loadPacks } from '../benchmarks/lib/adversarial-packs.ts';
 
 const read = async path => JSON.parse(await readFile(new URL(`../${path}`, import.meta.url), 'utf8'));
@@ -23,6 +23,20 @@ test('manifest bumps the revision when a pin value drifts', () => {
   const manifest = buildPinManifest({ pins: { a: 2 }, corpusHashes: { x: 'h1' }, fixtureIds: ['a--1'] }, current, 'new-rev');
   assert.equal(manifest.revision, 'new-rev');
   assert.deepEqual(manifest.pins, { a: 2 });
+});
+
+test('an explicit squash ancestry repair changes only the revision', () => {
+  const current = { schemaVersion: 1, revision: 'orphan', pins: { a: 1 }, corpusHashes: { x: 'h1' }, fixtureIds: ['a--1'] };
+  const manifest = buildPinManifest(current, current, 'ancestor', true);
+  assert.deepEqual(manifest, { ...current, revision: 'ancestor' });
+  assert.deepEqual(buildPinManifest(current, current, 'ancestor'), current);
+});
+
+test('revision refresh requires complete history and proven unrelated ancestry', () => {
+  assert.equal(pinManifestRevisionRefresh(false, 0), false);
+  assert.equal(pinManifestRevisionRefresh(false, 1), true);
+  assert.throws(() => pinManifestRevisionRefresh(true, 1), /complete git history/);
+  for (const status of [null, 128]) assert.throws(() => pinManifestRevisionRefresh(false, status), /Cannot verify/);
 });
 
 test('manifest bumps the revision when a corpus hash drifts', () => {

@@ -17,7 +17,7 @@ test('a change to PII migration tooling or data skips the legacy credential meas
   for (const file of ['scripts/replay-pii-populations.mjs', 'benchmarks/pii-authority.json', 'benchmarks/pii-eval-migration.json', 'benchmarks/pii-eval-population-dual-run/report.json',
     'scripts/check-pii-authority.mjs', 'benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs', 'scripts/lib/pii-population-conversion.mjs',
     'scripts/run-pii-candidate-comparison.mjs', 'scripts/record-pii-candidate-comparison.mjs',
-    'scripts/preflight-pii-evidence.mjs', 'scripts/run-pii-evidence-comparison.mjs', 'scripts/lib/pii-evidence-contract.mjs',
+    'scripts/lib/pii-evidence-adoption-apply.mjs', 'scripts/preflight-pii-evidence.mjs', 'scripts/run-pii-evidence-comparison.mjs', 'scripts/lib/pii-evidence-contract.mjs',
     'scripts/prepare-pii-evidence-adoption.mjs', 'scripts/pii-evidence-publication.mjs', 'scripts/pii-evidence-publication.d.mts', 'benchmarks/pii-evidence/snapshot-pin.json',
     'benchmarks/pii-evidence-comparison/plan.json', 'benchmarks/pii-population-policy.json', 'benchmarks/evaluation/domains/pii/evidence-comparison.mjs',
     'benchmarks/pii-candidate-comparison/receipt.json', 'benchmarks/evaluation/domains/pii/candidate-comparison.mjs']) {

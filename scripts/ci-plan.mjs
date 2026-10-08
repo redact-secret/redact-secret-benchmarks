@@ -44,7 +44,7 @@ const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.js
 export const PII_MIGRATION = [
   /^scripts\/pii-evidence-publication\.d\.mts$/,
   /^scripts\/(preflight-pii-evidence|pii-evidence-comparison-plan|run-pii-evidence-comparison|record-pii-evidence-comparison|fetch-pii-evidence-inputs|check-pii-evidence-dispatch|prepare-pii-evidence-adoption|pii-evidence-publication)\.mjs$/,
-  /^scripts\/lib\/pii-evidence-(contract|comparison-plan|json|adoption)\.mjs$/,
+  /^scripts\/lib\/pii-evidence-(contract|comparison-plan|json|adoption|adoption-apply)\.mjs$/,
   /^benchmarks\/(pii-evidence\/|pii-evidence-comparison\/|pii-population-policy\.json$)/,
   /^schemas\/pii-population-policy-v1\.json$/,
   /^scripts\/(adopt-pii-engine|pii-official-plan|pii-candidate-comparison-plan|run-pii-candidate-comparison|record-pii-candidate-comparison|pii-peer-observations|check-pii-comparison-dispatch|pii-scorer-basis|replay-pii-populations|run-pii-population-dual-run|convert-pii-populations|check-pii-eval-migration|fetch-pii-eval-public-synthetic|check-custodian-conformance|check-pii-authority|pii-legacy-inventory|rehearse-pii-authority-rollback|run-pii-official|record-pii-official-run)\.mjs$/,

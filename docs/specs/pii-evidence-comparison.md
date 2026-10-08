@@ -5,6 +5,26 @@ of the four historical populations. It neither changes PII authority nor qualifi
 a family. The proposed population policy remains proposed; loss-sensitive claims
 remain pending. Protected execution is zero and not operational.
 
+## Recorded first Linux comparison
+
+[Run 37829344445](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37829344445)
+completed on its first attempt at commit `836a020fe06e1c941185be95da6964f9eb0385a4`.
+The single Ubuntu job took 100 seconds including preparation and cleanup; measurement and
+scanner-free replay collection took 2,453 ms. Both products used 139 variants,
+two scanner replays and two additional scanner-free accounting replays.
+The 11 uploaded files and their GitHub provenance are retained here after
+strict archive, byte and semantic verification. Protected executions were zero.
+
+All 139 paired public outcomes were unchanged. Five metric values are available
+and five remain withheld: two have insufficient evidence and three have zero
+denominators. Both products record sensitive-miss 18/18, type-miss 20/20,
+wrong-family 0/20 and wrong-jurisdiction 0/8; measurable-share is 39/110.
+These are separate metric populations, never summed. Their normalized PII finding
+sets are empty; 98 located occurrences retain their residual and 41 rangeless
+occurrences are not measured for the output action. The historical beta.12
+record has the same input digests and finding sets. This comparison establishes
+the recorded measurement and provenance, with no support or accuracy promotion.
+
 ## Exact inputs
 
 `benchmarks/pii-evidence-comparison/plan.json` binds the released evidence snapshot,

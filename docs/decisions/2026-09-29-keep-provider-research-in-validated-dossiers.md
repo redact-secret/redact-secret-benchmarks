@@ -8,6 +8,8 @@ decided_at: 2026-09-29
 
 # Keep provider research in schema-validated dossiers in this repository
 
+> Amended 2026-10-08 (#582, `2026-10-08-own-canonical-research-in-credential-evidence-and-keep-benchmark-dossiers-as-legacy-presentation.md`): canonical public research is credential-evidence's; these dossiers stay as validated legacy and presentation records with a frozen vocabulary, and their "living index" role for new research passes to credential-evidence.
+
 ## Context
 
 Provider and family research was opened as issues in either repository,

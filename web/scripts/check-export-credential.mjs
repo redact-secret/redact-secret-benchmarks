@@ -288,7 +288,7 @@ if (!view) {
     }
     const { identity, ...shared } = file.shared;
     if (identity !== `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`) fail(`${where}: records identity does not bind its metadata and run payload`);
-    if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: the official run records no rule or action per range, and the records file must say so`);
+    if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: missing historical rule/action fields must have explicit unavailable defaults`);
     if (differs) fail(`${where}: ${differs} records differ from the view's expected spans, paths, levels, rows or the case records' titles`);
   }
 

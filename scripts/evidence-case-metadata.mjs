@@ -13,12 +13,13 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   EVIDENCE_CASE_METADATA_FILE, EVIDENCE_REPOSITORY, FIXTURE_DESCRIPTIONS_FILE, MATERIALIZED_MANIFEST_ASSET, RECORDS_BUNDLE_ASSET,
   deriveEvidenceCaseMetadata, evidenceCaseMetadataProblems, fixtureDescriptionsProblems, serializeCaseMetadata,
 } from '../benchmarks/lib/fixture-metadata.ts';
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = rel => JSON.parse(readFileSync(path.join(root, rel), 'utf8'));
 const args = process.argv.slice(2);
 const option = name => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };

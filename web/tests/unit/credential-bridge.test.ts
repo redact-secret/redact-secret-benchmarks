@@ -8,7 +8,7 @@ import { describe, expect, test } from 'vitest';
 import { REPORT_ROLE, bridgeQualificationView, reportPopulation, rowOf, withCaseText, type Bridged } from '../../services/credential-bridge';
 import { resolveRunState, resolvePipelineStamp } from '../../resolvers/run';
 import { syntheticView } from './qualification-data';
-import type { CaseRow } from '../../services/qualification';
+import { qualificationShapeProblem, type CaseRow } from '../../services/qualification';
 
 const taxonomy: any = {
   providers: [{ id: 'p', name: 'Provider P' }],
@@ -184,6 +184,20 @@ describe('the official run behind the figures (#658)', () => {
 test('the bridge carries only reported ranges and recorded actions from an additive view (#595)', () => {
   const reported = [{ start: 1, end: 4, action: 'warn' as const }];
   expect(rowOf({ scanner: 's', measurement: 'pending', observed: 1, reported })).toEqual({ observed: 1, actual: reported });
+});
+
+test('unsafe additive reported fields are refused before bridge/export (#595)', () => {
+  for (const finding of [
+    ...['value', 'raw', 'family', 'rule'].map(key => ({ start: 1, end: 4, [key]: 'injected' })),
+    { start: 1, end: 4, action: 'injected' }, { start: 4, end: 1 }, { start: 0.5, end: 4 },
+  ]) {
+    const view = syntheticView();
+    view.populations[0].cases[0].results[0].reported = [finding] as any;
+    expect(qualificationShapeProblem(view)).toMatch(/unsafe reported/);
+  }
+  const view = syntheticView();
+  view.populations[0].cases[0].results[0].reported = [];
+  expect(qualificationShapeProblem(view)).toMatch(/unsafe reported/);
 });
 
 describe('rowOf', () => {

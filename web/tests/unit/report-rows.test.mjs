@@ -356,6 +356,7 @@ test('a reported range\'s rule and action are stated as not recorded, with the s
 test('recorded actions survive packing and display without a rule inferred from expectations (#595)', () => {
   const row = { actual: [{ start: 2, end: 10, action: 'warn' }], spanOutcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 0 };
   assert.deepEqual(unpackRow(packRow(row)), row);
+  assert.ok(!packRow({ actual: [{ start: 2, end: 10, action: 'injected-sensitive-text' }] }).includes('injected'), 'the serializer has its own action allowlist');
   const page = suiteOf([{ entry: demoEntry(), built: built({ expectedAction: 'redact' }) }], [scanner('redact-secret', 'redact-secret', [['s--demo', row]])], { reported: { rule: 'unavailable', action: 'unavailable', reason: 'Historical.' } }).page('demo');
   assert.equal(page.facts.find(f => f.term === 'Reported range 1 action').value, 'warn');
   assert.equal(page.facts.find(f => f.term === 'Scanner rule').notRecorded, true);
@@ -372,6 +373,8 @@ test('a records file is used only by the page of its own suite and build (#595)'
   assert.equal(isRecordsOfBuild({ ...file, records: [file.records[0], file.records[0]] }, { ...expected, fixtureCount: 2 }), false, 'a duplicated id');
   assert.equal(isRecordsOfBuild({ records: [] }, expected), false, 'not a records file');
   assert.equal(isRecordsOfBuild({ ...file, records: [null] }, expected), false, 'malformed record does not throw');
+  assert.equal(isRecordsOfBuild({ ...file, records: [{ id: 'demo' }] }, expected), false, 'an id without renderable fields is refused');
+  assert.equal(isRecordsOfBuild({ ...file, records: [{ ...file.records[0], title: 9999 }] }, expected), false, 'out of bounds dictionary index');
   assert.equal(isSuiteRecordsFile(file), true, 'the legacy link lookup (#594) keeps its own shape check');
 });
 

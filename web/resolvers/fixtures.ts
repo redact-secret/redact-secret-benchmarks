@@ -112,7 +112,7 @@ export function packRow(row: RowResult): string {
   return [
     row.spanOutcomes ? row.spanOutcomes.map(o => OUTCOME_LETTER[o]).join('') || '=' : '-',
     row.flagged == null ? '-' : row.flagged ? '1' : '0',
-    (row.actual ?? []).map(r => `${r.start}-${r.end}${r.action ? `:${r.action}` : ''}`).join(','),
+    (row.actual ?? []).map(r => `${r.start}-${r.end}${['redact', 'warn', 'block', 'allow'].includes(r.action ?? '') ? `:${r.action}` : ''}`).join(','),
     row.leakedBytes ?? '', row.collateralBytes ?? '', row.findings ?? '', ...(row.actual === undefined && row.observed !== undefined ? [row.observed] : []),
   ].join('|');
 }
@@ -216,7 +216,21 @@ export interface SuiteRecordsFile { records: FixtureRecord[]; shared: SuiteShare
  */
 export const isRecordsOfBuild = (value: unknown, expected: { suite: string; fixtureCount: number; identity?: string }): value is SuiteRecordsFile =>
   isSuiteRecordsFile(value) && value.shared.category === expected.suite && value.records.length === expected.fixtureCount
-  && (expected.identity === undefined || value.shared.identity === expected.identity) && value.records.every(r => r !== null && typeof r === 'object' && typeof r.id === 'string')
+  && (expected.identity === undefined || value.shared.identity === expected.identity) && !!value.shared.suite && typeof value.shared.suite.title === 'string'
+  && ['detectorTitles', 'familyNames', 'providerNames'].every(k => !!value.shared[k as 'familyNames'] && typeof value.shared[k as 'familyNames'] === 'object')
+  && Array.isArray(value.shared.followUps)
+  && value.shared.assessments.every(a => !!a && Array.isArray(a.sources))
+  && value.shared.scanners.every(s => !!s && typeof s.id === 'string' && typeof s.name === 'string' && Array.isArray(s.observed))
+  && value.shared.texts.every(t => typeof t === 'string')
+  && value.records.every(r => r !== null && typeof r === 'object' && typeof r.id === 'string'
+    && typeof r.path === 'string' && typeof r.content === 'string' && typeof r.kind === 'string' && typeof r.tier === 'string'
+    && Array.isArray(r.expected) && r.expected.every(e => !!e && Number.isSafeInteger(e.start) && Number.isSafeInteger(e.end) && e.start >= 0 && e.end > e.start)
+    && ['detectors', 'families', 'twins'].every(k => Array.isArray(r[k as 'detectors']) && r[k as 'detectors'].every(v => typeof v === 'string'))
+    && Number.isSafeInteger(r.assessment) && r.assessment >= 0 && r.assessment < value.shared.assessments.length
+    && Array.isArray(r.rows) && r.rows.length === value.shared.scanners.length && r.rows.every(v => v === null || typeof v === 'string')
+    && Array.isArray(r.scenarios) && r.scenarios.every(i => Number.isSafeInteger(i) && i >= 0 && i < value.shared.scenarios.length)
+    && Array.isArray(r.followUps) && r.followUps.every(i => Number.isSafeInteger(i) && i >= 0 && i < value.shared.followUps.length)
+    && ['group', 'axis', 'action', 'unscoped', 'milestone', 'release', 'title', 'about', 'aboutBy'].every(k => { const i = r[k as 'title']; return i === undefined || (Number.isSafeInteger(i) && i >= 0 && i < value.shared.texts.length); }))
   && new Set(value.records.map(r => r.id)).size === value.records.length;
 
 /** Shape guard for a loaded records file: the parts `resolveFixtureRecord` reads exist. */

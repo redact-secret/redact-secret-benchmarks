@@ -52,7 +52,7 @@ export async function runBasetenArrival(options: Record<string, string>) {
   if (qualifiedFiles.length !== 17) throw new Error('incomplete-qualification-inventory');
   for (const row of qualifiedFiles) {
     const role = row.artifact === 'node-addon-aarch64-apple-darwin' ? 'node' : 'wasm';
-    const bytes = execFileSync('tar', ['-xOf', options[role], `package/${row.file}`]);
+    const bytes = execFileSync('tar', ['-xOf', options[role], `package/${row.file}`], { maxBuffer: 16 * 1024 * 1024 });
     if (digest(bytes) !== row.sha256) throw new Error('qualification-component-mismatch');
   }
   const fixtures = validateBasetenArrival(buildBasetenArrival()) as Fixture[];

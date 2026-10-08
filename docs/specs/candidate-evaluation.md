@@ -6,15 +6,19 @@ scanner adapter, or qualification pins. It is a development/revalidation
 workflow and emits `reportType: "candidate"`; it is not Evaluation Engine
 qualification and never implies whole-suite support.
 
-Most callers never need the raw command below directly — it is what the two
-wrappers in front of it call for you:
+Most callers can use the orchestration below instead of supplying raw
+artifact paths:
 
 - **Already have the product repo checked out at the commit to measure?** Run
-  `./scripts/measure-candidate.sh` from the product repo (or `npm run
-  benchmark:candidate` if you want to drive it yourself). It builds the
+  `npm run benchmark:candidate -- --benchmark-ref <full-40-character-sha>`
+  from the product repo. The benchmark revision is required; choose the
+  exact commit you intend to measure. It builds the
   façade/N-API/Wasm tarballs, computes their hashes, runs `eval:candidate`
   against this repo, and runs `eval:validate` on the result — one command, no
-  manual tarball paths or sha256s.
+  manual tarball paths or sha256s. An existing benchmarks clone can be supplied
+  with `--benchmark-repo /absolute/path/to/redact-secret-benchmarks`; otherwise
+  the command fetches a temporary checkout. It installs the measured revision's
+  dependencies and removes its temporary worktrees when finished.
 - **Measuring a commit you don't have checked out** (a release tag, a PR tip,
   anything not your active product checkout)? Use this repo's
   [`release-regression-check`](../../.agents/skills/release-regression-check/SKILL.md)
@@ -22,7 +26,7 @@ wrappers in front of it call for you:
   `benchmark:candidate` orchestration, and reports a fixture-level
   before/after regression view.
 
-Reach for `eval:candidate` directly only when neither wrapper fits — for
+Reach for `eval:candidate` directly only when neither route fits, for
 example, tarballs built or supplied outside this repo's tooling, or a custom
 `--ruleset`.
 

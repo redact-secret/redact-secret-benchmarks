@@ -1,0 +1,171 @@
+{
+ "schema": "pii-candidate-comparison-plan/1",
+ "supportClaims": false,
+ "publicOnly": true,
+ "mode": "official",
+ "runClass": "public-synthetic",
+ "engineProductPin": "candidate",
+ "engine": {
+  "repository": "redact-secret/pii-eval",
+  "commit": "b1c097e40bad456e52f904f626cca00b69c45612",
+  "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+  "binarySha256": "24ccae246f23e9f9fe3f847971fac3462be7b3898e0c52ccf488ac09252ac053",
+  "sourceArchiveSha256": "de7bebc2ca12a404b9d9141cd2c4f9da439012b96bab36582e26031b71b3b77b",
+  "build": "cargo build --release --locked -p pii-eval-cli",
+  "ci": {
+   "runId": 37551091456,
+   "engineArtifactId": 11452747504,
+   "engineArtifactName": "pii-eval-engine-b1c097e40bad456e52f904f626cca00b69c45612-linux-x86_64",
+   "archiveSha256": "24620d83e34e0239bb39afa6b8b4277b6fc6f1ece2c06f0adf856e4cca4b9b52",
+   "expiresAt": "2026-11-06T00:17:21Z"
+  },
+  "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+ },
+ "protocol": {
+  "id": "pii-v1",
+  "revision": 2,
+  "artifactSchema": "1.4"
+ },
+ "scanner": {
+  "adapter": {
+   "id": "redact-secret-core-node",
+   "version": "1.0.0",
+   "normalizationVersion": 1
+  },
+  "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+  "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+  "activation": [
+   "pii:global",
+   "pii:us"
+  ]
+ },
+ "baseline": {
+  "provenance": "published-npm-lockfile",
+  "version": "0.1.0-beta.14",
+  "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+  "packages": {
+   "@redact-secret/core": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/core/-/core-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-darwin-arm64": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-ARFG6EaEZwHGOCnaPqqtlF5BljxQ6sNAA74N7QU159EvVYCEZvg8gzSeDgt0kjJdJL+vlEjT1zWov+MoZV8KMA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-arm64/-/node-darwin-arm64-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-darwin-x64": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-xAiObLUcaFjPXJ07NRt/LcfjNUKUYCwEpf9lE2v3PfXY7xnkSBop9h06rLjEziR4XjPilb2pQeuuiO3PbzBNKA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-x64/-/node-darwin-x64-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-arm64-gnu": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-v1yP2VwFyP0o9qV32jECFId9jTvRjGTFyDpwn3wMCix+9iST7fSDhakEaEKJMifBCx/tfMy/1mXltF/pKPYdDA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-gnu/-/node-linux-arm64-gnu-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-arm64-musl": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-R8Fp1QHyVIOH+qGKcfLZbmEP4gG3sLpIKkmuzfx1sjN23WEvUz3O4UYL9DXJpXYZPG4QWPZuxSewpmGYuw6f2A==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-musl/-/node-linux-arm64-musl-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-x64-gnu": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-gnu/-/node-linux-x64-gnu-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-x64-musl": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-DOvm796wqFx9aWL49ZCAmEaHymqxVMHbJudnmSxtrPY2kdWeTR4Hy+fTKZ8lODCTsbWfJoeMK6W55F2TcNC4HA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-musl/-/node-linux-x64-musl-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-win32-arm64-msvc": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-OoNSo5+AyT4s2Za9lmKhvp7qcCDOVd/DluuB02n7gmpg2Wf1TfSZCkDwvgK1RWUw92onghrKXKVWgDjMjZL2zw==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-arm64-msvc/-/node-win32-arm64-msvc-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-win32-x64-msvc": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-L3y7yMRCtkZIfQkx44UdRLbPPGqN8xyO+RCYo903IMeaVmoBV+7wOS6bCghyzvj57D+EKDl4ORJq952dsFvcpA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-x64-msvc/-/node-win32-x64-msvc-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/wasm": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/wasm/-/wasm-0.1.0-beta.14.tgz"
+   }
+  }
+ },
+ "candidate": {
+  "provenance": "qualified-unpublished-artifacts",
+  "version": "0.1.0-beta.14",
+  "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
+  "qualificationRunId": "37772337995",
+  "inventorySha256": "ce4e59de91d00514f29a0035333912d2ec470a8d56a1a0ecbb12fbcc9fd1cb74",
+  "coreTarballSha256": "42c0447c124ace12c128768b30e33d83b4c58b8af2d0d8502c6d42f795c62c35",
+  "piiWasmTarballSha256": "77af5822255f28f13b4fc6e2de3ce393abdfe6ce205e7d2e61cb858808c4c037",
+  "nativeLinuxTarballSha256": "cc9bda9802092fdc60d1458657f27f04d74f4789b64f31685a3abb721a43ea72",
+  "localNativeDarwinTarballSha256": "1e165fe460548f6df664870d647f8c077b331e4e4da453f76b3895d82bcc91b9",
+  "piiWasmBinarySha256": "f52314fa95a51a064a42d0e03458ab8575dd32b4c42398191dc015e6983201e3"
+ },
+ "populations": [
+  {
+   "view": "oracle-plan",
+   "populationId": "b11-population-v2-oracle-plan",
+   "snapshotDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+   "rosterDigest": "1d4fba6c02d9686d63f9a3e74ba007013471be1407f88227e0088615bc91e48c",
+   "memberships": 146,
+   "located": 95,
+   "unresolvedRange": 51
+  },
+  {
+   "view": "qualification-plan",
+   "populationId": "b11-population-v2-qualification-plan",
+   "snapshotDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+   "rosterDigest": "f5617bbf64d76957254177b48ac800309eb489599dd16f2a0e6180813616e293",
+   "memberships": 266,
+   "located": 230,
+   "unresolvedRange": 36
+  },
+  {
+   "view": "diagnostic-balanced",
+   "populationId": "b11-population-v2-diagnostic-balanced",
+   "snapshotDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+   "rosterDigest": "929a8c248d4ea1a7170d0362a24f30982720a19aedd9d9531ea61e720d930b15",
+   "memberships": 477,
+   "located": 428,
+   "unresolvedRange": 49
+  },
+  {
+   "view": "benign-heavy-stress",
+   "populationId": "b11-population-v2-benign-heavy-stress",
+   "snapshotDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+   "rosterDigest": "afed4d8fced9b560598640e1e3f49ae18db0ff0a9a5cdb03ca52a5537c5e757b",
+   "memberships": 299,
+   "located": 279,
+   "unresolvedRange": 20
+  }
+ ],
+ "execution": {
+  "sides": 2,
+  "populationsPerSide": 4,
+  "runs": 8,
+  "replaysPerRun": 2,
+  "protectedRuns": 0,
+  "canonicalPlatform": "linux-x64",
+  "localDarwin": "exploratory only; never compared with a canonical Linux run",
+  "localDarwinBinarySha256": "3bb255edc4775cfd7f92ab937f126c478d8aaa9c2437ea88c59236202e98d4d9"
+ },
+ "qualification": {
+  "state": "not-qualified",
+  "activation": "installed-product configuration capture only",
+  "validator": "product-validator-primitive-seam-unavailable",
+  "protected": "not-operational",
+  "profileCost": "not-measured-for-current-candidate"
+ },
+ "dispatch": {
+  "authorised": true,
+  "costDecision": "benchmarks/pii-candidate-comparison/cost-decision.json",
+  "costDecisionSha256": "272e23f07e70a8d673f46ccb4452eb1aeb297269684a9aeece21e4d4df4df05d"
+ }
+}

@@ -62,7 +62,7 @@
    "mixed-split": {
     "disposition": "split-then-decide",
     "files": 15,
-    "externalCallerFiles": 49
+    "externalCallerFiles": 50
    },
    "benchmark-scorer": {
     "disposition": "retain-until-criterion",
@@ -1458,15 +1458,16 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 26,
+    "total": 27,
     "withinCandidates": 2,
     "testCallers": 6,
-    "external": 18,
+    "external": 19,
     "externalByClass": {
-     "benchmarks": 5,
+     "benchmarks": 6,
      "script": 13
     },
     "externalFiles": [
+     "benchmarks/baseten-arrival.ts (benchmarks, import+path)",
      "benchmarks/blind.ts (benchmarks, import+path)",
      "benchmarks/candidate.ts (benchmarks, import+path)",
      "benchmarks/classify-support.ts (benchmarks, import+path)",

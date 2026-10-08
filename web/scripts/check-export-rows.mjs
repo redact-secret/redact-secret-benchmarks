@@ -389,8 +389,8 @@ for (const c of categories) {
     const where = `family page ${family.id}`;
     const research = entries.get(family.id);
     if (!research) { fail(`${where}: no dossier entry`); continue; }
-    // The research record is the dossier's own frontmatter.
-    const record = `Research ${VERDICT[research.verdict]} Evidence level ${research.tier ? `${research.tier} · ${TIER[research.tier]}` : 'Not recorded'} Researched ${research.researchedAt ?? 'Not recorded'}`;
+    // Frozen dossier presentation fields are labelled apart from canonical research. Values still come from the dossier's own frontmatter.
+    const record = `Dossier verdict ${VERDICT[research.verdict]} Dossier evidence level ${research.tier ? `${research.tier} · ${TIER[research.tier]}` : 'Not recorded'} Dossier researched ${research.researchedAt ?? 'Not recorded'}`;
     if (!page.includes(record)) fail(`${where} does not state its research record "${record}"`);
     for (const source of research.sources) if (!page.includes(new URL(source).host)) fail(`${where} does not list the dossier source ${source}`);
     for (const ref of research.issues) if (!page.includes(ref)) fail(`${where} does not list the research issue ${ref}`);

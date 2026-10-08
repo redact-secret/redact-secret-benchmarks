@@ -161,6 +161,8 @@ function loadPiiEvidence(): Promise<PiiEvidence> {
     if (!binding) return publicOnly('No reviewed PII protected binding is registered.');
     try {
       const evidence = await loadPiiProtectedSupportEvidence(REPO_ROOT, binding);
+      // The frozen entry commitment uses JSON key order; a bundler may reorder a JSON import.
+      evidence.ledger = await readJsonIfPresent<NonNullable<typeof evidence.ledger>>('benchmarks/accepted-pii-profile-cost.json') ?? [];
       const route = validatePiiProtectedSupportBinding(binding, evidence);
       const matrix = validatePiiSupportMatrixV2(buildPiiSupportMatrixV2({ protectedRoute: route }), { protectedRoute: route });
       const caseCount = new Map<string, number>(evidence.runs.map(run => [run.aggregate.family as string, run.aggregate.caseCount as number]));

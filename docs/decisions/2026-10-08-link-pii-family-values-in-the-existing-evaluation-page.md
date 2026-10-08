@@ -35,6 +35,11 @@ protected binding cannot expose even a partial historical qualification report.
 New public baseline/candidate evidence is a separate sidecar. Reading it changes
 neither PII authority nor a qualification state. Missing, mismatched or withheld
 evidence is stated, never inferred from historical reports or runtime previews.
+The page displays paired family quantities. Language and control-class strata
+remain inspectable through links to both exact public artifacts, and the strict
+consumer recomputes every stratum. Repeating every stratum inline exceeded the
+1.5 MB export budget; the source links preserve access without expanding the
+initial page.
 
 ## Consequences
 

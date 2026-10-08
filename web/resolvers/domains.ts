@@ -386,16 +386,22 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       for (const population of comparison.populations) {
         for (const family of new Set(population.metrics.map(metric => metric.family))) {
           const anchor = piiFamilyAnchor('pii-v1-comparison', population.population.populationId, 'redact-secret-core', population.view, family);
+          const familyMetrics = population.metrics.filter(metric => metric.family === family);
+          const strata = new Set(familyMetrics.filter(metric => metric.stratum !== 'family').map(metric => metric.stratum));
           status.push({ title: `${family} · ${population.view} · current public comparison`,
             navigation: [{ label: `${family} · ${population.view} · baseline/candidate`, href: familyHref(anchor) }],
             rows: [{ id: anchor, anchor, label: 'Same authored population', status: 'info', statusWord: comparison.mode === 'official' ? 'Official' : 'Exploratory',
               value: `${int(population.memberships)} authored memberships`,
               detail: `${population.population.populationId}; SHA-256 ${identityText(population.population.populationDigest)}. Counts remain separate for this family and stratum. Replays add no samples; no threshold or verdict.` },
-            ...population.metrics.filter(metric => metric.family === family).map(metric => ({ id: `${anchor}:${metric.key}`,
+            ...familyMetrics.filter(metric => metric.stratum === 'family').map(metric => ({ id: `${anchor}:${metric.key}`,
               label: `${quantityOf('pii-v1', metric.metricId).name} · ${metric.stratum} (pii-v1:${metric.metricId})`,
               status: metric.delta === null ? 'not-measured' as const : 'info' as const, statusWord: metric.delta === null ? 'Delta withheld' : 'Recorded',
               detail: `Baseline ${comparisonMetricText(metric.baseline)}. Candidate ${comparisonMetricText(metric.candidate)}. ${metric.delta === null ? 'Delta unavailable: one or both quantities are withheld or not measured' : `Candidate minus baseline point delta ${Number(metric.delta.toFixed(6))}`}. No pooled total or qualification verdict.`,
-            }))],
+            })),
+            ...(['baseline', 'candidate'] as const).map(side => ({ id: `${anchor}:${side}:strata`, label: `${side} language and control-class strata`,
+              status: 'info' as const, statusWord: 'Recorded',
+              detail: `${int(strata.size)} separate strata for this family are recorded in the full ${population.view} artifact. The page displays family quantities; per-stratum numerators, denominators and withheld reasons remain in these exact artifacts. The strict paired consumer checks every stratum.`,
+              link: { label: `${side} full public artifact`, href: blob(`benchmarks/pii-candidate-comparison/${side}.${population.view}.public-synthetic-artifact.json`), external: true } }))],
           });
         }
       }

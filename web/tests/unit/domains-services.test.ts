@@ -57,6 +57,16 @@ describe('PII evaluation', () => {
     if (pii.state === 'not-recorded') expect(pii.reason).toMatch(/did not validate/);
   });
 
+  test('a reordered ledger retains its values but cannot replace the frozen entry serialization', async () => {
+    const ledger = JSON.parse(readFileSync(`${REAL}/benchmarks/accepted-pii-profile-cost.json`, 'utf8'));
+    const reordered = ledger.map((entry: Record<string, unknown>) => Object.fromEntries(Object.entries(entry).reverse()));
+    expect(reordered).toEqual(ledger);
+    const rejected = await (await domains(overlay({ 'benchmarks/accepted-pii-profile-cost.json': JSON.stringify(reordered) }))).loadPiiEvaluation();
+    expect(rejected).toMatchObject({ state: 'not-recorded', reason: expect.stringContaining('cost-acceptance-ledger-mismatch') });
+    const exact = await (await domains()).loadPiiEvaluation();
+    expect(exact.state).toBe('recorded');
+  });
+
   test('a missing evidence file is not recorded, with the reason', async () => {
     const dir = piiCurrentProtectedRoute()!.evidenceDirectory;
     const pii = await (await domains(overlay({ [`${dir}/pii-beta11-protected-disposition-v2.json`]: null }))).loadPiiEvaluation();

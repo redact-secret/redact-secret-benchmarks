@@ -382,7 +382,9 @@ test('current public paired quantities preserve both denominators, withheld delt
     validator: { state: 'not-measured', reason: 'product-validator-primitive-seam-unavailable' },
     populations: [{ view: 'oracle-plan', memberships: 7, population: { populationId: 'synthetic-current', populationDigest: 'd'.repeat(64) },
       metrics: [{ key: 'email/family/sensitive-miss-rate', family: 'pii:global:email', stratum: 'family', metricId: 'sensitive-miss-rate',
-        baseline: metric(4, 1), candidate: metric(3, 1, true), delta: null }] }] };
+        baseline: metric(4, 1), candidate: metric(3, 1, true), delta: null },
+        { key: 'email/language/en/sensitive-miss-rate', family: 'pii:global:email', stratum: 'language:en', metricId: 'sensitive-miss-rate',
+          baseline: metric(2, 0), candidate: metric(2, 0), delta: 0 }] }] };
   const value = pii({ candidateComparison: comparison });
   const view = resolvePiiView(value);
   const rows = rowsOf(view);
@@ -395,6 +397,10 @@ test('current public paired quantities preserve both denominators, withheld delt
   expect(group.rows[1].detail).toContain('Candidate 1/3 effective N');
   expect(group.rows[1].detail).toContain('withheld (insufficient-evidence)');
   expect(group.rows[1].detail).toContain('No pooled total or qualification verdict');
+  expect(group.rows.some(row => row.label.includes('language:en'))).toBe(false);
+  expect(group.rows[2].detail).toContain('1 separate strata');
+  expect(group.rows[2].link.href).toContain('baseline.oracle-plan.public-synthetic-artifact.json');
+  expect(group.rows[3].link.href).toContain('candidate.oracle-plan.public-synthetic-artifact.json');
   expect(rows.find(row => row.id === 'current-public:validator').status).toBe('not-measured');
   expect(rows.find(row => row.id === 'current-public:qualification').statusWord).toBe('Not qualified');
   const officialRows = rowsOf(resolvePiiView(pii({ candidateComparison: { ...comparison, mode: 'official' } })));

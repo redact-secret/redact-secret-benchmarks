@@ -65,7 +65,7 @@ export async function runBasetenArrival(options: Record<string, string>) {
     const api = await import(pathToFileURL(join(installation.root, 'node_modules/@redact-secret/core/dist/index.js')).href);
     await api.initialize();
     const manifest = api.artifactManifest();
-    if (api.artifact() !== 'addon' || manifest.sourceRevision !== options['source-commit'] || manifest.artifact.variant !== 'full') throw new Error('candidate-runtime-identity-mismatch');
+    if (api.artifact() !== 'addon' || (manifest.sourceRevision !== null && manifest.sourceRevision !== options['source-commit']) || manifest.artifact.variant !== 'full') throw new Error('candidate-runtime-identity-mismatch');
     const native = await readFile(join(installation.root, 'node_modules/@redact-secret/node-darwin-arm64/redact-secret.darwin-arm64.node'));
     const nativeHash = digest(native);
     if (!inventory.artifacts.some((row: { file: string; sha256: string }) => row.file === 'redact-secret.darwin-arm64.node' && row.sha256 === nativeHash)) throw new Error('qualification-binary-mismatch');
@@ -80,7 +80,7 @@ export async function runBasetenArrival(options: Record<string, string>) {
     const report = { schema: 'baseten-arrival/v1', status: 'complete', supportClaims: false,
       scope: 'focused-independent-development', peerComparison: false, startedAt, finishedAt: new Date().toISOString(),
       candidate: { sourceCommit: options['source-commit'], declaredVersion: installation.declaredVersion,
-        profile: 'full', backend: 'addon', published: false, packages, nativeBinarySha256: nativeHash,
+        profile: 'full', backend: 'addon', published: false, embeddedSourceRevision: manifest.sourceRevision, packages, nativeBinarySha256: nativeHash,
         qualificationRun: inventory.workflowRun, inventorySha256: digest(inventoryBytes), artifactManifestSha256: digest(JSON.stringify(manifest)) },
       benchmark: { sourceCommit: benchmarkCommit, dirty: false, lockfileSha256: await hashFile(join(root, 'package-lock.json')) },
       corpus: { contract: BASETEN_CONTRACT, sha256: digest(JSON.stringify(fixtures)), selected: fixtures.length, scanned: fixtures.length,

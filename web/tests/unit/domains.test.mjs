@@ -342,13 +342,16 @@ test('family anchors distinguish scanners and survive value changes; every row u
 test('historical b11 quantities keep their own denominator and threshold and never qualify the public measurement', () => {
   const metric = { id: 'context-discrimination-rate', numerator: 1, denominator: 2, threshold: 0.5, direction: 'lower', status: 'not-met',
     value: { point: 0.5, bound: 0.1, n: 2, direction: 'lower' } };
-  const value = pii({ families: [family('pii:global:email', { views: { ...views, 'oracle-plan': { ...views['oracle-plan'], metrics: [metric, { ...metric, id: 'range-collateral-rate', denominator: 0, value: null, status: 'not-applicable' }] } } })] });
+  const value = pii({ families: [family('pii:global:email', { views: { ...views, 'oracle-plan': { ...views['oracle-plan'], metrics: [metric, { ...metric, id: 'range-collateral-rate', denominator: 0, value: null, status: 'not-applicable' }, { ...metric, value: 'insufficient-evidence', status: 'insufficient-denominator' }] } } })] });
   const group = resolvePiiView(value).status.groups.find(group => group.title.includes('historical benchmark'));
   expect(group.rows[1].label).toContain('b11:context-discrimination-rate');
   expect(group.rows[1].detail).toContain('twin pairs');
   expect(group.rows[1].detail).toContain('Historical b11 threshold 0.5');
   expect(group.rows[2]).toMatchObject({ status: 'not-measured', statusWord: 'not-applicable' });
   expect(group.rows[2].detail).toContain('records no interval');
+  expect(group.rows[3]).toMatchObject({ status: 'not-measured', statusWord: 'insufficient-denominator' });
+  expect(group.rows[3].detail).toContain('insufficient-evidence');
+  expect(group.rows[3].detail).not.toContain('undefined');
   expect(group.rows[0].detail).toContain('not the current public pii-v1 measurement');
   const without = resolvePiiView({ ...value, state: 'public-recorded', piiEvalMeasurement: null, protectedReason: 'Unbound' });
   expect(without.status.groups.some(group => group.title.includes('historical benchmark'))).toBe(false);
@@ -394,5 +397,8 @@ test('current public paired quantities preserve both denominators, withheld delt
   expect(group.rows[1].detail).toContain('No pooled total or qualification verdict');
   expect(rows.find(row => row.id === 'current-public:validator').status).toBe('not-measured');
   expect(rows.find(row => row.id === 'current-public:qualification').statusWord).toBe('Not qualified');
+  const officialRows = rowsOf(resolvePiiView(pii({ candidateComparison: { ...comparison, mode: 'official' } })));
+  expect(officialRows.find(row => row.id === 'current-public:baseline').statusWord).toBe('Official');
+  expect(officialRows.find(row => row.id === 'current-public:qualification').statusWord).toBe('Not qualified');
   expect(value.distribution).toEqual({ pending: 1, provisional: 1, stable: 0, unsupported: 0 });
 });

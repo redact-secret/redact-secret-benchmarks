@@ -1,3 +1,11 @@
+---
+decision_id: decision-link-pii-family-values-in-the-existing-evaluation-page
+status: accepted
+scope: benchmarks
+title: Link PII family values in the existing evaluation page
+decided_at: 2026-10-08
+---
+
 # Link PII family values in the existing evaluation page
 
 Status: accepted implementation decision for #618.

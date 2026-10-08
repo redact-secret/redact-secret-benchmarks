@@ -347,9 +347,9 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
           detail: `Source commit ${identityText(recorded!.core.commit)}. Bound report ${recorded!.route.report ?? recorded!.route.record}; SHA-256 ${identityText(recorded!.route.reportCommitment)}. These b11 case quantities belong to this historical report; they are not the current public pii-v1 measurement or a new qualification.`,
           link: { label: 'Bound historical report', href: blob(recorded!.route.report ?? recorded!.route.record), external: true } },
           ...metrics.map(metric => ({ id: `${anchor}:${metric.id}`, label: `${quantityOf('b11', metric.id).name} (b11:${metric.id})`,
-            status: metric.value ? 'info' as const : 'not-measured' as const, statusWord: metric.status,
+            status: typeof metric.value === 'object' && metric.value !== null ? 'info' as const : 'not-measured' as const, statusWord: metric.status,
             value: `${int(metric.numerator)} / ${int(metric.denominator)}`,
-            detail: `${metric.value ? `Point ${metric.value.point}, ${metric.direction} interval bound ${metric.value.bound}` : 'Not measured: the bound report records no interval'}. Historical b11 threshold ${metric.threshold}, ${metric.direction} bound. Population: ${quantityOf('b11', metric.id).denominator}. No threshold is applied to pii-v1 occurrence quantities.`,
+            detail: `${typeof metric.value === 'object' && metric.value !== null ? `Point ${metric.value.point}, ${metric.direction} interval bound ${metric.value.bound}` : metric.value === 'insufficient-evidence' ? 'Not measured: insufficient-evidence, the bound report withholds the interval' : 'Not measured: the bound report records no interval'}. Historical b11 threshold ${metric.threshold}, ${metric.direction} bound. Population: ${quantityOf('b11', metric.id).denominator}. No threshold is applied to pii-v1 occurrence quantities.`,
           }))],
       });
     }

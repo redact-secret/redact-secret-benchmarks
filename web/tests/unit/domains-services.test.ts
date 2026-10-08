@@ -34,6 +34,12 @@ describe('PII evaluation', () => {
       expect(family.id.startsWith('pii:')).toBe(true);
       expect(STATUSES).toContain(family.status);
       expect(family.views, `${family.id} has no views: the report is not bound to the matrix`).not.toBeNull();
+      for (const view of Object.values(family.views ?? {})) for (const metric of view.metrics ?? []) {
+        if (typeof metric.value === 'object' && metric.value !== null) {
+          expect(Number.isFinite(metric.value.point)).toBe(true);
+          expect(Number.isFinite(metric.value.bound)).toBe(true);
+        } else expect([null, 'insufficient-evidence']).toContain(metric.value);
+      }
     }
     expect(Object.values(pii.distribution).reduce((a, b) => a + b, 0)).toBe(pii.families.length);
     expect(pii.metrics.map(m => m.id)).toEqual([...PII_METRIC_IDS]);

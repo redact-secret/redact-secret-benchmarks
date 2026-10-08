@@ -24,4 +24,4 @@ export type PiiCandidateComparison = {
 });
 export const SIDES: string[];
 export function comparisonDigest(value: unknown): string;
-export function loadPiiCandidateComparison(input?: { plan?: unknown; receipt?: unknown; artifacts?: Array<{ side: 'baseline' | 'candidate'; view: string; text: string }> }): PiiCandidateComparison;
+export function loadPiiCandidateComparison(input?: { plan?: unknown; receipt?: unknown; record?: unknown; artifacts?: Array<{ side: 'baseline' | 'candidate'; view: string; text: string }> }): PiiCandidateComparison;

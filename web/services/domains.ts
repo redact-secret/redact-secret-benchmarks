@@ -43,7 +43,7 @@ export const PII_VIEW_IDS: PiiViewId[] = ['oracle-plan', 'qualification-plan', '
 /** The cases of one view, split by what the author expects. */
 export interface PiiQualificationMetric {
   id: string; numerator: number; denominator: number; threshold: number; direction: 'upper' | 'lower'; status: string;
-  value: { point: number; bound: number; n: number; direction: 'upper' | 'lower' } | null;
+  value: { point: number; bound: number; n: number; direction: 'upper' | 'lower' } | 'insufficient-evidence' | null;
 }
 export interface PiiViewCounts { cases: number; sensitive: number; nonSensitive: number; notEstablished: number; metrics?: PiiQualificationMetric[] }
 
@@ -108,7 +108,8 @@ function viewsOf(report: { artifactCommitment?: string; families?: RawReportFami
     if (!view) return null;
     out[id] = { cases: view.cases, sensitive: view.sensitive.cases, nonSensitive: view.nonSensitive.cases, notEstablished: view.notEstablished.cases,
       ...(view.metrics ? { metrics: view.metrics.map(metric => ({ id: metric.id, numerator: metric.numerator, denominator: metric.denominator,
-        threshold: metric.threshold, direction: metric.direction, status: metric.status, value: metric.value ? { ...metric.value } : null })) } : {}) };
+        threshold: metric.threshold, direction: metric.direction, status: metric.status,
+        value: typeof metric.value === 'object' && metric.value !== null ? { ...metric.value } : metric.value })) } : {}) };
   }
   return out;
 }
@@ -235,11 +236,12 @@ async function loadCurrentPublicComparison(): Promise<PiiCandidateComparison> {
   try {
     const plan = await readJsonIfPresent<unknown>('benchmarks/pii-candidate-comparison/plan.json');
     const receipt = await readJsonIfPresent<unknown>('benchmarks/pii-candidate-comparison/receipt.json');
-    if (!plan || !receipt) return loadPiiCandidateComparison({ plan, receipt });
+    const record = await readJsonIfPresent<unknown>('benchmarks/pii-candidate-comparison/record.json');
+    if (!plan || !receipt) return loadPiiCandidateComparison({ plan, receipt, record });
     const artifacts = await Promise.all((['baseline', 'candidate'] as const).flatMap(side => PII_VIEW_IDS.map(async view => ({ side, view,
       text: await readFile(path.join(REPO_ROOT, `benchmarks/pii-candidate-comparison/${side}.${view}.public-synthetic-artifact.json`), 'utf8'),
     }))));
-    return loadPiiCandidateComparison({ plan, receipt, artifacts });
+    return loadPiiCandidateComparison({ plan, receipt, record, artifacts });
   } catch {
     return { state: 'invalid', reason: 'comparison-inputs-unreadable', publicOnly: true, supportClaims: false, qualified: false };
   }

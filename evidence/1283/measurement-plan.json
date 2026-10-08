@@ -1,0 +1,83 @@
+{
+  "schema": "configuration-performance-plan/v1",
+  "sourceCommit": "95293414dbd2dbdd21103a921a746cf346b28d94",
+  "selection": [
+    "github-token",
+    "jwt",
+    "generic-token"
+  ],
+  "samples": 5,
+  "iterations": 10,
+  "inputBytes": [
+    4096,
+    65536
+  ],
+  "qualificationInventory": "/tmp/redact-secret-1283-qualified-95293414/inventory/artifact-inventory.json",
+  "corePackageTarball": "/tmp/redact-secret-1283-qualified-95293414/configuration-journeys/candidate/redact-secret-core-0.1.0-beta.14.tgz",
+  "artifacts": [
+    {
+      "id": "full",
+      "directory": "/tmp/redact-secret-1283-qualified-95293414/wasm-web",
+      "binary": "/tmp/redact-secret-1283-qualified-95293414/wasm-web/redact_secret_wasm_bg.wasm",
+      "glue": "/tmp/redact-secret-1283-qualified-95293414/wasm-web/redact_secret_wasm.js",
+      "coreDist": "/tmp/redact-secret-1283-qualified-95293414/core-package/package/dist"
+    },
+    {
+      "id": "common",
+      "directory": "/tmp/redact-secret-1283-qualified-95293414/wasm-web-common",
+      "binary": "/tmp/redact-secret-1283-qualified-95293414/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+      "glue": "/tmp/redact-secret-1283-qualified-95293414/wasm-web-common/redact_secret_wasm_common.js",
+      "coreDist": "/tmp/redact-secret-1283-qualified-95293414/core-package/package/dist",
+      "selection": [
+        "jwt",
+        "generic-token"
+      ]
+    },
+    {
+      "id": "custom",
+      "directory": "/tmp/redact-secret-1283-qualified-95293414/configuration-journeys/configuration-custom-artifact",
+      "binary": "/tmp/redact-secret-1283-qualified-95293414/configuration-journeys/configuration-custom-artifact/redact_secret_wasm_custom_bg.wasm",
+      "selection": [
+        "jwt",
+        "generic-token"
+      ]
+    },
+    {
+      "id": "full-pii",
+      "directory": "/tmp/redact-secret-1283-qualified-95293414/wasm-web",
+      "binary": "/tmp/redact-secret-1283-qualified-95293414/wasm-web/redact_secret_wasm_pii_bg.wasm",
+      "glue": "/tmp/redact-secret-1283-qualified-95293414/wasm-web/redact_secret_wasm_pii.js",
+      "coreDist": "/tmp/redact-secret-1283-qualified-95293414/core-package/package/dist",
+      "initializeOptions": {
+        "pii": [
+          "pii:global"
+        ]
+      }
+    },
+    {
+      "id": "common-pii",
+      "directory": "/tmp/redact-secret-1283-qualified-95293414/wasm-web-common",
+      "binary": "/tmp/redact-secret-1283-qualified-95293414/wasm-web-common/redact_secret_wasm_common_pii_bg.wasm",
+      "glue": "/tmp/redact-secret-1283-qualified-95293414/wasm-web-common/redact_secret_wasm_common_pii.js",
+      "coreDist": "/tmp/redact-secret-1283-qualified-95293414/core-package/package/dist",
+      "selection": [
+        "jwt",
+        "generic-token"
+      ],
+      "initializeOptions": {
+        "pii": [
+          "pii:global"
+        ]
+      }
+    }
+  ],
+  "provenance": {
+    "productIssue": 1283,
+    "benchmarkCommit": "8e2895144d30d4ea5325c5f3d1e77fe7167a77ac",
+    "qualificationRunId": 37818423797,
+    "qualificationRunUrl": "https://github.com/redact-secret/redact-secret/actions/runs/37818423797",
+    "peerVersion": "trufflehog 3.97.4",
+    "qualificationRunAttempt": 1,
+    "configurationReceipt": "/tmp/redact-secret-1283-qualified-95293414/configuration-journeys/configuration-journeys.json"
+  }
+}

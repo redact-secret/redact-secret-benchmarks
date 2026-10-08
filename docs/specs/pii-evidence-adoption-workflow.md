@@ -65,6 +65,38 @@ concrete cost allowance; neither prior official runs nor a reused proposal grant
 another dispatch. A future workflow may call this preparation command, but it
 must prepare a candidate only, never accept or dispatch measurement automatically.
 
+## Reviewed candidate consumer runtime
+
+A wider evidence snapshot may need a new consumer mapping before adoption can
+be proposed. `benchmarks/pii-evidence/candidate-runtimes.json` is a versioned,
+reviewed registry of exact candidate consumer identities, local build receipts
+and mapping tables. It does not replace the initial consumer pin or the active
+evidence pin. A supplied candidate consumer must match a complete registered
+identity, including source/archive/lock/toolchain/helper/shim hashes, mapping
+revision, exact local binary hash and build command. Unregistered identities,
+edited binaries and new families outside the reviewed table refuse.
+Candidate source archive SHA-256 is over `git archive --format=tar HEAD`; the
+preflight recomputes it from the clean pinned checkout without downloading or
+storing an archive.
+
+```sh
+node scripts/preflight-pii-evidence.mjs \
+  --source-dir path/to/clean-pii-eval-checkout \
+  --consumer-bin path/to/pii-eval-evidence \
+  --snapshot-dir path/to/candidate-snapshot \
+  --candidate-snapshot-pin path/to/candidate-snapshot-pin.json \
+  --candidate-consumer-pin path/to/reviewed-candidate-consumer-pin.json \
+  --out path/to/new-preflight.json
+```
+
+The candidate receipt describes the actual Darwin source build; it does not
+supply a canonical Linux receipt or assert that the historical execution engine
+was rebuilt. The immutable initial Linux engine pin and pending Linux consumer
+receipt remain explicit. The helper verifies/imports the entire snapshot and
+records its exact population, losses and output hashes before preparation.
+Changing the consumer runtime does not authorize measurement, active adoption,
+product authority or an owner decision.
+
 ## Strict acceptance and historical chain validation
 
 `validateActiveEvidenceAdoption` consumes an externally supplied acceptance,

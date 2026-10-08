@@ -13,10 +13,11 @@ const read = file => parseEvidenceJson(readFileSync(file, 'utf8'));
 const pinned = name => path.join(ROOT, 'benchmarks/pii-evidence', `${name}.json`);
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
 
-export function runPreflight({ sourceDir, consumerBin, snapshotDir, out, fetch = false, candidateSnapshotPin }) {
+export function runPreflight({ sourceDir, consumerBin, snapshotDir, out, fetch = false, candidateSnapshotPin, candidateConsumerPin }) {
   const policy = read(path.join(ROOT, 'benchmarks/pii-population-policy.json'));
   const snapshotFile = candidateSnapshotPin ?? pinned('snapshot-pin');
-  const snapshotPin = read(snapshotFile), consumerPin = read(pinned('consumer-pin'));
+  const snapshotPin = read(snapshotFile), consumerPin = read(candidateConsumerPin ?? pinned('consumer-pin'));
+  if (candidateConsumerPin && !candidateSnapshotPin) throw new Error('candidate consumer requires candidate snapshot pin');
   checkActiveEvidenceFiles(ROOT);
   const futureActive = snapshotPin.snapshot.id !== SNAPSHOT_PIN.snapshot.id;
   if (candidateSnapshotPin) validateProposedSnapshotPin(snapshotPin);
@@ -24,6 +25,8 @@ export function runPreflight({ sourceDir, consumerBin, snapshotDir, out, fetch =
   if (existsSync(out)) throw new Error('preflight report output already exists');
   const sourceCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: sourceDir, encoding: 'utf8' }).trim();
   execFileSync('git', ['diff', '--quiet', 'HEAD', '--', 'crates', 'Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'tools/pii-evidence/fetch-snapshot.mjs'], { cwd: sourceDir });
+  if (candidateConsumerPin && sha256(execFileSync('git', ['archive', '--format=tar', 'HEAD'], { cwd: sourceDir, maxBuffer: 32 * 1024 * 1024 })) !== consumerPin.source.sourceArchiveSha256)
+    throw new Error('candidate consumer source archive mismatch');
   const helper = path.join(sourceDir, 'tools/pii-evidence/fetch-snapshot.mjs');
   verifyConsumerRuntime({ sourceCommit, cargoLock: readFileSync(path.join(sourceDir, 'Cargo.lock')),
     fetchHelper: readFileSync(helper), binary: readFileSync(consumerBin), platform: `${process.platform}-${process.arch}` }, consumerPin);
@@ -66,7 +69,7 @@ export function main(args) {
     const key = args[index];
     if (key === '--fetch' && options.fetch === undefined) { options.fetch = true; continue; }
     const field = { '--source-dir': 'sourceDir', '--consumer-bin': 'consumerBin', '--snapshot-dir': 'snapshotDir',
-      '--candidate-snapshot-pin': 'candidateSnapshotPin', '--out': 'out' }[key];
+      '--candidate-snapshot-pin': 'candidateSnapshotPin', '--candidate-consumer-pin': 'candidateConsumerPin', '--out': 'out' }[key];
     if (!field || options[field] !== undefined || !args[index + 1] || args[index + 1].startsWith('--')) throw new Error('invalid preflight arguments');
     options[field] = path.resolve(args[++index]);
   }

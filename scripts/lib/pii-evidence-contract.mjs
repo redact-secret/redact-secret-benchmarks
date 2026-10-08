@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { validatePiiPopulationPolicy } from './pii-population-policy.mjs';
 import { parseStrictJson, semanticDigest } from '../../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 
@@ -83,6 +84,44 @@ export const MAPPED_FAMILIES = {
   'pii:us:ssn': { cases: 9, variants: 9 },
 };
 
+const runtimeIdentity = pin => ({ ...pin, importedPopulation: CONSUMER_PIN.importedPopulation });
+const familiesOf = value => Array.isArray(value) ? value : [value];
+function reviewedCandidateRuntime(pin) {
+  const registry = parseStrictJson(readFileSync(new URL('../../benchmarks/pii-evidence/candidate-runtimes.json', import.meta.url), 'utf8'));
+  if (!closed(registry, ['schema', 'runtimes']) || registry.schema !== 'pii-evidence-reviewed-candidate-runtimes/1' || !Array.isArray(registry.runtimes)) refuse('candidate-runtime-registry-invalid');
+  const entry = registry.runtimes.find(runtime => same(runtime.consumerIdentity, runtimeIdentity(pin)));
+  if (!entry || !closed(entry, ['schema', 'consumerIdentity', 'buildReceipt', 'mappingKinds']) || entry.schema !== 'pii-evidence-reviewed-candidate-runtime/1' ||
+      !same(pin.executionEngine, CONSUMER_PIN.executionEngine) || !same(pin.evidenceConsumer.canonicalLinux, CONSUMER_PIN.evidenceConsumer.canonicalLinux) ||
+      pin.schema !== CONSUMER_PIN.schema || pin.state !== 'candidate' || pin.supportClaims !== false ||
+      pin.source.repository !== CONSUMER_PIN.source.repository || !/^[a-f0-9]{40}$/.test(pin.source.commit) ||
+      !same({ ...pin.contract, mapping: CONSUMER_PIN.contract.mapping }, CONSUMER_PIN.contract) ||
+      pin.contract.mapping.id !== CONSUMER_PIN.contract.mapping.id || !integer(pin.contract.mapping.revision) || pin.contract.mapping.revision < 2 ||
+      pin.preservedPopulationPinsSha256 !== CONSUMER_PIN.preservedPopulationPinsSha256 ||
+      pin.evidenceConsumer.localVerification.canonical !== false || pin.evidenceConsumer.localVerification.platform !== 'darwin-arm64' ||
+      !hex(pin.evidenceConsumer.localVerification.binarySha256) ||
+      Object.entries(pin.source).filter(([key]) => !['repository', 'commit'].includes(key)).some(([, value]) => !hex(value))) refuse('candidate-runtime-not-reviewed');
+  const receipt = entry.buildReceipt;
+  if (!closed(receipt, ['schema', 'sourceCommit', 'sourceArchiveSha256', 'cargoLockSha256', 'rustToolchainFileSha256', 'rustc', 'command', 'platform', 'binarySha256']) ||
+      receipt.schema !== 'pii-evidence-consumer-build-receipt/1' || receipt.sourceCommit !== pin.source.commit ||
+      receipt.sourceArchiveSha256 !== pin.source.sourceArchiveSha256 || receipt.cargoLockSha256 !== pin.source.cargoLockSha256 ||
+      receipt.rustToolchainFileSha256 !== pin.source.rustToolchainFileSha256 || receipt.rustc !== pin.evidenceConsumer.localVerification.rustc ||
+      receipt.platform !== pin.evidenceConsumer.localVerification.platform || receipt.binarySha256 !== pin.evidenceConsumer.localVerification.binarySha256 ||
+      receipt.command !== 'cargo build --locked -p pii-eval-cli --bin pii-eval-evidence -j 2' ||
+      !entry.mappingKinds || typeof entry.mappingKinds !== 'object' || Array.isArray(entry.mappingKinds) ||
+      Object.entries(MAPPING_KINDS).some(([kind, family]) => entry.mappingKinds[kind] !== family) ||
+      new Set(Object.values(entry.mappingKinds).flatMap(familiesOf)).size !== Object.values(entry.mappingKinds).flatMap(familiesOf).length ||
+      Object.values(entry.mappingKinds).some(value => !familiesOf(value).length ||
+        familiesOf(value).some(family => typeof family !== 'string' || !/^pii:(global|us|gb):[a-z0-9-]+$/.test(family)) ||
+        new Set(familiesOf(value)).size !== familiesOf(value).length)) refuse('candidate-runtime-receipt-invalid');
+  return entry;
+}
+function validateRuntimePin(pin) {
+  if (!same(runtimeIdentity(pin), CONSUMER_PIN)) reviewedCandidateRuntime(pin);
+}
+function mappingKindsOf(pin) {
+  return same(runtimeIdentity(pin), CONSUMER_PIN) ? MAPPING_KINDS : reviewedCandidateRuntime(pin).mappingKinds;
+}
+
 export function validateEvidencePins(snapshotPin, consumerPin) {
   if (!same(snapshotPin, SNAPSHOT_PIN)) refuse('snapshot-pin-mismatch');
   if (!same(consumerPin, CONSUMER_PIN)) refuse('consumer-pin-mismatch');
@@ -106,11 +145,11 @@ export function validateProposedSnapshotPin(pin) {
 export function validateProposedConsumerPin(pin, snapshotPin) {
   validateProposedSnapshotPin(snapshotPin);
   if (!closed(pin, Object.keys(CONSUMER_PIN)) ||
-      !same({ ...pin, importedPopulation: CONSUMER_PIN.importedPopulation }, CONSUMER_PIN) ||
       !closed(pin.importedPopulation, Object.keys(CONSUMER_PIN.importedPopulation)) ||
       pin.importedPopulation.id !== `pii-evidence-${snapshotPin.snapshot.id.replaceAll('/', '-')}` ||
       pin.importedPopulation.version !== 1 || !hex(pin.importedPopulation.digest) || !hex(pin.importedPopulation.bindingDigest))
     refuse('proposed-consumer-pin-invalid');
+  try { validateRuntimePin(pin); } catch { refuse('proposed-consumer-pin-invalid'); }
   return structuredClone(pin);
 }
 
@@ -126,7 +165,7 @@ export function validateSourceBuiltConsumerReceipt(receipt, pin = CONSUMER_PIN) 
 }
 
 export function verifyConsumerRuntime({ sourceCommit, cargoLock, fetchHelper, binary, platform, buildReceipt }, pin) {
-  if (!same({ ...pin, importedPopulation: CONSUMER_PIN.importedPopulation }, CONSUMER_PIN)) refuse('consumer-pin-mismatch');
+  validateRuntimePin(pin);
   if (sourceCommit !== pin.source.commit || sha256(cargoLock) !== pin.source.cargoLockSha256 ||
       sha256(fetchHelper) !== pin.source.fetchHelperSha256) refuse('consumer-source-mismatch');
   if (platform === 'linux-x64') {
@@ -187,8 +226,9 @@ export function preflightReport({ policy, snapshotPin, consumerPin, verified, im
       snapshot.semantic.cases.reduce((sum, row) => sum + row.variants.length, 0) !== mapped.binding.counts.corpusVariants ||
       binding.semantic.rows?.length !== mapped.binding.counts.occurrences) refuse('import-output-mismatch');
   const families = Object.keys(binding.semantic.byFamily ?? {});
-  if (families.some(family => !Object.values(MAPPING_KINDS).includes(family))) refuse('mapping-kind-unknown');
-  const mappedKinds = Object.keys(MAPPING_KINDS).filter(kind => families.includes(MAPPING_KINDS[kind])).sort();
+  const mappingKinds = mappingKindsOf(consumerPin);
+  if (families.some(family => !Object.values(mappingKinds).flatMap(familiesOf).includes(family))) refuse('mapping-kind-unknown');
+  const mappedKinds = Object.keys(mappingKinds).filter(kind => familiesOf(mappingKinds[kind]).some(family => families.includes(family))).sort();
   return expectedPreflightReport(policy, { snapshotPin, consumerPin, counts: mapped.binding.counts,
     losses: mapped.binding.losses, outputs: imported.outputs, mappedKinds, mappedFamilies: binding.semantic.byFamily });
 }
@@ -208,9 +248,12 @@ export function expectedPreflightReport(policy, { snapshotPin = SNAPSHOT_PIN, co
   validatePiiPopulationPolicy(policy);
   validateProposedConsumerPin(consumerPin, snapshotPin);
   validateMappingAccounting(counts, losses);
+  const mappingKinds = mappingKindsOf(consumerPin);
   if (!Array.isArray(mappedKinds) || !same(mappedKinds, [...new Set(mappedKinds)].sort()) ||
-      mappedKinds.some(kind => !Object.hasOwn(MAPPING_KINDS, kind))) refuse('mapping-kind-unknown');
-  if (!closed(mappedFamilies, mappedKinds.map(kind => MAPPING_KINDS[kind])) ||
+      mappedKinds.some(kind => !Object.hasOwn(mappingKinds, kind))) refuse('mapping-kind-unknown');
+  const familyKeys = Object.keys(mappedFamilies);
+  if (familyKeys.some(family => !mappedKinds.some(kind => familiesOf(mappingKinds[kind]).includes(family))) ||
+      mappedKinds.some(kind => !familiesOf(mappingKinds[kind]).some(family => familyKeys.includes(family))) ||
       Object.values(mappedFamilies).some(row => !closed(row, ['cases', 'variants']) || !integer(row.cases) || !integer(row.variants)) ||
       Object.values(mappedFamilies).reduce((sum, row) => sum + row.cases, 0) !== counts.corpusCases ||
       Object.values(mappedFamilies).reduce((sum, row) => sum + row.variants, 0) !== counts.corpusVariants) refuse('mapping-accounting-invalid');
@@ -220,7 +263,7 @@ export function expectedPreflightReport(policy, { snapshotPin = SNAPSHOT_PIN, co
     evidence: structuredClone(snapshotPin), consumer: structuredClone(consumerPin),
     population: structuredClone(consumerPin.importedPopulation), counts: structuredClone(counts), losses: structuredClone(losses),
     outputs: structuredClone(outputs), mappedKinds: [...mappedKinds], mappedFamilies: structuredClone(mappedFamilies),
-    excludedKinds: Object.keys(MAPPING_KINDS).filter(kind => !mappedKinds.includes(kind)).sort(),
+    excludedKinds: Object.keys(mappingKinds).filter(kind => !mappedKinds.includes(kind)).sort(),
     excludedKindsMeaning: 'known mapping kinds absent from imported binding; not scanner support',
     verification: { platform: 'darwin-arm64', canonical: false, scannersLaunched: 0, commands: ['verify', 'import'] },
     adoption: { state: 'proposed', active: false, lostAxisClaims: 'pending-until-faithfully-represented',

@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "pii-population-policy/1",
+  "title": "Proposed PII population roles and composition boundary",
+  "description": "Closed proposed role metadata. A changed composition or owner acceptance requires explicit contract review, not an extra field in this proposal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "state",
+    "issue",
+    "supportClaims",
+    "owners",
+    "populations",
+    "accounting",
+    "composition",
+    "mapping",
+    "execution"
+  ],
+  "properties": {
+    "schema": {
+      "const": "pii-population-policy/1"
+    },
+    "state": {
+      "const": "proposed"
+    },
+    "issue": {
+      "const": 835
+    },
+    "supportClaims": {
+      "const": false
+    },
+    "owners": {
+      "const": {
+        "measurement": "redact-secret/pii-eval",
+        "qualification": "redact-secret/redact-secret-benchmarks",
+        "protectedExecution": "redact-secret/private-custodian",
+        "privateAudit": "redact-secret/private-ledger"
+      }
+    },
+    "populations": {
+      "const": [
+        {
+          "id": "pii-evidence",
+          "evidenceOwner": "redact-secret/pii-evidence",
+          "role": "canonical-public-evidence",
+          "visibility": "public-synthetic",
+          "identitySource": "released-snapshot-and-import-binding",
+          "denominatorSource": "imported-artifact-metric-sufficient-counts",
+          "tuning": "no-new-authorisation"
+        },
+        {
+          "id": "oracle-plan",
+          "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+          "role": "authored-identity-oracle",
+          "visibility": "public-synthetic",
+          "identitySource": "benchmarks/pii-eval-population-pins.json",
+          "denominatorSource": "bound-artifact-metric-sufficient-counts",
+          "tuning": "existing-contract-only"
+        },
+        {
+          "id": "qualification-plan",
+          "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+          "role": "product-contract-qualification",
+          "visibility": "public-synthetic",
+          "identitySource": "benchmarks/pii-eval-population-pins.json",
+          "denominatorSource": "bound-artifact-metric-sufficient-counts",
+          "tuning": "existing-contract-only"
+        },
+        {
+          "id": "diagnostic-balanced",
+          "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+          "role": "development-tuning",
+          "visibility": "public-synthetic",
+          "identitySource": "benchmarks/pii-eval-population-pins.json",
+          "denominatorSource": "bound-artifact-metric-sufficient-counts",
+          "tuning": "existing-contract-only"
+        },
+        {
+          "id": "benign-heavy-stress",
+          "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+          "role": "evaluation-only-stress",
+          "visibility": "public-synthetic",
+          "identitySource": "benchmarks/pii-eval-population-pins.json",
+          "denominatorSource": "bound-artifact-metric-sufficient-counts",
+          "tuning": "forbidden"
+        },
+        {
+          "id": "future-protected",
+          "evidenceOwner": "unresolved-authored-evidence-owner",
+          "role": "protected-independent-evidence",
+          "visibility": "protected",
+          "identitySource": "future-reviewed-custodian-contract",
+          "denominatorSource": "future-bound-protected-aggregate",
+          "tuning": "no-new-authorisation"
+        }
+      ]
+    },
+    "accounting": {
+      "const": {
+        "crossPopulationPooling": "forbidden",
+        "crossScannerPooling": "forbidden",
+        "replayAddsSamples": false,
+        "authoredCaseEqualsImportedCase": false,
+        "denominator": "metric-local-effectiveN-and-sufficient-counts",
+        "unresolved": "retain-authored-membership-and-report-counts",
+        "withheld": "retain-reason-never-impute-zero-or-pass",
+        "notApplicable": "protocol-declared-only",
+        "partial": "no-subset-renormalisation",
+        "protectedInPublicDenominator": "forbidden"
+      }
+    },
+    "composition": {
+      "const": {
+        "state": "proposed",
+        "output": "population-local-conclusion-vector",
+        "requirements": [
+          "exact-population-and-run-provenance",
+          "exact-product-artifact",
+          "versioned-engine-and-protocol",
+          "declared-axis-applicability",
+          "explicit-mapping-losses",
+          "separate-public-and-protected-evidence"
+        ],
+        "numericalCriteria": "existing-qualification-contracts-only",
+        "automaticSupportPromotion": false,
+        "ownerCriteria": {
+          "state": "proposed",
+          "acceptedBy": null,
+          "acceptedAt": null,
+          "acceptanceSource": null
+        }
+      }
+    },
+    "mapping": {
+      "const": {
+        "owner": "redact-secret/pii-eval",
+        "upstreamIssue": "https://github.com/redact-secret/pii-eval/issues/37",
+        "publicAdoptionBlocked": false,
+        "lostAxisClaims": "pending-until-faithfully-represented",
+        "lossClasses": [
+          "contexts-not-carried",
+          "phi-domain-not-carried",
+          "sensitivity-context-dependent-flattened",
+          "identity-weakened-no-span",
+          "sensitivity-weakened-no-span"
+        ],
+        "unknownKindOrJurisdiction": "refuse-not-guess"
+      }
+    },
+    "execution": {
+      "const": {
+        "measurementTarget": "not-selected",
+        "snapshotPin": "not-selected",
+        "freshOfficialCostDecision": "required-before-dispatch",
+        "authorityRepin": "not-authorised-by-this-policy",
+        "protectedExecution": "not-authorised-by-this-policy"
+      }
+    }
+  }
+}

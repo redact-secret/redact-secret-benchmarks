@@ -5,6 +5,8 @@ name: Official PII run (fresh execution, public synthetic)
 # benchmarks/pii-eval-official-execution-plan.json (derived from the committed pins; the workflow refuses a plan that differs from them): no input can
 # name another plan, engine, commit or package. Spec: docs/specs/pii-official-execution-plan.md.
 # The candidate-comparison lane uses its own committed plan and requires a fresh, tuple-bound owner cost decision; the #796 waiver does not cover it.
+# The evidence-comparison lane can select a committed versioned plan within its
+# public sidecar directory; its exact origin paths and products need fresh approval.
 #
 # It is an execution, not a replay (the scanner is launched) and not an acceptance: it records nothing in the repository, writes no pin, threshold,
 # status or authority and no owner acceptance. A difference, a missing pin or a failed validation fails the job and is never normalised. The cost gate was
@@ -30,6 +32,11 @@ on:
         options:
           - pinned-official
           - candidate-comparison
+          - evidence-comparison
+      evidence_plan:
+        description: Committed public evidence plan, used only by evidence-comparison
+        type: string
+        default: benchmarks/pii-evidence-comparison/plan.json
 
 permissions: {}
 
@@ -39,7 +46,7 @@ concurrency:
 
 jobs:
   official-run:
-    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane != 'candidate-comparison'
+    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane == 'pinned-official'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -212,6 +219,18 @@ jobs:
       contents: read
       actions: read
     uses: $/.github/workflows/pii-candidate-comparison.yml
+    secrets:
+      PII_EVAL_APP_PRIVATE_KEY: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
+      BENCHMARKS_DISPATCH_APP_PRIVATE_KEY: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+
+  evidence-comparison:
+    if: github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane == 'evidence-comparison'
+    permissions:
+      contents: read
+      actions: read
+    uses: $/.github/workflows/pii-evidence-comparison.yml
+    with:
+      plan_path: ${{ inputs.evidence_plan }}
     secrets:
       PII_EVAL_APP_PRIVATE_KEY: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
       BENCHMARKS_DISPATCH_APP_PRIVATE_KEY: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}

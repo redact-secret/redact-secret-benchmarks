@@ -159,6 +159,8 @@ jobs:
         run: npm run pii:scorer-basis:check && npm run pii:official-plan:check
       - name: Current PII comparison inputs and protected and peer readiness match their public contracts (#615, #616, #647)
         run: npm run qualification:matrix-schema:check && npm run qualification:matrix-source:check && npm run pii:comparison-plan:check && npm run pii:comparison:check && npm run pii:protected-readiness:check && npm run pii:peer-readiness:check && npm run pii:peer-comparison:check
+      - name: The separate public pii-evidence population retains its pins, comparison receipts and publication (#834)
+        run: npm run pii:evidence:preflight:check && npm run pii:evidence:comparison-plan:check && npm run pii:evidence:comparison:check && npm run pii:evidence:publish && npm run pii:evidence:publication:check
       - name: The legacy credential evaluator's file inventory has owner, disposition, prerequisite and current callers for every row (#653, #660)
         run: npm run legacy-inventory:check
       - name: Every taxonomy provider and family has a dossier entry (#473)

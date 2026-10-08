@@ -1,0 +1,201 @@
+name: PII evidence snapshot comparison (public synthetic)
+
+# The source-built importer is auxiliary provenance. The measurement engine and
+# both product artifacts remain exact pins, and one fresh cost decision gates the job.
+on:
+  workflow_call:
+    inputs:
+      plan_path:
+        type: string
+        default: benchmarks/pii-evidence-comparison/plan.json
+    secrets:
+      PII_EVAL_APP_PRIVATE_KEY:
+        required: true
+      BENCHMARKS_DISPATCH_APP_PRIVATE_KEY:
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: pii-evidence-comparison
+  cancel-in-progress: false
+
+jobs:
+  comparison:
+    if: github.repository == 'redact-secret/redact-secret-benchmarks'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EVIDENCE_PLAN: ${{ inputs.plan_path }}
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Start the whole-job execution budget
+        run: echo "EVIDENCE_JOB_STARTED_AT=$(date +%s)" >> "$GITHUB_ENV"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate the snapshot, products and fresh execution allowance
+        id: plan
+        run: |
+          set -euo pipefail
+          node scripts/pii-evidence-comparison-plan.mjs --plan="$EVIDENCE_PLAN" --check
+          node scripts/pii-evidence-comparison-plan.mjs --plan="$EVIDENCE_PLAN" --github-output >> "$GITHUB_OUTPUT"
+          node scripts/pii-evidence-comparison-plan.mjs --plan="$EVIDENCE_PLAN" --snapshot-pin-output="$RUNNER_TEMP/pii-evidence-snapshot-pin.json"
+      - name: Refuse a second dispatch or rerun of the approved tuple
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/check-pii-evidence-dispatch.mjs
+
+      - name: Read-only access to pinned pii-eval artifacts and source
+        id: engine-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: '5178533'
+          private-key: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: pii-eval
+          permission-actions: read
+          permission-contents: read
+      - name: Verify the prebuilt Linux measurement engine
+        id: engine
+        env:
+          GH_TOKEN: ${{ steps.engine-token.outputs.token }}
+        run: node scripts/fetch-pii-evidence-inputs.mjs fetch-engine --out="$RUNNER_TEMP/pii-evidence-engine"
+      - name: Verify the exact source archive and scanner shim
+        id: source
+        env:
+          GH_TOKEN: ${{ steps.engine-token.outputs.token }}
+        run: node scripts/fetch-pii-evidence-inputs.mjs fetch-source --out="$RUNNER_TEMP/pii-evidence-source"
+      - name: Fetch the pinned public snapshot before token-free execution
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_DIR: ${{ steps.source.outputs.source }}
+        run: >-
+          node "$SOURCE_DIR/tools/pii-evidence/fetch-snapshot.mjs"
+          --pin "$RUNNER_TEMP/pii-evidence-snapshot-pin.json"
+          --out "$RUNNER_TEMP/pii-evidence-snapshot"
+      - uses: dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067 # pinned installer
+        with:
+          toolchain: 1.98.1
+      # Compile and scanner steps receive no App token or secret. The locked
+      # source produces an observed importer hash, never an invented binary pin.
+      - name: Build and seal the auxiliary evidence importer before use
+        env:
+          SOURCE_DIR: ${{ steps.source.outputs.source }}
+          CARGO_TARGET_DIR: ${{ runner.temp }}/pii-evidence-build
+        run: |
+          set -euo pipefail
+          cd "$SOURCE_DIR"
+          cargo fetch --locked
+          cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2
+          cd "$GITHUB_WORKSPACE"
+          node scripts/fetch-pii-evidence-inputs.mjs seal-importer \
+            --source="$SOURCE_DIR" \
+            --binary="$CARGO_TARGET_DIR/release/pii-eval-evidence" \
+            --out="$RUNNER_TEMP/pii-evidence-build-receipt.json"
+
+      - name: Read-only access to the qualified candidate
+        id: product-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.BENCHMARKS_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: redact-secret
+          permission-actions: read
+          permission-contents: read
+      - name: Resolve the exact successful candidate qualification
+        id: product
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_SHA: ${{ steps.plan.outputs.product_sha }}
+          QUALIFICATION_RUN_ID: ${{ steps.plan.outputs.qualification_run_id }}
+          PRODUCT_REF: main
+        run: node scripts/qualified-candidate.mjs resolve --repository redact-secret/redact-secret
+      - name: Verify the qualified candidate inventory and runtime payloads
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          QUALIFICATION_RUN: ${{ steps.product.outputs.run-id }}
+        run: >-
+          node scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret
+          --sha "$PRODUCT_COMMIT" --run-id "$QUALIFICATION_RUN" --product-ref main
+          --dir "$RUNNER_TEMP/pii-evidence-qualified"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: redact-secret/redact-secret
+          ref: ${{ steps.product.outputs.sha }}
+          token: ${{ steps.product-token.outputs.token }}
+          path: .redact-secret-product
+          persist-credentials: false
+      - name: Pack the exact qualified product payloads without credentials
+        working-directory: .redact-secret-product
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run js:build
+          node scripts/pack-npm-candidate.mjs \
+            --addon-dir "$RUNNER_TEMP/pii-evidence-qualified/node-addon-x86_64-unknown-linux-gnu" \
+            --wasm-dir "$RUNNER_TEMP/pii-evidence-qualified/wasm-web" \
+            --wasm-common-dir "$RUNNER_TEMP/pii-evidence-qualified/wasm-web-common" \
+            --out-dir "$RUNNER_TEMP/pii-evidence-candidate"
+          test -z "$(git status --porcelain)"
+      - name: Fetch the published baseline without lifecycle scripts
+        env:
+          BASELINE_VERSION: ${{ steps.plan.outputs.baseline_version }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/pii-evidence-baseline"
+          npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP/pii-evidence-baseline" \
+            "@redact-secret/core@$BASELINE_VERSION" \
+            "@redact-secret/node-linux-x64-gnu@$BASELINE_VERSION" \
+            "@redact-secret/wasm@$BASELINE_VERSION"
+      - name: Verify and import the snapshot, then measure and replay both products
+        env:
+          ENGINE: ${{ steps.engine.outputs.engine }}
+          SOURCE_DIR: ${{ steps.source.outputs.source }}
+          SOURCE_ARCHIVE: ${{ steps.source.outputs.archive }}
+          BASELINE_VERSION: ${{ steps.plan.outputs.baseline_version }}
+          CANDIDATE_VERSION: ${{ steps.plan.outputs.candidate_version }}
+        run: |
+          set -euo pipefail
+          node --import tsx scripts/run-pii-evidence-comparison.mjs --require-canonical \
+            --plan="$EVIDENCE_PLAN" \
+            --engine="$ENGINE" --source="$SOURCE_DIR" --source-archive="$SOURCE_ARCHIVE" \
+            --snapshot-dir="$RUNNER_TEMP/pii-evidence-snapshot" \
+            --consumer="$RUNNER_TEMP/pii-evidence-build/release/pii-eval-evidence" \
+            --build-receipt="$RUNNER_TEMP/pii-evidence-build-receipt.json" \
+            --shim="$SOURCE_DIR/crates/pii-eval-adapters/shims/node/redact-secret-core.mjs" \
+            --baseline-core="$RUNNER_TEMP/pii-evidence-baseline/redact-secret-core-$BASELINE_VERSION.tgz" \
+            --baseline-node="$RUNNER_TEMP/pii-evidence-baseline/redact-secret-node-linux-x64-gnu-$BASELINE_VERSION.tgz" \
+            --baseline-wasm="$RUNNER_TEMP/pii-evidence-baseline/redact-secret-wasm-$BASELINE_VERSION.tgz" \
+            --candidate-core="$RUNNER_TEMP/pii-evidence-candidate/redact-secret-core-$CANDIDATE_VERSION.tgz" \
+            --candidate-node="$RUNNER_TEMP/pii-evidence-candidate/redact-secret-node-linux-x64-gnu-$CANDIDATE_VERSION.tgz" \
+            --candidate-wasm="$RUNNER_TEMP/pii-evidence-candidate/redact-secret-wasm-$CANDIDATE_VERSION.tgz" \
+            --candidate-inventory="$RUNNER_TEMP/pii-evidence-qualified/artifact-inventory/artifact-inventory.json" \
+            --node="$(command -v node)" --out="$RUNNER_TEMP/pii-evidence-comparison"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: pii-evidence-comparison
+          path: |
+            ${{ runner.temp }}/pii-evidence-comparison/build-receipt.json
+            ${{ runner.temp }}/pii-evidence-comparison/plan.json
+            ${{ runner.temp }}/pii-evidence-comparison/receipt.json
+            ${{ runner.temp }}/pii-evidence-comparison/baseline.public-synthetic-artifact.json
+            ${{ runner.temp }}/pii-evidence-comparison/candidate.public-synthetic-artifact.json
+            ${{ runner.temp }}/pii-evidence-comparison/replay-inputs/baseline/manifest.json
+            ${{ runner.temp }}/pii-evidence-comparison/replay-inputs/baseline/observation.json
+            ${{ runner.temp }}/pii-evidence-comparison/replay-inputs/baseline/run-artifact.json
+            ${{ runner.temp }}/pii-evidence-comparison/replay-inputs/candidate/manifest.json
+            ${{ runner.temp }}/pii-evidence-comparison/replay-inputs/candidate/observation.json
+            ${{ runner.temp }}/pii-evidence-comparison/replay-inputs/candidate/run-artifact.json
+          if-no-files-found: warn
+          retention-days: 90

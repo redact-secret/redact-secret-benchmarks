@@ -47,6 +47,7 @@ export const SECTIONS: Section[] = [
       { href: '/evaluation/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
       { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
       { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
+      { href: '/evaluation/pii/evidence/', label: 'PII evidence', title: 'PII evidence as its own population', summary: 'The independent public pii-evidence population, with each scanner and denominator held apart.' },
       { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'The credential domain: its families, fixtures and what was recorded.' },
       { href: '/evaluation/qualification/', label: 'Qualification', title: 'Qualification from the official runs', summary: 'The support status derived from one official evaluation run per population, beside the existing report.', match: '/evaluation/qualification/' },
     ],

@@ -17,6 +17,9 @@ test('a change to PII migration tooling or data skips the legacy credential meas
   for (const file of ['scripts/replay-pii-populations.mjs', 'benchmarks/pii-authority.json', 'benchmarks/pii-eval-migration.json', 'benchmarks/pii-eval-population-dual-run/report.json',
     'scripts/check-pii-authority.mjs', 'benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs', 'scripts/lib/pii-population-conversion.mjs',
     'scripts/run-pii-candidate-comparison.mjs', 'scripts/record-pii-candidate-comparison.mjs',
+    'scripts/lib/pii-evidence-adoption-apply.mjs', 'scripts/preflight-pii-evidence.mjs', 'scripts/run-pii-evidence-comparison.mjs', 'scripts/lib/pii-evidence-contract.mjs',
+    'scripts/prepare-pii-evidence-adoption.mjs', 'scripts/pii-evidence-publication.mjs', 'scripts/pii-evidence-publication.d.mts', 'benchmarks/pii-evidence/snapshot-pin.json',
+    'benchmarks/pii-evidence-comparison/plan.json', 'benchmarks/pii-population-policy.json', 'benchmarks/evaluation/domains/pii/evidence-comparison.mjs',
     'benchmarks/pii-candidate-comparison/receipt.json', 'benchmarks/evaluation/domains/pii/candidate-comparison.mjs']) {
     const p = plan([file]);
     assert.equal(p.legacy, false, `${file} must not select the legacy oracle`);
@@ -26,6 +29,7 @@ test('a change to PII migration tooling or data skips the legacy credential meas
 
 test('the PII oracle code, the credential measurement and an unknown path still select the legacy oracle', () => {
   for (const file of ['benchmarks/evaluation/domains/pii/accounting.ts', 'benchmarks/evaluation/domains/pii/methods/benign.ts', 'qualification/pii-v1.json', 'scripts/publish-pii-support.ts',
+    'scripts/publish-pii-support-with-evidence.mjs', 'scripts/run-pii-evidence-unknown.mjs',
     'benchmarks/run.ts', 'scanners/candidate.mjs', 'scripts/some-new-script.mjs', 'benchmarks/evaluation/domains/pii/support-v2.ts']) {
     assert.equal(plan([file]).legacy, true, `${file} must select the legacy oracle`);
   }
@@ -35,8 +39,8 @@ test('the PII oracle code, the credential measurement and an unknown path still 
 
 test('no legacy-measurement file depends on a carved-out file: the only non-test, non-web callers are publish-time PII code and workflows', () => {
   assert.ok(migrationFiles.length >= 20, 'the carve-out matches the files it names');
-  // This projection reads committed comparison evidence after measurement; it launches no scanner.
-  const allowed = new Set(['package.json', 'scripts/pii-publication-inputs.ts', 'benchmarks/support/pii-current-qualification.ts']);
+  // Canonical consumers and the publish-only wrapper are not legacy credential oracle callers.
+  const allowed = new Set(['package.json', 'scripts/pii-publication-inputs.ts', 'scripts/publish-pii-support-with-evidence.mjs', 'benchmarks/support/pii-current-qualification.ts']);
   const offenders = [];
   for (const file of migrationFiles) {
     for (const caller of callersOf(file)) {

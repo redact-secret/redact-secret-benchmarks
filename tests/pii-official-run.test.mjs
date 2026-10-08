@@ -27,15 +27,26 @@ test('the workflow is dispatch only, selects only a committed lane, and holds le
   assert.deepEqual(Object.keys(parsed.on), ['workflow_dispatch']);
   assert.deepEqual(parsed.on.workflow_dispatch.inputs, { lane: {
     description: 'Committed measurement plan to execute', type: 'choice', default: 'pinned-official',
-    options: ['pinned-official', 'candidate-comparison'],
-  } });
+    options: ['pinned-official', 'candidate-comparison', 'evidence-comparison'],
+  }, evidence_plan: { description: 'Committed public evidence plan, used only by evidence-comparison', type: 'string',
+    default: 'benchmarks/pii-evidence-comparison/plan.json' } });
   assert.deepEqual(parsed.jobs['candidate-comparison'].permissions, { contents: 'read', actions: 'read' });
   assert.equal(parsed.jobs['candidate-comparison'].uses, '$/.github/workflows/pii-candidate-comparison.yml');
-  assert.match(parsed.jobs['official-run'].if, /inputs\.lane != 'candidate-comparison'/);
-  assert.match(parsed.jobs['candidate-comparison'].if, /inputs\.lane == 'candidate-comparison'/);
+  assert.deepEqual(parsed.jobs['evidence-comparison'].permissions, { contents: 'read', actions: 'read' });
+  assert.equal(parsed.jobs['evidence-comparison'].uses, '$/.github/workflows/pii-evidence-comparison.yml');
+  const lanes = { 'official-run': 'pinned-official', 'candidate-comparison': 'candidate-comparison', 'evidence-comparison': 'evidence-comparison' };
+  for (const [job, lane] of Object.entries(lanes))
+    assert.equal(parsed.jobs[job].if, `github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane == '${lane}'`);
+  for (const requested of [...Object.values(lanes), 'unknown']) {
+    const selected = Object.keys(lanes).filter(job => parsed.jobs[job].if.endsWith(`inputs.lane == '${requested}'`));
+    assert.deepEqual(selected, Object.keys(lanes).filter(job => lanes[job] === requested));
+  }
   const header = workflow.split('\njobs:')[0];
   assert.doesNotMatch(header.replace(/^#.*$/gm, ''), /pull_request|push:|schedule:|workflow_run/);
-  assert.equal([...workflow.matchAll(/^ {4}permissions:\n((?: {6}.+\n)+)/gm)].map(m => m[1].trim()).join('|'), 'contents: read', 'one job, contents: read only');
+  assert.deepEqual(Object.keys(parsed.jobs).sort(), Object.keys(lanes).sort());
+  assert.deepEqual(parsed.jobs['official-run'].permissions, { contents: 'read' });
+  for (const job of Object.values(parsed.jobs))
+    assert.ok(Object.values(job.permissions).every(permission => permission === 'read'), 'every lane has read-only permissions');
   assert.match(workflow, /concurrency:\n {2}group: pii-official-run\n {2}cancel-in-progress: false/);
 });
 

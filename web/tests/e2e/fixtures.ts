@@ -136,7 +136,7 @@ export const ROUTES: string[] = [
   '/comparison/', '/comparison/feature/', '/comparison/feature/?rows=differences',
   '/comparison/runtime/', '/comparison/runtime/?view=speed', '/comparison/runtime/?analysis=external&domain=credentials',
   '/comparison/performance/', '/comparison/accuracy/', '/comparison/accuracy/?data=pii',
-  '/evaluation/credential/', '/evaluation/pii/',
+  '/evaluation/credential/', '/evaluation/pii/', '/evaluation/pii/evidence/',
   '/evaluation/rc/', '/evaluation/scanner/', '/evaluation/qualification/', '/evaluation/qualification/unattributed/1/',
   '/evaluation/', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/evaluation/method/${m}/`),
   ...['twin', 'benign', 'metamorphic', 'mutation', 'differential'].map(m => `/evaluation/method/${m}/checks/`),

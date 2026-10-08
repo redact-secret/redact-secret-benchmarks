@@ -247,3 +247,84 @@ separately by the reviewed regression budgets in
 [`regression-budgets.md`](regression-budgets.md). They compare a fresh summary
 with the frozen `0.1.0-beta.8` baseline, per dimension, and
 `performance-evaluation.yml` runs them right after the acceptance step.
+
+## Configuration artifact measurements (#1283)
+
+[Core #1283](https://github.com/redact-secret/redact-secret/issues/1283) uses
+`node scripts/measure-configuration-artifacts.mjs --plan /absolute/plan.json --out /outside/checkout/configuration-performance.json`
+to measure **already-built**
+immutable artifacts. It does not rebuild, install a scanner, change the evaluation
+pin or issue a support/release verdict. Obtain the core package, full/common
+WebAssembly and custom directory from the same qualified source revision. The
+custom directory is the `configuration-custom-artifact` portion of core CI's
+`configuration-journeys` artifact. Extract the core package's `dist` alongside
+those artifacts; use its own `runtime.js` and `runtime/wasm-binding.js` to bind the
+explicit standard binaries. The custom row loads its emitted `index.js`.
+
+Plan example (replace the revision and paths with the exact downloaded inputs):
+
+```json
+{
+  "schema": "configuration-performance-plan/v1",
+  "sourceCommit": "<full-40-character-source-commit>",
+  "qualificationInventory": "/inputs/artifact-inventory.json",
+  "corePackageTarball": "/inputs/redact-secret-core.tgz",
+  "provenance": { "qualificationRun": "<exact-GitHub-Actions-run-URL>", "buildEnvironment": "<recorded-build-toolchain-and-host>" },
+  "selection": ["github-token", "jwt", "generic-token"],
+  "samples": 5,
+  "iterations": 10,
+  "inputBytes": [4096, 65536],
+  "artifacts": [
+    { "id": "full", "directory": "/inputs/full", "binary": "/inputs/full/redact_secret_wasm_bg.wasm", "glue": "/inputs/full/redact_secret_wasm.js", "coreDist": "/inputs/core/package/dist" },
+    { "id": "common", "selection": ["jwt", "generic-token"], "directory": "/inputs/common", "binary": "/inputs/common/redact_secret_wasm_common_bg.wasm", "glue": "/inputs/common/redact_secret_wasm_common.js", "coreDist": "/inputs/core/package/dist" },
+    { "id": "custom", "selection": ["jwt", "generic-token"], "directory": "/inputs/custom", "binary": "/inputs/custom/redact_secret_wasm_custom_bg.wasm" }
+  ]
+}
+```
+
+All paths are absolute; binary/glue must be inside the inventoried artifact
+directory. Full, common and custom are required. To measure PII transfer and
+runtime, add **both** `full-pii` and `common-pii` rows with their PII binary/glue and
+`initializeOptions.pii` (for example `["pii:global"]`); those variants must actually report linked PII.
+Optional `baselines` rows have `id`, exact `sourceCommit`, absolute `binary`, and
+`buildEnvironment`. Supply pre-#1250 binaries for common/PII transfer comparisons,
+with their build environment reviewed separately; the tool never fabricates or
+rebuilds a missing baseline.
+
+Every artifact is sampled with all included detectors and a declared narrowed
+selection, in serial fresh processes. The custom manifest must contain exactly
+the top-level composition selection. Per-artifact `selection` is a nonempty subset;
+common cannot include `github-token`, so common and custom use the shared
+`jwt`/`generic-token` intersection for their narrowed rows. The loaded manifests' digest, variant and source revision are
+checked; a null source self-report is allowed only when the supplied qualification
+inventory binds the exact source, WASM/glue hashes and core tarball. The runtime
+files are compared with that tarball, and the report preserves the null rather
+than replacing it with a fabricated revision. Custom packaged manifest and build-report file hashes must agree.
+Complete artifact/runtime file inventories are compared before and after the run.
+Full narrowed to the custom composition is compared with custom default findings.
+Common narrowed to the shared intersection is compared with custom narrowed to that
+intersection on the same public synthetic workload, with match/mismatch and repeated-output stability recorded as observations. The report also records whether the workload exercised a custom finding; no product mismatch is hidden by dropping the completed measurements.
+Only lengths, counts and digests are retained, never input or finding values.
+
+Five repetitions are the minimum, with one warmup and fixed repeated calls per
+sample. The report retains raw samples plus nearest-rank median/p95 and maxima.
+Inputs are bounded to 1,024–262,144 bytes, 2–4 sizes, 5–20 repetitions and 1–100
+calls per timing cell. Each child has a 60-second timeout. Startup records runtime
+module import and initialization separately; initialization includes loading,
+instantiation, manifest verification and registry creation, so there is no
+registry-only timing claim. Timings also cover scan throughput and resolution of the fixed selection document
+(its bytes/digest are recorded, not a resolution input-size sweep),
+two/four identical narrowed configuration sides, session creation and 4,096-code-unit
+append chunks (session creation/finalization excluded from append timing).
+
+Memory is Node process RSS/heap/external at explicit checkpoints, **not peak RSS**
+or isolated WebAssembly memory. Categories overlap. These Node-hosted observations
+are exploratory, not browser/Workers latency or official Linux performance
+acceptance. Full brotli is measured with the existing quality-11 compressor against
+the recorded **181,882 B** baseline and **15%** byte bound; the report marks build
+environment comparability unverified. The byte arithmetic alone cannot establish
+an apples-to-apples regression verdict. Run from a clean benchmark commit with plan/output outside the checkout. The
+runner rejects a dirty benchmark tree before sampling and verifies the same clean
+commit again before writing the report. Preserve the
+qualification run, source and artifact hashes and toolchain context with final
+benchmark evidence under `evidence/1283/`.

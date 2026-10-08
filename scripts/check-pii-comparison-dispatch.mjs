@@ -24,34 +24,36 @@ function api(endpoint, missingAllowed = false) {
   }
 }
 
-export function verifyCurrentDispatch() {
-  const plan = comparisonPlan();
+export function verifyCurrentDispatch({ plan = comparisonPlan(), readApi = api, environment = process.env,
+  readDecision = file => readFileSync(resolve(file), 'utf8') } = {}) {
   if (plan.dispatch.authorised !== true || !plan.dispatch.costDecisionSha256) throw new Error('fresh-cost-decision-required');
-  if (process.env.GITHUB_REPOSITORY !== 'redact-secret/redact-secret-benchmarks') throw new Error('dispatch-repository-mismatch');
+  if (environment.GITHUB_REPOSITORY !== 'redact-secret/redact-secret-benchmarks') throw new Error('dispatch-repository-mismatch');
   const repository = 'redact-secret/redact-secret-benchmarks';
   const runs = [];
   for (let page = 1; page <= 6; page++) {
-    const result = parseStrictJson(api(`repos/${repository}/actions/workflows/pii-official-run.yml/runs?event=workflow_dispatch&per_page=100&page=${page}`));
+    // GitHub metadata permits null (for example a running job's conclusion).
+    // The stricter public-artifact format applies only to our committed decision.
+    const result = JSON.parse(readApi(`repos/${repository}/actions/workflows/pii-official-run.yml/runs?event=workflow_dispatch&per_page=100&page=${page}`));
     if (!Array.isArray(result.workflow_runs) || result.total_count > 512) throw new Error('dispatch-history-invalid');
     runs.push(...result.workflow_runs);
     if (runs.length >= result.total_count) break;
     if (page === 6) throw new Error('dispatch-history-incomplete');
   }
-  const decision = parseStrictJson(readFileSync(resolve(plan.dispatch.costDecision), 'utf8'));
+  const decision = parseStrictJson(readDecision(plan.dispatch.costDecision));
   const since = Date.parse(decision.decidedAt);
   if (!Number.isFinite(since)) throw new Error('cost-decision-date-invalid');
   const eligible = runs.filter(run => Date.parse(run.created_at) >= since);
   const decisions = new Map();
   for (const sha of new Set(eligible.map(run => run.head_sha))) {
     if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('dispatch-history-invalid');
-    const text = api(`repos/${repository}/contents/benchmarks/pii-candidate-comparison/cost-decision.json?ref=${sha}`, true);
+    const text = readApi(`repos/${repository}/contents/benchmarks/pii-candidate-comparison/cost-decision.json?ref=${sha}`, true);
     if (!text) continue;
-    const content = parseStrictJson(text);
+    const content = JSON.parse(text);
     if (content.encoding !== 'base64' || typeof content.content !== 'string' || content.content.length > 100_000) throw new Error('cost-decision-content-invalid');
     const historical = parseStrictJson(Buffer.from(content.content, 'base64').toString('utf8'));
     decisions.set(sha, comparisonDigest(historical));
   }
-  checkDispatch({ runId: process.env.GITHUB_RUN_ID, attempt: process.env.GITHUB_RUN_ATTEMPT, decisionDigest: plan.dispatch.costDecisionSha256, runs: eligible, decisions });
+  checkDispatch({ runId: environment.GITHUB_RUN_ID, attempt: environment.GITHUB_RUN_ATTEMPT, decisionDigest: plan.dispatch.costDecisionSha256, runs: eligible, decisions });
   console.log('Fresh cost decision is bound to exactly this first dispatch attempt.');
 }
 

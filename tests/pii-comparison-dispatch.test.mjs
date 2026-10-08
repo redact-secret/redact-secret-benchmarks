@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { checkDispatch } from '../scripts/check-pii-comparison-dispatch.mjs';
+import { checkDispatch, verifyCurrentDispatch } from '../scripts/check-pii-comparison-dispatch.mjs';
+import { comparisonDigest } from '../benchmarks/evaluation/domains/pii/candidate-comparison.mjs';
 
 const digest = 'a'.repeat(64);
 const current = { id: 20, head_sha: 'b'.repeat(40) };
@@ -21,4 +22,17 @@ test('an independently renewed decision does not borrow an older one', () => {
 test('missing current binding and oversized history fail closed', () => {
   assert.throws(() => checkDispatch({ ...valid(), decisions: new Map() }), /not-bound/);
   assert.throws(() => checkDispatch({ ...valid(), runs: Array(513).fill(current) }), /history-invalid/);
+});
+
+test('GitHub API null metadata is valid while the committed decision stays strict', () => {
+  const decision = { decidedAt: '2026-10-08T13:20:49Z', state: 'approved' };
+  const text = JSON.stringify(decision);
+  const plan = { dispatch: { authorised: true, costDecision: 'cost.json', costDecisionSha256: comparisonDigest(decision) } };
+  const environment = { GITHUB_REPOSITORY: 'redact-secret/redact-secret-benchmarks', GITHUB_RUN_ID: '20', GITHUB_RUN_ATTEMPT: '1' };
+  const readApi = endpoint => endpoint.includes('/runs?')
+    ? JSON.stringify({ total_count: 1, workflow_runs: [{ ...current, conclusion: null, pull_requests: [],
+      created_at: '2026-10-08T13:25:59Z', referenced_workflows: null }] })
+    : JSON.stringify({ encoding: 'base64', content: Buffer.from(text).toString('base64'), _links: { git: null } });
+  assert.doesNotThrow(() => verifyCurrentDispatch({ plan, environment, readApi, readDecision: () => text }));
+  assert.throws(() => verifyCurrentDispatch({ plan, environment, readApi, readDecision: () => '{"decidedAt":null}' }), /null-not-allowed/);
 });

@@ -396,7 +396,7 @@ test('current public paired quantities preserve both denominators, withheld delt
   expect(group.rows[1].detail).toContain('Baseline 1/4 effective N');
   expect(group.rows[1].detail).toContain('Candidate 1/3 effective N');
   expect(group.rows[1].detail).toContain('withheld (insufficient-evidence)');
-  expect(group.rows[1].detail).toContain('No pooled total or qualification verdict');
+  expect(group.rows[0].detail).toContain('no pooled total, threshold or qualification verdict');
   expect(group.rows.some(row => row.label.includes('language:en'))).toBe(false);
   expect(group.rows[2].detail).toContain('1 separate strata');
   expect(group.rows[2].link.href).toContain('baseline.oracle-plan.public-synthetic-artifact.json');
@@ -407,4 +407,33 @@ test('current public paired quantities preserve both denominators, withheld delt
   expect(officialRows.find(row => row.id === 'current-public:baseline').statusWord).toBe('Official');
   expect(officialRows.find(row => row.id === 'current-public:qualification').statusWord).toBe('Not qualified');
   expect(value.distribution).toEqual({ pending: 1, provisional: 1, stable: 0, unsupported: 0 });
+});
+
+test('local default peer observations expose bounded provenance and artifact links without a winner or sensitivity claim', () => {
+  const peerComparison = { state: 'recorded', mode: 'exploratory', publicOnly: true, qualified: false, supportClaims: false,
+    engine: { platform: 'darwin-arm64', commit: 'e'.repeat(40) }, withheld: ['sensitivity', 'action', 'context-discrimination'],
+    peers: [{ peer: 'synthetic-peer', version: '0.0.0', limitations: ['default-only'], identity: { artifactDigest: 'a'.repeat(64), configurationDigest: 'b'.repeat(64) },
+      measurement: { populations: [{ label: 'oracle-plan', populationCounts: { authoredCases: 4 } }] } }] };
+  const group = resolvePiiView(pii({ peerComparison })).status.groups.find(group => group.title === 'Local default peer observations');
+  expect(group.rows[0]).toMatchObject({ statusWord: 'Exploratory', detail: expect.stringContaining('sensitivity, action, context-discrimination') });
+  expect(group.rows[0].detail).toContain('No qualification, ranking or pooled total');
+  expect(group.rows[1].detail).toContain('default-only');
+  expect(group.rows[2].value).toBe('4 authored memberships');
+  expect(group.rows[2].link.href).toContain('synthetic-peer.oracle-plan.public-synthetic-artifact.json');
+  const absent = resolvePiiView(pii({ peerComparison: { state: 'absent', reason: 'synthetic-absent' } })).status.groups.find(group => group.title === 'Local default peer observations');
+  expect(absent.rows[0]).toMatchObject({ status: 'not-measured', detail: 'synthetic-absent' });
+  expect(absent.rows[0].value).toBeUndefined();
+});
+
+test('current pending families do not inherit historical provisional status', () => {
+  const currentQualification = { state: 'recorded', sourceCommit: 'c'.repeat(40), publicMeasurement: { state: 'recorded' },
+    distribution: { stable: 0, provisional: 0, pending: 2, unsupported: 0 },
+    families: [{ family: 'synthetic:a', status: 'pending', reasonCodes: ['protected-path-not-operational'] },
+      { family: 'synthetic:b', status: 'pending', reasonCodes: ['profile-cost-unmeasured'] }] };
+  const view = resolvePiiView(pii({ currentQualification }));
+  const group = view.status.groups.find(group => group.title.startsWith('Current candidate qualification'));
+  expect(group.rows[0]).toMatchObject({ statusWord: 'Not qualified', detail: expect.stringContaining('Public measurement recorded; preparation recorded') });
+  expect(group.rows.slice(1).every(row => row.statusWord === 'Pending')).toBe(true);
+  expect(group.rows[1].detail).toBe('protected-path-not-operational');
+  expect(rowsOf(view).find(row => row.id === 'family-status').label).toContain('historical');
 });

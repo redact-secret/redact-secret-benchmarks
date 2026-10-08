@@ -32,6 +32,8 @@ import { once, readJsonIfPresent, REPO_ROOT } from './repo';
 import { piiEvalMeasurementFrom } from '../../scripts/pii-publication-inputs';
 import { validatePiiPeerReadiness, type PiiPeerReadiness } from '../../benchmarks/evaluation/domains/pii/peer-readiness.mjs';
 import { loadPiiCandidateComparison, type PiiCandidateComparison } from '../../benchmarks/evaluation/domains/pii/candidate-comparison.mjs';
+import { loadPiiPeerComparison, type PiiPeerComparison } from '../../benchmarks/evaluation/domains/pii/peer-comparison.mjs';
+import { buildPiiCurrentQualification, type PiiCurrentQualification } from '../../benchmarks/support/pii-current-qualification';
 import type { RunLoad } from './run';
 import type { KnownGaps } from './findings';
 
@@ -232,7 +234,25 @@ export interface PiiAuthorityStamp {
 }
 
 export type PiiPeerReadinessLoad = { state: 'recorded'; inventory: PiiPeerReadiness } | { state: 'absent' | 'invalid'; reason: string };
-export type PiiEvaluation = PiiEvidence & { authority: PiiAuthorityStamp; peerReadiness?: PiiPeerReadinessLoad; candidateComparison?: PiiCandidateComparison };
+export type PiiEvaluation = PiiEvidence & { authority: PiiAuthorityStamp; peerReadiness?: PiiPeerReadinessLoad; candidateComparison?: PiiCandidateComparison;
+  peerComparison?: PiiPeerComparison; currentQualification?: PiiCurrentQualification };
+
+async function loadLocalPeerComparison(): Promise<PiiPeerComparison> {
+  try {
+    const record = await readJsonIfPresent<unknown>('benchmarks/pii-peer-comparison/record.json');
+    if (!record) return loadPiiPeerComparison({ record });
+    const populationPins = await readJsonIfPresent<unknown>('benchmarks/pii-eval-population-pins.json');
+    const populationPlan = await readJsonIfPresent<unknown>('benchmarks/pii-candidate-comparison/plan.json');
+    const peers = ['flare-redact', 'openredaction'];
+    const pins = await Promise.all(peers.map(async peer => ({ peer,
+      text: await readFile(path.join(REPO_ROOT, `benchmarks/pii-peer-comparison/${peer}.pins.json`), 'utf8') })));
+    const artifacts = await Promise.all(peers.flatMap(peer => PII_VIEW_IDS.map(async view => ({ peer, view,
+      text: await readFile(path.join(REPO_ROOT, `benchmarks/pii-peer-comparison/${peer}.${view}.public-synthetic-artifact.json`), 'utf8') }))));
+    return loadPiiPeerComparison({ record, populationPins, populationPlan, pins, artifacts });
+  } catch {
+    return { state: 'invalid', reason: 'local-peer-inputs-unreadable', mode: 'exploratory', publicOnly: true, qualified: false, supportClaims: false };
+  }
+}
 
 async function loadCurrentPublicComparison(): Promise<PiiCandidateComparison> {
   try {
@@ -267,19 +287,21 @@ export function loadPiiEvaluation(): Promise<PiiEvaluation> {
   return once('pii-evaluation', async () => {
     const peerReadiness = await loadPeerReadiness();
     const candidateComparison = await loadCurrentPublicComparison();
+    const peerComparison = await loadLocalPeerComparison();
+    const currentQualification = await buildPiiCurrentQualification(REPO_ROOT);
     const state = await loadPiiAuthority();
     const stamp: PiiAuthorityStamp = {
       authority: state.authority, from: state.from, source: state.file?.legacy.source ?? 'No PII authority file is committed, so the legacy pipeline is the authority.',
       unmet: state.unmet, total: state.total, protectedPending: state.protectedPending, authorisation: state.authorisation, decidedBy: state.file?.legacy.oracle.decidedBy ?? null, reviewOn: state.file?.legacy.oracle.reviewOn ?? null,
     };
-    if (state.refusal) return { state: 'not-recorded', reason: state.refusal, authority: stamp, peerReadiness, candidateComparison } satisfies PiiEvaluation;
+    if (state.refusal) return { state: 'not-recorded', reason: state.refusal, authority: stamp, peerReadiness, candidateComparison, peerComparison, currentQualification } satisfies PiiEvaluation;
     const evidence = await loadPiiEvidence();
     if (state.authority === 'new') {
       const measurement = evidence.state === 'not-recorded' ? null : evidence.piiEvalMeasurement;
       if (!measurement || !measurement.populations.some(p => p.productProjection))
-        return { state: 'not-recorded', reason: `The PII authority is new and no validated pii-eval schema 1.2 projection backs this build.${evidence.state === 'not-recorded' ? ` ${evidence.reason}` : ''} There is no fallback to the legacy pipeline.`, authority: stamp, peerReadiness, candidateComparison } satisfies PiiEvaluation;
+        return { state: 'not-recorded', reason: `The PII authority is new and no validated pii-eval schema 1.2 projection backs this build.${evidence.state === 'not-recorded' ? ` ${evidence.reason}` : ''} There is no fallback to the legacy pipeline.`, authority: stamp, peerReadiness, candidateComparison, peerComparison, currentQualification } satisfies PiiEvaluation;
     }
-    return { ...evidence, authority: stamp, peerReadiness, candidateComparison } as PiiEvaluation;
+    return { ...evidence, authority: stamp, peerReadiness, candidateComparison, peerComparison, currentQualification } as PiiEvaluation;
   });
 }
 

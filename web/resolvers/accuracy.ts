@@ -573,7 +573,7 @@ function piiPanel(ctx: Context, query: PairQuery): PairPanel {
         ...base, first: FIRST_PII,
         notMeasured: {
           title: 'Not measured',
-          text: `No validated same-population personal-data peer accuracy artifact is recorded, and the runtime comparison does not cover ${name || 'this tool'}. No accuracy value is inferred.`,
+          text: `This runtime panel has no personal-data accuracy measurement, and the runtime comparison does not cover ${name || 'this tool'}. No accuracy value is inferred. Separate bounded local type/range observations are listed on the PII evaluation page when validated.`,
         },
       },
     };
@@ -624,10 +624,10 @@ function piiPanel(ctx: Context, query: PairQuery): PairPanel {
     key, query: q, isDefault, differences: {},
     props: {
       ...base, pair, first: FIRST_PII,
-      preview: 'Runtime preview, not peer accuracy measurement. Public pii-eval populations exist, but no reviewed peer adapter and same-population accuracy artifacts are recorded. These are the made-up texts from the runtime comparison, counted by text. Reserved or example values follow authored neutral expectations in an accuracy run; changed output cannot establish truth.',
+      preview: 'Runtime preview, not peer accuracy measurement. These are the made-up texts from the runtime comparison, counted by text. Separate bounded local default type/range observations are listed on the PII evaluation page when validated. Reserved or example values follow authored neutral expectations; changed output cannot establish truth.',
       questions,
       sources: [
-        { text: 'Peer accuracy is not measured. Reviewed family/range/sensitivity mappings, offset conformance vectors, pinned configurations and same-population pii-eval artifacts are required.', link: { href: 'https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/specs/pii-peer-accuracy-readiness.md', label: 'Neutral expectations and missing peer evidence' } },
+        { text: 'Full peer accuracy qualification remains unready. Bounded local default type/range observations preserve unsupported sensitivity, action and context quantities as withheld.', link: { href: '/evaluation/pii/', label: 'Local peer scope and public artifacts' } },
         { text: `redact-secret ${us.version} with ${setting!.selectors.join(' and ') || 'no PII selectors'}, and ${name} ${them.version} at its defaults, each on the same made-up texts, run ${isoDate(run.generatedAt)} (${run.path}). The inputs are described by kind only; their text is never published.` },
         { text: '“Hidden” means every value in the text came back replaced. Partly hidden counts as “Left some or all”.' },
         { text: 'The same texts and outcomes, with times, are on the runtime comparison.', link: { href: '/comparison/runtime/', label: 'Open the runtime comparison' } },

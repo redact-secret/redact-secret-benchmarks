@@ -287,7 +287,7 @@ test('a pair with no shared data says so, a peer that did not complete is not me
   assert.equal(credentials[0].props.notMeasured.command, 'npm run bench');
   assert.equal(credentials[0].isDefault, true);
   const pii = empty.panels.find(p => p.query.domain === 'pii');
-  assert.match(pii.props.notMeasured.text, /No validated same-population personal-data peer accuracy artifact is recorded/);
+  assert.match(pii.props.notMeasured.text, /This runtime panel has no personal-data accuracy measurement/);
   assert.match(pii.props.notMeasured.text, /No accuracy value is inferred/);
 });
 

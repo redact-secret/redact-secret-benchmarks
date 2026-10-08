@@ -57,6 +57,8 @@ const ROLES: Record<string, Record<string, Entry>> = {
   'services/domains.ts': {
     'benchmarks/evaluation/domains/pii/peer-readiness.mjs': PII('the reviewed neutral-expectation and peer-adapter readiness inventory'),
     'benchmarks/evaluation/domains/pii/candidate-comparison.mjs': PII('the independent public baseline/candidate measurement sidecar'),
+    'benchmarks/evaluation/domains/pii/peer-comparison.mjs': PII('the bounded local default family/type/range observations'),
+    'benchmarks/support/pii-current-qualification': PII('the fresh exact-target disposition, kept separate from historical protected status'),
     'benchmarks/evaluation/domains/pii/context-languages': PII('its context languages'), 'benchmarks/evaluation/domains/pii/jurisdictions': PII('its jurisdictions'),
     'benchmarks/evaluation/domains/pii/profile': PII('its profile'), 'benchmarks/evaluation/domains/pii/protected-support-binding': PII('the reviewed protected binding'),
     'benchmarks/evaluation/domains/pii/support-semantics': PII('its support semantics'), 'benchmarks/evaluation/domains/pii/support-v2': PII('its support matrix v2'),

@@ -189,7 +189,7 @@ export const piiPage: AccuracyPairComparisonProps = {
     theirs: { kind: 'Runtime library', name: 'Libsample', version: '4.5.6', ran: 'Defaults · published package', recorded: 'Run 2000-01-02' },
   },
   first: 'redact-secret finds personal data only when PII is switched on, and by its own rules it leaves values that standards reserve for examples alone. Other tools make other choices. Where they differ, that is a different rule, not a grade.',
-  preview: 'Runtime preview, not peer accuracy measurement. Public pii-eval populations exist; reviewed peer adapters and same-population accuracy artifacts are not recorded. These are synthetic runtime texts counted by text, with no accuracy percentage.',
+  preview: 'Runtime preview, not peer accuracy measurement. These are synthetic runtime texts counted by text, with no accuracy percentage. Separate bounded local default type/range observations are listed on the PII evaluation page when validated.',
   questions: [
     {
       id: 'story.pii1', position: '1 / 3', title: 'Personal data that looks real', description: '8 texts. Made-up emails, cards, bank accounts and phone numbers.', expect: 'Expected: hidden',

@@ -359,10 +359,36 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
     status.push({ title: 'PII peer accuracy readiness', rows: readiness.state === 'recorded'
       ? readiness.inventory.peers.map(peer => ({ id: `pii-peer:${peer.scannerId}`, label: `${peer.scannerId} ${peer.version}`,
           status: 'not-measured' as const, statusWord: 'Not measured',
-          detail: `No reviewed family, range and sensitivity adapter exists at evaluator ${identityText(readiness.inventory.reviewedEvaluator.commit)}. Required: ${peer.required.join(', ')}. The runtime preview remains a count of changed text, not accuracy evidence.`,
+          detail: `Full family, range and sensitivity qualification remains unready at evaluator ${identityText(readiness.inventory.reviewedEvaluator.commit)}. Required: ${peer.required.join(', ')}. Bounded local type/range observations are separate; the runtime preview counts changed text.`,
           link: { label: 'Neutral expectations and coverage gaps', href: blob('docs/specs/pii-peer-accuracy-readiness.md'), external: true } }))
       : [{ id: 'pii-peer:unavailable', label: 'Peer accuracy', status: 'not-measured', statusWord: 'Not measured', detail: readiness.reason }],
     });
+  }
+  if (pii.peerComparison) {
+    const peers = pii.peerComparison;
+    status.push({ title: 'Local default peer observations', rows: peers.state !== 'recorded'
+      ? [{ id: 'local-peer:unavailable', label: 'Family, type and range observations', status: 'not-measured', statusWord: 'Unavailable', detail: peers.reason }]
+      : [{ id: 'local-peer:scope', label: 'Bounded local measurement', status: 'info', statusWord: 'Exploratory',
+          detail: `${peers.engine.platform}, evaluator ${identityText(peers.engine.commit)}. Default family/type/range observations on the frozen public populations. Withheld: ${peers.withheld.join(', ')}. No qualification, ranking or pooled total.`,
+          link: { label: 'Local execution and provenance', href: blob('benchmarks/pii-peer-comparison/record.json'), external: true } },
+        ...peers.peers.flatMap(peer => [
+          { id: `local-peer:${peer.peer}`, label: `${peer.peer} ${peer.version}`, status: 'info' as const, statusWord: 'Defaults',
+            detail: `Limits: ${peer.limitations.join('; ')}. Package SHA-256 ${identityText(peer.identity.artifactDigest)}. Configuration SHA-256 ${identityText(peer.identity.configurationDigest)}.` },
+          ...peer.measurement.populations.map(population => ({ id: `local-peer:${peer.peer}:${population.label}`, label: `${peer.peer} · ${population.label}`,
+            status: 'info' as const, statusWord: 'Exploratory', value: `${int(population.populationCounts.authoredCases)} authored memberships`,
+            detail: `Family, language and control-class quantities retain their own denominators and withheld reasons in this validated artifact. No comparison with the official product run is inferred.`,
+            link: { label: 'Full local public artifact', href: blob(`benchmarks/pii-peer-comparison/${peer.peer}.${population.label}.public-synthetic-artifact.json`), external: true } })),
+        ])],
+    });
+  }
+  if (pii.currentQualification) {
+    const current = pii.currentQualification;
+    status.push({ title: 'Current candidate qualification, separate from historical status', rows: [
+      { id: 'current-pii:status', label: 'Current exact target', status: 'not-measured', statusWord: 'Not qualified',
+        value: distributionText(current.distribution),
+        detail: `Source ${identityText(current.sourceCommit)}. Public measurement ${current.publicMeasurement.state}; preparation ${current.state}. Protected execution and remaining gates are unresolved. Historical provisional status does not transfer.` },
+      ...current.families.map(family => ({ id: `current-pii:${family.family}`, label: family.family, status: 'not-measured' as const, statusWord: 'Pending', detail: family.reasonCodes.join(', ') })),
+    ] });
   }
   if (pii.candidateComparison) {
     const comparison = pii.candidateComparison;
@@ -392,11 +418,11 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
             navigation: [{ label: `${family} · ${population.view} · baseline/candidate`, href: familyHref(anchor) }],
             rows: [{ id: anchor, anchor, label: 'Same authored population', status: 'info', statusWord: comparison.mode === 'official' ? 'Official' : 'Exploratory',
               value: `${int(population.memberships)} authored memberships`,
-              detail: `${population.population.populationId}; SHA-256 ${identityText(population.population.populationDigest)}. Counts remain separate for this family and stratum. Replays add no samples; no threshold or verdict.` },
+              detail: `${population.population.populationId}; SHA-256 ${identityText(population.population.populationDigest)}. Counts remain separate for this family and stratum. Replays add no samples; no pooled total, threshold or qualification verdict.` },
             ...familyMetrics.filter(metric => metric.stratum === 'family').map(metric => ({ id: `${anchor}:${metric.key}`,
               label: `${quantityOf('pii-v1', metric.metricId).name} · ${metric.stratum} (pii-v1:${metric.metricId})`,
               status: metric.delta === null ? 'not-measured' as const : 'info' as const, statusWord: metric.delta === null ? 'Delta withheld' : 'Recorded',
-              detail: `Baseline ${comparisonMetricText(metric.baseline)}. Candidate ${comparisonMetricText(metric.candidate)}. ${metric.delta === null ? 'Delta unavailable: one or both quantities are withheld or not measured' : `Candidate minus baseline point delta ${Number(metric.delta.toFixed(6))}`}. No pooled total or qualification verdict.`,
+              detail: `Baseline ${comparisonMetricText(metric.baseline)}. Candidate ${comparisonMetricText(metric.candidate)}. ${metric.delta === null ? 'Delta unavailable: one or both quantities are withheld or not measured' : `Candidate minus baseline point delta ${Number(metric.delta.toFixed(6))}`}.`,
             })),
             ...(['baseline', 'candidate'] as const).map(side => ({ id: `${anchor}:${side}:strata`, label: `${side} language and control-class strata`,
               status: 'info' as const, statusWord: 'Recorded',

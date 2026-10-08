@@ -26,6 +26,22 @@ beforeEach(() => { vi.unstubAllEnvs(); });
 const STATUSES = ['pending', 'provisional', 'stable', 'unsupported'];
 
 describe('PII evaluation', () => {
+  test('bounded peer observations and fresh current qualification keep their own source and scope', async () => {
+    const pii = await (await domains()).loadPiiEvaluation();
+    expect(pii.peerComparison).toMatchObject({ state: 'recorded', mode: 'exploratory', qualified: false, supportClaims: false,
+      scope: 'local-default-family-type-and-range-only' });
+    expect(pii.currentQualification).toMatchObject({ state: 'recorded', qualified: false, supportClaims: false });
+    expect(pii.currentQualification?.distribution.pending).toBe(pii.currentQualification?.families.length);
+    expect(pii.currentQualification?.families.every(family => family.status === 'pending')).toBe(true);
+  });
+
+  test('missing or unreadable local peer inputs expose no peer counts', async () => {
+    const absent = await (await domains(overlay({ 'benchmarks/pii-peer-comparison/record.json': null }))).loadPiiEvaluation();
+    expect(absent.peerComparison).toMatchObject({ state: 'absent', reason: 'local-peer-comparison-not-recorded' });
+    const invalid = await (await domains(overlay({ 'benchmarks/pii-peer-comparison/flare-redact.pins.json': null }))).loadPiiEvaluation();
+    expect(invalid.peerComparison).toMatchObject({ state: 'invalid', reason: 'local-peer-inputs-unreadable' });
+  });
+
   test('is rebuilt from the reviewed binding: families, a distribution that recounts, views bound to the report', async () => {
     const pii = await (await domains()).loadPiiEvaluation();
     if (pii.state !== 'recorded') throw new Error(`the committed PII binding did not validate: ${pii.state}`);

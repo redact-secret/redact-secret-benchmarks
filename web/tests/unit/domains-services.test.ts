@@ -220,3 +220,23 @@ describe('credential evaluation', () => {
     expect(credential.catalog.fixtures.length).toBeGreaterThan(0);
   });
 });
+
+
+test('current public comparison has independent explicit absent and malformed states', async () => {
+  const absent = await (await domains(overlay({
+    'benchmarks/pii-candidate-comparison/plan.json': null,
+    'benchmarks/pii-candidate-comparison/receipt.json': null,
+  }))).loadPiiEvaluation();
+  expect(absent.candidateComparison).toMatchObject({ state: 'absent', publicOnly: true, qualified: false, supportClaims: false });
+  const invalid = await (await domains(overlay({
+    'benchmarks/pii-candidate-comparison/plan.json': '{bad-json',
+  }))).loadPiiEvaluation();
+  expect(invalid.candidateComparison).toMatchObject({ state: 'invalid', reason: 'comparison-inputs-unreadable', qualified: false });
+});
+
+test('peer readiness is independently fail-closed for absent and invented measured data', async () => {
+  const absent = await (await domains(overlay({ 'benchmarks/pii-peer-readiness-v1.json': null }))).loadPiiEvaluation();
+  expect(absent.peerReadiness).toMatchObject({ state: 'absent' });
+  const invalid = await (await domains(overlay({ 'benchmarks/pii-peer-readiness-v1.json': JSON.stringify({ measurementState: 'measured' }) }))).loadPiiEvaluation();
+  expect(invalid.peerReadiness).toMatchObject({ state: 'invalid' });
+});

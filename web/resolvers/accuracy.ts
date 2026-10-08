@@ -573,7 +573,7 @@ function piiPanel(ctx: Context, query: PairQuery): PairPanel {
         ...base, first: FIRST_PII,
         notMeasured: {
           title: 'Not measured',
-          text: `No personal-data accuracy corpus has been run against other tools, and the recorded runtime comparison does not cover ${name || 'this tool'}. Nothing is shown rather than a guess.`,
+          text: `No validated same-population personal-data peer accuracy artifact is recorded, and the runtime comparison does not cover ${name || 'this tool'}. No accuracy value is inferred.`,
         },
       },
     };
@@ -624,9 +624,10 @@ function piiPanel(ctx: Context, query: PairQuery): PairPanel {
     key, query: q, isDefault, differences: {},
     props: {
       ...base, pair, first: FIRST_PII,
-      preview: 'Preview, not yet a measurement. No personal-data accuracy corpus has been run against other tools. These are the made-up texts from the runtime comparison, counted by text. The page shows Not measured here until a corpus plan with peer runs exists.',
+      preview: 'Runtime preview, not peer accuracy measurement. Public pii-eval populations exist, but no reviewed peer adapter and same-population accuracy artifacts are recorded. These are the made-up texts from the runtime comparison, counted by text. Reserved or example values follow authored neutral expectations in an accuracy run; changed output cannot establish truth.',
       questions,
       sources: [
+        { text: 'Peer accuracy is not measured. Reviewed family/range/sensitivity mappings, offset conformance vectors, pinned configurations and same-population pii-eval artifacts are required.', link: { href: 'https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/specs/pii-peer-accuracy-readiness.md', label: 'Neutral expectations and missing peer evidence' } },
         { text: `redact-secret ${us.version} with ${setting!.selectors.join(' and ') || 'no PII selectors'}, and ${name} ${them.version} at its defaults, each on the same made-up texts, run ${isoDate(run.generatedAt)} (${run.path}). The inputs are described by kind only; their text is never published.` },
         { text: '“Hidden” means every value in the text came back replaced. Partly hidden counts as “Left some or all”.' },
         { text: 'The same texts and outcomes, with times, are on the runtime comparison.', link: { href: '/comparison/runtime/', label: 'Open the runtime comparison' } },
@@ -672,4 +673,3 @@ export function resolveAccuracyPage({ catalog, run, profiles, runtime, toolNames
   for (const id of options.pii.length ? options.pii : ['']) panels.push(piiPanel(ctx, { domain: 'pii', with: id, level: 'T1', scope: 'all', peers: false }));
   return { options, panels, diff: model?.diff };
 }
-

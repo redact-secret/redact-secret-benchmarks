@@ -312,3 +312,87 @@ describe('the PII authority row (#666)', () => {
     expect(live.detail).not.toContain('pending and not operational');
   });
 });
+
+
+test('family anchors distinguish scanners and survive value changes; every row uses its own scanner identity', () => {
+  const pop = { populationId: 'public-one', schemaVersion: '1.4', population: { populationDigest: 'a'.repeat(64) },
+    productBinding: { state: 'other-product', candidateSourceCommit: 'b'.repeat(40) },
+    scanners: [
+      { scannerId: 'one', metrics: [], identity: { product: { kind: 'candidate' }, scannerVersion: '1.0.0' } },
+      { scannerId: 'two', metrics: [], identity: { product: { kind: 'released' }, scannerVersion: '2.0.0' } },
+    ], productProjection: { requiredViews: ['oracle-plan'], rosterDigest: 'c'.repeat(64), rows: ['one', 'two'].map(scannerId => ({
+      family: 'pii:global:email', view: 'oracle-plan', mode: 'official', binding: { scannerId }, counts: { authoredCases: 2, variants: 2 }, metrics: [], methodCoverage: [],
+    })) } };
+  const input = { complete: true, build: { commit: 'd'.repeat(40), binarySha256: 'e'.repeat(64) }, populations: [pop] };
+  const groupOf = value => resolvePiiView(pii({ piiEvalMeasurement: value })).status.groups.find(g => g.title.includes('product projection'));
+  const group = groupOf(input);
+  const rows = group.rows.slice(1);
+  expect(rows[0].detail).toContain('Candidate one 1.0.0');
+  expect(rows[1].detail).toContain('Released two 2.0.0');
+  expect(rows[1].detail).toContain('Source commit Not recorded');
+  expect(rows[0].link.href).toContain('b'.repeat(40));
+  expect(rows[1].link).toBeUndefined();
+  expect(new Set(rows.map(row => row.id)).size).toBe(2);
+  expect(new Set(rows.map(row => row.anchor)).size).toBe(2);
+  expect(group.navigation.map(link => decodeURIComponent(link.href.split('#')[1]))).toEqual(rows.map(row => row.anchor));
+  const changed = structuredClone(input); changed.populations[0].productProjection.rows[0].counts.authoredCases = 7;
+  expect(groupOf(changed).rows[1].anchor).toBe(rows[0].anchor);
+});
+
+test('historical b11 quantities keep their own denominator and threshold and never qualify the public measurement', () => {
+  const metric = { id: 'context-discrimination-rate', numerator: 1, denominator: 2, threshold: 0.5, direction: 'lower', status: 'not-met',
+    value: { point: 0.5, bound: 0.1, n: 2, direction: 'lower' } };
+  const value = pii({ families: [family('pii:global:email', { views: { ...views, 'oracle-plan': { ...views['oracle-plan'], metrics: [metric, { ...metric, id: 'range-collateral-rate', denominator: 0, value: null, status: 'not-applicable' }] } } })] });
+  const group = resolvePiiView(value).status.groups.find(group => group.title.includes('historical benchmark'));
+  expect(group.rows[1].label).toContain('b11:context-discrimination-rate');
+  expect(group.rows[1].detail).toContain('twin pairs');
+  expect(group.rows[1].detail).toContain('Historical b11 threshold 0.5');
+  expect(group.rows[2]).toMatchObject({ status: 'not-measured', statusWord: 'not-applicable' });
+  expect(group.rows[2].detail).toContain('records no interval');
+  expect(group.rows[0].detail).toContain('not the current public pii-v1 measurement');
+  const without = resolvePiiView({ ...value, state: 'public-recorded', piiEvalMeasurement: null, protectedReason: 'Unbound' });
+  expect(without.status.groups.some(group => group.title.includes('historical benchmark'))).toBe(false);
+});
+
+
+test('current comparison absent or invalid remains separate from historical qualification', () => {
+  for (const state of ['absent', 'invalid']) {
+    const view = resolvePiiView(pii({ candidateComparison: { state, reason: 'comparison-plan-mismatch', publicOnly: true, supportClaims: false, qualified: false } }));
+    const row = rowsOf(view).find(row => row.id === 'current-public-comparison');
+    expect(row.status).toBe('not-measured');
+    expect(row).not.toHaveProperty('value');
+    expect(row.detail).toContain('comparison-plan-mismatch');
+    expect(row.detail).toContain('No current activation');
+    expect(rowsOf(view).find(row => row.id === 'family-status').label).toContain('historical');
+  }
+});
+
+test('current public paired quantities preserve both denominators, withheld delta and installed-only activation', () => {
+  const metric = (n, numerator, withheld = false) => ({ metric: { id: 'sensitive-miss-rate' }, status: withheld ? 'withheld' : 'measured', effectiveN: n,
+    counts: { numerator, measured: n, eligible: n + 1, unresolved: 1, notMeasured: 0 },
+    value: withheld ? { state: 'withheld', reason: 'insufficient-evidence' } : { state: 'measured', point: { mantissa: 25, scale: 2 }, bound: { mantissa: 4, scale: 1 } } });
+  const product = (sourceCommit, version) => ({ sourceCommit, version, packageTreeSha256: 'a'.repeat(64) });
+  const activation = { surfaces: [{ surface: 'node-addon', checks: [{ requestedSelectors: [] }, { requestedSelectors: ['pii:global', 'pii:us'] }] },
+    { surface: 'node-forced-wasm', checks: [{ requestedSelectors: ['pii:global'] }] }] };
+  const comparison = { state: 'recorded', publicOnly: true, supportClaims: false, qualified: false, mode: 'exploratory',
+    baseline: product('b'.repeat(40), '1.0.0'), candidate: product('c'.repeat(40), '1.1.0-beta.1'), activation: { baseline: activation, candidate: activation },
+    validator: { state: 'not-measured', reason: 'product-validator-primitive-seam-unavailable' },
+    populations: [{ view: 'oracle-plan', memberships: 7, population: { populationId: 'synthetic-current', populationDigest: 'd'.repeat(64) },
+      metrics: [{ key: 'email/family/sensitive-miss-rate', family: 'pii:global:email', stratum: 'family', metricId: 'sensitive-miss-rate',
+        baseline: metric(4, 1), candidate: metric(3, 1, true), delta: null }] }] };
+  const value = pii({ candidateComparison: comparison });
+  const view = resolvePiiView(value);
+  const rows = rowsOf(view);
+  expect(rows.find(row => row.id === 'current-public:candidate').link.href).toContain('c'.repeat(40));
+  expect(rows.find(row => row.id === 'current-public:baseline:activation').detail).toContain('PII off');
+  expect(rows.find(row => row.id === 'current-public:baseline:activation').detail).toContain('no trusted qualification activation');
+  const group = view.status.groups.find(group => group.title.includes('current public comparison') && group.title.includes('email'));
+  expect(group.rows[1]).toMatchObject({ status: 'not-measured', statusWord: 'Delta withheld' });
+  expect(group.rows[1].detail).toContain('Baseline 1/4 effective N');
+  expect(group.rows[1].detail).toContain('Candidate 1/3 effective N');
+  expect(group.rows[1].detail).toContain('withheld (insufficient-evidence)');
+  expect(group.rows[1].detail).toContain('No pooled total or qualification verdict');
+  expect(rows.find(row => row.id === 'current-public:validator').status).toBe('not-measured');
+  expect(rows.find(row => row.id === 'current-public:qualification').statusWord).toBe('Not qualified');
+  expect(value.distribution).toEqual({ pending: 1, provisional: 1, stable: 0, unsupported: 0 });
+});

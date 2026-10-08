@@ -30,6 +30,8 @@ import { loadCredentialSource, type CredentialPipeline } from './credential-sour
 import { loadFindings } from './findings';
 import { once, readJsonIfPresent, REPO_ROOT } from './repo';
 import { piiEvalMeasurementFrom } from '../../scripts/pii-publication-inputs';
+import { validatePiiPeerReadiness, type PiiPeerReadiness } from '../../benchmarks/evaluation/domains/pii/peer-readiness.mjs';
+import { loadPiiCandidateComparison, type PiiCandidateComparison } from '../../benchmarks/evaluation/domains/pii/candidate-comparison.mjs';
 import type { RunLoad } from './run';
 import type { KnownGaps } from './findings';
 
@@ -39,7 +41,11 @@ export type PiiViewId = 'oracle-plan' | 'qualification-plan' | 'diagnostic-balan
 export const PII_VIEW_IDS: PiiViewId[] = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'];
 
 /** The cases of one view, split by what the author expects. */
-export interface PiiViewCounts { cases: number; sensitive: number; nonSensitive: number; notEstablished: number }
+export interface PiiQualificationMetric {
+  id: string; numerator: number; denominator: number; threshold: number; direction: 'upper' | 'lower'; status: string;
+  value: { point: number; bound: number; n: number; direction: 'upper' | 'lower' } | null;
+}
+export interface PiiViewCounts { cases: number; sensitive: number; nonSensitive: number; notEstablished: number; metrics?: PiiQualificationMetric[] }
 
 export interface PiiFamilyRecord {
   id: string;
@@ -66,7 +72,7 @@ export type PiiEvidence =
       state: 'recorded';
       mode: 'candidate' | 'published';
       core: { commit: string; versionString: string | null };
-      route: { id: string; record: string; maximumStatus: string };
+      route: { id: string; record: string; maximumStatus: string; report?: string; reportCommitment?: string };
       profile: { id: string; version: number; evaluationProfile: string; domainAccountingVersion: string };
       distribution: Record<string, number>;
       families: PiiFamilyRecord[];
@@ -89,7 +95,7 @@ export type PiiEvidence =
     }
   | { state: 'not-recorded'; reason: string };
 
-interface RawView { view: string; cases: number; sensitive: { cases: number }; nonSensitive: { cases: number }; notEstablished: { cases: number } }
+interface RawView { view: string; cases: number; sensitive: { cases: number }; nonSensitive: { cases: number }; notEstablished: { cases: number }; metrics?: PiiQualificationMetric[] }
 interface RawReportFamily { family: string; views: { reviewed: RawView[] } }
 
 function viewsOf(report: { artifactCommitment?: string; families?: RawReportFamily[] } | undefined, commitment: string, family: string): PiiFamilyRecord['views'] {
@@ -100,7 +106,9 @@ function viewsOf(report: { artifactCommitment?: string; families?: RawReportFami
   for (const id of PII_VIEW_IDS) {
     const view = raw.find(v => v.view === id);
     if (!view) return null;
-    out[id] = { cases: view.cases, sensitive: view.sensitive.cases, nonSensitive: view.nonSensitive.cases, notEstablished: view.notEstablished.cases };
+    out[id] = { cases: view.cases, sensitive: view.sensitive.cases, nonSensitive: view.nonSensitive.cases, notEstablished: view.notEstablished.cases,
+      ...(view.metrics ? { metrics: view.metrics.map(metric => ({ id: metric.id, numerator: metric.numerator, denominator: metric.denominator,
+        threshold: metric.threshold, direction: metric.direction, status: metric.status, value: metric.value ? { ...metric.value } : null })) } : {}) };
   }
   return out;
 }
@@ -183,7 +191,8 @@ function loadPiiEvidence(): Promise<PiiEvidence> {
         state: 'recorded',
         mode: candidate.released ? 'published' : 'candidate',
         core: { commit: route.coreCommit, versionString: candidate.versionString ?? null },
-        route: { id: route.id, record: route.record, maximumStatus: route.maximumStatus },
+        route: { id: route.id, record: route.record, maximumStatus: route.maximumStatus,
+          report: `${route.evidenceDirectory}/pii-beta11-report-v2.json`, reportCommitment: route.reportCommitment },
         profile,
         distribution: { ...matrix.distribution },
         families,
@@ -219,7 +228,31 @@ export interface PiiAuthorityStamp {
   reviewOn: string | null;
 }
 
-export type PiiEvaluation = PiiEvidence & { authority: PiiAuthorityStamp };
+export type PiiPeerReadinessLoad = { state: 'recorded'; inventory: PiiPeerReadiness } | { state: 'absent' | 'invalid'; reason: string };
+export type PiiEvaluation = PiiEvidence & { authority: PiiAuthorityStamp; peerReadiness?: PiiPeerReadinessLoad; candidateComparison?: PiiCandidateComparison };
+
+async function loadCurrentPublicComparison(): Promise<PiiCandidateComparison> {
+  try {
+    const plan = await readJsonIfPresent<unknown>('benchmarks/pii-candidate-comparison/plan.json');
+    const receipt = await readJsonIfPresent<unknown>('benchmarks/pii-candidate-comparison/receipt.json');
+    if (!plan || !receipt) return loadPiiCandidateComparison({ plan, receipt });
+    const artifacts = await Promise.all((['baseline', 'candidate'] as const).flatMap(side => PII_VIEW_IDS.map(async view => ({ side, view,
+      text: await readFile(path.join(REPO_ROOT, `benchmarks/pii-candidate-comparison/${side}.${view}.public-synthetic-artifact.json`), 'utf8'),
+    }))));
+    return loadPiiCandidateComparison({ plan, receipt, artifacts });
+  } catch {
+    return { state: 'invalid', reason: 'comparison-inputs-unreadable', publicOnly: true, supportClaims: false, qualified: false };
+  }
+}
+
+async function loadPeerReadiness(): Promise<PiiPeerReadinessLoad> {
+  try {
+    const value = await readJsonIfPresent<unknown>('benchmarks/pii-peer-readiness-v1.json');
+    return value ? { state: 'recorded', inventory: validatePiiPeerReadiness(value) } : { state: 'absent', reason: 'No reviewed peer adapter readiness inventory is recorded.' };
+  } catch {
+    return { state: 'invalid', reason: 'The peer adapter readiness inventory did not validate; no peer measurement is inferred.' };
+  }
+}
 
 /**
  * The PII evaluation under the committed PII authority. `legacy` shows the benchmark-scorer evidence as the authority and the pii-eval
@@ -228,19 +261,21 @@ export type PiiEvaluation = PiiEvidence & { authority: PiiAuthorityStamp };
  */
 export function loadPiiEvaluation(): Promise<PiiEvaluation> {
   return once('pii-evaluation', async () => {
+    const peerReadiness = await loadPeerReadiness();
+    const candidateComparison = await loadCurrentPublicComparison();
     const state = await loadPiiAuthority();
     const stamp: PiiAuthorityStamp = {
       authority: state.authority, from: state.from, source: state.file?.legacy.source ?? 'No PII authority file is committed, so the legacy pipeline is the authority.',
       unmet: state.unmet, total: state.total, protectedPending: state.protectedPending, authorisation: state.authorisation, decidedBy: state.file?.legacy.oracle.decidedBy ?? null, reviewOn: state.file?.legacy.oracle.reviewOn ?? null,
     };
-    if (state.refusal) return { state: 'not-recorded', reason: state.refusal, authority: stamp } satisfies PiiEvaluation;
+    if (state.refusal) return { state: 'not-recorded', reason: state.refusal, authority: stamp, peerReadiness, candidateComparison } satisfies PiiEvaluation;
     const evidence = await loadPiiEvidence();
     if (state.authority === 'new') {
       const measurement = evidence.state === 'not-recorded' ? null : evidence.piiEvalMeasurement;
       if (!measurement || !measurement.populations.some(p => p.productProjection))
-        return { state: 'not-recorded', reason: `The PII authority is new and no validated pii-eval schema 1.2 projection backs this build.${evidence.state === 'not-recorded' ? ` ${evidence.reason}` : ''} There is no fallback to the legacy pipeline.`, authority: stamp } satisfies PiiEvaluation;
+        return { state: 'not-recorded', reason: `The PII authority is new and no validated pii-eval schema 1.2 projection backs this build.${evidence.state === 'not-recorded' ? ` ${evidence.reason}` : ''} There is no fallback to the legacy pipeline.`, authority: stamp, peerReadiness, candidateComparison } satisfies PiiEvaluation;
     }
-    return { ...evidence, authority: stamp } as PiiEvaluation;
+    return { ...evidence, authority: stamp, peerReadiness, candidateComparison } as PiiEvaluation;
   });
 }
 

@@ -17,3 +17,9 @@ export const Default: Story = {};
 export const NotMeasured: Story = { args: viewNotRecorded.status };
 
 export const Phone: Story = { globals: { viewport: { value: 'mobile1', isRotated: false } } };
+
+export const FamilyNavigation: Story = { args: { groups: [{ title: 'Synthetic public family values',
+  navigation: [{ label: 'Email · oracle-plan · synthetic-scanner', href: '/evaluation/pii/#synthetic-family' }],
+  rows: [{ id: 'synthetic-family', anchor: 'synthetic-family', label: 'Email · oracle-plan', status: 'info', statusWord: 'Exploratory',
+    value: '2 / 4 effective N', detail: 'Synthetic pii-v1 occurrence quantity; not a qualification verdict.' }],
+}] } };

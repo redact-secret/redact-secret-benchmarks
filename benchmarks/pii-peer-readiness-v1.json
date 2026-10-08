@@ -1,0 +1,85 @@
+{
+  "schema": "pii-peer-readiness/1",
+  "supportClaims": false,
+  "measurementState": "not-measured",
+  "reviewedEvaluator": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "e99128f5633c5905497342623e249ad90d902800",
+    "inventorySha256": "5a277e52d961d1b4c82a062b84372fee1b3a4d17b00f831c5f46bec77f478db9",
+    "configurationSha256": "438262d5e41dea09a55d228eccc39bd39199ab7cd796e0b8dfae69235c1cea80"
+  },
+  "expectationRules": [
+    "authored-before-observation",
+    "type-and-sensitivity-independent",
+    "reserved-control-requires-authority",
+    "unknown-remains-unresolved",
+    "no-output-derived-truth",
+    "same-population-and-protocol"
+  ],
+  "populations": [
+    {
+      "view": "oracle-plan",
+      "populationId": "b11-population-v2-oracle-plan",
+      "populationDigest": "7b39dab9154e33f2d2b946a5ca87b9c7aec50511337fa1dad2c4660744ae6839",
+      "method": "schema-only"
+    },
+    {
+      "view": "qualification-plan",
+      "populationId": "b11-population-v2-qualification-plan",
+      "populationDigest": "631d616d86d360cae4e839dfb884b8862da623f76050b204a08209c4b21f36f3",
+      "method": "schema-only"
+    },
+    {
+      "view": "diagnostic-balanced",
+      "populationId": "b11-population-v2-diagnostic-balanced",
+      "populationDigest": "d0ce54f06089ae0c4969c00f958a241324c01b938df41df3eae75497e18447ab",
+      "method": "schema-only"
+    },
+    {
+      "view": "benign-heavy-stress",
+      "populationId": "b11-population-v2-benign-heavy-stress",
+      "populationDigest": "3a8e7ac637174d6a37b65ef0f8ae51110ff7d5e3e90c4b0298badb3d29d8e8e2",
+      "method": "schema-only"
+    }
+  ],
+  "peers": [
+    {
+      "scannerId": "flare-redact",
+      "version": "1.6.1",
+      "adapterState": "unavailable",
+      "accuracyState": "not-measured",
+      "reason": "throughput-only-no-reviewed-pii-mapping",
+      "required": [
+        "reviewed-family-range-sensitivity-mapping",
+        "offset-conformance-vectors",
+        "pinned-configuration-and-artifacts",
+        "same-population-execution"
+      ]
+    },
+    {
+      "scannerId": "openredaction",
+      "version": "1.1.5",
+      "adapterState": "unavailable",
+      "accuracyState": "not-measured",
+      "reason": "throughput-only-no-reviewed-pii-mapping",
+      "required": [
+        "reviewed-family-range-sensitivity-mapping",
+        "offset-conformance-vectors",
+        "pinned-configuration-and-artifacts",
+        "same-population-execution"
+      ]
+    }
+  ],
+  "coverageGaps": [
+    "method-restricted-metrics-not-applicable",
+    "range-less-expectations-unresolved",
+    "no-reserved-non-sensitive-ssn-or-iban-namespace",
+    "no-independent-diversity-review"
+  ],
+  "sources": [
+    "docs/specs/pii-identity-oracle.md",
+    "docs/specs/pii-benign-collision-evidence.md",
+    "docs/specs/pii-eval-integration.md",
+    "docs/specs/pii-populations.md"
+  ]
+}

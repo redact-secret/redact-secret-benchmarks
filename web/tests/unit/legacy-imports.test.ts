@@ -31,7 +31,8 @@ const ROLES: Record<string, Record<string, Entry>> = {
   'resolvers/evaluation-checks.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/evaluation-hub.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'resolvers/evaluation-methods.ts': { 'benchmarks/shared/evaluation-types.ts': 'keep' },
-  'resolvers/domains.ts': { 'benchmarks/evaluation/domains/pii/metric-basis.mjs': PII('its metric basis') },
+  'resolvers/domains.ts': { 'benchmarks/evaluation/domains/pii/metric-basis.mjs': PII('its metric basis'),
+    'benchmarks/evaluation/domains/pii/candidate-comparison.mjs': PII('the public comparison metric types, no runtime import') },
   'resolvers/family-detail.ts': { 'benchmarks/support/taxonomy': 'keep' },
   'resolvers/rc-artifact.ts': { 'benchmarks/qualification/candidate-diff': 'keep' },
   'resolvers/rc.ts': { 'benchmarks/shared/evaluation-model.ts': oracle('classifies a saved-baseline candidate report (`changeRows`, `candidatePairs`), the evidence `eval:candidate` writes under `legacy`') },
@@ -54,6 +55,8 @@ const ROLES: Record<string, Record<string, Entry>> = {
   },
   'services/credential-source.ts': { 'benchmarks/accounting/index': 'keep', 'benchmarks/lib/fixture-metadata': 'keep', 'benchmarks/types': move('`AccountingConfig` still lives in the legacy engine\'s type module') },
   'services/domains.ts': {
+    'benchmarks/evaluation/domains/pii/peer-readiness.mjs': PII('the reviewed neutral-expectation and peer-adapter readiness inventory'),
+    'benchmarks/evaluation/domains/pii/candidate-comparison.mjs': PII('the independent public baseline/candidate measurement sidecar'),
     'benchmarks/evaluation/domains/pii/context-languages': PII('its context languages'), 'benchmarks/evaluation/domains/pii/jurisdictions': PII('its jurisdictions'),
     'benchmarks/evaluation/domains/pii/profile': PII('its profile'), 'benchmarks/evaluation/domains/pii/protected-support-binding': PII('the reviewed protected binding'),
     'benchmarks/evaluation/domains/pii/support-semantics': PII('its support semantics'), 'benchmarks/evaluation/domains/pii/support-v2': PII('its support matrix v2'),

@@ -287,13 +287,15 @@ test('a pair with no shared data says so, a peer that did not complete is not me
   assert.equal(credentials[0].props.notMeasured.command, 'npm run bench');
   assert.equal(credentials[0].isDefault, true);
   const pii = empty.panels.find(p => p.query.domain === 'pii');
-  assert.match(pii.props.notMeasured.text, /Nothing is shown rather than a guess/);
+  assert.match(pii.props.notMeasured.text, /No validated same-population personal-data peer accuracy artifact is recorded/);
+  assert.match(pii.props.notMeasured.text, /No accuracy value is inferred/);
 });
 
 test('personal data reads the recorded texts by line, with counts and no percentage, and both directions listed', () => {
   const { panels } = resolveAccuracyPage({ catalog, run, profiles, runtime });
   const pii = panels.find(p => p.key === 'pii.lib.-.-.-').props;
-  assert.match(pii.preview, /^Preview, not yet a measurement\./);
+  assert.match(pii.preview, /^Runtime preview, not peer accuracy measurement\./);
+  assert.match(pii.preview, /changed output cannot establish truth/);
   const q = pii.questions[0];
   assert.deepEqual(q.results.map(r => [r.name, r.figure]), [['redact-secret', '2 of 3'], ['lib', '2 of 3']]);
   assert.deepEqual(q.differences.columns.map(c => [c.title, c.groups.flatMap(g => g.files.map(f => f.slug))]), [['Hidden by redact-secret, not hidden by lib', ['Phone']], ['Hidden by lib, not hidden by redact-secret', ['Card']]]);

@@ -8,7 +8,7 @@ import { Stack } from '../../../../components/layout';
 import { Breadcrumb, PageHead } from '../../../../components/page';
 import { FixtureDetail } from '../../../../components/report';
 import { useBuildData } from '../../../../lib/build-data';
-import { isSuiteRecordsFile, resolveFixtureRecord, type SuiteRecordsFile } from '../../../../resolvers/fixtures';
+import { isRecordsOfBuild, resolveFixtureRecord, type SuiteRecordsFile } from '../../../../resolvers/fixtures';
 import { failureText } from '../../dataFailure';
 import styles from './Suite.module.css';
 
@@ -19,6 +19,9 @@ export interface FixtureViewProps {
   src: string;
   /** How many fixtures the suite has, for the "no such fixture" message. */
   fixtureCount: number;
+  /** The suite's id and the build identity its records file must carry (#595): a file of another suite or build is refused. */
+  suite: string;
+  identity: string;
 }
 
 const crumbsOf = (suiteTitle: string, suiteHref: string) => [{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: suiteTitle, href: suiteHref }];
@@ -57,10 +60,10 @@ export function FixtureSkeleton({ suiteTitle, suiteHref, id }: { suiteTitle: str
  * a failure says why and offers a retry. The server HTML holds the suite's rows and the
  * skeleton; this view shows in their place once the address names a fixture (Suite.module.css).
  */
-export function FixtureView({ suiteTitle, suiteHref, src, fixtureCount }: FixtureViewProps) {
+export function FixtureView({ suiteTitle, suiteHref, src, fixtureCount, suite, identity }: FixtureViewProps) {
   const id = useSearchParams().get('fixture');
-  // A file from another build than this page has another number of fixtures: refuse it.
-  const isThisBuild = useMemo(() => (value: unknown): value is SuiteRecordsFile => isSuiteRecordsFile(value) && value.records.length === fixtureCount, [fixtureCount]);
+  // A file of another suite or another build than this page (another run, another number of fixtures, duplicated ids): refuse it.
+  const isThisBuild = useMemo(() => (value: unknown): value is SuiteRecordsFile => isRecordsOfBuild(value, { suite, fixtureCount, identity }), [suite, fixtureCount, identity]);
   const load = useBuildData(id ? src : null, isThisBuild, 'now');
   const file = load.data;
   const record = useMemo(() => (id && file ? file.records.find(r => r.id === id) : undefined), [id, file]);

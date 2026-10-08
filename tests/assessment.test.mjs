@@ -186,7 +186,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // and the 15 new sk_org_ policy-floor positives are policy/T3 (+15).
   // #583 (registry pin 3b1a5aa): the seven second-wave detectors (xata … fly) scored as policy while their contract was a pending T3 placeholder (+21);
   // slices 583b-583h gave each a T1 contract, so those 21 coverage positives are must-redact/T1 now and leave this tally.
-  assert.deepEqual(tally['policy/T3'], { files: 256, spans: 256 });
+  // Ory session/OAuth2 and Baseten registry-only intake adds nine policy positives.
+  assert.deepEqual(tally['policy/T3'], { files: 265, spans: 265 });
   assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -258,7 +259,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // for the context-gated aws-secret-access-key (4; its 39-character near-miss is a length twin).
   // redact-secret#1030 adds ten sk_org_ policy-floor controls to stripe-token (no body, 19 bytes, `_`/`-` in the body, a wider identifier, rk_org_): +10.
   // #583 (registry pin 3b1a5aa) adds 40: prefix-only, short-body, mask, reference and label-prose for the eight second-wave registry detectors.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 724);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 733);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

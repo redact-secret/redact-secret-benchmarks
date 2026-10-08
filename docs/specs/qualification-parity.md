@@ -130,8 +130,11 @@ npm run qualification:view -- --artifacts <dir>   # <dir>/public-evidence-snapsh
 
 npm run qualification:parity -- --legacy-status results-output/support-status.json --legacy-results public/results \
   --view public/results/qualification-v1.json --artifacts <dir> \
-  --public-snapshot <dir>/public-evidence-snapshot/evidence/credential-eval-corpus-snapshot.json [--strict]
+  --public-snapshot <dir>/public-evidence-snapshot/evidence/credential-eval-corpus-snapshot.json \
+  --change-report docs/generated/evidence-adoption/snapshot-2026.10.06.4.json [--strict]
 ```
+
+Use the active evidence adoption's committed `candidate.changeReport` in `benchmarks/evidence-adoption.json`; the example names the currently accepted snapshot's report. It supplies the changed cases and twins whose method assertions the comparison reconciles, so omitting it produces an incomplete comparison. The artifact root must also include the population product-derived inputs used to build the view (including `regression-corpus/inputs/case-metadata.json` for project twin-scope copies). Prepare those alongside the retained artifacts without changing the immutable archive.
 
 The same inputs write the same bytes: no clock, host or path is in the report. The report reads the view's counts, families and per-population artifact identities; the per-case rows the view
 gained for #606 (`populations[].cases`) are not read, and regenerating the report from the same canonical artifacts after they were added reproduced it byte for byte. The report names each compared artifact's

@@ -3,12 +3,15 @@
  *
  *   npm run qualification:parity -- --legacy-status results-output/support-status.json --legacy-results public/results \
  *     --view public/results/qualification-v1.json --artifacts <dir> [--public-snapshot <credential-eval-corpus-snapshot.json>] \
+ *     --change-report <active-adoption-change-report.json> \
  *     [--out docs/generated/qualification-parity] [--strict]
  *
  * Inputs: the legacy support status (`npm run eval:classify`) and per-suite reports (`npm run bench`), the new
  * qualification view and the official RunArtifacts (`npm run qualification:view`), and, to compare the public
  * population fixture by fixture, the evidence snapshot the public artifact was run on (its `identity` must equal the
- * artifact's evidence). Writes `<out>.json` and `<out>.md`; the same inputs write the same bytes (no clock, host or
+ * artifact's evidence), and the active adoption's committed changeReport for changed-case and twin attribution.
+ * The artifact root also carries the population product-derived inputs used to build the view; retained artifacts remain immutable.
+ * Writes `<out>.json` and `<out>.md`; the same inputs write the same bytes (no clock, host or
  * path). Exits 1 under --strict when a difference is unexplained. It compares; it changes no ledger and no status.
  * The comparison logic and its three classes are `benchmarks/qualification/parity.ts`; the method is
  * `docs/specs/qualification-parity.md`.

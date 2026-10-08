@@ -103,9 +103,11 @@ Product-owned inputs derived from the corpus. They name axes and attribution and
 
 Twin scope: credential-evidence now gives the 0 cross-provider twins the accepted map named their family (grouping change), so the engine scopes them itself and the product map has nothing left to map; the project twin cases stay in the regression population. Unchanged policy parts: `attributionFallback`, `axisCoverage`, `criteria`, `differentialPeers`, `fixtureProfilesVersion`, `id`, `methodsRequired`, `populations`, `rules`, `scanner`; changed (derived from the corpus): `axisOverlay`, `components`, `ledgerRekey`, `revision`, `twinScope`. The review occurrence ids of alpha.15 all differ from alpha.5 (the peer configuration identity is part of the id), which is why the re-key is regenerated; every legacy decision still maps (4,268 of 4,268).
 
-## 4. Legacy-oracle parity (the authority gate)
+## 4. Legacy-oracle parity (current regenerated authority gate)
 
-`qualification:parity --strict` on the accepted view against the legacy oracle at the same release (@redact-secret/core 0.1.0-beta.12): 43,363 values compared, 36,468 equal, 6,895 attributed to a named structural cause, **0 unexplained**. Causes: canonical-evidence-membership 274, corpus-twin-change 12, engine-twin-scoring 33, family-not-in-accepted-evidence 232, legacy-id-rekey 156, observation-resolved-by-release 1, optional-scanner-not-measured 5963, owner-ledger-settlement 2, pending-not-scored 171, policy-corpus-bounded 9, review-occurrence-identity 2, twin-scope-vocabulary 40.
+This section reads the current regenerated parity artifact; the adoption comparison and its measured product above remain historical. Legacy product: `@redact-secret/core@0.1.0-beta.14`. New-path product: `@redact-secret/core@0.1.0-beta.14`.
+
+`qualification:parity --strict`: 43,529 values compared, 36,590 equal, 6,939 attributed to a named structural cause, **0 unexplained**. Causes: canonical-evidence-membership 274, corpus-twin-change 12, engine-twin-scoring 33, family-not-in-accepted-evidence 276, legacy-id-rekey 156, observation-resolved-by-release 1, optional-scanner-not-measured 5963, owner-ledger-settlement 2, pending-not-scored 171, policy-corpus-bounded 9, review-occurrence-identity 2, twin-scope-vocabulary 40.
 
 ## What is not measured
 

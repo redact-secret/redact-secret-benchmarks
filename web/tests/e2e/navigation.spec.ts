@@ -1,4 +1,4 @@
-import { BASE, FAMILY, FIXTURE, SUITE, expect, fixtureReady, test } from './fixtures';
+import { BASE, FAMILY, FIXTURE, FIXTURE_TITLE, SUITE, expect, fixtureReady, test } from './fixtures';
 
 /** Set a marker on the window; if it is still there after a navigation, the page was not reloaded. */
 const markWindow = (page: import('@playwright/test').Page) => page.evaluate(() => { (window as unknown as { __kept: boolean }).__kept = true; });
@@ -111,7 +111,7 @@ test.describe('addresses the export does not contain', () => {
     await page.goto(`${BASE}/fixture/${SUITE}--${FIXTURE}?show=all#legacy`);
     await expect(page).toHaveURL(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}&show=all#legacy`);
     await fixtureReady(page);
-    await expect(page.getByRole('heading', { level: 1, name: FIXTURE })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: FIXTURE_TITLE })).toBeVisible();
   });
 
   test('an old fixture link to a fixture the suite does not hold is a 404 that names the suite and links to it', async ({ page }) => {

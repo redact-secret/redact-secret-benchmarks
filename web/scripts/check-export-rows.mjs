@@ -302,6 +302,8 @@ for (const table of tables) {
 
 // A suite's records: every fixture with the corpus bytes and expected spans, one packed row per scanner.
 const corpora = new Map();
+// The titles this repository authors for its product-owned fixtures (#593): shown exactly as authored, and no other fixture has one on this pipeline.
+const authoredText = (await readJson('benchmarks/fixture-descriptions.json')).fixtures;
 for (const c of categories) {
   const slugs = slugsOfSuite.get(c.id) ?? [];
   const where = `data/fixtures/${c.id}/records.json`;
@@ -335,10 +337,17 @@ for (const c of categories) {
     if (record.sha !== sha || textOf(record.group) !== source?.group || textOf(record.axis) !== source?.contextAxis || textOf(record.action) !== source?.expectedAction
       || textOf(record.milestone) !== entry?.provenance?.milestone || textOf(record.unscoped) !== entry?.unscopedReason
       || JSON.stringify(gotScenarios) !== JSON.stringify(wantScenarios) || JSON.stringify(record.families) !== JSON.stringify(entry?.familyIds)) differs++;
+    const authored = Object.hasOwn(authoredText, slug) ? authoredText[slug] : undefined;
+    if (textOf(record.title) !== authored?.title || textOf(record.about) !== authored?.description) differs++;
+    // The release beside the milestone is the index's own `provenance.release` (#595), never derived from the milestone.
+    if (textOf(record.release) !== entry?.provenance?.release) differs++;
   }
-  if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans, hashes, labels or the run's rows`);
+  if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans, hashes, labels, authored titles or the run's rows`);
   if (run && file.shared.run?.date !== summaryForData?.generatedAt?.slice(0, 10)) fail(`${where}: shared.run.date ${file.shared.run?.date} is not the run's date`);
   if (!run && file.shared.run) fail(`${where} names a run, but none was published`);
+  const { identity, ...shared } = file.shared;
+  if (identity !== `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`) fail(`${where}: records identity does not bind its metadata and run payload`);
+  if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: the run records no rule or action per range, and the records file must say so`);
   const html = await readHtml(`report/fixtures/${c.id}`);
   if (!text(html).includes(`${int(slugs.length)} fixture`)) fail(`/report/fixtures/${c.id}/ does not state ${slugs.length} fixtures`);
   if (!html.includes(`fixtures/${c.id}/records.json`)) fail(`/report/fixtures/${c.id}/ does not name its records file`);
@@ -380,8 +389,8 @@ for (const c of categories) {
     const where = `family page ${family.id}`;
     const research = entries.get(family.id);
     if (!research) { fail(`${where}: no dossier entry`); continue; }
-    // The research record is the dossier's own frontmatter.
-    const record = `Research ${VERDICT[research.verdict]} Evidence level ${research.tier ? `${research.tier} · ${TIER[research.tier]}` : 'Not recorded'} Researched ${research.researchedAt ?? 'Not recorded'}`;
+    // Frozen dossier presentation fields are labelled apart from canonical research. Values still come from the dossier's own frontmatter.
+    const record = `Dossier verdict ${VERDICT[research.verdict]} Dossier evidence level ${research.tier ? `${research.tier} · ${TIER[research.tier]}` : 'Not recorded'} Dossier researched ${research.researchedAt ?? 'Not recorded'}`;
     if (!page.includes(record)) fail(`${where} does not state its research record "${record}"`);
     for (const source of research.sources) if (!page.includes(new URL(source).host)) fail(`${where} does not list the dossier source ${source}`);
     for (const ref of research.issues) if (!page.includes(ref)) fail(`${where} does not list the research issue ${ref}`);

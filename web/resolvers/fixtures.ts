@@ -8,7 +8,9 @@
  * [start, end). The marks follow the run's own outcomes: a reported range is a bar, hatched where the
  * row's outcome for the span it touches is `PARTIAL`; secret bytes no range covers are a dashed frame.
  * Nothing is re-scored, and matched values of a scanner's raw output are never read (a row holds ranges
- * only). A value the corpus does not hold is stated as "Not recorded", never filled in.
+ * only). A value the corpus does not hold is stated as "Not recorded", never filled in. An authored title and description
+ * (#593) are shown only as their owner recorded them, with who that is: credential-evidence's case record for a public case, this
+ * repository's overlay for a product-owned fixture (docs/specs/fixture-metadata.md); otherwise the page says none is recorded.
  */
 import type { BuiltFixture, CatalogFixture, CatalogSuite } from '../services/catalog';
 import type { RowResult, RunScanner } from '../services/run';
@@ -110,7 +112,7 @@ export function packRow(row: RowResult): string {
   return [
     row.spanOutcomes ? row.spanOutcomes.map(o => OUTCOME_LETTER[o]).join('') || '=' : '-',
     row.flagged == null ? '-' : row.flagged ? '1' : '0',
-    (row.actual ?? []).map(r => `${r.start}-${r.end}`).join(','),
+    (row.actual ?? []).map(r => `${r.start}-${r.end}${['redact', 'warn', 'block', 'allow'].includes(r.action ?? '') ? `:${r.action}` : ''}`).join(','),
     row.leakedBytes ?? '', row.collateralBytes ?? '', row.findings ?? '', ...(row.actual === undefined && row.observed !== undefined ? [row.observed] : []),
   ].join('|');
 }
@@ -120,7 +122,7 @@ export function unpackRow(text: string): RowResult {
   return {
     ...(outcomes !== '-' ? { spanOutcomes: outcomes === '=' ? [] : [...outcomes].map(letter => LETTER_OUTCOME[letter]) } : {}),
     ...(flagged !== '-' ? { flagged: flagged === '1' } : {}),
-    ...(observed !== undefined && observed !== '' ? { observed: Number(observed) } : { actual: ranges ? ranges.split(',').map(pair => { const [start, end] = pair.split('-'); return { start: Number(start), end: Number(end) }; }) : [] }),
+    ...(observed !== undefined && observed !== '' ? { observed: Number(observed) } : { actual: ranges ? ranges.split(',').map(pair => { const [range, action] = pair.split(':'); const [start, end] = range.split('-'); return { start: Number(start), end: Number(end), ...(['redact', 'warn', 'block', 'allow'].includes(action) ? { action: action as 'redact' | 'warn' | 'block' | 'allow' } : {}) }; }) : [] }),
     ...(leaked !== '' ? { leakedBytes: Number(leaked) } : {}),
     ...(collateral !== '' ? { collateralBytes: Number(collateral) } : {}),
     ...(findings !== '' ? { findings: Number(findings) } : {}),
@@ -158,14 +160,19 @@ export interface FixtureRecord {
   twins: string[];
   /** One entry per `SuiteShared.scanners`: what the scanner recorded (`packRow`), or `null` when it holds no row. */
   rows: (string | null)[];
-  /** Indexes into `SuiteShared.texts`: the corpus's group label, where in a file the fixture sits (`sdk-config`), the action a policy fixture expects, why no family owns it, the milestone that added it. */
+  /** Indexes into `SuiteShared.texts`: the corpus's group label, where in a file the fixture sits (`sdk-config`), the action a policy fixture expects, why no family owns it, the milestone that added it and the release the index records with it (#595). */
   group?: number;
   axis?: number;
   action?: number;
   unscoped?: number;
   milestone?: number;
+  release?: number;
   /** Indexes into `SuiteShared.scenarios`. */
   scenarios: number[];
+  /** Indexes into `SuiteShared.texts`: the authored title and one-sentence description (#593), and who authored them. Absent when neither owner records one. */
+  title?: number;
+  about?: number;
+  aboutBy?: number;
   /** The first 12 hex digits of the sha256 of the file's UTF-8 bytes. */
   sha: string;
 }
@@ -186,10 +193,45 @@ export interface SuiteShared {
   /** The run the rows come from: its date and which build of the product it measured. */
   run?: { date: string; mode: 'published' | 'candidate'; commit?: string };
   runProblem?: string;
+  /** Why the owner's titles are not shown for this build (a projection of another snapshot): said beside "What it tests" (#593). */
+  textProblem?: string;
+  /**
+   * SHA256 of the records and shared metadata, excluding this identity field. The fixture page refuses a file of another suite or another
+   * build (#595), so a cached file of an earlier deploy is never drawn under this page's rows.
+   */
+  identity?: string;
+  /**
+   * Why a historical row lacks a scanner rule/action (#595). Recorded allowlisted actions travel with ranges;
+   * these unavailable defaults never supply an action from expected spans or a detector name.
+   */
+  reported?: { rule: 'unavailable'; action: 'unavailable'; reason: string };
 }
 
 /** What `data/fixtures/<suite>/records.json` holds: the records and the shared text they refer to. */
 export interface SuiteRecordsFile { records: FixtureRecord[]; shared: SuiteShared }
+
+/**
+ * A records file is this page's own (#595): the suite it names, the number of records the page was built with, and the build identity the page
+ * carries. A file of another suite or build is refused, never drawn under this page's rows. Pure; the client island calls it on the parsed file.
+ */
+export const isRecordsOfBuild = (value: unknown, expected: { suite: string; fixtureCount: number; identity?: string }): value is SuiteRecordsFile =>
+  isSuiteRecordsFile(value) && value.shared.category === expected.suite && value.records.length === expected.fixtureCount
+  && (expected.identity === undefined || value.shared.identity === expected.identity) && !!value.shared.suite && typeof value.shared.suite.title === 'string'
+  && ['detectorTitles', 'familyNames', 'providerNames'].every(k => !!value.shared[k as 'familyNames'] && typeof value.shared[k as 'familyNames'] === 'object')
+  && Array.isArray(value.shared.followUps)
+  && value.shared.assessments.every(a => !!a && Array.isArray(a.sources))
+  && value.shared.scanners.every(s => !!s && typeof s.id === 'string' && typeof s.name === 'string' && Array.isArray(s.observed))
+  && value.shared.texts.every(t => typeof t === 'string')
+  && value.records.every(r => r !== null && typeof r === 'object' && typeof r.id === 'string'
+    && typeof r.path === 'string' && typeof r.content === 'string' && typeof r.kind === 'string' && typeof r.tier === 'string'
+    && Array.isArray(r.expected) && r.expected.every(e => !!e && Number.isSafeInteger(e.start) && Number.isSafeInteger(e.end) && e.start >= 0 && e.end > e.start)
+    && ['detectors', 'families', 'twins'].every(k => Array.isArray(r[k as 'detectors']) && r[k as 'detectors'].every(v => typeof v === 'string'))
+    && Number.isSafeInteger(r.assessment) && r.assessment >= 0 && r.assessment < value.shared.assessments.length
+    && Array.isArray(r.rows) && r.rows.length === value.shared.scanners.length && r.rows.every(v => v === null || typeof v === 'string')
+    && Array.isArray(r.scenarios) && r.scenarios.every(i => Number.isSafeInteger(i) && i >= 0 && i < value.shared.scenarios.length)
+    && Array.isArray(r.followUps) && r.followUps.every(i => Number.isSafeInteger(i) && i >= 0 && i < value.shared.followUps.length)
+    && ['group', 'axis', 'action', 'unscoped', 'milestone', 'release', 'title', 'about', 'aboutBy'].every(k => { const i = r[k as 'title']; return i === undefined || (Number.isSafeInteger(i) && i >= 0 && i < value.shared.texts.length); }))
+  && new Set(value.records.map(r => r.id)).size === value.records.length;
 
 /** Shape guard for a loaded records file: the parts `resolveFixtureRecord` reads exist. */
 export const isSuiteRecordsFile = (value: unknown): value is SuiteRecordsFile => {
@@ -207,6 +249,9 @@ export interface SuiteBuild {
   scanners: (Pick<RunScanner, 'id' | 'name' | 'version' | 'mode' | 'status' | 'rows'> & { observations?: { observedAt: string }[] })[];
   run?: SuiteShared['run'];
   runProblem?: string;
+  textProblem?: string;
+  identity?: string;
+  reported?: SuiteShared['reported'];
   /** Findings, each with the fixtures it rests on and its milestone label. */
   findings: { number: number; url: string; milestone: string; fixtures: string[] }[];
   detectorTitles: Map<string, string>;
@@ -261,7 +306,9 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       if (at === undefined) { at = scenarios.length; scenarios.push({ id, title: input.scenarioTitles.get(id) ?? id }); scenarioIndex.set(id, at); }
       return at;
     });
-    const group = text(built.group), axis = text(built.contextAxis), action = text(built.expectedAction), unscoped = text(entry.unscopedReason), milestone = text(entry.milestone);
+    const group = text(built.group), axis = text(built.contextAxis), action = text(built.expectedAction), unscoped = text(entry.unscopedReason), milestone = text(entry.milestone), release = text(entry.release);
+    // A title is shown only with its description and its author: a half-recorded pair is not recorded.
+    const authored = built.title && built.description && built.describedBy ? { title: text(built.title)!, about: text(built.description)!, aboutBy: text(built.describedBy)! } : {};
     return {
       id: entry.id, path: built.path, kind: entry.kind, tier: entry.tier,
       ...(built.assessment.contract ? { contract: built.assessment.contract } : {}),
@@ -275,8 +322,9 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       twins: twinsOf.get(entry.id) ?? [],
       rows: input.scanners.map(s => { const row = s.rows?.get(entry.slug); return row ? packRow(row) : null; }),
       ...(group !== undefined ? { group } : {}), ...(axis !== undefined ? { axis } : {}), ...(action !== undefined ? { action } : {}),
-      ...(unscoped !== undefined ? { unscoped } : {}), ...(milestone !== undefined ? { milestone } : {}),
+      ...(unscoped !== undefined ? { unscoped } : {}), ...(milestone !== undefined ? { milestone } : {}), ...(release !== undefined ? { release } : {}),
       scenarios: scenarioIds,
+      ...authored,
       sha: (input.hashes.get(entry.slug) ?? '').slice(0, 12),
     };
   });
@@ -289,6 +337,9 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       assessments, followUps, detectorTitles, familyNames, providerNames, scenarios, texts,
       ...(input.run ? { run: input.run } : {}),
       ...(input.runProblem ? { runProblem: input.runProblem } : {}),
+      ...(input.textProblem ? { textProblem: input.textProblem } : {}),
+      ...(input.identity ? { identity: input.identity } : {}),
+      ...(input.reported ? { reported: input.reported } : {}),
     },
   };
 }
@@ -566,7 +617,7 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
       label, role: `role: ${s.role ?? 'secret'}`,
       expected: { range: rangeText(s), size: sizeText(s), ...(s.envelope ? { envelope: `${rangeText(s.envelope)}${s.envelope.reason ? `: ${s.envelope.reason.replace(/\.\s*$/, '')}` : ''}` } : {}) },
       reported,
-      reportedNote: productRow ? (hasBytes ? 'none reported' : 'offsets not recorded') : 'not measured',
+      reportedNote: productRow ? (productRow?.actual !== undefined ? 'none reported' : 'offsets not recorded') : 'not measured',
       ...(isSecret
         ? (outcome ? { outcome: verdictsOf(record.kind, { spanOutcomes: [outcome] })[0], outcomeNote: SPAN_NOTE[outcome] } : productRow ? { outcomeNote: 'no outcome recorded' } : { outcome: { status: 'not-measured' as const, label: 'Not measured' } })
         : { outcomeNote: 'context, not scored' }),
@@ -641,6 +692,9 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
   const axis = text(record.axis);
   const action = text(record.action);
   const milestone = text(record.milestone);
+  const release = text(record.release);
+  const title = text(record.title);
+  const about = title ? text(record.about) : undefined;
   const scenarioTitles = record.scenarios.map(i => shared.scenarios[i]?.title).filter(Boolean) as string[];
   // The old site read the issue from the group label ("#211 · …") when the fixture names none.
   const issueNumber = record.issue ?? (Number(/#(\d+)/.exec(group ?? '')?.[1]) || undefined);
@@ -649,7 +703,9 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     ...record.followUps.map(i => shared.followUps[i]).filter(Boolean).map(i => ({ label: `${i.milestone} #${i.number}`, href: i.url, external: true })),
   ];
   const factList: FixtureFactData[] = [
-    { term: 'What it tests', notRecorded: true, note: group ? `The corpus records a group label, “${group}”, and no description.` : 'The corpus records no description of this fixture.' },
+    about
+      ? { term: 'What it tests', value: about, ...(text(record.aboutBy) ? { note: text(record.aboutBy) } : {}) }
+      : { term: 'What it tests', notRecorded: true, note: `${group ? `The corpus records a group label, “${group}”, and no description.` : 'The corpus records no description of this fixture.'}${shared.textProblem ? ` ${shared.textProblem}` : ''}` },
     assessment.reason ? { term: REASON_TERM[record.kind] ?? 'Reason', value: assessment.reason } : { term: REASON_TERM[record.kind] ?? 'Reason', notRecorded: true },
     ...(record.contract ? [{ term: 'Contract', value: record.contract, mono: true }] : []),
     { term: 'Evidence level', value: evidence, ...(record.tier === 'T0' ? { note: 'Pending review: excluded from comparative scores.' } : {}) },
@@ -659,8 +715,19 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     ...(record.detectors.length ? [{ term: record.detectors.length === 1 ? 'Detector' : 'Detectors', links: record.detectors.map(id => ({ label: shared.detectorTitles[id] ?? id, href: `/report/detectors/${id}/` })) }] : []),
     ...(scenarioTitles.length ? [{ term: 'Scenarios', value: scenarioTitles.join(' · ') }] : []),
     ...(axis ? [{ term: 'Context axis', value: axis, mono: true }] : []),
-    ...(action ? [{ term: 'Expected action', value: action, mono: true }] : []),
-    { term: 'Added', value: `${milestone ? `${capital(milestone)} · ` : ''}suite ${shared.suite.title}`, note: `Suite ${shared.category}` },
+    ...(action ? [{ term: 'Expected action', value: action, mono: true, note: 'What the corpus expects a scanner to do. Not what a scanner did.' }] : []),
+    // Recorded actions are per reported range; a scanner rule is never inferred from family attribution.
+    ...(productRow && reportedCount(productRow) > 0 && shared.reported
+      ? [{ term: 'Scanner rule', notRecorded: true as const, note: 'No scanner rule identifier is recorded. Family attribution is not a scanner rule.' },
+          ...(findings.length ? findings.map((f, i) => ({ term: `Reported range ${i + 1} action`, ...(f.action ? { value: f.action, mono: true } : { notRecorded: true as const }), note: `Bytes ${rangeText(f)}${f.action ? ' · recorded by the scanner' : ' · no action recorded'}` }))
+            : [{ term: 'Reported action', notRecorded: true as const, note: shared.reported.reason }])]
+      : []),
+    {
+      term: 'Added',
+      // The old site showed the release beside the milestone ("beta.8 · 0.1.0-beta.8"): the index's own `provenance.release`, never derived from the milestone.
+      value: `${milestone ? `${capital(milestone)} · ` : ''}${release ? `${release} · ` : ''}suite ${shared.suite.title}`,
+      note: `Suite ${shared.category}${milestone ? (release ? '' : ' · no release recorded for this milestone') : (release ? ' · no milestone recorded' : ' · no milestone or release recorded')}`,
+    },
     ...(issues.length ? [{ term: 'Issues', links: issues }] : []),
     { term: 'Review', value: record.tier === 'T0' ? 'Pending review: excluded from comparative scores.' : `Authored from construction and evidence, never from scanner output.${shared.suite.reviewStatus ? ` ${shared.suite.reviewStatus}.` : ''}` },
     { term: 'File', value: record.path, mono: true, note: hasBytes ? `${count(bytes.length, 'byte')}${record.sha ? ` · sha256 ${record.sha}…` : ''}` : 'The bytes are not recorded by this pipeline.' },
@@ -723,7 +790,8 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     id: record.id,
     head: {
       eyebrow: `Fixture · ${KIND_EYEBROW[record.kind] ?? record.kind}`,
-      title: record.id,
+      // The authored title when its owner records one; otherwise the id, which is never dressed up as a title.
+      title: title && about ? title : record.id,
       slug,
       tags: [
         { label: kindWord },

@@ -1,5 +1,11 @@
 # Provider dossiers
 
+> **Owner (#582).** Canonical public research on providers, families and formats is credential-evidence's, read from the release
+> pinned in `benchmarks/official-runs.json`. These dossiers are this repository's legacy and presentation records: their schema and
+> vocabulary are frozen, their readers stay, and a taxonomy family still needs its entry. Record new research in credential-evidence and
+> link it here. Evidence verdicts, policy rulings, research blockers and support status are four separate things:
+> [`docs/specs/research-records.md`](../../../docs/specs/research-records.md).
+
 One file per provider in [`../taxonomy.json`](../taxonomy.json) (plus
 `generic.md` for provider-less families). A dossier is the living index of what
 we know about a provider's credentials and how far each family is from a
@@ -67,6 +73,7 @@ step with the taxonomy and both schemas.
 
 Research on a candidate whose provider is not in `taxonomy.json` has no
 dossier of its own. Until it is promoted into the taxonomy, its disposition
-lives in [`_candidates-not-yet-families.md`](_candidates-not-yet-families.md).
+lives in [`_candidates-not-yet-families.md`](_candidates-not-yet-families.md), a frozen record that no code reads (#582); research on a
+new candidate goes to credential-evidence.
 
 Never place a real, live or unrevoked credential in a dossier.

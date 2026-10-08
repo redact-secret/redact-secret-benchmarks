@@ -5,10 +5,10 @@
  * every expectation is recounted here from the synthetic cases.
  */
 import { describe, expect, test } from 'vitest';
-import { REPORT_ROLE, bridgeQualificationView, reportPopulation, rowOf, type Bridged } from '../../services/credential-bridge';
+import { REPORT_ROLE, bridgeQualificationView, reportPopulation, rowOf, withCaseText, type Bridged } from '../../services/credential-bridge';
 import { resolveRunState, resolvePipelineStamp } from '../../resolvers/run';
 import { syntheticView } from './qualification-data';
-import type { CaseRow } from '../../services/qualification';
+import { qualificationShapeProblem, type CaseRow } from '../../services/qualification';
 
 const taxonomy: any = {
   providers: [{ id: 'p', name: 'Provider P' }],
@@ -181,6 +181,25 @@ describe('the official run behind the figures (#658)', () => {
   });
 });
 
+test('the bridge carries only reported ranges and recorded actions from an additive view (#595)', () => {
+  const reported = [{ start: 1, end: 4, action: 'warn' as const }];
+  expect(rowOf({ scanner: 's', measurement: 'pending', observed: 1, reported })).toEqual({ observed: 1, actual: reported });
+});
+
+test('unsafe additive reported fields are refused before bridge/export (#595)', () => {
+  for (const finding of [
+    ...['value', 'raw', 'family', 'rule'].map(key => ({ start: 1, end: 4, [key]: 'injected' })),
+    { start: 1, end: 4, action: 'injected' }, { start: 4, end: 1 }, { start: 0.5, end: 4 },
+  ]) {
+    const view = syntheticView();
+    view.populations[0].cases[0].results[0].reported = [finding] as any;
+    expect(qualificationShapeProblem(view)).toMatch(/unsafe reported/);
+  }
+  const view = syntheticView();
+  view.populations[0].cases[0].results[0].reported = [];
+  expect(qualificationShapeProblem(view)).toMatch(/unsafe reported/);
+});
+
 describe('rowOf', () => {
   test.each([
     [{ scanner: 's', measurement: 'positive', observed: 2, outcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 1 }, { spanOutcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 1, observed: 2 }],
@@ -201,4 +220,41 @@ test('a cross-suite twin keeps its slug on the catalog and has no twin inside it
   const { catalog, fixtureBytes } = bridged(view);
   expect(catalog.bySlug.get(twin.id)!.twinOf).toBe('another-suite--parent');
   expect(fixtureBytes.get(twin.id)!.twinOf).toBeUndefined();
+});
+
+describe('the public cases\' own titles (#593)', () => {
+  const caseMetadata = (view: ReturnType<typeof syntheticView>, over: { tag?: string; manifestDigest?: string; corpusDigest?: string } = {}) => {
+    const evidence = reportPopulation(view)!.artifact.evidence;
+    const first = reportPopulation(view)!.cases[0].id;
+    const file = {
+      schema: 'redact-secret/evidence-case-metadata/v1', spec: '', note: '',
+      source: {
+        repository: 'redact-secret/credential-evidence', tag: over.tag ?? evidence.release!.tag, manifestDigest: over.manifestDigest ?? evidence.release!.manifest_digest,
+        corpusDigest: over.corpusDigest ?? evidence.corpus_digest, sourceCommit: '0'.repeat(40),
+        recordsBundle: { asset: 'records-bundle.json', sha256: '0'.repeat(64) }, materializedManifest: { asset: 'fixtures-materialized-manifest.json', sha256: '0'.repeat(64), digest: '0'.repeat(64) },
+      },
+      cases: { 'synthetic-case': { title: 'A synthetic title', summary: 'A synthetic summary.', lifecycle: 'draft', record: 'records/cases/synthetic-case.json', sha256: '0'.repeat(64) } },
+      fixtures: { [first]: 'synthetic-case' },
+    };
+    return { file: file as unknown as Parameters<typeof withCaseText>[1], evidence, first };
+  };
+
+  test('a fixture the release attaches to a case gets that case record\'s title and summary, named with the record, its lifecycle and the release', () => {
+    const view = syntheticView();
+    const { file, evidence, first } = caseMetadata(view);
+    const out = withCaseText(bridged(view).fixtureBytes, file, evidence);
+    expect(out.problem).toBeUndefined();
+    expect(out.fixtureBytes.get(first)).toMatchObject({ title: 'A synthetic title', description: 'A synthetic summary.', describedBy: `credential-evidence case record synthetic-case (draft), release ${evidence.release!.tag}.` });
+    // A fixture the release does not attach to a case keeps none.
+    for (const [slug, built] of out.fixtureBytes) if (slug !== first) expect(built.title).toBeUndefined();
+  });
+
+  test.each([['tag', { tag: 'snapshot-other' }], ['manifest digest', { manifestDigest: `sha256:${'1'.repeat(64)}` }], ['corpus digest', { corpusDigest: `sha256:${'2'.repeat(64)}` }]] as const)(
+    'a projection of another snapshot (%s) gives no fixture a title and says why', (_what, over) => {
+      const view = syntheticView();
+      const { file, evidence } = caseMetadata(view, over);
+      const out = withCaseText(bridged(view).fixtureBytes, file, evidence);
+      expect(out.problem).toMatch(/the case titles are (from|bound to)/);
+      for (const built of out.fixtureBytes.values()) expect(built.title).toBeUndefined();
+    });
 });

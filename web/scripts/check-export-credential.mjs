@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url';
 import { readAuthority, stampOf } from './lib/authority.mjs';
 import { linkResolves } from './lib/links.mjs';
 
+import { createHash } from 'node:crypto';
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
 const basePath = process.env.BASE_PATH ?? '';
@@ -75,6 +76,11 @@ if (!view) {
   const category = c => c.id.slice(0, c.id.indexOf('--') < 0 ? c.id.length : c.id.indexOf('--'));
   const idOf = c => c.id.slice(c.id.indexOf('--') < 0 ? 0 : c.id.indexOf('--') + 2);
   const leaked = o => o === 'PARTIAL' || o === 'MISS';
+  // The public cases' titles (#593): the committed projection, used only when it names the release, manifest and corpus this run measured.
+  const projection = await readJson('benchmarks/evidence-case-metadata.json').catch(() => undefined);
+  const measuredEvidence = report.artifact.evidence;
+  const caseText = projection && projection.source.tag === measuredEvidence.release?.tag && projection.source.manifestDigest === measuredEvidence.release?.manifest_digest
+    && projection.source.corpusDigest === measuredEvidence.corpus_digest ? projection : undefined;
 
   // ---- Stamps ---------------------------------------------------------------------------------------------------------
   for (const route of [...REPORT_PAGES, `report/families/${slugOf(taxonomy.families[0].id)}`, `report/detectors/${[...new Set(cases.flatMap(c => c.detectors))].sort()[0]}`, `report/fixtures/${category(cases[0])}`, 'evaluation/credential']) {
@@ -211,7 +217,7 @@ if (!view) {
   const packRow = r => !r || r.measurement === 'not-measured' ? null : [
     r.measurement === 'positive' ? r.outcomes.map(o => LETTER[o]).join('') || '=' : '-',
     r.measurement === 'control' ? (r.flagged ? '1' : '0') : '-',
-    '', r.measurement === 'positive' ? r.leakedBytes ?? '' : '', r.measurement === 'positive' ? r.collateralBytes ?? '' : '', r.measurement === 'control' ? r.findings ?? '' : '', r.observed,
+    (r.reported ?? []).map(f => `${f.start}-${f.end}${f.action ? `:${f.action}` : ''}`).join(','), r.measurement === 'positive' ? r.leakedBytes ?? '' : '', r.measurement === 'positive' ? r.collateralBytes ?? '' : '', r.measurement === 'control' ? r.findings ?? '' : '', ...(r.reported === undefined ? [r.observed] : []),
   ].join('|');
   const wordOf = r => (!r || r.measurement === 'not-measured' ? 'Not measured'
     : r.measurement === 'positive' ? (r.outcomes.some(leaked) ? 'Left readable' : r.outcomes.includes('OVERBROAD') ? 'Too much' : 'Redacted')
@@ -264,6 +270,7 @@ if (!view) {
     if (JSON.stringify(file.shared.scanners.map(s => s.id)) !== JSON.stringify(report.artifact.scanners.map(s => s.id))) fail(`${where} has scanners ${file.shared.scanners.map(s => s.id)}`);
     const byRecord = new Map(group.map(c => [idOf(c), c]));
     let differs = 0;
+    const textOf = i => (i === undefined ? undefined : file.shared.texts?.[i]);
     for (const record of file.records) {
       const c = byRecord.get(record.id);
       if (!c) { differs++; continue; }
@@ -272,8 +279,17 @@ if (!view) {
       if (JSON.stringify(record.expected) !== JSON.stringify(c.expected) || record.path !== c.path || record.kind !== c.kind || record.tier !== c.tier) differs++;
       if (record.rows.length !== report.artifact.scanners.length) differs++;
       else record.rows.forEach((packed, k) => { if (packed !== packRow(resultOf(c, report.artifact.scanners[k].id))) differs++; });
+      // The title and description are the pinned case record's own, and only when the projection is of the snapshot this run measured (#593).
+      const caseId = caseText && Object.hasOwn(caseText.fixtures, c.id) ? caseText.fixtures[c.id] : undefined;
+      const want = caseId ? caseText.cases[caseId] : undefined;
+      if (textOf(record.title) !== want?.title || textOf(record.about) !== want?.summary) differs++;
+      // The view records no milestone or release per case (#595): none is shown.
+      if (record.milestone !== undefined || record.release !== undefined) differs++;
     }
-    if (differs) fail(`${where}: ${differs} records differ from the view's expected spans, paths, levels or rows`);
+    const { identity, ...shared } = file.shared;
+    if (identity !== `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`) fail(`${where}: records identity does not bind its metadata and run payload`);
+    if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: missing historical rule/action fields must have explicit unavailable defaults`);
+    if (differs) fail(`${where}: ${differs} records differ from the view's expected spans, paths, levels, rows or the case records' titles`);
   }
 
   // ---- What a visitor downloads: limits (the totals are information only) --------------------------------------------

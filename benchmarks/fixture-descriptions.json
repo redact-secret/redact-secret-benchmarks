@@ -1,0 +1,37 @@
+{
+  "schema": "redact-secret/fixture-descriptions/v1",
+  "spec": "docs/specs/fixture-metadata.md",
+  "note": "Authored titles and one-sentence descriptions of product-owned fixtures (the regression and policy corpora this repository generates; benchmarks/generated-populations.json). A public evidence case's title belongs to credential-evidence and is read from benchmarks/evidence-case-metadata.json, never authored here. Display text only: no fixture index identity, corpus hash or scored value reads this file. Describe what the bytes exercise, never a value from them.",
+  "fixtures": {
+    "policy-qualified-credentials--bearer-token-authorization-header": {
+      "title": "A bearer token in an HTTP Authorization header",
+      "description": "Checks that the value after Authorization: Bearer is redacted under the bounded project-policy contract for bearer tokens.",
+      "authoredOn": "2026-10-08"
+    },
+    "policy-qualified-credentials--bearer-token-authorization-header-twin": {
+      "title": "A bearer value below the policy length floor",
+      "description": "The same Authorization header with a value shorter than the frozen project-policy floor; nothing should be flagged.",
+      "authoredOn": "2026-10-08"
+    },
+    "policy-qualified-credentials--connection-string-postgres-userinfo": {
+      "title": "A password in the userinfo of a PostgreSQL connection URL",
+      "description": "Checks that only the password between the user name and the host is redacted in a postgres:// URL.",
+      "authoredOn": "2026-10-08"
+    },
+    "policy-qualified-credentials--otpauth-uri-query-order": {
+      "title": "A TOTP secret after other query parameters in an otpauth URI",
+      "description": "Checks that the secret parameter of an otpauth://totp URI is redacted when issuer comes before it and algorithm after it.",
+      "authoredOn": "2026-10-08"
+    },
+    "policy-qualified-credentials--generic-token-high-signal-redact": {
+      "title": "A quoted value assigned to api_key",
+      "description": "Checks that a high-entropy literal under a high-signal credential field name is redacted by the generic-token policy.",
+      "authoredOn": "2026-10-08"
+    },
+    "policy-qualified-credentials--generic-token-high-signal-warn": {
+      "title": "A short literal assigned to password",
+      "description": "Checks the generic-token policy on a short direct literal under a credential field name, where the expected action is a warning, not a redaction.",
+      "authoredOn": "2026-10-08"
+    }
+  }
+}

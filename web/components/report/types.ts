@@ -129,6 +129,8 @@ export interface FamilyEntry {
   href: string;
   fixturesLabel: string;
   counts: FixtureCounts | null;
+  /** "Draft, not reviewed · format revision 1, current" or "Research record not recorded" (#591): the canonical record's review state and revision, never a status. */
+  research?: string;
 }
 
 export interface ProviderGroupData {

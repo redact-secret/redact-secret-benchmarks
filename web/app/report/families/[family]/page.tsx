@@ -43,11 +43,13 @@ export default async function Page({ params }: { params: Promise<{ family: strin
         meta={data.meta}
         actions={<Link href="/report/providers/">All providers</Link>}
       />
-      <StatusBar label={`Research record for ${family.name}`} items={data.status} />
+      <StatusBar label={`Benchmark dossier for ${family.name}`} items={data.status} />
       {family.about.note && <Note>{family.about.note}</Note>}
       <RunNotes state={data.runState} />
       <FamilyView
+        name={family.name}
         providerName={family.providerName}
+        research={data.research} canonicalFormat={data.canonicalFormat}
         format={data.format}
         open={data.open}
         lookAlikes={data.lookAlikes}

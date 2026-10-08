@@ -263,6 +263,11 @@ A result is the artifact's own measurement and is never re-scored: `measurement`
 `outcomes`, `leakedBytes`, `collateralBytes` for a positive; `flagged`, `findings` and `coDetected` for a control; `status` (the scanner status that prevented the measurement) for a case that was not measured. A field that does
 not apply is absent, so a pending or unmeasured case never reads as zero. The evidence class is the artifact's label and is never a support status or a route. No case content is carried.
 
+Each result may also carry additive `reported` ranges (#595): only `start`, `end` and an actually recorded action in `redact`, `warn`, `block`, `allow`.
+No `family` is relabelled as a scanner rule, and no matched value, mapping or raw scanner output crosses this projection. Older views without `reported` remain
+compatible and show an explicit unavailable state. The projection leaves accounting, policy revision, artifact identity and authorisation unchanged; it is
+rebuilt from the retained artifact, never by modifying it. [Fixture metadata](fixture-metadata.md#recorded-release-and-reported-actions-595) records the source inventory.
+
 The rows are additive: removing `cases` from a view gives the view the adapter wrote before them, value for value, and the policy revision does not change (`adapter.version` stays 1; the schema tag stays `v1`).
 A view without `cases` is refused by the Next reader as incompatible, with the command that rebuilds it. The size is about 6 MB for the canonical populations (about 300 KB compressed), generated and never committed
 ([ADR](../decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md)).

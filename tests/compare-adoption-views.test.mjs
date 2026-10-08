@@ -34,9 +34,34 @@ const run = (files, strict = false) => {
   const write = (name, value) => { const file = path.join(dir, name); writeFileSync(file, JSON.stringify(value)); return file; };
   const args = ['--import', 'tsx', script, '--accepted', write('a.json', files.A), '--replay-old', write('b.json', files.B), '--candidate', write('c.json', files.C), '--report', write('r.json', { evidenceRelease: 'snapshot-test', diff: { added: files.added, evidenceClassTransitions: {} }, ...(files.report ?? {}) }), '--out-json', path.join(dir, 'out.json'), '--out-md', path.join(dir, 'out.md'), ...(files.superseded ? ['--superseded-comparison', write('s.json', files.superseded)] : []), '--record', write('record.json', files.record ?? recordOf('candidate')), '--registry', write('registry.json', registryOf()), ...(files.engineMoved ? ['--engine-from', 'v0.1.0-alpha.5', '--engine-to', 'v0.1.0-alpha.15'] : []), ...(strict ? ['--strict'] : [])];
   files.dir = dir;
+  if (files.parity) args.push('--parity', write('parity.json', files.parity));
   const proc = spawnSync('node', args, { encoding: 'utf8' });
   return { status: proc.status, stderr: proc.stderr, out: proc.status === 0 || strict ? JSON.parse(readFileSync(path.join(dir, 'out.json'), 'utf8')) : null, md: readFileSync(path.join(dir, 'out.md'), 'utf8') };
 };
+
+test('current parity product identities do not relabel the frozen adoption product or imply matching releases', () => {
+  const base = view({ families: [family('fam-a', {})], cases: [makeCase('c1')] });
+  for (const identities of [
+    { legacy: { package: '@redact-secret/core@1.0.0-oracle' }, new: { scanners: { 'redact-secret': '1.0.0-view' } } },
+    {},
+  ]) {
+    const parity = { identities, summary: { compared: 3, equal: 2, explained: 1, unexplained: 0, byCause: { 'synthetic-cause': 1 } } };
+    const { status, md, out } = run({ A: base, B: structuredClone(base), C: structuredClone(base), added: [], record: recordOf('accepted', { product: { version: '1.0.0-frozen' } }), parity });
+    assert.equal(status, 0);
+    assert.equal(out.adoptionState.product.measured, '@redact-secret/core@1.0.0-frozen');
+    assert.match(md, /Product measured.*core 1\.0\.0-frozen/);
+    const section = md.slice(md.indexOf('## 4. Legacy-oracle parity'), md.indexOf('## What is not measured'));
+    assert.match(section, /current regenerated authority gate/);
+    assert.doesNotMatch(section, /same release|1\.0\.0-frozen|beta\.12/);
+    if (identities.legacy) {
+      assert.match(section, /Legacy product: `@redact-secret\/core@1\.0\.0-oracle`/);
+      assert.match(section, /New-path product: `@redact-secret\/core@1\.0\.0-view`/);
+    } else {
+      assert.match(section, /Legacy product: not recorded in the parity artifact/);
+      assert.match(section, /New-path product: not recorded in the parity artifact/);
+    }
+  }
+});
 
 test('an engine effect of nothing and a corpus effect of an added case are separated and the evidence delta is attributed to the added case', () => {
   const base = view({ families: [family('fam-a', {}), family('fam-b', {})], cases: [makeCase('c1')] });

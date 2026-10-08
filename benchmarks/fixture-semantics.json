@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-09-29",
+  "reviewedAt": "2026-10-08",
   "fixtures": [
     {
       "slug": "accuracy--aws-id",
@@ -64518,6 +64518,177 @@
       "scenarioIds": [
         "benign-controls-and-twins",
         "regression-behavior"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-bare",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-quoted",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-unicode-crlf",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-prefix-only",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-mask",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-session-reference",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-bare",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-quoted",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-unicode-crlf",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-prefix-only",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-mask",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--ory-token-oauth2-reference",
+      "familyIds": [
+        "ory:network-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-bare",
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-quoted",
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-unicode-crlf",
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-prefix-only",
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-mask",
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ]
+    },
+    {
+      "slug": "detector-coverage--baseten-api-key-key-reference",
+      "familyIds": [
+        "baseten:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
       ]
     }
   ]

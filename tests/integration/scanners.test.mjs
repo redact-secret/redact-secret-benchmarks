@@ -17,6 +17,36 @@ const token =
     .digest("hex")
     .slice(0, 36);
 
+function assertFindingContract(fixture, findings) {
+  assert.ok(Array.isArray(findings), 'adapter returns a finding array');
+  const bytes = Buffer.from(fixture.content);
+  for (const finding of findings) {
+    assert.ok(finding && typeof finding === 'object' && !Array.isArray(finding));
+    assert.equal(finding.path, fixture.path);
+    assert.ok(Number.isSafeInteger(finding.start) && Number.isSafeInteger(finding.end));
+    assert.ok(finding.start >= 0 && finding.start < finding.end && finding.end <= bytes.length);
+    for (const offset of [finding.start, finding.end]) {
+      const prefix = bytes.subarray(0, offset);
+      assert.ok(Buffer.from(prefix.toString('utf8')).equals(prefix), 'range ends on UTF-8 character boundaries');
+    }
+    if (Object.hasOwn(finding, 'family')) assert.match(finding.family, /^[a-z][a-z0-9-]+$/);
+  }
+}
+
+test('adapter range contract rejects malformed spans and accepts unmapped findings', () => {
+  const fixture = { path: 'control.txt', content: '😀 control\n' };
+  assertFindingContract(fixture, [{ path: fixture.path, start: 0, end: 4 }]);
+  for (const finding of [
+    { path: 'other.txt', start: 0, end: 4 },
+    { path: fixture.path, start: 0, end: 1 },
+    { path: fixture.path, start: -1, end: 4 },
+    { path: fixture.path, start: 0, end: 999 },
+    { path: fixture.path, start: 4, end: 4 },
+    { path: fixture.path, start: 0.5, end: 4 },
+    { path: fixture.path, start: 0, end: 4, family: null },
+  ]) assert.throws(() => assertFindingContract(fixture, [finding]));
+});
+
 test('TruffleHog detects source-shaped Anthropic, AWS pairs and Shopify with shop context', async () => {
   const root = await mkdtemp(path.join(tmpdir(), 'benchmark-reviewed-'));
   const selected = buildCorpora()['common-formats'].fixtures.filter(f => /^(?:anthropic-token-api03|aws-access-key-pair|shopify-token-shpat)-unicode-crlf$/.test(f.id));
@@ -33,7 +63,7 @@ test('TruffleHog detects source-shaped Anthropic, AWS pairs and Shopify with sho
 });
 
 for (const scanner of scanners) {
-  test(`${scanner.name}: released scanner finds a synthetic control and accepts a clean file`, async () => {
+  test(`${scanner.name}: released adapter contract and synthetic positive control`, async () => {
     const root = await mkdtemp(path.join(tmpdir(), "benchmark-integration-"));
     const prefix =
       "# Synthetic benchmark value, never issued by GitHub.\n# 🔑 Unicode offset control\r\nGITHUB_TOKEN=";
@@ -61,6 +91,7 @@ for (const scanner of scanners) {
         mode: 0o600,
       });
       const findings = await scanner.scan(root, [positive]);
+      assertFindingContract(positive, findings);
       assert.ok(findings.some(f => f.family === 'github-token'), 'native GitHub family maps without expectations');
       const detected = score([positive], findings).rows[0];
       assert.deepEqual([detected.spanOutcomes, detected.collateralBytes], [["EXACT"], 0]);
@@ -68,7 +99,8 @@ for (const scanner of scanners) {
       await writeFile(path.join(root, negative.path), negative.content, {
         mode: 0o600,
       });
-      assert.deepEqual(await scanner.scan(root, [negative]), []);
+      // This smoke test verifies the adapter interface, not a peer-accuracy threshold.
+      assertFindingContract(negative, await scanner.scan(root, [negative]));
     } finally {
       await rm(root, { recursive: true, force: true });
     }

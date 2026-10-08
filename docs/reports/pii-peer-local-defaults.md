@@ -2,6 +2,8 @@
 
 This records public synthetic family/type and range observations, not official measurement, product qualification, independent corpus diversity or an overall winner. The existing runtime preview remains a throughput observation.
 
+The existing scanner smoke fixture `No credentials in this control.\n` produced an OpenRedaction **1.1.5** default `NAME` finding at **[0,22)** in **3/3** independent executions, matching `No credentials in this`. The unchanged credential adapter emits that span without a family mapping. Its smoke test now checks path, integer bounds, UTF-8 boundaries and optional family projection while retaining the synthetic GitHub positive control; it is not a peer-accuracy gate. The scanner, defaults, fixture and six-family authored expectations were not altered, and this unscoped NAME observation is not silently removed from measurement.
+
 ## Exact inputs and execution
 
 The producer is [pii-peer-observations.mjs](../../scripts/pii-peer-observations.mjs). It verifies the published npm archives against the committed lockfile SHA-512 integrity, checks that each extracted archive tree equals the installed package tree, and retains the same package tree after execution. The [record](../../benchmarks/pii-peer-comparison/record.json) contains those identities, default configuration and archive hashes. The measured packages are flare-redact **1.6.1** and OpenRedaction **1.1.5**.

@@ -99,6 +99,18 @@ const { suite, fixture } = aSuite();
 export const SUITE = suite;
 export const FIXTURE = fixture;
 export const FAMILY = dirs('report/families')[0];
+
+/** The first list behind a method count (#623) the export holds a file for, as its address; none when no evaluation was published. */
+function aChecksList(): string | undefined {
+  for (const method of ['twin', 'benign', 'metamorphic', 'mutation', 'differential']) {
+    const base = `data/evaluation/${method}`;
+    let row: string | undefined, scanner: string | undefined, status: string | undefined;
+    try { row = dirs(base).sort()[0]; scanner = row && dirs(`${base}/${row}`).sort()[0]; status = scanner && dirs(`${base}/${row}/${scanner}`).sort()[0]; } catch { continue; }
+    if (row && scanner && status) return `/evaluation/method/${method}/checks/?row=${encodeURIComponent(row)}&scanner=${encodeURIComponent(scanner)}&status=${status}`;
+  }
+  return undefined;
+}
+export const CHECKS_LIST = aChecksList();
 export const DETECTOR = dirs('report/detectors')[0];
 
 // WEB_BROWSER_SELECT (#656): the JSON `{ routes: [...] }` of scripts/ci-plan.mjs restricts the page matrix to the routes a change can reach. `a/b` is that page,
@@ -121,6 +133,8 @@ export const ROUTES: string[] = [
   '/evaluation/credential/', '/evaluation/pii/',
   '/evaluation/rc/', '/evaluation/scanner/', '/evaluation/qualification/', '/evaluation/qualification/unattributed/1/',
   '/evaluation/', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/evaluation/method/${m}/`),
+  ...['twin', 'benign', 'metamorphic', 'mutation', 'differential'].map(m => `/evaluation/method/${m}/checks/`),
+  ...(CHECKS_LIST ? [CHECKS_LIST] : []),
 ].filter(selected).map(route => `${BASE}${route}`);
 
 /** Resolves with the page's own links, so a test can follow the real hrefs rather than guess them. */

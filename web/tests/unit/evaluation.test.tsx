@@ -65,8 +65,8 @@ describe('twin', () => {
     expect(recorded(page).columns.map(c => c.id)).toEqual(['redact-secret', 'peer-a', 'peer-b']);
     expect(rowsOf(page).map(r => r.key)).toEqual(['pair', 'positive', 'negative']);
     expect(cell(page, 'pair', 'redact-secret')).toEqual({ kind: 'count', value: '0', of: '1' });
-    expect(cell(page, 'pair', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '1' });
-    expect(cell(page, 'negative', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '1' });
+    expect(cell(page, 'pair', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '1', href: '/evaluation/method/twin/checks/?row=pair&scanner=peer-a&status=fail' });
+    expect(cell(page, 'negative', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '1', href: '/evaluation/method/twin/checks/?row=negative&scanner=peer-a&status=fail' });
     expect(cell(page, 'pair', 'peer-b')).toEqual({ kind: 'not-measured' });
   });
 
@@ -99,7 +99,7 @@ describe('metamorphic and mutation', () => {
   test('metamorphic: one row per transform, then the transformed text on its own', () => {
     const page = resolveMethodPage('metamorphic', input());
     expect(recorded(page).groups.map(g => g.label)).toEqual(['Same detection after the transform', 'The transformed text on its own']);
-    expect(cell(page, 'context.indent', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '1' });
+    expect(cell(page, 'context.indent', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '1', href: '/evaluation/method/metamorphic/checks/?row=context.indent&scanner=peer-a&status=fail' });
     expect(page.how.figures.map(f => f.term)).toEqual(['Source cases', 'Transformed texts', 'Operators']);
     const inputs = page.inputs.state === 'recorded' ? page.inputs : undefined;
     const operators = inputs?.tables.find(t => t.title === 'Operators')?.table;
@@ -111,7 +111,7 @@ describe('metamorphic and mutation', () => {
   test('mutation: an operator whose values all break the format has a row that waits for review', () => {
     const page = resolveMethodPage('mutation', input());
     expect(cell(page, 'lexical.replace-last', 'redact-secret')).toEqual({ kind: 'count', value: '0', of: '1' });
-    expect(cell(page, 'lexical.invalid-alphabet', 'redact-secret')).toEqual({ kind: 'unscored', of: '1' });
+    expect(cell(page, 'lexical.invalid-alphabet', 'redact-secret')).toEqual({ kind: 'unscored', of: '1', href: '/evaluation/method/mutation/checks/?row=lexical.invalid-alphabet&scanner=redact-secret&status=review-required' });
     expect(recorded(page).unscored?.text).toMatch(/^1 altered value no longer match/);
   });
 
@@ -128,8 +128,8 @@ describe('differential', () => {
   test('peers are the columns, rows are exclusive and a peer that did not complete is not measured', () => {
     const page = resolveMethodPage('differential', input());
     expect(recorded(page).columns.map(c => c.id)).toEqual(['peer-a', 'peer-b']);
-    expect(cell(page, 'product-only', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '2' });
-    expect(cell(page, 'same', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '2' });
+    expect(cell(page, 'product-only', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '2', href: '/evaluation/method/differential/checks/?row=product-only&scanner=peer-a&status=complete' });
+    expect(cell(page, 'same', 'peer-a')).toEqual({ kind: 'count', value: '1', of: '2', href: '/evaluation/method/differential/checks/?row=same&scanner=peer-a&status=complete' });
     expect(cell(page, 'same', 'peer-b')).toEqual({ kind: 'not-measured' });
     expect(recorded(page).unscored?.text).toMatch(/^1 comparisons? recorded a difference/);
   });

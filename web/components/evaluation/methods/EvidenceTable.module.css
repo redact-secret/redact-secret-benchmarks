@@ -46,6 +46,19 @@
     color: var(--ink-muted);
   }
 
+  /* A count that opens its checks: underlined like every link, the same weight as a count that does not. */
+  .link {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--hairline);
+    text-underline-offset: var(--space-1);
+  }
+
+  .label .unlisted {
+    color: var(--ink-muted);
+    font-style: italic;
+  }
+
   /* A stacked row already has the scanner's name in front of the figure, so the figure and its denominator share a line. */
   @media (max-width: 720px) {
     .count {

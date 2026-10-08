@@ -201,6 +201,8 @@ if (!view) {
   for (const id of detectorIds) tables.push({ kind: 'detector', id, page: `report/detectors/${id}`, cases: cases.filter(c => c.detectors.includes(id)) });
   for (const level of ['T1', 'T2', 'T3']) tables.push({ kind: 'level', id: level, page: `report/rows/${level}`, cases: cases.filter(c => c.tier === level) });
   const wanted = new Set([...tables.filter(t => t.cases.length > PAGE).map(t => `rows/${t.kind}/${t.id}/rows.json`), ...[...suites.keys()].map(id => `fixtures/${id}/records.json`), 'comparison/accuracy/differences.json']);
+  // The lists behind the method counts (#623) are the evaluation's, not the view's: check-export-method-checks.mjs recounts which exist and what each holds.
+  for (const file of emitted) if (/^evaluation\/(?:twin|benign|metamorphic|mutation|differential)\/[a-z0-9][a-z0-9._-]*\/[a-z0-9][a-z0-9._-]*\/(?:fail|review-required|complete)\/checks\.json$/i.test(file)) wanted.add(file);
   for (const file of wanted) if (!emitted.has(file)) fail(`data/${file} is missing from the export`);
   for (const file of emitted) if (!wanted.has(file)) fail(`data/${file} is emitted but no page asks for it`);
 

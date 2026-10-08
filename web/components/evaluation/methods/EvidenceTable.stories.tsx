@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { EvidenceTable } from './EvidenceTable';
-import { columns, edgeRows, groupedRows, manyColumns, manyRows, pairRows } from './storyData';
+import { columns, edgeRows, groupedRows, linkedRows, manyColumns, manyRows, pairRows } from './storyData';
 
 const meta = {
   title: 'Evaluation/Methods/EvidenceTable',
@@ -12,6 +12,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+/** A count opens the checks behind it; a zero opens nothing, and a row that opens no list says why under its label (#623). */
+export const Linked: Story = { args: { groups: linkedRows } };
 export const Grouped: Story = { args: { groups: groupedRows, rowHeader: 'Transform' } };
 
 /** A scanner that did not run is "Not measured", a check that waits for review says so, and a check a scanner does not report says "No check". */

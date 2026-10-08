@@ -280,6 +280,16 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   and `evaluation-hub.ts` are pure, `evaluation-pages.ts` awaits the services. A phase page the hub links is a link only once
   its entry is in the Evaluation section of `lib/routes.ts`: add yours there. Decision:
   `docs/decisions/2026-10-01-show-each-evaluation-method-in-one-fixed-order.md`.
+- **The checks behind a method count (#623).** A count over zero (and a "Needs review" cell) links to
+  `/evaluation/method/<method>/checks/?row=&scanner=&status=` (`methodChecksHref`, the one place that writes it): the assertions (or, on
+  differential, the comparisons) behind exactly that figure, from the same pass that counted them (`collectRows`, `comparisonsByPeer`). The
+  page is one per method: its server HTML is the index of lists with their figures; a list is one build-emitted file
+  (`data/evaluation/<method>/<row>/<scanner>/<status>/checks.json`, `resolvers/evaluation-checks.ts`) fetched when opened and windowed
+  100 a page in the browser (`resolvers/evaluation-checks-view.ts`, `ChecksView`), the fixture-page pattern. A file whose run, list or
+  length is not the page's is refused. A family links to its qualification case page only when the view is usable and has it, labelled as
+  another report; review decisions are the review ledger's, never the page's. A row that opens nothing says why (`unlisted`).
+  `check-export-method-checks.mjs` recounts every list from the bundle. Decision:
+  `docs/decisions/2026-10-07-link-method-cells-to-the-checks-behind-each-count.md`.
 
 ## Tests
 

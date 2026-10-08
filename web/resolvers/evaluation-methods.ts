@@ -17,6 +17,7 @@ import type {
 import type { EvaluationAssertion, EvaluationCase, EvaluationReport, EvaluationVariant, QualificationEvidence } from '../../benchmarks/shared/evaluation-types.ts';
 import { METHOD_IDS, methodHref, type MethodId } from '../lib/methods';
 import { toolName } from './comparison';
+import { methodChecksHref, REVIEW_LEDGER, type CheckStatus } from './evaluation-checks-view';
 import { EVAL_COMMANDS, METHOD_COPY, OPERATOR_COPY } from './evaluation-copy';
 import { count, int, isoDate } from './format';
 
@@ -54,29 +55,47 @@ const notMeasured = (title: string, body: string, command = EVAL_COMMANDS): NotM
 
 // ---- Tallies --------------------------------------------------------------------------------------
 
-interface Tally { pass: number; fail: number; review: number }
+export interface Tally { pass: number; fail: number; review: number }
 const emptyTally = (): Tally => ({ pass: 0, fail: 0, review: 0 });
 
-interface Spec { group: string; groupOrder: number; key: string; order: number; label: string; note?: string }
+export interface Spec { group: string; groupOrder: number; key: string; order: number; label: string; note?: string }
 type Classify = (c: EvaluationCase, a: EvaluationAssertion, variant: EvaluationVariant, baseline: EvaluationVariant | undefined) => Spec | null;
 
-const columnsOf = (report: EvaluationSummary, only?: (id: string) => boolean): EvidenceColumn[] =>
+/** One recorded check behind a count (#623): the assertion, the case it belongs to and the variant it reads. */
+export interface CheckRef { case: EvaluationCase; assertion: EvaluationAssertion; variant: EvaluationVariant }
+/** One scanner's tally in one row, and the checks behind its two listable figures: the ones that did not hold and the ones that wait for review. */
+export interface ScannerChecks { tally: Tally; fail: CheckRef[]; review: CheckRef[] }
+export interface TalliedRow { spec: Spec; byScanner: Map<string, ScannerChecks> }
+
+export const columnsOf = (report: EvaluationSummary, only?: (id: string) => boolean): EvidenceColumn[] =>
   report.scanners.filter(s => !only || only(s.id)).map(s => ({ id: s.id, name: toolName(s.id), ...(s.version ? { version: s.version } : {}) }));
 
-/** The cell for one scanner and one row: "n of N" over scored checks, or the state that stops a count. */
-function cellOf(tally: Tally | undefined, complete: boolean): EvidenceCell {
+// ---- The address of the checks behind a count (#623) ----------------------------------------------
+
+/** A data-path segment (`lib/data-paths.ts`): a row key, an operator or a scanner id. A row or scanner whose id is not one has no list. */
+export const SEGMENT = /^[a-z0-9][a-z0-9._-]*$/i;
+
+/** Row keys that can be an address: segment-safe and used by one row only (two groups could share a key; then neither is linked). */
+export function addressableKeys(keys: string[]): Set<string> {
+  const seen = new Map<string, number>();
+  for (const k of keys) seen.set(k, (seen.get(k) ?? 0) + 1);
+  return new Set(keys.filter(k => SEGMENT.test(k) && seen.get(k) === 1));
+}
+
+/** The cell for one scanner and one row: "n of N" over scored checks, or the state that stops a count. A count opens the checks behind it. */
+function cellOf(checks: ScannerChecks | undefined, complete: boolean, href: ((status: CheckStatus) => string) | undefined): EvidenceCell {
   if (!complete) return { kind: 'not-measured' };
-  if (!tally) return { kind: 'none' };
+  if (!checks) return { kind: 'none' };
+  const { tally } = checks;
   const scored = tally.pass + tally.fail;
-  if (scored > 0) return { kind: 'count', value: int(tally.fail), of: int(scored) };
-  if (tally.review > 0) return { kind: 'unscored', of: int(tally.review) };
+  if (scored > 0) return { kind: 'count', value: int(tally.fail), of: int(scored), ...(href && tally.fail > 0 ? { href: href('fail') } : {}) };
+  if (tally.review > 0) return { kind: 'unscored', of: int(tally.review), ...(href ? { href: href('review-required') } : {}) };
   return { kind: 'none' };
 }
 
-/** Count the assertions of one method into rows chosen by `classify`, grouped and ordered by the spec. */
-function tallyRows(report: EvaluationSummary, cases: EvaluationCase[], columns: EvidenceColumn[], classify: Classify): EvidenceGroup[] {
-  const complete = new Map(report.scanners.map(s => [s.id, s.status === 'complete']));
-  const rows = new Map<string, { spec: Spec; byScanner: Map<string, Tally> }>();
+/** Count the assertions of one method into rows chosen by `classify`, keeping the checks behind each count: one pass, read by the table and the lists alike. */
+export function collectRows(cases: EvaluationCase[], classify: Classify): TalliedRow[] {
+  const rows = new Map<string, TalliedRow>();
   for (const c of cases) {
     const variants = new Map(c.variants.map(v => [v.id, v]));
     for (const a of c.assertions) {
@@ -85,17 +104,27 @@ function tallyRows(report: EvaluationSummary, cases: EvaluationCase[], columns: 
       const spec = classify(c, a, variant, a.baseline ? variants.get(a.baseline) : undefined);
       if (!spec) continue;
       const id = `${spec.group}\u0000${spec.key}`;
-      const row = rows.get(id) ?? { spec, byScanner: new Map<string, Tally>() };
+      const row = rows.get(id) ?? { spec, byScanner: new Map<string, ScannerChecks>() };
       rows.set(id, row);
-      const tally = row.byScanner.get(a.scanner) ?? emptyTally();
-      row.byScanner.set(a.scanner, tally);
-      if (a.status === 'pass') tally.pass++;
-      else if (a.status === 'fail') tally.fail++;
-      else if (a.status === 'review-required') tally.review++;
+      const checks = row.byScanner.get(a.scanner) ?? { tally: emptyTally(), fail: [], review: [] };
+      row.byScanner.set(a.scanner, checks);
+      if (a.status === 'pass') checks.tally.pass++;
+      else if (a.status === 'fail') { checks.tally.fail++; checks.fail.push({ case: c, assertion: a, variant }); }
+      else if (a.status === 'review-required') { checks.tally.review++; checks.review.push({ case: c, assertion: a, variant }); }
     }
   }
-  const groups = new Map<string, { order: number; rows: { spec: Spec; byScanner: Map<string, Tally> }[] }>();
-  for (const row of rows.values()) {
+  return [...rows.values()];
+}
+
+const NO_ADDRESS = 'Not listed: this row has no address of its own, so its counts open no list.';
+
+/** The rows as the table shows them, grouped and ordered by the spec; a count links to its checks when the row and scanner have an address. */
+function tallyRows(report: EvaluationSummary, cases: EvaluationCase[], columns: EvidenceColumn[], classify: Classify, method: MethodId): EvidenceGroup[] {
+  const rows = collectRows(cases, classify);
+  const complete = new Map(report.scanners.map(s => [s.id, s.status === 'complete']));
+  const linkable = addressableKeys(rows.map(r => r.spec.key));
+  const groups = new Map<string, { order: number; rows: TalliedRow[] }>();
+  for (const row of rows) {
     const group = groups.get(row.spec.group) ?? { order: row.spec.groupOrder, rows: [] };
     groups.set(row.spec.group, group);
     group.rows.push(row);
@@ -106,12 +135,17 @@ function tallyRows(report: EvaluationSummary, cases: EvaluationCase[], columns: 
       label,
       rows: group.rows
         .sort((a, b) => a.spec.order - b.spec.order || a.spec.label.localeCompare(b.spec.label))
-        .map(({ spec, byScanner }) => ({
-          key: spec.key,
-          label: spec.label,
-          ...(spec.note ? { note: spec.note } : {}),
-          cells: columns.map(col => cellOf(byScanner.get(col.id), complete.get(col.id) === true)),
-        })),
+        .map(({ spec, byScanner }) => {
+          const linked = linkable.has(spec.key);
+          return {
+            key: spec.key,
+            label: spec.label,
+            ...(spec.note ? { note: spec.note } : {}),
+            cells: columns.map(col => cellOf(byScanner.get(col.id), complete.get(col.id) === true,
+              linked && SEGMENT.test(col.id) ? status => methodChecksHref(method, spec.key, col.id, status) : undefined)),
+            ...(linked ? {} : { unlisted: NO_ADDRESS }),
+          };
+        }),
     }));
 }
 
@@ -217,6 +251,18 @@ function classifyTransform(report: EvaluationSummary, groups: { relation: string
   };
 }
 
+export type TallyMethod = Exclude<MethodId, 'holdout' | 'differential'>;
+
+/** Which row a check of each tallied method falls in. The table and the lists behind its counts both read this one choice. */
+export function classifierFor(id: TallyMethod, report: EvaluationSummary): Classify {
+  switch (id) {
+    case 'twin': return classifyTwin();
+    case 'benign': return classifyBenign();
+    case 'metamorphic': return classifyTransform(report, { relation: 'Same detection after the transform', alone: 'The transformed text on its own' }, () => false);
+    default: return classifyTransform(report, { relation: 'Same detection, format still valid', alone: 'The altered value on its own' }, v => v.operator === 'authored.twin');
+  }
+}
+
 // ---- Unscored -------------------------------------------------------------------------------------
 
 /** Cases with at least one check waiting for a person, for the methods whose assertions can be review-required. */
@@ -226,7 +272,7 @@ function unscoredCases(cases: EvaluationCase[]): number {
 
 // ---- Differential and holdout have their own shapes -----------------------------------------------
 
-const DIFFERENCES: { key: string; label: string; note: string; disagreement: string }[] = [
+export const DIFFERENCES: { key: string; label: string; note: string; disagreement: string }[] = [
   { key: 'same', label: 'No difference found', note: 'The same ranges, or none from either, and no family difference where families could be compared', disagreement: 'none' },
   { key: 'range', label: 'Ranges differ', note: 'Both reported something, and not the same ranges', disagreement: 'range-disagreement' },
   { key: 'product-only', label: `Only ${PRODUCT} reported`, note: `${PRODUCT} reported a range the peer did not`, disagreement: 'redact-secret-only' },
@@ -234,35 +280,57 @@ const DIFFERENCES: { key: string; label: string; note: string; disagreement: str
   { key: 'classification', label: 'Same ranges, different family', note: 'The ranges match and the families they map to differ', disagreement: 'classification-disagreement' },
 ];
 
-function differentialRecorded(report: EvaluationSummary, cases: EvaluationCase[], peerReviews: number): MethodRecordedData | NotMeasuredData {
-  const copy = METHOD_COPY.differential;
-  const peers = report.scanners.filter(s => s.id !== PRODUCT);
-  if (peers.length === 0) return notMeasured('No peer scanner ran', `The evaluation was published with ${PRODUCT} alone, so there is nothing to compare it with. Run the evaluation with its peers.`);
-  const columns = columnsOf(report, id => id !== PRODUCT);
-  type Counts = { complete: number; kinds: Map<string, number>; compared: number; notCompared: number };
-  const per = new Map<string, Counts>(peers.map(p => [p.id, { complete: 0, kinds: new Map(), compared: 0, notCompared: 0 }]));
+/** One recorded comparison behind a differential count (#623). */
+export interface ComparisonRef { case: EvaluationCase; comparison: EvaluationCase['comparisons'][number] }
+export interface PeerComparisons { complete: number; kinds: Map<string, ComparisonRef[]>; compared: number; notCompared: number }
+
+/** The comparisons of each peer, by what each tool reported: one pass, read by the table and the lists alike. */
+export function comparisonsByPeer(peers: string[], cases: EvaluationCase[]): Map<string, PeerComparisons> {
+  const per = new Map<string, PeerComparisons>(peers.map(p => [p, { complete: 0, kinds: new Map(), compared: 0, notCompared: 0 }]));
   for (const c of cases) {
     for (const x of c.comparisons) {
       const p = per.get(x.peer);
       if (!p) continue;
       if (x.status !== 'complete') { p.notCompared++; continue; }
       p.complete++;
-      p.kinds.set(x.disagreement, (p.kinds.get(x.disagreement) ?? 0) + 1);
+      const kind = p.kinds.get(x.disagreement) ?? [];
+      p.kinds.set(x.disagreement, kind);
+      kind.push({ case: c, comparison: x });
       if (x.classification === 'compared') p.compared++;
     }
   }
+  return per;
+}
+
+const CLASSIFICATION_UNLISTED = 'Not listed: the same comparisons as the rows above, split by family. Open a count above.';
+
+function differentialRecorded(report: EvaluationSummary, cases: EvaluationCase[], peerReviews: number): MethodRecordedData | NotMeasuredData {
+  const copy = METHOD_COPY.differential;
+  const peers = report.scanners.filter(s => s.id !== PRODUCT);
+  if (peers.length === 0) return notMeasured('No peer scanner ran', `The evaluation was published with ${PRODUCT} alone, so there is nothing to compare it with. Run the evaluation with its peers.`);
+  const columns = columnsOf(report, id => id !== PRODUCT);
+  const per = comparisonsByPeer(peers.map(p => p.id), cases);
   const status = new Map(peers.map(p => [p.id, p.status === 'complete']));
-  const cell = (peer: string, value: (p: Counts) => number): EvidenceCell => {
+  const cell = (peer: string, value: (p: PeerComparisons) => number, href?: string): EvidenceCell => {
     const p = per.get(peer)!;
-    return status.get(peer) && p.complete > 0 ? { kind: 'count', value: int(value(p)), of: int(p.complete) } : status.get(peer) ? { kind: 'none' } : { kind: 'not-measured' };
+    if (!status.get(peer)) return { kind: 'not-measured' };
+    if (p.complete === 0) return { kind: 'none' };
+    const n = value(p);
+    return { kind: 'count', value: int(n), of: int(p.complete), ...(href && n > 0 && SEGMENT.test(peer) ? { href } : {}) };
   };
   const groups: EvidenceGroup[] = [
-    { label: 'What each tool reported', rows: DIFFERENCES.map(d => ({ key: d.key, label: d.label, note: d.note, cells: columns.map(col => cell(col.id, p => p.kinds.get(d.disagreement) ?? 0)) })) },
+    {
+      label: 'What each tool reported',
+      rows: DIFFERENCES.map(d => ({
+        key: d.key, label: d.label, note: d.note,
+        cells: columns.map(col => cell(col.id, p => p.kinds.get(d.disagreement)?.length ?? 0, methodChecksHref('differential', d.key, col.id, 'complete'))),
+      })),
+    },
     {
       label: 'Family classification',
       rows: [
-        { key: 'compared', label: 'Comparable', note: 'Ranges match and every range maps to a family', cells: columns.map(col => cell(col.id, p => p.compared)) },
-        { key: 'not-comparable', label: 'Not comparable', note: 'Nothing to compare, an unmapped range, or ranges that differ', cells: columns.map(col => cell(col.id, p => p.complete - p.compared)) },
+        { key: 'compared', label: 'Comparable', note: 'Ranges match and every range maps to a family', cells: columns.map(col => cell(col.id, p => p.compared)), unlisted: CLASSIFICATION_UNLISTED },
+        { key: 'not-comparable', label: 'Not comparable', note: 'Nothing to compare, an unmapped range, or ranges that differ', cells: columns.map(col => cell(col.id, p => p.complete - p.compared)), unlisted: CLASSIFICATION_UNLISTED },
       ],
     },
   ];
@@ -281,6 +349,7 @@ function differentialRecorded(report: EvaluationSummary, cases: EvaluationCase[]
       text: `${int(queued)} comparisons recorded a difference and are queued for review.${notCompared ? ` Up to ${int(notCompared)} inputs were not compared for a peer that did not complete them.` : ''} Which tool is right is not decided here.`,
     },
     caption: 'Differences between redact-secret and each peer',
+    detail: `A count opens the comparisons behind it, from this run only. A zero has none to open. Which tool is right is decided in the review ledger (${REVIEW_LEDGER}), never on these pages.`,
   };
 }
 
@@ -379,14 +448,13 @@ function recordedFor(id: Exclude<MethodId, 'holdout' | 'differential'>, report: 
   let description: string;
   let rowHeader = 'Check';
   let unscored: MethodRecordedData['unscored'];
+  groups = tallyRows(report, cases, columns, classifierFor(id, report), id);
   switch (id) {
     case 'twin':
-      groups = tallyRows(report, cases, columns, classifyTwin());
       title = 'Do the pairs come apart?';
       description = 'One row for the pair and one for each side, per scanner.';
       break;
     case 'benign': {
-      groups = tallyRows(report, cases, columns, classifyBenign());
       groups.push(...untargetedActions(report, cases, columns));
       title = 'Which controls were flagged?';
       description = 'Controls by taxonomy, per scanner. Findings are not counted, only whether a control was flagged.';
@@ -394,13 +462,11 @@ function recordedFor(id: Exclude<MethodId, 'holdout' | 'differential'>, report: 
       break;
     }
     case 'metamorphic':
-      groups = tallyRows(report, cases, columns, classifyTransform(report, { relation: 'Same detection after the transform', alone: 'The transformed text on its own' }, () => false));
       title = 'Does detection survive a change of context?';
       description = 'One row per transform, then the transformed text read on its own.';
       rowHeader = 'Transform';
       break;
     default:
-      groups = tallyRows(report, cases, columns, classifyTransform(report, { relation: 'Same detection, format still valid', alone: 'The altered value on its own' }, v => v.operator === 'authored.twin'));
       title = 'Does detection survive an altered value?';
       description = 'Only values that still match the format contract are scored. One row per operator.';
       rowHeader = 'Operator';
@@ -414,8 +480,13 @@ function recordedFor(id: Exclude<MethodId, 'holdout' | 'differential'>, report: 
     const deferred = cases.reduce((n, c) => n + c.variants.filter(v => v.expectationEffect === 'defer').length, 0);
     if (deferred > 0) unscored = { title: 'Needs review', text: `${count(deferred, 'altered value')} no longer match the format contract. Their expectation is deferred, so they are counted in no row above.` };
   }
-  return { state: 'recorded', title, description, rowHeader, cellMeaning: copy.cellMeaning, columns, groups, ...(unscored ? { unscored } : {}), caption: `${copy.name}: checks that did not hold, per scanner` };
+  return { state: 'recorded', title, description, rowHeader, cellMeaning: copy.cellMeaning, columns, groups, ...(unscored ? { unscored } : {}), caption: `${copy.name}: checks that did not hold, per scanner`, detail: CHECKS_DETAIL };
 }
+
+/** What a count opens, said once under every tallied table (#623). */
+const CHECKS_DETAIL = 'A count opens the checks behind it: the ones that did not hold, from this run only. "Needs review" opens the checks that wait for a person. A zero has none to open, and a scanner that did not run has none to list.';
+
+const UNTARGETED_UNLISTED = 'Not listed: these controls are the untargeted taxonomy rows above, split by the action a finding carried. Open a count there.';
 
 /** Untargeted real-world-shaped controls, split by the policy action a finding carried (#95): only a scanner that reports an action has numbers here. */
 function untargetedActions(report: EvaluationSummary, benign: EvaluationCase[], columns: EvidenceColumn[]): EvidenceGroup[] {
@@ -441,8 +512,8 @@ function untargetedActions(report: EvaluationSummary, benign: EvaluationCase[], 
   return [{
     label: 'Untargeted, by policy action',
     rows: [
-      { key: 'gating', label: 'Flagged with redact or block', note: 'Only a scanner that reports a policy action has a count here', cells: columns.map(c => cell(c.id, p => p.gating)) },
-      { key: 'warn', label: 'Flagged with warn only', note: 'Accepted by the product policy on ordinary prose', cells: columns.map(c => cell(c.id, p => p.flagged - p.gating)) },
+      { key: 'gating', label: 'Flagged with redact or block', note: 'Only a scanner that reports a policy action has a count here', cells: columns.map(c => cell(c.id, p => p.gating)), unlisted: UNTARGETED_UNLISTED },
+      { key: 'warn', label: 'Flagged with warn only', note: 'Accepted by the product policy on ordinary prose', cells: columns.map(c => cell(c.id, p => p.flagged - p.gating)), unlisted: UNTARGETED_UNLISTED },
     ],
   }];
 }

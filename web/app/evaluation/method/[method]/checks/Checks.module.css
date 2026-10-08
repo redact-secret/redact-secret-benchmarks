@@ -1,0 +1,18 @@
+@layer components {
+  /*
+   * A method's checks page holds two views: the index of its lists, and one list. `?row=&scanner=&status=` chooses the second
+   * (ChecksSync and the inline script set `data-checks` on the root element), so a static export serves every list of a method from one
+   * page and the address keeps every filter. Without an address the index shows.
+   */
+  .listView {
+    display: none;
+  }
+
+  :global(:root[data-checks]) .listView {
+    display: block;
+  }
+
+  :global(:root[data-checks]) .indexView {
+    display: none;
+  }
+}

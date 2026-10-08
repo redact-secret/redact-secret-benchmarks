@@ -10,6 +10,8 @@ decided_at: 2026-09-30
 
 > Amended 2026-10-01 (#598, `2026-10-01-test-the-web-app-with-vitest-and-playwright.md`): the export-wide limits named here (total size, file count, the size of `data/`) are removed. They had no external basis: the site is static and deployed to S3 and CloudFront. Only per-page and per-request limits remain: one data file, the largest page, the largest rows page.
 
+> Amended 2026-10-07 (#623, `2026-10-07-link-method-cells-to-the-checks-behind-each-count.md`): a fourth kind of file, `evaluation/<method>/<row>/<scanner>/<status>/checks.json`, the checks behind one count of a method table, fetched by `/evaluation/method/<method>/checks/` when a list is opened. `BUILD_DATA_PATH` and `check-export-rows.mjs` carry its pattern; `check-export-method-checks.mjs` recounts what each holds.
+
 ## Context
 
 #573 (part of #543). `2026-09-30-load-web-data-through-services-and-resolvers.md` (#556) said the

@@ -1,0 +1,43 @@
+@layer components {
+  .cases {
+    min-width: 0;
+  }
+
+  .muted {
+    margin: 0;
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  /*
+   * A cell may hold several items (a case's families): one per line, never run together. The items keep their min-content width, so a
+   * column is never narrower than its longest word and a wide table scrolls inside its own region instead of breaking an identifier.
+   */
+  .items {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  /* The table cell breaks a word that does not fit (`break-word`); an identifier or an operator here never is: the column takes its width and the table scrolls. */
+  .item {
+    display: grid;
+    overflow-wrap: normal;
+  }
+
+  .item small {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  /* Stacked on a phone, a cell is the row's width: a long identifier wraps at its hyphens, or at last anywhere in the word. */
+  @media (max-width: 720px) {
+    .item {
+      overflow-wrap: break-word;
+      min-width: 0;
+    }
+
+    .items {
+      min-width: 0;
+    }
+  }
+}

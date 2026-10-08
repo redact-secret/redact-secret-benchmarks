@@ -28,10 +28,10 @@ const EVERYTHING = [
  * the evaluation bundle publication check and retention planner): none is read by a measurement, so changing one re-runs the site build and `validate-sources`, never the scanners.
  * Any other script is shared code.
  */
-const NEW_PATH_SCRIPTS = /^scripts\/(build-qualification-|export-qualification-|official-run|run-official-|check-official-runs|check-qualification-|record-official-run|provision-official-peers|adopt-evidence-snapshot|check-evidence-adoption|compare-adoption-views|derive-snapshot-inputs|export-|assemble-site|check-evaluation-bundle-publication|evaluation-bundle-retention|lib\/evaluation-bundle-deployment|check-feature-dataset-exclusion|check-blind-public)/
+const NEW_PATH_SCRIPTS = /^scripts\/(build-qualification-|export-qualification-|official-run|run-official-|check-official-runs|check-qualification-|record-official-run|provision-official-peers|adopt-evidence-snapshot|check-evidence-adoption|compare-adoption-views|derive-snapshot-inputs|export-|assemble-site|check-evaluation-bundle-publication|evaluation-bundle-retention|lib\/evaluation-bundle-deployment|check-feature-dataset-exclusion|check-blind-public|research-projection)/
 
-/** Benchmark-owned files only the new path reads: they change the view, never the legacy measurement. */
-const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.json$|official-run|qualification-)/
+/** Benchmark-owned files only the new path reads: they change the view or the pages, never the legacy measurement (the research projection, #590, is read by the Next app only). */
+const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.json$|official-run|qualification-|support\/research-projection\.(json|mjs)$)/
 
 /**
  * PII migration tooling and data (#666): the pii-eval consumer, the dual-run and linux-replay scripts, the committed pins and artifacts, the PII

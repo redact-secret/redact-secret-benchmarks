@@ -54,7 +54,7 @@ test('every input of the legacy measurement selects it, and the new path alone d
     'scanners/candidate.mjs', 'corpora/regression/manifest.json', 'fixtures/x.mjs', 'peer-observations/comparison/x.json', 'qualification/suite-v1.json', 'scripts/generate-fixtures.mjs', 'src/model.mjs']) {
     assert.equal(pr([f]).legacy, true, f);
   }
-  for (const f of ['benchmarks/qualification/adapter.ts', 'benchmarks/official-runs.json', 'benchmarks/qualification-inputs.json', 'scripts/build-qualification-view.ts', 'scripts/official-run-archive.mjs']) {
+  for (const f of ['benchmarks/qualification/adapter.ts', 'benchmarks/official-runs.json', 'benchmarks/qualification-inputs.json', 'scripts/build-qualification-view.ts', 'scripts/official-run-archive.mjs', 'scripts/research-projection.mjs', 'benchmarks/support/research-projection.mjs', 'benchmarks/support/research-projection.json']) {
     const plan = pr([f]);
     assert.equal(plan.legacy, false, f);
     assert.equal(plan.web, true, `${f} changes the view the site is built from`);

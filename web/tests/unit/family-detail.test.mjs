@@ -106,7 +106,7 @@ test('notes land under the three headings; a blank dossier has none, and an unre
   assert.deepEqual(n.lookAlikes.map(i => i.term), ['Collisions']);
   assert.deepEqual(n.open.map(i => i.term), ['Blocked by', 'Open caveat']);
   assert.deepEqual(resolveNotes(undefined), { format: [], lookAlikes: [], open: [] });
-  assert.deepEqual(resolveStatus(dossier).map(i => [i.label, i.value, i.tone]), [['Research', 'Ready', 'neutral'], ['Evidence level', 'T2 · Tool-corroborated', 'neutral'], ['Researched', '2026-09-29', 'neutral']]);
+  assert.deepEqual(resolveStatus(dossier).map(i => [i.label, i.value, i.tone]), [['Dossier verdict', 'Ready', 'neutral'], ['Dossier evidence level', 'T2 · Tool-corroborated', 'neutral'], ['Dossier researched', '2026-09-29', 'neutral']]);
   const none = resolveStatus({ ...dossier, verdict: 'unresearched', tier: null, researchedAt: null });
   assert.deepEqual(none.map(i => [i.value, i.tone]), [['Not researched', 'not-measured'], ['Not recorded', 'not-measured'], ['Not recorded', 'not-measured']]);
 });

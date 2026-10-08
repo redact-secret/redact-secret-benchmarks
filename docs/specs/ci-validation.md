@@ -30,7 +30,7 @@ and in the `validate` log, and a job cannot skip itself into a pass.
 `scripts/ci-plan.mjs` holds one map, tested in `tests/ci-plan.test.mjs`. It errs towards running: a path it does not recognise, an empty change and a failed diff run everything.
 
 - **Everything:** the two workflows and the composite actions that run the checks, the lockfiles (`package.json`, `package-lock.json`, `web/package*.json`), `tsconfig.json`, `schemas/`, the Dockerfile and the plan itself.
-- **The legacy measurement** (the oracle): `benchmarks/` except the files only the new path reads (`benchmarks/qualification/`, `official-runs*`, `qualification-*`, `evidence-adoption.json`), `scanners/`, `corpora/`, `fixtures/`, `peer-observations/`, `qualification/`,
+- **The legacy measurement** (the oracle): `benchmarks/` except the files only the new path reads (`benchmarks/qualification/`, `official-runs*`, `qualification-*`, `evidence-adoption.json`, `support/research-projection.{json,mjs}`), `scanners/`, `corpora/`, `fixtures/`, `peer-observations/`, `qualification/`,
   `holdout/`, `adversarial/`, `baselines/`, `evidence/`, `src/`, and every script that is not new-path tooling (shared code, generators and the engine's entry points).
 - **The site build:** `web/`, plus everything the services read: the benchmark files, the corpora, the committed evidence, the legacy site's validators in `src/`, the scripts, and the docs the pages are built from (`docs/specs/qualification/`, `docs/generated/`).
   Prose, the root unit tests and other workflows select neither (the root unit tests always run).

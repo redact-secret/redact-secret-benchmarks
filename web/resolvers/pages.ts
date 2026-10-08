@@ -12,6 +12,7 @@ import { loadCredentialSource, NO_VIEW_SUITE } from '../services/credential-sour
 import { loadDetectorContracts } from '../services/contracts';
 import { loadAccountingFloors } from '../services/floors';
 import { loadDossiers } from '../services/dossiers';
+import { loadResearch } from '../services/research';
 import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
 import { loadPeerProfiles } from '../services/peers';
@@ -24,13 +25,15 @@ import {
   resolveFamily, resolveFamilyList, familyHref, familySlug, type FamilyDetail, type FamilyList, type LevelList,
 } from './families';
 import type { StatusBarItem } from '../components/feedback';
-import type { FamilyBenchmarkData, FamilyNoteItem, FamilyRulesData, FamilySourcesData } from '../components/family/types';
+import type { FamilyBenchmarkData, FamilyFormatData, FamilyNoteItem, FamilyResearchRecordData, FamilyRulesData, FamilySourcesData } from '../components/family/types';
 import {
   LEVELS, isLevel, LEVEL_SHORT as SHORT_LABEL, LEVEL_TITLE as TIER_LABEL, answerMeta, levelHref, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
   type FindingsBlock, type LevelAnswers, type Level, type PeersBlock,
 } from './report';
 import { count, int, isoDate } from './format';
 import { resolveBenchmark, resolveNotes, resolveRules, resolveSources, resolveStatus } from './family-detail';
+import { resolveFamilyFormat } from './family-format';
+import { researchLine, resolveResearchRecord } from './family-research';
 import { LIST_LEVELS } from './filters';
 import { buildSuiteRecords, type SuiteRecordsFile } from './fixtures';
 import { NOT_PROVIDER_SPECIFIC } from './families';
@@ -125,9 +128,11 @@ const footnoteOf = (totals: FamilyList['totals']): string =>
   `${int(totals.global)} fixtures are global or not tied to one family. They count in no provider or family row.`;
 
 async function listPage(title: 'Providers' | 'Families'): Promise<ListPageData> {
-  const { catalog, run, stamp, measured, rows } = await context();
+  const [{ catalog, run, stamp, measured, rows }, research] = await Promise.all([context(), loadResearch()]);
   const levels: LevelList[] = LIST_LEVELS.map(({ level, label }) => {
     const list = resolveFamilyList(catalog, rows, level);
+    // The provider list names each family's research record (#591): review state and format revision, or "not recorded".
+    if (title === 'Providers') for (const p of list.providers) p.group.families = p.group.families.map(f => ({ ...f, research: researchLine(research.state === 'recorded' ? research.families.get(f.id) : undefined) }));
     const unit = title === 'Providers' ? count(list.totals.providersWithFixtures, 'provider') : count(list.totals.familiesWithFixtures, 'family', 'families');
     return { level, optionLabel: level === 'all' ? label : `${label} · ${unit}`, list, footnote: footnoteOf(list.totals) };
   });
@@ -243,6 +248,9 @@ export interface FamilyPageData {
   levels: { value: string; label: string }[];
   /** What the page says above the rows (#589): research status, dossier notes, benchmark counts, peer rules, sources. */
   status: StatusBarItem[];
+  /** The canonical research record (#591): review state, format revision, research state, blockers, revisions, rulings. */
+  research: FamilyResearchRecordData;
+  canonicalFormat: FamilyFormatData;
   format: FamilyNoteItem[];
   lookAlikes: FamilyNoteItem[];
   open: FamilyNoteItem[];
@@ -266,7 +274,7 @@ export async function resolveFamilySlugs(): Promise<string[]> {
 }
 
 export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | undefined> {
-  const [{ catalog, run, stamp, measured, rows }, dossiers, peers] = await Promise.all([context(), loadDossiers(), loadPeerProfiles()]);
+  const [{ catalog, run, stamp, measured, rows }, dossiers, peers, research] = await Promise.all([context(), loadDossiers(), loadPeerProfiles(), loadResearch()]);
   const id = catalog.taxonomy.families.find(f => familySlug(f.id) === slug)?.id;
   const family = id ? resolveFamily(catalog, id, rows) : undefined;
   if (!family) return undefined;
@@ -293,6 +301,8 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
     rows: await rowsFor('family', slug),
     levels: levels.length > 2 ? levels : [],
     status: resolveStatus(dossier),
+    research: resolveResearchRecord(research, family.id),
+    canonicalFormat: resolveFamilyFormat(research, family.id),
     format: notes.format,
     lookAlikes: notes.lookAlikes,
     open: notes.open,

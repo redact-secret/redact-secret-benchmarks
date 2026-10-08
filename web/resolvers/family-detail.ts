@@ -76,9 +76,9 @@ const VERDICT: Record<Verdict, string> = {
 export function resolveStatus(dossier: DossierFamily | undefined): StatusBarItem[] {
   const researched = !!dossier && dossier.verdict !== 'unresearched';
   return [
-    { label: 'Research', value: dossier ? VERDICT[dossier.verdict] : 'Not recorded', tone: researched ? 'neutral' : 'not-measured' },
-    { label: 'Evidence level', value: dossier?.tier ? `${dossier.tier} · ${TIER_TITLE[dossier.tier] ?? dossier.tier}` : 'Not recorded', tone: dossier?.tier ? 'neutral' : 'not-measured' },
-    { label: 'Researched', value: dossier?.researchedAt ?? 'Not recorded', tone: dossier?.researchedAt ? 'neutral' : 'not-measured' },
+    { label: 'Dossier verdict', value: dossier ? VERDICT[dossier.verdict] : 'Not recorded', tone: researched ? 'neutral' : 'not-measured' },
+    { label: 'Dossier evidence level', value: dossier?.tier ? `${dossier.tier} · ${TIER_TITLE[dossier.tier] ?? dossier.tier}` : 'Not recorded', tone: dossier?.tier ? 'neutral' : 'not-measured' },
+    { label: 'Dossier researched', value: dossier?.researchedAt ?? 'Not recorded', tone: dossier?.researchedAt ? 'neutral' : 'not-measured' },
   ];
 }
 

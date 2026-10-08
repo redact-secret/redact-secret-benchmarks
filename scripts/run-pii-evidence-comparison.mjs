@@ -9,7 +9,7 @@ import { verifyPackages } from './run-pii-candidate-comparison.mjs';
 import { treeSha256 } from './lib/pii-tree-digest.mjs';
 import { verifyEvidenceSource } from './fetch-pii-evidence-inputs.mjs';
 import { sha256, verifyConsumerRuntime, verifyImportDigests } from './lib/pii-evidence-contract.mjs';
-import { readEvidenceComparisonPlan, validateEvidenceComparisonPlan, evidenceDigest, same } from './lib/pii-evidence-comparison-plan.mjs';
+import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidenceExecutionSelection, validateEvidenceComparisonPlan, evidenceDigest, same } from './lib/pii-evidence-comparison-plan.mjs';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
 import { parseStrictJson } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 import { deriveEvidencePopulationIndex, loadPiiEvidenceComparison, SIDES, POPULATION_INDEX_DIGEST } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
@@ -46,9 +46,10 @@ export function verifyEvidenceImports({ verified, imported, outputs, plan }) {
   return { snapshot, binding, populationIndex };
 }
 
-export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(), engine, consumerBin, sourceDir, sourceArchive, buildReceipt,
+export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(), planFile = PLAN_PATH, engine, consumerBin, sourceDir, sourceArchive, buildReceipt,
   shim, node, tarballs, inventory, out, requireCanonical = false, snapshotDir }) {
   validateEvidenceComparisonPlan(plan);
+  if (requireCanonical) validateEvidenceExecutionSelection(plan, { planPath: planFile });
   if (existsSync(out)) fail('output-exists');
   if (requireCanonical ? plan.mode !== 'official' || plan.dispatch.authorised !== true : plan.mode !== 'exploratory') fail('fresh-cost-decision-required');
   const executionContext = evidenceExecutionContext({ requireCanonical, plan });
@@ -60,6 +61,8 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
     fetchHelper: readFileSync(join(sourceDir, 'tools/pii-evidence/fetch-snapshot.mjs')), binary: readFileSync(consumerBin), platform, buildReceipt: consumerReceipt }, plan.consumer);
   if (sha256(readFileSync(shim)) !== plan.engine.shimSha256) fail('shim-mismatch');
   for (const side of SIDES) verifyPackages({ plan, side, tarballs: tarballs[side], inventory });
+  if (plan.productTuple && sha256(readFileSync(tarballs.candidate.node)) !==
+      (requireCanonical ? plan.candidate.nativeLinuxTarballSha256 : plan.candidate.localNativeDarwinTarballSha256)) fail('reviewed-native-tarball-mismatch');
   const scratch = mkdtempSync(join(tmpdir(), 'pii-evidence-comparison-'));
   let deadline = executionContext.deadline;
   const command = (binary, args, cwd, asJson = true) => {
@@ -147,8 +150,9 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const arg = name => { const value = process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3); if (!value) fail(`missing-${name}`); return resolve(value); };
   const canonical = process.argv.includes('--require-canonical');
+  const planFile = process.argv.find(value => value.startsWith('--plan='))?.slice(7) ?? process.env.EVIDENCE_PLAN ?? PLAN_PATH;
   const result = await runEvidenceComparison({ engine: arg('engine'), sourceDir: arg('source'), sourceArchive: arg('source-archive'), consumerBin: arg('consumer'),
-    plan: process.argv.some(value => value.startsWith('--plan=')) ? readEvidenceComparisonPlan(arg('plan')) : undefined,
+    plan: readEvidenceComparisonPlan(planFile), planFile,
     snapshotDir: process.argv.some(value => value.startsWith('--snapshot-dir=')) ? arg('snapshot-dir') : undefined,
     buildReceipt: canonical ? arg('build-receipt') : undefined, shim: arg('shim'), node: arg('node'), inventory: arg('candidate-inventory'), out: arg('out'), requireCanonical: canonical,
     tarballs: Object.fromEntries(SIDES.map(side => [side, Object.fromEntries(['core', 'node', 'wasm'].map(key => [key, arg(`${side}-${key}`)]))])) });

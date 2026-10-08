@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 // Collect an already completed public run. Never dispatches or changes authority.
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, existsSync, lstatSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { readEvidenceComparisonPlan, evidenceDigest, validateEvidenceCostDecision, COST_PATH, same } from './lib/pii-evidence-comparison-plan.mjs';
+import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidencePlanPath, validateEvidenceExecutionSelection, evidenceDigest, validateEvidenceCostDecision, COST_PATH, same } from './lib/pii-evidence-comparison-plan.mjs';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
 import { sha256 } from './lib/pii-evidence-contract.mjs';
 import { loadPiiEvidenceComparison, SIDES } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
@@ -15,7 +15,7 @@ const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 export const UPLOAD_NAMES = ['plan.json', 'receipt.json', 'build-receipt.json', ...SIDES.map(side => `${side}.public-synthetic-artifact.json`),
   ...SIDES.flatMap(side => ['manifest', 'observation', 'run-artifact'].map(name => `replay-inputs/${side}/${name}.json`))];
 export function collectEvidenceComparison({ run, artifact, files, archiveSha256, expectedHeadSha, plan, costDecision, populationIndex }) {
-  validateEvidenceCostDecision(costDecision, { preflight: plan.preflight, policy: plan.policy, populationIndex });
+  validateEvidenceCostDecision(costDecision, { preflight: plan.preflight, policy: plan.policy, populationIndex, productTuple: plan.productTuple, executionPaths: plan.executionPaths });
   if (costDecision.state !== 'approved' || evidenceDigest(costDecision) !== plan.dispatch?.costDecisionSha256) throw new Error('evidence-approved-cost-mismatch');
   if (!/^[a-f0-9]{40}$/.test(expectedHeadSha ?? '') || run?.repository?.full_name !== REPOSITORY || run.head_repository?.full_name !== REPOSITORY ||
       run.path !== '.github/workflows/pii-official-run.yml' || run.event !== 'workflow_dispatch' || run.status !== 'completed' || run.conclusion !== 'success' ||
@@ -42,11 +42,14 @@ export function collectEvidenceComparison({ run, artifact, files, archiveSha256,
   if (summary.state !== 'recorded' || summary.mode !== 'official') throw new Error(`evidence-upload-refused:${summary.reason ?? 'mode'}`);
   return { record, summary, files: Object.fromEntries(UPLOAD_NAMES.map(name => [name, files[name]])) };
 }
-export function evidenceComparisonSourceProblems({ root = ROOT, plan = readEvidenceComparisonPlan() } = {}) {
-  const dir = join(root, COMPARISON_DIR);
+export function evidenceComparisonSourceProblems({ root = ROOT, planFile = PLAN_PATH, plan = readEvidenceComparisonPlan(planFile) } = {}) {
+  validateEvidencePlanPath(planFile);
+  const dir = join(root, dirname(planFile));
   if (!existsSync(join(dir, 'receipt.json')) && !existsSync(join(dir, 'record.json'))) return SIDES.some(side => existsSync(join(dir, `${side}.public-synthetic-artifact.json`))) ? ['evidence-artifact-without-record'] : [];
   try {
     const receiptText = readFileSync(join(dir, 'receipt.json'), 'utf8'), receipt = parseEvidenceJson(receiptText), record = parseEvidenceJson(readFileSync(join(dir, 'record.json'), 'utf8'));
+    const cost = validateEvidenceCostDecision(parseEvidenceJson(readFileSync(join(dir, 'cost-decision.json'), 'utf8')), { preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest, productTuple: plan.productTuple, executionPaths: plan.executionPaths });
+    if (cost.state !== 'approved' || evidenceDigest(cost) !== plan.dispatch.costDecisionSha256) return ['evidence-source-cost-mismatch'];
     if (!same(parseEvidenceJson(readFileSync(join(dir, 'plan.json'), 'utf8')), plan)) return ['evidence-source-plan-stale'];
     const result = loadPiiEvidenceComparison({ plan, receipt, receiptText, record,
       artifacts: SIDES.map(side => ({ side, text: readFileSync(join(dir, `${side}.public-synthetic-artifact.json`), 'utf8') })),
@@ -72,7 +75,39 @@ with zipfile.ZipFile(sys.argv[1]) as z:
     return Object.fromEntries(UPLOAD_NAMES.map(name => [name, new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(readFileSync(join(dir, name)))]));
   } catch { throw new Error('evidence-archive-member-set-invalid'); }
 }
-export function collectEvidenceGithub({ runId, expectedHeadSha, write = false }) {
+export function writeCollectedEvidence({ root = ROOT, outDir, result }) {
+  validateEvidencePlanPath(`${outDir}/plan.json`);
+  const dir = join(root, outDir);
+  const names = [...Object.keys(result.files), 'record.json'];
+  if (!same(Object.keys(result.files).sort(), [...UPLOAD_NAMES].sort())) throw new Error('evidence-durable-member-set-invalid');
+  for (const name of names) {
+    const parts = `${outDir}/${name}`.split('/');
+    for (let i = 1; i <= parts.length; i++) {
+      try { if (lstatSync(join(root, ...parts.slice(0, i))).isSymbolicLink()) throw new Error('evidence-output-symlink-refused'); }
+      catch (error) { if (error.code !== 'ENOENT') throw error; }
+    }
+  }
+  if (existsSync(join(dir, 'record.json')) || existsSync(join(dir, 'receipt.json'))) throw new Error('evidence-existing-record-refused');
+  for (const name of names) {
+    const destination = join(dir, name);
+    if (!existsSync(destination)) continue;
+    if (name !== 'plan.json') throw new Error('evidence-existing-member-refused');
+    if (!lstatSync(destination).isFile() || !readFileSync(destination).equals(Buffer.from(result.files[name])))
+      throw new Error('evidence-existing-plan-mismatch');
+  }
+  mkdirSync(dir, { recursive: true });
+  for (const [name, text] of Object.entries(result.files)) {
+    const destination = join(dir, name); mkdirSync(dirname(destination), { recursive: true });
+    if (name === 'plan.json' && existsSync(destination)) continue;
+    writeFileSync(destination, text, { flag: 'wx' });
+  }
+  writeFileSync(join(dir, 'record.json'), JSON.stringify(result.record, null, 1) + '\n', { flag: 'wx' });
+}
+export function collectEvidenceGithub({ runId, expectedHeadSha, write = false, planFile = PLAN_PATH, outDir = dirname(planFile) }) {
+  const plan = readEvidenceComparisonPlan(planFile);
+  validateEvidenceExecutionSelection(plan, { planPath: planFile });
+  validateEvidencePlanPath(`${outDir}/plan.json`);
+  if (outDir !== dirname(planFile)) throw new Error('evidence-collection-origin-mismatch');
   if (!/^[0-9]+$/.test(String(runId)) || !/^[a-f0-9]{40}$/.test(expectedHeadSha ?? '')) throw new Error('evidence-run-identity-invalid');
   const run = JSON.parse(gh(`repos/${REPOSITORY}/actions/runs/${runId}`));
   const listing = JSON.parse(gh(`repos/${REPOSITORY}/actions/runs/${runId}/artifacts?per_page=100`));
@@ -84,31 +119,24 @@ export function collectEvidenceGithub({ runId, expectedHeadSha, write = false })
   const headJson = file => { const doc = JSON.parse(gh(`repos/${REPOSITORY}/contents/${file}?ref=${expectedHeadSha}`));
     if (doc.encoding !== 'base64' || typeof doc.content !== 'string' || doc.content.length > 500000) throw new Error('evidence-head-file-invalid');
     return parseEvidenceJson(Buffer.from(doc.content, 'base64').toString('utf8')); };
-  const plan = readEvidenceComparisonPlan(), headPlan = headJson(`${COMPARISON_DIR}/plan.json`), costDecision = headJson(COST_PATH), populationIndex = headJson(`${COMPARISON_DIR}/population-index.json`);
+  const headPlan = headJson(planFile), costDecision = headJson(plan.dispatch.costDecision), populationIndex = headJson(`${dirname(planFile)}/population-index.json`);
   if (!same(headPlan, plan)) throw new Error('evidence-workflow-head-plan-mismatch');
   const temp = mkdtempSync(join(tmpdir(), 'pii-evidence-collect-'));
   try {
     const archive = join(temp, 'archive.zip'); writeFileSync(archive, zip);
     const files = extractEvidenceComparisonArchive({ archive, dir: join(temp, 'files') });
     const result = collectEvidenceComparison({ run, artifact, files, archiveSha256, expectedHeadSha, plan, costDecision, populationIndex });
-    if (write) {
-      const dir = join(ROOT, COMPARISON_DIR); mkdirSync(dir, { recursive: true });
-      if (existsSync(join(dir, 'record.json')) || existsSync(join(dir, 'receipt.json'))) throw new Error('evidence-existing-record-refused');
-      for (const [name, text] of Object.entries(result.files)) {
-        const destination = join(dir, name); mkdirSync(dirname(destination), { recursive: true });
-        writeFileSync(destination, text, { flag: name === 'plan.json' ? 'w' : 'wx' });
-      }
-      writeFileSync(join(dir, 'record.json'), JSON.stringify(result.record, null, 1) + '\n', { flag: 'wx' });
-    }
+    if (write) writeCollectedEvidence({ outDir, result });
     return result.record;
   } finally { rmSync(temp, { recursive: true, force: true }); }
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   if (process.argv.includes('--check')) {
-    const problems = evidenceComparisonSourceProblems(); if (problems.length) throw new Error(problems.join(','));
+    const planFile = process.argv.find(value => value.startsWith('--plan='))?.slice(7) ?? PLAN_PATH;
+    const problems = evidenceComparisonSourceProblems({ planFile }); if (problems.length) throw new Error(problems.join(','));
     console.log('PII evidence source bindings valid, or canonical measurement not recorded yet');
   } else {
     const arg = name => process.argv.find(value => value.startsWith(`--${name}=`))?.slice(name.length + 3);
-    console.log(JSON.stringify(collectEvidenceGithub({ runId: arg('run-id'), expectedHeadSha: arg('head-sha'), write: process.argv.includes('--write') }), null, 1));
+    console.log(JSON.stringify(collectEvidenceGithub({ runId: arg('run-id'), expectedHeadSha: arg('head-sha'), write: process.argv.includes('--write'), planFile: arg('plan') ?? PLAN_PATH, outDir: arg('out-dir') ?? undefined }), null, 1));
   }
 }

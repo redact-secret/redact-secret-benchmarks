@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, lstatSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -107,7 +107,70 @@ export function stable(value) {
 }
 export const same = (a, b) => stable(a) === stable(b);
 export const closed = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && same(Object.keys(value).sort(), [...keys].sort());
-function runtimeInputs({ preflight, policy, populationIndex, populationIndexDigest } = {}) {
+export function validateEvidenceProductTuple(tuple) {
+  const hex = (value, size) => typeof value === 'string' && new RegExp(`^[a-f0-9]{${size}}$`).test(value);
+  const version = value => typeof value === 'string' && value.length <= 64 && /^\d+\.\d+\.\d+(?:-[A-Za-z0-9]+(?:[.-][A-Za-z0-9]+)*)?$/.test(value);
+  const refuse = () => { throw new Error('reviewed-product-tuple-invalid'); };
+  if (!closed(tuple, ['schema', 'reviewedBy', 'reviewedAt', 'baseline', 'candidate']) || tuple.schema !== 'pii-evidence-reviewed-products/1' ||
+      typeof tuple.reviewedBy !== 'string' || !tuple.reviewedBy.trim() || tuple.reviewedBy.length > 160 || /[\x00-\x1f\x7f]/.test(tuple.reviewedBy) || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(tuple.reviewedAt ?? '') ||
+      !Number.isFinite(Date.parse(tuple.reviewedAt)) || new Date(tuple.reviewedAt).toISOString() !== tuple.reviewedAt.replace('Z', '.000Z')) refuse();
+  const { baseline, candidate } = tuple;
+  if (!closed(baseline, Object.keys(PRODUCT_PINS.baseline)) || baseline.provenance !== 'published-npm-lockfile' ||
+      !hex(baseline.sourceCommit, 40) || !version(baseline.version) || !closed(baseline.packages, Object.keys(PRODUCT_PINS.baseline.packages))) refuse();
+  for (const [name, pin] of Object.entries(baseline.packages)) {
+    const leaf = name.slice('@redact-secret/'.length);
+    if (!closed(pin, ['version', 'integrity', 'resolved']) || pin.version !== baseline.version ||
+        !/^sha512-[A-Za-z0-9+/]{86}==$/.test(pin.integrity ?? '') ||
+        Buffer.from(pin.integrity.slice(7), 'base64').length !== 64 ||
+        Buffer.from(pin.integrity.slice(7), 'base64').toString('base64') !== pin.integrity.slice(7) ||
+        pin.resolved !== `https://registry.npmjs.org/@redact-secret/${leaf}/-/${leaf}-${baseline.version}.tgz`) refuse();
+  }
+  if (!closed(candidate, Object.keys(PRODUCT_PINS.candidate)) || candidate.provenance !== 'qualified-unpublished-artifacts' ||
+      !hex(candidate.sourceCommit, 40) || candidate.sourceCommit === baseline.sourceCommit || !version(candidate.version) ||
+      typeof candidate.qualificationRunId !== 'string' || candidate.qualificationRunId.length > 20 || !/^[1-9][0-9]*$/.test(candidate.qualificationRunId) ||
+      Object.keys(PRODUCT_PINS.candidate).filter(key => key.endsWith('Sha256')).some(key => !hex(candidate[key], 64))) refuse();
+  return structuredClone(tuple);
+}
+export function validateEvidencePlanPath(path) {
+  if (path !== PLAN_PATH && (typeof path !== 'string' || !/^benchmarks\/pii-evidence-comparison\/[a-z0-9][a-z0-9-]{0,63}\/plan\.json$/.test(path) || path.includes('/replay-inputs/')))
+    throw new Error('evidence-plan-path-invalid');
+  const parts = path.split('/');
+  for (let i = 1; i <= parts.length; i++) {
+    try {
+      const stat = lstatSync(resolve(ROOT, ...parts.slice(0, i)));
+      if (stat.isSymbolicLink()) throw new Error('evidence-plan-symlink-refused');
+      if (i === parts.length ? !stat.isFile() || stat.size > 256 * 1024 : !stat.isDirectory()) throw new Error('evidence-plan-file-invalid');
+    }
+    catch (error) { if (error.code !== 'ENOENT') throw error; }
+  }
+  return path;
+}
+export function validateEvidenceCostPath(path) {
+  if (typeof path !== 'string' || !path.endsWith('/cost-decision.json')) throw new Error('evidence-cost-path-invalid');
+  validateEvidencePlanPath(path.replace(/cost-decision\.json$/, 'plan.json'));
+  try {
+    const stat = lstatSync(resolve(ROOT, path));
+    if (stat.isSymbolicLink()) throw new Error('evidence-cost-symlink-refused');
+    if (!stat.isFile() || stat.size > 64 * 1024) throw new Error('evidence-cost-file-invalid');
+  }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+  return path;
+}
+export function validateEvidenceExecutionPaths(paths) {
+  if (!closed(paths, ['planPath', 'costDecisionPath']) || paths.planPath === PLAN_PATH ||
+      validateEvidencePlanPath(paths.planPath).replace(/plan\.json$/, 'cost-decision.json') !== paths.costDecisionPath)
+    throw new Error('evidence-execution-paths-invalid');
+  validateEvidenceCostPath(paths.costDecisionPath);
+  return structuredClone(paths);
+}
+export function validateEvidenceExecutionSelection(plan, { planPath = PLAN_PATH, costDecisionPath = plan.dispatch.costDecision } = {}) {
+  validateEvidencePlanPath(planPath); validateEvidenceCostPath(costDecisionPath);
+  validateEvidenceComparisonPlan(plan);
+  const wanted = plan.executionPaths ?? { planPath: PLAN_PATH, costDecisionPath: COST_PATH };
+  if (planPath !== wanted.planPath || costDecisionPath !== wanted.costDecisionPath || plan.dispatch.costDecision !== wanted.costDecisionPath)
+    throw new Error('evidence-execution-origin-mismatch');
+}
+function runtimeInputs({ preflight, policy, populationIndex, populationIndexDigest, productTuple, executionPaths } = {}) {
   policy ??= parseEvidenceJson(readFileSync(resolve(ROOT, 'benchmarks/pii-population-policy.json'), 'utf8'));
   preflight ??= parseEvidenceJson(readFileSync(resolve(ROOT, 'benchmarks/pii-evidence/preflight.json'), 'utf8'));
   validatePreflightReport(preflight, policy, { snapshotPin: preflight.evidence, consumerPin: preflight.consumer });
@@ -115,12 +178,16 @@ function runtimeInputs({ preflight, policy, populationIndex, populationIndexDige
   if (!/^[a-f0-9]{64}$/.test(indexDigest)) throw new Error('population-index-digest-invalid');
   if (same(preflight.evidence, SNAPSHOT_PIN) && indexDigest !== 'e898ea657b4247858b905407275513510cc7db6b8efe3824ae982d2ddb6e0b55') throw new Error('initial-population-index-changed');
   if (!same(preflight.evidence, SNAPSHOT_PIN) && !populationIndex && !populationIndexDigest) throw new Error('future-population-index-required');
-  return { preflight, policy, populationIndexDigest: indexDigest };
+  if (productTuple !== undefined && executionPaths === undefined) throw new Error('reviewed-product-execution-paths-required');
+  return { preflight, policy, populationIndexDigest: indexDigest, ...(executionPaths === undefined ? {} : { executionPaths: validateEvidenceExecutionPaths(executionPaths) }), ...(productTuple === undefined ? {} : { productTuple: validateEvidenceProductTuple(productTuple) }) };
 }
 export function executionScope(runtime) {
   const inputs = runtimeInputs(runtime), { preflight } = inputs;
-  return { baselineSourceCommit: '0c62fd38bca75c5b28b042dc79789b708ebf1d17', candidateSourceCommit: '5696d7e1a2950bdf54fa21244f351e1c4b171f25',
-    qualificationRunId: '37772337995', inventorySha256: 'ce4e59de91d00514f29a0035333912d2ec470a8d56a1a0ecbb12fbcc9fd1cb74',
+  const products = inputs.productTuple ?? PRODUCT_PINS;
+  return { baselineSourceCommit: products.baseline.sourceCommit, candidateSourceCommit: products.candidate.sourceCommit,
+    qualificationRunId: products.candidate.qualificationRunId, inventorySha256: products.candidate.inventorySha256,
+    ...(inputs.productTuple ? { productTupleDigest: evidenceDigest(inputs.productTuple) } : {}),
+    ...(inputs.executionPaths ? inputs.executionPaths : {}),
     engineCommit: CONSUMER_PIN.source.commit, engineBinarySha256: CONSUMER_PIN.executionEngine.binarySha256,
     sourceArchiveSha256: CONSUMER_PIN.source.sourceArchiveSha256, snapshotDigest: preflight.evidence.snapshot.contentDigest,
     populationDigest: preflight.population.digest, bindingDigest: preflight.population.bindingDigest,
@@ -136,10 +203,10 @@ export function validateEvidenceCostDecision(cost, runtime) {
     throw new Error('evidence-cost-decision-invalid');
   return structuredClone(cost);
 }
-export function evidenceComparisonPlan({ costDecision, preflight, policy, populationIndex, populationIndexDigest } = {}) {
-  const old = structuredClone(PRODUCT_PINS);
-  const inputs = runtimeInputs({ preflight, policy, populationIndex, populationIndexDigest }); preflight = inputs.preflight; policy = inputs.policy;
-  const runtime = { preflight, policy, populationIndex, populationIndexDigest };
+export function evidenceComparisonPlan({ costDecision, preflight, policy, populationIndex, populationIndexDigest, productTuple, executionPaths } = {}) {
+  const old = { ...structuredClone(PRODUCT_PINS), ...(productTuple === undefined ? {} : validateEvidenceProductTuple(productTuple)) };
+  const inputs = runtimeInputs({ preflight, policy, populationIndex, populationIndexDigest, productTuple, executionPaths }); preflight = inputs.preflight; policy = inputs.policy;
+  const runtime = { preflight, policy, populationIndex, populationIndexDigest, productTuple, executionPaths };
   const cost = validateEvidenceCostDecision(costDecision ?? parseEvidenceJson(readFileSync(resolve(ROOT, COST_PATH), 'utf8')), runtime);
   return { schema: 'pii-evidence-comparison-plan/1', publicOnly: true, supportClaims: false, qualified: false,
     mode: cost.state === 'approved' ? 'official' : 'exploratory', runClass: 'public-synthetic', engineProductPin: 'candidate',
@@ -147,6 +214,8 @@ export function evidenceComparisonPlan({ costDecision, preflight, policy, popula
     engine: { repository: CONSUMER_PIN.source.repository, commit: CONSUMER_PIN.source.commit,
       binarySha256: CONSUMER_PIN.executionEngine.binarySha256, shimSha256: CONSUMER_PIN.source.shimSha256 },
     protocol: old.protocol, scanner: old.scanner, baseline: old.baseline, candidate: old.candidate,
+    ...(productTuple === undefined ? {} : { productTuple: structuredClone(productTuple) }),
+    ...(executionPaths === undefined ? {} : { executionPaths: structuredClone(executionPaths) }),
     population: structuredClone(preflight.population), populationIndexDigest: inputs.populationIndexDigest, counts: structuredClone(preflight.counts), losses: structuredClone(preflight.losses),
     mappedFamilies: structuredClone(preflight.mappedFamilies), execution: executionScope(runtime),
     localVerification: { platform: 'darwin-arm64', canonical: false,
@@ -155,7 +224,7 @@ export function evidenceComparisonPlan({ costDecision, preflight, policy, popula
       rustc: CONSUMER_PIN.evidenceConsumer.localVerification.rustc,
       command: 'cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval --bin pii-eval-evidence -j 2',
       maximumExecutionSeconds: 60 },
-    dispatch: { authorised: cost.state === 'approved', costDecision: COST_PATH,
+    dispatch: { authorised: cost.state === 'approved', costDecision: executionPaths?.costDecisionPath ?? COST_PATH,
       costDecisionSha256: cost.state === 'approved' ? evidenceDigest(cost) : null,
       sourceApproval: 'reviewed-e991-consumer-contract-and-released-evidence-pin', actualCostRecord: null },
     limitations: { familyMetrics: 'unavailable-no-family-projection-in-unprojected-schema-1.4',
@@ -166,7 +235,7 @@ export function evidenceComparisonPlan({ costDecision, preflight, policy, popula
 export function validateEvidenceComparisonPlan(plan, { populationIndex } = {}) {
   // The initial archive anchor remains fixed; a future plan carries its reviewed
   // candidate preflight and policy, bound by the fresh cost decision.
-  const runtime = { preflight: plan?.preflight, policy: plan?.policy, populationIndex, populationIndexDigest: plan?.populationIndexDigest };
+  const runtime = { preflight: plan?.preflight, policy: plan?.policy, populationIndex, populationIndexDigest: plan?.populationIndexDigest, productTuple: plan?.productTuple, executionPaths: plan?.executionPaths };
   const syntheticCost = { schema: 'pii-evidence-comparison-cost-decision/1', state: 'prepared', decidedBy: null, decidedAt: null, scope: executionScope(runtime) };
   const prepared = evidenceComparisonPlan({ costDecision: syntheticCost, ...runtime });
   if (plan?.mode === 'official') {
@@ -178,5 +247,6 @@ export function validateEvidenceComparisonPlan(plan, { populationIndex } = {}) {
   return structuredClone(plan);
 }
 export function readEvidenceComparisonPlan(file = PLAN_PATH) {
-  return validateEvidenceComparisonPlan(parseEvidenceJson(readFileSync(file, 'utf8')));
+  validateEvidencePlanPath(file);
+  return validateEvidenceComparisonPlan(parseEvidenceJson(readFileSync(resolve(ROOT, file), 'utf8')));
 }

@@ -3,19 +3,23 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
-import { PLAN_PATH, COST_PATH, readEvidenceComparisonPlan, evidenceComparisonPlan, same } from './lib/pii-evidence-comparison-plan.mjs';
+import { PLAN_PATH, COST_PATH, readEvidenceComparisonPlan, evidenceComparisonPlan, validateEvidenceExecutionSelection, validateEvidenceCostPath, same } from './lib/pii-evidence-comparison-plan.mjs';
 export * from './lib/pii-evidence-comparison-plan.mjs';
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const option = name => process.argv.find(arg => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
   const read = name => option(name) ? parseEvidenceJson(readFileSync(resolve(option(name)), 'utf8')) : undefined;
-  const runtime = { preflight: read('preflight'), policy: read('policy'), populationIndex: read('population-index') };
+  const runtime = { preflight: read('preflight'), policy: read('policy'), populationIndex: read('population-index'), productTuple: read('product-tuple'), executionPaths: read('execution-paths') };
   const future = Object.values(runtime).some(value => value !== undefined);
-  const selected = option('plan') ?? PLAN_PATH;
+  const selected = option('plan') ?? process.env.EVIDENCE_PLAN ?? PLAN_PATH;
   let plan;
   if (process.argv.includes('--check') || process.argv.includes('--github-output') || option('snapshot-pin-output')) {
     plan = readEvidenceComparisonPlan(selected);
-    const cost = parseEvidenceJson(readFileSync(option('cost-decision') ?? COST_PATH, 'utf8'));
-    const wanted = evidenceComparisonPlan({ costDecision: cost, preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest });
+    const activeCopy = selected === PLAN_PATH && plan.executionPaths !== undefined;
+    const costFile = option('cost-decision') ?? (activeCopy && process.argv.includes('--check') ? COST_PATH : plan.dispatch.costDecision);
+    if (process.argv.includes('--github-output') || option('snapshot-pin-output')) validateEvidenceExecutionSelection(plan, { planPath: selected, costDecisionPath: costFile });
+    validateEvidenceCostPath(costFile);
+    const cost = parseEvidenceJson(readFileSync(costFile, 'utf8'));
+    const wanted = evidenceComparisonPlan({ costDecision: cost, preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest, productTuple: plan.productTuple, executionPaths: plan.executionPaths });
     if (!same(plan, wanted)) throw new Error('evidence-plan-stale');
   } else plan = evidenceComparisonPlan({ ...runtime, costDecision: read('cost-decision') });
   const text = JSON.stringify(plan, null, 1) + '\n';

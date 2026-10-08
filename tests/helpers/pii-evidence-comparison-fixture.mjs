@@ -7,7 +7,7 @@ const h = character => character.repeat(64);
 // Synthetic metrics use the existing three-case wire fixture. They are never ledger evidence.
 export function syntheticEvidenceComparison(options = {}) {
   const populationIndex = options.populationIndex ?? read('benchmarks/pii-evidence-comparison/population-index.json');
-  const runtime = { ...options, populationIndex };
+  const runtime = { ...options, populationIndex, ...(options.productTuple && !options.executionPaths ? { executionPaths: { planPath: 'benchmarks/pii-evidence-comparison/synthetic-products/plan.json', costDecisionPath: 'benchmarks/pii-evidence-comparison/synthetic-products/cost-decision.json' } } : {}) };
   const costDecision = { schema: 'pii-evidence-comparison-cost-decision/1', state: 'prepared', decidedBy: null, decidedAt: null,
     scope: executionScope(runtime) };
   const plan = evidenceComparisonPlan({ costDecision, ...runtime });
@@ -44,7 +44,7 @@ export function syntheticEvidenceComparison(options = {}) {
 export function syntheticEvidenceOfficialUpload(options = {}) {
   const e = syntheticEvidenceComparison(options), costDecision = { schema: 'pii-evidence-comparison-cost-decision/1', state: 'approved',
     decidedBy: 'synthetic-test-owner', decidedAt: '2026-10-08T00:00:00Z', scope: e.plan.execution };
-  e.plan = evidenceComparisonPlan({ costDecision, preflight: e.plan.preflight, policy: e.plan.policy, populationIndex: e.populationIndex }); e.receipt.planDigest = evidenceDigest(e.plan); e.receipt.mode = 'official';
+  e.plan = evidenceComparisonPlan({ costDecision, preflight: e.plan.preflight, policy: e.plan.policy, populationIndex: e.populationIndex, productTuple: e.plan.productTuple, executionPaths: e.plan.executionPaths }); e.receipt.planDigest = evidenceDigest(e.plan); e.receipt.mode = 'official';
   e.receipt.engine.binarySha256 = e.plan.engine.binarySha256; e.receipt.engine.platform = 'linux-x64'; e.receipt.engine.canonical = true;
   const pin = e.plan.consumer;
   e.receipt.importer = { binarySha256: h('a'), buildReceipt: { schema: 'pii-evidence-consumer-build-receipt/1', sourceCommit: pin.source.commit,

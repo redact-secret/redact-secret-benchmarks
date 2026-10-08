@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readEvidenceComparisonPlan } from './lib/pii-evidence-comparison-plan.mjs';
+import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidenceExecutionSelection } from './lib/pii-evidence-comparison-plan.mjs';
 import { evidenceDigest as comparisonDigest, validateEvidenceCostDecision } from './lib/pii-evidence-comparison-plan.mjs';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
 
@@ -24,8 +24,10 @@ function api(endpoint, missingAllowed = false) {
   }
 }
 
-export function verifyCurrentDispatch({ plan = readEvidenceComparisonPlan(), readApi = api, environment = process.env,
+export function verifyCurrentDispatch({ plan, readApi = api, environment = process.env,
   readDecision = file => readFileSync(resolve(file), 'utf8') } = {}) {
+  plan ??= readEvidenceComparisonPlan(environment.EVIDENCE_PLAN ?? PLAN_PATH);
+  validateEvidenceExecutionSelection(plan, { planPath: environment.EVIDENCE_PLAN ?? PLAN_PATH });
   if (plan.dispatch.authorised !== true || !plan.dispatch.costDecisionSha256) throw new Error('fresh-cost-decision-required');
   if (environment.GITHUB_REPOSITORY !== 'redact-secret/redact-secret-benchmarks') throw new Error('dispatch-repository-mismatch');
   const repository = 'redact-secret/redact-secret-benchmarks';
@@ -39,7 +41,7 @@ export function verifyCurrentDispatch({ plan = readEvidenceComparisonPlan(), rea
     if (runs.length >= result.total_count) break;
     if (page === 6) throw new Error('dispatch-history-incomplete');
   }
-  const decision = validateEvidenceCostDecision(parseEvidenceJson(readDecision(plan.dispatch.costDecision)), { preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest });
+  const decision = validateEvidenceCostDecision(parseEvidenceJson(readDecision(plan.dispatch.costDecision)), { preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest, productTuple: plan.productTuple, executionPaths: plan.executionPaths });
   if (decision.state !== 'approved' || comparisonDigest(decision) !== plan.dispatch.costDecisionSha256) throw new Error('cost-decision-plan-mismatch');
   if (!/^refs\/heads\/(?!main$|develop$)[A-Za-z0-9._/-]+$/.test(environment.GITHUB_REF ?? '')) throw new Error('branch-only-evidence-dispatch-required');
   const since = Date.parse(decision.decidedAt);
@@ -48,7 +50,7 @@ export function verifyCurrentDispatch({ plan = readEvidenceComparisonPlan(), rea
   const decisions = new Map();
   for (const sha of new Set(eligible.map(run => run.head_sha))) {
     if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('dispatch-history-invalid');
-    const text = readApi(`repos/${repository}/contents/benchmarks/pii-evidence-comparison/cost-decision.json?ref=${sha}`, true);
+    const text = readApi(`repos/${repository}/contents/${plan.dispatch.costDecision}?ref=${sha}`, true);
     if (!text) continue;
     const content = JSON.parse(text);
     if (content.encoding !== 'base64' || typeof content.content !== 'string' || content.content.length > 100_000) throw new Error('cost-decision-content-invalid');

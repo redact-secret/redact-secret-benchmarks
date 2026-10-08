@@ -83,7 +83,8 @@ export function validateEvidenceComparisonReceipt(receipt, plan) {
         if (row.tarballIntegrity[key] !== plan.baseline.packages[name]?.integrity) refuse('published-integrity-mismatch');
       }
     } else if (row.tarballs.core !== plan.candidate.coreTarballSha256 || row.tarballs.wasm !== plan.candidate.piiWasmTarballSha256 ||
-      (plan.mode === 'official' && row.tarballs.node !== plan.candidate.nativeLinuxTarballSha256)) refuse('qualified-package-mismatch');
+      (plan.mode === 'official' && row.tarballs.node !== plan.candidate.nativeLinuxTarballSha256) ||
+      (plan.productTuple && plan.mode === 'exploratory' && row.tarballs.node !== plan.candidate.localNativeDarwinTarballSha256)) refuse('qualified-package-mismatch');
   }
   return structuredClone(receipt);
 }

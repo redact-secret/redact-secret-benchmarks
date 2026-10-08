@@ -136,3 +136,34 @@ Local Darwin verification can match the historical engine binary; explicit axis
 flags preserve that distinction without creating a regression verdict. No new result retroactively qualifies the four older
 populations, validates missing product primitives, restores lost contexts or PHI
 domain information, or activates protected execution.
+
+## Reviewed future product inputs
+
+An optional `--product-tuple=<file>` input supplies a closed
+`pii-evidence-reviewed-products/1` record: external `reviewedBy`/`reviewedAt`,
+`baseline` published source/version with the fixed npm package roster, exact
+registry URLs and SHA512 integrities, and `candidate` source/version, successful
+qualification run, inventory digest and exact core/native/WASM artifact hashes.
+The engine, importer, protocol and adapter configuration remain fixed by the
+reviewed contract. A tuple never grants execution or support acceptance.
+
+The optional variant carries `plan.productTuple` and binds its full digest in
+`execution.productTupleDigest`. Prepare a separate plan and a fresh cost decision
+for that exact tuple. The CLI emits source/run/version outputs from the validated
+variant; versions cannot contain shell or output-file control characters. Current
+plans without this field keep their exact historical semantics and digests.
+
+A variant also takes `--execution-paths=<file>` with exactly `planPath` and
+`costDecisionPath`, under `benchmarks/pii-evidence-comparison/<safe-id>/` with the
+filenames `plan.json` and `cost-decision.json`. The fresh scope binds both origin
+paths. Commit the matching population index beside the selected plan. The wrapper
+`evidence_plan` input selects that plan; all execution steps require that origin.
+Unknown paths, escaping paths, symlinks and mismatched ids are refused before
+execution. Copying an approved plan or decision to a different path cannot reuse
+its allowance. A retained plan copied to the active view is readable but cannot
+execute from that copied address.
+
+Collect a successful variant with `--plan=<origin-path> --out-dir=<origin-directory>`
+on the collector. It verifies the selected immutable-head plan, its scoped cost
+decision and population index, then retains the full public synthetic replay set
+in that fresh versioned directory. Existing records are never overwritten.

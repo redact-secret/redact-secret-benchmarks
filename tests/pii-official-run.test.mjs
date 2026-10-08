@@ -28,7 +28,8 @@ test('the workflow is dispatch only, selects only a committed lane, and holds le
   assert.deepEqual(parsed.on.workflow_dispatch.inputs, { lane: {
     description: 'Committed measurement plan to execute', type: 'choice', default: 'pinned-official',
     options: ['pinned-official', 'candidate-comparison', 'evidence-comparison'],
-  } });
+  }, evidence_plan: { description: 'Committed public evidence plan, used only by evidence-comparison', type: 'string',
+    default: 'benchmarks/pii-evidence-comparison/plan.json' } });
   assert.deepEqual(parsed.jobs['candidate-comparison'].permissions, { contents: 'read', actions: 'read' });
   assert.equal(parsed.jobs['candidate-comparison'].uses, '$/.github/workflows/pii-candidate-comparison.yml');
   assert.deepEqual(parsed.jobs['evidence-comparison'].permissions, { contents: 'read', actions: 'read' });

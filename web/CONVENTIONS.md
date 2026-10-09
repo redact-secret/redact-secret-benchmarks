@@ -370,3 +370,12 @@ changes describe recorded differences and never imply improvement, regression or
 
 The theme icon toggles light and dark, persisting explicit preferences. Before a reader chooses, an existing system
 preference still resolves to the operating system's effective theme.
+
+Coverage and Evaluation have two focused domain entrances (#887):
+`/coverage/credential/` and `/coverage/pii/` describe release/configuration-bound
+scope, while `/evaluation/credential/` and `/evaluation/pii/` explain evidence,
+measurement and benchmark-owned policy. The PII population selectors, metric
+results and execution details live on `/evaluation/pii/results/`. Old recorded
+family fragments retain their query and selection there. The complete
+`/evaluation/pii/evidence/` matrix stays separate and links back to both overviews.
+See [the content movement contract](../docs/specs/coverage-evaluation-split.md).

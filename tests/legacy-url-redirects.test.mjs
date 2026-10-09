@@ -56,6 +56,16 @@ test('the table is well formed: unique ids, anchored patterns that compile, ever
   }
 });
 
+test('canonical coverage pages are kept before the legacy detector-id rule', () => {
+  for (const domain of ['credential', 'pii']) {
+    assert.equal(resolve(`/coverage/${domain}`), `/coverage/${domain}`);
+    assert.equal(resolve(`/coverage/${domain}/`), `/coverage/${domain}`);
+    assert.equal(resolve(`/next/coverage/${domain}/`), `/coverage/${domain}`);
+  }
+  assert.equal(resolve('/coverage/example-detector'), '/report/detectors/example-detector/');
+  assert.equal(resolve('/coverage'), '/report/families/');
+});
+
 test('every target is a route of the Next export', () => {
   assert.ok(routes.statics.has('/report/') && routes.statics.has('/evaluation/qualification/'), 'the route list was read');
   for (const rule of table.rules) {

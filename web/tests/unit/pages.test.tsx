@@ -42,7 +42,7 @@ describe('routes', () => {
   test('every page of the app is covered', () => {
     expect(all.map(c => c.route).filter((r, i, a) => a.indexOf(r) === i).sort()).toEqual([
       '/', '/comparison', '/comparison/accuracy', '/comparison/feature', '/comparison/performance', '/comparison/runtime', '/comparison/scanner',
-      '/evaluation', '/evaluation/credential', '/evaluation/method', '/evaluation/method/[method]', '/evaluation/method/[method]/checks', '/evaluation/pii', '/evaluation/pii/evidence', '/evaluation/qualification', '/evaluation/qualification/families/[family]', '/evaluation/qualification/families/[family]/cases/[page]', '/evaluation/qualification/unattributed/[page]', '/evaluation/rc', '/evaluation/scanner', '/evidence/resources',
+      '/coverage/credential', '/coverage/pii', '/evaluation', '/evaluation/credential', '/evaluation/method', '/evaluation/method/[method]', '/evaluation/method/[method]/checks', '/evaluation/pii', '/evaluation/pii/evidence', '/evaluation/pii/results', '/evaluation/qualification', '/evaluation/qualification/families/[family]', '/evaluation/qualification/families/[family]/cases/[page]', '/evaluation/qualification/unattributed/[page]', '/evaluation/rc', '/evaluation/scanner', '/evidence/resources',
       '/report', '/report/corpus', '/report/corpus/[suite]', '/report/detectors', '/report/detectors/[detector]', '/report/families', '/report/families/[family]', '/report/findings',
       '/report/fixtures', '/report/fixtures/[suite]', '/report/internationalization', '/report/providers', '/report/rows/[level]',
     ]);

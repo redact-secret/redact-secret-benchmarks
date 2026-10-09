@@ -15,8 +15,8 @@ export const FOOTER_GROUPS = [
   { label: 'Coverage', links: [
     { label: 'Credential Corpus', href: '/report/corpus/' },
     { label: 'Detectors', href: '/report/detectors/' },
-    { label: 'Credentials', href: '/report/families/' },
-    { label: 'PII + PHI', href: '/evaluation/pii/' },
+    { label: 'Credentials', href: '/coverage/credential/' },
+    { label: 'PII + PHI', href: '/coverage/pii/' },
     { label: 'Internationalization', href: '/report/internationalization/' },
   ] },
   { label: 'Evaluation', links: [
@@ -26,6 +26,7 @@ export const FOOTER_GROUPS = [
   ] },
   { label: 'Evidence', links: [
     { label: 'Providers', href: '/report/providers/' },
+    { label: 'Credential families', href: '/report/families/' },
     { label: 'Cases', href: '/report/corpus/' },
     { label: 'Resources', href: '/evidence/resources/' },
   ] },
@@ -39,3 +40,4 @@ export const FOOTER_GROUPS = [
     { label: 'Qualification', href: '/evaluation/qualification/' },
   ] },
 ];
+export const SITE_ORIGIN = 'https://benchmarks.redactsecret.dev';

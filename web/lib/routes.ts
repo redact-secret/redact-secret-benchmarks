@@ -1,19 +1,16 @@
 /**
- * The six routes of the new site, and the navigation derived from them.
- *
- * `/comparison/runtime` follows issue #547; the design spec's mockup URL says
- * `/comparison/runtime-comparison`. The issue is the contract for this build.
- * The spec's global tab order keeps Report first and Comparison second; the
- * other entrances in that list (Coverage, Support, Performance, How to read)
- * are not part of this migration and stay on the existing site. Evaluation
- * (epic #543 follow-up) replaces the existing site's `/workbench`.
+ * Site navigation. Coverage describes product scope; Evaluation explains measurement.
  */
 export interface RouteEntry {
   href: string; label: string; title: string; summary: string;
   /** A path prefix that also marks this entry current, for an entry that stands for a family of pages (the six method pages). */
   match?: string;
 }
-export interface Section { href: string; label: string; entries: RouteEntry[] }
+export interface Section {
+  href: string; label: string; entries: RouteEntry[];
+  /** A section can enter at a child page while its prefix still identifies both domains. */
+  landingHref?: string;
+}
 
 export const SECTIONS: Section[] = [
   {
@@ -40,15 +37,25 @@ export const SECTIONS: Section[] = [
     ],
   },
   {
+    href: '/coverage/',
+    landingHref: '/coverage/credential/',
+    label: 'Coverage',
+    entries: [
+      { href: '/coverage/credential/', label: 'Credentials', title: 'Credential coverage', summary: 'Declared product scope and separately recorded qualification for the exact release and configuration.' },
+      { href: '/coverage/pii/', label: 'PII + PHI', title: 'Personal-data coverage', summary: 'Declared types, activation and context limits, separate from public measurement and protected qualification.' },
+    ],
+  },
+  {
     href: '/evaluation/',
     label: 'Evaluation',
     entries: [
       { href: '/evaluation/', label: 'Overview', title: 'Evaluation', summary: 'The evaluation methods, the run behind them and the pages that read it.' },
       { href: '/evaluation/method/', label: 'Methods', title: 'Evaluation methods', summary: 'Six methods, each with how it runs and what was recorded for it.', match: '/evaluation/method/' },
       { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
-      { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
+      { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'Evidence, type identity and sensitivity, metric denominators and qualification policy.' },
+      { href: '/evaluation/pii/results/', label: 'PII results', title: 'Personal-data measurement results', summary: 'Recorded populations, metric results, method coverage and execution details, kept separate.' },
       { href: '/evaluation/pii/evidence/', label: 'PII evidence', title: 'PII evidence as its own population', summary: 'The independent public pii-evidence population, with each scanner and denominator held apart.' },
-      { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'The credential domain: its families, fixtures and what was recorded.' },
+      { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'Authored evidence, scanner measurement and benchmark-owned qualification policy.' },
       { href: '/evaluation/qualification/', label: 'Qualification', title: 'Qualification from the official runs', summary: 'The support status derived from one official evaluation run per population, beside the existing report.', match: '/evaluation/qualification/' },
     ],
   },
@@ -60,10 +67,12 @@ export const SECTIONS: Section[] = [
  * points at a route the export does not contain.
  */
 export const EVALUATION_PHASES: RouteEntry[] = [
+  { href: '/coverage/credential/', label: 'Credential coverage', title: 'Credential coverage', summary: 'Release-bound declared scope, separately recorded qualification and full evidence links.' },
+  { href: '/coverage/pii/', label: 'PII coverage', title: 'Personal-data coverage', summary: 'Declared kinds, activation and context limits, separate from public measurement.' },
   { href: '/comparison/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
   { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
-  { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
-  { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'The credential domain: its families, fixtures and what was recorded.' },
+  { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'Evidence, measurement denominators and the benchmark-owned personal-data policy.' },
+  { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'Authored answers, scanner outcomes and the benchmark-owned credential policy.' },
 ];
 
 export const ROUTES: RouteEntry[] = SECTIONS.flatMap(s => s.entries);

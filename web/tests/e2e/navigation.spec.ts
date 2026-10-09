@@ -7,14 +7,14 @@ const windowKept = (page: import('@playwright/test').Page) => page.evaluate(() =
 test.describe('desktop navigation', () => {
   test.use({ viewport: { width: 1280, height: 800 } });
 
-  test('the header names the two sections and marks the current one; the section navigation lists its pages', async ({ page }) => {
+  test('the header names the site sections and marks the current one; the section navigation lists its pages', async ({ page }) => {
     await page.goto(`${BASE}/report/families/`);
     const primary = page.getByRole('navigation', { name: 'Primary', exact: true });
     await expect(primary.getByRole('link', { name: 'Report' })).toHaveAttribute('aria-current', 'page');
     await expect(primary.getByRole('link', { name: 'Comparison' })).not.toHaveAttribute('aria-current');
     const section = page.getByRole('navigation', { name: 'Report pages' });
     await expect(section.getByRole('link')).toHaveText(['Overview', 'Providers', 'Detectors']);
-    await expect(page.getByRole('navigation', { name: 'Site directory' }).getByRole('link', { name: 'Credentials', exact: true })).toHaveAttribute('aria-current', 'page');
+    await expect(page.getByRole('navigation', { name: 'Site directory' }).getByRole('link', { name: 'Credential families', exact: true })).toHaveAttribute('aria-current', 'page');
   });
 
   test('every page of both sections is reachable by following links, inside the app (no reload)', async ({ page }) => {
@@ -22,11 +22,11 @@ test.describe('desktop navigation', () => {
     await markWindow(page);
     for (const [name, path, heading] of [
       ['Providers', '/report/providers/', /provider/i],
-      ['Credentials', '/report/families/', /famil/i],
+      ['Credential families', '/report/families/', /famil/i],
       ['Detectors', '/report/detectors/', /detector/i],
       ['Overview', '/report/', /benchmark shows/i],
     ] as const) {
-      await page.getByRole('navigation', { name: name === 'Credentials' ? 'Site directory' : 'Report pages' }).getByRole('link', { name, exact: true }).click();
+      await page.getByRole('navigation', { name: name === 'Credential families' ? 'Site directory' : 'Report pages' }).getByRole('link', { name, exact: true }).click();
       await expect(page).toHaveURL(`${BASE}${path}`);
       await expect(page.getByRole('heading', { level: 1 })).toContainText(heading);
     }
@@ -92,6 +92,79 @@ test.describe('phone navigation', () => {
     for (const link of await page.getByRole('navigation', { name: 'Primary, bottom bar' }).getByRole('link').all()) {
       expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     }
+  });
+});
+
+test.describe('Coverage and Evaluation split', () => {
+  test('phone Coverage entrance and native detail disclosures work with the keyboard', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 700 });
+    await page.goto(`${BASE}/evaluation/`);
+    const bar = page.getByRole('navigation', { name: 'Primary, bottom bar' });
+    await bar.getByRole('link', { name: 'Coverage', exact: true }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(`${BASE}/coverage/credential/`);
+    for (const route of ['/coverage/credential/', '/coverage/pii/']) {
+      await page.goto(`${BASE}${route}`);
+      const disclosure = page.locator('main details').first();
+      const summary = disclosure.locator(':scope > summary');
+      await summary.focus();
+      await expect(summary).toBeFocused();
+      await page.keyboard.press('Enter');
+      await expect(disclosure).toHaveAttribute('open', '');
+      await page.keyboard.press('Enter');
+      await expect(disclosure).not.toHaveAttribute('open');
+    }
+  });
+
+  test('both domains are reachable from the header, keep their section current and link to their methodology', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(`${BASE}/report/`);
+    await markWindow(page);
+    await page.getByRole('navigation', { name: 'Primary', exact: true }).getByRole('link', { name: 'Coverage', exact: true }).click();
+    await expect(page).toHaveURL(`${BASE}/coverage/credential/`);
+    for (const [label, path, evaluation] of [
+      ['Credentials', '/coverage/credential/', '/evaluation/credential/'],
+      ['PII + PHI', '/coverage/pii/', '/evaluation/pii/'],
+    ]) {
+      await page.getByRole('navigation', { name: 'Coverage pages' }).getByRole('link', { name: label, exact: true }).click();
+      await expect(page).toHaveURL(`${BASE}${path}`);
+      await expect(page.getByRole('navigation', { name: 'Primary', exact: true }).getByRole('link', { name: 'Coverage', exact: true })).toHaveAttribute('aria-current', 'page');
+      await expect(page.locator(`main a[href="${BASE}${evaluation}"]`).first()).toBeVisible();
+      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://benchmarks.redactsecret.dev${path}`);
+    }
+    expect(await windowKept(page)).toBe(true);
+  });
+
+  test('a recorded PII result bookmark retains its query and selects the same result', async ({ page }) => {
+    await page.goto(`${BASE}/evaluation/pii/results/`);
+    const explorer = page.getByRole('region', { name: 'PII measurement results', exact: true });
+    const groups = explorer.getByLabel('Population or report');
+    let anchor: string | null = null;
+    const groupCount = await groups.locator('option').count();
+    for (let g = 0; g < groupCount && !anchor; g++) {
+      await groups.selectOption(String(g));
+      const rows = explorer.getByLabel('Metric or category');
+      for (let r = 0; r < await rows.locator('option').count() && !anchor; r++) {
+        await rows.selectOption(String(r));
+        const anchored = explorer.locator('li[id]').first();
+        if (await anchored.count()) anchor = await anchored.getAttribute('id');
+      }
+    }
+    expect(anchor, 'the export has a recorded family result bookmark').toBeTruthy();
+    const fragment = `#${encodeURIComponent(anchor!)}`;
+    await page.goto(`${BASE}/evaluation/pii/?view=kept&show=all${fragment}`);
+    await expect(page).toHaveURL(`${BASE}/evaluation/pii/results/?view=kept&show=all${fragment}`);
+    await expect(page.getByRole('region', { name: 'PII measurement results', exact: true }).locator('li[id]').first()).toHaveAttribute('id', anchor!);
+  });
+
+  test('ordinary methodology fragments remain there, and malformed fragments do not break either page', async ({ page, watch }) => {
+    await page.goto(`${BASE}/evaluation/pii/?view=kept#methods`);
+    await expect(page).toHaveURL(`${BASE}/evaluation/pii/?view=kept#methods`);
+    for (const route of ['/evaluation/pii/', '/evaluation/pii/results/']) {
+      await page.goto(`${BASE}${route}#%E0%A4%A`);
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    }
+    expect(watch.problems).toEqual([]);
   });
 });
 
@@ -205,7 +278,7 @@ test.describe('addresses the export does not contain', () => {
   test('robots.txt allows crawling and the favicon is served', async ({ request }) => {
     const robots = await request.get('/robots.txt');
     expect(robots.status()).toBe(200);
-    expect(await robots.text()).toMatch(/^User-agent: \*\s+Allow: \/\s*$/);
+    expect(await robots.text()).toMatch(/^User-agent: \*\s+Allow: \/\s+Sitemap: https:\/\/benchmarks\.redactsecret\.dev\/sitemap\.xml\s*$/);
     expect((await request.get('/favicon.svg')).status()).toBe(200);
   });
 });

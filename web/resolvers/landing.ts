@@ -126,6 +126,10 @@ export function resolveLanding(inputs: LandingInputs): LandingData {
         href: '/evaluation/', kicker: 'Method', title: 'How do we know the answers are right?',
         text: 'Six evaluation methods, pinned scanner versions, a review ledger and a look at each release candidate.', action: 'See how it is evaluated →',
       },
+      {
+        href: '/coverage/credential/', kicker: 'Product scope', title: 'Which credentials and personal data does it cover?',
+        text: 'The exact release and configuration, declared capability and separately recorded qualification. Credential and personal-data catalogs link their evidence and limitations.', action: 'Open coverage →',
+      },
     ],
     rulesLabel: 'The rules of the benchmark',
     rules: [

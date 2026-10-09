@@ -14,7 +14,8 @@ describe('routes', () => {
   test('Report and Comparison come first, Evaluation is an entrance too, and every entry is under its section href', () => {
     const labels = SECTIONS.map(s => s.label);
     expect(labels.slice(0, 2)).toEqual(['Report', 'Comparison']);
-    expect(labels).toContain('Evaluation');
+    expect(labels.slice(2)).toEqual(['Coverage', 'Evaluation']);
+    expect(SECTIONS.find(s => s.label === 'Coverage')?.landingHref).toBe('/coverage/credential/');
     expect(ROUTES.length).toBeGreaterThanOrEqual(10);
     for (const section of SECTIONS) for (const entry of section.entries) expect(entry.href.startsWith(section.href)).toBe(true);
     expect(new Set(ROUTES.map(r => r.href)).size).toBe(ROUTES.length);
@@ -34,6 +35,8 @@ describe('routes', () => {
     expect(sectionFor('/report/families/github-pat')?.label).toBe('Report');
     expect(sectionFor('/comparison/runtime/?view=speed')?.label).toBe('Comparison');
     expect(sectionFor('/evaluation/method/twin/')?.label).toBe('Evaluation');
+    expect(sectionFor('/coverage/credential/')?.label).toBe('Coverage');
+    expect(sectionFor('/coverage/pii/')?.label).toBe('Coverage');
     expect(sectionFor('/')).toBeUndefined();
     expect(sectionFor('/other/')).toBeUndefined();
   });

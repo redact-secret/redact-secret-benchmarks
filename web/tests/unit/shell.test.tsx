@@ -82,7 +82,7 @@ describe('pages around the routes', () => {
     render(await Home());
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     const questions = screen.getByRole('navigation', { name: 'What the benchmark answers' });
-    expect(within(questions).getAllByRole('link').map(a => a.getAttribute('href'))).toEqual(['/report', '/comparison/performance', '/evaluation'].map(h => expect.stringMatching(new RegExp(`^${h}/?$`))));
+    expect(within(questions).getAllByRole('link').map(a => a.getAttribute('href'))).toEqual(['/report', '/comparison/performance', '/evaluation', '/coverage/credential'].map(h => expect.stringMatching(new RegExp(`^${h}/?$`))));
     expect(screen.getByRole('list', { name: 'The rules of the benchmark' })).toBeInTheDocument();
     expect(document.head.querySelector('meta[http-equiv="refresh"]')).toBeNull();
   });

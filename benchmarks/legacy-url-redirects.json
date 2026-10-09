@@ -4,7 +4,9 @@
   "status": 301,
   "paths": "A request path without its trailing slash is matched; a `to` ends in a slash because the export serves directories. `match` is an anchored JavaScript regular expression over the path; `to` substitutes {name} from its named groups. `ID` is [a-z0-9-]+.",
   "kept": [
-    { "path": "/", "reason": "The landing page of the new site. The legacy `/` redirected to /report; it no longer does." }
+    { "path": "/", "reason": "The landing page of the new site. The legacy `/` redirected to /report; it no longer does." },
+    { "path": "/coverage/credential", "reason": "The release-bound credential product catalog (#887), not a legacy detector id." },
+    { "path": "/coverage/pii", "reason": "The source-bound personal-data product catalog (#887), not a legacy detector id." }
   ],
   "rules": [
     {"id": "scanner-comparison", "from": "/evaluation/scanner", "match": "^/evaluation/scanner$", "to": "/comparison/scanner/", "decision": "The scanner roster belongs to Comparison (#893); keep old links and their query parameters working."},

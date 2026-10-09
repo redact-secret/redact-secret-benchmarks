@@ -19,7 +19,8 @@ export function PiiStatusExplorer({ data }: { data: DomainStatusData }) {
   const id = useId();
   useEffect(() => {
     const sync = () => {
-      const hash = decodeURIComponent(window.location.hash.slice(1));
+      let hash: string;
+      try { hash = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
       if (!hash) return;
       for (const [g, group] of resultGroups.entries()) {
         const r = group.rows.findIndex(row => row.anchor === hash);

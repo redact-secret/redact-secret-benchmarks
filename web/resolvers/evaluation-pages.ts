@@ -16,7 +16,7 @@ import { CHECKS_SCHEMA, listKey, UNAVAILABLE_CHECKS, type ChecksFile, type Check
 import { resolveEvaluationHub } from './evaluation-hub';
 import { resolveMethodPage } from './evaluation-methods';
 
-const builtHrefs = (): Set<string> => new Set(SECTIONS.find(s => s.href === '/evaluation/')?.entries.map(e => e.href) ?? []);
+const builtHrefs = (): Set<string> => new Set(SECTIONS.flatMap(s => s.entries.map(e => e.href)));
 
 async function sources() {
   const [evaluation, qualification, suites] = await Promise.all([loadEvaluation(), loadQualification(), loadSuites()]);

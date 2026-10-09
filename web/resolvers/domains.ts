@@ -37,7 +37,7 @@ const modeWord = (mode: 'candidate' | 'published'): string => (mode === 'candida
 /** Values never enter the address: a repin preserves the family/view link. */
 export const piiFamilyAnchor = (protocol: string, population: string, scanner: string, view: string, family: string) =>
   [protocol, population, scanner, view, family].map(part => `${part.length}:${part}`).join('|');
-const familyHref = (anchor: string) => `${DOMAIN_HREF.pii}#${encodeURIComponent(anchor)}`;
+const familyHref = (anchor: string) => `/evaluation/pii/results/#${encodeURIComponent(anchor)}`;
 const identityText = (value: unknown) => typeof value === 'string' && value ? value.match(/.{1,8}/g)!.join(' ') : 'Not recorded';
 const comparisonMetricText = (metric: PiiComparisonMetric) => {
   const fixed = (value: { mantissa: number; scale: number }) => (value.mantissa / 10 ** value.scale).toFixed(value.scale);

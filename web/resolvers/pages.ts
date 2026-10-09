@@ -51,6 +51,10 @@ import type { ComparisonHubProps } from '../components/comparison/ComparisonHub'
 import { resolvePipelineStamp, resolveRunState, type RunState } from './run';
 import { resolveCredentialView, resolvePiiView, type DomainId } from './domains';
 import { loadCredentialEvaluation, loadPiiEvaluation } from '../services/domains';
+import { loadCredentialCoverage } from '../services/credential-coverage';
+import { loadPiiCatalogSource } from '../services/pii-catalog';
+import { resolveCredentialCoverage } from './credential-coverage';
+import { resolvePiiCatalog } from './pii-overview';
 import type { DomainViewData } from '../components/evaluation/domain';
 import { loadRcSources } from '../services/candidate';
 import { resolveRcPage, type RcPage } from './rc';
@@ -569,6 +573,15 @@ export async function resolveAccuracyDifferencesFile(): Promise<DiffFile> {
 /** `/evaluation/pii/` and `/evaluation/credential/` (#611): one view shape for both domains. */
 export async function resolveDomainPage(domain: DomainId): Promise<DomainViewData> {
   return domain === 'pii' ? resolvePiiView(await loadPiiEvaluation()) : resolveCredentialView(await loadCredentialEvaluation());
+}
+
+export async function resolveCredentialCoveragePage() {
+  return resolveCredentialCoverage(await loadCredentialCoverage());
+}
+
+export async function resolvePiiCoveragePage() {
+  const [publication, pii] = await Promise.all([loadPiiCatalogSource(), loadPiiEvaluation()]);
+  return resolvePiiCatalog(publication, pii);
 }
 
 // ---- /evaluation/rc ----------------------------------------------------------------------

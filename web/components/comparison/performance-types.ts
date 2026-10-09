@@ -111,4 +111,5 @@ export interface MissingGroup {
   description: string;
   /** Why it has no time, and where it is tracked. */
   reason: string;
+  links?: { label: string; href: string }[];
 }

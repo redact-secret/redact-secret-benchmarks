@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { cx } from '../../lib/cx';
 import { StatusBadge } from '../feedback';
 import { Section } from '../layout';
@@ -25,6 +26,7 @@ export function PerformanceGaps({ title, description, groups, className }: Perfo
             <div className={styles.state}>
               <StatusBadge status="not-measured">Not measured</StatusBadge>
               <p className={styles.reason}>{group.reason}</p>
+              {group.links?.map(link => <p className={styles.reason} key={link.href}><Link href={link.href}>{link.label}</Link></p>)}
             </div>
           </li>
         ))}

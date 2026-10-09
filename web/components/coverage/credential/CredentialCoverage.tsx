@@ -23,7 +23,7 @@ export function CredentialCoverage({ release, configuration, binding, sourceRevi
       <p>{support}</p><a href="/evaluation/qualification/">Recorded qualification and its criteria</a>
     </Section>
     <Section title="Activation, input conditions and limitations" description="These statements describe the scope binding above. A historical scope record does not qualify another release or configuration.">
-      <p>Generic labels and credential carriers require the recorded context/value contract and independent negative controls to distinguish ordinary values and look-alikes. Project-policy evidence stays project policy; outside-contract matches are unknown or incidental, with no provider-specific qualification. See the <a href="https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/support/policy-qualified-credentials.json">bounded credential policy contract</a> and its <a href="https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/specs/policy-qualified-credentials.md">qualification rationale and exclusions</a>.</p>
+      <p>Generic labels and credential carriers require the recorded context/value contract and negative controls authored before scanner execution to distinguish ordinary values and look-alikes. Project-policy evidence stays project policy; outside-contract matches are unknown or incidental, with no provider-specific qualification. See the <a href="https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/support/policy-qualified-credentials.json">bounded credential policy contract</a> and its <a href="https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/specs/policy-qualified-credentials.md">qualification rationale and exclusions</a>.</p>
       {scope.map(group => <div key={group.title}><h3>{group.title}</h3><ul>{group.statements.map(statement => <li key={statement}>{statement}</li>)}</ul></div>)}
       {!scope.length && <p>Activation and policy scope statements are not recorded.</p>}
     </Section>
@@ -38,6 +38,6 @@ export function CredentialCoverage({ release, configuration, binding, sourceRevi
         </li>)}</ul>
       </details>)}
     </Section>
-    <Note title="Full evidence remains inspectable" tone="info">Unsupported, unknown and research-pending families remain in the <a href="/report/families/">full family inventory</a>. The <a href="/report/corpus/">credential corpus</a> and <a href="/evaluation/qualification/">qualification results</a> retain their own denominators.</Note>
+    <Note className={styles.evidenceNote} title="Full evidence remains inspectable" tone="info">Unsupported, unknown and research-pending families remain in the <a href="/report/families/">full family inventory</a>. The <a href="/report/corpus/">credential corpus</a> and <a href="/evaluation/qualification/">qualification results</a> retain their own denominators.</Note>
   </div>;
 }

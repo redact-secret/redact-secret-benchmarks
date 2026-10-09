@@ -122,7 +122,6 @@ export const own = {
   description: 'The throughput the Performance page records for the Node surface, whole and in 4 KiB pieces.',
   apart: 'This is another run, on another machine, with another protocol than the pair above, so it is not set beside those times and is not drawn on the same axis. Read it on its own.',
   rows: ownRows,
-  other: { name: 'flare-redact', reason: 'no run of this kind is recorded. Its row of this table is not measured. Tracked in #571.' },
   source: 'Accepted run of product commit da69ebf50908: 5 repetitions, a 4-CPU linux machine, node-22, served by the N-API add-on.',
 };
 

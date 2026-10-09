@@ -175,11 +175,11 @@ function sideInfo(tool: RuntimeTool | undefined, name: string, setting: string, 
 }
 
 const GAPS: { id: string; title: string; description: string; reason: string }[] = [
-  { id: 'size', title: 'How big is the text?', description: 'The same kind of text at 64 KiB, 256 KiB and 10 MiB.', reason: 'No committed run times both libraries at more than one size of the same text. Tracked in #571.' },
-  { id: 'shape', title: 'What does the text look like?', description: 'One long line, hex ids, source code, CLI tables, invisible characters, personal data at the end of a long line.', reason: 'No committed run times both libraries on these shapes. Tracked in #571.' },
-  { id: 'hard', title: 'Text built to slow scanners down', description: 'Patterns that once made a scanner re-read the same bytes many times, each one long line or one open assignment.', reason: 'The product times these for redact-secret alone. No committed run times the other libraries on them. Tracked in #571.' },
+  { id: 'size', title: 'How big is the text?', description: 'The same kind of text at 64 KiB, 256 KiB and 10 MiB.', reason: 'The separate own run records small whole-input and medium 4 KiB-piece profiles, changing size and dispatch together. It is not a controlled size sweep for this pair. Tracked in #571.' },
+  { id: 'shape', title: 'What does the text look like?', description: 'One long line, hex ids, source code, CLI tables, invisible characters, personal data at the end of a long line.', reason: 'The pair above records six specific credential/PII texts. It does not cover this expanded shape matrix. Tracked in #571.' },
+  { id: 'hard', title: 'Text built to slow scanners down', description: 'Patterns that once made a scanner re-read the same bytes many times, each one long line or one open assignment.', reason: 'The registered accepted own run has no adversarial profile. No committed pair run times these patterns. Tracked in #571.' },
   { id: 'density', title: 'How many secrets does it hold?', description: 'The same mixed text with none, one and eight secrets per KiB.', reason: 'No committed run varies the number of secrets in one text for both libraries. Tracked in #571.' },
-  { id: 'pieces', title: 'Does it arrive whole or in pieces?', description: 'The same text handed over at once, or streamed in 4 KiB or 64 KiB pieces.', reason: 'redact-secret’s own time in 4 KiB pieces is in the table above. No committed run times both libraries in pieces. Tracked in #571.' },
+  { id: 'pieces', title: 'Does it arrive whole or in pieces?', description: 'The same text handed over at once, or streamed in 4 KiB or 64 KiB pieces.', reason: 'The separate own run records a medium 4 KiB-piece profile and a different small whole-input profile, not the same text across dispatch modes. No committed run times both libraries in pieces. Tracked in #571.' },
 ];
 
 function ownRows(own: OwnPerformance): OwnRunRow[] {
@@ -253,7 +253,6 @@ function panelFor(runtime: PeerRuntime, own: OwnPerformance, peer: Peer, setting
     description: 'The throughput the Performance page records for the Node surface, whole and in 4 KiB pieces.',
     apart: 'This is another run, on another machine, with another protocol than the pair above, so it is not set beside those times and is not drawn on the same axis. Read it on its own.',
     rows: ownRowsList,
-    other: { name: peerName, reason: 'no run of this kind is recorded. Its row of this table is not measured. Tracked in #571.' },
     source: ownSource(own),
     ...(own.state !== 'measured' ? { empty: own.reason } : !ownRowsList.length ? { empty: 'The accepted run records no Node rows.' } : {}),
   };
@@ -261,7 +260,12 @@ function panelFor(runtime: PeerRuntime, own: OwnPerformance, peer: Peer, setting
   const gaps: PerformancePairProps['gaps'] = {
     title: 'Not measured for this pair',
     description: 'Questions a pair page can answer once a run times both libraries on them. Each is a dashed “Not measured”, never a zero.',
-    groups: GAPS.map((g): MissingGroup => ({ ...g })),
+    groups: GAPS.map((g): MissingGroup => ({ ...g, links: [
+      ...(own.state === 'measured' && ['size', 'pieces'].includes(g.id) ? [{ label: 'Separate accepted own profiles and provenance', href: 'https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/inputs/performance/current.json' }] : []),
+      ...(g.id === 'shape' && run ? [{ label: `Recorded ${settingLabel} pair texts and run`, href: `https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/inputs/runtime/runtime-comparison-${settingId}.json` }] : []),
+      { label: 'Workload expansion #571', href: 'https://github.com/redact-secret/redact-secret-benchmarks/issues/571' },
+      { label: 'Neutral engine capability handoff #68', href: 'https://github.com/redact-secret/credential-eval/issues/68' },
+    ] })),
   };
 
   const method: string[] = run

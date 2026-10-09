@@ -16,5 +16,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+export const LinkedSeparateEvidence: Story = { args: { groups: [{ ...missingGroups[0], links: [{ label: 'Separate accepted own profiles and provenance', href: 'https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/inputs/performance/current.json' }] }] } };
 export const Empty: Story = { args: { groups: [] } };
 export const Phone: Story = { parameters: { viewport: { defaultViewport: 'mobile1' } } };

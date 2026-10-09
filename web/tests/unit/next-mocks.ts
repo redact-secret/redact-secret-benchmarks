@@ -1,5 +1,5 @@
 /**
- * The three pieces of `next/navigation` the app uses, backed by `window.location` so a test sets
+ * The pieces of `next/navigation` the app uses, backed by `window.location` so a test sets
  * the address with `history.replaceState` and renders. Import this file before the module under
  * test: `import './next-mocks'`.
  */
@@ -11,6 +11,7 @@ vi.mock('next/navigation', () => ({
   useServerInsertedHTML: () => {},
   usePathname: () => window.location.pathname,
   useSearchParams: () => new URLSearchParams(window.location.search),
+  useRouter: () => ({ push: (href: string) => window.history.pushState(null, '', href) }),
   notFound: () => {
     throw Object.assign(new Error(NOT_FOUND), { digest: NOT_FOUND });
   },

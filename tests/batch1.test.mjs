@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
-import { cases, corpusDigest, FAMILIES, FAMILY_IDS, synth, EXPECTED_ACTION } from '../benchmarks/batch1/corpus.mjs';
-import { parity, scoreCase, spanOutcome, summarize } from '../benchmarks/batch1/score.mjs';
+import { cases, corpusDigest, FAMILIES, FAMILY_IDS, synth, EXPECTED_ACTION } from '../benchmarks/corpora/provider-shapes/corpus.mjs';
+import { parity, scoreCase, spanOutcome, summarize } from '../benchmarks/corpora/provider-shapes/score.mjs';
 
 // Corpus and scoring invariants of the focused Batch 1 qualification (#717). No ledger value, scanner output or
 // support status is asserted here: a recorded run is only checked for the identity of the corpus it measured.
@@ -100,7 +100,7 @@ test('a recorded run, when present, was measured on this corpus', () => {
     if (!existsSync(file)) continue;
     const run = JSON.parse(readFileSync(file, 'utf8'));
     assert.equal(run.schema, 'batch1-observations-v1');
-    assert.equal(run.corpus.sha256, corpusDigest(), `${label} observations are stale: re-run scripts/measure-batch1.mjs`);
+    assert.equal(run.corpus.sha256, corpusDigest(), `${label} observations are stale: re-run scripts/measure-focused-corpus.mjs`);
     assert.ok(run.surfaces.node && run.surfaces.wasm && run.surfaces.python && run.surfaces.cli, `${label} covers every surface`);
     for (const kase of cases) for (const surface of Object.values(run.surfaces)) assert.ok(surface.cases[kase.id], `${label} lacks ${kase.id}`);
     assert.ok(!JSON.stringify(run).includes(cases[0].text.trim()), 'observations carry spans, not matched text');

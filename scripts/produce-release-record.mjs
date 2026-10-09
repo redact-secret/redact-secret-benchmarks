@@ -14,14 +14,15 @@
  *     --pii-route=pii-b11-protected-v1 --pii-protected-binding=<reviewed protected-support-bindings-v1.json id> \
  *     [--source-equivalence=<reviewed release-source-equivalences-v1.json id>]
  *
- * Schema 1 (`beta10-release-record`) is produced unchanged by scripts/produce-beta10-release-record.mjs, which calls
+ * Schema 1 (`beta10-release-record`) is produced by explicit --schema=1 using
  * produceSchema1 below.
  */
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { assembleReleaseRecord, assembleReleaseRecordV2, PII_TRUSTED_PRODUCT_ROUTE } from '../benchmarks/evaluation/release-record.ts';
 import { verifyReleaseRecordEvidence } from '../benchmarks/evaluation/release-record-evidence.ts';
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
 import { piiSupportRegistry } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 import { PII_PROTECTED_ROUTE, piiReviewedProtectedRoute } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
 
@@ -36,6 +37,7 @@ export function parseArguments(argv) {
     if (!match || Object.hasOwn(args, match[1])) throw new Error(`Invalid argument: ${argument}`);
     args[match[1]] = match[2];
   }
+  args.output ??= path.join(repositoryRoot, 'results-output/release-records', `record-${Date.now()}.json`);
   return args;
 }
 
@@ -51,7 +53,7 @@ function requireArgs(args, keys, allowed) {
 const readJson = async file => JSON.parse(await readFile(path.resolve(file), 'utf8'));
 
 async function write(record, output) {
-  await writeFile(path.resolve(output), `${JSON.stringify(record, null, 2)}\n`);
+  writeMeasurement(measurementOutput(output, repositoryRoot), `${JSON.stringify(record, null, 2)}\n`);
   console.log(`${record.artifactCommitment} ${record.reportType} product=${record.identity.productSourceCommit}`);
   return record;
 }
@@ -98,5 +100,10 @@ export async function produceSchema2(args) {
 }
 
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) {
-  await produceSchema2(parseArguments(process.argv.slice(2)));
+  const args = parseArguments(process.argv.slice(2));
+  const schema = args.schema ?? '2';
+  delete args.schema;
+  if (schema === '1') await produceSchema1(args);
+  else if (schema === '2') await produceSchema2(args);
+  else throw new Error('--schema must be 1 or 2');
 }

@@ -1,8 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFile as execFileCallback } from 'node:child_process';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, mkdtemp, readFile, rm, symlink } from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
@@ -100,17 +99,26 @@ test('the CLI rejects an unknown PII route, missing flags and flags of the other
 });
 
 test('the CLI writes a verified Beta.11 record', async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), 'release-record-v2-'));
+  await mkdir(path.join(root, 'results-output'), {recursive: true});
+  const directory = await mkdtemp(path.join(root, 'results-output/release-record-v2-'));
   try {
     const output = path.join(directory, 'record.json');
-    await execFile(process.execPath, ['--import', 'tsx', 'scripts/produce-release-record.mjs', '--release-version=0.1.0-beta.11',
+    const args = ['--import', 'tsx', 'scripts/produce-release-record.mjs', '--release-version=0.1.0-beta.11',
       `--source-commit=${RELEASE}`, '--benchmark-revision=c82a15ab797452fe200fc74674604ae9cd03cac3', '--credential-profile=measurement-v4',
       '--performance-budget=evidence/860/94fc18a-release/regression-budgets.json', '--credential-candidate=evidence/449/credential-candidate-94fc18a-v1.json',
       '--credential-qualification=evidence/449/credential-qualification-engine-v1.json', '--pii-route=pii-b11-protected-v1',
-      `--suite=${SUITE_PATH}`, '--pii-protected-binding=beta11-8b6a5fd-pii-protected', '--source-equivalence=beta11-8b6a5fd-to-94fc18a', `--output=${output}`],
-      { cwd: root, timeout: 60_000 });
+      `--suite=${SUITE_PATH}`, '--pii-protected-binding=beta11-8b6a5fd-pii-protected', '--source-equivalence=beta11-8b6a5fd-to-94fc18a', `--output=${output}`];
+    await execFile(process.execPath, args, { cwd: root, timeout: 60_000 });
     const record = JSON.parse(await readFile(output, 'utf8'));
     assert.deepEqual(record, assembleReleaseRecordV2(await beta11Input()));
+    const outside = path.join(root, 'evidence/876-unaccepted-record.json');
+    await assert.rejects(execFile(process.execPath, [...args.slice(0, -1), `--output=${outside}`], {cwd: root}), error => /ignored results-output/.test(error.stderr));
+    await assert.rejects(readFile(outside), error => error.code === 'ENOENT');
+    await symlink(path.join(root, 'evidence'), path.join(directory, 'escape'));
+    await assert.rejects(execFile(process.execPath, [...args.slice(0, -1), `--output=${path.join(directory, 'escape/876-unaccepted-record.json')}`], {cwd: root}), error => /ignored results-output/.test(error.stderr));
+    await assert.rejects(readFile(outside), error => error.code === 'ENOENT');
+    await assert.rejects(execFile(process.execPath, args, {cwd: root}), error => /already exists/.test(error.stderr));
+    assert.deepEqual(JSON.parse(await readFile(output, 'utf8')), record);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 

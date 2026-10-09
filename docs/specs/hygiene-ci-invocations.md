@@ -51,7 +51,7 @@ The parser and its synthetic tests now cover that shape.
   explicit oracle entrypoint, and discovery is the publication entrypoint. Keep
   identical fixture `prepare` and pre-command hooks: they are independent npm
   lifecycle entrypoints, not duplicated jobs within one command.
-- Keep `beta8:profiles`: its advisory profile accounting remains a referenced
+- Keep `fixtures:profiles`: its advisory profile accounting remains a referenced
   contract, not a product status claim. Keep the three `pii:beta11*` commands:
   their frozen population/protected evidence is still the bounded PII oracle.
   A version in the name is a review flag, not proof of obsolescence.
@@ -70,7 +70,7 @@ work. The review disposition is retention, with their direct CLI/file contract:
 | `adopt-pii-engine`, `record-pii-official-run`, `prepare-pii-evidence-adoption`, `record-deployment-receipt` | Owner-operated adoption/recording lifecycle in PII and evidence-adoption specs. They are not authorisations made by this cleanup. |
 | `generate-pii-card-iban-stress`, `observe-pii-card-iban-stress`, `measure-pii-ssn-phone-stress` | Population authoring/observation and retained stress evidence; specialized population ownership remains. |
 | `attribute-engine-effect`, `render-view-effect`, `summarize-adoption-replay`, `summarize-representation-effect`, `summarize-review-state-effect`, `summarize-scope-accounting` | Explicit input/output diagnostic CLIs used to interpret retained artifact/report evidence. Ad hoc execution is not an official run. |
-| `batch2-readiness`, `report-batch1`, `report-batch2-r2`, `report-batch2-r3`, `render-groups-cde-*` | Historical batch/candidate evidence reproduction and narrative renderers; outputs are retained independently of CI frequency. |
+| `measure-focused-corpus`, `report-focused-corpus` | Current parameterised diagnostic tools, exact product/corpus/scorer identities, whole/stream and four bindings; fresh ignored output. Completed batch/group writers and renderers were archived and removed in #876; history or test references do not keep a command active. |
 | `check-evaluation-ui`, `job-timing`, `measure-report-growth`, `refresh-detector-finding-types`, `rekey-review-ledger`, `report-untargeted-action-split`, `verify-evaluation-bundle` | Documented/manual verification, metadata maintenance, ledger migration and report tools; preserve the owned inputs and explicit commands. |
 | `core-build-cache`, `lib/retention-inventory`, `retained-data-dispositions`, declaration files | Computed workflow imports, actual tool imports, the durable-data inventory command or TypeScript type consumers. They are helpers, not obsolete CLI lanes. |
 

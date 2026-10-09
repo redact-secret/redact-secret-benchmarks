@@ -71,14 +71,14 @@ async function writeFixtures(directory) {
   return Object.fromEntries(Object.keys(files).map(name => [name, path.join(directory, name)]));
 }
 
-const baseArgs = paths => ['--import', 'tsx', 'scripts/produce-beta10-release-record.mjs',
+const baseArgs = paths => ['--import', 'tsx', 'scripts/produce-release-record.mjs', '--schema=1',
   `--benchmark-revision=${'2'.repeat(40)}`, '--credential-profile=evaluation-v1',
   `--performance-budget=${paths['performance-budget.json']}`, `--credential-candidate=${paths['credential-candidate.json']}`,
   `--credential-qualification=${paths['credential-qualification.json']}`, `--pii-qualification=${paths['pii-qualification.json']}`,
   `--pii-binding=${paths['pii-binding.json']}`];
 
 test('rejects missing required arguments', async () => {
-  await assert.rejects(execFile(process.execPath, ['--import', 'tsx', 'scripts/produce-beta10-release-record.mjs',
+  await assert.rejects(execFile(process.execPath, ['--import', 'tsx', 'scripts/produce-release-record.mjs', '--schema=1',
     '--benchmark-revision=' + '2'.repeat(40)], { timeout: 10_000 }), error => /Missing required/.test(error.stderr));
 });
 

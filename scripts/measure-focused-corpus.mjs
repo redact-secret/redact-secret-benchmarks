@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// `node scripts/measure-batch1.mjs --label <published|candidate> --out <file> [--node-root D] [--wasm-dir D]
+// `node scripts/measure-focused-corpus.mjs --label <published|candidate> --out <file> [--node-root D] [--wasm-dir D]
 // [--python P] [--cli B] [--corpus <module>]` (#717, #739). Scans the focused Batch 1 corpus through every supported surface the given
 // engine provides, whole and streamed, and records the per-case observations with UTF-8 byte offsets. It records
 // no matched text and decides nothing; scoring is benchmarks/batch1/score.mjs.
@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 // The corpus module is chosen by `--corpus` (default: the Batch 1 corpus, so Batch 1 runs are unchanged).
@@ -63,7 +64,7 @@ async function wasmSurface(dir) {
 function pythonSurface(python, scratch) {
   const file = path.join(scratch, 'corpus.json');
   writeFileSync(file, JSON.stringify(cases.map(({ id, text }) => ({ id, text }))));
-  const raw = execFileSync(python, [path.join(here, '../benchmarks/batch1/python-surface.py'), file], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, env: { ...process.env, BATCH_CHUNK: String(CHUNK) } });
+  const raw = execFileSync(python, [path.join(here, '../benchmarks/corpora/provider-shapes/python-surface.py'), file], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, env: { ...process.env, BATCH_CHUNK: String(CHUNK) } });
   const parsed = JSON.parse(raw);
   const version = execFileSync(python, ['-c', 'import importlib.metadata as m; print(m.version("redact-secret"))'], { encoding: 'utf8' }).trim();
   return { version, rangeUnit: parsed.rangeUnit, cases: parsed.cases };
@@ -102,13 +103,17 @@ async function cliSurface(binary, scratch) {
   return { version, rangeUnit: 'utf8-bytes', cases: out };
 }
 
-const { values } = parseArgs({ options: { label: { type: 'string' }, out: { type: 'string' }, 'node-root': { type: 'string' }, 'wasm-dir': { type: 'string' }, python: { type: 'string' }, cli: { type: 'string' }, 'source-commit': { type: 'string' }, corpus: { type: 'string' }, chunk: { type: 'string' } } });
+const { values } = parseArgs({ options: { label: { type: 'string' }, out: { type: 'string', default: `results-output/focused-measurement-${Date.now()}.json` }, 'node-root': { type: 'string' }, 'wasm-dir': { type: 'string' }, python: { type: 'string' }, cli: { type: 'string' }, 'source-commit': { type: 'string' }, corpus: { type: 'string' }, chunk: { type: 'string' } } });
 if (values.chunk) CHUNK = Number(values.chunk);
-const corpusModule = await import(pathToFileURL(path.resolve(here, values.corpus ?? '../benchmarks/batch1/corpus.mjs')).href);
+const corpusModule = await import(pathToFileURL(path.resolve(here, values.corpus ?? '../benchmarks/corpora/provider-shapes/corpus.mjs')).href);
 cases = corpusModule.cases;
 const { corpusDigest, CORPUS_VERSION } = corpusModule;
-if (!values.label || !values.out) { console.error('usage: measure-batch1.mjs --label <published|candidate> --out <file> [--node-root D] [--wasm-dir D] [--python P] [--cli B]'); process.exit(2); }
-const scratch = mkdtempSync(path.join(tmpdir(), 'batch1-'));
+if (!values.label || !values.out) { console.error('usage: measure-focused-corpus.mjs --label <published|candidate> --out <file> [--node-root D] [--wasm-dir D] [--python P] [--cli B]'); process.exit(2); }
+if (!/^[a-f0-9]{40}$/.test(values['source-commit'] ?? '')) throw new Error('--source-commit requires the exact 40-hex measured product commit');
+if (!Number.isSafeInteger(CHUNK) || CHUNK < 1) throw new Error('--chunk must be a positive integer');
+if (!['published', 'candidate'].includes(values.label)) throw new Error('--label must be published or candidate');
+values.out = measurementOutput(values.out, path.resolve(here, '..'));
+const scratch = mkdtempSync(path.join(tmpdir(), 'focused-corpus-'));
 try {
   const surfaces = {};
   if (values['node-root']) surfaces.node = await nodeSurface(values['node-root']);
@@ -118,6 +123,7 @@ try {
   const record = {
     schema: corpusModule.SCHEMA ?? 'batch1-observations-v1',
     issue: corpusModule.ISSUE ?? 717,
+    producer: { command: 'measure-focused-corpus', corpusModule: path.relative(path.resolve(here, '..'), fileURLToPath(pathToFileURL(path.resolve(here, values.corpus ?? '../benchmarks/corpora/provider-shapes/corpus.mjs')))), corpusModuleSha256: createHash('sha256').update(readFileSync(path.resolve(here, values.corpus ?? '../benchmarks/corpora/provider-shapes/corpus.mjs'))).digest('hex') },
     corpus: { version: CORPUS_VERSION, sha256: corpusDigest(), cases: cases.length },
     label: values.label,
     sourceCommit: values['source-commit'] ?? null,
@@ -126,7 +132,8 @@ try {
     chunkBytes: CHUNK,
     surfaces,
   };
-  writeFileSync(values.out, `${JSON.stringify(record)}\n`);
+  if (!Object.keys(surfaces).length) throw new Error('At least one explicit product binding is required');
+  writeMeasurement(values.out, `${JSON.stringify(record)}\n`);
   console.log(`${values.label}: ${Object.keys(surfaces).join(', ')} -> ${values.out} (${createHash('sha256').update(JSON.stringify(record)).digest('hex').slice(0, 12)})`);
 } finally {
   rmSync(scratch, { recursive: true, force: true });

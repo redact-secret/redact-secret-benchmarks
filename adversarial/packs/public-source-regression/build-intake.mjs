@@ -12,7 +12,7 @@
  * `externally-authored`: the inputs were written outside the project, but the
  * selection, composition, actions and ranges were not. See ./README.md.
  *
- * Run once, at submission: node --import tsx adversarial/packs/beta9-external-inputs/build-intake.mjs
+ * Run once, at submission: node --import tsx adversarial/packs/public-source-regression/build-intake.mjs
  * It refuses to overwrite an intake that has left `submitted`.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';

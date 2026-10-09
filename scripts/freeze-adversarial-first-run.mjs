@@ -1,3 +1,4 @@
+import { firstRunPath, HISTORICAL_PACK_PATHS } from '../benchmarks/lib/adversarial-packs.ts';
 /**
  * Freeze the first run of one adversarial pack (#140, contract #139).
  *
@@ -32,7 +33,8 @@ import { normalizeFindings } from '../benchmarks/lib/adversarial-first-run.ts';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const packId = process.argv.find(arg => arg.startsWith('--pack='))?.slice('--pack='.length);
 if (!packId) throw new Error('usage: freeze-adversarial-first-run.mjs --pack=<id>');
-const packDir = join(root, 'adversarial/packs', packId);
+const packPath = HISTORICAL_PACK_PATHS[packId] ?? `adversarial/packs/${packId}`;
+const packDir = join(root, packPath);
 const intakePath = join(packDir, 'intake.json');
 const git = args => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -43,7 +45,7 @@ if (record.status !== 'safety-review' || record.safetyReview?.outcome !== 'passe
   throw new Error(`${packId} must be at safety-review with a passed review (is ${record.status})`);
 }
 const benchmarkCommit = git(['rev-parse', 'HEAD']).trim();
-const committed = JSON.parse(git(['show', `HEAD:adversarial/packs/${packId}/intake.json`]));
+const committed = JSON.parse(git(['show', `HEAD:${packPath}/intake.json`]));
 const digest = expectationsDigest(record.fixtures);
 if (expectationsDigest(committed.fixtures) !== digest || digest !== record.expectations.digest) {
   throw new Error('fixtures differ from HEAD or from the submitted digest; commit the submission before freezing');
@@ -132,7 +134,7 @@ const firstRun = {
   results,
 };
 const firstRunBytes = `${JSON.stringify(firstRun, null, 2)}\n`;
-writeFileSync(join(packDir, 'first-run.json'), firstRunBytes);
+writeFileSync(firstRunPath(root, packPath), firstRunBytes);
 
 record.firstRun = { path: 'first-run.json', sha256: fileDigest(firstRunBytes) };
 record.history.push({ status: 'frozen-first-run', at: recordedAt, by: record.safetyReview.reviewer });

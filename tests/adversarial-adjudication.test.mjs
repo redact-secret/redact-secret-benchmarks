@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { adjudicationProblems } from '../benchmarks/lib/adversarial-adjudication.ts';
 import { fileDigest } from '../benchmarks/lib/adversarial-intake.ts';
-import { loadPacks } from '../benchmarks/lib/adversarial-packs.ts';
+import { loadPacks, packProblems } from '../benchmarks/lib/adversarial-packs.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pack = loadPacks(root).find(p => p.record.id === 'beta9-external-inputs');
@@ -51,4 +51,11 @@ test('inRawInputContract must agree with the adjudication kind, and fixtures mus
   const unknown = clone();
   unknown.fixtures[0].fixtureId = 'no-such-fixture';
   assert.match(adjudicationProblems(unknown, pack.record, firstRun).join('\n'), /no such fixture/);
+});
+
+test('purpose path preserves the historical pack identity without allowing arbitrary aliases', () => {
+  assert.equal(pack.path, 'adversarial/packs/public-source-regression');
+  const forged = { ...pack, path: 'adversarial/packs/unreviewed-alias' };
+  assert.ok(packProblems([forged]).some(problem => problem.includes('directory name')));
+  assert.ok(packProblems([pack, { ...pack }]).some(problem => problem.includes('used twice')));
 });

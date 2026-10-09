@@ -1,14 +1,16 @@
+import { firstRunPath, HISTORICAL_PACK_PATHS } from '../benchmarks/lib/adversarial-packs.ts';
+import { spawnSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { compareResult, normalizeFindings, outcomeTable } from '../benchmarks/lib/adversarial-first-run.ts';
-import { derivedQualification, expectationsDigest, validateIntake } from '../benchmarks/lib/adversarial-intake.ts';
-import { SOURCES, fixtures as authoredFixtures } from '../adversarial/packs/beta9-external-inputs/build-intake.mjs';
+import { derivedQualification, expectationsDigest, fileDigest, validateIntake } from '../benchmarks/lib/adversarial-intake.ts';
+import { SOURCES, fixtures as authoredFixtures } from '../adversarial/packs/public-source-regression/build-intake.mjs';
 
-const pack = fileURLToPath(new URL('../adversarial/packs/beta9-external-inputs/', import.meta.url));
+const pack = fileURLToPath(new URL('../adversarial/packs/public-source-regression/', import.meta.url));
 const intake = JSON.parse(readFileSync(`${pack}intake.json`, 'utf8'));
-const firstRunBytes = readFileSync(`${pack}first-run.json`, 'utf8');
+const firstRunBytes = readFileSync(fileURLToPath(new URL('../adversarial/run-records/public-source-regression/first-run.json', import.meta.url)), 'utf8');
 const sources = JSON.parse(readFileSync(`${pack}sources.json`, 'utf8'));
 
 test('normalizeFindings sorts, de-duplicates and merges overlaps, keeping touching ranges apart', () => {
@@ -69,4 +71,14 @@ test('the frozen first run covers every fixture × scanner with ranges only', ()
   for (const counts of table.values()) {
     assert.equal(Object.values(counts).reduce((a, b) => a + b, 0), intake.fixtures.length);
   }
+});
+
+test('historical pack CLI resolves the purpose path and refuses a second freeze before scanner execution', () => {
+  const root = fileURLToPath(new URL('../', import.meta.url));
+  const path = HISTORICAL_PACK_PATHS[intake.id];
+  assert.equal(fileDigest(readFileSync(firstRunPath(root, path), 'utf8')), intake.firstRun.sha256);
+  const run = spawnSync(process.execPath, ['--import', 'tsx', 'scripts/freeze-adversarial-first-run.mjs', `--pack=${intake.id}`], { cwd: root, encoding: 'utf8' });
+  assert.notEqual(run.status, 0);
+  assert.match(run.stderr, /must be at safety-review/);
+  assert.doesNotMatch(run.stderr, /ENOENT|peer.*pin|trufflehog/i);
 });

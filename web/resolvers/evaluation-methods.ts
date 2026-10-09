@@ -167,7 +167,7 @@ function suitesTable(report: EvaluationSummary, cases: EvaluationCase[], suites:
     rows: ids.map(id => ({
       key: id,
       cells: [
-        suites.has(id) ? { text: suites.get(id)!, href: `/report/fixtures/${id}/`, note: id } : { text: id },
+        suites.has(id) ? { text: suites.get(id)!, href: `/report/corpus/${id}/`, note: id } : { text: id },
         { text: int(counts.get(id)!) },
       ],
     })),

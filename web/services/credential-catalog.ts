@@ -54,14 +54,17 @@ export type BuiltFixture = {
   detectors: string[]; issue?: number; mutation?: string; mutationKind?: string;
   /** Authored where the corpus has one: where in a file the fixture sits (`sdk-config`), the action a policy fixture expects. */
   contextAxis?: string; expectedAction?: string;
-  /** `false` when the source carries no bytes for the fixture (the qualification view carries none, by design): `content` is then empty and the page says the bytes are not recorded. */
+  /** `false` when no verified input is available for display: `content` is empty and `contentProblem` explains missing evidence or the display budget. */
   contentRecorded?: false;
+  contentProblem?: string;
+  scenarioDescription?: string;
+  scenarioDescribedBy?: string;
   /**
    * An authored title and one-sentence description, and who authored them (#593; docs/specs/fixture-metadata.md): a public evidence case's are
    * credential-evidence's case record, a product-owned fixture's are `benchmarks/fixture-descriptions.json`. Absent when neither records one.
    */
   title?: string; description?: string; describedBy?: string;
-  assessment: { kind: Kind; tier: Tier; contract?: string; reason?: string; sources?: string[] };
+  assessment: { kind: Kind; tier: Tier; contract?: string; reason?: string; reasonBy?: string; sources?: string[] };
 };
 
 export function taxonomyProblems(taxonomy: Taxonomy): string[] {

@@ -96,6 +96,65 @@ test.describe('phone navigation', () => {
 });
 
 test.describe('addresses the export does not contain', () => {
+  test('compatibility pages provide a canonical link without JavaScript', async ({ browser, baseURL }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
+    const page = await context.newPage();
+    try {
+      for (const [old, target, label] of [
+        ['/report/fixtures/', '/report/corpus/', 'Credential Corpus'],
+        [`/report/fixtures/${SUITE}/`, `/report/corpus/${SUITE}/`, 'Credential Corpus'],
+        ['/evaluation/scanner/', '/comparison/scanner/', 'Scanner comparison'],
+      ]) {
+        await page.goto(`${BASE}${old}`);
+        await expect(page.getByRole('link', { name: `Open ${label}` })).toHaveAttribute('href', `${BASE}${target}`);
+      }
+    } finally { await context.close(); }
+  });
+
+  test('the Credential Corpus footer link opens the corpus directory', async ({ page }) => {
+    await page.goto(`${BASE}/evaluation/credential/`);
+    await page.getByRole('navigation', { name: 'Site directory' }).getByRole('link', { name: 'Credential Corpus', exact: true }).click();
+    await expect(page).toHaveURL(`${BASE}/report/corpus/`);
+    await expect(page.getByRole('heading', { level: 1, name: 'Credential Corpus' })).toBeVisible();
+  });
+
+  test('corpus and suite provenance opens in a dialog, closes with Escape and restores focus', async ({ page }) => {
+    await page.setViewportSize({ width: 874, height: 1356 });
+    for (const route of ['/report/corpus/', `/report/corpus/${SUITE}/`]) {
+      await page.goto(`${BASE}${route}`);
+      const trigger = page.getByRole('button', { name: 'Where these numbers come from' });
+      const dialog = page.getByRole('dialog', { name: 'Where these numbers come from' });
+      await expect(dialog).not.toBeVisible();
+      await expect(page.getByRole('complementary', { name: 'Where these numbers come from' })).not.toBeVisible();
+      await trigger.click();
+      await expect(dialog).toBeVisible();
+      await expect(dialog.getByRole('complementary', { name: 'Where these numbers come from' })).toBeVisible();
+      await expect(dialog.getByText('Authority', { exact: true }).first()).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(dialog).not.toBeVisible();
+      await expect(trigger).toBeFocused();
+      await trigger.click();
+      await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+      await expect(dialog).not.toBeVisible();
+    }
+  });
+
+  test('Scanners belongs to Comparison and its old evaluation address preserves the query and fragment', async ({ page }) => {
+    await page.goto(`${BASE}/evaluation/scanner/?mode=published#roster`);
+    await expect(page).toHaveURL(`${BASE}/comparison/scanner/?mode=published#roster`);
+    await expect(page.getByRole('navigation', { name: 'Primary', exact: true }).getByRole('link', { name: 'Comparison' })).toHaveAttribute('aria-current', 'page');
+    await expect(page.getByRole('navigation', { name: 'Comparison pages' }).getByRole('link', { name: 'Scanners' })).toHaveAttribute('href', `${BASE}/comparison/scanner/`);
+  });
+
+  test('former fixture addresses open the corpus, preserving selections and fragments', async ({ page }) => {
+    await page.goto(`${BASE}/report/fixtures/?q=example#corpus`);
+    await expect(page).toHaveURL(`${BASE}/report/corpus/?q=example#corpus`);
+    await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}&show=all#spans`);
+    await expect(page).toHaveURL(`${BASE}/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}&show=all#spans`);
+    await fixtureReady(page);
+    await expect(page.getByRole('heading', { level: 1, name: FIXTURE_TITLE })).toBeVisible();
+  });
+
   test('are a 404 with a page that says so and offers the way on', async ({ page }) => {
     const response = await page.goto(`${BASE}/report/families/no-such--family/`);
     expect(response?.status()).toBe(404);
@@ -108,7 +167,7 @@ test.describe('addresses the export does not contain', () => {
   // Old /fixture/<suite>--<id> links (#594). The suite and fixture are read from the export, so a repin cannot break these.
   test('an old fixture link opens that fixture on its suite page, keeping the query and the hash', async ({ page }) => {
     await page.goto(`${BASE}/fixture/${SUITE}--${FIXTURE}?show=all#legacy`);
-    await expect(page).toHaveURL(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}&show=all#legacy`);
+    await expect(page).toHaveURL(`${BASE}/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}&show=all#legacy`);
     await fixtureReady(page);
     await expect(page.getByRole('heading', { level: 1, name: FIXTURE_TITLE })).toBeVisible();
   });
@@ -118,11 +177,11 @@ test.describe('addresses the export does not contain', () => {
     expect(response?.status()).toBe(404);
     await expect(page.getByText('No fixture “no-such-fixture-id” in the suite', { exact: false })).toBeVisible();
     await page.getByRole('link', { name: `Fixtures in ${SUITE}` }).click();
-    await expect(page).toHaveURL(`${BASE}/report/fixtures/${SUITE}/`);
+    await expect(page).toHaveURL(`${BASE}/report/corpus/${SUITE}/`);
   });
 
   test('an old fixture link to a suite the export does not have is a 404 that says so, as is the same suite reached through the host redirect', async ({ page }) => {
-    for (const address of ['/fixture/no-such-suite--abc', '/report/fixtures/no-such-suite/?fixture=abc']) {
+    for (const address of ['/fixture/no-such-suite--abc', '/report/corpus/no-such-suite/?fixture=abc', '/report/fixtures/no-such-suite/?fixture=abc']) {
       const response = await page.goto(`${BASE}${address}`);
       expect(response?.status()).toBe(404);
       await expect(page.getByText('No suite “no-such-suite”')).toBeVisible();

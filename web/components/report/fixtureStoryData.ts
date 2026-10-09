@@ -37,17 +37,17 @@ const flagged = s('fail', 'Flagged');
 const notMeasured = s('not-measured', 'Not measured');
 
 export const scannerRows: FixtureRowData[] = [
-  { slug: 'pat-in-env-file', group: 'github-token · github', kind: 'Must redact', evidence: 'T1 · Provider-documented', outcome: redacted, href: '/report/fixtures/github-token/?fixture=pat-in-env-file', outcomes: [redacted, redacted, redacted, readable, readable] },
-  { slug: 'pat-in-curl-header', group: 'github-token · github', alsoIn: 'also in 1 other family', kind: 'Must redact', evidence: 'T1 · Provider-documented', outcome: readable, href: '/report/fixtures/github-token/?fixture=pat-in-curl-header', outcomes: [readable, redacted, redacted, redacted, readable] },
-  { slug: 'pat-look-alike-one-char-off', group: 'github-token · github', kind: 'Must not flag', evidence: 'T2 · Tool-corroborated', outcome: quiet, href: '/report/fixtures/github-token/?fixture=pat-look-alike-one-char-off', outcomes: [quiet, quiet, flagged, quiet, quiet] },
-  { slug: 'pat-in-shell-history', group: 'github-token · github', kind: 'Must redact', evidence: 'T2 · Tool-corroborated', outcome: s('review', 'Too much'), href: '/report/fixtures/github-token/?fixture=pat-in-shell-history', outcomes: [s('review', 'Too much'), redacted, redacted, notMeasured, readable] },
-  { slug: 'pat-placeholder-in-docs', group: 'github-token · github', kind: 'Project policy', evidence: 'T3 · Project policy', outcome: s('info', 'Redacted'), href: '/report/fixtures/github-token/?fixture=pat-placeholder-in-docs', outcomes: [s('info', 'Redacted'), s('info', 'Left readable'), s('info', 'Left readable'), s('info', 'Left readable'), s('info', 'Redacted')] },
+  { slug: 'pat-in-env-file', group: 'github-token · github', kind: 'Must redact', evidence: 'T1 · Provider-documented', outcome: redacted, href: '/report/corpus/github-token/?fixture=pat-in-env-file', outcomes: [redacted, redacted, redacted, readable, readable] },
+  { slug: 'pat-in-curl-header', group: 'github-token · github', alsoIn: 'also in 1 other family', kind: 'Must redact', evidence: 'T1 · Provider-documented', outcome: readable, href: '/report/corpus/github-token/?fixture=pat-in-curl-header', outcomes: [readable, redacted, redacted, redacted, readable] },
+  { slug: 'pat-look-alike-one-char-off', group: 'github-token · github', kind: 'Must not flag', evidence: 'T2 · Tool-corroborated', outcome: quiet, href: '/report/corpus/github-token/?fixture=pat-look-alike-one-char-off', outcomes: [quiet, quiet, flagged, quiet, quiet] },
+  { slug: 'pat-in-shell-history', group: 'github-token · github', kind: 'Must redact', evidence: 'T2 · Tool-corroborated', outcome: s('review', 'Too much'), href: '/report/corpus/github-token/?fixture=pat-in-shell-history', outcomes: [s('review', 'Too much'), redacted, redacted, notMeasured, readable] },
+  { slug: 'pat-placeholder-in-docs', group: 'github-token · github', kind: 'Project policy', evidence: 'T3 · Project policy', outcome: s('info', 'Redacted'), href: '/report/corpus/github-token/?fixture=pat-placeholder-in-docs', outcomes: [s('info', 'Redacted'), s('info', 'Left readable'), s('info', 'Left readable'), s('info', 'Left readable'), s('info', 'Redacted')] },
 ];
 
 export const manyScannerRows: FixtureRowData[] = Array.from({ length: 50 }, (_, i) => ({
   ...scannerRows[i % scannerRows.length],
   slug: i === 3 ? 'pat-in-a-very-long-nested-fixture-slug-that-has-no-natural-break-points-at-all-0123456789' : `pat-fixture-${i + 1}`,
-  href: `/report/fixtures/github-token/?fixture=pat-fixture-${i + 1}`,
+  href: `/report/corpus/github-token/?fixture=pat-fixture-${i + 1}`,
 }));
 
 // ---- One fixture: bytes, lanes, expected spans, reported ranges ------------------------------------
@@ -113,15 +113,15 @@ export const detectorGroups: DetectorGroupRowData[] = [
 // ---- Findings inventory ---------------------------------------------------------------------------
 
 export const findingRows: FindingRowData[] = [
-  { id: '292', number: '#292', title: 'Preserve Windows environment references and SQL bind parameters in contextual detection', href: 'https://github.com/redact-secret/redact-secret/issues/292', status: s('pass', 'Fixed'), kind: 'Flagged a safe value', fixtures: [{ label: 'windows-env', href: '/report/fixtures/reference-syntax/?fixture=windows-env' }, { label: 'sql-bind', href: '/report/fixtures/reference-syntax/?fixture=sql-bind' }], measured: '0.1.0-beta.3', reviewed: '2026-09-16' },
-  { id: '936', number: '#936', title: 'Policy: keyword co-occurrence spans warn instead of redact', href: 'https://github.com/redact-secret/redact-secret/issues/936', status: s('withheld', 'Policy'), kind: 'Left a secret readable', fixtures: [{ label: 'keyword-cooccurrence', href: '/report/fixtures/policy/?fixture=keyword-cooccurrence' }], measured: '0.1.0-beta.3', reviewed: '2026-09-28' },
+  { id: '292', number: '#292', title: 'Preserve Windows environment references and SQL bind parameters in contextual detection', href: 'https://github.com/redact-secret/redact-secret/issues/292', status: s('pass', 'Fixed'), kind: 'Flagged a safe value', fixtures: [{ label: 'windows-env', href: '/report/corpus/reference-syntax/?fixture=windows-env' }, { label: 'sql-bind', href: '/report/corpus/reference-syntax/?fixture=sql-bind' }], measured: '0.1.0-beta.3', reviewed: '2026-09-16' },
+  { id: '936', number: '#936', title: 'Policy: keyword co-occurrence spans warn instead of redact', href: 'https://github.com/redact-secret/redact-secret/issues/936', status: s('withheld', 'Policy'), kind: 'Left a secret readable', fixtures: [{ label: 'keyword-cooccurrence', href: '/report/corpus/policy/?fixture=keyword-cooccurrence' }], measured: '0.1.0-beta.3', reviewed: '2026-09-28' },
   { id: '999', number: '#999', title: 'Context-gated legacy keys missed when the provider context is on the previous line (a_very_long_unbroken_identifier_that_keeps_going_and_going_without_a_break)', href: 'https://github.com/redact-secret/redact-secret/issues/999', status: s('review', 'In review'), kind: 'Left a secret readable', fixtures: [{ label: 'a-fixture-slug-that-is-not-in-the-corpus' }], measured: '0.1.0-beta.3', reviewed: '2026-09-28' },
 ];
 
 // ---- Suites ---------------------------------------------------------------------------------------
 
 export const suiteRows: SuiteRowData[] = [
-  { id: 'detector-coverage', title: 'Detector coverage', href: '/report/fixtures/detector-coverage/', fixtures: '1,309', description: 'One fixture per detector shape, in the plainest context.', counts: c('12', '3', '1') },
-  { id: 'context-edges', title: 'Context edges', href: '/report/fixtures/context-edges/', fixtures: '173', description: 'One credential wrapped in many syntactic contexts.', counts: c('4', '0', '0', '2') },
-  { id: 'not-run-yet', title: 'A suite with no fixtures', href: '/report/fixtures/not-run-yet/', fixtures: '0', description: 'Registered, no fixtures.', counts: null },
+  { id: 'detector-coverage', title: 'Detector coverage', href: '/report/corpus/detector-coverage/', fixtures: '1,309', description: 'One fixture per detector shape, in the plainest context.', counts: c('12', '3', '1') },
+  { id: 'context-edges', title: 'Context edges', href: '/report/corpus/context-edges/', fixtures: '173', description: 'One credential wrapped in many syntactic contexts.', counts: c('4', '0', '0', '2') },
+  { id: 'not-run-yet', title: 'A suite with no fixtures', href: '/report/corpus/not-run-yet/', fixtures: '0', description: 'Registered, no fixtures.', counts: null },
 ];

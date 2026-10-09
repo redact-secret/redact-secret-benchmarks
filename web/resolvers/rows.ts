@@ -27,7 +27,7 @@ import { PAGE_SIZE } from './filters';
 export const PRODUCT = 'redact-secret';
 
 /** The page of a fixture: its suite page, opened on that fixture. */
-export const suiteHref = (category: string): string => `/report/fixtures/${category}/`;
+export const suiteHref = (category: string): string => `/report/corpus/${category}/`;
 export const fixtureHref = (fixture: { category: string; id: string }): string => `${suiteHref(fixture.category)}?fixture=${encodeURIComponent(fixture.id)}`;
 /** The rows behind the figures at one evidence level (`T1`, `T2`, `T3`). */
 export const rowsHref = (level: string): string => `/report/rows/${level}/`;

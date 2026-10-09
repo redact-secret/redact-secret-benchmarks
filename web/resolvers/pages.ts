@@ -376,7 +376,7 @@ export async function resolveLevelRowsPage(level: Level): Promise<LevelRowsPageD
   };
 }
 
-// ---- /report/fixtures, /report/fixtures/[suite] -------------------------------------
+// ---- /report/corpus, /report/corpus/[suite] -------------------------------------
 
 export interface SuiteListPageData { head: HeadData; runState: RunState; suites: SuiteRowData[] }
 
@@ -385,7 +385,7 @@ export async function resolveSuitesPage(): Promise<SuiteListPageData> {
   return {
     head: {
       eyebrow: 'redact-secret · Report',
-      title: 'Suites',
+      title: 'Credential Corpus',
       lede: 'The corpus is a set of suites, each a folder of fixtures authored for one purpose. Open a suite for its rows, then a row for the fixture: its bytes, what was expected and what each scanner reported.',
       meta: [{ value: count(catalog.suites.length, 'suite') }, { value: count(catalog.fixtures.length, 'fixture') }, ...(measured ? runFacts(measured) : [])],
     },
@@ -578,7 +578,7 @@ export async function resolveReleaseCandidatePage(): Promise<RcPage> {
   return resolveRcPage(await loadRcSources());
 }
 
-// ---- /evaluation/scanner ------------------------------------------------------------------
+// ---- /comparison/scanner ------------------------------------------------------------------
 
 /** The scanners the benchmark ran with and the environment each ran in (#612). */
 export async function resolveScannerPage(): Promise<ScannerOverviewProps> {

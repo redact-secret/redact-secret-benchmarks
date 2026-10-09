@@ -52,7 +52,7 @@ export function FixtureWhy({ facts, sources, command, escaped, actions, classNam
       <div className={styles.actions}>
         {actions.download
           ? <a className={styles.action} href={actions.download.href} download={actions.download.filename}>Download exact bytes</a>
-          : <span className={cx(styles.action, styles.off)}>{actions.bytesNotRecorded ? 'Exact bytes are not recorded' : 'Exact bytes cannot be saved as UTF-8'}</span>}
+          : <span className={cx(styles.action, styles.off)}>{actions.bytesNotRecorded ? 'Exact bytes unavailable in this view' : 'Exact bytes cannot be saved as UTF-8'}</span>}
         <Link className={styles.action} href={actions.corpusHref}>View in corpus</Link>
       </div>
       <details className={styles.more}>

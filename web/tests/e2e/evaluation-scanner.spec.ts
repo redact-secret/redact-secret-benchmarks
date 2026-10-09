@@ -1,9 +1,10 @@
 import { BASE, expect, test } from './fixtures';
 
 /** Structure only: the page's routes, landmarks and controls. No version, digest, host or count is asserted (a repin re-keys them). */
-test.describe('/evaluation/scanner', () => {
+test.describe('/comparison/scanner', () => {
   test('one h1, a roster whose every scanner has a section to jump to, and a section per scanner with the same groups', async ({ page }) => {
-    await page.goto(`${BASE}/evaluation/scanner/`);
+    await page.goto(`${BASE}/comparison/scanner/`);
+    await expect(page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Comparison' })).toHaveAttribute('href', `${BASE}/comparison/`);
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
     const roster = page.getByRole('table').first();
     const links = roster.getByRole('link');
@@ -19,7 +20,7 @@ test.describe('/evaluation/scanner', () => {
   });
 
   test('a roster link moves to the scanner without leaving the page', async ({ page }) => {
-    await page.goto(`${BASE}/evaluation/scanner/`);
+    await page.goto(`${BASE}/comparison/scanner/`);
     const first = page.getByRole('table').first().getByRole('link').first();
     const target = await first.getAttribute('href');
     await first.click();
@@ -27,7 +28,7 @@ test.describe('/evaluation/scanner', () => {
   });
 
   test('the arguments disclosure opens where the pipeline records arguments, and every link stays inside the app', async ({ page }) => {
-    await page.goto(`${BASE}/evaluation/scanner/`);
+    await page.goto(`${BASE}/comparison/scanner/`);
     const summary = page.getByText('Exact arguments').first();
     if (await summary.count()) {
       await summary.click();
@@ -41,7 +42,7 @@ test.describe('/evaluation/scanner', () => {
   });
 
   test('the page names no scanner as better, faster or recommended', async ({ page }) => {
-    await page.goto(`${BASE}/evaluation/scanner/`);
+    await page.goto(`${BASE}/comparison/scanner/`);
     const text = await page.locator('main').innerText();
     expect(text).not.toMatch(/\b(better|worse|best|worst|winner|fastest|slowest|recommended)\b/i);
   });

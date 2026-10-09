@@ -13,7 +13,7 @@ export function AppChrome({ children, build = null }: { children: ReactNode; bui
   const section = sectionFor(path);
   const quickLinks: Record<string, string[]> = {
     Report: ['/report/', '/report/providers/', '/report/detectors/'],
-    Comparison: ['/evaluation/scanner/', '/comparison/performance/', '/comparison/accuracy/'],
+    Comparison: ['/comparison/scanner/', '/comparison/performance/', '/comparison/accuracy/'],
     Evaluation: ['/evaluation/method/', '/evaluation/credential/', '/evaluation/pii/'],
   };
   const quickSection = section && { ...section, entries: quickLinks[section.label].map(href => SECTIONS.flatMap(section => section.entries).find(entry => entry.href === href)!).filter(Boolean) };

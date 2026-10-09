@@ -28,7 +28,7 @@ async function tabThrough(page: Page, count: number): Promise<Stop[]> {
 }
 
 test.describe('focus', () => {
-  for (const route of ['/report/', '/report/families/', '/comparison/feature/', `/report/fixtures/${SUITE}/`]) {
+  for (const route of ['/report/', '/report/families/', '/comparison/feature/', `/report/corpus/${SUITE}/`]) {
     test(`${route}: every stop among the first 30 shows a focus ring and has a size`, async ({ page }) => {
       await page.goto(`${BASE}${route}`);
       const stops = await tabThrough(page, 30);

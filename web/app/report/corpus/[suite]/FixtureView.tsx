@@ -24,7 +24,7 @@ export interface FixtureViewProps {
   identity: string;
 }
 
-const crumbsOf = (suiteTitle: string, suiteHref: string) => [{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: suiteTitle, href: suiteHref }];
+const crumbsOf = (suiteTitle: string, suiteHref: string) => [{ label: 'Report', href: '/report/' }, { label: 'Credential Corpus', href: '/report/corpus/' }, { label: suiteTitle, href: suiteHref }];
 
 /**
  * The placeholder a direct visit to `?fixture=` shows until the page has hydrated, and the shape of
@@ -67,7 +67,11 @@ export function FixtureView({ suiteTitle, suiteHref, src, fixtureCount, suite, i
   const load = useBuildData(id ? src : null, isThisBuild, 'now');
   const file = load.data;
   const record = useMemo(() => (id && file ? file.records.find(r => r.id === id) : undefined), [id, file]);
-  const detail = useMemo(() => (record && file ? resolveFixtureRecord(record, file.shared, file.records) : undefined), [record, file]);
+  // Keep this page's corpus ancestry while loading and after resolving family metadata.
+  const detail = useMemo(() => (record && file ? {
+    ...resolveFixtureRecord(record, file.shared, file.records),
+    crumbs: [...crumbsOf(suiteTitle, suiteHref), { label: record.id }],
+  } : undefined), [record, file, suiteTitle, suiteHref]);
   const crumbs = crumbsOf(suiteTitle, suiteHref);
   const state = !id ? 'idle' : file ? (record ? 'ready' : 'missing') : load.status === 'error' ? 'error' : 'loading';
   const problem = state === 'error' ? failureText(load.failure, 'this fixture', 'The rest of the suite is unaffected.') : undefined;

@@ -22,6 +22,7 @@ import { readAuthority, stampOf } from './lib/authority.mjs';
 import { linkResolves } from './lib/links.mjs';
 
 import { createHash } from 'node:crypto';
+import { BUDGET_NOTE, FIXTURE_DISPLAY_FILE, decodeFixtureDisplay, fixtureDisplayProblems } from '../../benchmarks/lib/fixture-display.ts';
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
 const basePath = process.env.BASE_PATH ?? '';
@@ -48,7 +49,7 @@ let view;
 try { view = await readJson('public/results/qualification-v1.json'); } catch { /* no view */ }
 
 // Pages that show credential numbers: the stamp is on all of them.
-const REPORT_PAGES = ['report', 'report/providers', 'report/families', 'report/detectors', 'report/fixtures', 'report/rows/T1', 'report/rows/T2', 'report/rows/T3'];
+const REPORT_PAGES = ['report', 'report/providers', 'report/families', 'report/detectors', 'report/corpus', 'report/rows/T1', 'report/rows/T2', 'report/rows/T3'];
 const stampProblem = (route, html, want) => {
   const stamp = stampOf(html);
   if (!stamp) fail(`/${route}/ carries no pipeline stamp`);
@@ -57,11 +58,11 @@ const stampProblem = (route, html, want) => {
 
 if (!view) {
   // ---- No view: every report page says so, shows no credential number, and names the new pipeline ------------------------
-  for (const route of [...REPORT_PAGES, 'report/families/' + slugOf(taxonomy.families[0].id), `report/detectors/${detectorRegistry.detectors[0].id}`, 'report/fixtures/no-view', 'evaluation/credential']) {
+  for (const route of [...REPORT_PAGES, 'report/families/' + slugOf(taxonomy.families[0].id), `report/detectors/${detectorRegistry.detectors[0].id}`, 'report/corpus/no-view', 'evaluation/credential']) {
     const html = await readHtml(route);
     if (!html) continue;
     stampProblem(route, html, { pipeline: 'new', role: 'authority' });
-    if (route.startsWith('report') && !route.startsWith('report/families/') && !route.startsWith('report/detectors/') && !route.startsWith('report/fixtures/') && !text(html).includes('No qualification view for this build')) fail(`/${route}/ has no qualification view to read and must say so`);
+    if (route.startsWith('report') && !route.startsWith('report/families/') && !route.startsWith('report/detectors/') && !route.startsWith('report/corpus/') && !text(html).includes('No qualification view for this build')) fail(`/${route}/ has no qualification view to read and must say so`);
     if (/Same [\d,]+ inputs for/.test(text(html))) fail(`/${route}/ states fixture counts for a scanner run but there is no view`);
   }
   if (process.env.WEB_REQUIRE_QUALIFICATION === '1') fail('WEB_REQUIRE_QUALIFICATION=1 but public/results/qualification-v1.json is absent: build the view before the web build');
@@ -81,9 +82,12 @@ if (!view) {
   const measuredEvidence = report.artifact.evidence;
   const caseText = projection && projection.source.tag === measuredEvidence.release?.tag && projection.source.manifestDigest === measuredEvidence.release?.manifest_digest
     && projection.source.corpusDigest === measuredEvidence.corpus_digest ? projection : undefined;
+  const displayFile = await readJson(FIXTURE_DISPLAY_FILE).catch(() => undefined);
+  const display = measuredEvidence.release && fixtureDisplayProblems(displayFile, { corpusDigest: measuredEvidence.corpus_digest, release: { tag: measuredEvidence.release.tag, manifestDigest: measuredEvidence.release.manifest_digest } }).length === 0 ? decodeFixtureDisplay(displayFile) : undefined;
+  const normalized = value => Array.isArray(value) ? value.map(normalized) : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).sort(([a], [b]) => a < b ? -1 : 1).map(([k, v]) => [k, normalized(v)])) : value;
 
   // ---- Stamps ---------------------------------------------------------------------------------------------------------
-  for (const route of [...REPORT_PAGES, `report/families/${slugOf(taxonomy.families[0].id)}`, `report/detectors/${[...new Set(cases.flatMap(c => c.detectors))].sort()[0]}`, `report/fixtures/${category(cases[0])}`, 'evaluation/credential']) {
+  for (const route of [...REPORT_PAGES, `report/families/${slugOf(taxonomy.families[0].id)}`, `report/detectors/${[...new Set(cases.flatMap(c => c.detectors))].sort()[0]}`, `report/corpus/${category(cases[0])}`, 'evaluation/credential']) {
     const html = await readHtml(route);
     if (html) stampProblem(route, html, { pipeline: 'new', role: 'authority' });
     if (html && route === 'report') {
@@ -175,24 +179,24 @@ if (!view) {
   }
   const suites = new Map();
   for (const c of cases) (suites.get(category(c)) ?? suites.set(category(c), []).get(category(c))).push(c);
-  const suitesText = text(await readHtml('report/fixtures'));
-  if (!suitesText.includes(`${int(suites.size)} suites`)) fail(`/report/fixtures/ does not state ${suites.size} suites`);
+  const suitesText = text(await readHtml('report/corpus'));
+  if (!suitesText.includes(`${int(suites.size)} suites`)) fail(`/report/corpus/ does not state ${suites.size} suites`);
   for (const [id, group] of suites) {
-    const html = await readHtml(`report/fixtures/${id}`);
-    if (html && !text(html).includes(`${int(group.length)} fixture`)) fail(`/report/fixtures/${id}/ does not state ${group.length} fixtures`);
+    const html = await readHtml(`report/corpus/${id}`);
+    if (html && !text(html).includes(`${int(group.length)} fixture`)) fail(`/report/corpus/${id}/ does not state ${group.length} fixtures`);
   }
 
   // ---- Findings: the ledger's records; a fixture link only where the view holds the fixture ----------------------------
   const findingsHtml = await readHtml('report/findings');
   if (!text(findingsHtml).includes(`${int(gaps.issues.length)} findings`)) fail(`/report/findings/ does not state ${gaps.issues.length} findings`);
   for (const issue of gaps.issues) for (const slug of issue.fixtures) {
-    const c = slug.split('--'); const linked = findingsHtml.includes(`href="${basePath}/report/fixtures/${c[0]}/?fixture=${encodeURIComponent(c.slice(1).join('--'))}"`);
+    const c = slug.split('--'); const linked = findingsHtml.includes(`href="${basePath}/report/corpus/${c[0]}/?fixture=${encodeURIComponent(c.slice(1).join('--'))}"`);
     if (byId.has(slug) !== linked) fail(`/report/findings/ ${linked ? 'links' : 'does not link'} ${slug}, which the view ${byId.has(slug) ? 'holds' : 'does not hold'}`);
   }
 
   // ---- Links stay inside the app ---------------------------------------------------------------------------------------
   const internal = html => [...html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)].map(m => m[1]).filter(h => h.startsWith('/'));
-  for (const route of ['report', 'report/providers', 'report/families', 'report/detectors', 'report/fixtures', 'report/findings', 'report/rows/T1', `report/families/${slugOf(taxonomy.families[0].id)}`, `report/fixtures/${[...suites.keys()][0]}`]) {
+  for (const route of ['report', 'report/providers', 'report/families', 'report/detectors', 'report/corpus', 'report/findings', 'report/rows/T1', `report/families/${slugOf(taxonomy.families[0].id)}`, `report/corpus/${[...suites.keys()][0]}`]) {
     for (const href of internal(await readHtml(route))) if (!(await linkResolves(path.join(webRoot, 'out'), basePath, href))) fail(`/${route}/ links ${href}, which is not a page or file of the export`);
   }
 
@@ -203,7 +207,7 @@ if (!view) {
   try { for await (const file of walk(dataRoot)) emitted.add(path.relative(dataRoot, file).split(path.sep).join('/')); } catch { fail('the export has no data/ folder: rows and records files are missing'); }
   const tables = [];
   for (const f of taxonomy.families) tables.push({ kind: 'family', id: slugOf(f.id), page: `report/families/${slugOf(f.id)}`, cases: cases.filter(c => familyOf(c) === f.id) });
-  for (const [id, group] of suites) tables.push({ kind: 'suite', id, page: `report/fixtures/${id}`, cases: group });
+  for (const [id, group] of suites) tables.push({ kind: 'suite', id, page: `report/corpus/${id}`, cases: group });
   for (const id of detectorIds) tables.push({ kind: 'detector', id, page: `report/detectors/${id}`, cases: cases.filter(c => c.detectors.includes(id)) });
   for (const level of ['T1', 'T2', 'T3']) tables.push({ kind: 'level', id: level, page: `report/rows/${level}`, cases: cases.filter(c => c.tier === level) });
   const wanted = new Set([...tables.filter(t => t.cases.length > PAGE).map(t => `rows/${t.kind}/${t.id}/rows.json`), ...[...suites.keys()].map(id => `fixtures/${id}/records.json`), 'comparison/accuracy/differences.json']);
@@ -227,7 +231,7 @@ if (!view) {
     if (!caption) return null;
     const start = html.indexOf('<tbody', caption.index);
     const body = html.slice(start, html.indexOf('</tbody>', start));
-    return [...body.matchAll(/href="[^"]*\/report\/fixtures\/([^/"]+)\/\?fixture=([^"]+)"/g)].map(m => `${m[1]}--${decodeURIComponent(m[2])}`);
+    return [...body.matchAll(/href="[^"]*\/report\/corpus\/([^/"]+)\/\?fixture=([^"]+)"/g)].map(m => `${m[1]}--${decodeURIComponent(m[2])}`);
   };
   let dataRows = 0, dataFiles = 0;
   for (const table of tables) {
@@ -274,8 +278,12 @@ if (!view) {
     for (const record of file.records) {
       const c = byRecord.get(record.id);
       if (!c) { differs++; continue; }
-      // The bytes are not in the view: a record carries none, says so, and never a stand-in.
-      if (record.noContent !== true || record.content !== '' || record.sha !== '') differs++;
+      // Independently join current display evidence, never the legacy corpus, to the measured case.
+      const candidate = display?.fixtures[c.id];
+      const d = candidate && candidate.path === c.path && candidate.kind === c.kind && candidate.tier === c.tier && candidate.group === c.group && JSON.stringify(normalized(candidate.expected)) === JSON.stringify(normalized(c.expected)) ? candidate : undefined;
+      if (d?.content !== undefined) {
+        if (record.noContent !== undefined || record.content !== d.content || record.sha !== d.sha256.slice(0, 12) || record.bytesNote !== undefined) differs++;
+      } else if (record.noContent !== true || record.content !== '' || record.sha !== '' || !record.bytesNote || (d && record.bytesNote !== BUDGET_NOTE)) differs++;
       if (JSON.stringify(record.expected) !== JSON.stringify(c.expected) || record.path !== c.path || record.kind !== c.kind || record.tier !== c.tier) differs++;
       if (record.rows.length !== report.artifact.scanners.length) differs++;
       else record.rows.forEach((packed, k) => { if (packed !== packRow(resultOf(c, report.artifact.scanners[k].id))) differs++; });
@@ -283,13 +291,19 @@ if (!view) {
       const caseId = caseText && Object.hasOwn(caseText.fixtures, c.id) ? caseText.fixtures[c.id] : undefined;
       const want = caseId ? caseText.cases[caseId] : undefined;
       if (textOf(record.title) !== want?.title || textOf(record.about) !== want?.summary) differs++;
+      const description = d?.description ? display.descriptions[d.description] : undefined;
+      const scenario = description?.kind === 'scenario' ? description : undefined;
+      if (textOf(record.scenarioAbout) !== scenario?.description || (scenario && !textOf(record.scenarioAboutBy)?.includes(`Scenario description (${scenario.lifecycle})`))) differs++;
+      const assessment = d?.assessment ? display.assessments[d.assessment] : undefined;
+      const actualAssessment = file.shared.assessments[record.assessment];
+      if (actualAssessment?.reason !== assessment?.reason || JSON.stringify(actualAssessment?.sources) !== JSON.stringify(assessment?.sources ?? []) || actualAssessment?.reasonBy !== (assessment ? `credential-evidence ${assessment.record}, release ${display.source.tag}.` : undefined)) differs++;
       // The view records no milestone or release per case (#595): none is shown.
       if (record.milestone !== undefined || record.release !== undefined) differs++;
     }
     const { identity, ...shared } = file.shared;
     if (identity !== `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`) fail(`${where}: records identity does not bind its metadata and run payload`);
     if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: missing historical rule/action fields must have explicit unavailable defaults`);
-    if (differs) fail(`${where}: ${differs} records differ from the view's expected spans, paths, levels, rows or the case records' titles`);
+    if (differs) fail(`${where}: ${differs} records differ from the measured cases or verified display bytes, descriptions and rationale`);
   }
 
   // ---- What a visitor downloads: limits (the totals are information only) --------------------------------------------

@@ -191,18 +191,18 @@ describe('inputs', () => {
     const page = resolveMethodPage('twin', input());
     if (page.inputs.state !== 'recorded') throw new Error('expected recorded inputs');
     const rows = page.inputs.tables[0].table.rows;
-    expect(rows.find(r => r.key === 'suite-a')?.cells[0].href).toBe('/report/fixtures/suite-a/');
+    expect(rows.find(r => r.key === 'suite-a')?.cells[0].href).toBe('/report/corpus/suite-a/');
     expect(rows.find(r => r.key === 'suite-b')?.cells[0].href).toBeUndefined();
   });
 });
 
 describe('hub', () => {
-  const builtHrefs = new Set(['/evaluation/', '/evaluation/method/twin/', '/evaluation/scanner/']);
+  const builtHrefs = new Set(['/evaluation/', '/evaluation/method/twin/', '/comparison/scanner/']);
 
   test('a phase is a link only once its entry is in the section navigation', () => {
     const phases = resolvePhases(EVALUATION_PHASES, builtHrefs);
     expect(phases.map(p => p.label)).toEqual(EVALUATION_PHASES.map(p => p.label));
-    expect(phases.find(p => p.label === 'Scanners')?.href).toBe('/evaluation/scanner/');
+    expect(phases.find(p => p.label === 'Scanners')?.href).toBe('/comparison/scanner/');
     const pending = phases.filter(p => !p.href);
     expect(pending.length).toBe(EVALUATION_PHASES.length - 1);
     for (const p of pending) expect(p.action).toBe('Not in this build yet');
@@ -258,7 +258,7 @@ describe('blocks', () => {
   test('a suite table is folded behind its summary and links to the suite', () => {
     render(<MethodPage {...resolveMethodPage('twin', input())} />);
     expect(screen.getByText(/^Show the 2 suites$/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Suite A' })).toHaveAttribute('href', expect.stringMatching(/\/report\/fixtures\/suite-a\/?$/));
+    expect(screen.getByRole('link', { name: 'Suite A' })).toHaveAttribute('href', expect.stringMatching(/\/report\/corpus\/suite-a\/?$/));
   });
 
   test('holdout shows the hashes behind a disclosure', () => {
@@ -267,7 +267,7 @@ describe('blocks', () => {
   });
 
   test('the hub renders a link for a built phase and plain text for one that is not', () => {
-    const props = resolveEvaluationHub({ ...evidenceOf(syntheticReport()), qualification: syntheticQualification(), phases: EVALUATION_PHASES, builtHrefs: new Set(['/evaluation/scanner/']) });
+    const props = resolveEvaluationHub({ ...evidenceOf(syntheticReport()), qualification: syntheticQualification(), phases: EVALUATION_PHASES, builtHrefs: new Set(['/comparison/scanner/']) });
     render(<EvaluationHub {...props} />);
     const phases = screen.getByRole('navigation', { name: 'Evaluation pages' });
     expect(within(phases).getAllByRole('link')).toHaveLength(1);

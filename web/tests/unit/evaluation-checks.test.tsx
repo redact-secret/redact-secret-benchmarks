@@ -199,7 +199,7 @@ describe('identity: which run a row is from', () => {
     const list = listsOf('twin', report).get(listKey(entry.row, entry.scanner, entry.status))!;
     const withPages = checksFile('twin', list, report.runId, slug => (slug === 'suite-a--pair-1' ? 'pair-1' : undefined));
     expect(checksFileFits(entry, report.runId)(withPages)).toBe(true);
-    expect(checksBody(entry, withPages, 1, page.context!)!.table.rows[0].cells[1]).toEqual([{ text: 'pair-1', href: '/report/fixtures/suite-a/?fixture=pair-1', note: 'Suite A' }]);
+    expect(checksBody(entry, withPages, 1, page.context!)!.table.rows[0].cells[1]).toEqual([{ text: 'pair-1', href: '/report/corpus/suite-a/?fixture=pair-1', note: 'Suite A' }]);
     const unpublished = pageOf('twin', report, { suites: new Map() });
     expect(checksBody(entry, withPages, 1, unpublished.context!)!.table.rows[0].cells[1]).toEqual([{ text: 'suite-a--pair-1', note: 'No fixture page in this build' }]);
   });

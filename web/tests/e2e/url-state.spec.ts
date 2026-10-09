@@ -196,7 +196,7 @@ test.describe('one fixture (?fixture=)', () => {
   test('opening a fixture from the list shows its page; Back returns to the list as it was; Forward returns to the fixture', async ({ page }) => {
     // The find term is read from the export (the first word of a fixture id the suite holds), not a word one corpus happens to contain.
     const term = FIXTURE.split('-')[0];
-    await page.goto(`${BASE}/report/fixtures/${SUITE}/?q=${encodeURIComponent(term)}`);
+    await page.goto(`${BASE}/report/corpus/${SUITE}/?q=${encodeURIComponent(term)}`);
     await expect(page.getByRole('searchbox', { name: 'Find' })).toHaveValue(term);
     const link = page.locator('main table a[href*="?fixture="]').first();
     const href = (await link.getAttribute('href'))!;
@@ -212,7 +212,7 @@ test.describe('one fixture (?fixture=)', () => {
   });
 
   test('a direct visit shows the fixture: its title is the authored one or else the id, with the id beside it and a breadcrumb back to the report', async ({ page }) => {
-    await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
+    await page.goto(`${BASE}/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
     const view = page.locator('[data-fixture-state="ready"]');
     await expect(view.getByRole('heading', { level: 1 })).toHaveText(FIXTURE_TITLE);
     await expect(view).toContainText(`${SUITE}--${FIXTURE}`);
@@ -223,10 +223,10 @@ test.describe('one fixture (?fixture=)', () => {
   });
 
   test('an id the suite does not have is said so, with the way back', async ({ page }) => {
-    await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=no-such-fixture`);
+    await page.goto(`${BASE}/report/corpus/${SUITE}/?fixture=no-such-fixture`);
     await expect(page.getByText('No fixture “no-such-fixture”')).toBeVisible();
     await page.getByRole('link', { name: 'All fixtures in this suite' }).click();
-    await expect(page).toHaveURL(`${BASE}/report/fixtures/${SUITE}/`);
+    await expect(page).toHaveURL(`${BASE}/report/corpus/${SUITE}/`);
     await expect(page.getByRole('searchbox', { name: 'Find' })).toBeVisible();
   });
 });

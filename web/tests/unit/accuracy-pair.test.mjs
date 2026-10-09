@@ -120,7 +120,7 @@ test('differences are listed in both directions, grouped by provider, alphabetic
   assert.deepEqual(all.onlyUs.map(g => [g.name, g.files.map(f => f.slug)]), [['Zeta Cloud', ['a1']], ['Alpha Pay', ['a5']]].sort((x, y) => x[0].localeCompare(y[0])));
   assert.deepEqual(all.onlyThem.map(g => [g.name, g.files.map(f => f.slug)]), [['Alpha Pay', ['a3']]]);
   assert.equal(all.total, model.peers[0].cells['T1|all'].r.differing);
-  assert.equal(all.onlyUs[0].files[0].href, '/report/fixtures/s/?fixture=a5');
+  assert.equal(all.onlyUs[0].files[0].href, '/report/corpus/s/?fixture=a5');
   const listed = differencesOf(model.diff, 'peer', 'T1', 'listed', 'r');
   assert.equal(listed.total, model.peers[0].cells['T1|listed'].r.differing);
   assert.deepEqual(listed.onlyUs.map(g => g.files.map(f => f.slug)), [['a1']]);

@@ -73,13 +73,13 @@ if (run) {
 }
 
 // ---- Routes ------------------------------------------------------------------------------------
-for (const route of ['report/detectors', 'report/findings', 'report/fixtures', 'report/rows/T1', 'report/rows/T2', 'report/rows/T3']) {
+for (const route of ['report/detectors', 'report/findings', 'report/corpus', 'report/rows/T1', 'report/rows/T2', 'report/rows/T3']) {
   const html = await readHtml(route);
   if (html && !/<h1[\s>]/.test(html)) fail(`/${route}/ has no <h1>`);
 }
 for (const d of detectors.detectors) await readHtml(`report/detectors/${d.id}`).then(html => { if (html && !text(html).includes(d.title)) fail(`/report/detectors/${d.id}/ does not name ${d.title}`); });
 const categories = (await readJson('benchmarks/categories.json')).filter(c => !c.calibrationOnly);
-for (const c of categories) await readHtml(`report/fixtures/${c.id}`);
+for (const c of categories) await readHtml(`report/corpus/${c.id}`);
 
 // ---- Hub: the Detectors tile is back and every link stays inside the app --------------------
 const hubHtml = await readHtml('report');
@@ -91,7 +91,7 @@ if (!hubHtml.includes(`href="${basePath}/report/findings/"`)) fail('/report/ doe
 if (!hubText.includes(`${int(Object.keys(assignments).filter(slug => assignments[slug].length).length)} fixtures exercise`) && withDetectors.size) fail('/report/ does not state how many fixtures exercise a detector');
 
 const internalLinks = html => [...html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)].map(m => m[1]).filter(h => h.startsWith('/'));
-const linkPages = ['report', 'report/detectors', 'report/findings', 'report/fixtures', 'report/rows/T1', 'report/providers', 'report/families', `report/families/${slugOf(taxonomy.families[0].id)}`, `report/detectors/${detectors.detectors[0].id}`, `report/fixtures/${categories[0].id}`];
+const linkPages = ['report', 'report/detectors', 'report/findings', 'report/corpus', 'report/rows/T1', 'report/providers', 'report/families', `report/families/${slugOf(taxonomy.families[0].id)}`, `report/detectors/${detectors.detectors[0].id}`, `report/corpus/${categories[0].id}`];
 for (const route of linkPages) {
   const html = await readHtml(route);
   for (const href of internalLinks(html)) if (!(await linkResolves(path.join(webRoot, 'out'), basePath, href))) fail(`/${route}/ links ${href}, which is not a page or file of the export`);
@@ -199,7 +199,7 @@ for (const issue of gaps.issues) if (!findingsText.includes(`#${issue.number}`))
 const known = new Set(index.fixtures.map(f => f.slug));
 for (const issue of gaps.issues) for (const slug of issue.fixtures) {
   const [category, ...rest] = slug.split('--');
-  const linked = findingsHtml.includes(`href="${basePath}/report/fixtures/${category}/?fixture=${encodeURIComponent(rest.join('--'))}"`);
+  const linked = findingsHtml.includes(`href="${basePath}/report/corpus/${category}/?fixture=${encodeURIComponent(rest.join('--'))}"`);
   if (known.has(slug) && !linked) fail(`/report/findings/ does not link ${slug} to its fixture page`);
   if (!known.has(slug) && linked) fail(`/report/findings/ links ${slug}, which the corpus does not hold`);
 }
@@ -230,7 +230,7 @@ for (const f of index.fixtures) (slugsOfSuite.get(f.source.categoryId) ?? slugsO
 /** Every rows table of the site: where its page is, its data path and the fixtures it must hold. */
 const tables = [];
 for (const f of taxonomy.families) tables.push({ kind: 'family', id: slugOf(f.id), page: `report/families/${slugOf(f.id)}`, slugs: index.fixtures.filter(x => x.familyIds.includes(f.id)).map(x => x.slug) });
-for (const c of categories) tables.push({ kind: 'suite', id: c.id, page: `report/fixtures/${c.id}`, slugs: slugsOfSuite.get(c.id) ?? [] });
+for (const c of categories) tables.push({ kind: 'suite', id: c.id, page: `report/corpus/${c.id}`, slugs: slugsOfSuite.get(c.id) ?? [] });
 for (const d of detectors.detectors) tables.push({ kind: 'detector', id: d.id, page: `report/detectors/${d.id}`, slugs: Object.entries(assignments).filter(([, ids]) => ids.includes(d.id)).map(([slug]) => slug) });
 if (run) for (const level of ['T1', 'T2', 'T3']) tables.push({ kind: 'level', id: level, page: `report/rows/${level}`, slugs: [...tierOf.entries()].filter(([, v]) => v.tier === level).map(([slug]) => slug) });
 
@@ -258,7 +258,7 @@ const linkedRows = html => {
   if (!caption) return null;
   const start = html.indexOf('<tbody', caption.index);
   const body = html.slice(start, html.indexOf('</tbody>', start));
-  return [...body.matchAll(/href="[^"]*\/report\/fixtures\/([^/"]+)\/\?fixture=([^"]+)"/g)].map(m => `${m[1]}--${decodeURIComponent(m[2])}`);
+  return [...body.matchAll(/href="[^"]*\/report\/corpus\/([^/"]+)\/\?fixture=([^"]+)"/g)].map(m => `${m[1]}--${decodeURIComponent(m[2])}`);
 };
 
 let dataRows = 0, dataFiles = 0;
@@ -348,10 +348,10 @@ for (const c of categories) {
   const { identity, ...shared } = file.shared;
   if (identity !== `sha256:${createHash('sha256').update(JSON.stringify({ records: file.records, shared })).digest('hex')}`) fail(`${where}: records identity does not bind its metadata and run payload`);
   if (file.shared.reported?.rule !== 'unavailable' || file.shared.reported?.action !== 'unavailable') fail(`${where}: the run records no rule or action per range, and the records file must say so`);
-  const html = await readHtml(`report/fixtures/${c.id}`);
-  if (!text(html).includes(`${int(slugs.length)} fixture`)) fail(`/report/fixtures/${c.id}/ does not state ${slugs.length} fixtures`);
-  if (!html.includes(`fixtures/${c.id}/records.json`)) fail(`/report/fixtures/${c.id}/ does not name its records file`);
-  if (html.includes('followUps')) fail(`/report/fixtures/${c.id}/ embeds fixture records; they belong in data/fixtures/${c.id}/records.json`);
+  const html = await readHtml(`report/corpus/${c.id}`);
+  if (!text(html).includes(`${int(slugs.length)} fixture`)) fail(`/report/corpus/${c.id}/ does not state ${slugs.length} fixtures`);
+  if (!html.includes(`fixtures/${c.id}/records.json`)) fail(`/report/corpus/${c.id}/ does not name its records file`);
+  if (html.includes('followUps')) fail(`/report/corpus/${c.id}/ embeds fixture records; they belong in data/fixtures/${c.id}/records.json`);
 }
 
 // ---- Family pages (#589): research record, benchmark counts per level and per scanner, peer rules, sources -----

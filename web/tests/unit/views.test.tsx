@@ -223,7 +223,7 @@ describe('rows table (RowsView)', () => {
 
   test('pointing at a row link warms the suite records file named by the page', async () => {
     const user = userEvent.setup();
-    await renderPage('/report/fixtures/[suite]', { suite: 'common-formats' });
+    await renderPage('/report/corpus/[suite]', { suite: 'common-formats' });
     const link = await screen.findAllByRole('link', { name: /./ });
     const rowLink = link.find(a => a.getAttribute('href')?.includes('?fixture='));
     expect(rowLink).toBeTruthy();
@@ -235,7 +235,7 @@ describe('rows table (RowsView)', () => {
 });
 
 describe('a fixture of a suite (?fixture=)', () => {
-  const SUITE = '/report/fixtures/[suite]';
+  const SUITE = '/report/corpus/[suite]';
   const suite = 'common-formats';
 
   async function aFixtureId() {
@@ -252,7 +252,7 @@ describe('a fixture of a suite (?fixture=)', () => {
 
   test('a direct visit shows the loading frame, then the fixture with its bytes and per-scanner lanes', async () => {
     const id = await aFixtureId();
-    visit(`/report/fixtures/${suite}/?fixture=${encodeURIComponent(id)}`);
+    visit(`/report/corpus/${suite}/?fixture=${encodeURIComponent(id)}`);
     let release!: () => void;
     fetchMock.mockImplementationOnce(url => new Promise<Response>(resolve => { release = () => resolve(served(url)); }));
     await renderPage(SUITE, { suite });
@@ -260,25 +260,27 @@ describe('a fixture of a suite (?fixture=)', () => {
     const frame = document.querySelector('[data-fixture-state]')!;
     await waitFor(() => expect(frame).toHaveAttribute('data-fixture-state', 'loading'));
     expect(within(frame as HTMLElement).getByRole('status')).toHaveTextContent(`Loading fixture ${id}`);
+    const loadingCrumbs = within(frame as HTMLElement).getByRole('navigation', { name: 'Breadcrumb' }).textContent;
     await act(async () => { release(); });
     await waitFor(() => expect(frame).toHaveAttribute('data-fixture-state', 'ready'));
     expect(frame).toHaveAttribute('data-fixture-ready');
+    expect(within(frame as HTMLElement).getByRole('navigation', { name: 'Breadcrumb' }).textContent).toBe(loadingCrumbs);
     expect(within(frame as HTMLElement).getByRole('heading', { level: 1 })).toHaveTextContent(id);
   });
 
   test('an id the suite does not have says so and links back to the suite', async () => {
-    visit(`/report/fixtures/${suite}/?fixture=no-such-fixture`);
+    visit(`/report/corpus/${suite}/?fixture=no-such-fixture`);
     await renderPage(SUITE, { suite });
     expect(await screen.findByText(/No fixture “no-such-fixture”/)).toBeInTheDocument();
     const frame = document.querySelector('[data-fixture-state]')!;
     expect(frame).toHaveAttribute('data-fixture-state', 'missing');
-    expect(within(frame as HTMLElement).getByRole('link', { name: 'All fixtures in this suite' })).toHaveAttribute('href', expect.stringMatching(new RegExp(`^/report/fixtures/${suite}/?$`)));
+    expect(within(frame as HTMLElement).getByRole('link', { name: 'All fixtures in this suite' })).toHaveAttribute('href', expect.stringMatching(new RegExp(`^/report/corpus/${suite}/?$`)));
   });
 
   test('a failed load keeps the title, offers a retry and the way back; the retry loads the fixture', async () => {
     const user = userEvent.setup();
     const id = await aFixtureId();
-    visit(`/report/fixtures/${suite}/?fixture=${encodeURIComponent(id)}`);
+    visit(`/report/corpus/${suite}/?fixture=${encodeURIComponent(id)}`);
     fetchMock.mockResolvedValueOnce(new Response('', { status: 500 }));
     await renderPage(SUITE, { suite });
     const alert = await screen.findByRole('alert');

@@ -10,7 +10,7 @@ export const pendingPhases: HubPhase[] = [
 ];
 
 export const builtPhases: HubPhase[] = [
-  { href: '/evaluation/scanner/', label: 'Scanners', title: 'What did each scanner record?', description: 'One scanner at a time, across every evaluation method.', action: 'Scanners →' },
+  { href: '/comparison/scanner/', label: 'Scanners', title: 'What did each scanner record?', description: 'One scanner at a time, across every evaluation method.', action: 'Scanners →' },
   { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', description: 'A pinned candidate read against the published release.', action: 'Release candidate →' },
   { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', description: 'The personal-data domain: its families, fixtures and what was recorded.', action: 'Personal data →' },
   { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', description: 'The credential domain: its families, fixtures and what was recorded.', action: 'Credentials →' },

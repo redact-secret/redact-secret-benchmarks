@@ -87,14 +87,14 @@ export const LevelRowsPage: Story = { render: () => <LevelRows /> };
 
 export const LevelRowsLeftReadable: Story = { render: () => <LevelRows initialShow="leaked" /> };
 
-/** `/report/fixtures/`. */
+/** `/report/corpus/`. */
 export const Suites: Story = {
   render: () => (
     <Page>
       <PageHead
         before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites' }]} />}
         eyebrow="redact-secret · Report"
-        title="Suites"
+        title="Credential Corpus"
         lede="The corpus is a set of suites, each a folder of fixtures authored for one purpose. Open a suite for its rows, then a row for the fixture: its bytes, what was expected and what each scanner reported."
         meta={[{ value: '68 suites' }, { value: '5,925 fixtures' }, ...runMeta]}
       />
@@ -103,24 +103,24 @@ export const Suites: Story = {
   ),
 };
 
-/** `/report/fixtures/<suite>/`. */
+/** `/report/corpus/<suite>/`. */
 export const SuiteRows: Story = {
   render: () => (
     <Page>
       <PageHead
-        before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: 'GitHub tokens' }]} />}
+        before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Credential Corpus', href: '/report/corpus/' }, { label: 'GitHub tokens' }]} />}
         eyebrow="redact-secret · Report"
         title="GitHub tokens"
         lede="One fixture per token shape, in the plainest context."
         meta={[{ value: '5 fixtures' }, ...runMeta]}
-        actions={<Link href="/report/fixtures/">All suites</Link>}
+        actions={<Link href="/report/corpus/">All suites</Link>}
       />
       <FixtureTable familyName="GitHub tokens" title="Fixtures in this suite" description="5 fixtures in this suite. Open a fixture for its bytes, expected spans and what each scanner reported." rows={scannerRows} scanners={scannerColumns} />
     </Page>
   ),
 };
 
-/** `/report/fixtures/<suite>/?fixture=<id>`. */
+/** `/report/corpus/<suite>/?fixture=<id>`. */
 export const FixturePage: Story = {
   render: () => (
     <Page>
@@ -134,7 +134,7 @@ export const FixtureLoading: Story = {
   render: () => (
     <Page>
       <Stack gap="lg">
-        <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: 'Detector coverage', href: '/report/fixtures/detector-coverage/' }, { label: fixtureDetail.id }]} />} eyebrow="DETECTOR COVERAGE" title={fixtureDetail.id} meta={[{ value: ' ' }]} />
+        <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Credential Corpus', href: '/report/corpus/' }, { label: 'Detector coverage', href: '/report/corpus/detector-coverage/' }, { label: fixtureDetail.id }]} />} eyebrow="DETECTOR COVERAGE" title={fixtureDetail.id} meta={[{ value: ' ' }]} />
         <Skeleton label={`Loading fixture ${fixtureDetail.id}`}>
           <SkeletonBlock shape="panel" />
           <SkeletonBlock shape="panel" />
@@ -150,9 +150,9 @@ export const FixtureLoadFailed: Story = {
   render: () => (
     <Page>
       <Stack gap="lg">
-        <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: 'Detector coverage', href: '/report/fixtures/detector-coverage/' }, { label: fixtureDetail.id }]} />} eyebrow="DETECTOR COVERAGE" title={fixtureDetail.id} meta={[{ value: ' ' }]} />
+        <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Credential Corpus', href: '/report/corpus/' }, { label: 'Detector coverage', href: '/report/corpus/detector-coverage/' }, { label: fixtureDetail.id }]} />} eyebrow="DETECTOR COVERAGE" title={fixtureDetail.id} meta={[{ value: ' ' }]} />
         <RetryNote title="Could not load this fixture" onRetry={() => undefined}>You are offline. The rest of the suite is unaffected.</RetryNote>
-        <Link href="/report/fixtures/detector-coverage/">All fixtures in this suite</Link>
+        <Link href="/report/corpus/detector-coverage/">All fixtures in this suite</Link>
       </Stack>
     </Page>
   ),
@@ -161,8 +161,8 @@ export const FixtureLoadFailed: Story = {
 export const FixtureNotFound: Story = {
   render: () => (
     <Page>
-      <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: 'not-a-fixture' }]} />} eyebrow="redact-secret · Report" title="No such fixture" />
-      <EmptyState title="No fixture “not-a-fixture” in Detector coverage" action={<Link href="/report/fixtures/detector-coverage/">All fixtures in this suite</Link>}>
+      <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Credential Corpus', href: '/report/corpus/' }, { label: 'not-a-fixture' }]} />} eyebrow="redact-secret · Report" title="No such fixture" />
+      <EmptyState title="No fixture “not-a-fixture” in Detector coverage" action={<Link href="/report/corpus/detector-coverage/">All fixtures in this suite</Link>}>
         Fixture ids come from the corpus. This suite has 1,309 fixtures.
       </EmptyState>
     </Page>

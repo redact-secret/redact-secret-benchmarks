@@ -63,12 +63,12 @@ export function LegacyFixtureLookup({ children }: { children?: ReactNode }) {
   if (state.kind === 'checking') {
     return <EmptyState title={`Opening fixture ${ref.id}`}>This is an old fixture address. Looking for <Code>{ref.id}</Code> in the suite <Code>{ref.suite}</Code>.</EmptyState>;
   }
-  const suiteLink = <Link href={`/report/fixtures/${ref.suite}/`}>Fixtures in {ref.suite}</Link>;
+  const suiteLink = <Link href={`/report/corpus/${ref.suite}/`}>Fixtures in {ref.suite}</Link>;
   if (state.outcome === 'unknown-fixture') {
     return <EmptyState title={`No fixture “${ref.id}” in the suite ${ref.suite}`} action={suiteLink}>This is an old fixture address. The suite exists, and none of its fixtures has this id.</EmptyState>;
   }
   if (state.outcome === 'unknown-suite') {
-    return <EmptyState title={`No suite “${ref.suite}”`} action={<Link href="/report/fixtures/">All suites</Link>}>An old fixture address names a suite and a fixture id. This report publishes no suite with this id, so there is no page for fixture <Code>{ref.id}</Code>. Suites are the groups of the report's current population; an older corpus that is not one of them has no fixture pages.</EmptyState>;
+    return <EmptyState title={`No suite “${ref.suite}”`} action={<Link href="/report/corpus/">All suites</Link>}>An old fixture address names a suite and a fixture id. This report publishes no suite with this id, so there is no page for fixture <Code>{ref.id}</Code>. Suites are the groups of the report's current population; an older corpus that is not one of them has no fixture pages.</EmptyState>;
   }
   return <EmptyState title={`Could not check fixture “${ref.id}”`} action={suiteLink}>This is an old fixture address, but the suite’s records could not be loaded. Try again, or open the suite.</EmptyState>;
 }

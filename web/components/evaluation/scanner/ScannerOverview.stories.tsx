@@ -4,12 +4,12 @@ import { optionalNotMeasured } from '../../qualification/storyData';
 import { candidateNote, notRecorded, publishedNote, repositoryScanner, rosterNotRecorded, rosterRows, runtimeLibrary } from './storyData';
 
 const meta = {
-  title: 'Evaluation/Scanner/ScannerOverview',
+  title: 'Comparison/Scanner/ScannerOverview',
   component: ScannerOverview,
   parameters: { layout: 'fullscreen' },
   args: {
-    breadcrumb: [{ label: 'Evaluation', href: '/evaluation/' }, { label: 'Scanners' }],
-    eyebrow: 'Evaluation',
+    breadcrumb: [{ label: 'Comparison', href: '/comparison/' }, { label: 'Scanners' }],
+    eyebrow: 'Comparison',
     title: 'Scanners and where they ran',
     lede: 'The scanners this benchmark ran with, the version of each, how it was installed, how it was run and what was left out. Results are on the report and comparison pages.',
     meta: [{ label: 'Mode', value: 'published · Alpha Library 1.2.3' }, { label: 'Run', value: '2026-10-01 · 3 suites' }],

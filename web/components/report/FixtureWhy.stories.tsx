@@ -23,7 +23,7 @@ export const NothingRecorded: Story = {
 };
 
 /** The bytes cannot be encoded as UTF-8 (a lone surrogate): the button says why it is off. */
-export const CannotDownload: Story = { args: { actions: { corpusHref: '/report/fixtures/example-suite/' } } };
+export const CannotDownload: Story = { args: { actions: { corpusHref: '/report/corpus/example-suite/' } } };
 
 export const LongValues: Story = {
   args: {

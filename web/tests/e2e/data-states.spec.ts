@@ -117,7 +117,7 @@ test.describe('rows table', () => {
 });
 
 test.describe('one fixture of a suite', () => {
-  const url = `${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`;
+  const url = `${BASE}/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`;
 
   test('loading: the page frame and a skeleton the size of the regions to come; then the fixture', async ({ page }) => {
     const gate = await hold(page, RECORDS);
@@ -167,7 +167,7 @@ test.describe('one fixture of a suite', () => {
   test('pointing at a row link warms the records file, so opening the fixture needs no second wait', async ({ page }) => {
     const requests: string[] = [];
     page.on('request', r => { if (r.url().includes('/records.json')) requests.push(r.url()); });
-    await page.goto(`${BASE}/report/fixtures/${SUITE}/`);
+    await page.goto(`${BASE}/report/corpus/${SUITE}/`);
     const link = page.locator('main table a[href*="?fixture="]').first();
     await link.hover();
     await expect.poll(() => requests.length).toBe(1);

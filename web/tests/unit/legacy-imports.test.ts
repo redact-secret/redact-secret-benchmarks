@@ -51,10 +51,11 @@ const ROLES: Record<string, Record<string, Entry>> = {
   'services/credential-catalog.ts': { 'benchmarks/support/taxonomy': 'keep' },
   'services/contracts.ts': { 'benchmarks/lib/assessment': 'keep' },
   'services/credential-bridge.ts': {
+    'benchmarks/lib/fixture-display': 'keep',
     'benchmarks/consumer/credential-metrics': 'keep', 'benchmarks/support/taxonomy': 'keep', 'benchmarks/lib/fixture-metadata': 'keep',
     'benchmarks/shared/accounting-types': 'keep',
   },
-  'services/credential-source.ts': { 'benchmarks/consumer/credential-metrics': 'keep', 'benchmarks/lib/fixture-metadata': 'keep', 'benchmarks/shared/accounting-types': 'keep' },
+  'services/credential-source.ts': { 'benchmarks/lib/fixture-display': 'keep', 'benchmarks/consumer/credential-metrics': 'keep', 'benchmarks/lib/fixture-metadata': 'keep', 'benchmarks/shared/accounting-types': 'keep' },
   'services/domains.ts': {
     'benchmarks/consumer/credential-metrics': 'keep',
     'benchmarks/evaluation/domains/pii/peer-readiness.mjs': PII('the reviewed neutral-expectation and peer-adapter readiness inventory'),

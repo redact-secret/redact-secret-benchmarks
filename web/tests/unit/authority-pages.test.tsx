@@ -47,7 +47,7 @@ const stamp = (container: HTMLElement) => container.querySelector('aside[data-pi
 describe('authority legacy', () => {
   const root = () => overlay({ [AUTHORITY_FILE]: authorityFile('legacy') });
 
-  test.each(['/report', '/report/providers', '/report/families', '/report/detectors', '/report/fixtures', '/evaluation/credential'])('%s is built from the legacy pipeline, the authority', async route => {
+  test.each(['/report', '/report/providers', '/report/families', '/report/detectors', '/report/corpus', '/evaluation/credential'])('%s is built from the legacy pipeline, the authority', async route => {
     const { container } = await open(root(), undefined, route);
     expect(stamp(container)).toHaveAttribute('data-pipeline', 'legacy');
     expect(stamp(container)).toHaveAttribute('data-role', 'authority');
@@ -65,7 +65,7 @@ describe('authority new, with an authorised view', () => {
   const own = view.populations.find(p => p.role === 'floors-and-gates')!;
   const root = () => overlay({ [AUTHORITY_FILE]: authorising(view) });
 
-  test.each(['/report', '/report/providers', '/report/families', '/report/detectors', '/report/fixtures', '/evaluation/credential'])('%s is built from the new pipeline, and names the population and the run', async route => {
+  test.each(['/report', '/report/providers', '/report/families', '/report/detectors', '/report/corpus', '/evaluation/credential'])('%s is built from the new pipeline, and names the population and the run', async route => {
     const { container } = await open(root(), results(view), route);
     const aside = stamp(container)!;
     expect(aside).toHaveAttribute('data-pipeline', 'new');
@@ -76,7 +76,7 @@ describe('authority new, with an authorised view', () => {
   });
 
   test('the suite page lists the suite of the report population and the stamp is on it', async () => {
-    const { container } = await open(root(), results(view), '/report/fixtures/[suite]', { suite: own.population });
+    const { container } = await open(root(), results(view), '/report/corpus/[suite]', { suite: own.population });
     expect(stamp(container)).toHaveAttribute('data-pipeline', 'new');
     expect(container.querySelector('h1')?.textContent).toBe(own.population);
   });
@@ -118,7 +118,7 @@ describe('authority new, with an authorised view', () => {
   });
 
   test('the scanner page takes each scanner\u2019s identity from the official run, not from a peer snapshot', async () => {
-    const { container } = await open(root(), results(view), '/evaluation/scanner');
+    const { container } = await open(root(), results(view), '/comparison/scanner');
     const text = container.textContent ?? '';
     for (const scanner of own.artifact.scanners) {
       expect(text).toContain(scanner.mode);
@@ -130,7 +130,7 @@ describe('authority new, with an authorised view', () => {
     expect(text).not.toMatch(/committed snapshot|Snapshots, /);
   });
 
-  test.each(['/report', '/comparison', '/comparison/accuracy', '/evaluation/scanner'])('%s needs no legacy catalog, corpus index or peer snapshot under the new authority (#658)', async route => {
+  test.each(['/report', '/comparison', '/comparison/accuracy', '/comparison/scanner'])('%s needs no legacy catalog, corpus index or peer snapshot under the new authority (#658)', async route => {
     // The catalog and the fixtures come from the view (the evidence snapshot's case metadata) and the product-owned overlays (the taxonomy, the detector
     // registry, the pins); none of the legacy catalog files, nor the committed peer snapshots, is read. They are absent from this root.
     const bare = overlay({
@@ -200,8 +200,8 @@ describe('a fixture whose bytes are not recorded', () => {
     expect(detail.bytesNote).toMatch(/not the file’s bytes/);
     expect(detail.spans[0].reportedNote).toBe('offsets not recorded');
     const { container } = render(<FixtureDetail fixture={detail} />);
-    expect(screen.getByText('The bytes are not recorded')).toBeInTheDocument();
-    expect(screen.getByText('Exact bytes are not recorded')).toBeInTheDocument();
+    expect(screen.getByText('Input bytes unavailable in this view')).toBeInTheDocument();
+    expect(screen.getByText('Exact bytes unavailable in this view')).toBeInTheDocument();
     expect(container.querySelector('[aria-label="Input file"]')).toBeNull();
   });
 

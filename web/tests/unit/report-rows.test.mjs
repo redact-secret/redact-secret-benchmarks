@@ -126,7 +126,7 @@ test('rows are ordered by what needs a look, carry per-scanner outcomes, and exp
   assert.deepEqual(rows.map(r => r.slug), ['a2', 'c1', 'b1', 'p1', 'a3', 't0', 'a1']);
   assert.deepEqual(rows[0].outcomes.map(o => o.label), ['Left readable', 'Left readable']);
   assert.equal(rows[0].outcome.label, 'Left readable', 'the product column is redact-secret');
-  assert.equal(rows[0].href, '/report/fixtures/s/?fixture=a2');
+  assert.equal(rows[0].href, '/report/corpus/s/?fixture=a2');
   assert.equal(rows.find(r => r.slug === 'p1').outcomes[0].status, 'info', 'a policy row is information, never a failure');
   assert.equal(rows.find(r => r.slug === 'a2').alsoIn, 'also in 1 other family');
   assert.equal(rows.find(r => r.slug === 't0').kind, 'Pending review');
@@ -301,7 +301,7 @@ test('what the corpus does not hold is stated as not recorded, and what it holds
   const bare = suiteOf([{ entry: fx('bare', 'must-redact', 'T0', [], { unscopedReason: 'No provider owns this shape.', detectors: [] }), built: built({ id: 'bare', slug: 's--bare', contextAxis: undefined, assessment: { kind: 'must-redact', tier: 'T0', sources: [] } }) }], []).page('bare');
   assert.equal(bare.facts.find(f => f.term === 'Why it must be redacted').notRecorded, true);
   assert.deepEqual(bare.facts.find(f => f.term === 'Family'), { term: 'Family', value: 'None', note: 'No provider owns this shape.' });
-  assert.deepEqual(bare.crumbs.map(c => c.label), ['Report', 'Suites', 'Suite S', 'bare']);
+  assert.deepEqual(bare.crumbs.map(c => c.label), ['Report', 'Credential Corpus', 'Suite S', 'bare']);
   assert.match(bare.facts.find(f => f.term === 'Evidence level').note, /excluded from comparative scores/);
   // The records hold a label once, however many fixtures share it.
   assert.equal(shared.texts.filter(t => t === '#1 · demo · sdk-config').length, 1);
@@ -382,7 +382,7 @@ test('the exact bytes can be taken as a file, and text that cannot be encoded sa
   const detail = suiteOf([{ entry: demoEntry(), built: built() }], []).page('demo');
   assert.equal(detail.actions.download.filename, 'demo.txt');
   assert.equal(decodeURIComponent(detail.actions.download.href.replace('data:text/plain;charset=utf-8,', '')), content);
-  assert.equal(detail.actions.corpusHref, '/report/fixtures/s/');
+  assert.equal(detail.actions.corpusHref, '/report/corpus/s/');
   const lone = suiteOf([{ entry: demoEntry(), built: built({ content: 'a\ud800b', expected: [] }) }], []).page('demo');
   assert.equal(lone.actions.download, undefined, 'a lone surrogate cannot be saved as UTF-8: no link is better than a wrong file');
   assert.match(lone.input.notice, /1 character that is not valid text/);
@@ -421,7 +421,7 @@ test('a twin is held against its original with the changed bytes boxed, and each
   const positive = page('demo');
   assert.equal(positive.twins.heading, 'Its near-twin');
   const item = positive.twins.items[0];
-  assert.deepEqual([item.id, item.title, item.changed, item.linkLabel, item.href], ['demo-twin', 'Alphabet twin', 'byte 7 changed', 'Open the twin', '/report/fixtures/s/?fixture=demo-twin']);
+  assert.deepEqual([item.id, item.title, item.changed, item.linkLabel, item.href], ['demo-twin', 'Alphabet twin', 'byte 7 changed', 'Open the twin', '/report/corpus/s/?fixture=demo-twin']);
   assert.equal(item.description, 'alphabet: one character replaced with !');
   assert.deepEqual(item.file.rows[0].segments.map(x => [x.text, x.mark ?? '-']), [['k=synth', '-'], ['!', 'changed'], ['01', '-']]);
   assert.deepEqual(item.outcome, [{ status: 'pass', label: 'Quiet' }]);
@@ -547,7 +547,7 @@ test('a detector page shows the run’s own figures per group with the other sca
 test('the findings inventory links a fixture the corpus holds and leaves one it does not as text', () => {
   const inventory = resolveFindingsInventory(gaps, { bySlug: new Map([['s--c1', fixtures[3]], ['s--a2', fixtures[1]]]) });
   assert.deepEqual(inventory.rows.map(r => r.number), ['#2', '#1'], 'newest first');
-  assert.deepEqual(inventory.rows[1].fixtures, [{ label: 'c1', href: '/report/fixtures/s/?fixture=c1' }, { label: 'gone' }]);
+  assert.deepEqual(inventory.rows[1].fixtures, [{ label: 'c1', href: '/report/corpus/s/?fixture=c1' }, { label: 'gone' }]);
   assert.equal(inventory.rows[0].status.label, 'Policy');
   assert.equal(inventory.milestone.href, 'https://example.com/m');
   assert.match(inventory.description, /not live issue status/);
@@ -565,9 +565,9 @@ test('the ledger stamp reads as the last review and measurement, derived from th
 test('suites resolve to counts, and a suite with no fixtures is not zeros', () => {
   const rows = resolveSuiteRows({ suites: [{ id: 's', title: 'S', description: 'd' }, { id: 'e', title: 'E', description: 'd' }], fixturesBySuite: new Map([['s', fixtures], ['e', []]]) }, mine);
   assert.equal(rows[0].fixtures, '7');
-  assert.equal(rows[0].href, '/report/fixtures/s/');
+  assert.equal(rows[0].href, '/report/corpus/s/');
   assert.equal(rows[1].counts, null);
-  assert.equal(fixtureHref({ category: 'a', id: 'b c' }), '/report/fixtures/a/?fixture=b%20c');
+  assert.equal(fixtureHref({ category: 'a', id: 'b c' }), '/report/corpus/a/?fixture=b%20c');
 });
 
 // ---- Layering -----------------------------------------------------------------------------------------

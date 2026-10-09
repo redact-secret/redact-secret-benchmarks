@@ -132,7 +132,7 @@ test('workflows, lockfiles, schemas and the plan itself select everything', () =
   }
 });
 
-const fixtureMetadataPaths = ['scripts/evidence-case-metadata.mjs', 'benchmarks/evidence-case-metadata.json', 'benchmarks/fixture-descriptions.json', 'benchmarks/lib/fixture-metadata.ts'];
+const fixtureMetadataPaths = ['scripts/evidence-case-metadata.mjs', 'benchmarks/evidence-case-metadata.json', 'benchmarks/fixture-descriptions.json', 'benchmarks/lib/fixture-metadata.ts', 'benchmarks/lib/fixture-display.ts', 'benchmarks/inputs/fixture-display-v1.json'];
 
 test('fixture metadata alone keeps the full site validation and changes only the view cache key', () => {
   for (const f of fixtureMetadataPaths) {
@@ -150,7 +150,7 @@ test('fixture metadata alone keeps the full site validation and changes only the
 });
 
 test('fixture metadata importers are confined to display services, the projection script and tests', () => {
-  const allowed = new Set(['scripts/evidence-case-metadata.mjs', 'tests/fixture-metadata.test.mjs', 'web/services/catalog.ts', 'web/services/credential-bridge.ts', 'web/services/credential-source.ts']);
+  const allowed = new Set(['benchmarks/lib/fixture-display.ts', 'scripts/evidence-case-metadata.mjs', 'tests/fixture-metadata.test.mjs', 'web/services/catalog.ts', 'web/services/credential-bridge.ts', 'web/services/credential-source.ts']);
   for (const importer of importersOf('benchmarks/lib/fixture-metadata.ts')) assert.ok(allowed.has(importer), `${importer} needs a CI dependency review before consuming fixture metadata`);
   assert.deepEqual(importersOf('scripts/evidence-case-metadata.mjs'), [], 'the display projection is not imported by measurement tooling');
 });

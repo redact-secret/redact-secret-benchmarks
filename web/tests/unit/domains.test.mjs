@@ -27,7 +27,7 @@ const text = view => JSON.stringify(view);
 describe('the two pages are a pair', () => {
   test('one shape, the same sections in the same order, a switch that names both domains', () => {
     const p = resolvePiiView(pii());
-    expect(Object.keys(p)).toEqual(['head', 'glance', 'method', 'coverage', 'status', 'reading']);
+    expect(Object.keys(p).filter(key => key !== 'presentationSummary')).toEqual(['head', 'glance', 'method', 'coverage', 'status', 'reading']);
     expect(p.head.pair.map(x => x.href)).toEqual([DOMAIN_HREF.credential, DOMAIN_HREF.pii]);
     expect(p.glance).toHaveLength(3);
     expect(p.method.steps.map(s => s.title)).toEqual(['Author', 'Run', 'Compare', 'Record']);

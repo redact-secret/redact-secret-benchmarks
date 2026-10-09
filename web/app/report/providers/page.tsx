@@ -19,7 +19,7 @@ export default async function Page() {
         lede={data.head.lede}
         meta={data.head.meta}
       />
-      <RunNotes state={data.runState} />
+      <RunNotes state={data.runState} detailsInDialog />
       <ProvidersView levels={data.levels} />
     </Stack>
   );

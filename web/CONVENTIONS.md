@@ -36,7 +36,7 @@ Components are pure render: props in, elements out.
   state should be shareable (`SegmentedNav` before `SegmentedControl`).
 - Native elements first (`<details>`, `<select>`, `<table>`, `<a>`). MUI only where
   accessibility behaviour is costly to get right: today `Tabs`, `SegmentedControl`
-  and `ThemeToggle`. Dialogs and menus will be MUI-backed when a block needs one.
+  and dialogs. Theme preference uses the MUI provider with a native icon button.
 
 ## Styling
 
@@ -210,9 +210,9 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `WEB_REQUIRE_QUALIFICATION=1`. The rollback state, the legacy pipeline's export built with `node scripts/with-authority.mjs legacy -- <command>` (it flips the value for the command and restores it), is built and recounted in every `web-build`, and its
   browser checks run in the legacy oracle (`legacy-oracle.yml`, #655). Locally, run the full checks on both values (`with-authority.mjs`) and, for `new`, with a view built into `public/results/`. Which checks a pull request runs, and why, is `scripts/ci-plan.mjs` ([`docs/specs/ci-validation.md`](../docs/specs/ci-validation.md)). Decision:
   `docs/decisions/2026-10-02-switch-credential-qualification-authority-to-the-new-path.md`; spec: `docs/specs/qualification-cutover.md`.
-- **An optional scanner a run did not measure, and where an observation came from (#763, #724).** The view's `scannerRoster.notMeasured` reaches the credential report pages through `CredentialPipeline.view.notMeasured`, `resolvePipelineStamp` and the one block `OptionalScannerNote` (the `PipelineStamp` of every report page, `/evaluation/credential`, `/comparison/accuracy`), the roster of `/evaluation/scanner/` and the full pointer on `/evaluation/qualification/`: the contract sentence, the reason, the last measurement (run, engine, configuration, date; `resolveNotMeasuredRows`) and, when the run registry no longer lists it, the roster's retained record with its archive. No page gives the scanner a row, count or zero. Observation origin (`resolveObservationOrigins`, block `ObservationOrigins`) is provenance from the artifact's non-semantic telemetry and is a block of its own beneath `ScopeAccounting`, never a column of it; `not-recorded` is not `fresh`. Tests build these states from synthetic views (`tests/unit/optional-scanner-pages.test.tsx`) and assert no ledger value. Decision: `docs/decisions/2026-10-07-disclose-the-optional-scanner-on-every-report-and-keep-observation-origin-apart-from-scope-evidence.md`.
+- **An optional scanner a run did not measure, and where an observation came from (#763, #724).** The view's `scannerRoster.notMeasured` reaches the credential report pages through `CredentialPipeline.view.notMeasured`, `resolvePipelineStamp` and the one block `OptionalScannerNote` (the `PipelineStamp` of every report page, `/evaluation/credential`, `/comparison/accuracy`), the full pointer on `/evaluation/qualification/`: the contract sentence, the reason, the last measurement (run, engine, configuration, date; `resolveNotMeasuredRows`) and, when the run registry no longer lists it, the roster's retained record with its archive. No page gives the scanner a row, count or zero. Observation origin (`resolveObservationOrigins`, block `ObservationOrigins`) is provenance from the artifact's non-semantic telemetry and is a block of its own beneath `ScopeAccounting`, never a column of it; `not-recorded` is not `fresh`. Tests build these states from synthetic views (`tests/unit/optional-scanner-pages.test.tsx`) and assert no ledger value. Decision: `docs/decisions/2026-10-07-disclose-the-optional-scanner-on-every-report-and-keep-observation-origin-apart-from-scope-evidence.md`.
 - **Which pipeline the PII evaluation is authoritative from (#666).** One committed value, `benchmarks/pii-authority.json` (`legacy` or `new`), read by `services/pii-authority.ts` and nowhere else in the app (`pii:authority:check` fails on any other file that names it), independent of the credential authority: neither service reads the other and a credential value is never authorisation for PII. `loadPiiEvaluation` carries the stamp to `/evaluation/pii/` (the last row of the first status group, "PII authority"). `new` (public/synthetic measurement only; the protected path is pending and never gates it) is refused without a recorded owner authorisation and never falls back to the legacy evaluation; with no published support artifact it reads the pii-eval measurement from the committed durable copies (`committedPiiEvalMeasurement`, product unbound). Tests choose the value in an overlay root (`tests/unit/overlay.ts` pins `legacy` unless a test names the file) and never assert the committed value or an authorisation. Spec: `docs/specs/pii-authority.md`.
-- **Review-state disclosure (#680).** Where the accepted evidence release records `maintainer-only` fixtures (credential-evidence ADR 0020), the `PipelineStamp` and `/evaluation/qualification/` carry a `ReviewDisclosure`: the owner's fixed words ("메인테이너 검토 (독립 검토 대기)" / "Maintainer-reviewed (independent review pending)" and the note that it is not yet independently reviewed) and a count read at build time by `services/review-state.ts` from the accepted adoption record's change report (`benchmarks/evidence-adoption.json`), only when the view was built from that release. The internal status name is unchanged; no word says "independent" validation; no count means a build shows no disclosure, never a zero. Decision: `docs/decisions/2026-10-04-accept-snapshot-2026-10-04-3-on-credential-eval-alpha-4.md`.
+- **Review-state disclosure (#680).** Where the accepted evidence release records `maintainer-only` fixtures (credential-evidence ADR 0020), the `PipelineStamp` and `/evaluation/qualification/` carry a `ReviewDisclosure`: the owner's fixed English words ("Maintainer-reviewed (independent review pending)" and the note that it is not yet independently reviewed) and a count read at build time by `services/review-state.ts` from the accepted adoption record's change report (`benchmarks/evidence-adoption.json`), only when the view was built from that release. The internal status name is unchanged; no word says "independent" validation; no count means a build shows no disclosure, never a zero. Decision: `docs/decisions/2026-10-04-accept-snapshot-2026-10-04-3-on-credential-eval-alpha-4.md`.
 - `/evaluation/scanner/` (#612) shows the scanners the benchmark ran with and each one's environment: pins, install checksums, configuration and
   platform from the validated peer snapshots (`services/scanners.ts`), the mode line and host from the run, `outOfScope` from the registry. Blocks are
   `Scanner*` in `components/evaluation/scanner/` (a folder of folders is a section; each phase of `/evaluation` has its own). A fact the repository does not
@@ -346,3 +346,27 @@ Playwright tests that opened `?show=leaked` and expected a pager found zero leak
   the PR body, with the evidence that your change did not cause it (the same check red on `develop`'s tip).
 - **A merge is done when `develop` is green.** After merging, read the push-triggered runs on `develop`'s merge commit
   (`gh run list --branch develop`) and say what they show. If they are red, fixing it comes before anything else.
+
+## Compact navigation and evidence presentation
+
+The section navigation has at most three quick links. The footer directory holds Coverage, Evaluation, Evidence,
+Comparison and Development links. `/evaluation/method/` separates credential method links from PII method descriptions;
+Internationalization and Evidence resources are explicit planned pages until their reports exist.
+
+Performance comparison uses native dropdowns for the peer and redact-secret setting. Changes preserve both URL
+parameters and browser history. Reading guidance opens from an accessible information icon in a dialog; its exact
+caveats remain in the static export. Link controls remain available without script.
+
+Credential source stamps on the report hub, provider/family/detector lists and family/detector detail pages,
+credential evaluation and accuracy comparison open in a dialog. English review-state wording, fixture counts and
+optional-profile provenance remain available there. The scanner roster omits optional-profile explanations and opens
+its published/candidate explanation in a dialog; qualification retains the full optional-profile pointers.
+
+The PII page separates public measurement from current product qualification and protected execution/audit. Its
+population/report and metric/category selectors show one recorded result at a time; source and execution metadata
+open in a dialog. Existing family anchors select their corresponding result. Independent PII evidence shows changed,
+unchanged and unresolved variant counts, with changed variants first. Unresolved overlaps the other two counts;
+changes describe recorded differences and never imply improvement, regression or support qualification.
+
+The theme icon toggles light and dark, persisting explicit preferences. Before a reader chooses, an existing system
+preference still resolves to the operating system's effective theme.

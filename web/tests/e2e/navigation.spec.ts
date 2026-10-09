@@ -13,8 +13,8 @@ test.describe('desktop navigation', () => {
     await expect(primary.getByRole('link', { name: 'Report' })).toHaveAttribute('aria-current', 'page');
     await expect(primary.getByRole('link', { name: 'Comparison' })).not.toHaveAttribute('aria-current');
     const section = page.getByRole('navigation', { name: 'Report pages' });
-    await expect(section.getByRole('link')).toHaveText(['Overview', 'Providers', 'Families', 'Detectors', 'Findings']);
-    await expect(section.getByRole('link', { name: 'Families' })).toHaveAttribute('aria-current', 'page');
+    await expect(section.getByRole('link')).toHaveText(['Overview', 'Providers', 'Detectors']);
+    await expect(page.getByRole('navigation', { name: 'Site directory' }).getByRole('link', { name: 'Credentials', exact: true })).toHaveAttribute('aria-current', 'page');
   });
 
   test('every page of both sections is reachable by following links, inside the app (no reload)', async ({ page }) => {
@@ -22,18 +22,17 @@ test.describe('desktop navigation', () => {
     await markWindow(page);
     for (const [name, path, heading] of [
       ['Providers', '/report/providers/', /provider/i],
-      ['Families', '/report/families/', /famil/i],
+      ['Credentials', '/report/families/', /famil/i],
       ['Detectors', '/report/detectors/', /detector/i],
-      ['Findings', '/report/findings/', /finding|changed/i],
       ['Overview', '/report/', /benchmark shows/i],
     ] as const) {
-      await page.getByRole('navigation', { name: 'Report pages' }).getByRole('link', { name, exact: true }).click();
+      await page.getByRole('navigation', { name: name === 'Credentials' ? 'Site directory' : 'Report pages' }).getByRole('link', { name, exact: true }).click();
       await expect(page).toHaveURL(`${BASE}${path}`);
       await expect(page.getByRole('heading', { level: 1 })).toContainText(heading);
     }
     await page.getByRole('navigation', { name: 'Primary', exact: true }).getByRole('link', { name: 'Comparison' }).click();
     await expect(page).toHaveURL(`${BASE}/comparison/`);
-    for (const [name, path] of [['Features', '/comparison/feature/'], ['Runtime', '/comparison/runtime/'], ['Performance', '/comparison/performance/'], ['Accuracy', '/comparison/accuracy/']] as const) {
+    for (const [name, path] of [['Performance', '/comparison/performance/'], ['Accuracy', '/comparison/accuracy/']] as const) {
       await page.getByRole('navigation', { name: 'Comparison pages' }).getByRole('link', { name, exact: true }).click();
       await expect(page).toHaveURL(`${BASE}${path}`);
       await expect(page.getByRole('heading', { level: 1 }).filter({ visible: true })).toHaveCount(1);
@@ -65,7 +64,7 @@ test.describe('phone navigation', () => {
     const bar = page.getByRole('navigation', { name: 'Primary, bottom bar' });
     await expect(bar).toBeVisible();
     await expect(page.getByRole('navigation', { name: 'Primary', exact: true })).toBeHidden();
-    await expect(page.getByRole('group', { name: 'Color theme' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Color theme:/ })).toBeVisible();
     const box = (await bar.boundingBox())!;
     const viewport = page.viewportSize()!;
     expect(Math.round(box.y + box.height)).toBe(viewport.height);

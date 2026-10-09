@@ -118,7 +118,8 @@ for (const p of view.populations) for (const c of p.cases) {
 }
 
 // An optional scanner the view did not measure (#763) is stated on the overview and on every page built from the view, with its pointer; the scanner has no row anywhere.
-// A page is built from the view when it carries the new pipeline's stamp (data-pipeline="new") or, for the scanner page, the official run's own words.
+// Report provenance stays available through the source dialog. The scanner roster omits optional-profile explanations; qualification keeps their full pointers.
+// A report page is built from the view when it carries the new pipeline stamp.
 const notMeasured = view.scannerRoster?.notMeasured ?? [];
 let disclosures = 0;
 for (const n of notMeasured) {
@@ -126,12 +127,11 @@ for (const n of notMeasured) {
   const pages = [
     ['evaluation/qualification/index.html', true],
     ...['report', 'report/families', 'report/detectors', 'report/providers', 'report/fixtures', 'evaluation/credential', 'comparison/accuracy'].map(rel => [`${rel}/index.html`, null]),
-    ['evaluation/scanner/index.html', null],
   ];
   for (const [rel, always] of pages) {
     if (!existsSync(out(rel))) continue;
     const html = await read(rel);
-    const fromView = always || html.includes('data-pipeline="new"') || (rel.startsWith('evaluation/scanner') && html.includes('Official run, '));
+    const fromView = always || html.includes('data-pipeline="new"');
     if (!fromView) continue;
     const text = decode(stripTags(html));
     for (const needle of [n.statement, pointer]) if (!text.includes(needle)) fail(`${rel} does not say "${needle}" although the view left ${n.scanner} out`);

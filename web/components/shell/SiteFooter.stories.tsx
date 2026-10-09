@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { FOOTER_GROUPS } from '../../lib/site';
 import { SiteFooter } from './SiteFooter';
 
 const LINKS = [
@@ -13,6 +14,7 @@ const meta = {
   component: SiteFooter,
   args: {
     links: LINKS,
+    groups: FOOTER_GROUPS,
     legal: <>© 2026 Example Org · Code and data under the <a href="https://example.com/license" rel="noreferrer">MIT License</a>. This site records measurements and does not assert product output.</>,
     build: 'redact-secret 0.0.0-example · 1,234 inputs · run 2026-01-01',
   },

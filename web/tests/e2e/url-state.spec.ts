@@ -70,8 +70,8 @@ test.describe('lists (?q= ?show= ?level=)', () => {
   test('Back after navigating away and returning restores the list as it was left', async ({ page }) => {
     await page.goto(`${BASE}/report/detectors/?q=stripe`);
     await expect(page.getByRole('searchbox', { name: 'Find' })).toHaveValue('stripe');
-    await page.getByRole('navigation', { name: 'Report pages' }).getByRole('link', { name: 'Findings' }).click();
-    await expect(page).toHaveURL(`${BASE}/report/findings/`);
+    await page.getByRole('navigation', { name: 'Report pages' }).getByRole('link', { name: 'Providers' }).click();
+    await expect(page).toHaveURL(`${BASE}/report/providers/`);
     await page.goBack();
     await expect(page).toHaveURL(`${BASE}/report/detectors/?q=stripe`);
     await expect(page.getByRole('searchbox', { name: 'Find' })).toHaveValue('stripe');
@@ -122,10 +122,10 @@ test.describe('pair pickers (links)', () => {
     await page.goto(`${BASE}/comparison/performance/`);
     const lede = page.locator('main p').filter({ hasText: 'ran the same texts' }).filter({ visible: true }).first();
     const first = await lede.textContent();
-    const picker = page.getByRole('navigation', { name: 'Compare with' }).filter({ visible: true });
-    const other = picker.getByRole('link').nth(1);
+    const picker = page.getByRole('combobox', { name: 'Compare with' }).filter({ visible: true });
+    const other = picker.getByRole('option').nth(1);
     const otherName = (await other.textContent())!;
-    await other.click();
+    await picker.selectOption((await other.getAttribute('value'))!);
     await expect(page).toHaveURL(/with=/);
     await expect(lede).toContainText(otherName);
     expect(await lede.textContent()).not.toBe(first);
@@ -135,10 +135,12 @@ test.describe('pair pickers (links)', () => {
 
   test('performance: the setting picker changes the address and keeps the chosen library', async ({ page }) => {
     await page.goto(`${BASE}/comparison/performance/?with=openredaction&setting=pii-global-us`);
-    await page.getByRole('navigation', { name: 'redact-secret setting' }).filter({ visible: true }).getByRole('link', { name: 'Default' }).click();
+    await page.getByRole('combobox', { name: 'redact-secret setting' }).filter({ visible: true }).selectOption({ label: 'Default' });
     await expect(page).toHaveURL(/with=openredaction&setting=default/);
     await expect(page.locator('html')).toHaveAttribute('data-setting', 'default');
     await expect(page.locator('html')).toHaveAttribute('data-peer', 'openredaction');
+    await page.reload();
+    await expect(page.getByRole('combobox', { name: 'redact-secret setting' }).filter({ visible: true })).toHaveValue('/comparison/performance/?with=openredaction&setting=default');
   });
 
   test('accuracy: a link with the pair, level and scope reproduces that panel; the pickers walk the history', async ({ page }) => {

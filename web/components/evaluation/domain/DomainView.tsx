@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { cx } from '../../../lib/cx';
 import { SegmentedNav } from '../../nav';
 import { Breadcrumb, PageHead } from '../../page';
@@ -12,6 +13,11 @@ import type { DomainViewData } from './types';
 
 export interface DomainViewProps extends DomainViewData {
   className?: string;
+  afterGlance?: ReactNode;
+  pipelineContent?: ReactNode;
+  statusContent?: ReactNode;
+  glanceContent?: ReactNode;
+  coverageContent?: ReactNode;
 }
 
 /**
@@ -19,7 +25,7 @@ export interface DomainViewProps extends DomainViewData {
  * status, how to read the numbers, sources. `/evaluation/pii/` and `/evaluation/credential/` render this with their
  * own data and nothing else, so what differs between them is the ledger, never the design.
  */
-export function DomainView({ head, pipeline, glance, method, coverage, status, reading, className }: DomainViewProps) {
+export function DomainView({ head, pipeline, glance, method, coverage, status, reading, className, afterGlance, pipelineContent, statusContent, glanceContent, coverageContent }: DomainViewProps) {
   return (
     <div className={cx(styles.view, className)}>
       <PageHead
@@ -30,11 +36,12 @@ export function DomainView({ head, pipeline, glance, method, coverage, status, r
         meta={head.meta}
         actions={<SegmentedNav label={head.pairLabel} items={head.pair} currentHref={head.currentHref} />}
       />
-      {pipeline && <PipelineStamp {...pipeline} />}
-      <DomainGlance items={glance} />
+      {pipelineContent ?? (pipeline && <PipelineStamp {...pipeline} />)}
+      {glanceContent ?? <DomainGlance items={glance} />}
+      {afterGlance}
       <DomainMethod {...method} />
-      <DomainCoverage {...coverage} />
-      <DomainStatus {...status} />
+      {coverageContent ?? <DomainCoverage {...coverage} />}
+      {statusContent ?? <DomainStatus {...status} />}
       <DomainReading {...reading} />
     </div>
   );

@@ -43,11 +43,11 @@ test.describe('focus', () => {
   test('the tab order is the reading order: skip link, logo, primary navigation, theme, section navigation, then the page', async ({ page }) => {
     await page.goto(`${BASE}/report/`);
     const stops = await tabThrough(page, 12);
-    expect(stops.map(s => s.name)).toEqual(expect.arrayContaining(['Skip to content', 'Report', 'Comparison', 'Light', 'Overview', 'Providers']));
+    expect(stops.map(s => s.name)).toEqual(expect.arrayContaining(['Skip to content', 'Report', 'Comparison', 'Color theme: Light. Switch to Dark', 'Overview', 'Providers']));
     const order = (name: string) => stops.findIndex(s => s.name === name);
     expect(order('Skip to content')).toBe(0);
-    expect(order('Report')).toBeLessThan(order('Light'));
-    expect(order('Light')).toBeLessThan(order('Overview'));
+    expect(order('Report')).toBeLessThan(order('Color theme: Light. Switch to Dark'));
+    expect(order('Color theme: Light. Switch to Dark')).toBeLessThan(order('Overview'));
   });
 
   test('a focused control is not hidden behind the fixed bottom bar on a phone', async ({ page }) => {
@@ -66,19 +66,18 @@ test.describe('focus', () => {
 });
 
 test.describe('controls', () => {
-  test('the theme choice is one tab stop: Space chooses, the arrow keys move between Light, Dark and System, and focus stays put', async ({ page }) => {
+  test('the theme button toggles light and dark with Space and Enter and keeps focus', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' });
     await page.goto(`${BASE}/report/`);
-    const group = page.getByRole('group', { name: 'Color theme' });
-    await group.getByRole('button', { name: 'Light' }).focus();
+    const button = page.getByRole('button', { name: /Color theme:/ });
+    await button.focus();
     await page.keyboard.press('Space');
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-    await expect(group.getByRole('button', { name: 'Light' })).toBeFocused();
-    await page.keyboard.press('ArrowRight');
-    await expect(group.getByRole('button', { name: 'Dark' })).toBeFocused();
+    await expect(button).toHaveAttribute('data-mode', 'dark');
+    await expect(button).toBeFocused();
     await page.keyboard.press('Enter');
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await expect(group.getByRole('button', { name: 'Dark' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(group.getByRole('button', { name: 'Dark' })).toBeFocused();
+    await expect(button).toHaveAttribute('data-mode', 'light');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect(button).toBeFocused();
   });
 
   test('the feature filter is operable with the keyboard, and the choice shows in the address', async ({ page }) => {

@@ -1,62 +1,21 @@
-/* Rules live in `@layer components`, which is declared after `mui` (theme/layers.ts),
-   so these override MUI's generated styles by layer order, not specificity. */
 @layer components {
-  .group {
-    border-radius: var(--radius-sm);
-  }
-
   .option {
-    font: var(--text-small);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--touch);
+    height: var(--touch);
+    padding: var(--space-2);
     color: var(--ink-muted);
-    border: var(--hairline) solid var(--ink-muted);
+    background: transparent;
+    border: var(--hairline) solid var(--line);
     border-radius: 0;
-    padding: var(--space-1) var(--space-3);
-    text-transform: none;
-    transition: transform 160ms var(--ease-out), color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+    cursor: pointer;
+    transition: transform 160ms var(--ease-out), color 160ms var(--ease-out);
   }
-
-  .option:first-child {
-    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-  }
-
-  .option:last-child {
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  }
-
-  .option:active {
-    transform: scale(var(--press));
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .option:hover {
-      color: var(--ink);
-    }
-  }
-
-  .option:global(.Mui-selected) {
-    background: var(--ink);
-    color: var(--surface);
-  }
-
-  .option:focus-visible {
-    outline: var(--rule-strong) solid var(--focus);
-    outline-offset: var(--rule-strong);
-  }
-
-  /* Touch: each option is at least a finger tall. */
-  @media (pointer: coarse) {
-    .option {
-      min-height: var(--touch);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .option {
-      transition: none;
-    }
-
-    .option:active {
-      transform: none;
-    }
-  }
+  .icon { width: var(--space-6); height: var(--space-6); }
+  .option:active { transform: scale(var(--press)); }
+  .option:focus-visible { outline: var(--rule-strong) solid var(--focus); outline-offset: var(--rule-strong); }
+  @media (hover: hover) and (pointer: fine) { .option:hover { color: var(--ink); } }
+  @media (prefers-reduced-motion: reduce) { .option { transition: none; } .option:active { transform: none; } }
 }

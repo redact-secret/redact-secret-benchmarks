@@ -1,0 +1,17 @@
+@layer components {
+  .page { display: grid; gap: var(--space-12); min-width: 0; }
+  .section { display: grid; gap: var(--space-6); min-width: 0; }
+  .section header { display: grid; gap: var(--space-3); }
+  .section h2, .section h3, .section p { margin: 0; }
+  .section header p { max-width: var(--measure); color: var(--ink-muted); }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .card { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-6); border: var(--hairline) solid var(--line); color: var(--ink); text-decoration: none; min-width: 0; }
+  .card h3 { font: var(--text-small-strong); }
+  .card p { color: var(--ink-muted); }
+  .action { color: var(--link); font: var(--text-small-strong); }
+  .card .action { margin-top: auto; padding-top: var(--space-3); }
+  a.card:focus-visible { outline: var(--rule-strong) solid var(--focus); outline-offset: var(--rule-strong); }
+  @media (hover: hover) and (pointer: fine) { a.card:hover { border-color: var(--ink); } }
+  @media (max-width: 1080px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 720px) { .cards { grid-template-columns: minmax(0, 1fr); } }
+}

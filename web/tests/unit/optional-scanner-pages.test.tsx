@@ -6,7 +6,7 @@
  * the committed ledger, a recorded run or a built view; the pages are put in each state by an overlay root and a synthetic view.
  */
 import './next-mocks';
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -61,9 +61,15 @@ const withRoster = (notMeasured: RosterNotMeasured[]): QualificationView => ({
 
 describe('every credential report page built from a view that left an optional scanner out says so', () => {
   const view = withRoster([note(retained)]);
-  test.each(['/report', '/report/families', '/report/detectors', '/report/fixtures', '/report/providers', '/evaluation/credential', '/comparison/accuracy', '/evaluation/scanner'])('%s', async route => {
+  test.each(['/report', '/report/families', '/report/detectors', '/report/fixtures', '/report/providers', '/evaluation/credential', '/comparison/accuracy'])('%s', async route => {
     const { container } = await open(view, route);
-    const text = container.textContent ?? '';
+    const sourceButton = screen.queryByRole('button', { name: 'Where these numbers come from' });
+    if (sourceButton) {
+      expect(screen.queryByRole('dialog')).toBeNull();
+      fireEvent.click(sourceButton);
+      expect(screen.getByRole('dialog')).toBeTruthy();
+    }
+    const text = document.body.textContent ?? '';
     expect(text).toContain(STATEMENT);
     expect(text).toContain('A slow, manual measurement');
     // The pointer names the earlier measurement by run, configuration, engine and date, and says it is history that is never combined with another run.
@@ -73,6 +79,15 @@ describe('every credential report page built from a view that left an optional s
     expect(screen.queryAllByRole('link', { name: 'Open the qualification page for this pointer' }).length).toBe(1);
   });
 
+  test('the scanner page omits optional-scanner explanations and opens the mode explanation on demand', async () => {
+    const { container } = await open(view, '/evaluation/scanner');
+    expect(container.querySelector('[data-optional-scanners]')).toBeNull();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Published and candidate' }));
+    expect(screen.getByRole('dialog').textContent).toContain('Published measures the released npm package.');
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+  });
+
   test('the report pages carry the compact note: the archive detail stays on the qualification page', async () => {
     const { container } = await open(view, '/report');
     expect(container.textContent).not.toContain('syn-archive-release');
@@ -80,7 +95,7 @@ describe('every credential report page built from a view that left an optional s
 
   test('the qualification page carries the full pointer: the archive that keeps the artifacts and the legacy scope statement', async () => {
     const { container } = await open(view, '/evaluation/qualification');
-    const text = container.textContent ?? '';
+    const text = document.body.textContent ?? '';
     expect(text).toContain(STATEMENT);
     expect(text).toContain('retained record, no longer listed by the run registry');
     expect(text).toContain('syn-archive-release');

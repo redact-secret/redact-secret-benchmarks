@@ -183,16 +183,18 @@ describe('fields', () => {
 });
 
 describe('ThemeToggle', () => {
-  test('is a labelled group of Light, Dark and System; choosing one presses it and sets the root attribute and the saved choice', async () => {
+  test('one icon toggles only light and dark and persists the choice', async () => {
+    localStorage.setItem('redact-secret-benchmarks:theme', 'light');
     const user = userEvent.setup();
     render(<ThemeRoot><ThemeToggle /></ThemeRoot>);
-    const group = screen.getByRole('group', { name: 'Color theme' });
-    expect(within(group).getAllByRole('button').map(b => b.textContent)).toEqual(['Light', 'Dark', 'System']);
-    await user.click(within(group).getByRole('button', { name: 'Dark' }));
-    expect(within(group).getByRole('button', { name: 'Dark' })).toHaveAttribute('aria-pressed', 'true');
+    const button = screen.getByRole('button', { name: /Color theme:/ });
+    expect(button).toHaveAttribute('data-mode', 'light');
+    await user.click(button);
+    expect(button).toHaveAttribute('data-mode', 'dark');
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     expect(localStorage.getItem('redact-secret-benchmarks:theme')).toBe('dark');
-    await user.click(within(group).getByRole('button', { name: 'Light' }));
-    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    await user.click(button);
+    expect(button).toHaveAttribute('data-mode', 'light');
+    expect(localStorage.getItem('redact-secret-benchmarks:theme')).toBe('light');
   });
 });

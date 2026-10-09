@@ -14,7 +14,7 @@ const migrationFiles = tracked.filter(f => PII_MIGRATION.some(r => r.test(f)));
 const plan = files => planChecks({ files, event: 'pull_request' });
 
 test('a change to PII migration tooling or data skips the legacy credential measurement and still builds and tests the site', () => {
-  for (const file of ['scripts/replay-pii-populations.mjs', 'benchmarks/pii-authority.json', 'benchmarks/pii-eval-migration.json', 'benchmarks/pii-eval-population-dual-run/report.json',
+  for (const file of ['benchmarks/inputs/pii-population-report-receipt.json', 'scripts/lib/retained-pii-population-report.mjs', 'scripts/replay-pii-populations.mjs', 'benchmarks/pii-authority.json', 'benchmarks/pii-eval-migration.json', 'benchmarks/pii-eval-population-dual-run/report.json',
     'scripts/check-pii-authority.mjs', 'benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs', 'scripts/lib/pii-population-conversion.mjs',
     'scripts/run-pii-candidate-comparison.mjs', 'scripts/record-pii-candidate-comparison.mjs',
     'scripts/lib/pii-evidence-adoption-apply.mjs', 'scripts/preflight-pii-evidence.mjs', 'scripts/run-pii-evidence-comparison.mjs', 'scripts/lib/pii-evidence-contract.mjs',

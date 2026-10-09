@@ -77,7 +77,7 @@ export function loadCorpora(categories = [LEDGER_CATEGORY, ...new Set(NEW_FAMILI
 }
 
 export function ledgerFamilies(file = FAMILY_LEDGER_FILE): string[] {
-  const validateFamilyInput = new Ajv2020({ strict: true, allErrors: true }).compile(JSON.parse(readFileSync('schemas/credential-family-axis-input-v1.json', 'utf8')));
+  const validateFamilyInput = new Ajv2020({ strict: true, allErrors: true }).compile<{ selection: Array<{ family: string }> }>(JSON.parse(readFileSync('schemas/credential-family-axis-input-v1.json', 'utf8')));
   const input = JSON.parse(readFileSync(file, 'utf8'));
   if (!validateFamilyInput(input)) throw new Error('Invalid reviewed family-axis input');
   const families = input.selection.map((row: { family: string }) => row.family);

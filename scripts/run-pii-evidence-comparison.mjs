@@ -9,7 +9,7 @@ import { verifyPackages } from './run-pii-candidate-comparison.mjs';
 import { treeSha256 } from './lib/pii-tree-digest.mjs';
 import { verifyEvidenceSource } from './fetch-pii-evidence-inputs.mjs';
 import { sha256, verifyConsumerRuntime, verifyImportDigests } from './lib/pii-evidence-contract.mjs';
-import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidenceExecutionSelection, validateEvidenceComparisonPlan, evidenceDigest, same } from './lib/pii-evidence-comparison-plan.mjs';
+import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidenceExecutionSelection, validateEvidenceComparisonPlan, evidenceDigest, same, evidenceSides } from './lib/pii-evidence-comparison-plan.mjs';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
 import { parseStrictJson } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 import { deriveEvidencePopulationIndex, loadPiiEvidenceComparison, SIDES, POPULATION_INDEX_DIGEST } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
@@ -29,18 +29,21 @@ export function evidenceExecutionContext({ requireCanonical, plan, environment =
 }
 export function verifyEvidenceImports({ verified, imported, outputs, plan }) {
   const sem = verified?.semantic, mapped = imported?.semantic;
+  const losses = mapped?.binding?.losses;
+  const normalizedLosses = plan.consumer.contract.mapping.revision === 3 && losses && Object.keys(losses).every(key => Object.hasOwn(plan.losses, key))
+    ? Object.fromEntries(Object.keys(plan.losses).map(key => [key, Object.hasOwn(losses, key) ? losses[key] : 0])) : losses;
   if (verified?.state !== 'accepted' || verified.command !== 'verify' || verified.exit?.code !== 0 || sem?.population !== 'public' ||
       sem.snapshotId !== plan.evidence.snapshot.id || sem.contentDigest !== plan.evidence.snapshot.contentDigest || sem.manifestSha256 !== plan.evidence.snapshot.manifestSha256 ||
       !same(sem.contract, { name: plan.evidence.contract.name, version: '1' }) || !same(sem.counts, { cases: plan.counts.evidenceCases, fixtures: plan.counts.evidenceFixtures, skipped: plan.counts.evidenceSkipped }) ||
       imported?.state !== 'accepted' || imported.command !== 'import' || imported.exit?.code !== 0 ||
       mapped?.snapshotId !== sem.snapshotId || mapped.contentDigest !== sem.contentDigest || mapped.manifestSha256 !== sem.manifestSha256 ||
       !same(mapped.contract, sem.contract) || !same(mapped.counts, sem.counts) || !same(imported.outputs, plan.preflight.outputs) ||
-      !same(mapped.population, { id: plan.population.id, version: 1, visibility: 'public-synthetic', schemaVersion: '1.4', semanticDigest: plan.population.digest }) ||
-      mapped.binding?.semanticDigest !== plan.population.bindingDigest || !same(mapped.binding?.counts, plan.counts) || !same(mapped.binding?.losses, plan.losses))
+      !same(mapped.population, { id: plan.population.id, version: plan.population.version, visibility: 'public-synthetic', schemaVersion: plan.consumer.contract.corpusSchema, semanticDigest: plan.population.digest }) ||
+      mapped.binding?.semanticDigest !== plan.population.bindingDigest || !same(mapped.binding?.counts, plan.counts) || !same(normalizedLosses, plan.losses))
     fail('verify-import-summary-mismatch');
   for (const [name, expected] of Object.entries(plan.preflight.outputs))
     if (!outputs[name] || outputs[name].length !== expected.bytes || sha256(outputs[name]) !== expected.sha256) fail('import-output-byte-mismatch');
-  const { snapshot, binding } = verifyImportDigests(outputs, plan.population);
+  const { snapshot, binding } = verifyImportDigests(outputs, plan.population, plan.consumer.contract.corpusSchema);
   const populationIndex = deriveEvidencePopulationIndex(snapshot, binding, plan);
   if (evidenceDigest(populationIndex) !== plan.populationIndexDigest) fail('population-index-mismatch');
   return { snapshot, binding, populationIndex };
@@ -49,19 +52,20 @@ export function verifyEvidenceImports({ verified, imported, outputs, plan }) {
 export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(), planFile = PLAN_PATH, engine, consumerBin, sourceDir, sourceArchive, buildReceipt,
   shim, node, tarballs, inventory, out, requireCanonical = false, snapshotDir }) {
   validateEvidenceComparisonPlan(plan);
+  const sides = evidenceSides(plan);
   if (requireCanonical) validateEvidenceExecutionSelection(plan, { planPath: planFile });
   if (existsSync(out)) fail('output-exists');
   if (requireCanonical ? plan.mode !== 'official' || plan.dispatch.authorised !== true : plan.mode !== 'exploratory') fail('fresh-cost-decision-required');
   const executionContext = evidenceExecutionContext({ requireCanonical, plan });
   const platform = `${process.platform}-${process.arch}`, binarySha256 = sha256(readFileSync(engine));
   if (requireCanonical ? platform !== 'linux-x64' || binarySha256 !== plan.engine.binarySha256 : platform !== 'darwin-arm64' || binarySha256 !== plan.localVerification.engineBinarySha256) fail('engine-platform-mismatch');
-  verifyEvidenceSource(sourceDir, sourceArchive);
+  verifyEvidenceSource(sourceDir, sourceArchive, plan.consumer);
   const consumerReceipt = buildReceipt ? read(buildReceipt) : null;
   verifyConsumerRuntime({ sourceCommit: plan.consumer.source.commit, cargoLock: readFileSync(join(sourceDir, 'Cargo.lock')),
     fetchHelper: readFileSync(join(sourceDir, 'tools/pii-evidence/fetch-snapshot.mjs')), binary: readFileSync(consumerBin), platform, buildReceipt: consumerReceipt }, plan.consumer);
   if (sha256(readFileSync(shim)) !== plan.engine.shimSha256) fail('shim-mismatch');
-  for (const side of SIDES) verifyPackages({ plan, side, tarballs: tarballs[side], inventory });
-  if (plan.productTuple && sha256(readFileSync(tarballs.candidate.node)) !==
+  for (const side of sides) verifyPackages({ plan, side, tarballs: tarballs[side], inventory });
+  if (plan.candidate && plan.productTuple && sha256(readFileSync(tarballs.candidate.node)) !==
       (requireCanonical ? plan.candidate.nativeLinuxTarballSha256 : plan.candidate.localNativeDarwinTarballSha256)) fail('reviewed-native-tarball-mismatch');
   const scratch = mkdtempSync(join(tmpdir(), 'pii-evidence-comparison-'));
   let deadline = executionContext.deadline;
@@ -81,7 +85,8 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
     }
     const common = ['--snapshot-dir', snapshotDir, '--pin', pinFile];
     const verified = command(consumerBin, ['verify', ...common]), importDir = join(scratch, 'import');
-    const imported = command(consumerBin, ['import', ...common, '--out', importDir]);
+    const imported = command(consumerBin, ['import', ...common, '--out', importDir,
+      ...(plan.consumer.contract.mapping.revision === 3 ? ['--mapping-revision', '3'] : [])]);
     const outputs = Object.fromEntries(['snapshot.json', 'binding.json'].map(name => [name, readFileSync(join(importDir, name))]));
     const { populationIndex } = verifyEvidenceImports({ verified, imported, outputs, plan });
     deadline = requireCanonical ? executionContext.deadline : Date.now() + 60000;
@@ -93,7 +98,7 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
         snapshotSha256: sha256(outputs['snapshot.json']), bindingSha256: sha256(outputs['binding.json']), populationIndexDigest: plan.populationIndexDigest } };
     if (requireCanonical) receipt.github = executionContext.github;
     mkdirSync(out, { recursive: true }); const artifacts = [];
-    for (const side of SIDES) {
+    for (const side of sides) {
       const installation = { root: join(scratch, `${side}-package`) }; mkdirSync(installation.root);
       try {
         const nodeName = `@redact-secret/node-${platform}${platform === 'linux-x64' ? '-gnu' : ''}`;
@@ -114,7 +119,7 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
         const configFile = join(dir, 'config.json'); writeFileSync(configFile, json(config));
         const planned = command(consumerBin, ['plan', '--config', configFile, '--node', node, '--replays', '2']);
         const manifestDigest = planned.semantic.manifestSemanticDigest;
-        config.mode = plan.mode; config.engineVersion = '0.0.0'; config.protocol = { id: 'pii-v1', revision: 2 };
+        config.mode = plan.mode; config.engineVersion = plan.consumer.contract.engineVersion; config.protocol = plan.consumer.contract.protocol;
         config.snapshot.semanticDigest = plan.population.digest; config.manifest.semanticDigest = manifestDigest;
         config.output = { dir: join(dir, 'run'), overwrite: 'refuse' }; writeFileSync(configFile, json(config));
         const executed = command(engine, ['run', '--config', configFile, '--node', node]);
@@ -151,10 +156,11 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const arg = name => { const value = process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3); if (!value) fail(`missing-${name}`); return resolve(value); };
   const canonical = process.argv.includes('--require-canonical');
   const planFile = process.argv.find(value => value.startsWith('--plan='))?.slice(7) ?? process.env.EVIDENCE_PLAN ?? PLAN_PATH;
+  const plan = readEvidenceComparisonPlan(planFile);
   const result = await runEvidenceComparison({ engine: arg('engine'), sourceDir: arg('source'), sourceArchive: arg('source-archive'), consumerBin: arg('consumer'),
-    plan: readEvidenceComparisonPlan(planFile), planFile,
+    plan, planFile,
     snapshotDir: process.argv.some(value => value.startsWith('--snapshot-dir=')) ? arg('snapshot-dir') : undefined,
-    buildReceipt: canonical ? arg('build-receipt') : undefined, shim: arg('shim'), node: arg('node'), inventory: arg('candidate-inventory'), out: arg('out'), requireCanonical: canonical,
-    tarballs: Object.fromEntries(SIDES.map(side => [side, Object.fromEntries(['core', 'node', 'wasm'].map(key => [key, arg(`${side}-${key}`)]))])) });
+    buildReceipt: canonical ? arg('build-receipt') : undefined, shim: arg('shim'), node: arg('node'), inventory: plan.candidate ? arg('candidate-inventory') : undefined, out: arg('out'), requireCanonical: canonical,
+    tarballs: Object.fromEntries(evidenceSides(plan).map(side => [side, Object.fromEntries(['core', 'node', 'wasm'].map(key => [key, arg(`${side}-${key}`)]))])) });
   console.log(JSON.stringify({ state: result.summary.state, mode: result.summary.mode, metrics: result.summary.metrics.length, outcomes: result.summary.outcomes.length, changed: result.summary.changes.total, supportClaims: false }));
 }

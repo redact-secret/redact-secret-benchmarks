@@ -1,6 +1,6 @@
 import { parseStrictJson, semanticDigest, verifyArtifact } from './pii-eval-artifact-consumer.mjs';
 import { sha256, CONSUMER_PIN, validateSourceBuiltConsumerReceipt } from '../../../../scripts/lib/pii-evidence-contract.mjs';
-import { stable, same, closed, evidenceDigest, validateEvidenceComparisonPlan } from '../../../../scripts/lib/pii-evidence-comparison-plan.mjs';
+import { stable, same, closed, evidenceDigest, validateEvidenceComparisonPlan, evidenceSides } from '../../../../scripts/lib/pii-evidence-comparison-plan.mjs';
 
 export const SIDES = ['baseline', 'candidate'];
 const hex = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
@@ -35,7 +35,8 @@ export function deriveEvidencePopulationIndex(snapshot, binding, plan) {
 
 export function validateEvidenceComparisonReceipt(receipt, plan) {
   validateEvidenceComparisonPlan(plan);
-  const keys = ['schema', 'publicOnly', 'supportClaims', 'authorityChanged', 'planDigest', 'mode', 'engine', 'importer', 'import', 'baseline', 'candidate', 'durationMs', 'replayInputs'];
+  const sides = evidenceSides(plan);
+  const keys = ['schema', 'publicOnly', 'supportClaims', 'authorityChanged', 'planDigest', 'mode', 'engine', 'importer', 'import', ...sides, 'durationMs', 'replayInputs'];
   if (plan.mode === 'official') keys.push('github');
   if (!closed(receipt, keys) || receipt.schema !== 'pii-evidence-comparison-receipt/1' || receipt.publicOnly !== true ||
       receipt.supportClaims !== false || receipt.authorityChanged !== false || receipt.planDigest !== evidenceDigest(plan) ||
@@ -48,7 +49,7 @@ export function validateEvidenceComparisonReceipt(receipt, plan) {
   if (plan.mode === 'official') {
     if (receipt.engine.platform !== 'linux-x64' || receipt.engine.canonical !== true || receipt.engine.binarySha256 !== plan.engine.binarySha256)
       refuse('canonical-engine-mismatch');
-    validateSourceBuiltConsumerReceipt(receipt.importer.buildReceipt);
+    validateSourceBuiltConsumerReceipt(receipt.importer.buildReceipt, plan.consumer);
     if (receipt.importer.binarySha256 !== receipt.importer.buildReceipt.binarySha256) refuse('importer-binary-mismatch');
     const g = receipt.github;
     if (!closed(g, ['repository', 'runId', 'runAttempt', 'headSha', 'workflowRef']) ||
@@ -57,17 +58,17 @@ export function validateEvidenceComparisonReceipt(receipt, plan) {
       refuse('canonical-github-mismatch');
   } else {
     if (receipt.engine.platform !== 'darwin-arm64' || receipt.engine.canonical !== false || receipt.engine.binarySha256 !== plan.localVerification.engineBinarySha256 || receipt.importer.buildReceipt !== null ||
-        receipt.importer.binarySha256 !== CONSUMER_PIN.evidenceConsumer.localVerification.binarySha256)
+        receipt.importer.binarySha256 !== plan.consumer.evidenceConsumer.localVerification.binarySha256)
       refuse('local-verification-mismatch');
   }
   if (!same(receipt.import, { population: plan.population, counts: plan.counts, losses: plan.losses,
     snapshotSha256: plan.preflight.outputs['snapshot.json'].sha256,
     bindingSha256: plan.preflight.outputs['binding.json'].sha256,
     populationIndexDigest: plan.populationIndexDigest })) refuse('import-binding-mismatch');
-  const replayNames = SIDES.flatMap(side => ['manifest', 'observation', 'run-artifact'].map(name => `replay-inputs/${side}/${name}.json`));
+  const replayNames = sides.flatMap(side => ['manifest', 'observation', 'run-artifact'].map(name => `replay-inputs/${side}/${name}.json`));
   if (!Array.isArray(receipt.replayInputs) || receipt.replayInputs.length !== replayNames.length ||
       receipt.replayInputs.some((row, index) => !closed(row, ['name', 'sha256']) || row.name !== replayNames[index] || !hex(row.sha256))) refuse('replay-input-inventory-mismatch');
-  for (const side of SIDES) {
+  for (const side of sides) {
     const row = receipt[side];
     if (!closed(row, ['sourceCommit', 'version', 'packageTreeSha256', 'addonTreeSha256', 'wasmTreeSha256', 'tarballs', 'tarballIntegrity', 'manifestDigest', 'artifactDigest', 'artifactSha256', 'replays']) ||
         row.sourceCommit !== plan[side].sourceCommit || row.version !== plan[side].version ||
@@ -91,12 +92,13 @@ export function validateEvidenceComparisonReceipt(receipt, plan) {
 
 function artifactPins(doc, side, receipt, plan) {
   const row = receipt[side];
-  return { artifactSchema: { id: 'pii-eval.public-synthetic-artifact', version: '1.4' },
+  const revision = plan.protocol.revision;
+  return { artifactSchema: { id: 'pii-eval.public-synthetic-artifact', version: plan.protocol.artifactSchema },
     engine: { name: 'pii-eval', version: '0.0.0' }, protocol: { accounting: 'pii-v1', id: 'pii-v1',
-      rules: { accounting: { id: 'pii-v1-canonical-accounting', revision: 2 }, matching: { id: 'pii-v1-canonical', revision: 2 }, statistics: { id: 'pii-v1-wilson-exact', revision: 1 } }, version: 2 },
+      rules: { accounting: { id: 'pii-v1-canonical-accounting', revision }, matching: { id: 'pii-v1-canonical', revision }, statistics: { id: 'pii-v1-wilson-exact', revision: 1 } }, version: revision },
     requireComplete: true, populations: [{ label: 'released-evidence', runClass: 'public-synthetic', artifactDigest: row.artifactDigest,
       retiredArtifactDigests: [], manifestDigest: row.manifestDigest, retiredManifestDigests: [],
-      population: { populationId: plan.population.id, populationVersion: 1, populationDigest: plan.population.digest, visibility: 'public-synthetic' },
+      population: { populationId: plan.population.id, populationVersion: plan.population.version, populationDigest: plan.population.digest, visibility: 'public-synthetic' },
       scanners: [{ scannerId: 'redact-secret-core', scannerVersion: row.version, artifactDigest: row.packageTreeSha256,
         adapter: { adapterId: plan.scanner.adapter.id, adapterVersion: plan.scanner.adapter.version, normalizationVersion: 1 },
         configurationDigest: plan.scanner.configurationDigest, activationDigest: plan.scanner.activationDigest,
@@ -119,7 +121,7 @@ export function validateEvidenceComparisonRecord(record, { plan, receipt, receip
     refuse('record-receipt-mismatch');
   if (!closed(record.buildReceipt, ['sha256', 'documentDigest']) || !hex(record.buildReceipt.sha256) ||
       record.buildReceipt.documentDigest !== evidenceDigest(receipt.importer.buildReceipt)) refuse('record-build-receipt-mismatch');
-  if (!same(record.artifacts, SIDES.map(side => ({ side, sha256: sha256(artifacts.find(row => row.side === side).text) })))) refuse('record-artifact-mismatch');
+  if (!same(record.artifacts, evidenceSides(plan).map(side => ({ side, sha256: sha256(artifacts.find(row => row.side === side).text) })))) refuse('record-artifact-mismatch');
   if (!same(record.replayInputs, receipt.replayInputs)) refuse('record-replay-input-mismatch');
   return structuredClone(record);
 }
@@ -128,14 +130,15 @@ export function loadPiiEvidenceComparison({ plan, receipt, receiptText, artifact
   const base = { publicOnly: true, supportClaims: false, qualified: false };
   if (!plan || !receipt) return { ...base, state: 'absent', reason: 'new-evidence-comparison-not-recorded' };
   try {
+    const sides = evidenceSides(plan);
     validateEvidenceComparisonReceipt(receipt, plan); validateEvidencePopulationIndex(populationIndex, { plan });
-    if (!Array.isArray(artifacts) || artifacts.length !== 2 || !same(artifacts.map(row => row.side).sort(), SIDES)) refuse('artifact-set-mismatch');
+    if (!Array.isArray(artifacts) || artifacts.length !== sides.length || !same(artifacts.map(row => row.side).sort(), sides)) refuse('artifact-set-mismatch');
     if (plan.mode === 'official' && !allowUnrecordedOfficial) {
       if (!record || typeof receiptText !== 'string') refuse('canonical-record-missing');
       validateEvidenceComparisonRecord(record, { plan, receipt, receiptText, artifacts });
     }
     const documents = {};
-    for (const side of SIDES) {
+    for (const side of sides) {
       const artifact = artifacts.find(row => row.side === side), doc = parseStrictJson(artifact.text);
       if (sha256(artifact.text) !== receipt[side].artifactSha256) refuse('artifact-byte-mismatch');
       const checked = verifyArtifact(doc, artifactPins(doc, side, receipt, plan));
@@ -149,26 +152,26 @@ export function loadPiiEvidenceComparison({ plan, receipt, receiptText, artifact
         membership.get(row.variantId)?.method !== row.method || row.scannerId !== 'redact-secret-core')) refuse('outcome-membership-mismatch');
       documents[side] = doc;
     }
-    const candidates = new Map(documents.candidate.semantic.outcomes.map(row => [tuple(row), row]));
+    const candidates = new Map((documents.candidate?.semantic.outcomes ?? []).map(row => [tuple(row), row]));
     const families = new Map(populationIndex.map(row => [row.variantId, row.family]));
     const outcomes = documents.baseline.semantic.outcomes.map(baseline => {
-      const candidate = candidates.get(tuple(baseline)); if (!candidate) refuse('outcome-pair-mismatch');
-      return { caseId: baseline.caseId, variantId: baseline.variantId, family: families.get(baseline.variantId), baseline, candidate, changed: !same(baseline, candidate) };
+      const candidate = candidates.get(tuple(baseline)) ?? null; if (plan.candidate && !candidate) refuse('outcome-pair-mismatch');
+      return { caseId: baseline.caseId, variantId: baseline.variantId, family: families.get(baseline.variantId), baseline, candidate, changed: candidate !== null && !same(baseline, candidate) };
     });
-    const baselineMetrics = documents.baseline.semantic.scannerMetrics[0].metrics, candidateMetrics = documents.candidate.semantic.scannerMetrics[0].metrics;
+    const baselineMetrics = documents.baseline.semantic.scannerMetrics[0].metrics, candidateMetrics = documents.candidate?.semantic.scannerMetrics[0].metrics ?? [];
     const metrics = baselineMetrics.map(baseline => {
-      const candidate = candidateMetrics.find(row => same(row.metric, baseline.metric)); if (!candidate) refuse('metric-pair-mismatch');
+      const candidate = candidateMetrics.find(row => same(row.metric, baseline.metric)) ?? null; if (plan.candidate && !candidate) refuse('metric-pair-mismatch');
       const numeric = value => value.mantissa / 10 ** value.scale;
-      return { metric: baseline.metric, baseline, candidate, delta: baseline.value.state === 'measured' && candidate.value.state === 'measured'
+      return { metric: baseline.metric, baseline, candidate, delta: candidate && baseline.value.state === 'measured' && candidate.value.state === 'measured'
         ? numeric(candidate.value.point) - numeric(baseline.value.point) : null };
     });
     const byFamily = Object.fromEntries(Object.keys(plan.mappedFamilies).map(family => [family, outcomes.filter(row => row.family === family && row.changed).length]));
     return { ...base, state: 'recorded', mode: plan.mode, evidence: plan.evidence, population: plan.population, counts: plan.counts, losses: plan.losses,
       mappedFamilies: plan.mappedFamilies, protocol: plan.protocol, scanner: plan.scanner, engine: receipt.engine, importer: receipt.importer, baseline: { ...plan.baseline, ...receipt.baseline },
-      candidate: { ...plan.candidate, ...receipt.candidate }, metrics, outcomes, changes: { total: outcomes.filter(row => row.changed).length, byFamily },
+      candidate: plan.candidate ? { ...plan.candidate, ...receipt.candidate } : null, metrics, outcomes, changes: { total: outcomes.filter(row => row.changed).length, byFamily },
       provenance: plan.mode === 'official' && record ? { workflow: record.workflow, actionsArtifact: record.actionsArtifact, receipt: record.receipt }
         : { mode: 'exploratory', canonical: false },
-      familyMetrics: { state: 'unavailable', reason: 'unprojected-schema-1.4' },
+      familyMetrics: { state: 'unavailable', reason: `unprojected-schema-${plan.protocol.artifactSchema}` },
       historical: { state: 'descriptive-only', version: '0.1.0-beta.12', platform: 'darwin-arm64', source: 'upstream-bootstrap-measurement',
         record: 'https://github.com/redact-secret/pii-eval/blob/e99128f5633c5905497342623e249ad90d902800/docs/measurements/pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb/provenance.json',
         artifactDigest: 'd54f96f9b71f89c4960d7d3e086de6d1a19f24d9012fa63d08015f9a605faa6d',

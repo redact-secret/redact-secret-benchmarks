@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { syntheticEvidenceComparison, syntheticEvidenceOfficialUpload, syntheticFutureEvidenceOfficialUpload } from './helpers/pii-evidence-comparison-fixture.mjs';
 import { loadPiiEvidenceComparison } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
 import { semanticDigest } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
-import { evidenceDigest, evidenceComparisonPlan, validateEvidenceProductTuple, readEvidenceComparisonPlan, validateEvidencePlanPath, validateEvidenceExecutionPaths, validateEvidenceExecutionSelection, validateEvidenceComparisonPlan, validateEvidenceCostDecision } from '../scripts/lib/pii-evidence-comparison-plan.mjs';
+import { executionScope, evidenceDigest, evidenceComparisonPlan, validateEvidenceProductTuple, readEvidenceComparisonPlan, validateEvidencePlanPath, validateEvidenceExecutionPaths, validateEvidenceExecutionSelection, validateEvidenceComparisonPlan, validateEvidenceCostDecision } from '../scripts/lib/pii-evidence-comparison-plan.mjs';
 import { sha256, expectedPreflightReport } from '../scripts/lib/pii-evidence-contract.mjs';
 import { parseEvidenceJson } from '../scripts/lib/pii-evidence-json.mjs';
 import { runEvidenceComparison, evidenceExecutionContext } from '../scripts/run-pii-evidence-comparison.mjs';
@@ -206,7 +206,7 @@ test('CLI prepares a separate reviewed product plan and emits only origin-bound 
         : JSON.stringify({ encoding: 'base64', content: Buffer.from(JSON.stringify(e.costDecision)).toString('base64') }) });
     run(['--check', `--plan=${executionPaths.planPath}`]);
     assert.equal(run(['--github-output', `--plan=${executionPaths.planPath}`]),
-      `product_sha=${productTuple.candidate.sourceCommit}\nqualification_run_id=${productTuple.candidate.qualificationRunId}\nbaseline_version=${productTuple.baseline.version}\ncandidate_version=${productTuple.candidate.version}\n`);
+      `has_candidate=true\nproduct_sha=${productTuple.candidate.sourceCommit}\nqualification_run_id=${productTuple.candidate.qualificationRunId}\nbaseline_version=${productTuple.baseline.version}\ncandidate_version=${productTuple.candidate.version}\n`);
   } finally { rmSync(dir, { recursive: true, force: true }); rmSync(scratch, { recursive: true, force: true }); }
 });
 test('execution origins refuse copied active plans, other ids and unsafe paths', () => {
@@ -293,4 +293,24 @@ test('reviewed local variant binds its exact reviewed native tarball too', () =>
   assert.equal(loadPiiEvidenceComparison(e).state, 'recorded');
   e.receipt.candidate.tarballs.node = 'f'.repeat(64);
   assert.equal(loadPiiEvidenceComparison(e).state, 'invalid');
+});
+
+
+test('a published-only execution preserves one product and rejects candidate observations', () => {
+  const e = syntheticEvidenceComparison();
+  const productTuple = { schema: 'pii-evidence-reviewed-products/1', reviewedBy: 'synthetic reviewer', reviewedAt: '2026-10-09T00:00:00Z', baseline: e.plan.baseline, candidate: null };
+  const executionPaths = { planPath: 'benchmarks/pii-evidence-comparison/synthetic-single/plan.json', costDecisionPath: 'benchmarks/pii-evidence-comparison/synthetic-single/cost-decision.json' };
+  const runtime = { preflight: e.plan.preflight, policy: e.plan.policy, populationIndex: e.populationIndex, productTuple, executionPaths };
+  const costDecision = { schema: 'pii-evidence-comparison-cost-decision/1', state: 'prepared', decidedBy: null, decidedAt: null, scope: executionScope(runtime) };
+  e.plan = evidenceComparisonPlan({ ...runtime, costDecision });
+  const extraArtifact = e.artifacts.find(row => row.side === 'candidate');
+  delete e.receipt.candidate; e.receipt.planDigest = evidenceDigest(e.plan);
+  e.receipt.replayInputs = e.receipt.replayInputs.filter(row => row.name.includes('/baseline/'));
+  e.artifacts = e.artifacts.filter(row => row.side === 'baseline');
+  const result = loadPiiEvidenceComparison(e);
+  assert.equal(result.state, 'recorded', result.reason);
+  assert.equal(e.plan.execution.runs, 1); assert.equal(e.plan.execution.protectedRuns, 0);
+  assert.equal(result.candidate, null); assert.ok(result.metrics.every(row => row.candidate === null && row.delta === null));
+  assert.ok(result.outcomes.every(row => row.candidate === null && !row.changed));
+  e.artifacts.push(extraArtifact); assert.equal(loadPiiEvidenceComparison(e).state, 'invalid');
 });

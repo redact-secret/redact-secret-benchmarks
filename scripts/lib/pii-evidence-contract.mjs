@@ -165,7 +165,7 @@ export function validateProposedConsumerPin(pin, snapshotPin, { repoRoot } = {})
 }
 
 export function validateSourceBuiltConsumerReceipt(receipt, pin = CONSUMER_PIN) {
-  if (!same({ ...pin, importedPopulation: CONSUMER_PIN.importedPopulation }, CONSUMER_PIN)) refuse('consumer-pin-mismatch');
+  validateRuntimePin(pin);
   if (!closed(receipt, ['schema', 'sourceCommit', 'sourceArchiveSha256', 'cargoLockSha256', 'rustToolchainFileSha256', 'rustc', 'command', 'platform', 'binarySha256']) ||
       receipt.schema !== 'pii-evidence-consumer-build-receipt/1' || receipt.platform !== 'linux-x64' ||
       receipt.sourceCommit !== pin.source.commit || receipt.sourceArchiveSha256 !== pin.source.sourceArchiveSha256 ||

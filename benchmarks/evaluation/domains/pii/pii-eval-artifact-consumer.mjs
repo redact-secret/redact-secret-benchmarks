@@ -26,6 +26,8 @@ import schemaV11 from "../../../../schemas/pii-eval-public-synthetic-artifact-v1
 import schemaV12 from "../../../../schemas/pii-eval-public-synthetic-artifact-v1.2.json" with { type: "json" };
 import schemaV14 from "../../../../schemas/pii-eval-public-synthetic-artifact-v1.4.json" with { type: "json" };
 
+import schemaV15 from "../../../../schemas/pii-eval-public-synthetic-artifact-v1.5.json" with { type: "json" };
+
 export const REPORT_SCHEMA = "pii-eval-consumer-report/1";
 export const PINS_SCHEMA = "pii-eval-consumer-pins/1";
 export const DIGEST_CONSTRUCTION = "pii-eval-semantic-digest/1";
@@ -38,7 +40,7 @@ const MAX_DEPTH = 32;
 // `unresolved` observation of an authored not-established identity and range (ADR 0017, 0018) and is the schema of the four benchmark
 // populations. 1.3 (identity only) is not accepted: an artifact that states a not-established occurrence is 1.4. A pin names exactly
 // one version and a document of another version is never read under it.
-const SCHEMAS = { '1.1': schemaV11, '1.2': schemaV12, '1.4': schemaV14 };
+const SCHEMAS = { '1.1': schemaV11, '1.2': schemaV12, '1.4': schemaV14, '1.5': schemaV15 };
 const validators = Object.fromEntries(Object.entries(SCHEMAS).map(([version, schema]) => {
   const validator = new Ajv2020({ strict: true, allErrors: true });
   validator.addFormat('uint8', { type: 'number', validate: value => Number.isSafeInteger(value) && value >= 0 && value <= 255 });
@@ -584,7 +586,7 @@ function dedupe(reasons) {
 const HEX64 = /^[0-9a-f]{64}$/;
 const HEX40 = /^[0-9a-f]{40}$/;
 /** The schema versions a pin may name. 1.2 adds the optional product projection; 1.4 the unresolved not-established observations. */
-export const PUBLIC_SCHEMA_VERSIONS = ["1.1", "1.2", "1.4"];
+export const PUBLIC_SCHEMA_VERSIONS = ["1.1", "1.2", "1.4", "1.5"];
 
 /**
  * Validate and normalize the caller's pin document, strictly: an unusable pin

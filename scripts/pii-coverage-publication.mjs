@@ -72,6 +72,8 @@ export async function piiCoveragePublication(root) {
   if (historicalCoverage) paths.push(historyPath, 'benchmarks/pii-evidence/adoption.json', 'benchmarks/pii-evidence/history.json',
     'benchmarks/pii-evidence-comparison/cost-decision.json', 'benchmarks/pii-evidence-comparison/build-receipt.json',
     ...['manifest', 'observation', 'run-artifact'].map(name => `benchmarks/pii-evidence-comparison/replay-inputs/baseline/${name}.json`));
+  if (historicalCoverage && comparison.candidate) paths.push(
+    ...['manifest', 'observation', 'run-artifact'].map(name => `benchmarks/pii-evidence-comparison/replay-inputs/candidate/${name}.json`));
   const sources = [...await Promise.all(paths.map(async file => ({ path: file, sha256: sha(await readFile(path.join(root, file))) }))), ...evidencePublication.view.sources, ...proposedPublication.view.sources];
   return { schema: 'pii-coverage-publication/1', supportClaims: false, qualified: false, sources, coverage, deltas };
 }

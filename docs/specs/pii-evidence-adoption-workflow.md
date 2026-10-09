@@ -115,7 +115,13 @@ inputs. Build and replay hashes are rechecked; no replay bytes can be dropped. E
 acceptance checks. The first entry, or the current candidate when history is
 empty, must be the immutable initial release anchor. Each later candidate's
 historical identity must exactly bind the preceding entry. Missing anchors,
-duplicated snapshot identities and altered historical records refuse.
+altered historical records and reused canonical runs refuse. A consecutive core
+repin may retain the same snapshot only when the entire preflight is identical,
+the core source commit changes, the measurement tuple has never appeared in the
+chain, and a fresh canonical run and separately supplied acceptance validate.
+Returning to an earlier population after another snapshot still refuses. This
+records another measurement of one denominator, never pooled observations or a
+product support promotion.
 
 The returned validated record retains all prior identity, acceptance and
 measurement digests. It has `activeWritesApplied: false`, `authorityChanged:

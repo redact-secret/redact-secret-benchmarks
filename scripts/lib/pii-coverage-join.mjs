@@ -67,7 +67,7 @@ export async function loadPiiCoverage(root, { comparison = { state: 'absent' }, 
   const catalogs = {};
   for (const side of ['baseline', 'candidate']) {
     const bytes = await readFile(path.join(root, `benchmarks/inputs/pii-coverage/${side}-product-catalog.json`));
-    const expected = side === 'baseline' ? '96aed93ada7a65c1990d101a9eca621dccf15dc24ffefc671af375682acd7de8' : 'a0c3829593add99ddd0ebd5677c6b2868b7e7e756c2004ad4a6445ba0e3d0396';
+    const expected = side === 'baseline' ? '96aed93ada7a65c1990d101a9eca621dccf15dc24ffefc671af375682acd7de8' : 'eabd3d20440395c9ef3aeaaf2c98c570258209bad9b8184adf2ceb1d6e214c06';
     if (createHash('sha256').update(bytes).digest('hex') !== expected) fail('product-catalog-projection-mismatch');
     const catalog = parseEvidenceJson(bytes.toString());
     const families = [...catalog.declaration.matchAll(/"(pii:[a-z0-9:-]+)"/g)].map(match => match[1]);

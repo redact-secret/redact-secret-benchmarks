@@ -14,13 +14,16 @@ release commit `e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0`.
 `consumer-pin.json` binds pii-eval `bfa93c79013dd9804fe16abedbc27990e76d01fb`,
 mapping revision 3, pii-v1 protocol 3 and corpus/public-artifact schema 1.5.
 The Linux measurement engine is from upstream run 37983467352; canonical
-consumer build/import and measurement are retained from benchmarks run 37983968336.
+consumer build/import and current comparison are retained from benchmarks run 38000504948.
+The initial v2 published-only run 37983968336 remains immutable in history.
 The pin's `pending-source-build` field describes the immutable build plan.
 The actual Linux importer is sealed in `build-receipt.json`, SHA-256
 `070d000f2f9012e44dced295f4d0d82aa6f4111eefec5773f422fe082334af75`.
 
-`adoption.json` binds the actual maintainer acceptance recorded in issue #841,
-candidate `5010b3ae838adc760fdbcbb65b1db6324226a178c36959af34f65d4d71856693`.
+`adoption.json` binds the requested core repin authorization recorded in issue #898,
+candidate `a561477392b7cb02d8b4010db1ecd3668a6f2512f197431f6c9c88a8073e7a9c`.
+The original v2 acceptance in #841, candidate
+`5010b3ae838adc760fdbcbb65b1db6324226a178c36959af34f65d4d71856693`, is preserved.
 `history.json` preserves v1 and v2 complete original measurement/replay bytes;
 `benchmarks/pii-evidence-comparison/historical-v1/` keeps the v1 measurement
 separately usable. The initial pin/preflight remains immutable under
@@ -85,7 +88,11 @@ consumer; absence of family projection must be labelled explicitly. No support
 promotion or protected execution follows from this preflight.
 
 Published beta.14 source `0c62fd38bca75c5b28b042dc79789b708ebf1d17` is the
-fresh v2 baseline. No candidate is required or measured by this adoption.
+fresh v2 baseline. The current comparison separately measures qualified unpublished
+core `ca09aeb6bb360aed20914e475230836250e2759a` from qualification run
+37996223624, also carrying version text beta.14. The source, package, native and
+WASM digests distinguish it from the published baseline. All 285 outcomes and
+ten metrics are identical. This does not publish the candidate or promote support.
 Explicit `pii:global,pii:us` activation preserves that product's configuration,
 keeps GB evidence in the full population and does not assert GB support.
 Historical candidate/product measurements remain separate from v2.

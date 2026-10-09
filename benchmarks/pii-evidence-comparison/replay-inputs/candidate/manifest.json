@@ -1,0 +1,171 @@
+{
+  "schema": "pii-eval.run-manifest",
+  "schemaVersion": "1.5",
+  "semantic": {
+    "engine": {
+      "name": "pii-eval",
+      "version": "0.0.0"
+    },
+    "generation": {
+      "generator": "pii-evidence-snapshot-consumer",
+      "generatorVersion": 3,
+      "seedDerivation": "none"
+    },
+    "limits": {
+      "batchVariants": 1,
+      "maxMemoryBytes": 17179869184,
+      "maxStderrBytes": 1048576,
+      "maxStdoutBytes": 16777216,
+      "maxTemporaryBytes": 4294967296,
+      "pendingTasks": 4,
+      "perScannerParallelism": 1,
+      "scannerTimeoutMs": 120000,
+      "workers": 2
+    },
+    "mechanics": {
+      "intervalPrecision": 6,
+      "intervalZ": {
+        "mantissa": 196,
+        "scale": 2
+      },
+      "minDenominator": 4,
+      "replays": 2
+    },
+    "methods": [
+      {
+        "id": "pii-benign",
+        "version": 3
+      },
+      {
+        "id": "schema-only",
+        "version": 1
+      },
+      {
+        "id": "type-validation",
+        "version": 2
+      }
+    ],
+    "metrics": [
+      {
+        "id": "benign-suppression-rate",
+        "version": 1
+      },
+      {
+        "id": "context-discrimination-rate",
+        "version": 1
+      },
+      {
+        "id": "jurisdiction-collision-rate",
+        "version": 1
+      },
+      {
+        "id": "measurable-share",
+        "version": 1
+      },
+      {
+        "id": "non-sensitive-flag-rate",
+        "version": 1
+      },
+      {
+        "id": "range-collateral-rate",
+        "version": 1
+      },
+      {
+        "id": "sensitive-miss-rate",
+        "version": 1
+      },
+      {
+        "id": "type-miss-rate",
+        "version": 1
+      },
+      {
+        "id": "wrong-family-rate",
+        "version": 1
+      },
+      {
+        "id": "wrong-jurisdiction-rate",
+        "version": 1
+      }
+    ],
+    "population": {
+      "populationDigest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+      "populationId": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+      "populationVersion": 3,
+      "visibility": "public-synthetic"
+    },
+    "protocol": {
+      "accounting": "pii-v1",
+      "id": "pii-v1",
+      "rules": {
+        "accounting": {
+          "id": "pii-v1-canonical-accounting",
+          "revision": 3
+        },
+        "matching": {
+          "id": "pii-v1-canonical",
+          "revision": 3
+        },
+        "statistics": {
+          "id": "pii-v1-wilson-exact",
+          "revision": 1
+        }
+      },
+      "version": 3
+    },
+    "runClass": "public-synthetic",
+    "scanners": [
+      {
+        "configuration": {
+          "activation": [
+            "pii:global",
+            "pii:us"
+          ],
+          "parameters": [
+            {
+              "key": "detectorProfile",
+              "value": "full"
+            },
+            {
+              "key": "findingSource",
+              "value": "pii-domain-only"
+            },
+            {
+              "key": "offsetUnit",
+              "value": "utf16-code-units"
+            },
+            {
+              "key": "sanitizedOutput",
+              "value": true
+            }
+          ]
+        },
+        "identity": {
+          "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+          "adapter": {
+            "adapterId": "redact-secret-core-node",
+            "adapterVersion": "1.0.0",
+            "normalizationVersion": 1
+          },
+          "artifactDigest": "7360a97714517232dd4663cd2ce1219ca824476ba2391b7755affecf42fcec28",
+          "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+          "product": {
+            "candidateDigest": "7360a97714517232dd4663cd2ce1219ca824476ba2391b7755affecf42fcec28",
+            "kind": "candidate"
+          },
+          "scannerId": "redact-secret-core",
+          "scannerVersion": "0.1.0-beta.14"
+        }
+      }
+    ],
+    "scope": {
+      "jurisdictions": [
+        "GB",
+        "US"
+      ],
+      "languages": [
+        "und"
+      ]
+    }
+  },
+  "semanticDigest": "58e37133c7aff7ad516bc029c747584925403c29645a1afb71b50d9ef8dc2e6c"
+}

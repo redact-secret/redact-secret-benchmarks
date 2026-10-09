@@ -1,0 +1,372 @@
+{
+  "schema": "pii-evidence-adoption-candidate/1",
+  "state": "proposed",
+  "supportClaims": false,
+  "authorityChanged": false,
+  "activePinsChanged": false,
+  "ownerAcceptance": null,
+  "policyDigest": "4e64f49fb934d68add4503f47c3b56e8d30bbafbdea047e4c62ba991232b0708",
+  "preflightDigest": "053e1d50a4f1f57b87b7bcb35e9f1eb2971ce0e88c32beab240432025e82b599",
+  "identity": {
+    "evidence": {
+      "schema": "pii-eval-evidence-pin/1",
+      "contract": {
+        "name": "pii-evidence-consumer-contract",
+        "version": "1",
+        "digestSpec": "files-v1"
+      },
+      "release": {
+        "repository": "redact-secret/pii-evidence",
+        "tag": "snapshot-public-pii-phi-2026-10-08-ee61c7afc32d",
+        "commit": "e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0",
+        "archive": {
+          "name": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d.tar.gz",
+          "tarSha256": "ae0324a180361a70bd6f225859fe46f7fde6f02f4d9d317a2336ae432c0a2e36",
+          "tarGzSha256": "e86648cf7c54fd6fcc62a17e58859aa334557b6cb9ba30954d12a42cc087c626"
+        }
+      },
+      "snapshot": {
+        "id": "public-pii-phi/2026-10-08/ee61c7afc32d",
+        "contentDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+        "manifestSha256": "acf14bf012740f25083a6c50134afffa406605061138208bbe83d7f83ad8eb0b",
+        "sourceManifestDigest": "0230e2c92daefe0292284c5e61ebd520585ced52be96e77484dd23340a54a82f"
+      }
+    },
+    "consumer": {
+      "schema": "pii-evidence-consumer-pin/1",
+      "state": "candidate",
+      "supportClaims": false,
+      "source": {
+        "repository": "redact-secret/pii-eval",
+        "commit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+        "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
+        "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+        "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+        "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
+        "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+      },
+      "contract": {
+        "engineVersion": "0.0.0",
+        "protocol": {
+          "id": "pii-v1",
+          "revision": 3
+        },
+        "corpusSchema": "1.5",
+        "artifactSchema": "1.5",
+        "mapping": {
+          "id": "pii-evidence-to-corpus",
+          "revision": 3
+        }
+      },
+      "executionEngine": {
+        "platform": "linux-x64",
+        "binarySha256": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb",
+        "workflow": {
+          "runId": 37983467352,
+          "runAttempt": 1,
+          "path": ".github/workflows/ci.yml",
+          "event": "push",
+          "branch": "main",
+          "conclusion": "success"
+        },
+        "archive": {
+          "id": 11641827260,
+          "name": "pii-eval-engine-bfa93c79013dd9804fe16abedbc27990e76d01fb-linux-x86_64",
+          "sha256": "8975a52ba238a038b5040c57ec50621340f70b3d45a5618af5a276fe740fdee7",
+          "members": {
+            "SHA256SUMS": "78b3d5bb33f9af35a4fdb9a4152000c16edc3e1fa4e4ed7d7118f3cab761910c",
+            "build-info.json": "d817cf145d81d8baf826eaceda5f88a7293b491c938d4025709161de27e63ae1",
+            "pii-eval": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb"
+          }
+        },
+        "binaryBytes": 4668056
+      },
+      "evidenceConsumer": {
+        "binary": "pii-eval-evidence",
+        "canonicalLinux": {
+          "state": "pending-source-build",
+          "reason": "upstream-ci-does-not-archive-evidence-consumer",
+          "binarySha256": null,
+          "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+          "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "receiptRequiredBeforeUse": true,
+          "scannerGate": "sealed-build-receipt-and-exact-import-semantics"
+        },
+        "localVerification": {
+          "platform": "darwin-arm64",
+          "binarySha256": "5a29ba5861cdffa4a4e311a513d82f9fdb6c5a194d98a1ad85b162bb12713b20",
+          "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "canonical": false
+        }
+      },
+      "importedPopulation": {
+        "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+        "version": 3,
+        "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+        "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+      },
+      "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
+    },
+    "population": {
+      "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+      "version": 3,
+      "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+      "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+    },
+    "importOutputs": {
+      "binding.json": {
+        "bytes": 306216,
+        "sha256": "4f277405d9bed223d6a382e7d5ff2b14308dd4e68070066ae9612c69767425b2"
+      },
+      "snapshot.json": {
+        "bytes": 356837,
+        "sha256": "dfdd244f6e00215c987f82ab6f84580adbcfb1ebb02c47649ef5a647dc6a70c6"
+      }
+    },
+    "scanner": {
+      "schema": "pii-evidence-scanner-identity/1",
+      "sourceCommit": "ca09aeb6bb360aed20914e475230836250e2759a",
+      "version": "0.1.0-beta.14",
+      "kind": "qualified-candidate",
+      "coreTarballSha256": "7451a4d6de0c45a54553a45d71d2f6b57129ace52368e427d1f1527a4ff8f37f",
+      "nativeTarballSha256": "3a62d0784366eaca3ccb28eef7556cc3659468d911d843a843159ee8e957ec9c",
+      "wasmTarballSha256": "148329bd4da084c1f6afa1529486e69c41658c436760a2318bcc18a4f97e2507",
+      "packageTreeSha256": "7360a97714517232dd4663cd2ce1219ca824476ba2391b7755affecf42fcec28",
+      "adapterDigest": "8bd02b05b56b78e328e6deecc925c6865e7648c827d794453693a2daa8e44b9a",
+      "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+      "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3"
+    }
+  },
+  "historical": {
+    "preflightDigest": "053e1d50a4f1f57b87b7bcb35e9f1eb2971ce0e88c32beab240432025e82b599",
+    "identity": {
+      "evidence": {
+        "schema": "pii-eval-evidence-pin/1",
+        "contract": {
+          "name": "pii-evidence-consumer-contract",
+          "version": "1",
+          "digestSpec": "files-v1"
+        },
+        "release": {
+          "repository": "redact-secret/pii-evidence",
+          "tag": "snapshot-public-pii-phi-2026-10-08-ee61c7afc32d",
+          "commit": "e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0",
+          "archive": {
+            "name": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d.tar.gz",
+            "tarSha256": "ae0324a180361a70bd6f225859fe46f7fde6f02f4d9d317a2336ae432c0a2e36",
+            "tarGzSha256": "e86648cf7c54fd6fcc62a17e58859aa334557b6cb9ba30954d12a42cc087c626"
+          }
+        },
+        "snapshot": {
+          "id": "public-pii-phi/2026-10-08/ee61c7afc32d",
+          "contentDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+          "manifestSha256": "acf14bf012740f25083a6c50134afffa406605061138208bbe83d7f83ad8eb0b",
+          "sourceManifestDigest": "0230e2c92daefe0292284c5e61ebd520585ced52be96e77484dd23340a54a82f"
+        }
+      },
+      "consumer": {
+        "schema": "pii-evidence-consumer-pin/1",
+        "state": "candidate",
+        "supportClaims": false,
+        "source": {
+          "repository": "redact-secret/pii-eval",
+          "commit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+          "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
+          "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+          "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+          "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
+          "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+        },
+        "contract": {
+          "engineVersion": "0.0.0",
+          "protocol": {
+            "id": "pii-v1",
+            "revision": 3
+          },
+          "corpusSchema": "1.5",
+          "artifactSchema": "1.5",
+          "mapping": {
+            "id": "pii-evidence-to-corpus",
+            "revision": 3
+          }
+        },
+        "executionEngine": {
+          "platform": "linux-x64",
+          "binarySha256": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb",
+          "workflow": {
+            "runId": 37983467352,
+            "runAttempt": 1,
+            "path": ".github/workflows/ci.yml",
+            "event": "push",
+            "branch": "main",
+            "conclusion": "success"
+          },
+          "archive": {
+            "id": 11641827260,
+            "name": "pii-eval-engine-bfa93c79013dd9804fe16abedbc27990e76d01fb-linux-x86_64",
+            "sha256": "8975a52ba238a038b5040c57ec50621340f70b3d45a5618af5a276fe740fdee7",
+            "members": {
+              "SHA256SUMS": "78b3d5bb33f9af35a4fdb9a4152000c16edc3e1fa4e4ed7d7118f3cab761910c",
+              "build-info.json": "d817cf145d81d8baf826eaceda5f88a7293b491c938d4025709161de27e63ae1",
+              "pii-eval": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb"
+            }
+          },
+          "binaryBytes": 4668056
+        },
+        "evidenceConsumer": {
+          "binary": "pii-eval-evidence",
+          "canonicalLinux": {
+            "state": "pending-source-build",
+            "reason": "upstream-ci-does-not-archive-evidence-consumer",
+            "binarySha256": null,
+            "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+            "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+            "receiptRequiredBeforeUse": true,
+            "scannerGate": "sealed-build-receipt-and-exact-import-semantics"
+          },
+          "localVerification": {
+            "platform": "darwin-arm64",
+            "binarySha256": "5a29ba5861cdffa4a4e311a513d82f9fdb6c5a194d98a1ad85b162bb12713b20",
+            "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+            "canonical": false
+          }
+        },
+        "importedPopulation": {
+          "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+          "version": 3,
+          "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+          "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+        },
+        "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
+      },
+      "population": {
+        "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+        "version": 3,
+        "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+        "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+      },
+      "importOutputs": {
+        "binding.json": {
+          "bytes": 306216,
+          "sha256": "4f277405d9bed223d6a382e7d5ff2b14308dd4e68070066ae9612c69767425b2"
+        },
+        "snapshot.json": {
+          "bytes": 356837,
+          "sha256": "dfdd244f6e00215c987f82ab6f84580adbcfb1ebb02c47649ef5a647dc6a70c6"
+        }
+      },
+      "scanner": {
+        "schema": "pii-evidence-scanner-identity/1",
+        "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+        "version": "0.1.0-beta.14",
+        "kind": "published-npm",
+        "coreTarballSha256": "5908f85933cd322b741f6e067b261b7827e3d16dece9d1b645cabae8f3a866a2",
+        "nativeTarballSha256": "69efc0c10ebe2299855b38a865a2ce1a0008d2325119aed4d73385769480d25a",
+        "wasmTarballSha256": "d2acc0dd0dcf325799a0ec824f2c5353c56e35a9deaf7b968f0770c226777fc4",
+        "packageTreeSha256": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+        "adapterDigest": "8bd02b05b56b78e328e6deecc925c6865e7648c827d794453693a2daa8e44b9a",
+        "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+        "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3"
+      }
+    },
+    "preservation": "retain-immutable-snapshot-and-run-records-before-active-update"
+  },
+  "changes": {
+    "losses": {
+      "contexts-not-carried": {
+        "previous": 0,
+        "candidate": 0,
+        "delta": 0
+      },
+      "phi-domain-not-carried": {
+        "previous": 0,
+        "candidate": 0,
+        "delta": 0
+      },
+      "sensitivity-context-dependent-flattened": {
+        "previous": 0,
+        "candidate": 0,
+        "delta": 0
+      },
+      "identity-weakened-no-span": {
+        "previous": 0,
+        "candidate": 0,
+        "delta": 0
+      },
+      "sensitivity-weakened-no-span": {
+        "previous": 4,
+        "candidate": 4,
+        "delta": 0
+      }
+    },
+    "mappedKinds": {
+      "added": [],
+      "removed": []
+    },
+    "excludedKinds": {
+      "added": [],
+      "removed": []
+    },
+    "counts": {
+      "corpusCases": {
+        "previous": 123,
+        "candidate": 123
+      },
+      "corpusVariants": {
+        "previous": 285,
+        "candidate": 285
+      },
+      "evidenceCases": {
+        "previous": 118,
+        "candidate": 118
+      },
+      "evidenceCasesCarried": {
+        "previous": 115,
+        "candidate": 115
+      },
+      "evidenceCasesWithoutFixtures": {
+        "previous": 3,
+        "candidate": 3
+      },
+      "evidenceFixtures": {
+        "previous": 285,
+        "candidate": 285
+      },
+      "evidenceSkipped": {
+        "previous": 18,
+        "candidate": 18
+      },
+      "locatedOccurrences": {
+        "previous": 198,
+        "candidate": 198
+      },
+      "occurrences": {
+        "previous": 285,
+        "candidate": 285
+      },
+      "rangeLessOccurrences": {
+        "previous": 87,
+        "candidate": 87
+      }
+    }
+  },
+  "measurement": {
+    "state": "fresh-execution-required",
+    "reused": false,
+    "identityCompatible": false,
+    "reason": "no-identical-validated-measurement-tuple",
+    "targetSelected": true,
+    "scannerExecutions": 0,
+    "lostAxisClaims": "pending-until-faithfully-represented"
+  },
+  "adoption": {
+    "canApply": false,
+    "reason": "strict-measurement-receipt-required-before-acceptance",
+    "activeUpdate": "separate-explicit-maintainer-acceptance-command",
+    "numericalCriteriaChanged": false,
+    "freshOfficialCostDecisionRequired": true,
+    "protectedExecutionAuthorised": false
+  },
+  "candidateDigest": "a561477392b7cb02d8b4010db1ecd3668a6f2512f197431f6c9c88a8073e7a9c",
+  "acceptanceReview": null
+}

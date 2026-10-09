@@ -6,8 +6,8 @@ const root = new URL('../', import.meta.url).pathname;
 const load = async () => { const comparison = (await piiEvidencePublication(root)).view.comparison;
   return { comparison, view: await loadPiiCoverage(root, { comparison }) }; };
 test('exact artifact catalogs independently declare baseline and candidate families without granting support', async () => {
-  const { view } = await load();
-  for (const side of ['baseline']) {
+  const { view, comparison } = await load();
+  for (const side of comparison.candidate ? ['baseline', 'candidate'] : ['baseline']) {
     const joined = view.matrices.active[side], rows = joined.matrix.rows;
     assert.ok(joined.binding); assert.equal(rows.length, view.inventories.active.rows.length);
     assert.equal(rows.find(row => row.kindKey === 'email/global/basic').capability.state, 'declared');
@@ -19,8 +19,10 @@ test('exact artifact catalogs independently declare baseline and candidate famil
     assert.equal(joined.familyMetrics.state, 'unavailable');
     assert.equal(joined.perKindLossAccounting, 'unavailable');
   }
-  assert.equal(view.matrices.active.candidate.binding, null);
-  assert.equal(view.matrices.active.candidate.matrix.identity.productCommitment, null);
+  if (!comparison.candidate) {
+    assert.equal(view.matrices.active.candidate.binding, null);
+    assert.equal(view.matrices.active.candidate.matrix.identity.productCommitment, null);
+  }
   assert.equal(view.proposalState, 'accepted');
   for (const side of ['baseline', 'candidate']) {
     assert.equal(view.matrices.proposed[side].binding, null);
@@ -37,7 +39,7 @@ test('stale population, wrong snapshot and mixed run identities withhold all obs
     assert.ok(joined.matrix.rows.every(row => row.observation.status === 'identity-mismatch'));
   }
   const proposal = joinPiiCoverageInventory({ inventory: view.inventories.proposed, comparison, side: 'candidate' });
-  assert.equal(proposal.binding, null);
+  assert.equal(Boolean(proposal.binding), Boolean(comparison.candidate));
 });
 test('capability declarations must bind exact artifact and refuse ambiguous or unexposed kinds', async () => {
   const { comparison, view } = await load(), inventory = view.inventories.active;

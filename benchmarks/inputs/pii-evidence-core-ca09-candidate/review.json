@@ -1,0 +1,42 @@
+{
+  "schema": "pii-evidence-core-repin-review/1",
+  "candidateDigest": "a561477392b7cb02d8b4010db1ecd3668a6f2512f197431f6c9c88a8073e7a9c",
+  "acceptance": {
+    "schema": "pii-evidence-maintainer-acceptance/1",
+    "scope": "public-evidence-snapshot-adoption",
+    "candidateDigest": "a561477392b7cb02d8b4010db1ecd3668a6f2512f197431f6c9c88a8073e7a9c",
+    "acceptedBy": "Milo Kang",
+    "acceptedAt": "2026-10-09T22:43:49Z",
+    "source": "https://github.com/redact-secret/redact-secret-benchmarks/issues/898#issuecomment-6090512574"
+  },
+  "workflowRunId": 38000504948,
+  "expectedPriorSha256": {
+    "benchmarks/pii-evidence-comparison/baseline.public-synthetic-artifact.json": "db3d026f488baf6f4d846604a07348243cca8ab12f08d96768a1cc655338dd3d",
+    "benchmarks/pii-evidence-comparison/build-receipt.json": "6d04ef72bafdb5be9eb020f5f93aa86351a0fbccbb46dd182c2af90e26122975",
+    "benchmarks/pii-evidence-comparison/candidate.public-synthetic-artifact.json": null,
+    "benchmarks/pii-evidence-comparison/cost-decision.json": "cdea29a13b9293cc7f1170f014142f21e11b3a812c5f899e07122a707af8e1bf",
+    "benchmarks/pii-evidence-comparison/plan.json": "7fc6dcbf40e07b5b6f614636a48a680f0a9cfffcb704f01363af3e863c41737f",
+    "benchmarks/pii-evidence-comparison/population-index.json": "1e061eafa5dfe50cecd1822302f23066236ac9bcc11f5d199a449df19182ba5d",
+    "benchmarks/pii-evidence-comparison/receipt.json": "f46f689943359ce1c024fa0bbbd039477220788c0024b6c789f3fb2fc6698b7d",
+    "benchmarks/pii-evidence-comparison/record.json": "738297aafeeb3260374bf6a7ac24ab9a3c1a6e75f6ca960a5c60ec9b6237ec5b",
+    "benchmarks/pii-evidence-comparison/replay-inputs/baseline/manifest.json": "0ae4af5ad7ffcb9a00feb0113f1685176b23a6863942ab928ad066ac060ace58",
+    "benchmarks/pii-evidence-comparison/replay-inputs/baseline/observation.json": "3a7e3e4f9eb9b5b66f814e501eb2dadba601271c79f1ace77dd50ed9182c4d9b",
+    "benchmarks/pii-evidence-comparison/replay-inputs/baseline/run-artifact.json": "9a841aad2b5d8a5cc6209901e92bc8dcecfd1cc024a9519b977527bce2536fbf",
+    "benchmarks/pii-evidence-comparison/replay-inputs/candidate/manifest.json": null,
+    "benchmarks/pii-evidence-comparison/replay-inputs/candidate/observation.json": null,
+    "benchmarks/pii-evidence-comparison/replay-inputs/candidate/run-artifact.json": null,
+    "benchmarks/pii-evidence/adoption.json": "e371b9901338338f717e010968d598253a0b9a6fec0899ce56553a564ab77620",
+    "benchmarks/pii-evidence/consumer-pin.json": "b03012dccfd2fa743ba471d2ae6b24981db9afbced25228de20971e2e1f0bad0",
+    "benchmarks/pii-evidence/history.json": "ac3502c9cbf17ac80a40c2cbfec87134e152d77bcbffe47c7e402da1242794ff",
+    "benchmarks/pii-evidence/preflight.json": "7ab3b16ea7b3bacb994bedaa128ec4023a39698417602acd413cd9a54d57fda5",
+    "benchmarks/pii-evidence/snapshot-pin.json": "0a46693b440df366b0a471af149110108d1bd4b25f68250f67853d0fce4995a6"
+  },
+  "reviewPackageSha256": "57b8a6493b40c7a64d2d4473d951501c60fa65040eef5558e09550b6ecce218d",
+  "activeBundle": "benchmarks/pii-evidence/adoption.json",
+  "history": "benchmarks/pii-evidence/history.json",
+  "measurementDirectory": "benchmarks/pii-evidence-comparison/v2-core-ca09-linux",
+  "rollbackEntry": 1,
+  "authorityChanged": false,
+  "supportClaims": false,
+  "qualified": false
+}

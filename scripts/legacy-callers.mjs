@@ -17,18 +17,28 @@ const CODE = /\.(?:[cm]?[jt]sx?)$/
 const TEXT = /\.(?:[cm]?[jt]sx?|json|ya?ml|sh|py|html|css)$|^Dockerfile$/
 const SKIP_PATHS = [/^package-lock\.json$/, /^web\/package-lock\.json$/, /^docs\//, /^public\/results\//, /^evidence\//, /^graft\//]
 
+// Parallel checks can remove their temporary files during this read-only scan.
+function ifPresent(read) {
+  try { return read() }
+  catch (error) {
+    if (error.code === 'ENOENT' || error.code === 'ENOTDIR') return undefined
+    throw error
+  }
+}
+
 function walk(dir, out = []) {
-  for (const name of readdirSync(dir)) {
+  for (const name of ifPresent(() => readdirSync(dir)) ?? []) {
     if (SKIP_DIRS.has(name)) continue
     const full = join(dir, name)
-    const st = statSync(full)
+    const st = ifPresent(() => statSync(full))
+    if (!st) continue
     if (st.isDirectory()) walk(full, out)
     else out.push(relative(root, full).split(sep).join('/'))
   }
   return out
 }
 
-const files = walk(root).filter((f) => TEXT.test(f) && !SKIP_PATHS.some((p) => p.test(f)) && statSync(join(root, f)).size < 2_000_000)
+const files = walk(root).filter((f) => TEXT.test(f) && !SKIP_PATHS.some((p) => p.test(f)) && (ifPresent(() => statSync(join(root, f)))?.size ?? Infinity) < 2_000_000)
 const known = new Set(walk(root).map((f) => f))
 const SPEC = /(?:from\s*|import\s*\(\s*|import\s+|require\s*\(\s*)(['"])(\.{1,2}\/[^'"]+)\1/g
 
@@ -44,7 +54,8 @@ function resolveSpec(fromFile, spec) {
 const importers = new Map()
 const text = new Map()
 for (const f of files) {
-  const src = readFileSync(join(root, f), 'utf8')
+  const src = ifPresent(() => readFileSync(join(root, f), 'utf8'))
+  if (src === undefined) continue
   text.set(f, src)
   if (!CODE.test(f)) continue
   for (const m of src.matchAll(SPEC)) {

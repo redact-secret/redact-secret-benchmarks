@@ -1,11 +1,72 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { callersOf, classify } from '../scripts/legacy-callers.mjs';
 
 // Structure only: the caller lister classifies files, finds a static importer and a path mention, and every path the
 // file-level inventory (#653) names still exists, so a rename or a removal cannot leave the inventory stale. No count and no
 // measured value is asserted.
+
+test('caller scans tolerate disappearing files and directories without hiding other filesystem errors', () => {
+  for (const phase of ['walk-stat', 'size-stat', 'read', 'readdir', 'permission']) {
+    const root = mkdtempSync(join(tmpdir(), 'caller-scan-race-'));
+    try {
+      mkdirSync(join(root, 'scripts'));
+      copyFileSync(new URL('../scripts/legacy-callers.mjs', import.meta.url), join(root, 'scripts/legacy-callers.mjs'));
+      writeFileSync(join(root, 'target.mjs'), 'export const value = 1;');
+      writeFileSync(join(root, 'stable.mjs'), "import './target.mjs';");
+      writeFileSync(join(root, 'vanishing.mjs'), "import './target.mjs';");
+      mkdirSync(join(root, 'vanishing-dir'));
+      writeFileSync(join(root, 'vanishing-dir/input.json'), '{}');
+      const probe = `
+        import fs from 'node:fs';
+        import { syncBuiltinESMExports } from 'node:module';
+        const phase = process.argv[2];
+        const file = new URL('./vanishing.mjs', import.meta.url).pathname;
+        const dir = new URL('./vanishing-dir', import.meta.url).pathname;
+        const stat = fs.statSync, read = fs.readFileSync, list = fs.readdirSync;
+        let hits = 0, triggered = false;
+        fs.statSync = function(path, ...args) {
+          if (path === file) {
+            hits++;
+            if ((phase === 'walk-stat' && hits === 1) || (phase === 'size-stat' && hits === 2)) {
+              triggered = true; fs.rmSync(file);
+            } else if (phase === 'permission') {
+              throw Object.assign(new Error('permission probe'), { code: 'EACCES' });
+            }
+          }
+          return stat.call(this, path, ...args);
+        };
+        fs.readFileSync = function(path, ...args) {
+          if (phase === 'read' && path === file) { triggered = true; fs.rmSync(file); }
+          return read.call(this, path, ...args);
+        };
+        fs.readdirSync = function(path, ...args) {
+          if (phase === 'readdir' && path === dir) { triggered = true; fs.rmSync(dir, { recursive: true }); }
+          return list.call(this, path, ...args);
+        };
+        syncBuiltinESMExports();
+        const { callersOf } = await import('./scripts/legacy-callers.mjs');
+        console.log(JSON.stringify({ callers: callersOf('target.mjs'), triggered }));
+      `;
+      writeFileSync(join(root, 'probe.mjs'), probe);
+      const result = spawnSync(process.execPath, [join(root, 'probe.mjs'), phase], { encoding: 'utf8' });
+      if (phase === 'permission') {
+        assert.notEqual(result.status, 0);
+        assert.match(result.stderr, /EACCES/);
+      } else {
+        assert.equal(result.status, 0, `${phase}: ${result.stderr}`);
+        const { callers, triggered } = JSON.parse(result.stdout);
+        assert.equal(triggered, true, `${phase} exercised the deletion race`);
+        assert.ok(callers.some(caller => caller.file === 'stable.mjs' && caller.via.includes('import')));
+        if (phase !== 'readdir') assert.ok(!callers.some(caller => caller.file === 'vanishing.mjs'));
+      }
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  }
+});
 
 test('classify names the caller classes the inventory uses', () => {
   assert.equal(classify('package.json'), 'package hook');

@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { loadPiiCoverageInventories, consumePiiCoverageInventory } from '../scripts/lib/pii-coverage-inventory.mjs';
+import { loadPiiCoverageInventories, consumePiiCoverageInventory, PROPOSED_EVIDENCE_DIRECTORY } from '../scripts/lib/pii-coverage-inventory.mjs';
 const root = new URL('../', import.meta.url).pathname;
 const read = async file => JSON.parse(await readFile(`${root}${file}`, 'utf8'));
 const input = async role => {
-  const pins = role === 'active' ? 'benchmarks/pii-evidence' : 'benchmarks/inputs/pii-evidence-snapshot-v2-candidate';
+  const pins = role === 'active' ? 'benchmarks/pii-evidence' : PROPOSED_EVIDENCE_DIRECTORY;
   return { role, policy: await read('benchmarks/pii-population-policy.json'), snapshotPin: await read(`${pins}/snapshot-pin.json`),
     consumerPin: await read(`${pins}/consumer-pin.json`), preflight: await read(`${pins}/preflight.json`),
     manifestBytes: await readFile(`${root}benchmarks/inputs/pii-coverage/${role}/manifest.json`),
@@ -22,6 +22,17 @@ test('full source inventory retains zero-case and unmapped identities before eva
   }
   assert.equal(proposed.rows.some(row => row.kindKey === 'uk-nino/uk/structured'), true);
   assert.equal(active.rows.some(row => row.kindKey === 'uk-nino/uk/structured'), false);
+});
+
+test('metadata-preserving proposal exposes PHI and context axes without implying faithful per-kind measurement', async () => {
+  const { active, proposed } = await loadPiiCoverageInventories(root);
+  for (const row of proposed.rows.filter(row => row.mapping.families.length && row.domains.includes('PHI'))) {
+    assert.ok(row.mapping.representableAxes.includes('phi-domain'));
+    assert.ok(!row.mapping.losses.includes('phi-domain-not-represented'));
+    assert.equal(row.mapping.state, 'partial');
+    assert.ok(row.mapping.losses.includes('per-kind-fidelity-unavailable'));
+  }
+  assert.ok(active.rows.some(row => row.mapping.losses.includes('phi-domain-not-represented')));
 });
 test('source and import grains reconcile separately, including explicit one-kind-to-many-family mapping', async () => {
   const { active, proposed } = await loadPiiCoverageInventories(root);

@@ -1,0 +1,77 @@
+{
+  "schema": "pii-evidence-proposed-core-target/1",
+  "state": "frozen-for-proposed-measurement",
+  "measuredOnV2": false,
+  "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+  "version": "0.1.0-beta.14",
+  "policySources": [
+    "benchmarks/detector-inventory.json",
+    "benchmarks/pii-evidence-comparison/plan.json"
+  ],
+  "publishedTag": {
+    "tag": "v0.1.0-beta.14",
+    "tagObject": "db9c280bfdfa7c489da8ad767f7417259521c53d",
+    "commit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+  },
+  "tarballs": {
+    "core": "5908f85933cd322b741f6e067b261b7827e3d16dece9d1b645cabae8f3a866a2",
+    "node": "69efc0c10ebe2299855b38a865a2ce1a0008d2325119aed4d73385769480d25a",
+    "wasm": "d2acc0dd0dcf325799a0ec824f2c5353c56e35a9deaf7b968f0770c226777fc4"
+  },
+  "tarballIntegrity": {
+    "core": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+    "node": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+    "wasm": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ=="
+  },
+  "trees": {
+    "core": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+    "node": "ac23cff4c37dcab8835ad9ae2e30793b3d6fc7a96adc30df5b28fde1f7b1ba67",
+    "wasm": "bb7560b0da5695f88ccd4146e03187032f9cdf34bbae3c38a60519f7289e1562"
+  },
+  "binaries": {
+    "node": [
+      {
+        "path": "redact-secret.linux-x64-gnu.node",
+        "sha256": "25f8c5c932ecefa30b45d9b6c9a3f878cab7d89f8a54d51b172170b8491fb9f8",
+        "bytes": 1853272
+      }
+    ],
+    "wasm": [
+      {
+        "path": "redact_secret_wasm_bg.wasm",
+        "sha256": "981b9aa776ee810bf3a5f074b46b0a356af8b14044e384970198520bd91abf66",
+        "bytes": 682427
+      },
+      {
+        "path": "redact_secret_wasm_common_bg.wasm",
+        "sha256": "1d8eaea86e901d18d1c9d8c9564e9a292f59acbff241728d9a839908094a5bae",
+        "bytes": 479216
+      },
+      {
+        "path": "redact_secret_wasm_common_pii_bg.wasm",
+        "sha256": "d1df0179af9d69876adc894f81b3fc83c7009cd4b96bb79d62e2868b08a40b85",
+        "bytes": 778199
+      },
+      {
+        "path": "redact_secret_wasm_pii_bg.wasm",
+        "sha256": "2d4fa12906cfb9a397fdb514d558bfe9a3d247eeea9e00476d2bd4836ee70bef",
+        "bytes": 981328
+      }
+    ]
+  },
+  "scanner": {
+    "adapter": {
+      "id": "redact-secret-core-node",
+      "version": "1.0.0",
+      "normalizationVersion": 1
+    },
+    "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+    "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+    "activation": [
+      "pii:global",
+      "pii:us"
+    ]
+  },
+  "candidateRequired": false,
+  "previousMeasurementReusable": false
+}

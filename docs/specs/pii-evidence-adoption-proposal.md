@@ -1,5 +1,10 @@
 # Pending PII evidence adoption proposal
 
+The mapping-2 proposal below is retained historical preparation. The current
+post-#37 successor and unresolved release/execution prerequisites are described
+in [pii-evidence-adoption-post37.md](pii-evidence-adoption-post37.md). Neither
+proposal is active or ready for maintainer acceptance.
+
 This is a helper-generated, scanner-free proposal for
 `public-pii-phi/2026-10-08/ee61c7afc32d`, not an active adoption or product claim.
 The proposed tag is not published. The source snapshot is pinned to committed

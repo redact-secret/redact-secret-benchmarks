@@ -3,6 +3,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadPiiCoverage } from './lib/pii-coverage-join.mjs';
+import { PROPOSED_EVIDENCE_DIRECTORY } from './lib/pii-coverage-inventory.mjs';
 import { summarizeCoverage, validateCoverageSummary } from './lib/pii-coverage-summary.mjs';
 import { buildPiiCoverageDeltas } from './lib/pii-coverage-delta.mjs';
 import { piiEvidencePublication } from './pii-evidence-publication.mjs';
@@ -47,7 +48,7 @@ export async function piiCoveragePublication(root) {
     'scripts/lib/pii-evidence-contract.mjs', 'scripts/lib/pii-evidence-json.mjs', 'scripts/lib/pii-population-policy.mjs',
     'scripts/pii-evidence-publication.mjs', 'scripts/lib/pii-evidence-comparison-plan.mjs',
     'benchmarks/evaluation/domains/pii/evidence-comparison.mjs', 'benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs', ...roles.flatMap(role => {
-    const pins = role === 'active' ? 'benchmarks/pii-evidence' : 'benchmarks/inputs/pii-evidence-snapshot-v2-candidate';
+    const pins = role === 'active' ? 'benchmarks/pii-evidence' : PROPOSED_EVIDENCE_DIRECTORY;
     return ['snapshot-pin', 'consumer-pin', 'preflight'].map(name => `${pins}/${name}.json`).concat([
       `benchmarks/inputs/pii-coverage/${role}/manifest.json`, `benchmarks/inputs/pii-coverage/${role}/privacy-kinds.json`]);
   }), ...sides.map(side => `benchmarks/inputs/pii-coverage/${side}-product-catalog.json`),

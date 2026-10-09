@@ -1,0 +1,507 @@
+{
+  "schema": "pii-evidence-post37-adoption-review/1",
+  "state": "blocked-before-canonical-measurement",
+  "preparedAt": "2026-10-09T19:09:05.160Z",
+  "candidateDigest": "6e23de67bbaf05a792bfa54f70812bc5ebf290061c6c3699a78020012b6f4274",
+  "previousProposalDigest": "5732aed798ea7da0cb484c6b14fe76e04bd8ee6efc3ff84773322d18ffcf78cc",
+  "release": {
+    "state": "unreleased",
+    "repository": "redact-secret/pii-evidence",
+    "tag": "snapshot-public-pii-phi-2026-10-08-ee61c7afc32d",
+    "checkedReleaseApiStatus": 404,
+    "checkedTagApiStatus": 404,
+    "registryHasV2": false,
+    "sourceCommit": "d6825d5985c7fbc83d54e49f5c0b5426e5d852a2",
+    "archiveVerification": "local-deterministic-pack-only-not-a-released-asset",
+    "tarSha256": "ae0324a180361a70bd6f225859fe46f7fde6f02f4d9d317a2336ae432c0a2e36",
+    "tarGzSha256": "e86648cf7c54fd6fcc62a17e58859aa334557b6cb9ba30954d12a42cc087c626",
+    "manifestSha256": "acf14bf012740f25083a6c50134afffa406605061138208bbe83d7f83ad8eb0b",
+    "sourceManifestDigest": "0230e2c92daefe0292284c5e61ebd520585ced52be96e77484dd23340a54a82f",
+    "contentDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+    "archiveMembers": [
+      "public-pii-phi-2026-10-08-ee61c7afc32d/cases.jsonl",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/claims.jsonl",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/fixture-rules.jsonl",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/fixtures.jsonl",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/manifest.json",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/skipped.jsonl",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/sources.jsonl",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/taxonomy/contexts.json",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/taxonomy/jurisdictions.json",
+      "public-pii-phi-2026-10-08-ee61c7afc32d/taxonomy/privacy-kinds.json"
+    ]
+  },
+  "consumer": {
+    "source": {
+      "repository": "redact-secret/pii-eval",
+      "commit": "0cd2ec43387d5e420b4c4ca6678a9b63fae5001a",
+      "sourceArchiveSha256": "f7c9866d762f5a51d075e3ed8e4298c185ca1c78d8d5d144d1cb8493514c1c84",
+      "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+      "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+      "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
+      "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+    },
+    "contract": {
+      "engineVersion": "0.0.0",
+      "protocol": {
+        "id": "pii-v1",
+        "revision": 3
+      },
+      "corpusSchema": "1.5",
+      "artifactSchema": "1.5",
+      "mapping": {
+        "id": "pii-evidence-to-corpus",
+        "revision": 3
+      }
+    },
+    "buildReceipt": {
+      "schema": "pii-evidence-consumer-build-receipt/1",
+      "sourceCommit": "0cd2ec43387d5e420b4c4ca6678a9b63fae5001a",
+      "sourceArchiveSha256": "f7c9866d762f5a51d075e3ed8e4298c185ca1c78d8d5d144d1cb8493514c1c84",
+      "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+      "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+      "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+      "command": "cargo build --locked --release -p pii-eval-cli --bin pii-eval-evidence -j 2",
+      "platform": "darwin-arm64",
+      "binarySha256": "8def22b78b1a65caa2b135cdc2de03aa9eb3a65a87da07c87e4651e15df84a9e"
+    },
+    "upstreamLinuxEngine": {
+      "platform": "linux-x64",
+      "binarySha256": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8",
+      "workflow": {
+        "runId": 37970072564,
+        "runAttempt": 1,
+        "path": ".github/workflows/ci.yml",
+        "event": "push",
+        "branch": "main",
+        "conclusion": "success"
+      },
+      "archive": {
+        "id": 11634793093,
+        "name": "pii-eval-engine-0cd2ec43387d5e420b4c4ca6678a9b63fae5001a-linux-x86_64",
+        "sha256": "b14c9e4a1df77a10614262f701588b4b295336894ea87798d85bd5a4ea938c50",
+        "members": {
+          "build-info.json": "1f4e50c4fd57feee1e0bfc50ed04c6c1a8f9f8589f706e6be9f501b799f6d3c6",
+          "SHA256SUMS": "93d33c767f74ba96f0f08a784859ea46280d1db89a2dabd3e0285fcb2a36e63b",
+          "pii-eval": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8"
+        }
+      }
+    },
+    "canonicalLinuxImporterReceipt": null
+  },
+  "reconciliation": {
+    "countsChanged": false,
+    "counts": {
+      "corpusCases": 123,
+      "corpusVariants": 285,
+      "evidenceCases": 118,
+      "evidenceCasesCarried": 115,
+      "evidenceCasesWithoutFixtures": 3,
+      "evidenceFixtures": 285,
+      "evidenceSkipped": 18,
+      "locatedOccurrences": 198,
+      "occurrences": 285,
+      "rangeLessOccurrences": 87
+    },
+    "losses": {
+      "contexts-not-carried": {
+        "previous": 102,
+        "next": 0,
+        "delta": -102
+      },
+      "phi-domain-not-carried": {
+        "previous": 74,
+        "next": 0,
+        "delta": -74
+      },
+      "sensitivity-context-dependent-flattened": {
+        "previous": 35,
+        "next": 0,
+        "delta": -35
+      },
+      "identity-weakened-no-span": {
+        "previous": 44,
+        "next": 0,
+        "delta": -44
+      },
+      "sensitivity-weakened-no-span": {
+        "previous": 47,
+        "next": 4,
+        "delta": -43
+      }
+    },
+    "population": {
+      "previous": {
+        "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+        "version": 2,
+        "digest": "2bff16441b6e3ef3be72ecb8cacedfdb404053981d1d086546a00f2c4c407d52",
+        "bindingDigest": "299c406c1f7e5ae49dfd819e42c713da54d99952b1b3219db3451bdcbcc6e864"
+      },
+      "next": {
+        "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+        "version": 3,
+        "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+        "bindingDigest": "c59620a7ba4c5a1e98f2939d72fb859f0053ea3aba5af83fd44399acef6ae1f4"
+      },
+      "reason": "explicit-mapping-3-population-version-3-schema-1.5-preserves-evidence-metadata-and-text-negatives"
+    },
+    "outputs": {
+      "previous": {
+        "binding.json": {
+          "bytes": 319321,
+          "sha256": "3b8ddba8e89ecf232c17b3d860834edc1b63c7c78b5bd572c8244dc399d57a84"
+        },
+        "snapshot.json": {
+          "bytes": 272723,
+          "sha256": "6426676ad51b7ad4f816233a32aed778ce596302e39daaaec74df888aadb9886"
+        }
+      },
+      "next": {
+        "binding.json": {
+          "bytes": 306216,
+          "sha256": "03d937b009ee92fdf1b854f9381a2bd1d9647a4e0433be477cd60b0d86f254fc"
+        },
+        "snapshot.json": {
+          "bytes": 356837,
+          "sha256": "dfdd244f6e00215c987f82ab6f84580adbcfb1ebb02c47649ef5a647dc6a70c6"
+        }
+      },
+      "reason": "snapshot-gains-evidence-metadata-and-new-authored-values-binding-records-new-mapping-and-reduced-losses"
+    },
+    "remainingLossRows": [
+      {
+        "evidenceCase": "medical-record-number/us/labeled-field/ambiguous/patient-identifier-label",
+        "evidenceFixture": "medical-record-number/us/labeled-field/ambiguous/patient-identifier-label/plain-text/line",
+        "variantId": "ev-860aba6eb1f31ef2ce1a350f",
+        "family": "pii:us:medical-record-number",
+        "authored": {
+          "identity": "not-established",
+          "sensitivity": "sensitive",
+          "spanEstablished": false
+        },
+        "mapped": {
+          "family": "pii:us:medical-record-number",
+          "method": "schema-only",
+          "rangeEstablished": false,
+          "sensitivity": "not-established",
+          "typeExpectation": "not-established"
+        },
+        "losses": [
+          "sensitivity-weakened-no-span"
+        ]
+      },
+      {
+        "evidenceCase": "health-plan-member-id/us/member-field/ambiguous/medicare-number-label",
+        "evidenceFixture": "health-plan-member-id/us/member-field/ambiguous/medicare-number-label/plain-text/line",
+        "variantId": "ev-bb0788ab708bfae0ee810f7c",
+        "family": "pii:us:health-plan-member-id",
+        "authored": {
+          "identity": "not-established",
+          "sensitivity": "sensitive",
+          "spanEstablished": false
+        },
+        "mapped": {
+          "family": "pii:us:health-plan-member-id",
+          "method": "schema-only",
+          "rangeEstablished": false,
+          "sensitivity": "not-established",
+          "typeExpectation": "not-established"
+        },
+        "losses": [
+          "sensitivity-weakened-no-span"
+        ]
+      },
+      {
+        "evidenceCase": "health-plan-member-id/us/member-field/ambiguous/dependent-identifier-label",
+        "evidenceFixture": "health-plan-member-id/us/member-field/ambiguous/dependent-identifier-label/plain-text/line",
+        "variantId": "ev-ec6ca6a4fd2b0c67193a47dd",
+        "family": "pii:us:health-plan-member-id",
+        "authored": {
+          "identity": "not-established",
+          "sensitivity": "sensitive",
+          "spanEstablished": false
+        },
+        "mapped": {
+          "family": "pii:us:health-plan-member-id",
+          "method": "schema-only",
+          "rangeEstablished": false,
+          "sensitivity": "not-established",
+          "typeExpectation": "not-established"
+        },
+        "losses": [
+          "sensitivity-weakened-no-span"
+        ]
+      },
+      {
+        "evidenceCase": "health-plan-member-id/us/member-field/ambiguous/subscriber-number-label",
+        "evidenceFixture": "health-plan-member-id/us/member-field/ambiguous/subscriber-number-label/plain-text/line",
+        "variantId": "ev-f178eab5099b0b23de110ee7",
+        "family": "pii:us:health-plan-member-id",
+        "authored": {
+          "identity": "not-established",
+          "sensitivity": "sensitive",
+          "spanEstablished": false
+        },
+        "mapped": {
+          "family": "pii:us:health-plan-member-id",
+          "method": "schema-only",
+          "rangeEstablished": false,
+          "sensitivity": "not-established",
+          "typeExpectation": "not-established"
+        },
+        "losses": [
+          "sensitivity-weakened-no-span"
+        ]
+      }
+    ],
+    "textNegativeExpectations": 47
+  },
+  "coreTarget": {
+    "schema": "pii-evidence-proposed-core-target/1",
+    "state": "frozen-for-proposed-measurement",
+    "measuredOnV2": false,
+    "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+    "version": "0.1.0-beta.14",
+    "policySources": [
+      "benchmarks/detector-inventory.json",
+      "benchmarks/pii-evidence-comparison/plan.json"
+    ],
+    "publishedTag": {
+      "tag": "v0.1.0-beta.14",
+      "tagObject": "db9c280bfdfa7c489da8ad767f7417259521c53d",
+      "commit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17"
+    },
+    "tarballs": {
+      "core": "5908f85933cd322b741f6e067b261b7827e3d16dece9d1b645cabae8f3a866a2",
+      "node": "69efc0c10ebe2299855b38a865a2ce1a0008d2325119aed4d73385769480d25a",
+      "wasm": "d2acc0dd0dcf325799a0ec824f2c5353c56e35a9deaf7b968f0770c226777fc4"
+    },
+    "tarballIntegrity": {
+      "core": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+      "node": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+      "wasm": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ=="
+    },
+    "trees": {
+      "core": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+      "node": "ac23cff4c37dcab8835ad9ae2e30793b3d6fc7a96adc30df5b28fde1f7b1ba67",
+      "wasm": "bb7560b0da5695f88ccd4146e03187032f9cdf34bbae3c38a60519f7289e1562"
+    },
+    "binaries": {
+      "node": [
+        {
+          "path": "redact-secret.linux-x64-gnu.node",
+          "sha256": "25f8c5c932ecefa30b45d9b6c9a3f878cab7d89f8a54d51b172170b8491fb9f8",
+          "bytes": 1853272
+        }
+      ],
+      "wasm": [
+        {
+          "path": "redact_secret_wasm_bg.wasm",
+          "sha256": "981b9aa776ee810bf3a5f074b46b0a356af8b14044e384970198520bd91abf66",
+          "bytes": 682427
+        },
+        {
+          "path": "redact_secret_wasm_common_bg.wasm",
+          "sha256": "1d8eaea86e901d18d1c9d8c9564e9a292f59acbff241728d9a839908094a5bae",
+          "bytes": 479216
+        },
+        {
+          "path": "redact_secret_wasm_common_pii_bg.wasm",
+          "sha256": "d1df0179af9d69876adc894f81b3fc83c7009cd4b96bb79d62e2868b08a40b85",
+          "bytes": 778199
+        },
+        {
+          "path": "redact_secret_wasm_pii_bg.wasm",
+          "sha256": "2d4fa12906cfb9a397fdb514d558bfe9a3d247eeea9e00476d2bd4836ee70bef",
+          "bytes": 981328
+        }
+      ]
+    },
+    "scanner": {
+      "adapter": {
+        "id": "redact-secret-core-node",
+        "version": "1.0.0",
+        "normalizationVersion": 1
+      },
+      "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+      "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+      "activation": [
+        "pii:global",
+        "pii:us"
+      ]
+    },
+    "candidateRequired": false,
+    "previousMeasurementReusable": false
+  },
+  "measurement": {
+    "state": "not-run",
+    "workflow": ".github/workflows/pii-evidence-comparison.yml",
+    "canonicalWorkflowRunId": null,
+    "scannersLaunched": 0,
+    "protectedRuns": 0,
+    "oldObservationReused": false
+  },
+  "coverage": {
+    "active": {
+      "kinds": 10,
+      "authoredCases": 49,
+      "fixtures": 139,
+      "importedCases": 55,
+      "variants": 139,
+      "occurrences": 139
+    },
+    "proposed": {
+      "kinds": 12,
+      "authoredCases": 118,
+      "fixtures": 285,
+      "importedCases": 123,
+      "variants": 285,
+      "occurrences": 285
+    },
+    "states": {
+      "active": {
+        "baseline": {
+          "measured-supported": 0,
+          "measured-missed": 0,
+          "measured-partial": 0,
+          "supported-unmeasured": 3,
+          "measurement-unavailable": 0,
+          "product-not-supported": 4,
+          "evaluator-not-representable": 0,
+          "evidence-deferred": 3,
+          "not-applicable": 0
+        },
+        "candidate": {
+          "measured-supported": 0,
+          "measured-missed": 0,
+          "measured-partial": 0,
+          "supported-unmeasured": 3,
+          "measurement-unavailable": 0,
+          "product-not-supported": 4,
+          "evaluator-not-representable": 0,
+          "evidence-deferred": 3,
+          "not-applicable": 0
+        }
+      },
+      "proposed": {
+        "baseline": {
+          "measured-supported": 0,
+          "measured-missed": 0,
+          "measured-partial": 0,
+          "supported-unmeasured": 0,
+          "measurement-unavailable": 9,
+          "product-not-supported": 0,
+          "evaluator-not-representable": 0,
+          "evidence-deferred": 3,
+          "not-applicable": 0
+        },
+        "candidate": {
+          "measured-supported": 0,
+          "measured-missed": 0,
+          "measured-partial": 0,
+          "supported-unmeasured": 0,
+          "measurement-unavailable": 9,
+          "product-not-supported": 0,
+          "evaluator-not-representable": 0,
+          "evidence-deferred": 3,
+          "not-applicable": 0
+        }
+      }
+    },
+    "addedKinds": [
+      "date-of-birth/global/labeled-field",
+      "uk-nino/uk/structured"
+    ],
+    "removedKinds": [],
+    "attribution": {
+      "evidence": {
+        "changed": true,
+        "reason": "snapshot-inventory-scope"
+      },
+      "evaluator": {
+        "changed": true,
+        "reason": "mapping-or-protocol-changed"
+      },
+      "product": {
+        "changed": null,
+        "reason": "product-binding-unavailable-cannot-attribute-change"
+      },
+      "productRegressionComparison": {
+        "state": "unavailable",
+        "reason": "different-snapshot-denominators-require-separate-held-constant-product-control",
+        "oldObservationReused": false
+      }
+    },
+    "perKindMetrics": "withheld-no-validated-per-kind-observation-contract"
+  },
+  "executionDecision": {
+    "state": "not-dispatched",
+    "reason": "unreleased-source-and-incompatible-measurement-path",
+    "oldApprovalReusable": false,
+    "maxJobs": 1,
+    "timeoutMinutes": 15,
+    "protectedRuns": 0,
+    "approvalGenerated": false
+  },
+  "blockers": [
+    "release-tag-and-assets-absent",
+    "existing-measurement-fetch-plan-driver-receipt-public-consumer-still-bind-old-engine-protocol-2-schema-1.4",
+    "existing-comparison-and-adoption-validator-require-baseline-candidate-pair-not-baseline-only",
+    "canonical-linux-importer-receipt-absent",
+    "fresh-canonical-v2-measurement-and-replays-absent",
+    "fresh-exact-cost-decision-not-recorded",
+    "explicit-maintainer-acceptance-absent"
+  ],
+  "activeWritesApplied": [],
+  "ownerAcceptanceGenerated": false,
+  "authorityChanged": false,
+  "supportClaims": false,
+  "qualified": false,
+  "historicalPreservation": {
+    "state": "unchanged",
+    "paths": [
+      "benchmarks/pii-evidence/snapshot-pin.json",
+      "benchmarks/pii-evidence/consumer-pin.json",
+      "benchmarks/pii-evidence/preflight.json",
+      "benchmarks/pii-evidence-comparison",
+      "benchmarks/inputs/pii-evidence-snapshot-v2-candidate"
+    ],
+    "apply": "only-existing-guarded-adoption-path-after-release-measurement-and-external-acceptance",
+    "rollback": "retain-original-byte-records-and-full-replay-uploads-before-any-active-write"
+  },
+  "validation": {
+    "reproducedPreflightByteIdentical": true,
+    "immutableHistoricalPathsSha256": {
+      "benchmarks/pii-evidence/snapshot-pin.json": "3b0a59a4fe114d95f044472791cbf7e6be85d8e5a4651497079ed5cc7156d797",
+      "benchmarks/pii-evidence/consumer-pin.json": "5911dada9d2c1908b1bfc1d3c4d103067654adaedbee72283acb633320cd41a3",
+      "benchmarks/pii-evidence/preflight.json": "c62277cc5a5f52cdec5b19ddf1ae51b2bb0ae9ecb71da30ac7d91612b9960a6f",
+      "benchmarks/pii-evidence-comparison/plan.json": "7bb7a648e9ee131dcd662417a68cbbde860afd730d59efc55bc4a7af2ddbb138",
+      "benchmarks/pii-evidence-comparison/receipt.json": "715f892bec712de5aa7ca6fe2317d660f2b72e99a1b0bdab5b51d6664e15a43d",
+      "benchmarks/pii-evidence-comparison/record.json": "0f76f1f96cd87aa8872d6fb653b44cc581a5741573a136103cfa0901c8612ed3",
+      "benchmarks/pii-evidence-comparison/cost-decision.json": "a1b46332cf766df54a8b9151d7977ae6bb69be34da1b06336d2e703f67426e41",
+      "benchmarks/pii-eval-population-pins.json": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787",
+      "benchmarks/pii-authority.json": "9536d4e23b25dee735a24ecf2b443a2031be624431350d330afb36bf51449bbc",
+      "benchmarks/qualification-authority.json": "6b12b36627856660beaab70a0394bbf42b82ae89f8b6a2acfff785e63c4578ca",
+      "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/acceptance-plan.json": "af3be2895f16b035d142c62d79682fe6151c7b8d063d5105b2d9d80460c651de",
+      "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/candidate.json": "0121de253bad9f1a0d0df793b141dff987d0d98b1bb52d23623480c3f463eae8",
+      "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/consumer-pin.json": "c99e6454ccea77d8873603139c0052054ce099015012ccf12bd8ade9f9c6c119",
+      "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/preflight.json": "adc0c58b597db3b4a203e0de6d4a27ef762dc9c682657d3a3f2ff136c44d6aac",
+      "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/snapshot-pin.json": "a91bc3a990dff56ad6761f536ce95312c44657963c989b83b1b31a2838a69ead"
+    },
+    "tests": {
+      "command": "node --import tsx --test tests/pii-evidence*.test.mjs tests/pii-coverage*.test.mjs",
+      "passed": 126,
+      "failed": 0,
+      "skipped": 0
+    },
+    "typecheck": "passed",
+    "preflight": "passed",
+    "comparisonPlan": "passed",
+    "comparisonRecord": "passed-existing-v1-record-only",
+    "evidencePublication": "passed",
+    "coveragePublicationFairness": "passed",
+    "pinDrift": "passed",
+    "hygiene": "passed",
+    "ciDispatches": 0
+  }
+}

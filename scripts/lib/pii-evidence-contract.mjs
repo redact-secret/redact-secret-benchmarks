@@ -97,11 +97,14 @@ function reviewedCandidateRuntime(pin, repoRoot) {
   const registry = parseEvidenceJson(readFileSync(path.join(root, 'benchmarks/pii-evidence/candidate-runtimes.json'), 'utf8'));
   if (!closed(registry, ['schema', 'runtimes']) || registry.schema !== 'pii-evidence-reviewed-candidate-runtimes/1' || !Array.isArray(registry.runtimes)) refuse('candidate-runtime-registry-invalid');
   const entry = registry.runtimes.find(runtime => same(runtime.consumerIdentity, runtimeIdentity(pin)));
+  const semanticContract = { ...CONSUMER_PIN.contract, protocol: { id: 'pii-v1', revision: 3 },
+    corpusSchema: '1.5', artifactSchema: '1.5', mapping: { id: 'pii-evidence-to-corpus', revision: 3 } };
+  const semanticRuntime = same(pin.contract, semanticContract);
   if (!entry || !closed(entry, ['schema', 'consumerIdentity', 'buildReceipt', 'mappingKinds']) || entry.schema !== 'pii-evidence-reviewed-candidate-runtime/1' ||
-      !same(pin.executionEngine, CONSUMER_PIN.executionEngine) || !same(pin.evidenceConsumer.canonicalLinux, CONSUMER_PIN.evidenceConsumer.canonicalLinux) ||
+      (!semanticRuntime && !same(pin.executionEngine, CONSUMER_PIN.executionEngine)) || !same(pin.evidenceConsumer.canonicalLinux, CONSUMER_PIN.evidenceConsumer.canonicalLinux) ||
       pin.schema !== CONSUMER_PIN.schema || pin.state !== 'candidate' || pin.supportClaims !== false ||
       pin.source.repository !== CONSUMER_PIN.source.repository || !/^[a-f0-9]{40}$/.test(pin.source.commit) ||
-      !same({ ...pin.contract, mapping: CONSUMER_PIN.contract.mapping }, CONSUMER_PIN.contract) ||
+      (!semanticRuntime && !same({ ...pin.contract, mapping: CONSUMER_PIN.contract.mapping }, CONSUMER_PIN.contract)) ||
       pin.contract.mapping.id !== CONSUMER_PIN.contract.mapping.id || !integer(pin.contract.mapping.revision) || pin.contract.mapping.revision < 2 ||
       pin.preservedPopulationPinsSha256 !== CONSUMER_PIN.preservedPopulationPinsSha256 ||
       pin.evidenceConsumer.localVerification.canonical !== false || pin.evidenceConsumer.localVerification.platform !== 'darwin-arm64' ||
@@ -113,7 +116,8 @@ function reviewedCandidateRuntime(pin, repoRoot) {
       receipt.sourceArchiveSha256 !== pin.source.sourceArchiveSha256 || receipt.cargoLockSha256 !== pin.source.cargoLockSha256 ||
       receipt.rustToolchainFileSha256 !== pin.source.rustToolchainFileSha256 || receipt.rustc !== pin.evidenceConsumer.localVerification.rustc ||
       receipt.platform !== pin.evidenceConsumer.localVerification.platform || receipt.binarySha256 !== pin.evidenceConsumer.localVerification.binarySha256 ||
-      receipt.command !== 'cargo build --locked -p pii-eval-cli --bin pii-eval-evidence -j 2' ||
+      receipt.command !== (semanticRuntime ? 'cargo build --locked --release -p pii-eval-cli --bin pii-eval-evidence -j 2'
+        : 'cargo build --locked -p pii-eval-cli --bin pii-eval-evidence -j 2') ||
       !entry.mappingKinds || typeof entry.mappingKinds !== 'object' || Array.isArray(entry.mappingKinds) ||
       Object.entries(MAPPING_KINDS).some(([kind, family]) => entry.mappingKinds[kind] !== family) ||
       new Set(Object.values(entry.mappingKinds).flatMap(familiesOf)).size !== Object.values(entry.mappingKinds).flatMap(familiesOf).length ||
@@ -185,10 +189,10 @@ export function verifyConsumerRuntime({ sourceCommit, cargoLock, fetchHelper, bi
       sha256(binary) !== pin.evidenceConsumer.localVerification.binarySha256) refuse('consumer-binary-not-pinned');
 }
 
-export function verifyImportDigests(outputs, population) {
+export function verifyImportDigests(outputs, population, corpusSchema = '1.4') {
   const snapshot = parseStrictJson(outputs['snapshot.json'].toString('utf8'));
   const binding = parseStrictJson(outputs['binding.json'].toString('utf8'));
-  if (snapshot.schema !== 'pii-eval.corpus-snapshot' || snapshot.schemaVersion !== '1.4' ||
+  if (!['1.4', '1.5'].includes(corpusSchema) || snapshot.schema !== 'pii-eval.corpus-snapshot' || snapshot.schemaVersion !== corpusSchema ||
       binding.schema !== 'pii-eval-evidence-binding/1' ||
       snapshot.semanticDigest !== population.digest || semanticDigest(snapshot) !== snapshot.semanticDigest ||
       binding.semanticDigest !== population.bindingDigest ||
@@ -215,18 +219,19 @@ export function preflightReport({ policy, snapshotPin, consumerPin, verified, im
       mapped?.snapshotId !== sem.snapshotId || mapped.contentDigest !== sem.contentDigest || mapped.manifestSha256 !== sem.manifestSha256 ||
       !same(mapped.contract, sem.contract) || !same(mapped.counts, sem.counts) ||
       !same(mapped.population, { id: consumerPin.importedPopulation.id, version: consumerPin.importedPopulation.version, visibility: 'public-synthetic',
-        schemaVersion: '1.4', semanticDigest: consumerPin.importedPopulation.digest }) ||
+        schemaVersion: consumerPin.contract.corpusSchema, semanticDigest: consumerPin.importedPopulation.digest }) ||
       mapped.binding?.semanticDigest !== consumerPin.importedPopulation.bindingDigest ||
       (!proposed && (!same(mapped.binding.counts, COUNTS) || !same(mapped.binding.losses, LOSSES) ||
       !same(imported.outputs, IMPORT_OUTPUTS)))) refuse('import-mismatch');
-  validateMappingAccounting(mapped.binding.counts, mapped.binding.losses);
+  const losses = importLosses(mapped.binding.losses, consumerPin.contract.mapping.revision);
+  validateMappingAccounting(mapped.binding.counts, losses);
   if (mapped.binding.counts.evidenceCases !== sem.counts.cases || mapped.binding.counts.evidenceFixtures !== sem.counts.fixtures ||
       mapped.binding.counts.evidenceSkipped !== sem.counts.skipped || !closed(imported.outputs, Object.keys(IMPORT_OUTPUTS))) refuse('import-mismatch');
   for (const [name, expected] of Object.entries(imported.outputs)) {
     if (!closed(expected, ['bytes', 'sha256']) || !integer(expected.bytes) || !hex(expected.sha256)) refuse('import-output-mismatch');
     if (!outputs[name] || outputs[name].length !== expected.bytes || sha256(outputs[name]) !== expected.sha256) refuse('import-output-mismatch');
   }
-  const { snapshot, binding } = verifyImportDigests(outputs, consumerPin.importedPopulation);
+  const { snapshot, binding } = verifyImportDigests(outputs, consumerPin.importedPopulation, consumerPin.contract.corpusSchema);
   if (!same(binding.semantic?.mappingRule, consumerPin.contract.mapping) || !same(binding.semantic?.counts, mapped.binding.counts) ||
       !same(binding.semantic?.losses, mapped.binding.losses) ||
       snapshot.semantic?.cases?.length !== mapped.binding.counts.corpusCases ||
@@ -237,7 +242,16 @@ export function preflightReport({ policy, snapshotPin, consumerPin, verified, im
   if (families.some(family => !Object.values(mappingKinds).flatMap(familiesOf).includes(family))) refuse('mapping-kind-unknown');
   const mappedKinds = Object.keys(mappingKinds).filter(kind => familiesOf(mappingKinds[kind]).some(family => families.includes(family))).sort();
   return expectedPreflightReport(policy, { snapshotPin, consumerPin, counts: mapped.binding.counts,
-    losses: mapped.binding.losses, outputs: imported.outputs, mappedKinds, mappedFamilies: binding.semantic.byFamily });
+    losses, outputs: imported.outputs, mappedKinds, mappedFamilies: binding.semantic.byFamily });
+}
+
+function importLosses(losses, revision) {
+  if (revision !== 3) return losses;
+  // Revision 3 omits zero classes in the binding. Preserve its original bytes;
+  // the benchmark report still names all five axes, including verified zeros.
+  if (!losses || typeof losses !== 'object' || Array.isArray(losses) ||
+      Object.keys(losses).some(key => !Object.hasOwn(LOSSES, key))) refuse('mapping-accounting-invalid');
+  return Object.fromEntries(Object.keys(LOSSES).map(key => [key, Object.hasOwn(losses, key) ? losses[key] : 0]));
 }
 
 function validateMappingAccounting(counts, losses) {
@@ -275,7 +289,9 @@ export function expectedPreflightReport(policy, { snapshotPin = SNAPSHOT_PIN, co
     verification: { platform: 'darwin-arm64', canonical: false, scannersLaunched: 0, commands: ['verify', 'import'] },
     adoption: { state: 'proposed', active: false, lostAxisClaims: 'pending-until-faithfully-represented',
       upstreamIssue: policy.mapping.upstreamIssue, unknownKindOrJurisdiction: 'refuse-not-guess' },
-    blockers: ['canonical-linux-evidence-consumer-build-receipt-pending', 'fresh-exact-execution-cost-decision-required'],
+    blockers: ['canonical-linux-evidence-consumer-build-receipt-pending', 'fresh-exact-execution-cost-decision-required',
+      ...(consumerPin.contract.mapping.revision === 3 ? ['immutable-snapshot-release-verification-required',
+        'schema-1.5-measurement-path-review-required', 'explicit-maintainer-adoption-acceptance-required'] : [])],
   };
 }
 

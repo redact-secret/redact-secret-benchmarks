@@ -1,0 +1,14 @@
+@layer components {
+  .section, .panel { display: grid; gap: var(--space-4); min-width: 0; }
+  .section h2, .section h3, .section h4, .section p { margin: 0; }
+  .panel { border-top: var(--hairline) solid var(--line); padding-top: var(--space-4); }
+  .summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); margin: 0; }
+  .summary > div { border-top: var(--hairline) solid var(--line); padding-top: var(--space-3); }
+  .summary dd { margin: 0; font: var(--text-small-strong); }
+  .links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .identity, .rows code, .rows p { overflow-wrap: break-word; word-break: break-word; }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .rows > li { display: grid; gap: var(--space-3); padding: var(--space-4) 0; border-top: var(--hairline) solid var(--line); min-width: 0; }
+  .rows h4 { font: var(--text-small-strong); }
+  @media (max-width: 720px) { .summary { grid-template-columns: 1fr; } }
+}

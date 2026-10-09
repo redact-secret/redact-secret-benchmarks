@@ -290,6 +290,7 @@ export const PII_AUTHORITY_READERS: readonly { path: string; why: string }[] = [
   { path: 'web/services/pii-authority.ts', why: 'the only reader in the Next app; the PII evaluation asks it, never the file' },
   { path: 'schemas/pii-authority-v1.json', why: 'the JSON schema of the file' },
   { path: 'tests/pii-authority.test.mjs', why: 'the validator tests' },
+  { path: 'tests/pii-coverage-publication.test.mjs', why: 'test-only byte checkpoints prove coverage publication leaves the committed authority untouched; no runtime interpretation or value writes (#864)' },
   { path: 'tests/generated-output.test.mjs', why: 'synthetic negative controls prove generated publication refuses authority targets without reading or writing the committed value (#848)' },
   { path: 'tests/pii-ci-lanes.test.mjs', why: 'the CI plan treats the file as PII migration data, not a legacy input' },
   { path: 'web/tests/unit/', why: 'the service and page tests choose the authority by a committed-shaped file in an overlay root' },

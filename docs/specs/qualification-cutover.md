@@ -136,6 +136,12 @@ and that policy, and the decision it cites exists and is accepted. A repin, a ne
 While the value is `legacy` nothing is asked of `new`, and its block stays in place. Last, only the listed readers may name the file (`AUTHORITY_READERS`): a new reader is a decision, added there and
 to the table below in the same change.
 
+`tests/pii-coverage-publication.test.mjs` is an exact approved test-only reader
+(#864). It copies and hashes the original authority bytes before and after
+coverage publication to prove they are unchanged; it does not interpret the
+value, switch pipelines or write the authority. No production coverage reader
+may use this test exception.
+
 `tests/generated-output.test.mjs` is an approved synthetic negative-control
 reference (#848): it names the authority path only to prove generated-output
 publication rejects that destination. It neither reads nor writes the committed

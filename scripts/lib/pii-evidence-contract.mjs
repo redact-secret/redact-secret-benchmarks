@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { parseEvidenceJson } from './pii-evidence-json.mjs';
 import { validatePiiPopulationPolicy } from './pii-population-policy.mjs';
 import { parseStrictJson, semanticDigest } from '../../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
@@ -87,8 +89,12 @@ export const MAPPED_FAMILIES = {
 
 const runtimeIdentity = pin => ({ ...pin, importedPopulation: CONSUMER_PIN.importedPopulation });
 const familiesOf = value => Array.isArray(value) ? value : [value];
-function reviewedCandidateRuntime(pin) {
-  const registry = parseEvidenceJson(readFileSync(new URL('../../benchmarks/pii-evidence/candidate-runtimes.json', import.meta.url), 'utf8'));
+function reviewedCandidateRuntime(pin, repoRoot) {
+  // A static-export bundler treats a literal file URL as a public asset. Read the
+  // registry through the build's repository root so its bytes stay server-only.
+  const root = repoRoot ?? process.env.WEB_REPO_ROOT ?? (path.basename(process.cwd()) === 'web'
+    ? path.resolve(process.cwd(), '..') : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'));
+  const registry = parseEvidenceJson(readFileSync(path.join(root, 'benchmarks/pii-evidence/candidate-runtimes.json'), 'utf8'));
   if (!closed(registry, ['schema', 'runtimes']) || registry.schema !== 'pii-evidence-reviewed-candidate-runtimes/1' || !Array.isArray(registry.runtimes)) refuse('candidate-runtime-registry-invalid');
   const entry = registry.runtimes.find(runtime => same(runtime.consumerIdentity, runtimeIdentity(pin)));
   if (!entry || !closed(entry, ['schema', 'consumerIdentity', 'buildReceipt', 'mappingKinds']) || entry.schema !== 'pii-evidence-reviewed-candidate-runtime/1' ||
@@ -116,11 +122,11 @@ function reviewedCandidateRuntime(pin) {
         new Set(familiesOf(value)).size !== familiesOf(value).length)) refuse('candidate-runtime-receipt-invalid');
   return entry;
 }
-function validateRuntimePin(pin) {
-  if (!same(runtimeIdentity(pin), CONSUMER_PIN)) reviewedCandidateRuntime(pin);
+function validateRuntimePin(pin, repoRoot) {
+  if (!same(runtimeIdentity(pin), CONSUMER_PIN)) reviewedCandidateRuntime(pin, repoRoot);
 }
-function mappingKindsOf(pin) {
-  return same(runtimeIdentity(pin), CONSUMER_PIN) ? MAPPING_KINDS : reviewedCandidateRuntime(pin).mappingKinds;
+export function mappingKindsOf(pin, { repoRoot } = {}) {
+  return same(runtimeIdentity(pin), CONSUMER_PIN) ? MAPPING_KINDS : reviewedCandidateRuntime(pin, repoRoot).mappingKinds;
 }
 
 export function validateEvidencePins(snapshotPin, consumerPin) {
@@ -143,14 +149,14 @@ export function validateProposedSnapshotPin(pin) {
   return structuredClone(pin);
 }
 
-export function validateProposedConsumerPin(pin, snapshotPin) {
+export function validateProposedConsumerPin(pin, snapshotPin, { repoRoot } = {}) {
   validateProposedSnapshotPin(snapshotPin);
   if (!closed(pin, Object.keys(CONSUMER_PIN)) ||
       !closed(pin.importedPopulation, Object.keys(CONSUMER_PIN.importedPopulation)) ||
       pin.importedPopulation.id !== `pii-evidence-${snapshotPin.snapshot.id.replaceAll('/', '-')}` ||
       pin.importedPopulation.version !== pin.contract?.mapping?.revision || !hex(pin.importedPopulation.digest) || !hex(pin.importedPopulation.bindingDigest))
     refuse('proposed-consumer-pin-invalid');
-  try { validateRuntimePin(pin); } catch { refuse('proposed-consumer-pin-invalid'); }
+  try { validateRuntimePin(pin, repoRoot); } catch { refuse('proposed-consumer-pin-invalid'); }
   return structuredClone(pin);
 }
 
@@ -245,11 +251,11 @@ function validateMappingAccounting(counts, losses) {
 }
 
 export function expectedPreflightReport(policy, { snapshotPin = SNAPSHOT_PIN, consumerPin = CONSUMER_PIN,
-  counts = COUNTS, losses = LOSSES, outputs = IMPORT_OUTPUTS, mappedKinds = MAPPED_KINDS, mappedFamilies = MAPPED_FAMILIES } = {}) {
+  counts = COUNTS, losses = LOSSES, outputs = IMPORT_OUTPUTS, mappedKinds = MAPPED_KINDS, mappedFamilies = MAPPED_FAMILIES, repoRoot } = {}) {
   validatePiiPopulationPolicy(policy);
-  validateProposedConsumerPin(consumerPin, snapshotPin);
+  validateProposedConsumerPin(consumerPin, snapshotPin, { repoRoot });
   validateMappingAccounting(counts, losses);
-  const mappingKinds = mappingKindsOf(consumerPin);
+  const mappingKinds = mappingKindsOf(consumerPin, { repoRoot });
   if (!Array.isArray(mappedKinds) || !same(mappedKinds, [...new Set(mappedKinds)].sort()) ||
       mappedKinds.some(kind => !Object.hasOwn(mappingKinds, kind))) refuse('mapping-kind-unknown');
   const familyKeys = Object.keys(mappedFamilies);
@@ -273,8 +279,8 @@ export function expectedPreflightReport(policy, { snapshotPin = SNAPSHOT_PIN, co
   };
 }
 
-export function validatePreflightReport(report, policy, { snapshotPin = SNAPSHOT_PIN, consumerPin = CONSUMER_PIN } = {}) {
-  const options = { snapshotPin, consumerPin };
+export function validatePreflightReport(report, policy, { snapshotPin = SNAPSHOT_PIN, consumerPin = CONSUMER_PIN, repoRoot } = {}) {
+  const options = { snapshotPin, consumerPin, repoRoot };
   if (!same(snapshotPin, SNAPSHOT_PIN)) {
     options.counts = report.counts; options.losses = report.losses; options.outputs = report.outputs;
     options.mappedKinds = report.mappedKinds; options.mappedFamilies = report.mappedFamilies;

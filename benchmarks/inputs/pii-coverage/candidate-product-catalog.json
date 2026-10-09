@@ -1,0 +1,23 @@
+{
+  "schema": "pii-coverage-product-catalog/1",
+  "repository": "redact-secret/redact-secret",
+  "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
+  "path": "crates/secret-scan-core/src/pii.rs",
+  "sourceSha256": "f120970895d0b1a1bf864e21ab5c5fc1aafbd6baad64e1a49f29a6aebf624ce4",
+  "gitBlob": "b2ede97a8a1398dc30ecd66b1e12b39099513bdc",
+  "symbol": "AVAILABLE_FAMILIES",
+  "lines": {
+    "start": 20,
+    "end": 27
+  },
+  "declaration": "const AVAILABLE_FAMILIES: &[&str] = &[\n    \"pii:global:email\",\n    \"pii:global:iban\",\n    \"pii:global:network-address\",\n    \"pii:global:payment-card\",\n    \"pii:global:phone\",\n    \"pii:us:ssn\",\n];",
+  "families": [
+    "pii:global:email",
+    "pii:global:iban",
+    "pii:global:network-address",
+    "pii:global:payment-card",
+    "pii:global:phone",
+    "pii:us:ssn"
+  ],
+  "meaning": "Closed production family activation catalog. Family declaration does not grant grammar completeness, PHI semantics or support qualification."
+}

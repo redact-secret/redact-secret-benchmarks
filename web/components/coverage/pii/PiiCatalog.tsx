@@ -22,7 +22,7 @@ export function PiiCatalog({ facts, activation, qualification, summary, limitati
         <summary>{item.title}</summary><Note title="Exact activation checks" tone="info"><p>{item.text}</p></Note>
       </details>)}
     </Section>
-    <Note title="Product qualification has not been established" tone="info"><p>{qualification}</p><a href="/evaluation/pii/results/">Qualification, binding and protected execution details</a></Note>
+    <Note title="Product qualification has not been established" tone="info" className={styles.qualificationNote}><p>{qualification}</p><a href="/evaluation/pii/results/">Qualification, binding and protected execution details</a></Note>
     <Section title="Personal-data types in the bound catalog">
       <p data-pii-catalog-summary="true">{summary}</p>
       <p>Declared implementation, public synthetic measurement and product qualification describe separate records. Evidence taxonomy membership does not establish country or PHI support.</p>

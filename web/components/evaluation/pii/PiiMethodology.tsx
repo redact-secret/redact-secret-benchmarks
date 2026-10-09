@@ -15,7 +15,7 @@ export interface PiiMethodologyData {
 
 export function PiiMethodology({ method, qualification, repositories, metricGroups, definitionsHref, policyHref, className }: PiiMethodologyData & { className?: string }) {
   return <div className={cx(styles.methodology, className)}>
-    <Note title="Looking for product capabilities?" tone="info"><p><a href="/coverage/pii/">Open PII coverage</a> for the release-bound catalog, activation settings and limitations.</p></Note>
+    <Note title="Looking for product capabilities?" tone="info" className={styles.coverageNote}><p><a href="/coverage/pii/">Open PII coverage</a> for the release-bound catalog, activation settings and limitations.</p></Note>
     <Section title="Evidence, evaluator and benchmark responsibilities">
       <ul className={styles.repositories}>{repositories.map(repo => <li key={repo.href}><a href={repo.href}>{repo.label}</a><p>{repo.responsibility}</p></li>)}</ul>
     </Section>

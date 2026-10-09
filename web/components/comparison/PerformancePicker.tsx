@@ -1,3 +1,5 @@
+'use client';
+
 import { cx } from '../../lib/cx';
 import { SegmentedNav } from '../nav';
 import { TimingKey } from './TimingTrack';
@@ -31,5 +33,3 @@ export function PerformancePicker({ controls, legend, legendNote, className, onS
     </div>
   );
 }
-'use client';
-

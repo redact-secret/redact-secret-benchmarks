@@ -7,6 +7,7 @@ import { canonical } from '../benchmarks/qualification/canonical.ts';
 import { readRunArtifact, semanticDigestOf, familyCounts } from '../benchmarks/qualification/run-artifact.ts';
 import { validateQualificationView } from '../benchmarks/qualification/view-schema.ts';
 import { statusCriteria } from '../benchmarks/support/status.ts';
+import { decisionRecord } from '../scripts/lib/decision-provenance.mjs';
 import { fixtureProfiles } from '../benchmarks/support/profiles.ts';
 
 // Synthetic only. No test here reads the ledger, a committed artifact or a count from the corpus: a repin or a new
@@ -813,7 +814,9 @@ test('the credential profile is its own scanner, labelled separately from the de
   assert.match(prof.disclosure, /not a more accurate OpenRedaction/);
   assert.match(prof.statement, /not measured in an official run \(local exploratory diagnostics only: see ADR\)/);
   assert.deepEqual(prof.withoutConfigs, {}, 'it is in no official configuration, so there is nothing to leave out');
-  assert.ok(existsSync(new URL(`../${prof.decision}`, import.meta.url)));
+  const provenance = decisionRecord(prof.decision);
+  assert.ok(provenance, 'the unchanged profile locator resolves to validated original decision provenance');
+  assert.equal(provenance.status, 'accepted');
 });
 
 test('a view without the credential profile states that it was not measured in an official run, with no number and no history of the default, and keeps the default labelled (#764)', () => {

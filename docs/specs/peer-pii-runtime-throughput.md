@@ -1,7 +1,7 @@
 # Peer runtime PII-redaction throughput: `peer-pii-runtime-throughput-v1`
 
 Issue: [#429](https://github.com/redact-secret/redact-secret-benchmarks/issues/429).
-Decision: [`2026-09-28-add-peer-runtime-pii-redaction-throughput.md`](../decisions/2026-09-28-add-peer-runtime-pii-redaction-throughput.md).
+Decision: [`2026-09-28-add-peer-runtime-pii-redaction-throughput.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-28-add-peer-runtime-pii-redaction-throughput.md).
 Plan: `qualification/peer-pii-runtime-throughput-v1.json`, schema/validator
 `benchmarks/evaluation/domains/pii/peer-runtime-throughput.ts`. Adapters:
 `scripts/peer-pii-runtime-throughput/adapters.mjs`. Measurement:
@@ -120,7 +120,7 @@ commit in `benchmarks/pin-manifest.json` `pins.redactSecretRevision` (override w
 a branch or tag name is rejected), on a `linux/amd64` base image pinned by digest with Node 22.22.2, Rust 1.90.0 and
 `npm ci` from the lockfile. The wrapper runs the image with `--cpus` fixed and passes the image digest, CPU limit and
 whether the Docker host is emulated. Decisions:
-[`2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md`](../decisions/2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md).
+[`2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md).
 
 The report is `schemaVersion: 2`. `validatePeerRuntimeThroughputReport` requires, beyond the v1 fields,
 `runner.{cpuModel, cpuLimit, emulated, imageDigest}` (`imageDigest` is the image ID, `sha256:<64 hex>`) and

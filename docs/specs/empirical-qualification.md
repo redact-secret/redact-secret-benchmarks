@@ -1,8 +1,8 @@
 # Empirical qualification and safe observation metadata
 
 Issue: [#177](https://github.com/redact-secret/redact-secret-benchmarks/issues/177).
-Decisions: [qualify T2 families empirically](../decisions/2026-09-24-qualify-t2-empirically.md),
-amended by [qualify empirical stable by corroboration](../decisions/2026-09-24-qualify-empirical-stable-by-corroboration.md).
+Decisions: [qualify T2 families empirically](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-qualify-t2-empirically.md),
+amended by [qualify empirical stable by corroboration](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-qualify-empirical-stable-by-corroboration.md).
 
 `benchmarks/support/empirical-observations.json` is the only committed input
 for T2 empirical evidence: one record per T2 family, holding its corroboration

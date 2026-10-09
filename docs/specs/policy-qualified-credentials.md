@@ -1,7 +1,7 @@
 # Policy-qualified T3 credentials
 
 Issue: [#365](https://github.com/redact-secret/redact-secret-benchmarks/issues/365).
-Decision: [Qualify bounded T3 credential policy without changing provenance](../decisions/2026-09-26-qualify-bounded-t3-credential-policy.md).
+Decision: [Qualify bounded T3 credential policy without changing provenance](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-26-qualify-bounded-t3-credential-policy.md).
 
 The machine contract is `benchmarks/support/policy-qualified-credentials.json`,
 validated by `schemas/policy-qualified-credential-v1.json`. It covers exactly

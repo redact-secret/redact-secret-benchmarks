@@ -102,7 +102,7 @@ export const PII_EXIT_CRITERIA: readonly { id: string; basis: CriterionBasis; sc
 /** Criteria that gate the public/synthetic cutover (the protected path never does). */
 export const publicCriteria = <T extends { scope: CriterionScope }>(criteria: readonly T[]): T[] => criteria.filter(c => c.scope === 'public');
 
-const DECISION_PATH = /^docs\/decisions\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$/;
+const DECISION_PATH = /^(?:docs\/decisions\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md|benchmarks\/governance\/authorisations\/[0-9a-z-]+\.json)$/;
 const HEX64 = /^[0-9a-f]{64}$/;
 const HEX40 = /^[0-9a-f]{40}$/;
 const object = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);

@@ -16,6 +16,7 @@ import { execFileSync } from 'node:child_process';
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
+import { decisionRecord, decisionStatus } from './lib/decision-provenance.mjs';
 import { officialRecordExists, officialRecordProblems } from './lib/pii-official-record.mjs';
 import { PII_AUTHORITY_FILE, criteriaDriftProblems, piiAuthorityFreshnessProblems, piiAuthorityShapeProblems, unlistedPiiAuthorityReaders } from '../benchmarks/evaluation/domains/pii/authority.ts';
 
@@ -100,15 +101,15 @@ export async function checkPiiAuthority({ listing } = {}) {
   problems.push(...criteriaDriftProblems(file, computed.state));
   if (file.new.target.engine !== `redact-secret/pii-eval@${computed.engineCommit}`) problems.push(`new.target.engine names ${file.new.target.engine}, the migration record pins ${computed.engineCommit}`);
   if (JSON.stringify(file.new.target.populations) !== JSON.stringify(Object.keys(computed.digests))) problems.push('new.target.populations differ from the four pinned benchmark populations');
-  const oracleDecision = existsSyncText(file.legacy.oracle.decision);
-  if (oracleDecision === undefined) problems.push(`${file.legacy.oracle.decision} does not exist`);
+  const oracleDecision = decisionRecord(file.legacy.oracle.decision);
+  if (oracleDecision === undefined) problems.push(`${file.legacy.oracle.decision} has no validated provenance`);
 
   if (file.authority === 'new') {
     const auth = file.new.authorisation;
-    const decision = auth ? existsSyncText(auth.decision) : undefined;
+    const acceptedStatus = auth ? decisionStatus(auth.decision, { role: 'pii-public-authority', target: auth }) : undefined;
     problems.push(...piiAuthorityFreshnessProblems(file, {
       computed: computed.state, policyDigest: sha256(readFileSync(new URL('qualification/pii-v1.json', root))), engineCommit: computed.engineCommit,
-      populationDigests: computed.digests, target: computed.target, decisionStatus: decision === undefined ? undefined : /^status:\s*(\S+)/m.exec(decision)?.[1],
+      populationDigests: computed.digests, target: computed.target, decisionStatus: acceptedStatus,
     }));
   }
 
@@ -117,8 +118,6 @@ export async function checkPiiAuthority({ listing } = {}) {
   for (const path of unlistedPiiAuthorityReaders(naming)) problems.push(`${path} names ${PII_AUTHORITY_FILE} and is not a listed reader: a reader is a decision, add it to PII_AUTHORITY_READERS and the spec`);
   return problems;
 }
-
-function existsSyncText(path) { try { return text(path); } catch { return undefined; } }
 
 /** Emit a workflow value only after the complete existing authority gate succeeds. */
 export async function validatedPiiAuthority({ check = checkPiiAuthority, read = json } = {}) {

@@ -9,7 +9,7 @@ performance evaluation. Nothing here is a release claim.
 
 This supersedes [`../ec9224d/README.md`](../ec9224d/README.md) as the current measurement. That file stays as history
 and holds the #948 analysis: the 177 changed fixtures, the 55-stable reading before the relabel, and the relabel
-decision [`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](../../../docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md).
+decision [`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md).
 Against `8f97f14`, the changes are the same ones recorded there. Parity: [`../381/README.md`](../381/README.md).
 
 ## Feed-safe re-classification (current)
@@ -61,7 +61,7 @@ maintainer decided it ships in Beta.11.
 - **Review queue:** the same 9,748 candidate ids. `queue:check` passes with no new ledger row.
 - **Public differential:** whole-input and incremental over all 5,001 public fixtures. The digest files of the
   `ec9224d` and `8b6a5fd` builds are byte-identical (SHA-256 `d18cccfb…ee6e`), so 0 fixtures differ. Record:
-  [`../../../docs/reports/2026-09-29-beta11-142-blind-carry-over-8b6a5fd.md`](../../../docs/reports/2026-09-29-beta11-142-blind-carry-over-8b6a5fd.md).
+  [`../../../docs/reports/2026-09-29-beta11-142-blind-carry-over-8b6a5fd.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-29-beta11-142-blind-carry-over-8b6a5fd.md).
 - **Diagnostics:** the candidate rows digest `e319bdf7…` is unchanged. The published report is unchanged in full
   (digest `868315e2…`).
 

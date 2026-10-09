@@ -1,12 +1,13 @@
+import { frozenSourceDigest } from './corpus-source-receipts.mjs';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { AXES, CLAIMS, EVIDENCE, FAMILY_IDS, INEXPRESSIBLE, ROWS, cases, corpusDigest, counts } from '../benchmarks/group-e/corpus-e.mjs';
-import { CASE_IDS, FIXTURE_SETS, SNAPSHOT_TAG } from '../benchmarks/group-e/extract-evidence.mjs';
-import { proposedFreeze, traceability } from '../benchmarks/group-e/build-artifacts.mjs';
-import * as batch2Score from '../benchmarks/batch2/score-r2.mjs';
-import * as groupScore from '../benchmarks/group-e/score-e.mjs';
+import { AXES, CLAIMS, EVIDENCE, FAMILY_IDS, INEXPRESSIBLE, ROWS, cases, corpusDigest, counts } from '../benchmarks/corpora/session-material/corpus-e.mjs';
+import { CASE_IDS, FIXTURE_SETS, SNAPSHOT_TAG } from '../benchmarks/corpora/session-material/extract-evidence.mjs';
+import { proposedFreeze, traceability } from '../benchmarks/corpora/session-material/build-artifacts.mjs';
+import * as batch2Score from '../benchmarks/harness/credential-carriers/score-multispan.mjs';
+import * as groupScore from '../benchmarks/corpora/session-material/score-e.mjs';
 
 // Group E (#754) corpus unit and schema tests. None of them invokes a detector, a scanner, a CLI or the product.
 
@@ -167,7 +168,7 @@ test('era words never justify silence: every assertable row has a positive with 
 });
 
 test('vendor-shaped probes are assembled at run time and only ever observed', () => {
-  const src = readFileSync(file('benchmarks/group-e/corpus-e.mjs'), 'utf8');
+  const src = readFileSync(file('benchmarks/corpora/session-material/corpus-e.mjs'), 'utf8');
   assert.ok(!/AKCp[A-Za-z0-9]{12}/.test(src));
   assert.ok(!/\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b/.test(src));
   assert.ok(!/-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(src));
@@ -192,7 +193,7 @@ test('vendor-shaped probes are assembled at run time and only ever observed', ()
 test('synthetic only: no case text carries a real-looking credential literal', () => {
   const real = [/\bAKIA[0-9A-Z]{16}\b/, /\bgh[pousr]_[A-Za-z0-9]{36}\b/, /\bxox[baprs]-[A-Za-z0-9-]{10,}/, /\bsk_live_[A-Za-z0-9]{10,}/, /\bAIza[0-9A-Za-z_-]{35}\b/, /\bpat[A-Za-z0-9]{14}\.[0-9a-f]{64}\b/];
   for (const c of cases) for (const re of real) assert.ok(!re.test(c.text), `${c.id}: ${re}`);
-  for (const f of ['benchmarks/group-e/corpus-e.mjs', 'benchmarks/group-e/evidence-group-e.json']) {
+  for (const f of ['benchmarks/corpora/session-material/corpus-e.mjs', 'benchmarks/corpora/session-material/evidence-group-e.json']) {
     const text = readFileSync(file(f), 'utf8');
     for (const re of real) assert.ok(!re.test(text), `${f}: ${re}`);
   }
@@ -242,16 +243,16 @@ test('scoring smoke without a detector: an oracle observation is all exact, an e
 });
 
 test('the corpus is deterministic and its digest is the proposed freeze, which is superseded by the frozen manifest', async () => {
-  const again = await import('../benchmarks/group-e/corpus-e.mjs?again');
+  const again = await import('../benchmarks/corpora/session-material/corpus-e.mjs?again');
   assert.equal(again.corpusDigest(), corpusDigest());
-  const proposed = JSON.parse(readFileSync(file('benchmarks/group-e/FROZEN-group-e.json.proposed'), 'utf8'));
+  const proposed = proposedFreeze();
   assert.equal(proposed.status, 'proposed');
   assert.equal(proposed.frozen, false);
   assert.equal(proposed.sha256, corpusDigest());
   assert.equal(proposed.cases, cases.length);
   for (const f of ROWS) assert.equal(proposed.rows[f].total, counts()[f].total);
-  assert.equal(proposed.expectationSources.evidenceInputSha256, sha(readFileSync(file('benchmarks/group-e/evidence-group-e.json'))));
-  assert.equal(existsSync(file('benchmarks/group-e/FROZEN-group-e.json')), true, 'the corpus is frozen');
+  assert.equal(proposed.expectationSources.evidenceInputSha256, sha(readFileSync(file('benchmarks/corpora/session-material/evidence-group-e.json'))));
+  assert.equal(existsSync(file('benchmarks/corpora/session-material/FROZEN-group-e.json')), true, 'the corpus is frozen');
 });
 
 test('the traceability table names a Case, a fixture or the absence of one, and claims for every case', () => {
@@ -265,9 +266,9 @@ test('the traceability table names a Case, a fixture or the absence of one, and 
     if (r.fixture) assert.ok(EVIDENCE.fixtures.some((f) => f.id === r.fixture), `${r.id}: ${r.fixture}`);
     else assert.equal(r.case, 'adobe-jwt-private-key-file-contents-unsettled', r.id);
   }
-  const committed = JSON.parse(readFileSync(file('benchmarks/group-e/traceability-group-e.json'), 'utf8'));
+  const committed = JSON.parse(readFileSync(file('benchmarks/corpora/session-material/traceability-group-e.json'), 'utf8'));
   assert.deepEqual(committed, t);
-  const md = readFileSync(file('benchmarks/group-e/TRACEABILITY.md'), 'utf8');
+  const md = readFileSync(file('benchmarks/corpora/session-material/TRACEABILITY.md'), 'utf8');
   for (const f of ROWS) assert.ok(md.includes(`## \`${f}\``), f);
   for (const i of INEXPRESSIBLE) assert.ok(md.includes(i.id), i.id);
 });
@@ -325,7 +326,7 @@ test('unique inputs per row and kind are in the proposal and the traceability', 
 });
 
 test('Group E is frozen: FROZEN-group-e.json exists, carries the digest and pins the evidence and scorer files', () => {
-  const frozen = JSON.parse(readFileSync(new URL('../benchmarks/group-e/FROZEN-group-e.json', import.meta.url), 'utf8'));
+  const frozen = JSON.parse(readFileSync(new URL('../benchmarks/corpora/session-material/FROZEN-group-e.json', import.meta.url), 'utf8'));
   assert.equal(frozen.frozen, true);
   assert.equal(frozen.status, 'frozen');
   assert.equal(frozen.frozenBeforeAnyScan, true);
@@ -335,5 +336,5 @@ test('Group E is frozen: FROZEN-group-e.json exists, carries the digest and pins
   assert.equal(frozen.evidenceSnapshot.tag, 'snapshot-2026.10.06.5');
   assert.equal(frozen.evidenceSnapshot.commit, '574b52ba367e2071d5a9bea3e2da7a9c5057f633');
   assert.match(frozen.frozenAtCommit, /^[0-9a-f]{40}$/);
-  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(createHash('sha256').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex'), h, f);
+  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(frozenSourceDigest(f), h, f);
 });

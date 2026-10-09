@@ -12,10 +12,10 @@ export interface Fixture {
   id: string; path: string; content: string; expected: ExpectedRange[];
   group: string; assessment: Assessment; detectors?: string[];
   twinOf?: string; mutation?: string; mutationKind?: string; formatReason?: string; issue?: number;
-  /** Beta.8 (#207–#212): targets that are not product detectors (`benchmarks/lib/beta8/`), kept out of
+  /** Beta.8 (#207–#212): targets that are not product detectors (`benchmarks/lib/credential-regressions/`), kept out of
    * `detectors` so the registry-keyed catalog and coverage pages never read them as product families. */
   arrivalTargets?: string[];
-  /** Beta.8: the positive-context axis a positive or twin exercises (`POSITIVE_AXES` in benchmarks/lib/beta8/profiles.ts). */
+  /** Beta.8: the positive-context axis a positive or twin exercises (`POSITIVE_AXES` in benchmarks/lib/credential-regressions/profiles.ts). */
   contextAxis?: string;
   /** Independently authored default-policy outcome for a direct credential literal.
    * This is fixture truth; scanner output must never populate or revise it. */

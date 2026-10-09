@@ -23,7 +23,7 @@ Only the official run record is an official measurement. A replay proves determi
 Run [37559349070](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37559349070) (`develop` `e97a9152`, first and only dispatch, success, about 30 s): the canonical engine binary on linux-x64 (Node v22.23.3), the product commit's qualified `0.1.0-beta.13` package, four populations of 146, 266, 477 and 299 memberships, every
 run `official`, two agreeing scanner replays each, `pii-eval validate` of the public and run artifacts, the production consumer complete under the derived pins. The fresh metric cells equal the exploratory replay's (240 of 240; descriptive, in each receipt entry as `exploratoryParity`). The
 record (`benchmarks/pii-eval-official-run/record.json`), the receipt, the four durable copies and the re-derived pins are written by `scripts/record-pii-official-run.mjs --run-id=<id> --write` and held by `pii:migration:check`
-(`scripts/lib/pii-official-record.mjs`); [decision](../decisions/2026-10-07-record-the-first-official-public-synthetic-pii-run-and-repin-the-four-populations.md). It is evidence: no verdict is accepted from it and PII authority stays `legacy`.
+(`scripts/lib/pii-official-record.mjs`); [decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-07-record-the-first-official-public-synthetic-pii-run-and-repin-the-four-populations.md). It is evidence: no verdict is accepted from it and PII authority stays `legacy`.
 
 ## The candidate identity of a run (resolved with evidence)
 

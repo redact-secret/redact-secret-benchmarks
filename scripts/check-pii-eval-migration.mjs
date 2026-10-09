@@ -1,3 +1,4 @@
+import { retainedPiiPopulationReportProblems } from './lib/retained-pii-population-report.mjs';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
@@ -53,7 +54,10 @@ if (record.acceptance?.benchmarkPopulationDualRun !== 'accepted' || dual?.unexpl
   fail('dual-run acceptance state');
 // The dual-run record: pinned report, sealed schema 1.4 artifacts and counts that add up to the frozen populations.
 if (await digest(dual.report.path) !== dual.report.sha256) fail('dual-run report drift');
-const report = JSON.parse(await readFile(new URL(`../${dual.report.path}`, import.meta.url), 'utf8'));
+const reportBytes = await readFile(new URL(`../${dual.report.path}`, import.meta.url), 'utf8');
+const report = JSON.parse(reportBytes);
+const retainedReport = JSON.parse(await readFile(new URL('../benchmarks/inputs/pii-population-report-receipt.json', import.meta.url), 'utf8'));
+for (const problem of retainedPiiPopulationReportProblems(retainedReport, reportBytes)) fail(problem);
 if (report.reportType !== 'pii-eval-population-dual-run' || report.supportClaims !== false || report.authorityChanged !== false ||
     report.verdict?.unexplainedDifferences !== 0 || report.verdict.reportCountDisagreements !== 0 || report.verdict.bindingsRefused !== true ||
     report.verdict.comparisonDetectsInjectedDifferences !== true || report.verdict.deterministic !== true)

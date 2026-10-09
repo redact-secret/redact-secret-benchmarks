@@ -54,7 +54,7 @@ it is not part of the shadow-scoring measurement.
   exact product and benchmark sources; accepted with no failed checks.
 - Blind run `5ebdef2d-9330-4b07-996f-889856c9fb2c`: `complete`. Its evidence
   class, aggregate and limitations remain separate in the
-  [#142 report](../../docs/reports/2026-09-26-beta9-142-blind-evaluation.md);
+  [#142 report](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-26-beta9-142-blind-evaluation.md);
   no blind count is combined with this public qualification.
 
 ## Results by required question

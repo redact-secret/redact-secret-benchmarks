@@ -42,6 +42,8 @@ const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.js
  * (`benchmarks/evaluation/domains/pii/`, which is the oracle) stays a legacy input.
  */
 export const PII_MIGRATION = [
+  /^benchmarks\/inputs\/pii-population-report-receipt\.json$/,
+  /^scripts\/lib\/retained-pii-population-report\.mjs$/,
   /^benchmarks\/support\/pii-publication-product\.(mjs|d\.mts)$/,
   /^scripts\/pii-evidence-publication\.d\.mts$/,
   /^scripts\/(preflight-pii-evidence|pii-evidence-comparison-plan|run-pii-evidence-comparison|record-pii-evidence-comparison|fetch-pii-evidence-inputs|check-pii-evidence-dispatch|prepare-pii-evidence-adoption|pii-evidence-publication)\.mjs$/,

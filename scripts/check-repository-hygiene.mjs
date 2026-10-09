@@ -4,10 +4,12 @@ import { readFileSync, lstatSync } from 'node:fs';
 import { dirname, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import YAML from 'yaml';
+import { ownerAuthorisationProblems } from './lib/decision-provenance.mjs';
 import { inventoryAt } from './lib/retention-inventory.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const GENERATED = /^(?:evidence\/|docs\/(?:generated|reports)\/)/;
+const GENERATED = /^(?:evidence\/|docs\/(?:generated|reports|decisions)\/)/;
+const SESSION = /(?:^|[/-])(?:beta[.-]?\d+|batch\d+|group-[a-z]|groups-cde|round\d+|issue-\d+)(?:[-./]|$)/i;
 const SCRATCH = /(?:^|\/)(?:node_modules|results-output|\.next|dist|coverage|test-results|playwright-report)\/|(?:\.next|\.tmp|\.log)$/;
 
 export function workflowScriptReferences(text) {
@@ -49,15 +51,38 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
     if (exceptions.has(e.path)) problems.push(`${e.path}: duplicate exception`);
     exceptions.set(e.path, e);
   }
+  const reviews = new Map();
+  for (const row of policy.pathReviews ?? []) {
+    if (typeof row.path !== 'string' || !/^[\w./-]+$/.test(row.path) || row.path.startsWith('/') || row.path.split('/').includes('..') ||
+        !row.owner || !row.rationale || !/^https:\/\/github\.com\/redact-secret\/[\w-]+\/issues\/\d+$/.test(row.issue) ||
+        !['current-contract', 'structured-owner-authorisation', 'required-manual-tool', 'current-runtime', 'historical-reproduction'].includes(row.classification))
+      problems.push(`${row.path ?? 'path review'}: require exact scoped path, owner, issue, rationale and reviewed classification`);
+    if (reviews.has(row.path)) problems.push(`${row.path}: duplicate path review`);
+    reviews.set(row.path, row);
+  }
   const entries = new Map(inventory.entries.map(e => [e.path, e]));
   const paths = new Set(files.map(f => f.path));
+  if (policy.enforcePrunedBaseline) {
+    const scoped = new Set();
+    for (const row of policy.retainedScopes ?? []) {
+      if (!row.owner || !row.rationale || !/^https:\/\/github\.com\/redact-secret\/[\w-]+\/issues\/\d+$/.test(row.issue) || !Array.isArray(row.paths)) problems.push('retainedScopes: require owner, issue, rationale and exact paths');
+      for (const path of row.paths ?? []) {
+        if (!known.has(path) || scoped.has(path)) problems.push(`${path}: retained scope must name one exact baseline path`);
+        scoped.add(path);
+      }
+    }
+    for (const path of known) {
+      if (!paths.has(path)) problems.push(`${path}: prune removed/moved grandfathered baseline entry`);
+      if (!scoped.has(path)) problems.push(`${path}: retained baseline needs a scoped owner/issue review`);
+    }
+  }
   const hasEntrypoint = target => {
     const queue = [target], seen = new Set(queue);
     while (queue.length) {
       for (const c of entries.get(queue.pop())?.callers ?? []) {
         if (!(c.via ?? ['literal-path']).some(v => ['import', 'literal-path'].includes(v))) continue;
-        if (/^(?:tests\/|web\/tests\/|\.github\/workflows\/|README\.md$|docs\/specs\/|(?:web\/)?package\.json$)/.test(c.path)) return true;
-        if (known.has(c.path) && c.active && c.path.startsWith('scripts/')) return true;
+        if (/^(?:\.github\/workflows\/|(?:web\/)?package\.json$)/.test(c.path)) return true;
+        if (['current-runtime', 'required-manual-tool'].includes(reviews.get(c.path)?.classification) && c.active && c.path.startsWith('scripts/')) return true;
         if (!seen.has(c.path) && c.active) { seen.add(c.path); queue.push(c.path); }
       }
     }
@@ -66,13 +91,25 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
   for (const f of files) {
     if (SCRATCH.test(f.path)) problems.push(`${f.path}: regenerable scratch belongs in ignored results-output/`);
     const exception = exceptions.get(f.path);
+    const review = reviews.get(f.path);
+    if (f.path.startsWith('docs/decisions/'))
+      problems.push(`${f.path}: dated decision history belongs in the linked issue/archive; current contracts go in docs/specs/ and owner authorisations in benchmarks/governance/authorisations/`);
+    if (f.path.startsWith('benchmarks/governance/authorisations/')) {
+      if (!review || review.classification !== 'structured-owner-authorisation')
+        problems.push(`${f.path}: structured owner authorisation needs an exact reviewed path, owner and issue; hygiene never supplies owner approval`);
+      try { for (const error of ownerAuthorisationProblems(JSON.parse(f.text ?? ''))) problems.push(`${f.path}: ${error}`); }
+      catch { problems.push(`${f.path}: owner authorisation must be schema-valid structured JSON`); }
+    }
+    if (SESSION.test(f.path.startsWith('scripts/') ? f.path : posix.dirname(f.path)) && ((f.path.startsWith('scripts/') && !review) || (!known.has(f.path) && !review && !exception)))
+      problems.push(`${f.path}: session-named path needs role review with an owner/issue; stable identifiers and seeds may remain inside a justified current contract`);
+
     if (GENERATED.test(f.path) && !known.has(f.path) && !exception)
       problems.push(`${f.path}: new retained output needs a scoped owner/issue/expiry exception; otherwise use results-output/`);
     const max = exception?.maxBytes ?? large.get(f.path) ?? policy.maxNewPayloadBytes;
     if (f.size > max) problems.push(`${f.path}: ${f.size} bytes exceeds ${max}; preserve externally or review a size exception`);
     if (f.path.startsWith('scripts/') && /\.(?:[cm]?[jt]s|py|sh)$/.test(f.path) && !known.has(f.path) && !exception) {
-      if (!hasEntrypoint(f.path))
-        problems.push(`${f.path}: orphan script; wire it into a command/workflow/test or document its manual entrypoint`);
+      if (!hasEntrypoint(f.path) && review?.classification !== 'required-manual-tool' && review?.classification !== 'current-runtime')
+        problems.push(`${f.path}: orphan script; wire it into an active command/workflow or classify an exact required manual tool; tests and historical prose are not execution roots`);
     }
     if (f.path.startsWith('.github/workflows/') && !exception) {
       try {
@@ -83,6 +120,7 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
       } catch { problems.push(`${f.path}: invalid workflow YAML`); }
     }
   }
+  for (const row of policy.pathReviews ?? []) if (!paths.has(row.path)) problems.push(`${row.path}: path review names a missing tracked file`);
   for (const e of policy.exceptions) if (!paths.has(e.path)) problems.push(`${e.path}: exception names a missing tracked file`);
   if (archive && (archive.schema !== 'redact-secret/retention-archive/v1' || !/^[a-f0-9]{40}$/.test(archive.sourceCommit) || !/^hygiene-[a-z0-9-]+$/.test(archive.retainedTag) || !/^[a-f0-9]{40}$/.test(archive.tagObject)))
     problems.push('retention-archive.json: broken retained source/tag identity');
@@ -111,7 +149,7 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const paths = execFileSync('git', ['ls-files', '-z'], { cwd: root }).toString().split('\0').filter(Boolean);
-  const files = paths.map(path => ({ path, size: lstatSync(resolve(root, path)).size, ...(path.startsWith('.github/workflows/') ? { text: readFileSync(resolve(root, path), 'utf8') } : {}) }));
+  const files = paths.map(path => ({ path, size: lstatSync(resolve(root, path)).size, ...((path.startsWith('.github/workflows/') || path.startsWith('benchmarks/governance/authorisations/')) ? { text: readFileSync(resolve(root, path), 'utf8') } : {}) }));
   const json = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
   const problems = hygieneProblems({ files, policy: json('docs/retention/policy.json'), inventory: inventoryAt(root), archive: json('docs/retention/archive.json'), removals: json('docs/retention/removals.json'), today: new Date().toISOString().slice(0, 10) });
   if (problems.length) { console.error(problems.join('\n')); process.exitCode = 1; }

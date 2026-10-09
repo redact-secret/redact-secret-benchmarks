@@ -2,7 +2,7 @@
 
 Issue: [#607](https://github.com/redact-secret/redact-secret-benchmarks/issues/607), part of epic
 [#602](https://github.com/redact-secret/redact-secret-benchmarks/issues/602).
-Decision: [Compare the legacy and the new qualification by attributed difference](../decisions/2026-10-01-compare-the-legacy-and-new-qualification-by-attributed-difference.md).
+Decision: [Compare the legacy and the new qualification by attributed difference](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-01-compare-the-legacy-and-new-qualification-by-attributed-difference.md).
 Inputs: [official-runs.md](official-runs.md), [qualification-adapter.md](qualification-adapter.md).
 Output: `docs/generated/qualification-parity.json` and `.md`. Cutover criteria: [qualification-cutover.md](qualification-cutover.md).
 
@@ -47,7 +47,7 @@ narrows the pattern but the root cause has not been confirmed with the owner (li
 | `legacy-id-rekey` | Legacy fixture, ledger and disputed-property ids do not resolve to canonical ids until the re-key. |
 | `twin-scope-vocabulary` | A twin is scoped by the product contract in the legacy lattice and by the case family in the evidence snapshot, so the twin can belong to another family and its flagged or co-detected verdict can differ. Confirmed (#641): the project twin-scope corpus carries the same bytes with the parent's family and the engine reads them as co-detected, as the legacy path did; the public engine verdict on the unscoped copy remains a reported difference and the twin gate reads the project case. |
 | `pending-not-scored` | A T0 non-twin fixture has no scored outcome in credential-eval and is excluded from floor counts; the legacy path counted it. A T0 twin is not counted by either side (the legacy lattice drops it). |
-| `canonical-evidence-membership` | The snapshot holds fixtures with no legacy counterpart (an intended canonical-evidence change). It also attributes a methods-run figure (a family's unresolved differential disagreements, metamorphic critical failures or unresolved mutation findings, and a gate peer's review-occurrence count) when the residual equals exactly the unsettled gate occurrences, or the failed reference assertions, of the cases the legacy join leaves unmatched; nothing is settled by it ([ADR](../decisions/2026-10-04-attribute-methods-gate-evidence-of-added-cases-to-canonical-evidence-membership.md), #680). |
+| `canonical-evidence-membership` | The snapshot holds fixtures with no legacy counterpart (an intended canonical-evidence change). It also attributes a methods-run figure (a family's unresolved differential disagreements, metamorphic critical failures or unresolved mutation findings, and a gate peer's review-occurrence count) when the residual equals exactly the unsettled gate occurrences, or the failed reference assertions, of the cases the legacy join leaves unmatched; nothing is settled by it ([ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-04-attribute-methods-gate-evidence-of-added-cases-to-canonical-evidence-membership.md), #680). |
 | `fixture-attribution` | The legacy path attributed a fixture by its declared contract and targets; the adapter by targets, family or taxonomy family. Inferred. |
 
 A T2 to project-policy reclassification alone is never a cause (#607): the route is read from the product overlays, not from

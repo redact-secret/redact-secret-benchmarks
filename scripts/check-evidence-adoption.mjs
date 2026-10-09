@@ -11,13 +11,14 @@ import { existsSync, readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { freshnessProblems } from './adoption-report-sync.mjs';
 import { acceptanceSelectionProblems } from './acceptance-roster.mjs';
+import { decisionStatus, evidenceAdoptionTarget } from './lib/decision-provenance.mjs';
 
 const root = new URL('../', import.meta.url);
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const readJson = path => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 
 /** Pure: `pin` is the floors population pin of benchmarks/qualification-inputs.json; `exists(path)` tells whether a repo file exists; `read(path)` returns a repo file's text (only the prepared acceptance is checked through it). */
-export function evidenceAdoptionProblems(record, { pin, exists, read, roster }) {
+export function evidenceAdoptionProblems(record, { pin, exists, read, roster, acceptedDecision = exists }) {
   const problems = [];
   if (record.schema !== 'redact-secret/evidence-adoption/v1') problems.push('schema must be redact-secret/evidence-adoption/v1');
   if (!['none', 'candidate', 'accepted'].includes(record.state)) { problems.push('state must be none, candidate or accepted'); return problems; }
@@ -36,7 +37,7 @@ export function evidenceAdoptionProblems(record, { pin, exists, read, roster }) 
   } else {
     if (!isPin || c.manifestDigest !== pin.manifestDigest || c.snapshotDigest !== pin.snapshotDigest) problems.push('an accepted adoption must be the active pin (release, manifest digest, snapshot digest)');
     const a = c.ownerAcceptance;
-    if (!a?.acceptedBy || !/^\d{4}-\d{2}-\d{2}$/.test(a?.acceptedOn ?? '') || !a?.decision || !exists(a.decision)) problems.push('an accepted adoption needs ownerAcceptance { acceptedBy, acceptedOn, decision (an existing docs/decisions file) }');
+    if (!a?.acceptedBy || !/^\d{4}-\d{2}-\d{2}$/.test(a?.acceptedOn ?? '') || !a?.decision || !acceptedDecision(a.decision)) problems.push('an accepted adoption needs ownerAcceptance { acceptedBy, acceptedOn, decision (validated accepted provenance) }');
   }
   return problems;
 }
@@ -110,7 +111,7 @@ export function evidenceCandidateProblems(record, { pin, exists, read, productCa
 export function checkEvidenceAdoption() {
   const inputs = readJson('benchmarks/qualification-inputs.json');
   const record = readJson('benchmarks/evidence-adoption.json');
-  const context = { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8'), productCandidates: readJson('benchmarks/product-candidates.json'), roster: readJson('benchmarks/support/scanner-roster.json') };
+  const context = { acceptedDecision: p => decisionStatus(p, { role: 'evidence-adoption', target: evidenceAdoptionTarget(record.candidate) }) === 'accepted', pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8'), productCandidates: readJson('benchmarks/product-candidates.json'), roster: readJson('benchmarks/support/scanner-roster.json') };
   return [...evidenceAdoptionProblems(record, context), ...engineCandidateProblems(record, context), ...evidenceCandidateProblems(record, context)];
 }
 

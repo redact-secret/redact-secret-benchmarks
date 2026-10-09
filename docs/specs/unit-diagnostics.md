@@ -1,7 +1,7 @@
 # Unit-safe diagnostics and verified sanitized output
 
 Status: **proposed (2026-09-28), #380.** Decision record:
-[`decisions/2026-09-28-report-unit-safe-diagnostics-and-verified-output.md`](../decisions/2026-09-28-report-unit-safe-diagnostics-and-verified-output.md).
+[`decisions/2026-09-28-report-unit-safe-diagnostics-and-verified-output.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-28-report-unit-safe-diagnostics-and-verified-output.md).
 Schema: [`schemas/unit-diagnostics-v1.json`](../../schemas/unit-diagnostics-v1.json).
 Code: `benchmarks/lib/unit-diagnostics.ts` (pure scoring and invariants),
 `benchmarks/unit-diagnostics.ts` (runner), `benchmarks/lib/unit-diagnostics-report.ts`
@@ -130,10 +130,10 @@ Adding fixtures (e.g. #379) changes the identity: `--check` then says
 
 ```sh
 # published package (package-lock.json pin)
-npm run eval:diagnostics -- --out=docs/reports/<date>-unit-diagnostics-published
+npm run eval:diagnostics -- --out=results-output/unit-diagnostics/<date>-published
 
 # exact candidate build (e.g. the artifacts `npm run benchmark:candidate` leaves in its output dir)
-npm run eval:diagnostics -- --out=docs/reports/<date>-unit-diagnostics-candidate \
+npm run eval:diagnostics -- --out=results-output/unit-diagnostics/<date>-candidate \
   --candidate-package=<core.tgz> --candidate-node-package=<node.tgz> \
   --candidate-wasm-package=<wasm.tgz> --candidate-source-commit=<40-hex>
 

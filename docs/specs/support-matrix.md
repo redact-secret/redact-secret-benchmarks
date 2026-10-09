@@ -92,7 +92,7 @@ adapter labels by finding type; 16 registered detectors emit several types, and 
 
 Sources are `benchmarks/detector-finding-types.json` (the core's `docs/coverage/detector-inventory.json` at one recorded
 revision, `findingTypeSource` in the matrix) and the reviewed `arrivalFindingTypes` table
-([decision](../decisions/2026-09-24-map-product-finding-types-to-arrival-families.md)). Fixture content and scanner output
+([decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-map-product-finding-types-to-arrival-families.md)). Fixture content and scanner output
 are not sources. At the Beta.12 revision `4227160c` all 129 detector-bearing rows are grounded (104 sole, 25 table, 23
 remainder) and the 141 finding types are all owned by some row; no row is unset. Rows that share a detector carry the same
 remainder. Refresh the snapshot with `node scripts/refresh-detector-finding-types.mjs --core=<checkout> --revision=<sha>`

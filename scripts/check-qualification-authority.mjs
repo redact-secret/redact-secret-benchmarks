@@ -12,6 +12,7 @@ import { execFileSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
+import { decisionRecord, decisionStatus } from './lib/decision-provenance.mjs';
 import { AUTHORITY_FILE, authorityFreshnessProblems, authorityShapeProblems, unlistedReaders } from '../benchmarks/qualification/authority.ts';
 
 const root = new URL('../', import.meta.url);
@@ -44,24 +45,24 @@ export async function checkQualificationAuthority({ listing } = {}) {
   if (file.authority === 'new') {
     const { loadPolicyRevision } = await import('../benchmarks/qualification/inputs.ts');
     const registry = await readJson('benchmarks/official-runs.json');
-    const decisionText = await readText(file.new.decision).catch(() => undefined);
+    const acceptedStatus = decisionStatus(file.new.decision, { role: 'credential-authority', target: file.new });
     const exit = file.legacy.oracle.exit;
-    const exitText = exit ? await readText(exit.decision).catch(() => undefined) : undefined;
+    const exitStatus = exit ? decisionStatus(exit.decision, { role: 'credential-oracle-exit', target: exit }) : undefined;
     const [rehearsalPath, rehearsalAnchor] = exit ? exit.rollbackRehearsal.split('#') : [];
     const rehearsalText = exit ? await readText(rehearsalPath).catch(() => undefined) : undefined;
     problems.push(...authorityFreshnessProblems(file, {
       policyRevision: (await loadPolicyRevision()).revision,
       runs: registry.runs.map(r => ({ id: r.id, canonical: r.canonical === true, semanticDigest: r.artifact?.semanticDigest })),
       parity: await readJsonIfPresent(file.new.parityReport),
-      decisionStatus: decisionText === undefined ? undefined : /^status:\s*(\S+)/m.exec(decisionText)?.[1],
+      decisionStatus: acceptedStatus,
       ...(exit ? {
-        exitDecisionStatus: exitText === undefined ? undefined : /^status:\s*(\S+)/m.exec(exitText)?.[1],
+        exitDecisionStatus: exitStatus,
         exitRehearsalPresent: rehearsalText !== undefined && rehearsalText.split('\n').some(l => /^#{1,6}\s/.test(l) && headingAnchor(l) === rehearsalAnchor),
       } : {}),
     }));
   }
-  const oracleDecision = await readText(file.legacy.oracle.decision).catch(() => undefined);
-  if (oracleDecision === undefined) problems.push(`${file.legacy.oracle.decision} does not exist`);
+  const oracleDecision = decisionRecord(file.legacy.oracle.decision);
+  if (oracleDecision === undefined) problems.push(`${file.legacy.oracle.decision} has no validated provenance`);
 
   const tracked = listing ?? execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).split('\0').filter(Boolean);
   const naming = filesNamingTheAuthorityFile(tracked, path => { try { return readFileSyncUtf8(path); } catch { return undefined; } });

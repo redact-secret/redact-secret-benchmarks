@@ -1,0 +1,631 @@
+{
+  "schema": "redact-secret/command-dispositions/v1",
+  "sourceCommit": "40809e8ce53eb94509d3b6bb3ae877ca8d4021f4",
+  "issue": 876,
+  "entries": [
+    {
+      "path": "scripts/report-beta8-profiles.mjs",
+      "sha256": "84bf2ff54439232b2d1326416e629404c9b2b737f81a6e0e40c357db92436233",
+      "bytes": 2872,
+      "disposition": "current-fixture-profile",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/specs/qualification-cutover.md",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "package.json",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "tests/beta10-corpus.test.mjs",
+          "kind": "test-only"
+        },
+        {
+          "path": "tests/beta11-434-corpus.test.mjs",
+          "kind": "test-only"
+        },
+        {
+          "path": "tests/beta11-tier-b-corpus.test.mjs",
+          "kind": "test-only"
+        },
+        {
+          "path": "tests/beta12-1012-corpus.test.mjs",
+          "kind": "test-only"
+        },
+        {
+          "path": "tests/beta12-464-corpus.test.mjs",
+          "kind": "test-only"
+        },
+        {
+          "path": "tests/beta12-528-corpus.test.mjs",
+          "kind": "test-only"
+        }
+      ],
+      "currentPath": "scripts/report-fixture-profiles.mjs",
+      "manualRequirement": "npm fixtures:profiles reads current generator/assignment/control-axis floors; no measurement"
+    },
+    {
+      "path": "scripts/report-groups-cde-r4.mjs",
+      "sha256": "6e3b505eb0a2791b61af9d3a0699dee90953bc2c48fddb2efe68345a75cabe75",
+      "bytes": 7003,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round4-published-beta14/identity.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/groups-cde/round4-published-beta14/report.md",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-final.mjs",
+          "kind": "runtime-import"
+        }
+      ]
+    },
+    {
+      "path": "scripts/produce-beta10-release-record.mjs",
+      "sha256": "d17de696840f65f8a8c9aa7a4c24c17a27b5f96bd7094c895b4983584c413d37",
+      "bytes": 1032,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/decisions/2026-09-27-bind-the-beta10-cross-domain-release-record.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/specs/evaluation-report-storage.md",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "scripts/produce-release-record.mjs",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "tests/produce-beta10-release-record.test.mjs",
+          "kind": "test-only"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-groups-cde-r4-controls.mjs",
+      "sha256": "8d56df47a142d29e9071e5df6b99e64d5e4d3ad3f776f9963337d8af2435af3e",
+      "bytes": 4613,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round4-published-beta14/report.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "scripts/render-groups-cde-final.mjs",
+          "kind": "manual-or-documentation"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-groups-cde-r3.mjs",
+      "sha256": "ff4766b461ba9353c2dcf98131e2545d18da2568033a7182f2f121c9b2fa9fb4",
+      "bytes": 10254,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round3/report.md",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-r3-report.mjs",
+          "kind": "runtime-import"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-groups-cde-r2.mjs",
+      "sha256": "852d8ec9b5756f63b32ec36254b8ed10f1539328dfcd67e77d03a4acff6d5cd7",
+      "bytes": 9737,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round2/report.md",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-r2-report.mjs",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-r3-report.mjs",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/report-groups-cde-r3.mjs",
+          "kind": "runtime-import"
+        }
+      ]
+    },
+    {
+      "path": "scripts/render-groups-cde-r3-report.mjs",
+      "sha256": "394c42ad44347e15c6645674e92f9f0e01d8d6529148e204dd79f9dfcf35a1ce",
+      "bytes": 27429,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round3/report.md",
+          "kind": "historical-reproduction"
+        }
+      ]
+    },
+    {
+      "path": "scripts/render-groups-cde-report.mjs",
+      "sha256": "3d42a1793798234a324c8ab37c114e7caf0f37e1134feac8083a174f9b5a2d72",
+      "bytes": 28740,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round1/report.md",
+          "kind": "historical-reproduction"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-groups-cde.mjs",
+      "sha256": "cbd584d45b3a861978f239cafd1920f4f3e2697a8d144860cdd1a35f51fb73a3",
+      "bytes": 8596,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round1/report.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "scripts/render-groups-cde-report.mjs",
+          "kind": "manual-or-documentation"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-batch1.mjs",
+      "sha256": "fa0c4fbe5768264a6e3184b81b506b2a0db5ce4e2f10a5e2fcddac68e98c1624",
+      "bytes": 7272,
+      "disposition": "reusable-reporting",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/specs/batch1-focused-qualification.md",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/717/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/717/report.md",
+          "kind": "historical-reproduction"
+        }
+      ],
+      "currentPath": "scripts/report-focused-corpus.mjs",
+      "manualRequirement": "Parameterised corpus/scorer and exact recorded product identities; scratch output only"
+    },
+    {
+      "path": "scripts/batch2-readiness.mjs",
+      "sha256": "a7fe7645419284858e94236314de486166d63724e1796d605fb173f8ec6ff53a",
+      "bytes": 8818,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/739/readiness.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/739/readiness.md",
+          "kind": "runtime-import"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-batch2-r3.mjs",
+      "sha256": "3f802ca881bac6e01885de16b0e5f4c7ba9b1c6c7d8fd80b3aafbf1e635ed0fd",
+      "bytes": 21453,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/739/README.md",
+          "kind": "historical-reproduction"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-batch2.mjs",
+      "sha256": "dc17ef66578d65b32d4e5aab8135522fcb82444059509d5251387774bc0dddb4",
+      "bytes": 16258,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/739/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "scripts/batch2-readiness.mjs",
+          "kind": "manual-or-documentation"
+        }
+      ]
+    },
+    {
+      "path": "scripts/report-batch2-r2.mjs",
+      "sha256": "c2872f33958803bfb3f59d380414808bc6716015e246d249b02b40dd6a72ecc3",
+      "bytes": 17059,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/739/README.md",
+          "kind": "historical-reproduction"
+        }
+      ]
+    },
+    {
+      "path": "scripts/render-groups-cde-final.mjs",
+      "sha256": "6901e1066055467856c6b2a91dbe50d404e57a43334f890f6a3e9bc245f7b0b2",
+      "bytes": 40222,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/retention/removals.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/752/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/753/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/754/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/groups-cde/round4-published-beta14/report.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "tests/groups-cde-final.test.mjs",
+          "kind": "test-only"
+        }
+      ]
+    },
+    {
+      "path": "scripts/generate-pii-beta11-population-v2.mjs",
+      "sha256": "4bffb1dc9381eb2be97ba6c5220c37feb95848a26faa6efaa8db7eddeccea3dd",
+      "bytes": 839,
+      "disposition": "current-population-contract-generator",
+      "callers": [
+        {
+          "path": "docs/generated/pii-legacy-inventory.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "package.json",
+          "kind": "runtime-import"
+        }
+      ],
+      "manualRequirement": "npm pii:beta11:plans generates authored b11/v2 compatibility plan contract; frozen IDs remain protocol names"
+    },
+    {
+      "path": "scripts/measure-batch1.mjs",
+      "sha256": "45f1d0eaef519a70cc6fd1b95543dbdef774445b4b4f31a343619061e30cf686",
+      "bytes": 7580,
+      "disposition": "reusable-measurement",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/specs/batch1-focused-qualification.md",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/717/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/739/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/752/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/753/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/754/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/groups-cde/round1/report.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/groups-cde/round2/report.md",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "evidence/groups-cde/round3/report.md",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "evidence/groups-cde/round4-published-beta14/identity.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/groups-cde/round4-published-beta14/report.md",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-final.mjs",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-r2-report.mjs",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-r3-report.mjs",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/render-groups-cde-report.mjs",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "scripts/report-batch1.mjs",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "scripts/report-groups-cde.mjs",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "tests/batch1.test.mjs",
+          "kind": "test-only"
+        }
+      ],
+      "currentPath": "scripts/measure-focused-corpus.mjs",
+      "manualRequirement": "Whole/stream, UTF-8 spans, arbitrary fixed corpus and node/wasm/python/CLI product bindings; never scanner peers or support qualification"
+    },
+    {
+      "path": "scripts/render-groups-cde-r2-report.mjs",
+      "sha256": "9c057bd95c384aa82a6e87fd8e7b7d9b1dfee743f3f75f353a07cea6f6754637",
+      "bytes": 23262,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round2/report.md",
+          "kind": "historical-reproduction"
+        }
+      ]
+    },
+    {
+      "path": "scripts/triage-groups-cde.mjs",
+      "sha256": "8be1209b85321069830046c9f76a2e2de1edd7c4538afca50b451fe1d86ac950",
+      "bytes": 6190,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round1/report.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "scripts/render-groups-cde-report.mjs",
+          "kind": "manual-or-documentation"
+        }
+      ]
+    },
+    {
+      "path": "scripts/pii-beta11-protected.mjs",
+      "sha256": "cfc613fe7de7b296bdb11e553da378be6ef3ad03f16d87474ce54a16852d9bae",
+      "bytes": 17630,
+      "disposition": "required-custodian-tool",
+      "callers": [
+        {
+          "path": "docs/generated/pii-legacy-inventory.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/901/428/final-core-8b6a5fde.md",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "package.json",
+          "kind": "runtime-import"
+        }
+      ],
+      "manualRequirement": "npm pii:beta11:protected validates/seals/runs/custodian dispositions on private holdout; independent owner controls, no public authority claim"
+    },
+    {
+      "path": "scripts/attribute-groups-cde.mjs",
+      "sha256": "22bbf4a930eec58612a90841fe1959e2f3eae5ecfc2638846432fb02fddaf92f",
+      "bytes": 3537,
+      "disposition": "archived-historical-writer",
+      "callers": [
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/groups-cde/round1/report.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "scripts/render-groups-cde-report.mjs",
+          "kind": "manual-or-documentation"
+        }
+      ]
+    },
+    {
+      "path": "scripts/pii-beta11.mjs",
+      "sha256": "b4a6d324950eea4dd6e37d86c81fa39c8f69a7fcc982e5b8070ea683caf54092",
+      "bytes": 35505,
+      "disposition": "bounded-pii-oracle",
+      "callers": [
+        {
+          "path": "benchmarks/evaluation/domains/pii/beta11-disposition.ts",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/generated/pii-legacy-inventory.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "docs/retention/policy.json",
+          "kind": "manual-or-documentation"
+        },
+        {
+          "path": "evidence/901/428/README.md",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-1127bf913237/pii-beta11-freeze-v2.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-1db8ff38b16e/pii-beta11-freeze-v2.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-401158d09a67/pii-beta11-freeze-v2.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-79c0a66119fb/pii-beta11-freeze-v1.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-79c0a66119fb/pii-beta11-freeze-v2.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-8b6a5fde52ec/pii-beta11-freeze-v2.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-8f97f14d97d7/pii-beta11-freeze-v2.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "evidence/901/428/core-ec9224d97430/pii-beta11-freeze-v2.json",
+          "kind": "historical-reproduction"
+        },
+        {
+          "path": "package.json",
+          "kind": "runtime-import"
+        },
+        {
+          "path": "scripts/pii-beta11-protected.mjs",
+          "kind": "manual-or-documentation"
+        }
+      ],
+      "manualRequirement": "npm pii:beta11 remains bounded oracle/candidate binding pending #851 exit; not new public engine authority"
+    }
+  ],
+  "archive": {
+    "sourceCommit": "40809e8ce53eb94509d3b6bb3ae877ca8d4021f4",
+    "asset": "historical-command-source-and-inputs-876-v1.tar.gz",
+    "sha256": "d601d8bcdf042f8cb77a2f841daff3f92bd2981401ff89137b3ffc18205220fd",
+    "bytes": 1865783,
+    "verifiedMembers": 110,
+    "verifiedAt": "2026-10-09T01:36:21.540101+00:00",
+    "accessClass": "committed public synthetic observations and metadata; no matched text; no private/holdout inputs",
+    "preservationTag": "hygiene-records-before-removal-872-20261008",
+    "retrievedIndependently": true,
+    "tagObject": "53bfce455a48fabd76d070af9c27e518f024367b",
+    "downloadUrl": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-command-source-and-inputs-876-v1.tar.gz"
+  },
+  "restoreRecipe": [
+    "Download the archive from archive.downloadUrl and verify archive.sha256 before extraction.",
+    "Extract into an isolated ignored directory; compare every MANIFEST.json member SHA256 and byte length with the original sourceCommit.",
+    "To execute a historical command, restore the advertised preservationTag source and original corpus/scorer modules, observations and product artifacts on the recorded platform. Never invoke removed scripts against current HEAD or current pins.",
+    "For report preservation use exact accepted archive bytes; regeneration is never required to recover a report."
+  ]
+}

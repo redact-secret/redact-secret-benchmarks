@@ -35,13 +35,14 @@ import { b11FreezeFiles, B11_BASELINE_879, b11ProtectedEpochs, buildB11Report, b
 import { PII_PRODUCT_IDENTITY_FORMAT, PII_ORACLE_PLANS } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
 import { piiArrivalCommitment } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
 import { packLockfileRelease } from './observe-pii-populations.mjs';
 
 const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const args = Object.fromEntries(process.argv.slice(2).map(argument => {
-  const match = /^--(core-commit|core-repo|role|work|samples|plan-set|rescore)=(.+)$/.exec(argument);
+  const match = /^--(core-commit|core-repo|role|work|samples|plan-set|rescore|out-dir|promote-freeze)=(.+)$/.exec(argument);
   if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2]];
 }));
 if (!/^[0-9a-f]{40}$/.test(args['core-commit'] ?? '') || !path.isAbsolute(args['core-repo'] ?? '') || !['interim', 'final'].includes(args.role))
@@ -55,13 +56,14 @@ const commit = args['core-commit'], sha12 = commit.slice(0, 12);
 const workRoot = path.resolve(args.work ?? path.join(root, 'results-output/pii-beta11'));
 const work = path.join(workRoot, `core-${sha12}`);
 const evidenceDir = path.join(root, 'evidence/901/428', `core-${sha12}`);
+const outputDir = measurementOutput(args['out-dir'] ?? path.join(root, 'results-output/pii-oracle', `core-${sha12}`, `${Date.now()}`), root, {directory: true});
 const freezeFile = path.join(evidenceDir, `pii-beta11-freeze-${fileVersion}.json`);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const fileSha256 = async file => sha256(await readFile(file));
 const run = async (command, argv, options = {}) => (await exec(command, argv, { maxBuffer: 64 * 1024 * 1024, timeout: 30 * 60_000,
   ...options, env: { ...process.env, npm_config_update_notifier: 'false', ...(options.env ?? {}) } })).stdout;
 const git = (...argv) => run('git', argv, { cwd: root }).then(value => value.trim());
-const writeJson = async (file, value) => { await mkdir(path.dirname(file), { recursive: true }); await writeFile(file, `${JSON.stringify(value, null, 2)}\n`); };
+const writeJson = async (file, value) => { await mkdir(path.dirname(file), { recursive: true }); writeMeasurement(file, `${JSON.stringify(value, null, 2)}\n`); };
 const nodePackage = () => ({ 'darwin-arm64': 'darwin-arm64', 'darwin-x64': 'darwin-x64', 'linux-x64': 'linux-x64-gnu', 'linux-arm64': 'linux-arm64-gnu' })[`${process.platform}-${process.arch}`];
 
 async function payloads(tarball) {
@@ -200,17 +202,18 @@ async function freeze() {
   };
   value.protectedEpochs = b11ProtectedEpochs(value);
   value.freezeCommitment = b11Commitment({ ...value, freezeCommitment: undefined });
-  await writeJson(freezeFile, value);
-  console.log(`Wrote ${path.relative(root, freezeFile)} (${value.freezeCommitment}). Commit it, then run the same command again to measure.`);
+  const prepared = path.join(outputDir, `pii-beta11-freeze-${fileVersion}.json`);
+  await writeJson(prepared, value);
+  console.log(`Prepared ${path.relative(root, prepared)} (${value.freezeCommitment}). Review it, then explicitly --promote-freeze=<prepared file> into a new accepted path and commit before measuring.`);
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 // Phase 2: verify and measure
 // ---------------------------------------------------------------------------------------------------------------
-async function verifyFreeze() {
-  if (await git('status', '--porcelain')) throw new Error('benchmark tree is not clean; measure only from the committed freeze');
-  await git('ls-files', '--error-unmatch', path.relative(root, freezeFile));
-  const frozen = JSON.parse(await readFile(freezeFile, 'utf8'));
+async function verifyFreeze({ preparedFile = freezeFile, requireCommitted = true } = {}) {
+  if (requireCommitted && await git('status', '--porcelain')) throw new Error('benchmark tree is not clean; measure only from the committed freeze');
+  if (requireCommitted) await git('ls-files', '--error-unmatch', path.relative(root, freezeFile));
+  const frozen = JSON.parse(await readFile(preparedFile, 'utf8'));
   if (frozen.freezeCommitment !== b11Commitment({ ...frozen, freezeCommitment: undefined }) || frozen.candidate.sourceCommit !== commit ||
       b11PlanSetOf(frozen) !== planSet)
     throw new Error('freeze commitment mismatch');
@@ -230,7 +233,7 @@ async function verifyFreeze() {
   }
   const example = path.join(work, 'bin', 'pii_identity_evaluation');
   if (await fileSha256(example) !== frozen.candidate.identityExample.binarySha256) throw new Error('identity example binary differs from the freeze');
-  const freezeCommit = await git('log', '-1', '--format=%H', '--', path.relative(root, freezeFile));
+  const freezeCommit = requireCommitted ? await git('log', '-1', '--format=%H', '--', path.relative(root, freezeFile)) : null;
   return { frozen, tarballs, baselineTarballs, example, freezeCommit };
 }
 
@@ -418,8 +421,8 @@ async function measure() {
     role: frozen.role, sourceCommit: commit, freezeCommitment: frozen.freezeCommitment, ...cost,
     ...(wasmSplit.status === 'not-applicable' ? {} : { wasmSplit }), artifactCommitment: '' };
   operationalEvidence.artifactCommitment = b11EvidenceCommitment(operationalEvidence);
-  await writeJson(path.join(evidenceDir, `pii-beta11-observation-${fileVersion}.json`), observation);
-  await writeJson(path.join(evidenceDir, `pii-beta11-operational-${fileVersion}.json`), operationalEvidence);
+  await writeJson(path.join(outputDir, `pii-beta11-observation-${fileVersion}.json`), observation);
+  await writeJson(path.join(outputDir, `pii-beta11-operational-${fileVersion}.json`), operationalEvidence);
   await writeReport(frozen, observation, operationalEvidence);
 }
 
@@ -435,17 +438,29 @@ async function writeReport(frozen, observation, operationalEvidence) {
   const parityFile = path.join(root, 'evidence/901/427', `mixed-parity-core-${sha12}-plan-v2-report-v1.json`);
   const parity = existsSync(parityFile) ? { file: path.relative(root, parityFile), report: JSON.parse(await readFile(parityFile, 'utf8')) } : null;
   const report = buildB11Report({ freeze: frozen, observation, operational: operationalEvidence, parity, profileCost: await profileCostEvidence() });
-  await writeJson(path.join(evidenceDir, `pii-beta11-report-${fileVersion}.json`), report);
+  await writeJson(path.join(outputDir, `pii-beta11-report-${fileVersion}.json`), report);
   const disposition = buildB11Disposition(report);
-  await writeJson(path.join(evidenceDir, `pii-beta11-disposition-${fileVersion}.json`), disposition);
+  await writeJson(path.join(outputDir, `pii-beta11-disposition-${fileVersion}.json`), disposition);
   for (const row of disposition.families) console.log(`${row.family}: ${row.status} (${row.failedOrWithheldGates.map(gate => gate.gate).join(', ')})`);
   console.log(`protected eligibility: ${disposition.protectedPartition.eligibleFamilies.length ? disposition.protectedPartition.eligibleFamilies.join(', ') : 'none'}`);
 }
 
-if (args.rescore === 'true') {
+if (args['promote-freeze']) {
+  // Publishing a mechanical freeze does not authorise a measurement authority or owner exit.
+  if (existsSync(freezeFile)) throw new Error('Accepted freeze already exists; historical records are immutable');
+  const { frozen } = await verifyFreeze({ preparedFile: path.resolve(args['promote-freeze']), requireCommitted: false });
+  if (frozen.freezeCommitment !== b11Commitment({ ...frozen, freezeCommitment: undefined }) ||
+      frozen.candidate?.sourceCommit !== commit || frozen.role !== args.role || b11PlanSetOf(frozen) !== planSet || frozen.benchmark?.baseRevision !== await git('rev-parse', 'HEAD'))
+    throw new Error('Prepared freeze identity/commitment differs from the requested product, plan or benchmark');
+  for (const row of [...frozen.frozenInputs, ...frozen.evaluationSchema])
+    if (await fileSha256(path.join(root, row.path)) !== row.sha256) throw new Error(`Prepared freeze input changed: ${row.path}`);
+  await writeJson(freezeFile, frozen);
+  console.log(`Published new freeze ${path.relative(root, freezeFile)}; commit and review before measurement. No authority changed.`);
+} else if (args.rescore === 'true') {
   // Re-derive the report and disposition from the committed observation and operational evidence, e.g. after binding the
   // official profile-cost runs. Nothing is measured again.
   const frozen = JSON.parse(await readFile(freezeFile, 'utf8'));
+  if (frozen.candidate?.sourceCommit !== commit || b11PlanSetOf(frozen) !== planSet || frozen.freezeCommitment !== b11Commitment({...frozen, freezeCommitment: undefined})) throw new Error('Rescore requires the exact accepted freeze product, plan and commitment');
   const read = async name => JSON.parse(await readFile(path.join(evidenceDir, `pii-beta11-${name}-${fileVersion}.json`), 'utf8'));
   await writeReport(frozen, await read('observation'), await read('operational'));
 } else if (existsSync(freezeFile) && (await git('ls-files', path.relative(root, freezeFile)))) await measure();

@@ -43,7 +43,7 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   types inside a shared detector (`scoredArrivalFamilies`,
   `scanners/families.mjs`): its taxonomy family maps to the arrival id, which
   `eval:classify` scores on its own contract
-  ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md), #730). A detector serving several families is common — `github-token`
+  ([`2026-09-24-score-arrival-families-by-finding-type.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md), #730). A detector serving several families is common — `github-token`
   serves five, `stripe-token` serves four.
 - **`families[].detectors: []`** is a family a provider offers that this
   project does not detect. This is deliberate and representable, not an
@@ -131,7 +131,7 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
 
 ## Counting fixtures per family
 
-Decision: [`2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md`](../decisions/2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md)
+Decision: [`2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md)
 (#560). A fixture's family relationships are `familyIds` in
 `benchmarks/fixture-index.json`: none (a global fixture, with an
 `unscopedReason`), one, or several. Every count that says "fixtures in a family"

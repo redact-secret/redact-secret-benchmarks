@@ -6,7 +6,7 @@ import { createRegistry } from '../benchmarks/evaluation/substrate/registry.ts';
 import { createMethods } from '../benchmarks/evaluation/domains/credential/methods/index.ts';
 import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
 import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
-import { arrivalIds } from '../benchmarks/lib/beta8/index.ts';
+import { arrivalIds } from '../benchmarks/lib/credential-regressions/index.ts';
 import { generateCase, hash, bytes, secrets, validateCase } from '../benchmarks/evaluation/model/model.ts';
 import { mapFixture } from '../benchmarks/evaluation/domains/credential/operators/context.ts';
 import { absolute, observe, relation } from '../benchmarks/evaluation/domains/credential/assertions.ts';
@@ -33,7 +33,7 @@ test('all existing corpora bridge deterministically into five methods and all de
   assert.equal(cases.some(c => c.source.category === 'shadow-scoring-authored'), false,
     'calibration-only rows never become public evaluation or support evidence');
   assert.deepEqual([...new Set(cases.map(c => c.method))].sort(), ['benign', 'differential', 'metamorphic', 'mutation', 'twin']);
-  // Registry targets and the pre-Beta.8 twin count; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
+  // Registry targets and the pre-Beta.8 twin count; beta8-<issue> corpora (#207–#212) are counted by npm run fixtures:profiles.
   assert.equal(new Set(cases.flatMap(c => c.targets).filter(t => !arrivalIds.has(t))).size, 120);
   assert.equal(cases.filter(c => c.method === 'twin' && !c.source.category.startsWith('beta8-')).length, 417);
   const before = hash(cases);

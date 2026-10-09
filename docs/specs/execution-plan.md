@@ -1,7 +1,7 @@
 # Execution plan: accuracy and performance planned separately
 
 Issue [#709](https://github.com/redact-secret/redact-secret-benchmarks/issues/709), under [#704](https://github.com/redact-secret/redact-secret-benchmarks/issues/704).
-Decision: [plan accuracy and performance execution separately, by identity](../decisions/2026-10-05-plan-accuracy-and-performance-execution-separately-by-identity.md).
+Decision: [plan accuracy and performance execution separately, by identity](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-05-plan-accuracy-and-performance-execution-separately-by-identity.md).
 Accuracy observation reuse is [accuracy-reuse.md](accuracy-reuse.md) (#706). This repository measures and records; the plan never reads a score and starts nothing.
 
 ## Inventory of what runs where
@@ -55,7 +55,7 @@ The plan reports executed, reused and re-scored counts, jobs, engine runs or inv
 
 ## Which planner
 
-[Decision](../decisions/2026-10-06-integrate-the-engine-perf-plan-for-engine-kinds-and-keep-harness-cells-repository-side.md) (#722). `perf plan` reads only engine `PerformanceArtifact` v1 files and reuses a cell only with an invocation digest, an executable digest and a CPU model (ADR 0010 §2, §5). The 60 registered cells come from this repository's harness, are not engine artifacts and carry no invocation digest, so they stay on the repository-side identity comparison above; replacing it would mark every one `no stored result`. A measurement declared as an engine-run kind (`latency`, `instructions`) is planned by `credential-eval perf plan` from the pinned engine, and its dry-run decision, reason and `invalidated_by` are reported as the engine states them. Each job names its planner. The harness whole-job granularity decision above is unchanged. No engine-run measurement is registered yet, so the engine path is not wired until one exists.
+[Decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-06-integrate-the-engine-perf-plan-for-engine-kinds-and-keep-harness-cells-repository-side.md) (#722). `perf plan` reads only engine `PerformanceArtifact` v1 files and reuses a cell only with an invocation digest, an executable digest and a CPU model (ADR 0010 §2, §5). The 60 registered cells come from this repository's harness, are not engine artifacts and carry no invocation digest, so they stay on the repository-side identity comparison above; replacing it would mark every one `no stored result`. A measurement declared as an engine-run kind (`latency`, `instructions`) is planned by `credential-eval perf plan` from the pinned engine, and its dry-run decision, reason and `invalidated_by` are reported as the engine states them. Each job names its planner. The harness whole-job granularity decision above is unchanged. No engine-run measurement is registered yet, so the engine path is not wired until one exists.
 
 ## Not covered
 

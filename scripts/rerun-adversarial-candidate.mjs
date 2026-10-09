@@ -1,3 +1,4 @@
+import { firstRunPath, HISTORICAL_PACK_PATHS } from '../benchmarks/lib/adversarial-packs.ts';
 /**
  * Rerun one frozen adversarial pack against a locally built product
  * candidate: the benchmark-side "fixed-candidate revalidation" for known gaps
@@ -48,9 +49,10 @@ const git = gitArgs => execFileSync('git', gitArgs, { cwd: root, encoding: 'utf8
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const now = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
-const packDir = join(root, 'adversarial/packs', args.pack);
+const packPath = HISTORICAL_PACK_PATHS[args.pack] ?? `adversarial/packs/${args.pack}`;
+const packDir = join(root, packPath);
 const record = JSON.parse(readFileSync(join(packDir, 'intake.json'), 'utf8'));
-const firstRunBytes = readFileSync(join(packDir, 'first-run.json'), 'utf8');
+const firstRunBytes = readFileSync(firstRunPath(root, packPath), 'utf8');
 const problems = validateIntake(record, firstRunBytes);
 if (problems.length) throw new Error(`${args.pack} does not validate:\n${problems.join('\n')}`);
 if (!AFTER_FIRST_RUN.includes(record.status)) throw new Error(`${args.pack} has no frozen first run (status ${record.status})`);

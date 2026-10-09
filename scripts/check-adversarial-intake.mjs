@@ -16,7 +16,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { fileDigest, firstRunImmutabilityProblems } from '../benchmarks/lib/adversarial-intake.ts';
 import {
-  firstRunDigests, loadPacks, packProblems, rejectionCaseProblems, uiLanguageProblems,
+  firstRunDigests, firstRunPackPath, loadPacks, packProblems, rejectionCaseProblems, uiLanguageProblems,
 } from '../benchmarks/lib/adversarial-packs.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -36,8 +36,12 @@ try { baseRef = git(['rev-parse', '--verify', '--quiet', `${base}^{commit}`]).tr
 if (baseRef) {
   const atBase = new Map();
   for (const path of git(['ls-tree', '-r', '--name-only', baseRef, '--', 'adversarial']).split('\n')) {
-    const match = /^(adversarial\/(?:packs|samples)\/[^/]+)\/first-run\.json$/.exec(path);
-    if (match) atBase.set(match[1], fileDigest(git(['show', `${baseRef}:${path}`])));
+    const packPath = firstRunPackPath(path);
+    if (packPath) {
+      const digest = fileDigest(git(['show', `${baseRef}:${path}`]));
+      if (atBase.has(packPath)) failures.push(`${packPath}: multiple frozen first-run paths exist at the base revision`);
+      else atBase.set(packPath, digest);
+    }
   }
   failures.push(...firstRunImmutabilityProblems(firstRunDigests(packs), atBase));
 } else {

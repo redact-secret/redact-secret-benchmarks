@@ -1,118 +1,52 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 import { validate } from '../scripts/validate-decisions.mjs';
+import { loadDecisionProvenance, provenanceProblems, decisionStatus, decisionRecord, ownerAuthorisationProblems, evidenceAdoptionTarget } from '../scripts/lib/decision-provenance.mjs';
+import { adrPath, draftDecision } from '../scripts/prepare-acceptance-package.mjs';
 
-const record = (overrides = {}) => {
-  const fields = {
-    decision_id: 'decision-use-thing',
-    status: 'accepted',
-    scope: 'benchmarks',
-    ...overrides,
-  };
-  const frontmatter = Object.entries(fields)
-    .filter(([, value]) => value !== undefined)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join('\n');
-  return `---\n${frontmatter}\n---\n\n# Use the thing\n\n## Decision\n\nUse the thing.\n`;
-};
-
-async function withDecisionsDir(fn) {
-  const root = await mkdtemp(path.join(tmpdir(), 'decisions-validate-'));
-  const decisionsDir = pathToFileURL(path.join(root, 'docs', 'decisions') + path.sep);
-  await mkdir(path.join(root, 'docs', 'decisions'), { recursive: true });
-  try {
-    await fn(root, decisionsDir);
-  } finally {
-    await rm(root, { recursive: true, force: true });
-  }
-}
-
-const addRecord = async (root, name, content) => {
-  await writeFile(path.join(root, 'docs', 'decisions', name), content, 'utf8');
-  const indexPath = path.join(root, 'docs', 'decisions', 'DECISIONS.md');
-  const existing = await import('node:fs/promises')
-    .then(fs => fs.readFile(indexPath, 'utf8'))
-    .catch(() => '# Decisions\n\n');
-  await writeFile(indexPath, `${existing}- [${name}](${name})\n`, 'utf8');
-};
-
-test('the real tree has valid ADR frontmatter, a Decision heading, and a valid active index', async () => {
+test('reviewed provenance has exact archived identity/status and current spec targets', async () => {
   assert.deepEqual(await validate(), []);
 });
+test('duplicate identities, missing source digests, and invented statuses are refused', () => {
+  const source = loadDecisionProvenance();
+  const duplicate = structuredClone(source); duplicate.records.push(duplicate.records[0]);
+  assert.ok(provenanceProblems(duplicate).some(p => p.includes('duplicate')));
+  const forged = structuredClone(source); forged.records[0].status = 'approved';
+  assert.ok(provenanceProblems(forged).length);
+  delete forged.records[0].sourceSha256;
+  assert.ok(provenanceProblems(forged).length);
+});
+test('historically accepted narrative cannot authorise a current target or another authority role', () => {
+  const source = loadDecisionProvenance();
+  const current = source.records.find(r => r.uses.some(u => u.role === 'credential-authority'));
+  const binding = current.uses.find(u => u.role === 'credential-authority');
+  assert.equal(decisionStatus(current.path, { role: binding.role, target: binding.target }), 'accepted');
+  assert.equal(decisionStatus(current.path, { role: 'pii-public-authority', target: binding.target }), undefined);
+  assert.equal(decisionStatus(current.path, { role: binding.role, target: { ...binding.target, acceptedBy: 'someone else' } }), undefined);
+  const historical = source.records.find(r => r.status === 'accepted' && !r.uses.length);
+  assert.equal(decisionStatus(historical.path, { role: binding.role, target: binding.target }), undefined);
+  assert.equal(decisionStatus('docs/decisions/missing.md'), undefined);
+});
+test('owner package stays proposed with all owner fields unset; typed path replaces dated Markdown', () => {
+  const tag = 'snapshot-2026.10.09'; const ec = { engine: { tag: 'v0.1.0-alpha.17' }, manifestDigest: 'sha256:' + 'a'.repeat(64), snapshotDigest: 'sha256:' + 'b'.repeat(64) };
+  const decision = adrPath(tag, ec.engine.tag);
+  assert.match(decision, /^benchmarks\/governance\/authorisations\/.*\.json$/);
+  const draft = JSON.parse(draftDecision({ tag, ec, decision, summary: 'prepared evidence' }));
+  assert.deepEqual(ownerAuthorisationProblems(draft), []);
+  assert.equal(draft.status, 'proposed'); assert.equal(draft.owner.acceptedBy, 'OWNER-TO-SET');
+  const accepted = { ...draft, status: 'accepted' };
+  assert.ok(ownerAuthorisationProblems(accepted).length);
+  assert.equal(decisionRecord(decision, { read: () => accepted }), undefined);
+  assert.equal(decisionStatus(decision, { read: () => draft }), 'proposed');
+});
 
-test('a valid record with no index problems passes', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, '2026-09-09-use-thing.md', record());
-  assert.deepEqual(await validate(decisionsDir), []);
-}));
-
-test('missing frontmatter fields are reported', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, '2026-09-09-use-thing.md', record({ scope: undefined }));
-  const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('missing required field scope')), errors.join('\n'));
-}));
-
-test('a scope other than benchmarks is rejected', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, '2026-09-09-use-thing.md', record({ scope: 'workspace' }));
-  const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('must use benchmarks scope')), errors.join('\n'));
-}));
-
-test('an invalid decision_id is rejected', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, '2026-09-09-use-thing.md', record({ decision_id: 'Use_Thing' }));
-  const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('invalid decision_id')), errors.join('\n'));
-}));
-
-test('an accepted record with no Decision/Decisions heading is rejected', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, '2026-09-09-use-thing.md', '---\ndecision_id: decision-use-thing\nstatus: accepted\nscope: benchmarks\n---\n\n# Use the thing\n\n## Context\n\nNo decision heading here.\n');
-  const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('requires a Decision heading')), errors.join('\n'));
-}));
-
-test('"Decisions" (plural) and "Decision N" headings both satisfy the requirement', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, '2026-09-09-a.md', '---\ndecision_id: decision-a\nstatus: accepted\nscope: benchmarks\n---\n\n# A\n\n## Decisions\n\nSeveral.\n');
-  await addRecord(root, '2026-09-09-b.md', '---\ndecision_id: decision-b\nstatus: accepted\nscope: benchmarks\n---\n\n# B\n\n## Decision 1 — the first\n\nDone.\n');
-  assert.deepEqual(await validate(decisionsDir), []);
-}));
-
-test('an empty active index is reported', () => withDecisionsDir(async (root, decisionsDir) => {
-  await writeFile(path.join(root, 'docs', 'decisions', '2026-09-09-use-thing.md'), record(), 'utf8');
-  await writeFile(path.join(root, 'docs', 'decisions', 'DECISIONS.md'), '# Decisions\n', 'utf8');
-  const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('active decision index is empty')), errors.join('\n'));
-}));
-
-test('a duplicate decision_id is reported', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, '2026-09-09-a.md', record());
-  await addRecord(root, '2026-09-10-b.md', record());
-  const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('duplicate decision_id')), errors.join('\n'));
-}));
-
-
-test('retained records may be absent from the active index, but still require valid metadata', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, 'active.md', record());
-  const retained = path.join(root, 'docs', 'decisions', 'retained.md');
-  await writeFile(retained, record({ decision_id: 'decision-retained' }));
-  assert.deepEqual(await validate(decisionsDir), []);
-  await writeFile(retained, record({ decision_id: 'decision-retained', scope: undefined }));
-  assert.ok((await validate(decisionsDir)).some(e => e.includes('missing required field scope')));
-}));
-
-test('missing and duplicate active entry links fail', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, 'active.md', record());
-  await writeFile(path.join(root, 'docs', 'decisions', 'DECISIONS.md'), '# Decisions\n\n- [A](active.md)\n- [Again](active.md)\n- [Missing](missing.md)\n');
-  const errors = await validate(decisionsDir);
-  assert.ok(errors.some(e => e.includes('is indexed 2 times')));
-  assert.ok(errors.some(e => e.includes('broken decision link missing.md')));
-}));
-
-test('an index cannot cite itself as a decision record', () => withDecisionsDir(async (root, decisionsDir) => {
-  await addRecord(root, 'active.md', record());
-  await writeFile(path.join(root, 'docs', 'decisions', 'DECISIONS.md'), '# Decisions\n\n- [Index](DECISIONS.md)\n');
-  assert.ok((await validate(decisionsDir)).some(e => e.includes('not a decision record')));
-}));
+test('accepted evidence decision binds the original snapshot/product identity, not just an owner name', () => {
+  const source = loadDecisionProvenance();
+  const row = source.records.find(r => r.uses.some(use => use.role === 'evidence-adoption'));
+  const use = row.uses.find(use => use.role === 'evidence-adoption');
+  assert.equal(decisionStatus(row.path, { role: use.role, target: use.target }), 'accepted');
+  for (const field of ['evidenceRelease', 'manifestDigest', 'snapshotDigest', 'sourceRevision']) {
+    assert.equal(decisionStatus(row.path, { role: use.role, target: { ...use.target, [field]: 'different' } }), undefined);
+  }
+  assert.deepEqual(evidenceAdoptionTarget({ ...use.target, deployment: { staging: 'new receipt' } }), use.target);
+});

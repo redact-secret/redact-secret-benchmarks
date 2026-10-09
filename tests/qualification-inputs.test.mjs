@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { checkQualificationInputs, qualificationInputProblems } from '../scripts/check-qualification-inputs.mjs';
 
+import { decisionStatus } from '../scripts/lib/decision-provenance.mjs';
+
 const real = JSON.parse(await readFile(new URL('../benchmarks/qualification-inputs.json', import.meta.url), 'utf8'));
 const always = async () => true;
 const clone = () => structuredClone(real);
@@ -68,4 +70,18 @@ test('a pending pin names the issue that resolves it', async () => {
   const m = clone();
   m.populations[1].pin.runArtifact = { state: 'pending' };
   assert.ok((await qualificationInputProblems(m, always)).some(p => /pending without a resolving issue/.test(p)));
+});
+
+
+test('decision references require validated accepted provenance rather than a file that happens to exist', async () => {
+  const accepted = path => decisionStatus(path) === 'accepted';
+  const m = clone();
+  assert.deepEqual(await qualificationInputProblems(m, always, accepted), []);
+  for (const decision of ['benchmarks/qualification-inputs.json', 'docs/decisions/unknown.md', 'docs/decisions/2026-09-25-classify-project-assembled-external-inputs-as-maintainer-regression.md']) {
+    m.decision = decision;
+    assert.ok((await qualificationInputProblems(m, always, accepted)).some(p => /decision has no validated accepted provenance/.test(p)));
+  }
+  m.decision = real.decision;
+  m.supportStatusChanges.push({ family: 'example', reason: 'r', decision: 'benchmarks/qualification-inputs.json', productPolicyRevision: `rs-policy-1:sha256:${'a'.repeat(64)}` });
+  assert.ok((await qualificationInputProblems(m, always, accepted)).some(p => /supportStatusChanges: decision has no validated accepted provenance/.test(p)));
 });

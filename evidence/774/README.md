@@ -401,7 +401,7 @@ the corpus hash computed at f00f215 (immediately before 99a7681 edited three of 
 23,962 entries were rekeyed this way, preserving every entry's `status`/`note`/resolution history verbatim
 under its new id (only the key changed, following the same "carry over by matching case content, not id"
 practice as
-[`2026-09-22-lift-five-families-out-of-un-probeable.md`](../../docs/decisions/2026-09-22-lift-five-families-out-of-un-probeable.md)'s
+[`2026-09-22-lift-five-families-out-of-un-probeable.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-lift-five-families-out-of-un-probeable.md)'s
 prior detector-coverage rekey); 21,995 keys were already correct and untouched. 52 current review-queue
 entries had no legacy match at all — genuine new or changed disagreements (the mistral/cohere/deepgram
 fixtures 99a7681 actually edited, and the brand-new per-family case ids `redact-secret#882`'s

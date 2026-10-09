@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -72,7 +73,7 @@ test('committed pin manifest is schema-correct, matches live pin sources, and ca
   assert.equal(manifest.pins.redactSecretVersion, inventory.redactSecretVersion);
   assert.equal(manifest.pins.packageVersion, packageJson.dependencies['@redact-secret/core']);
 
-  const packs = packPinEntries(loadPacks(new URL('..', import.meta.url).pathname).map(pack => pack.record));
+  const packs = packPinEntries(loadPacks(fileURLToPath(new URL('..', import.meta.url))).map(pack => pack.record));
   assert.deepEqual(manifest.fixtureIds, [...Object.keys(assignments), ...packs.fixtureIds].sort());
   for (const id of manifest.fixtureIds) assert.match(id, /^[a-z][a-z0-9-]*--[a-z][a-z0-9-]*$/);
 
@@ -112,7 +113,7 @@ test('merging pack entries rejects a pack id or fixture id that collides with a 
 });
 
 test('the frozen beta9 pack is pinned with its committed expectations digest', async () => {
-  const intake = await read('adversarial/packs/beta9-external-inputs/intake.json');
+  const intake = await read('adversarial/packs/public-source-regression/intake.json');
   const manifest = await read('benchmarks/pin-manifest.json');
   assert.equal(manifest.corpusHashes['beta9-external-inputs'], intake.expectations.digest);
   for (const fixture of intake.fixtures) assert.ok(manifest.fixtureIds.includes(`beta9-external-inputs--${fixture.id}`), fixture.id);

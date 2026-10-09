@@ -3,8 +3,8 @@
 Issue: [#136](https://github.com/redact-secret/redact-secret-benchmarks/issues/136),
 part of [#132](https://github.com/redact-secret/redact-secret-benchmarks/issues/132).
 Paired with [redact-secret#603 (DS11)](https://github.com/redact-secret/redact-secret/issues/603).
-Decisions: [`2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md`](../decisions/2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md),
-[`2026-09-23-run-the-performance-evaluation-for-real.md`](../decisions/2026-09-23-run-the-performance-evaluation-for-real.md)
+Decisions: [`2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md),
+[`2026-09-23-run-the-performance-evaluation-for-real.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-23-run-the-performance-evaluation-for-real.md)
 (the [#150](https://github.com/redact-secret/redact-secret-benchmarks/issues/150) follow-up
 that actually ran the workflow and retired the "by construction" framing below).
 Data: `benchmarks/performance-criteria.json`, schema
@@ -159,7 +159,7 @@ ACCEPTED evaluation behind it is exactly the drift #150 found (evaluated
 revision matching evidence, but not the current pin).
 
 Registry drift is judged on the registry, not on paths
-([`decision-detect-registry-drift-semantically-not-by-path`](../decisions/2026-10-02-detect-registry-drift-semantically-not-by-path.md),
+([`decision-detect-registry-drift-semantically-not-by-path`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-02-detect-registry-drift-semantically-not-by-path.md),
 #631): `pins:check` compares the ordered detector ids in the product's
 `detectors/mod.rs` at the pinned commit and at `main`, so an
 implementation-only detector change on `main` does not fail it. A registry
@@ -170,7 +170,7 @@ pinned or released, by an evaluation at that commit, not by the pin-drift job.
 ## Re-pinning without recalibrating
 
 Per
-[`decision-decouple-pin-freshness-from-pin-consistency`](../decisions/2026-09-23-decouple-pin-freshness-from-pin-consistency.md),
+[`decision-decouple-pin-freshness-from-pin-consistency`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-23-decouple-pin-freshness-from-pin-consistency.md),
 an ACCEPTED run at a new pin does not re-derive thresholds. `baseline.sourceCommit`
 stays the commit the thresholds were derived from; `baseline.verifiedCommit`
 and `baseline.verificationPath` name the latest ACCEPTED evaluation against

@@ -4,10 +4,10 @@ This is a diff against [`docs/specs/evaluation-engine-v1.md`](evaluation-engine-
 and the measurement protocol in [`docs/specs/measurement-v4.md`](measurement-v4.md).
 Everything not stated here is unchanged. The rationale and the decisions behind
 it are in
-[`docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md`](../decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md).
+[`docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md).
 
 Status: accepted and implemented (issue #26). The floors and the §12 questions
-were settled from a dry run — [`evaluation-engine-v1.1-dry-run.md`](../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md)
+were settled from a dry run — [`evaluation-engine-v1.1-dry-run.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-19/evaluation-engine-v1.1-dry-run.md)
 — and the decisions are recorded in the ADR. Where a clause below was refined
 by review, the refinement is marked **Decided**.
 

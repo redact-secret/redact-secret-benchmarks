@@ -1,3 +1,4 @@
+import { HISTORICAL_PACK_PATHS } from '../benchmarks/lib/adversarial-packs.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -110,7 +111,7 @@ test('known gap issues cover all recorded failures and link to authored fixtures
   // corpus hash is the pack's expectations digest.
   const packs = new Map();
   const pack = async id => {
-    if (!packs.has(id)) packs.set(id, await read(`adversarial/packs/${id}/intake.json`).catch(() => null));
+    if (!packs.has(id)) packs.set(id, await read(`${HISTORICAL_PACK_PATHS[id] ?? `adversarial/packs/${id}`}/intake.json`).catch(() => null));
     return packs.get(id);
   };
   for (const issue of knownGaps.issues) {

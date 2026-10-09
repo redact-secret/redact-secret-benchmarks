@@ -6,7 +6,7 @@ import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts'
 import { generateCase, hash, secrets, bytes } from '../benchmarks/evaluation/model/model.ts';
 import { runEvaluation, exitCode } from '../benchmarks/evaluation/domains/credential/runner.ts';
 import { findingFamily, arrivalFindingTypes } from '../scanners/families.mjs';
-import { arrivalFamilies } from '../benchmarks/lib/beta8/index.ts';
+import { arrivalFamilies } from '../benchmarks/lib/credential-regressions/index.ts';
 
 const methods = createMethods(), operators = createOperators();
 const cases = await loadCases(operators);

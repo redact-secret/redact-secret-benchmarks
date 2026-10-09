@@ -1,127 +1,40 @@
-/**
- * CI gate: every ADR under `docs/decisions/` carries valid frontmatter
- * (`decision_id`, `status`, `scope`), an accepted ADR states its Decision,
- * and the active entry index links to valid records without duplicates.
- * Retained provenance records need not appear in the active entry index.
- * Adopted from redact-secret's `scripts/validate-decisions.py`
- * (redact-secret#592/#597), adapted to this repo's `benchmarks` scope and
- * to the `Decision`/`Decisions`/`Decision N` heading variants this corpus
- * actually uses (issue #135).
- *
- * Run: npm run decisions:validate
- */
+/** Validate archived decision identities and current scoped owner records; reject historical Markdown accumulation. */
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-
+import { loadDecisionProvenance, provenanceProblems, ownerAuthorisationProblems } from './lib/decision-provenance.mjs';
 const root = new URL('../', import.meta.url);
 const DECISIONS_DIR = new URL('docs/decisions/', root);
-const DECISION_ID = /^decision-[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const DECISION_HEADING = /^#{1,6}\s+Decisions?\b/im;
-const LINK = /\[[^\]]+\]\(([^)]+)\)/g;
-const VALID_STATUSES = new Set(['proposed', 'accepted', 'rejected', 'superseded']);
-const SCOPE = 'benchmarks';
-
-async function exists(url) {
-  try {
-    await stat(url);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-function parseFrontmatter(text, label) {
+async function exists(url) { try { await stat(url); return true; } catch { return false; } }
+export async function validate() {
   const errors = [];
-  const lines = text.split('\n');
-  if (lines[0] !== '---') return { fields: {}, body: text, errors: [`${label}: missing YAML frontmatter`] };
-  const end = lines.indexOf('---', 1);
-  if (end === -1) return { fields: {}, body: text, errors: [`${label}: missing YAML frontmatter closer`] };
-
-  const fields = {};
-  for (let i = 1; i < end; i++) {
-    const line = lines[i];
-    if (!line.trim() || line.trimStart().startsWith('#')) continue;
-    const match = /^([a-z][a-z0-9_]*):\s*(.+)$/.exec(line);
-    if (!match) { errors.push(`${label}:${i + 1}: unsupported frontmatter syntax`); continue; }
-    const [, key, rawValue] = match;
-    if (key in fields) errors.push(`${label}:${i + 1}: duplicate field ${key}`);
-    fields[key] = rawValue.trim().replace(/^['"]|['"]$/g, '');
+  let provenance;
+  try { provenance = loadDecisionProvenance(); } catch (error) { return [error.message]; }
+  errors.push(...provenanceProblems(provenance));
+  const manifest = JSON.parse(await readFile(new URL('docs/retention/historical-decisions.json', root), 'utf8'));
+  const sourceRows = manifest.files.filter(r => r.decisionId);
+  if (sourceRows.length !== provenance.records.length) errors.push('decision provenance and reviewed disposition counts differ');
+  for (const row of provenance.records) {
+    const source = sourceRows.find(r => r.path === row.path);
+    if (!source || source.decisionId !== row.decisionId || source.status !== row.status || source.sha256 !== row.sourceSha256 || manifest.sourceCommit !== row.sourceCommit) errors.push(`${row.path}: provenance differs from reviewed source identity/status/digest`);
+    if (!(await exists(new URL(row.spec, root)))) errors.push(`${row.path}: current specification ${row.spec} is absent`);
   }
-  return { fields, body: lines.slice(end + 1).join('\n'), errors };
-}
-
-/** Validate retained ADR identities and the active entry index. */
-export async function validate(decisionsDir = DECISIONS_DIR) {
-  const errors = [];
-  let names;
   try {
-    names = (await readdir(decisionsDir)).filter(name => name.endsWith('.md') && name !== 'DECISIONS.md').sort();
-  } catch (err) {
-    if (err.code === 'ENOENT') return errors;
-    throw err;
-  }
-
-  const indexUrl = new URL('DECISIONS.md', decisionsDir);
-  if (names.length && !(await exists(indexUrl))) {
-    errors.push(`${fileLabel(indexUrl)}: missing decision index`);
-    return errors;
-  }
-
-  const identities = new Map();
-  for (const name of names) {
-    const fileUrl = new URL(name, decisionsDir);
-    const label = fileLabel(fileUrl);
-    const text = await readFile(fileUrl, 'utf8');
-    const { fields, body, errors: parseErrors } = parseFrontmatter(text, label);
-    errors.push(...parseErrors);
-
-    for (const required of ['decision_id', 'status', 'scope']) {
-      if (!(required in fields)) errors.push(`${label}: missing required field ${required}`);
+    for (const name of await readdir(DECISIONS_DIR)) errors.push(`docs/decisions/${name}: historical ADR accumulation is forbidden; use a maintained spec or reviewed typed owner record`);
+  } catch (error) { if (error.code !== 'ENOENT') throw error; }
+  const authorisations = new URL('benchmarks/governance/authorisations/', root);
+  try {
+    for (const name of await readdir(authorisations)) {
+      if (!/^[0-9a-z-]+\.json$/.test(name)) { errors.push(`invalid owner record name: ${name}`); continue; }
+      const value = JSON.parse(await readFile(new URL(name, authorisations), 'utf8'));
+      errors.push(...ownerAuthorisationProblems(value).map(p => `${name}: ${p}`));
     }
-
-    const identity = fields.decision_id ?? '';
-    if (!DECISION_ID.test(identity)) errors.push(`${label}: invalid decision_id`);
-    else if (identities.has(identity)) errors.push(`${label}: duplicate decision_id ${identity}`);
-    else identities.set(identity, name);
-
-    if (!VALID_STATUSES.has(fields.status)) errors.push(`${label}: invalid status`);
-    if (fields.scope !== undefined && fields.scope !== SCOPE) errors.push(`${label}: docs/decisions records must use ${SCOPE} scope`);
-    if (fields.status === 'accepted' && !DECISION_HEADING.test(body)) errors.push(`${label}: accepted decision requires a Decision heading`);
-  }
-
-  if (!names.length) return errors;
-
-  const indexText = await readFile(indexUrl, 'utf8');
-  const resolved = [];
-  for (const match of indexText.matchAll(LINK)) {
-    const target = match[1];
-    if (/^[a-z]+:\/\//i.test(target) || target.startsWith('#')) continue;
-    const resolvedUrl = new URL(target.split('#')[0], indexUrl);
-    resolved.push(resolvedUrl.pathname);
-    if (!(await exists(resolvedUrl))) errors.push(`${fileLabel(indexUrl)}: broken decision link ${target}`);
-    else if (new URL('.', resolvedUrl).pathname !== new URL('.', indexUrl).pathname)
-      errors.push(`${fileLabel(indexUrl)}: decision link leaves docs/decisions: ${target}`);
-  }
-
-  const records = new Set(names.map(name => new URL(name, decisionsDir).pathname));
-  for (const recordPath of new Set(resolved)) {
-    if (!records.has(recordPath)) errors.push(`${fileLabel(indexUrl)}: indexed target is not a decision record: ${recordPath}`);
-    const count = resolved.filter(p => p === recordPath).length;
-    if (count > 1) errors.push(`${fileLabel(indexUrl)}: ${recordPath} is indexed ${count} times`);
-  }
-  if (!resolved.length) errors.push(`${fileLabel(indexUrl)}: active decision index is empty`);
-
+  } catch (error) { if (error.code !== 'ENOENT') throw error; }
   return errors;
-}
-
-function fileLabel(url) {
-  const rootPath = new URL('.', root).pathname;
-  return url.pathname.startsWith(rootPath) ? url.pathname.slice(rootPath.length) : url.pathname;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const errors = await validate();
   for (const error of errors) console.error(`::error::${error}`);
   if (errors.length) process.exitCode = 1;
-  else console.log(`Decision validation complete: 0 error(s).`);
+  else console.log('Decision provenance and owner record validation complete: 0 error(s).');
 }

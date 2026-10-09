@@ -1,6 +1,6 @@
 # Repository retention and hygiene
 
-Current contract for #845 and #846–#854. Repository hygiene measures ownership,
+Current contract for #845, #846–#854 and #872–#877. Repository hygiene measures ownership,
 readers and retained bytes. It does not change qualification authority or scores.
 
 ## Inventory before removal
@@ -60,7 +60,7 @@ secret material never migrate into public archives or issue bodies.
 job, with no extra CI job. `docs/retention/policy.json` records the existing
 retained-path baseline and explicit large-file limits. New evidence/reports/
 generated files require an exact-path exception or belong in ignored
-`results-output/`. New scripts need a caller or a documented manual entrypoint;
+`results-output/`. New scripts need an active npm/workflow invocation or an exact owner/issue review as a required manual tool; tests and historical documentation are not execution roots;
 workflow script invocations must exist. Tracked build/scratch outputs fail.
 Workflow parsing respects package working directories and explicit checkouts;
 dynamic shell paths and computed npm calls still need scoped review.
@@ -80,3 +80,13 @@ the eight scoped surfaces contain 3,084 files / 329,066,322 bytes.
 The foundation adds read-only tools and synthetic indirect/computed-reader
 tests; no data or authority changes. Later audit JSON and Markdown are generated
 locally so the cleanup does not add another large committed snapshot.
+
+## Decision and session recurrence (#877)
+
+No dated Markdown decisions are retained in active HEAD. New historical issue/run records belong in their linked issues and independently retrievable archives. Current normative contracts belong in `docs/specs/`; an owner authorisation belongs in `benchmarks/governance/authorisations/<id>.json`, must satisfy `owner-authorisation-v1.json`, and needs an exact scoped `pathReviews` entry. A schema-valid or reviewed proposed record is not an owner acceptance. The authority gates still bind an accepted owner record to its precise role and target.
+
+New beta/batch/group/round/issue-named paths require an explicit role review. Canonical IDs, protocol versions, historical seeds and bounded-oracle names may remain when justified. `pathReviews` distinguish current runtime, required manual tools, current contracts, structured authorisations and historical reproduction. Historical reproduction alone never makes a tool a current execution root.
+
+The retained baseline is pruned with each removal or move; an `existingPaths` entry names an exact remaining file, not a glob. The paired `retainedScopes` lists carry owner, issue and exact paths. Retention exceptions still expire and carry a size limit. A green guard proves this scoped recurrence policy, not completion of unrelated historical cleanup or permission to remove canonical evidence.
+
+`command-dispositions.json` reviews all 22 release/session commands present at 40809e8: 16 completed writers/wrappers are archived and removed; six reusable/current commands retain explicit consumer or manual requirements. The retained bounded PII oracle writes fresh ignored outputs; rescore validates the full accepted product commit and plan. Publishing a prepared new freeze is an explicit `--promote-freeze=<file>` operation that validates identities and frozen-file digests, refuses any existing accepted destination and publishes atomically. This mechanical freeze is never an owner-authorisation or authority change. Historical reports/decisions and original command source/input archives are linked from `archive.json`. Restore original bytes using the advertised retained tag and archive checksums rather than rerunning historical generators with current pins.

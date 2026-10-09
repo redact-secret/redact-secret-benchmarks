@@ -3,7 +3,7 @@
 Issues: [#281](https://github.com/redact-secret/redact-secret-benchmarks/issues/281)
 (`tools/call`) and [#321](https://github.com/redact-secret/redact-secret-benchmarks/issues/321)
 (`resources/read`).
-Decision: [`2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md`](../decisions/2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md).
+Decision: [`2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md).
 Contract under test: redact-secret's
 [MCP boundary contract](https://github.com/redact-secret/redact-secret/blob/main/docs/reference/mcp-boundary.md)
 (redact-secret#612), its
@@ -17,7 +17,7 @@ pieces (artifact digests, the leak scan, verdicts): `benchmarks/lib/mcp-qualific
 Consumer-side host, server and workload corpus: `benchmarks/mcp-qualification/consumer/`.
 Report schema: `schemas/mcp-qualification-v1.json`. Tests: `tests/mcp-qualification.test.mjs`.
 First run: [`evidence/612/`](../../evidence/612/README.md), reported in
-[`docs/reports/2026-09-25-beta9-281-mcp-qualification.md`](../reports/2026-09-25-beta9-281-mcp-qualification.md).
+[`docs/reports/2026-09-25-beta9-281-mcp-qualification.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-25-beta9-281-mcp-qualification.md).
 
 How this relates to the adapters' own qualification and to the detector
 results: [adapter evidence map](adapter-evidence-map.md).

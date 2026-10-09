@@ -43,7 +43,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   for (const [category, corpus] of all) for (const f of corpus.fixtures) {
     validateAssessment(f);
     assert.deepEqual(f.assessment, classifyFixture(category, f), f.id);
-    // The tallies below are the pre-Beta.8 corpus; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
+    // The tallies below are the pre-Beta.8 corpus; beta8-<issue> corpora (#207–#212) are counted by npm run fixtures:profiles.
     const key = `${f.assessment.kind}/${f.assessment.tier}`;
     if (!category.startsWith('beta8-')) {
       tally[key] ??= { files: 0, spans: 0 };
@@ -267,7 +267,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
 test('a fixture re-scoped off a provider-undecided property exists, reads T0 for its family, and its contradiction is bounded', async () => {
   // docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md
   const { empiricalObservations } = await import('../benchmarks/support/empirical.ts');
-  await readFile(new URL('../docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md', import.meta.url));
+  const { decisionStatus } = await import('../scripts/lib/decision-provenance.mjs');
+  assert.equal(decisionStatus('docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md'), 'accepted');
   const byKey = new Map(all.flatMap(([category, corpus]) => corpus.fixtures.map(f => [`${category}--${f.id}`, f])));
   for (const { family, ids } of Object.values(DISPUTED_PROPERTIES)) {
     for (const key of ids) {

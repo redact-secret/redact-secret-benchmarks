@@ -2,7 +2,7 @@
 
 Issues: [#654](https://github.com/redact-secret/redact-secret-benchmarks/issues/654), [#655](https://github.com/redact-secret/redact-secret-benchmarks/issues/655) and
 [#656](https://github.com/redact-secret/redact-secret-benchmarks/issues/656), of the cleanup epic [#651](https://github.com/redact-secret/redact-secret-benchmarks/issues/651).
-Decision: [Run the legacy measurement as an explicit oracle and plan validation from changed paths](../decisions/2026-10-05-run-the-legacy-measurement-as-an-explicit-oracle-and-plan-validation-from-changed-paths.md).
+Decision: [Run the legacy measurement as an explicit oracle and plan validation from changed paths](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-05-run-the-legacy-measurement-as-an-explicit-oracle-and-plan-validation-from-changed-paths.md).
 Inventory and what may be removed: [qualification-cutover.md](qualification-cutover.md#file-level-inventory-and-cleanup-order-653). This changes where checks run, never what they assert, and removes nothing.
 
 ## What runs, and when

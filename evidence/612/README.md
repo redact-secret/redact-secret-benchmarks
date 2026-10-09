@@ -10,7 +10,7 @@ It is not the adapter's conformance suite: that is
 [redact-secret-adapters#13](https://github.com/redact-secret/redact-secret-adapters/issues/13),
 linked here and not copied. The narrative, the observations and the
 publication judgement are in
-[`docs/reports/2026-09-25-beta9-281-mcp-qualification.md`](../../docs/reports/2026-09-25-beta9-281-mcp-qualification.md).
+[`docs/reports/2026-09-25-beta9-281-mcp-qualification.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-25-beta9-281-mcp-qualification.md).
 The method is in [`docs/specs/mcp-qualification.md`](../../docs/specs/mcp-qualification.md).
 
 ## Source revisions

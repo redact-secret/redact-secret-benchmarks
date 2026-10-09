@@ -198,7 +198,7 @@ for the refresh/check commands.
 `benchmarks/known-gaps.json` preserves point-in-time benchmark findings and
 their lifecycle (`observed` → `reviewed` → `promoted`) as they're raised
 against the product; see
-[docs/decisions/2026-09-18-govern-benchmark-promotion.md](docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[docs/decisions/2026-09-18-govern-benchmark-promotion.md](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 for the authoritative lifecycle and
 [CONTRIBUTING.md](CONTRIBUTING.md#promoting-a-product-regression) for the
 promotion workflow. Issue cards on fixture pages are historical measurement
@@ -306,7 +306,7 @@ reads. Variants, scores, bands and the operators that moved a band stay in
 Anything unmeasured, unstable or unreviewed consumes denominator rather than
 disappearing from it, and the published figure is the worst defensible bound
 ([spec](docs/specs/evaluation-engine-v1.1.md),
-[decision](docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md)).
+[decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md)).
 Every rate is `{ point, bound, n, direction }` with a Wilson bound on the
 pessimistic side, or the reason it is withheld (`insufficient-evidence`,
 `insufficient-coverage`). Each scanner is replayed over the same scratch tree

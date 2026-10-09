@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
-const assignment = read('benchmarks/batch2/families.json');
+const assignment = read('benchmarks/corpora/credential-carriers/families.json');
 const readiness = read('evidence/739/readiness.json');
 const ledger = read('evidence/739/ledger.json');
 

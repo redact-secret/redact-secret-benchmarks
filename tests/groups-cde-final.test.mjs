@@ -2,7 +2,6 @@
 // They check that the committed files are what the renderer writes from the committed round data, that every row is accounted for, and that nothing is left dangling.
 // No ledger value is asserted here, and no scanner runs.
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
@@ -12,10 +11,6 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(path.join(root, p), 'utf8');
 const json = (p) => JSON.parse(read(p));
 const ROWS = { 752: 11, 753: 23, 754: 9 };
-
-test('the rendered final artifacts are up to date with the committed round data', () => {
-  execFileSync(process.execPath, [path.join(root, 'scripts/render-groups-cde-final.mjs'), '--check'], { cwd: root, stdio: 'pipe' });
-});
 
 test('every issue README accounts for all rows and keeps the counts separate', () => {
   const report = json('evidence/groups-cde/round3/report.json');

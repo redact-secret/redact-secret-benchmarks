@@ -10,6 +10,28 @@ import { fileDigest, validateIntake, type IntakeRecord } from './adversarial-int
 import { adjudicationProblems, type Adjudication } from './adversarial-adjudication.ts';
 import { independenceClaims, type EvidenceSources } from './evidence-classes.ts';
 
+export const HISTORICAL_PACK_PATHS: Readonly<Record<string, string>> = Object.freeze({
+  'beta9-external-inputs': 'adversarial/packs/public-source-regression',
+});
+
+export function firstRunPath(root: string, packPath: string): string {
+  return join(root, packPath === HISTORICAL_PACK_PATHS['beta9-external-inputs']
+    ? 'adversarial/run-records/public-source-regression/first-run.json'
+    : `${packPath}/first-run.json`);
+}
+
+/** Resolve only the fixed migration when comparing frozen bytes across Git trees. */
+export function firstRunPackPath(path: string): string | null {
+  if (path === 'adversarial/run-records/public-source-regression/first-run.json') {
+    return HISTORICAL_PACK_PATHS['beta9-external-inputs'];
+  }
+  const match = /^(adversarial\/(?:packs|samples)\/([^/]+))\/first-run\.json$/.exec(path);
+  if (!match) return null;
+  return match[1] === 'adversarial/packs/beta9-external-inputs'
+    ? HISTORICAL_PACK_PATHS['beta9-external-inputs']
+    : match[1];
+}
+
 export const PACK_DIRECTORIES = ['adversarial/packs', 'adversarial/samples'] as const;
 
 export interface LoadedPack {
@@ -29,11 +51,11 @@ export function loadPacks(root: string): LoadedPack[] {
     for (const entry of readdirSync(absolute, { withFileTypes: true }).filter(e => e.isDirectory()).sort((a, b) => a.name.localeCompare(b.name))) {
       const path = `${parent}/${entry.name}`;
       const record = JSON.parse(readFileSync(join(root, path, 'intake.json'), 'utf8')) as IntakeRecord;
-      const firstRunPath = join(root, path, 'first-run.json');
+      const runPath = firstRunPath(root, path);
       const adjudicationPath = join(root, path, 'adjudication.json');
       packs.push({
         path, record,
-        firstRunBytes: existsSync(firstRunPath) ? readFileSync(firstRunPath, 'utf8') : null,
+        firstRunBytes: existsSync(runPath) ? readFileSync(runPath, 'utf8') : null,
         adjudication: existsSync(adjudicationPath) ? JSON.parse(readFileSync(adjudicationPath, 'utf8')) as Adjudication : null,
       });
     }
@@ -47,9 +69,9 @@ export function packProblems(packs: readonly LoadedPack[]): string[] {
   const ids = new Set<string>();
   for (const pack of packs) {
     const name = pack.path.split('/').at(-1);
-    if (pack.record?.id !== name) problems.push(`${pack.path}: directory name must equal the pack id`);
-    if (ids.has(name!)) problems.push(`${pack.path}: pack id is used twice`);
-    ids.add(name!);
+    if (pack.record?.id !== name && HISTORICAL_PACK_PATHS[pack.record?.id] !== pack.path) problems.push(`${pack.path}: directory name must equal the pack id or its fixed historical mapping`);
+    if (ids.has(pack.record.id)) problems.push(`${pack.path}: pack id is used twice`);
+    ids.add(pack.record.id);
     if (pack.path.startsWith('adversarial/samples/') !== (pack.record?.sample === true)) {
       problems.push(`${pack.path}: sample must be true exactly for packs under adversarial/samples/`);
     }

@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { contracts } from '../benchmarks/lib/assessment.ts';
-import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
-import { HANDOFF_REVISION } from '../benchmarks/lib/beta8/528-sources.ts';
-import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
+import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/credential-regressions/index.ts';
+import { HANDOFF_REVISION } from '../benchmarks/lib/credential-regressions/528-sources.ts';
+import { beta8ProfileCounts } from '../scripts/report-fixture-profiles.mjs';
 import { findingFamily, scoredArrivalFamilies } from '../scanners/families.mjs';
-import { polarChecksum, cratesCheckChar } from '../fixtures/generated/beta8/528-shared.mjs';
+import { polarChecksum, cratesCheckChar } from '../fixtures/generators/credential-regressions/528-shared.mjs';
 
 // Beta.12 #1014 broad-discovery contracts and corpus (#528): the conventions tests/beta8.test.mjs cannot see because
 // they are specific to these ten slices.
@@ -111,7 +111,7 @@ test('every family has a positive in each of the nine #860 probe contexts', () =
 });
 
 test('no #528 source file carries a complete synthetic credential as a literal', async () => {
-  const files = [...slices.flatMap(key => [`fixtures/generated/beta8/${key}.mjs`, `benchmarks/lib/beta8/${key}.ts`]), 'fixtures/generated/beta8/528-shared.mjs', 'benchmarks/lib/beta8/528-sources.ts', 'tests/beta12-528-corpus.test.mjs'];
+  const files = [...slices.flatMap(key => [`fixtures/generators/credential-regressions/${key}.mjs`, `benchmarks/lib/credential-regressions/${key}.ts`]), 'fixtures/generators/credential-regressions/528-shared.mjs', 'benchmarks/lib/credential-regressions/528-sources.ts', 'tests/beta12-528-corpus.test.mjs'];
   const shapes = [/0\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[A-Za-z0-9]{30}:/i, /polar_[a-z_]{2,6}_[A-Za-z0-9_-]{40,}/, /sq[uap]_[0-9a-f]{40}/,
     /rubygems_[0-9a-f]{40,}/, /CLOJARS_[0-9a-f]{40,}/, /\bcio(?:_tp_)?[A-Za-z0-9]{30,}/, /dt0[cs][0-9]{2}\.[A-Z2-7]{24}\./, /pdl_(?:live|sdbx)_apikey_[a-z0-9]{20,}/,
     /hc[a-z]i[kc]_[a-z0-9]{40,}/, /xa[ap]t-[0-9a-f]{8}-[0-9a-f]{4}-/];

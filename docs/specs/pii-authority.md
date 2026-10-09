@@ -1,8 +1,8 @@
 # PII authority, the measured exit and the rollback (#666)
 
 Status: benchmark-side record. This document measures and records; it asserts no product output and never writes an owner acceptance on the owner's behalf. Decisions:
-[`2026-10-07 switch the public/synthetic PII measurement authority to pii-eval`](../decisions/2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md) (active) and
-[`2026-10-05 keep legacy with a measured exit`](../decisions/2026-10-05-keep-pii-authority-legacy-with-a-measured-exit-and-a-rehearsed-rollback.md) (the mechanism; its value is superseded for the public lane).
+[`2026-10-07 switch the public/synthetic PII measurement authority to pii-eval`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-07-switch-the-public-synthetic-pii-measurement-authority-to-pii-eval.md) (active) and
+[`2026-10-05 keep legacy with a measured exit`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-05-keep-pii-authority-legacy-with-a-measured-exit-and-a-rehearsed-rollback.md) (the mechanism; its value is superseded for the public lane).
 The credential analogue is [`qualification-cutover.md`](qualification-cutover.md); the two are independent.
 
 ## Who is the authority for what
@@ -101,3 +101,13 @@ npm run pii:population:replay -- --engine=<pii-eval binary>   # replay the four 
 The [PII publication boundary](pii-publication-boundary.md) separates immutable contracts, erased accounting DTOs and strict artifact readers from the retained TypeScript measurement oracle. Current publication uses explicit legacy population absence plus independently validated engine measurement, without substituting canonical `pii-v1` quantities for `b11` qualification metrics. Source-commit-only product matching is refused: a strict paired comparison receipt must also bind the core tarball, engine package tree, scorer and population identities. A same-commit artifact without that proof is `publication-artifact-not-bound`.
 
 Historical raw population publication requires the explicit `--bounded-population-oracle` lane. This records a consumer split, not an oracle-exit decision, authority repin, owner acceptance, installed-validator conformance or protected operational readiness.
+
+## Historical decision locator resolution (#872)
+
+Existing authority bytes, owner facts and target identities are unchanged.
+Historical Markdown decision paths are immutable provenance locators resolved by
+`benchmarks/governance/decision-provenance.json`; the executable gate checks
+validated original status and the exact current role/target binding. It no longer
+reads an ADR body. New reviewed authorisations use the typed JSON owner-record
+contract described in `current-measurement-governance.md`; proposed records and
+accepted historical narratives cannot authorise an unrelated current target.

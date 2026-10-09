@@ -81,7 +81,7 @@ The `1db8ff3` rerun below is superseded by this one and kept as history.
 Gap: [redact-secret#932](https://github.com/redact-secret/redact-secret/issues/932), Deepgram/Cohere keyword-gated keys missed in same-line forms the gate does not recognise (HTTPie Token header, Go/Java SDK calls, LiteLLM log). Known-gap record
 `product-932`, fixed by [`127260c`](https://github.com/redact-secret/redact-secret/commit/127260c1bec71c181e043839a76607abbd72c6f3).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

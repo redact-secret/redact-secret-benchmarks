@@ -5,7 +5,7 @@ Status: normative, contract version 1
 cross-repo parent
 [redact-secret#767](https://github.com/redact-secret/redact-secret/issues/767)).
 Decided in
-[Gate future scorer promotion on hard constraints, not a mixed score](../decisions/2026-09-25-gate-future-scorer-promotion-on-hard-constraints.md).
+[Gate future scorer promotion on hard constraints, not a mixed score](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-25-gate-future-scorer-promotion-on-hard-constraints.md).
 Contract:
 [`benchmarks/scorer-promotion-contract.json`](../../benchmarks/scorer-promotion-contract.json)
 (structure:

@@ -63,7 +63,7 @@ test('a zero-detector taxonomy family has its recorded disposition, a non-null r
 
 test('#373: blocked Vercel families are pending and carry no aggregate evidence or profile', () => {
   const { families } = buildSupportMatrix(fullStatusReport());
-  // #1012/#1013: vcp_/vca_/vcr_ are scored arrival families (benchmarks/lib/beta8/1012e.ts); vci_ and vck_ stay blocked.
+  // #1012/#1013: vcp_/vca_/vcr_ are scored arrival families (benchmarks/lib/credential-regressions/1012e.ts); vci_ and vck_ stay blocked.
   const modern = families.filter(entry => [
     'vercel:integration-token',
     'vercel:api-key',

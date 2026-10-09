@@ -1,6 +1,6 @@
 import { fixture, synthetic } from "./build.mjs";
-import { build384a } from "./beta8/384a.mjs";
-import { build384c } from "./beta8/384c.mjs";
+import { build384a } from "../generators/credential-regressions/384a.mjs";
+import { build384c } from "../generators/credential-regressions/384c.mjs";
 import { classifyFixture } from "../../benchmarks/lib/assessment.ts";
 
 // Project-owned twin-scope corpus (#602, docs/specs/qualification-inputs.md): the cross-provider

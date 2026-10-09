@@ -195,7 +195,7 @@ test('reviewed candidate runtime permits scoped DOB families while exact receipt
 });
 
 test('recorded v2 preflight and helper proposal remain reproducible without active pin updates', () => {
-  const base = 'docs/reports/pii-evidence-snapshot-v2-candidate';
+  const base = 'benchmarks/inputs/pii-evidence-snapshot-v2-candidate';
   const future = read(`${base}/preflight.json`);
   const candidate = read(`${base}/candidate.json`);
   assert.deepEqual(validatePreflightReport(future, policy, { snapshotPin: future.evidence, consumerPin: future.consumer }), future);

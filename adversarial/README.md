@@ -3,7 +3,7 @@
 How adversarial fixtures written outside this project enter the benchmark,
 and how they stay apart from maintainer-authored regression coverage and
 from protected holdout evidence. The decision record is
-[`docs/decisions/2026-09-22-define-external-adversarial-intake.md`](../docs/decisions/2026-09-22-define-external-adversarial-intake.md);
+[`docs/decisions/2026-09-22-define-external-adversarial-intake.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-define-external-adversarial-intake.md);
 the tracking issue is
 [#139](https://github.com/redact-secret/redact-secret-benchmarks/issues/139)
 (epic [#138](https://github.com/redact-secret/redact-secret-benchmarks/issues/138)).

@@ -1,7 +1,7 @@
 # Accuracy observation reuse
 
 Issue [#706](https://github.com/redact-secret/redact-secret-benchmarks/issues/706), under [#704](https://github.com/redact-secret/redact-secret-benchmarks/issues/704).
-Engine contract: credential-eval ADR 0008 (issue #40). Decision: [plan accuracy reuse from verified observation archives](../decisions/2026-10-05-plan-accuracy-reuse-from-verified-observation-archives-and-let-the-engine-replay.md).
+Engine contract: credential-eval ADR 0008 (issue #40). Decision: [plan accuracy reuse from verified observation archives](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-05-plan-accuracy-reuse-from-verified-observation-archives-and-let-the-engine-replay.md).
 
 This repository measures and records. Reuse concerns normalized accuracy observations, never final scores, and never performance (#709).
 

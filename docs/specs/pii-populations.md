@@ -293,7 +293,7 @@ remains evaluation-only.
 
 ## Network-address port suffix
 
-Decision: [`2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span`](../decisions/2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md)
+Decision: [`2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md)
 (#451). Every PII population and `pii:parity:measure` scorer reads one rule for
 an address with a port:
 

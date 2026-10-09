@@ -2,7 +2,7 @@
 
 Issue: [#603](https://github.com/redact-secret/redact-secret-benchmarks/issues/603), part of epic
 [#602](https://github.com/redact-secret/redact-secret-benchmarks/issues/602).
-Decision: [Partition qualification inputs by population](../decisions/2026-10-01-partition-qualification-inputs-by-population.md).
+Decision: [Partition qualification inputs by population](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-01-partition-qualification-inputs-by-population.md).
 
 The machine contract is `benchmarks/qualification-inputs.json` (schema version 1), checked by
 `npm run qualification-inputs:check` (`scripts/check-qualification-inputs.mjs`). The gate checks structure

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "sourceCommit",
+    "records"
+  ],
+  "properties": {
+    "schema": {
+      "const": "redact-secret/decision-provenance/v1"
+    },
+    "sourceCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "decisionId",
+          "status",
+          "scope",
+          "sourceCommit",
+          "sourceSha256",
+          "rulingSha256",
+          "spec",
+          "uses"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^docs/decisions/[0-9a-z-]+\\.md$"
+          },
+          "decisionId": {
+            "type": "string",
+            "pattern": "^decision-[a-z0-9-]+$"
+          },
+          "status": {
+            "enum": [
+              "accepted",
+              "proposed",
+              "rejected",
+              "superseded"
+            ]
+          },
+          "scope": {
+            "const": "benchmarks"
+          },
+          "sourceCommit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "sourceSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "rulingSha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "spec": {
+            "type": "string",
+            "pattern": "^(docs/specs/.+\\.md|web/CONVENTIONS\\.md)$"
+          },
+          "uses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "role",
+                "target"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "credential-authority",
+                    "credential-oracle",
+                    "credential-oracle-exit",
+                    "pii-public-authority",
+                    "pii-oracle",
+                    "evidence-adoption"
+                  ]
+                },
+                "target": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

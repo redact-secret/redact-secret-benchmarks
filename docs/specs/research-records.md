@@ -1,6 +1,6 @@
 # Research records: owner, legacy dossiers and what the site shows
 
-Decisions: [ownership and the #582 dispositions](../decisions/2026-10-08-own-canonical-research-in-credential-evidence-and-keep-benchmark-dossiers-as-legacy-presentation.md).
+Decisions: [ownership and the #582 dispositions](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-08-own-canonical-research-in-credential-evidence-and-keep-benchmark-dossiers-as-legacy-presentation.md).
 
 ## Owner and compatibility boundary
 

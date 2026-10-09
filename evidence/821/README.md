@@ -8,7 +8,7 @@ Gap: [redact-secret#821](https://github.com/redact-secret/redact-secret/issues/8
 JWK secret members (`"k"`, `"d"`, `"p"`, `"q"`, `"dp"`, `"dq"`, `"qi"`) are not detected. Known-gap record `product-821`, fixed by
 [`bc52fb5`](https://github.com/redact-secret/redact-secret/commit/bc52fb58a2625880c808de8aeab502c12a24ce50).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

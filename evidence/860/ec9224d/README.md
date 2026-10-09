@@ -8,7 +8,7 @@
 (documented 63, empirical 25; 20 provisional, 2 pending), the same families and profiles as at `8f97f14`. Published
 mode (`@redact-secret/core` 0.1.0-beta.10) reads **61 stable of 110** (documented 38, empirical 23; 47 provisional, 2
 pending), also the same families. This holds after the #948 contract change is recorded in the corpus
-([`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](../../../docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md)).
+([`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md)).
 With the labels as they stood before that record, candidate mode read **55 stable**. The loss of those 33 families
 is broken down below. The registry is pinned to `ec9224d`, and the pinned revision has an ACCEPTED performance
 evaluation. Nothing here is a release claim.

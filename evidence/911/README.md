@@ -95,7 +95,7 @@ high-signal name, which is outside #911 and warns by documented policy (below).
 Gap: [redact-secret#911](https://github.com/redact-secret/redact-secret/issues/911), generic-token redacts secret-reference names and identifiers in ordinary config/source (untargeted real-world-shapes). Known-gap record
 `product-911`, fixed by [`12a984e`](https://github.com/redact-secret/redact-secret/commit/12a984ebf62dd1f8640058b8290421f6cc72baf7)
 (PR [#938](https://github.com/redact-secret/redact-secret/pull/938), merge `ea5c7bd`). This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

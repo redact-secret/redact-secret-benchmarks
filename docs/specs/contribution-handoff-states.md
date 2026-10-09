@@ -3,13 +3,13 @@
 Issue [#533](https://github.com/redact-secret/redact-secret-benchmarks/issues/533), part of
 [#531](https://github.com/redact-secret/redact-secret-benchmarks/issues/531). Core counterpart:
 [redact-secret#1049](https://github.com/redact-secret/redact-secret/issues/1049). Decision:
-[`decision-define-benchmark-handoff-states`](../decisions/2026-09-30-define-benchmark-handoff-states.md).
+[`decision-define-benchmark-handoff-states`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-30-define-benchmark-handoff-states.md).
 
 Core's contract for the same five words is
 [`implementation-ready-handoff`](https://github.com/redact-secret/redact-secret/blob/main/docs/contracts/contribution/implementation-ready-handoff.md).
 Issue [#810](https://github.com/redact-secret/redact-secret-benchmarks/issues/810) aligned this spec with it; the
 amendment is
-[`decision-apply-implementation-ready-only-on-the-core-issue`](../decisions/2026-10-07-apply-implementation-ready-only-on-the-core-issue.md).
+[`decision-apply-implementation-ready-only-on-the-core-issue`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-07-apply-implementation-ready-only-on-the-core-issue.md).
 
 Public anchor for other issues to link:
 `docs/specs/contribution-handoff-states.md#shared-vocabulary`.
@@ -48,7 +48,7 @@ was promoted, or is supported (see [No inference rule](#no-inference-rule)).
 ### Relation to dossier verdicts
 
 The dossier verdicts (`unresearched`, `ready`, `issuance-gated`, `date-gated`, `not-found`, `rejected`,
-[dossier decision](../decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md)) are unchanged
+[dossier decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md)) are unchanged
 and remain the maintainer layer. The public states do not map one to one. Verdict reading:
 
 | Dossier verdict | Public state it can support | Note |
@@ -137,7 +137,7 @@ reopen the contract. A change to the contract is a new dated dossier verdict and
 A merged core implementation says implementation work exists. It does not:
 
 - promote a benchmark finding (`observed` to `reviewed` to `promoted` in `benchmarks/known-gaps.json`
-  follows [its own lifecycle](../decisions/2026-09-18-govern-benchmark-promotion.md) and needs independent
+  follows [its own lifecycle](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md) and needs independent
   review evidence);
 - change a family's measured status (`stable`, `provisional`, `pending`, `unsupported` stay derived from
   the support criteria and the support matrix);
@@ -172,7 +172,7 @@ Every link below is a record that already exists. The trace uses the vocabulary 
 | Research of the Tier B families | `research-needed` | product [#860](https://github.com/redact-secret/redact-secret/issues/860), benchmark [#436](https://github.com/redact-secret/redact-secret-benchmarks/issues/436) |
 | Verdict `ready`, T1, `researchedAt` 2026-09-28; cloud `eyJ2` body left `issuance-gated` | `implementation-ready` for the hex body only | [`benchmarks/support/dossiers/convex.md`](../../benchmarks/support/dossiers/convex.md), frozen contract at the [`convex.md` permalink](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/convex.md) |
 | Core implementation | (core side) | core [#912](https://github.com/redact-secret/redact-secret/issues/912) |
-| Exact-candidate measurement | `verification-needed`, then `complete` on the committed record | [`evidence/860/436/README.md`](../../evidence/860/436/README.md), described in the [Tier B handoff report](../reports/2026-09-28/beta-11-tier-b-corpus-handoff.md) |
+| Exact-candidate measurement | `verification-needed`, then `complete` on the committed record | [`evidence/860/436/README.md`](../../evidence/860/436/README.md), described in the [Tier B handoff report](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-28/beta-11-tier-b-corpus-handoff.md) |
 
 The measurement record for this family found a benign-control regression introduced after the published
 beta.10 (core #919). That is a recorded finding. It moves no status and promotes nothing. It shows why

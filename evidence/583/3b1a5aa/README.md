@@ -54,7 +54,7 @@ variable (benign false alarms, and the 14 and 7 metamorphic failures are the sam
 
 The #1014 handoff lists these as benign, so they are recorded as open `differential-false-alarm-unconfirmed` rows, not relabelled to
 policy (the placeholder floors are not the credential-named-neighbour policy of
-[`2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md`](../../../docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md)).
+[`2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md)).
 They are the next candidate for a promote-finding pass; this repository does not assert product output.
 
 ## Peer lag and overreach per contract (`beta8-583a`, the Square corpus only)

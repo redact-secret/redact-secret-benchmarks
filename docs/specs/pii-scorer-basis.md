@@ -1,7 +1,7 @@
 # PII scorer basis: the measurement-to-product boundary (#795)
 
 Status: benchmark-side record. This repository measures and records; it asserts no product output. The decision on which protocol defines a product value is
-[`docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md`](../decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md),
+[`docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md),
 **status: accepted by the owner, 2026-10-06** (scorer, denominator and label decision only; source: issue #795 comment 6028908779). PII authority stays `legacy` (`benchmarks/pii-authority.json`, #666), the new artifacts are
 exploratory, and no threshold, tolerance, membership, suppression or support verdict changes. Nothing here reads or needs EC2, the custodian, the private ledger or a protected corpus.
 

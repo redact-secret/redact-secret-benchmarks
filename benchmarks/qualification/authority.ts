@@ -53,7 +53,7 @@ export const DEFAULT_AUTHORITY: Authority = 'legacy';
 
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const REVISION = /^rs-policy-\d+:sha256:[0-9a-f]{64}$/;
-const DECISION_PATH = /^docs\/decisions\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$/;
+const DECISION_PATH = /^(?:docs\/decisions\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md|benchmarks\/governance\/authorisations\/[0-9a-z-]+\.json)$/;
 const RELEASE = /^@[a-z0-9-]+\/[a-z0-9-]+@\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/;
 const ROLLBACK_PATH = /^docs\/[A-Za-z0-9/._-]+\.md#[a-z0-9-]+$/;
 const REPORT_PATH = /^docs\/generated\/[a-z0-9-]+\.json$/;

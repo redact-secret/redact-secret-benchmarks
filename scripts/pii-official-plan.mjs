@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { decisionStatus as recordedDecisionStatus } from './lib/decision-provenance.mjs';
 // The frozen execution plan of the first official public/synthetic PII measurement (#796), derived from the committed pins and never typed:
 //
 //   node scripts/pii-official-plan.mjs [--write | --check]
@@ -46,7 +47,7 @@ export function buildPlan() {
   const source = readJson('benchmarks/pii-eval-public-synthetic-source.json');
   const dual = migration.benchmarkPopulationDualRun;
   const decision = 'docs/decisions/2026-10-07-propose-the-pii-scorer-basis-and-metric-semantics.md';
-  const decisionStatus = /^status:\s*(\S+)/m.exec(read(decision).toString('utf8'))?.[1];
+  const decisionStatus = recordedDecisionStatus(decision);
   return {
     schemaVersion: 1, reportType: 'pii-official-execution-plan', issue: 'redact-secret/redact-secret-benchmarks#796', supportClaims: false, authorityChanged: false,
     state: recorded() ? 'executed-and-recorded' : 'pending-not-dispatched',

@@ -8,7 +8,7 @@ Gap: [redact-secret#816](https://github.com/redact-secret/redact-secret/issues/8
 generic-token misses credential parameters in URL query strings, fragments and form bodies (`?access_token=`, `&client_secret=`, `code_verifier=`). Known-gap record `product-816`, fixed by
 [`855bf96`](https://github.com/redact-secret/redact-secret/commit/855bf9698959af4cd8d475b477b23a32c2453cc2).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

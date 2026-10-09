@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { promisify } from 'node:util';
 import record from '../benchmarks/pii-eval-migration.json' with { type: 'json' };
 import { buildConversion, manifestFor, observationFor, oracleInput, rosterFor, snapshotFor, VIEWS } from '../scripts/lib/pii-population-conversion.mjs';
+import { retainedPiiPopulationReportProblems } from '../scripts/lib/retained-pii-population-report.mjs';
 import { renderReport } from '../scripts/lib/pii-population-report.mjs';
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
@@ -90,8 +91,11 @@ test('the conversion is deterministic, keeps populations separate and never inve
 });
 
 test('the Markdown report is the rendering of the record and the record holds no input text', () => {
-  assert.equal(read(dual.report.markdown), renderReport(report));
-  const published = [read(dual.report.path), read(dual.report.markdown), ...dual.artifacts.map(row => read(row.path))].join('\n');
+  const receipt = JSON.parse(read('benchmarks/inputs/pii-population-report-receipt.json'));
+  assert.equal(receipt.historicalPath, dual.report.markdown);
+  assert.equal(receipt.record, dual.report.path);
+  assert.deepEqual(retainedPiiPopulationReportProblems(receipt, read(dual.report.path)), []);
+  const published = [read(dual.report.path), renderReport(report), ...dual.artifacts.map(row => read(row.path))].join('\n');
   const ctx = buildConversion();
   for (const bucket of ctx.populations) for (const row of bucket.cases) {
     if (row.value.length >= 12) assert.ok(!published.includes(row.value), `a matched value of ${row.id} appears in a published record`);

@@ -34,7 +34,7 @@ const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-co
 const readJson = (file, base = root) => JSON.parse(readFileSync(path.join(base, file), 'utf8'));
 const writeJson = (file, value, base = root) => { mkdirSync(path.dirname(path.join(base, file)), { recursive: true }); writeFileSync(path.join(base, file), `${JSON.stringify(value, null, 2)}\n`); };
 
-export const adrPath = (tag, engineTag = 'v0.1.0-alpha.5') => `docs/decisions/${new Date().toISOString().slice(0, 10)}-accept-${tag.replace(/\./g, '-')}-on-credential-eval-${engineTag.replace(/^v0\.1\.0-/, '').replace(/\./g, '-')}.md`;
+export const adrPath = (tag, engineTag = 'v0.1.0-alpha.5') => `benchmarks/governance/authorisations/${new Date().toISOString().slice(0, 10)}-accept-${tag.replace(/\./g, '-')}-on-credential-eval-${engineTag.replace(/^v0\.1\.0-/, '').replace(/\./g, '-')}.json`;
 
 /** Pure: the accepted record the owner's acceptance would write. The previous accepted adoption stays in it as history; the owner fields are OWNER-TO-SET. */
 export function acceptedRecord({ record, decision }) {
@@ -62,18 +62,17 @@ export function acceptedRecord({ record, decision }) {
 
 /** Pure: the draft decision (status proposed). It states the facts of the replay and leaves the decision and the owner statement to the owner. */
 export function draftDecision({ tag, ec, decision, summary }) {
-  const lines = [
-    '---', `decision_id: decision-accept-${tag.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-on-credential-eval-alpha-5`, 'status: proposed', 'scope: benchmarks',
-    `title: Accept evidence ${tag} on credential-eval ${ec.engine.tag} with the published @redact-secret/core ${ec.product?.version ?? ''} as the credential qualification evidence`, 'decided_at: OWNER-TO-SET', '---', '',
-    `# Accept evidence ${tag} on credential-eval ${ec.engine.tag} with the published @redact-secret/core ${ec.product?.version ?? ''}`, '',
-    `**PROPOSED, NOT DECIDED.** Prepared by scripts/prepare-acceptance-package.mjs for the owner (#690, #680). Status stays \`proposed\` and the Decision and the owner statement are the owner's to write. Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기): owner acceptance is not an independent review.`, '',
-    '## Context', '',
-    `\`${tag}\` (manifest \`${ec.manifestDigest}\`, corpus \`${ec.snapshotDigest}\`) supersedes the accepted \`${ec.supersedes?.evidenceRelease}\`. ${summary}`, '',
-    '## Decision', '', 'OWNER-TO-SET', '', '## Consequences', '',
-    'On acceptance the active evidence pin, the recorded runs (the previous ones as historical receipts), the derived overlays, the parity report and the authority file move to this release; the public numbers change only when this is merged and deployed. Rollback: revert the acceptance, or set the authority back to `legacy` (docs/specs/qualification-cutover.md).', '',
-  ];
-  void decision;
-  return `${lines.join('\n').replace(/\n+$/, '')}\n`;
+  return `${JSON.stringify({
+    schema: 'redact-secret/owner-authorisation/v1',
+    decisionId: `decision-accept-${tag.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-on-credential-eval-${ec.engine.tag.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+    status: 'proposed', scope: 'benchmarks',
+    title: `Accept evidence ${tag} on credential-eval ${ec.engine.tag} with @redact-secret/core ${ec.product?.version ?? ''}`,
+    owner: { acceptedBy: OWNER, acceptedOn: OWNER }, ruling: OWNER,
+    context: { evidenceRelease: tag, manifestDigest: ec.manifestDigest, snapshotDigest: ec.snapshotDigest, engine: ec.engine,
+      product: ec.product ?? null, decision, summary,
+      note: 'Prepared for owner review only. Fill the owner fields, ruling, accepted status and exact scoped targets in uses through a reviewed owner change; no authority is changed by this package. Owner acceptance is not independent review.' },
+    uses: [],
+  }, null, 2)}\n`;
 }
 
 const sh = (command, args, options = {}) => execFileSync(command, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 512 * 1024 * 1024, ...options });
@@ -169,7 +168,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     const acceptance = {
       note: 'Prepared for the owner (#690). Nothing here is accepted: the active pins, runs and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.',
       report: `${GENERATED}/${tag}.md`, comparison: `${GENERATED}/${tag}.comparison.json`, patch: patchFile, patchDigestFile: `${patchFile}.sha256`, applies: `git apply ${patchFile}`,
-      ownerFields: ['the authority: renew it in a reviewed commit with `authorityValues` (and set its acceptedOn and acceptedBy); the patch does not change it, so authority:check stays red until you do', 'benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn', `${decision} status (proposed to accepted), decided_at and its Decision`],
+      ownerFields: ['the authority: renew it in a reviewed commit with `authorityValues` (and set its acceptedOn and acceptedBy); the patch does not change it, so authority:check stays red until you do', 'benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn', `${decision} status (proposed to accepted), owner, ruling and uses with exact evidence-adoption and credential-authority targets`],
       scannerSelection: acceptanceSelection({ selection, replay: ec.replay, archive: archiveFile, runId }),
       authorityValues: { release: `@redact-secret/core@${ec.product?.version ?? registry.scanners.find(x => x.id === 'redact-secret').version}`, policyRevision: viewData.policy?.revision, semanticDigests, parityReport: 'docs/generated/qualification-parity.json', decision },
       candidateView: { sha256: `sha256:${createHash('sha256').update(readFileSync(view)).digest('hex')}`, policyRevision: viewData.policy?.revision, distribution },
@@ -185,9 +184,8 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineRep
     run('git', ['-c', 'user.name=acceptance', '-c', 'user.email=acceptance@localhost', 'commit', '-qm', 'base: the record with the prepared acceptance', '--', 'benchmarks/evidence-adoption.json']);
     // 8. The authority file (owner fields unset), the accepted record and the draft decision.
     writeJson('benchmarks/evidence-adoption.json', acceptedRecord({ record: withAcceptance, decision }), tree);
+    mkdirSync(path.dirname(path.join(tree, decision)), { recursive: true });
     writeFileSync(path.join(tree, decision), draftDecision({ tag, ec, decision, summary: `Candidate view: ${JSON.stringify(distribution)}; the report is ${GENERATED}/${tag}.md.` }));
-    const decisions = readFileSync(path.join(tree, 'docs/decisions/DECISIONS.md'), 'utf8').replace(/\n*$/, '\n');
-    writeFileSync(path.join(tree, 'docs/decisions/DECISIONS.md'), `${decisions}- [Accept evidence ${tag} on credential-eval ${ec.engine.tag} with the published @redact-secret/core ${ec.product?.version ?? ''} as the credential qualification evidence (PROPOSED)](${path.basename(decision)}) (#690, #680; owner acceptance OWNER-TO-SET)\n`);
     // 9. The patch and its digest; the acceptance block into THIS checkout's record.
     rmSync(path.join(tree, 'node_modules'), { force: true }); // the link to this checkout's modules is not part of the change
     run('git', ['add', '-A']);

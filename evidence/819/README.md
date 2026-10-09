@@ -8,7 +8,7 @@ Gap: [redact-secret#819](https://github.com/redact-secret/redact-secret/issues/8
 RFC 8959 `secret-token:` URIs are redacted without their scheme, and missed with an upper-case scheme or behind another assignment. Known-gap record `product-819`, fixed by
 [`56cd309`](https://github.com/redact-secret/redact-secret/commit/56cd309dc569fa9d45fd8279c6d4863ab9ec57ad).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

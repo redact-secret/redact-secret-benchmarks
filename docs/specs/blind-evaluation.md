@@ -2,7 +2,7 @@
 
 Issue: [#142](https://github.com/redact-secret/redact-secret-benchmarks/issues/142),
 part of [#138](https://github.com/redact-secret/redact-secret-benchmarks/issues/138).
-Decision: [`2026-09-25-run-blind-evaluation-through-an-isolated-custodian-agent.md`](../decisions/2026-09-25-run-blind-evaluation-through-an-isolated-custodian-agent.md).
+Decision: [`2026-09-25-run-blind-evaluation-through-an-isolated-custodian-agent.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-25-run-blind-evaluation-through-an-isolated-custodian-agent.md).
 Code: `benchmarks/blind/` (library), `benchmarks/blind.ts` (CLI, `npm run blind:run`),
 `scripts/check-blind-public.mjs` (`npm run blind:check-public`),
 `schemas/blind-aggregate-v1.json`. Tests: `tests/blind-evaluation.test.mjs`.

@@ -1,7 +1,7 @@
 # Statistical scorer tuning and protected holdout
 
 Status: normative for beta.9 (#256). Decided in
-[Protect holdout from statistical scorer tuning](../decisions/2026-09-25-protect-holdout-from-statistical-scorer-tuning.md).
+[Protect holdout from statistical scorer tuning](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-25-protect-holdout-from-statistical-scorer-tuning.md).
 Enforced by `npm run tuning:check`
 ([`benchmarks/lib/tuning-manifest.ts`](../../benchmarks/lib/tuning-manifest.ts),
 [`schemas/tuning-manifest-v1.json`](../../schemas/tuning-manifest-v1.json)).

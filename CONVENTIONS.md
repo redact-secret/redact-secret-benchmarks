@@ -31,7 +31,7 @@ assignment context (`mutationKind: "context"`); a family with nothing
 documented to mutate is recorded `unprobeable` on its contract instead, and
 `/coverage` publishes discriminated, not discriminated and un-probeable as
 separate lines
-([decision](docs/decisions/2026-09-20-extend-twins-to-assignment-context.md)). Envelopes, tiers and
+([decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-20-extend-twins-to-assignment-context.md)). Envelopes, tiers and
 twins are authored from construction and provider evidence, hashed with the
 corpus, and never widened in response to scanner output. Fixtures are
 materialized in a scratch filesystem directory.

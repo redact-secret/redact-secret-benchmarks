@@ -2,7 +2,7 @@
 
 Issue: [#605](https://github.com/redact-secret/redact-secret-benchmarks/issues/605), part of epic
 [#602](https://github.com/redact-secret/redact-secret-benchmarks/issues/602).
-Decision: [Run credential-eval officially once per population](../decisions/2026-10-01-run-credential-eval-per-population-and-adapt-run-artifacts.md).
+Decision: [Run credential-eval officially once per population](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-01-run-credential-eval-per-population-and-adapt-run-artifacts.md).
 Inputs: [official-runs.md](official-runs.md), [qualification-inputs.md](qualification-inputs.md).
 Output contract: `schemas/qualification-view-v1.json`. Consumer: the Next app (#606).
 
@@ -54,7 +54,7 @@ or erase the source population. One invalid artifact stops the view; it is never
 ## The scanner roster
 
 Issue [#763](https://github.com/redact-secret/redact-secret-benchmarks/issues/763), epic #723.
-Decision: [Make the OpenRedaction default profile an optional, manual measurement](../decisions/2026-10-06-make-the-openredaction-default-profile-an-optional-manual-measurement.md).
+Decision: [Make the OpenRedaction default profile an optional, manual measurement](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-06-make-the-openredaction-default-profile-an-optional-manual-measurement.md).
 
 The evaluation contract names, per run class (and, when needed, per population), the scanners a run MUST measure and the ones it MAY leave unmeasured:
 `benchmarks/support/scanner-roster.json` (`required`, `optional`, and for each optional scanner its label, profile, reason, the per-platform engine configuration that leaves it out, and the first engine release that ships it; whether the PINNED engine ships it is read from its checkout by the driver, #812). The
@@ -69,7 +69,7 @@ adapter reads it (`benchmarks/qualification/scanner-roster.ts`, `buildQualificat
 
 What dropping the default changes, stated rather than hidden: the other scanners' counts, every family status and the support matrix are derived from the product and the other scanners and do not move (the contract tests build the same view with and without an optional scanner and compare). The gate peers of the differential are `gitleaks` and `trufflehog`; OpenRedaction occurrences were measured and listed per family but were never gate-bearing, so the gate, the review queue of the gate peers and the ledger are unchanged; its occurrences, and any comparison column or page that listed the default, are absent for that run and say so. A view built from an earlier run keeps its OpenRedaction default results as history labelled with that run, engine, configuration and date.
 
-**The credential profile (#764).** `openredaction-credential-bearing` (the 33 credential-bearing OpenRedaction types) is a separately named optional entry of the roster, `profileOf: openredaction`, with its own label ('OpenRedaction credential profile (33 types)'; the default is 'OpenRedaction default (all patterns)'), statement, detection text and identity (adapter, package, scanner configuration hash, run configuration and its hash). It is optional because no pinned configuration measures it yet; until an official-class measurement exists the view states 'not measured in an official run (local exploratory diagnostics only: see ADR)', with no number and never the default's history. The view's `scannerRoster.profiles` lists every optional scanner, measured or not, so the pages label the two profiles separately and say that both are the same package under different configurations, that results differ by configuration, and that no accuracy claim follows. Two optional entries may not share a label or be the same profile of the same scanner. Decision: [choose the credential profile](../decisions/2026-10-06-choose-the-openredaction-credential-bearing-profile-as-the-comparison-scanner.md).
+**The credential profile (#764).** `openredaction-credential-bearing` (the 33 credential-bearing OpenRedaction types) is a separately named optional entry of the roster, `profileOf: openredaction`, with its own label ('OpenRedaction credential profile (33 types)'; the default is 'OpenRedaction default (all patterns)'), statement, detection text and identity (adapter, package, scanner configuration hash, run configuration and its hash). It is optional because no pinned configuration measures it yet; until an official-class measurement exists the view states 'not measured in an official run (local exploratory diagnostics only: see ADR)', with no number and never the default's history. The view's `scannerRoster.profiles` lists every optional scanner, measured or not, so the pages label the two profiles separately and say that both are the same package under different configurations, that results differ by configuration, and that no accuracy claim follows. Two optional entries may not share a label or be the same profile of the same scanner. Decision: [choose the credential profile](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-06-choose-the-openredaction-credential-bearing-profile-as-the-comparison-scanner.md).
 
 The roster is deliberately not a component of the product policy revision (it says who is measured, not what a status requires), so changing it moves no support status and not `policy.revision`; `npm run authority:check` does not see it.
 
@@ -89,7 +89,7 @@ A review occurrence settles through `review-ledger.json` by the legacy decision 
 id to; an occurrence the mapping does not name is unreviewed and reads unresolved. The differential gate counts only the occurrences of the
 peers named in `population-policy.json` `methods.differential.peers` (gitleaks and trufflehog, the peers the legacy gate read); the occurrences
 of every other peer are measured and listed per family (`families[].differential`) and are not gate-bearing until reviewed
-([ADR](../decisions/2026-10-01-gate-the-differential-on-the-legacy-peers-and-measure-the-others.md)).
+([ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-01-gate-the-differential-on-the-legacy-peers-and-measure-the-others.md)).
 
 ## The review-ledger re-key
 
@@ -107,7 +107,7 @@ reason (a peer the legacy run never scanned, a case the join does not pair, no l
 ambiguous key), and the legacy mutation entries, which have no canonical counterpart (the canonical queue holds differential occurrences
 only). It is validated (one to one with the ledger, counts reconcile), bound to the snapshot's corpus digest and to the canonical methods run's
 semantic digest, and a component of the policy revision
-([ADR](../decisions/2026-10-01-apply-the-legacy-review-decisions-to-canonical-occurrences-by-content.md)).
+([ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-01-apply-the-legacy-review-decisions-to-canonical-occurrences-by-content.md)).
 
 ## The public axis overlay
 
@@ -132,7 +132,7 @@ target), the policy's `attribution.fallback` applies in order: the overlay's `de
 only), then the detectors of its twin parent. What the snapshot names always wins. A case no step attributes is counted under the
 population's `unattributed` counts, and its family is listed in `unmappedFamilies`; it is never dropped. `families[].attribution` counts the
 floors cases of a family by source (`snapshot`, `overlay-detectors`, `twin-parent`)
-([ADR](../decisions/2026-10-01-attribute-public-cases-by-the-legacy-targets-and-keep-floors-per-population.md)). Floors stay per population: the legacy
+([ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-01-attribute-public-cases-by-the-legacy-targets-and-keep-floors-per-population.md)). Floors stay per population: the legacy
 pooled count of a family with regression fixtures is a legitimate difference (`population-separation`), never reproduced by pooling. A
 cross-provider twin the snapshot gives no family is scoped by no one in the engine, which reads a finding of another known detector as
 flagged; the adapter does not re-score it (`twin-scope-vocabulary`; the twin gate reads its project counterpart, see Twin scope).
@@ -141,7 +141,7 @@ flagged; the adapter does not re-score it (`twin-scope-vocabulary`; the twin gat
 
 An axis floor (`positiveAxes`, `controlAxes`, `benignAxes`, `confusionAxes` and the fixture-profile positive-context, control and confusion cells) is judged on the
 union of the axis labels across the populations `population-policy.json` `axisCoverage.populations` names (#641,
-[ADR](../decisions/2026-10-02-judge-axis-floors-on-the-union-of-axis-labels-across-populations.md)). Only labels are unioned. `positiveCases`, `benignCases`,
+[ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-02-judge-axis-floors-on-the-union-of-axis-labels-across-populations.md)). Only labels are unioned. `positiveCases`, `benignCases`,
 `twinPairs`, `totalFixtures` and every case cell are the floors population's count alone, and the zero-tolerance gates are unchanged. A label is the legacy
 classifier's: a control's reviewed axis, a positive's `<category>/<fixture group>` (the fixture group for the cell). The public population gets it from the axis
 overlay; a product population from its own case taxonomy and case metadata (`group`, and `axisCategory` for a byte-for-byte copy, which names its original's category so a
@@ -270,7 +270,7 @@ rebuilt from the retained artifact, never by modifying it. [Fixture metadata](fi
 
 The rows are additive: removing `cases` from a view gives the view the adapter wrote before them, value for value, and the policy revision does not change (`adapter.version` stays 1; the schema tag stays `v1`).
 A view without `cases` is refused by the Next reader as incompatible, with the command that rebuilds it. The size is about 6 MB for the canonical populations (about 300 KB compressed), generated and never committed
-([ADR](../decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md)).
+([ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md)).
 
 **Who reads the view, and when (#608).** `/evaluation/qualification/…` always. When `benchmarks/qualification-authority.json` says `new`, the Next credential report pages too: `web/services/credential-bridge.ts` reads the
 report population's `cases` (the one the population policy gives the floors and gates), `artifact` and `methodsArtifact`, and `distribution` and `stableDistribution`, and only when the view is the one the authorisation names (its
@@ -300,7 +300,7 @@ Whether a scanner's observation was made in the run or taken from an earlier ver
 - The reason is the engine's fixed vocabulary (`compatible`, `forced`, `no-recorded-observation`, `not-prepared`, `changed: <field>[, <field>]`); anything else is dropped, so no scanner output reaches a page through it.
 - The bytes are the verified ones: the view job checks each archived artifact against the byte digest `benchmarks/official-runs.json` records, `non_semantic` included. The registry and the run records themselves carry no per-scanner origin (what they carry: artifact digests, determinism runs, the scanner list and `omittedOptionalScanners`).
 - An optional scanner left out of a run has no observation and so no origin row; the origin block states it as not measured.
-- Availability per run, as read from the recorded artifacts (verified by inspecting them, not asserted by a test): the current engine (alpha.16) artifacts of the four required scanners carry no `origin`, no `reuse`, no `scope_accounting` and no native labels, so their origin is `not-recorded` and their scope state is `not-accounted` (the engine has no reviewed disposition table for these scanners). The retained alpha.5 artifacts of the OpenRedaction default predate both (`legacy-native-label-unavailable`, Unknown counts). Decision: [disclose the optional scanner on every report and keep observation origin apart from scope evidence](../decisions/2026-10-07-disclose-the-optional-scanner-on-every-report-and-keep-observation-origin-apart-from-scope-evidence.md).
+- Availability per run, as read from the recorded artifacts (verified by inspecting them, not asserted by a test): the current engine (alpha.16) artifacts of the four required scanners carry no `origin`, no `reuse`, no `scope_accounting` and no native labels, so their origin is `not-recorded` and their scope state is `not-accounted` (the engine has no reviewed disposition table for these scanners). The retained alpha.5 artifacts of the OpenRedaction default predate both (`legacy-native-label-unavailable`, Unknown counts). Decision: [disclose the optional scanner on every report and keep observation origin apart from scope evidence](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-07-disclose-the-optional-scanner-on-every-report-and-keep-observation-origin-apart-from-scope-evidence.md).
 
 ## Tests
 

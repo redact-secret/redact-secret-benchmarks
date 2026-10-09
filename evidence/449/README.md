@@ -56,7 +56,7 @@ frozen per-family plans pin `vocabulary=pii-context/v1`, and Beta.11 reports `pi
 `8b6a5fd` or `94fc18a` would need plans rewritten after the fact. The Beta.11 disposition already reaches publication
 through the reviewed v2 route (`protected-support-bindings-v1.json`, checked by `bindPiiProtectedSupport`). Schema 2 of
 the record accepts that route. The decision is the amendment to
-[`docs/decisions/2026-09-27-bind-the-beta10-cross-domain-release-record.md`](../../docs/decisions/2026-09-27-bind-the-beta10-cross-domain-release-record.md).
+[`docs/decisions/2026-09-27-bind-the-beta10-cross-domain-release-record.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-27-bind-the-beta10-cross-domain-release-record.md).
 Under #449's "Done when", this is option (a): Beta.11 evidence satisfies the single-commit binding.
 
 ## Source equivalence 8b6a5fd → 94fc18a

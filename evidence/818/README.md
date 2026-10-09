@@ -8,7 +8,7 @@ Gap: [redact-secret#818](https://github.com/redact-secret/redact-secret/issues/8
 Authorization header credentials missed: `Proxy-Authorization`, Basic/Token not at line start, header-anchored Bearer values of 12-15 bytes. Known-gap record `product-818`, fixed by
 [`ebaff0a`](https://github.com/redact-secret/redact-secret/commit/ebaff0af3c472384646afa80a25851d2c2959463).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

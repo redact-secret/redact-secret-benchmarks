@@ -66,7 +66,7 @@ The `1db8ff3` rerun below is superseded by this one and kept as history.
 Gap: [redact-secret#935](https://github.com/redact-secret/redact-secret/issues/935), connection-string misses the password in dialect+driver:// URLs (postgresql+psycopg://). Known-gap record
 `product-935`, fixed by [`4e86505`](https://github.com/redact-secret/redact-secret/commit/4e865058e94bb0ead2d39f73d607a0b8e31a43f5).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

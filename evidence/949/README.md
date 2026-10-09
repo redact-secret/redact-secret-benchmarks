@@ -72,7 +72,7 @@ The `1db8ff3` rerun below is superseded by this one and kept as history.
 Gap: [redact-secret#949](https://github.com/redact-secret/redact-secret/issues/949), generic-token warns on provider-prefixed placeholders (signkey-test-<digits>, re_<digits>, re_your<word>). Known-gap record
 `product-949`, fixed by [`9605eb5`](https://github.com/redact-secret/redact-secret/commit/9605eb5d7094fc8a408a42e6bf7bd419299e13bf).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

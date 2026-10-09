@@ -67,7 +67,7 @@
    "benchmark-scorer": {
     "disposition": "retain-until-criterion",
     "files": 4,
-    "externalCallerFiles": 8
+    "externalCallerFiles": 9
    },
    "product-policy": {
     "disposition": "retain",
@@ -559,13 +559,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 31,
+     "retainedConsumerCount": 32,
      "retainedConsumers": [
+      "benchmarks/corpora/session-name-inventory.json",
       "benchmarks/evaluation/domains/pii/accounting-types.ts",
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/benign-collision-contract.ts",
-      "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
-      "benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts"
+      "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -597,13 +597,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 24,
+     "retainedConsumerCount": 25,
      "retainedConsumers": [
+      "benchmarks/corpora/session-name-inventory.json",
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
       "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
       "benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts",
-      "benchmarks/evaluation/domains/pii/email-network-population.ts",
-      "benchmarks/evaluation/domains/pii/metric-basis.mjs"
+      "benchmarks/evaluation/domains/pii/email-network-population.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -1617,15 +1617,16 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 14,
+    "total": 15,
     "withinCandidates": 2,
     "testCallers": 6,
-    "external": 6,
+    "external": 7,
     "externalByClass": {
-     "benchmarks": 3,
+     "benchmarks": 4,
      "script": 3
     },
     "externalFiles": [
+     "benchmarks/corpora/session-name-inventory.json (benchmarks, path)",
      "benchmarks/evaluation/domains/pii/metric-basis.mjs (benchmarks, path)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
@@ -1645,14 +1646,16 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 4,
+    "total": 5,
     "withinCandidates": 2,
     "testCallers": 1,
-    "external": 1,
+    "external": 2,
     "externalByClass": {
+     "benchmarks": 1,
      "script": 1
     },
     "externalFiles": [
+     "benchmarks/corpora/session-name-inventory.json (benchmarks, path)",
      "scripts/generate-pii-beta11-population-v2.mjs (script, import+path)"
     ]
    }
@@ -1667,14 +1670,16 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 4,
+    "total": 5,
     "withinCandidates": 0,
     "testCallers": 2,
-    "external": 2,
+    "external": 3,
     "externalByClass": {
+     "benchmarks": 1,
      "script": 2
     },
     "externalFiles": [
+     "benchmarks/corpora/session-name-inventory.json (benchmarks, path)",
      "scripts/check-pii-protected-readiness.mjs (script, path)",
      "scripts/pii-beta11.mjs (script, import+path)"
     ]
@@ -1690,15 +1695,16 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 5,
+    "total": 6,
     "withinCandidates": 0,
     "testCallers": 3,
-    "external": 2,
+    "external": 3,
     "externalByClass": {
-     "benchmarks": 1,
+     "benchmarks": 2,
      "script": 1
     },
     "externalFiles": [
+     "benchmarks/corpora/session-name-inventory.json (benchmarks, path)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "scripts/pii-beta11-protected.mjs (script, import+path)"
     ]

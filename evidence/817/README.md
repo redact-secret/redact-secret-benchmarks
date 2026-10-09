@@ -8,7 +8,7 @@ Gap: [redact-secret#817](https://github.com/redact-secret/redact-secret/issues/8
 generic-token flags non-secret references and identifiers under credential names (HTML-escaped placeholder, quoted `$VAR`, `env.X`, string concatenation, AWS ARN). Known-gap record `product-817`, fixed by
 [`840266c`](https://github.com/redact-secret/redact-secret/commit/840266c3d8c46c9f308740719c3b0d8e54b5f6ba).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

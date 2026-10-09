@@ -1,6 +1,6 @@
 # PII population ownership and composition proposal (#835)
 
-Status: proposed. [ADR](../decisions/2026-10-08-propose-independent-pii-evidence-population-composition.md).
+Status: proposed. [ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-08-propose-independent-pii-evidence-population-composition.md).
 Machine record: [`benchmarks/pii-population-policy.json`](../../benchmarks/pii-population-policy.json).
 Closed proposal schema: [`schemas/pii-population-policy-v1.json`](../../schemas/pii-population-policy-v1.json).
 Validator: `scripts/lib/pii-population-policy.mjs`; scoped check:

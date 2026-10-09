@@ -51,7 +51,7 @@ an inert fixture stub under `fixtures/generated/families/`;
    if a provider or family id is not in `taxonomy.json`, or if a GitHub file
    link is not a permalink (40-hex commit; `main` only for a living
    `redact-secret` doc). The rules are recorded in
-   [the decision](../../../docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
+   [the decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
 
 ## Where it shows up
 

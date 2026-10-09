@@ -1,7 +1,7 @@
 # Fixture titles and descriptions
 
 Issue: [#593](https://github.com/redact-secret/redact-secret-benchmarks/issues/593), part of [#543](https://github.com/redact-secret/redact-secret-benchmarks/issues/543).
-Decision: [Take a public case's title from its credential-evidence record and author only product-owned fixtures here](../decisions/2026-10-08-take-public-case-titles-from-credential-evidence-and-author-only-product-fixtures-here.md).
+Decision: [Take a public case's title from its credential-evidence record and author only product-owned fixtures here](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-08-take-public-case-titles-from-credential-evidence-and-author-only-product-fixtures-here.md).
 
 This repository measures and records. A title and a description are display text: this page and the files it names assert no product result.
 

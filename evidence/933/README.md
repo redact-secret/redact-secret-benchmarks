@@ -72,7 +72,7 @@ The `1db8ff3` rerun below is superseded by this one and kept as history.
 Gap: [redact-secret#933](https://github.com/redact-secret/redact-secret/issues/933), Context-gated legacy keys missed when the provider context is on the previous line (heroku authorizations:info, Schema Registry basic.auth.user.info, twilio profiles:list). Known-gap record
 `product-933`, fixed by [`03d6a2b`](https://github.com/redact-secret/redact-secret/commit/03d6a2b2bbb75ade4c991977a9e122cb6c603303).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

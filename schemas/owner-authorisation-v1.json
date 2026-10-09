@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "decisionId",
+    "status",
+    "scope",
+    "title",
+    "owner",
+    "ruling",
+    "context",
+    "uses"
+  ],
+  "properties": {
+    "schema": {
+      "const": "redact-secret/owner-authorisation/v1"
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^decision-[a-z0-9-]+$"
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "accepted",
+        "rejected",
+        "superseded"
+      ]
+    },
+    "scope": {
+      "const": "benchmarks"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "acceptedBy",
+        "acceptedOn"
+      ],
+      "properties": {
+        "acceptedBy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acceptedOn": {
+          "type": "string"
+        }
+      }
+    },
+    "ruling": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context": {
+      "type": "object"
+    },
+    "uses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "target"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "credential-authority",
+              "credential-oracle",
+              "credential-oracle-exit",
+              "pii-public-authority",
+              "pii-oracle",
+              "evidence-adoption"
+            ]
+          },
+          "target": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 Issue: [#659](https://github.com/redact-secret/redact-secret-benchmarks/issues/659) (C7), part of the cleanup epic
 [#651](https://github.com/redact-secret/redact-secret-benchmarks/issues/651).
-Decision: [Separate public evidence materialization from product corpus generation](../decisions/2026-10-05-separate-public-evidence-materialization-from-product-corpus-generation.md).
+Decision: [Separate public evidence materialization from product corpus generation](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-05-separate-public-evidence-materialization-from-product-corpus-generation.md).
 
 This repository measures and records. This page and the files it names assert no product result and record no count.
 

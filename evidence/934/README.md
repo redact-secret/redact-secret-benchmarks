@@ -69,7 +69,7 @@ The `1db8ff3` rerun below is superseded by this one and kept as history.
 Gap: [redact-secret#934](https://github.com/redact-secret/redact-secret/issues/934), heroku-api-key-legacy and stripe-token redact repeated-filler documentation placeholders (all-zero UUID, sk_test_ + x run). Known-gap record
 `product-934`, fixed by [`c576040`](https://github.com/redact-secret/redact-secret/commit/c5760402b43b31e49be0bc61498cb8c2db4764fd).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

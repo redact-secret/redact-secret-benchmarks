@@ -1,6 +1,6 @@
 # Legacy URL redirects
 
-The Next export is the site root ([decision](../decisions/2026-10-02-serve-the-next-export-at-the-site-root.md)), so the URLs of the legacy site
+The Next export is the site root ([decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-02-serve-the-next-export-at-the-site-root.md)), so the URLs of the legacy site
 and of the retired `/next/` preview need an answer. The answer is a table, `benchmarks/legacy-url-redirects.json`, derived from the legacy route
 table (`parseRoute` and `legacyRoute` in `src/model.mjs`) and the routes of the export (`web/lib/routes.ts`, `web/app/**/page.tsx`). The redirects are
 CloudFront viewer-request function code in `redact-secret-sites`; that repository mirrors the JSON, this one validates it.
@@ -45,7 +45,7 @@ CloudFront viewer-request function code in `redact-secret-sites`; that repositor
 Until the CloudFront function carries the `fixture` row, and on any host without it, `/fixture/<suite>--<id>` reaches the export's `404.html`. The not-found page
 then resolves it in the browser (`web/app/LegacyFixtureLookup.tsx`, `web/lib/legacy-fixture.ts`): split at the first `--`, validate both ids, check the suite's
 records file, and replace a known fixture with `/report/fixtures/<suite>/?fixture=<id>` (original query minus `fixture`, hash kept). An unknown suite or fixture
-stays a 404 that says which ([decision](../decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md)). The host rule is still the answer of record.
+stays a 404 that says which ([decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md)). The host rule is still the answer of record.
 
 ## Decisions where the new site has no equal page
 

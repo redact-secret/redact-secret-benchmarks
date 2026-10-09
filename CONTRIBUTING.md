@@ -59,7 +59,7 @@ families). Open it first: it shows each family's research verdict, tier, sources
 blocker and open questions, so you can pick up the next piece of work. Schema, tier and permalink rules
 are in [`benchmarks/support/dossiers/README.md`](benchmarks/support/dossiers/README.md)
 and the
-[decision](docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
+[decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
 
 0. Finding work: `npm run family:status -- <provider>[:<family>]` is offline
    and prints each family's dossier verdict, detector mapping, fixture
@@ -139,7 +139,7 @@ Separately, a measured product gap moves through the promotion lifecycle: an
 **observation** here, **reviewed**, and **promoted** to a product issue that
 carries the handoff; the product fixes it and this repository re-measures at a
 pinned commit (**fixed**, **verified**). The authoritative lifecycle is
-[`docs/decisions/2026-09-18-govern-benchmark-promotion.md`](docs/decisions/2026-09-18-govern-benchmark-promotion.md),
+[`docs/decisions/2026-09-18-govern-benchmark-promotion.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md),
 driven by the `promote-finding` skill. Contributors never coordinate both
 repositories by hand: the product issue and the `evidence/<issue>/` record link
 each other.
@@ -194,22 +194,19 @@ separately. Project-authored evidence is never described as independent.
 
 ### Recording a decision
 
-`docs/decisions/` holds this repository's ADRs — benchmark-methodology and
-process decisions, indexed in
-[`docs/decisions/DECISIONS.md`](docs/decisions/DECISIONS.md) and validated by
-`npm run decisions:validate` (frontmatter, an index entry, and a `Decision`
-heading for every accepted record). A new record needs `decision_id`,
-`status`, `scope: benchmarks`, `title` and `decided_at` frontmatter, a `#
-Title` heading, and a `## Decision`/`## Decisions` section if accepted.
+Current policy belongs in the maintained `docs/specs/` contract that owns it,
+with its issue and supporting evidence. Historical ADRs and reports are retained
+in the verified archive described in
+[`docs/retention/historical-decisions.json`](docs/retention/historical-decisions.json);
+do not recreate `docs/decisions/` or `docs/reports/` payloads.
 
-A decision that applies an existing policy to one more family or one more
-fixture is a note on the relevant `docs/specs/*.md` page plus its supporting
-evidence, not a new ADR (adopted from redact-secret's ADR criterion,
-[`decision-decide-artifact-taxonomy-spec-routing-and-evidence-placement`](https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-22-decide-artifact-taxonomy-spec-routing-and-evidence-placement.md)).
-A new ADR is warranted only for new policy, a new trade-off, or a precedent
-that spans families. A resweep, review, or measurement run that led to a
-decision belongs under `docs/reports/`, linked from the ADR's `Context`
-section — never copied into the ADR body.
+Owner authorisation proposals use the validated JSON schema in
+[`schemas/owner-authorisation-v1.json`](schemas/owner-authorisation-v1.json),
+under `benchmarks/governance/authorisations/`. A proposal remains proposed until
+the owner supplies the ruling, actual owner/date and exact scoped target.
+`npm run decisions:validate` validates these records and the historical
+provenance registry; an old accepted narrative cannot authorise a new target.
+See [`docs/specs/current-measurement-governance.md`](docs/specs/current-measurement-governance.md).
 
 ### Promoting a product regression
 
@@ -217,7 +214,7 @@ This repository owns discovery and evaluation evidence; the product owns the
 small, release-blocking behavioral regression. The authoritative lifecycle,
 transition evidence, fixed-candidate rerun commands, and two-gate acceptance
 rule are in
-[`docs/decisions/2026-09-18-govern-benchmark-promotion.md`](docs/decisions/2026-09-18-govern-benchmark-promotion.md).
+[`docs/decisions/2026-09-18-govern-benchmark-promotion.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md).
 The product-side placement and provenance rules are linked there. Do not copy a
 discovery matrix, generated variants, competitor observations, holdout material,
 or raw result bundles into `redact-secret`.
@@ -227,7 +224,7 @@ scanner versions, the reproduce command, and the one-line result — is
 committed to [`evidence/<issue>/README.md`](evidence/README.md), not to a
 git-ignored `results-output/` path; `redact-secret`'s own evidence archive
 keeps only a permalink to it plus that one-line result. See
-[the evidence decision record](docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md).
+[the evidence decision record](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md).
 
 The `promote-finding` skill (see [AGENTS.md](AGENTS.md)) drives one
 `benchmarks/known-gaps.json` record through this lifecycle end to end.

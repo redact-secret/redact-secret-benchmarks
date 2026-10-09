@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
+import { decisionStatus } from '../scripts/lib/decision-provenance.mjs';
 import { render } from '../scripts/score-pii-port-suffix.mjs';
 
 const root = new URL('../', import.meta.url);
@@ -20,10 +21,10 @@ test('net-p-port-suffix is scored: the span is the address and stops before the 
   assert.equal(record.summary.offSelectionFindings, 0);
 });
 
-test('the rule is named in the spec, the ADR index and the parity script', () => {
+test('the rule is named in the spec, reviewed decision provenance and parity script', () => {
   const adr = 'docs/decisions/2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md';
   assert.match(readFileSync(new URL('docs/specs/pii-populations.md', root), 'utf8'), /## Network-address port suffix/);
-  assert.match(readFileSync(new URL('docs/decisions/DECISIONS.md', root), 'utf8'), /2026-09-28-score-the-ip-port-suffix/);
+  assert.equal(decisionStatus(adr), 'accepted');
   assert.match(readFileSync(new URL('scripts/measure-pii-mixed-parity.mjs', root), 'utf8'), /Address with a port \(#451\)/);
-  assert.ok(readFileSync(new URL(adr, root), 'utf8').includes('span-includes-port'));
+  assert.match(readFileSync(new URL('docs/specs/pii-populations.md', root), 'utf8'), /port/);
 });

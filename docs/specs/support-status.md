@@ -28,7 +28,7 @@ pure function: same evidence in, same status and reasons out, every time.
 
 Tier alone never grants `stable`. T1 must clear the documented fixture and
 behavioral gates. T2 must clear one evidence route and every other empirical
-gate ([decision](../decisions/2026-09-24-qualify-empirical-stable-by-corroboration.md),
+gate ([decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-qualify-empirical-stable-by-corroboration.md),
 amending #177):
 
 - **Corroborated route** (required unless observed): at least 3 verified,
@@ -150,7 +150,7 @@ coverage UI and `docs/generated/fixture-profile-coverage.md`, but does not yet
 gate, because most families that read `stable` today miss arrival cells
 (#207 and #209 raise them). Flipping `enforcement` to `enforced` is the whole
 ratchet, in the same manner as `benign.minimumAxes`. See
-[the decision record](../decisions/2026-09-24-enforce-fixture-profiles-and-publish-coverage-debt.md).
+[the decision record](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-enforce-fixture-profiles-and-publish-coverage-debt.md).
 
 **Wilson bounds are corpus-relative.** A published Wilson bound describes the
 fixtures in this corpus, treated as the sample it is. It is not a probability of
@@ -175,7 +175,7 @@ be tuned once A3 runs them against real data, per #503.
 
 A support classification or review-queue coverage claim is valid only when every
 peer scanner (`gitleaks`, `trufflehog`) resolves to exactly the version pinned in
-`qualification/suite-v1.json` ([ADR](../decisions/2026-09-23-require-pinned-peer-scanners-for-classification.md)).
+`qualification/suite-v1.json` ([ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-23-require-pinned-peer-scanners-for-classification.md)).
 `eval:classify` and `queue:check` resolve each peer's version before evaluating
 and exit non-zero, writing no classification and reporting no coverage, when a
 peer is unavailable, reports unparseable output, or differs from its pin. The
@@ -199,7 +199,7 @@ A3 (`benchmarks/classify-support.ts`, `npm run eval:classify`) builds one
 `FamilySupportEvidence` per **registered detector** — `registryContractIds`,
 exactly `benchmarks/detectors.json`'s ids (42 when #504 was filed, 46 as of
 2026-09-21) — plus each Beta.8 arrival family the product types inside a shared
-detector (`scoredArrivalIds`, #730, [`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md)), not per
+detector (`scoredArrivalIds`, #730, [`2026-09-24-score-arrival-families-by-finding-type.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md)), not per
 `taxonomy.families[]` entry: the taxonomy's provider:credential-name units are
 finer-grained (79 as of 2026-09-21, several per detector) and are the unit A8's support matrix
 displays, via `familiesForDetector`, not the unit this evidence attaches to.
@@ -207,13 +207,13 @@ displays, via `familiesForDetector`, not the unit this evidence attaches to.
 (twin/benign/metamorphic assertions, scoped to the `redact-secret` scanner),
 its `axesByDetector` (distinct benign taxonomy axes per family, case-level,
 `reporting.ts`'s `summaries()` — see
-[ADR](../decisions/2026-09-21-measure-benign-axis-diversity.md)), and its
+[ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-21-measure-benign-axis-diversity.md)), and its
 `reviewQueue` resolved against `benchmarks/review-ledger.json`
 (mutation/differential; a queued entry counts as unresolved unless the ledger
 marks it `resolved` or `not-assertable` — the latter a per-operator-class
 decision that no ground truth is inferable by construction, distinct from a
 per-fixture review (issue #63,
-[ADR](../decisions/2026-09-21-settle-mechanical-mutation-review-classes.md)); a
+[ADR](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-21-settle-mechanical-mutation-review-classes.md)); a
 hard mutation failure counts as unresolved too — no ledger entry ever
 un-reviews an assertion that failed outright). Each
 family's contract `unprobeable` record (#33) is carried into the output

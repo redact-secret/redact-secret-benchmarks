@@ -45,13 +45,13 @@ rulings Q-SL and Q-TG). `vercel-token` stays pending (T0 aggregate).
 
 ## Relabels (security-first: redaction accepted as policy)
 
-Per [`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](../../../docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md)
+Per [`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md)
 (section "Application to the #464 corpus"): `DAYTONA_API_KEY`, `BROWSERBASE_API_KEY`, `REDIRECTPIZZA_API_TOKEN` and
 `RUNPOD_S3_SECRET_KEY` near-miss controls move to `policy`/T3 on `generic-token` (redact). The four review rows move to
 their new ids and resolve as `range-matches-corpus`; the candidate reports each authored span exactly. The #1012
 `AWS_SECRET_ACCESS_KEY=<12-byte near miss>` joins the same list at `warn`.
 
-Per [`docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md`](../../../docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md):
+Per [`docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md):
 `RUNNER_API_KEY=<64 hex>`, the `Pinecone(api_key=…)` argument and the Polar checkout `clientSecret` member are policy/T3
 `generic-token` redact rows; the `PINECONE_API_KEY=pcsk_…` control is a policy/T3 `pinecone-api-key` row (the typed
 finding is expected); the Pinecone key beside the Cerebras positive is an authored companion span.

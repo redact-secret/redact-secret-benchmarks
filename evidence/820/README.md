@@ -8,7 +8,7 @@ Gap: [redact-secret#820](https://github.com/redact-secret/redact-secret/issues/8
 connection-string misses the password in http(s)/ftp URL userinfo (`https://user:pass@host/`). Known-gap record `product-820`, fixed by
 [`58089c3`](https://github.com/redact-secret/redact-secret/commit/58089c3b0e843275f753f98bd19f876e1eb57c53).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

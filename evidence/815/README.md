@@ -8,7 +8,7 @@ Gap: [redact-secret#815](https://github.com/redact-secret/redact-secret/issues/8
 generic-token misses assignments with escaped JSON quotes, `:=`, Objective-C `@"..."`, or braces inside the value. Known-gap record `product-815`, fixed by
 [`6bbfba8`](https://github.com/redact-secret/redact-secret/commit/6bbfba8860456688bfe52f85195007c323f06366).
 This is the benchmark-side rerun that
-[`decision-govern-benchmark-promotion`](../../docs/decisions/2026-09-18-govern-benchmark-promotion.md)
+[`decision-govern-benchmark-promotion`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md)
 requires before `verified`. It keeps no fixture content and no matched value.
 
 ## Fixture outcomes

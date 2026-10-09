@@ -27,8 +27,8 @@ see [redact-secret-benchmarks#150](https://github.com/redact-secret/redact-secre
 which retired that framing.
 
 Full derivation rule and rationale are in
-[`docs/decisions/2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md`](../../docs/decisions/2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md)
-and [`docs/decisions/2026-09-23-run-the-performance-evaluation-for-real.md`](../../docs/decisions/2026-09-23-run-the-performance-evaluation-for-real.md)
+[`docs/decisions/2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md)
+and [`docs/decisions/2026-09-23-run-the-performance-evaluation-for-real.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-23-run-the-performance-evaluation-for-real.md)
 (the #150 follow-up) and `docs/specs/performance-acceptance.md`. This file
 exists so a permalink to it, plus the one-line result above, is everything
 the core repository's own evidence archive needs to keep — per
@@ -237,7 +237,7 @@ or invalid measurement. Runner: AMD EPYC 7763, 4 logical CPUs, image
 `ubuntu24 20260920.314.1`; 6 interleaved rounds, 12 samples per side.
 
 Per
-[`decision-decouple-pin-freshness-from-pin-consistency`](../../docs/decisions/2026-09-23-decouple-pin-freshness-from-pin-consistency.md),
+[`decision-decouple-pin-freshness-from-pin-consistency`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-23-decouple-pin-freshness-from-pin-consistency.md),
 this ACCEPTED run does not re-derive thresholds. `summary.json` here still
 holds the `3144bb3` run the thresholds came from; the `192c964` run is frozen
 in [`verified-192c964/`](verified-192c964/) and advances only
@@ -363,7 +363,7 @@ npm run performance:evaluate -- \
 
 What `redact-secret/redact-secret`'s own `docs/audits/evidence/603/` keeps,
 per this repository's
-[evidence decision](../../docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md):
+[evidence decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md):
 
 > Performance-evaluation ownership intake: PASS. A real CI execution of the
 > pinned core revision evaluated ACCEPTED (46/46 checks) against criteria

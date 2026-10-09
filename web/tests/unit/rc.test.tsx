@@ -122,7 +122,7 @@ describe('resolveRcPage, candidate recorded', () => {
     const [regressed, improved] = page.moved!.groups;
     expect(regressed.label).toBe('Regressed · 2');
     expect(improved.label).toBe('Improved · 1');
-    expect(regressed.rows[0]).toMatchObject({ title: 'regress-miss', href: '/report/fixtures/suite-a/?fixture=regress-miss', before: 'Exact', after: 'Miss' });
+    expect(regressed.rows[0]).toMatchObject({ title: 'regress-miss', href: '/report/corpus/suite-a/?fixture=regress-miss', before: 'Exact', after: 'Miss' });
     expect(page.moved!.truncated).toBeUndefined();
   });
 
@@ -215,7 +215,7 @@ describe('the page', () => {
     expect(screen.getAllByText('published').length).toBeGreaterThan(0);
     expect(screen.getAllByText('candidate').length).toBeGreaterThan(0);
     const moved = screen.getByRole('region', { name: /Fixtures whose recorded outcome moved/ });
-    expect(within(moved).getByRole('link', { name: 'regress-miss' })).toHaveAttribute('href', expect.stringMatching(/\/report\/fixtures\/suite-a\/?\?fixture=regress-miss$/));
+    expect(within(moved).getByRole('link', { name: 'regress-miss' })).toHaveAttribute('href', expect.stringMatching(/\/report\/corpus\/suite-a\/?\?fixture=regress-miss$/));
     expect(screen.queryByRole('heading', { name: 'No release candidate is recorded' })).toBeNull();
   });
 

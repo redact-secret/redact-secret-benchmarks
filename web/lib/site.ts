@@ -13,7 +13,7 @@ export const LICENSE_HREF = 'https://github.com/redact-secret/redact-secret-benc
 /** Full site directory; quick navigation above the content stays deliberately small. */
 export const FOOTER_GROUPS = [
   { label: 'Coverage', links: [
-    { label: 'Providers', href: '/report/providers/' },
+    { label: 'Credential Corpus', href: '/report/corpus/' },
     { label: 'Detectors', href: '/report/detectors/' },
     { label: 'Credentials', href: '/report/families/' },
     { label: 'PII + PHI', href: '/evaluation/pii/' },
@@ -26,11 +26,11 @@ export const FOOTER_GROUPS = [
   ] },
   { label: 'Evidence', links: [
     { label: 'Providers', href: '/report/providers/' },
-    { label: 'Cases', href: '/report/fixtures/' },
+    { label: 'Cases', href: '/report/corpus/' },
     { label: 'Resources', href: '/evidence/resources/' },
   ] },
   { label: 'Comparison', links: [
-    { label: 'Scanners', href: '/evaluation/scanner/' },
+    { label: 'Scanners', href: '/comparison/scanner/' },
     { label: 'Performance', href: '/comparison/performance/' },
     { label: 'Accuracy', href: '/comparison/accuracy/' },
   ] },

@@ -102,8 +102,15 @@ test('an unknown method id and an unknown path are not answered', () => {
 });
 
 test('the fixture rule splits at the first double hyphen and keeps the rest as the fixture id', () => {
-  assert.equal(resolve('/fixture/common-formats--aws-key--v2'), '/report/fixtures/common-formats/?fixture=aws-key--v2');
+  assert.equal(resolve('/fixture/common-formats--aws-key--v2'), '/report/corpus/common-formats/?fixture=aws-key--v2');
   assert.equal(resolve('/coverage/github:fine-grained-pat'), '/report/families/github--fine-grained-pat/');
+});
+
+test('the former fixture directory and suite addresses map to Credential Corpus', () => {
+  assert.equal(resolve('/report/fixtures/'), '/report/corpus/');
+  assert.equal(resolve('/report/fixtures/common-formats/'), '/report/corpus/common-formats/');
+  assert.equal(resolve('/report/fixtures/not/a/suite'), null);
+  assert.equal(resolve('/evaluation/scanner/'), '/comparison/scanner/');
 });
 
 test('the retired /next/ prefix is stripped and the rest is answered once', () => {

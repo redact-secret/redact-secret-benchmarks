@@ -23,7 +23,7 @@ export interface ScannerOverviewProps {
   notMeasured?: NotMeasuredScanner[];
 }
 
-/** `/evaluation/scanner`: the roster, the published and candidate note, then one profile per scanner. */
+/** `/comparison/scanner`: the roster, the published and candidate note, then one profile per scanner. */
 export function ScannerOverview({ breadcrumb, eyebrow, title, lede, meta, roster, modeNote, profiles, modeNoteContent }: ScannerOverviewProps) {
   return (
     <Stack gap="xl" className={styles.overview}>

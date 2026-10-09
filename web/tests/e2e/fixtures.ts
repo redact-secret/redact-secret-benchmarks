@@ -93,7 +93,7 @@ const dirs = (relative: string): string[] => readdirSync(path.join(out, relative
  * records one with a description (#593), otherwise the id. Read from the build, never assumed.
  */
 function aSuite(): { suite: string; fixture: string; title: string } {
-  const suite = dirs('report/fixtures').includes('common-formats') ? 'common-formats' : dirs('report/fixtures')[0];
+  const suite = dirs('report/corpus').includes('common-formats') ? 'common-formats' : dirs('report/corpus')[0];
   const file = JSON.parse(readFileSync(path.join(out, 'data/fixtures', suite, 'records.json'), 'utf8')) as { records: { id: string; title?: number; about?: number }[]; shared: { texts: string[] } };
   const first = file.records[0];
   return { suite, fixture: first.id, title: first.title !== undefined && first.about !== undefined ? file.shared.texts[first.title] : first.id };
@@ -131,13 +131,13 @@ export const ROUTES: string[] = [
   '/report/families/', '/report/families/?level=T2&show=empty', `/report/families/${FAMILY}/`,
   '/report/detectors/', `/report/detectors/${DETECTOR}/`,
   '/report/findings/',
-  '/report/fixtures/', `/report/fixtures/${SUITE}/`, `/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`,
+  '/report/corpus/', `/report/corpus/${SUITE}/`, `/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`,
   '/report/rows/T1/', '/report/rows/T2/', '/report/rows/T3/?show=leaked',
   '/comparison/', '/comparison/feature/', '/comparison/feature/?rows=differences',
   '/comparison/runtime/', '/comparison/runtime/?view=speed', '/comparison/runtime/?analysis=external&domain=credentials',
   '/comparison/performance/', '/comparison/accuracy/', '/comparison/accuracy/?data=pii',
   '/evaluation/credential/', '/evaluation/pii/', '/evaluation/pii/evidence/',
-  '/evaluation/rc/', '/evaluation/scanner/', '/evaluation/qualification/', '/evaluation/qualification/unattributed/1/',
+  '/evaluation/rc/', '/comparison/scanner/', '/evaluation/qualification/', '/evaluation/qualification/unattributed/1/',
   '/evaluation/', '/evaluation/method/', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/evaluation/method/${m}/`),
   ...['twin', 'benign', 'metamorphic', 'mutation', 'differential'].map(m => `/evaluation/method/${m}/checks/`),
   ...(CHECKS_LIST ? [CHECKS_LIST] : []),

@@ -1,6 +1,6 @@
 // @vitest-environment node
 /**
- * /evaluation/scanner (#612). The resolver is exercised with synthetic scanners, runs and snapshots, so no
+ * /comparison/scanner (#612). The resolver is exercised with synthetic scanners, runs and snapshots, so no
  * ledger value is asserted: a repin or a refreshed snapshot changes the page, never these tests. The service
  * is read against the committed tree for its shape only, and against overlays for the states the tree is not in.
  */

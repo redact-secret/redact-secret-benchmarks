@@ -91,8 +91,8 @@ export const suiteTable: TextTable = {
   caption: 'Suites the cases come from',
   columns: [{ key: 'suite', header: 'Suite' }, { key: 'cases', header: 'Pairs', numeric: true }],
   rows: [
-    { key: 'credential-formats', cells: [{ text: 'Credential formats', href: '/report/fixtures/credential-formats/', note: 'credential-formats' }, { text: '15' }] },
-    { key: 'context-edges', cells: [{ text: 'Context & boundaries', href: '/report/fixtures/context-edges/', note: 'context-edges' }, { text: '57' }] },
+    { key: 'credential-formats', cells: [{ text: 'Credential formats', href: '/report/corpus/credential-formats/', note: 'credential-formats' }, { text: '15' }] },
+    { key: 'context-edges', cells: [{ text: 'Context & boundaries', href: '/report/corpus/context-edges/', note: 'context-edges' }, { text: '57' }] },
     { key: 'unlisted-suite', cells: [{ text: 'unlisted-suite' }, { text: '4' }] },
   ],
 };
@@ -186,7 +186,7 @@ const casesTable: MethodCasesProps['body'] = {
         key: 'pair-1:twin',
         cells: [
           [{ text: 'synthetic-pair-1', code: true }],
-          [{ text: 'synthetic-pair-1', href: '/report/fixtures/credential-formats/?fixture=synthetic-pair-1', note: 'credential-formats' }],
+          [{ text: 'synthetic-pair-1', href: '/report/corpus/credential-formats/?fixture=synthetic-pair-1', note: 'credential-formats' }],
           [{ text: 'twin', code: true, note: 'authored.twin · T1' }],
           [{ text: 'must-flip', note: 'against canonical' }],
           [{ text: 'alpha-token', href: '/evaluation/qualification/families/alpha-token/cases/1/' }],

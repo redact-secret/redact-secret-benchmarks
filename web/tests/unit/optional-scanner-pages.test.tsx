@@ -61,7 +61,7 @@ const withRoster = (notMeasured: RosterNotMeasured[]): QualificationView => ({
 
 describe('every credential report page built from a view that left an optional scanner out says so', () => {
   const view = withRoster([note(retained)]);
-  test.each(['/report', '/report/families', '/report/detectors', '/report/fixtures', '/report/providers', '/evaluation/credential', '/comparison/accuracy'])('%s', async route => {
+  test.each(['/report', '/report/families', '/report/detectors', '/report/corpus', '/report/providers', '/evaluation/credential', '/comparison/accuracy'])('%s', async route => {
     const { container } = await open(view, route);
     const sourceButton = screen.queryByRole('button', { name: 'Where these numbers come from' });
     if (sourceButton) {
@@ -80,7 +80,7 @@ describe('every credential report page built from a view that left an optional s
   });
 
   test('the scanner page omits optional-scanner explanations and opens the mode explanation on demand', async () => {
-    const { container } = await open(view, '/evaluation/scanner');
+    const { container } = await open(view, '/comparison/scanner');
     expect(container.querySelector('[data-optional-scanners]')).toBeNull();
     expect(screen.queryByRole('dialog')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Published and candidate' }));
@@ -106,7 +106,7 @@ describe('every credential report page built from a view that left an optional s
 
 describe('a run that measured every optional scanner, or a view built before the roster, says nothing', () => {
   test.each([['no roster', syntheticView()], ['nothing left out', withRoster([])]])('%s', async (_name, view) => {
-    for (const route of ['/report', '/evaluation/scanner', '/comparison/accuracy']) {
+    for (const route of ['/report', '/comparison/scanner', '/comparison/accuracy']) {
       const { container, unmount } = await open(view, route);
       expect(container.textContent).not.toContain('not measured in this run (optional)');
       unmount();

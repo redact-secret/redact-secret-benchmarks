@@ -70,7 +70,7 @@ export const levels: RcLevelsData = {
 };
 
 const moveRow = (n: number, before: string, after: string): RcMovedRow => ({
-  id: `suite-a--fixture-${n}`, title: `fixture-${n}`, href: `/report/fixtures/suite-a/?fixture=fixture-${n}`, detail: 'suite-a · must-redact', level: 'T1', before, after,
+  id: `suite-a--fixture-${n}`, title: `fixture-${n}`, href: `/report/corpus/suite-a/?fixture=fixture-${n}`, detail: 'suite-a · must-redact', level: 'T1', before, after,
 });
 
 export const moved: RcMovedData = {

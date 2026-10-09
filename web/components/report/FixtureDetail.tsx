@@ -61,7 +61,7 @@ export function FixtureDetail({ fixture: f, className }: FixtureDetailProps) {
               <FixtureKey items={f.key} />
             </>
           ) : (
-            <EmptyState title="The bytes are not recorded">{f.bytesNote}</EmptyState>
+            <EmptyState title="Input bytes unavailable in this view">{f.bytesNote}</EmptyState>
           )}
           <div className={styles.pane}>
             <FixtureSpans rows={f.spans} />

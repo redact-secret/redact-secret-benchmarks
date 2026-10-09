@@ -32,6 +32,7 @@ export const SECTIONS: Section[] = [
     label: 'Comparison',
     entries: [
       { href: '/comparison/', label: 'Overview', title: 'How does redact-secret compare?', summary: 'Pick the question you came with.' },
+      { href: '/comparison/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
       { href: '/comparison/feature/', label: 'Features', title: 'Feature comparison', summary: 'What each project says it can do, from its own documentation.' },
       { href: '/comparison/runtime/', label: 'Runtime', title: 'Runtime comparison', summary: 'Time and output on the same text, with what each one hid.' },
       { href: '/comparison/performance/', label: 'Performance', title: 'Performance pair comparison', summary: 'How long redact-secret and one other library take, text by text, on one scale.' },
@@ -44,7 +45,6 @@ export const SECTIONS: Section[] = [
     entries: [
       { href: '/evaluation/', label: 'Overview', title: 'Evaluation', summary: 'The evaluation methods, the run behind them and the pages that read it.' },
       { href: '/evaluation/method/', label: 'Methods', title: 'Evaluation methods', summary: 'Six methods, each with how it runs and what was recorded for it.', match: '/evaluation/method/' },
-      { href: '/evaluation/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
       { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
       { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
       { href: '/evaluation/pii/evidence/', label: 'PII evidence', title: 'PII evidence as its own population', summary: 'The independent public pii-evidence population, with each scanner and denominator held apart.' },
@@ -55,12 +55,12 @@ export const SECTIONS: Section[] = [
 ];
 
 /**
- * The pages the Evaluation overview lists besides the methods. Every one is also an entry of the Evaluation section above;
+ * The pages the Evaluation overview lists besides the methods. Every one is also an entry of the site navigation above;
  * the overview links a phase only when its page is an entry there, and otherwise names it as not in this build, so no link
  * points at a route the export does not contain.
  */
 export const EVALUATION_PHASES: RouteEntry[] = [
-  { href: '/evaluation/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
+  { href: '/comparison/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
   { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
   { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
   { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'The credential domain: its families, fixtures and what was recorded.' },

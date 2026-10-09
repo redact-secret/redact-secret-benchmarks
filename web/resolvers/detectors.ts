@@ -123,7 +123,7 @@ export function resolveDetector(catalog: Catalog, id: string, run: MeasuredRun |
   return {
     id, title: detector.title, fixtureCount: fixtures.length,
     belowMinimum: fixtures.length < minimum ? status('withheld', 'Below minimum') : fixtures.length === minimum ? status('withheld', 'At minimum') : undefined,
-    suites: suiteIds.map(s => ({ id: s, title: catalog.suites.find(x => x.id === s)?.title ?? s, href: `/report/fixtures/${s}/` })),
+    suites: suiteIds.map(s => ({ id: s, title: catalog.suites.find(x => x.id === s)?.title ?? s, href: `/report/corpus/${s}/` })),
     tier: contract?.tier, tierTitle: contract?.tier ? TIER_TITLE[contract.tier] : undefined,
     sources: contract?.sources ?? [], review: contract?.review ?? contract?.companion, unprobeable: contract?.unprobeable,
     groups, fixtures,

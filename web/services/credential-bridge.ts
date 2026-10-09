@@ -15,7 +15,7 @@
  *    same `selectionGroups` and `accountGroups` the legacy bench uses, so a rate means the same on both pipelines. The diagnostics
  *    field is dropped: the view records how many ranges a scanner reported, not their offsets, and a diagnostic needs the offsets;
  *  - the view carries no bytes. A fixture's `content` is empty and `contentRecorded` is false, so the fixture page shows what the view
- *    holds (expected spans, each scanner's outcome) and says the bytes are not recorded, never a stand-in.
+ *    holds (expected spans, each scanner's outcome) and says the bytes are unavailable, never a stand-in. `withFixtureDisplay` may attach byte-verified public display inputs bound to this measured population (#885).
  *
  * Pure: no file is read here. `credential-source.ts` hands it the parsed view and the product-owned inputs.
  */
@@ -24,6 +24,7 @@ import type { AccountingConfig } from '../../benchmarks/shared/accounting-types'
 import type { RecordedCredentialRow, RunSummary } from '../../benchmarks/consumer/credential-metrics';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
 import { caseMetadataBindingProblem, type EvidenceCaseMetadata } from '../../benchmarks/lib/fixture-metadata';
+import { BUDGET_NOTE, decodeFixtureDisplay, displayMatchesCase, fixtureDisplayProblems } from '../../benchmarks/lib/fixture-display';
 import { assembleCatalog, type BuiltFixture, type Catalog, type CatalogFixture, type CatalogSuite, type Tier } from './credential-catalog';
 import type { CaseRow, CaseScannerResult, MeasurementHost, PopulationView, QualificationView } from './qualification';
 import type { MeasuredRun, OfficialRun, Outcome, RowResult, RunScanner } from './run';
@@ -192,4 +193,35 @@ export function withCaseText(fixtureBytes: Map<string, BuiltFixture>, file: Evid
     out.set(slug, c ? { ...built, title: c.title, description: c.summary, describedBy: `credential-evidence case record ${caseId} (${c.lifecycle}), release ${file.source.tag}.` } : built);
   }
   return { fixtureBytes: out };
+}
+
+/** Add only source-bound display evidence; the catalog, scanner rows and support decisions stay the view's. */
+export function withFixtureDisplay(fixtureBytes: Map<string, BuiltFixture>, value: unknown, population: PopulationView): { fixtureBytes: Map<string, BuiltFixture>; problem?: string } {
+  const e = population.artifact.evidence;
+  const problems = e.release ? fixtureDisplayProblems(value, { release: { tag: e.release.tag, manifestDigest: e.release.manifest_digest }, corpusDigest: e.corpus_digest }) : ['the run records no public evidence release'];
+  const problem = problems.length ? `The fixture display evidence is unavailable: ${problems.slice(0, 3).join('; ')}.` : undefined;
+  const file = problem ? undefined : decodeFixtureDisplay(value);
+  const cases = new Map(population.cases.map(c => [c.id, c]));
+  const out = new Map<string, BuiltFixture>();
+  for (const [id, built] of fixtureBytes) {
+    const d = !problem && file && Object.hasOwn(file.fixtures, id) ? file.fixtures[id] : undefined;
+    const c = cases.get(id);
+    if (!file || !d || !c || !displayMatchesCase(d, c)) {
+      const { scenarioDescription: _description, scenarioDescribedBy: _author, ...base } = built;
+      const { reason: _reason, reasonBy: _reasonBy, sources: _sources, ...assessment } = built.assessment;
+      out.set(id, { ...base, content: '', contentRecorded: false, assessment: { ...assessment, sources: [] }, contentProblem: problem ?? 'No display evidence matches this fixture’s id, path, grouping and expected spans in the measured run.' });
+      continue;
+    }
+    const description = d.description ? file.descriptions[d.description] : undefined;
+    const assessment = d.assessment ? file.assessments[d.assessment] : undefined;
+    const source = (record: string) => `credential-evidence ${record}, release ${file.source.tag}.`;
+    const { contentRecorded: _recorded, contentProblem: _problem, ...rest } = built;
+    out.set(id, {
+      ...rest,
+      ...(d.content !== undefined ? { content: d.content } : { contentRecorded: false as const, contentProblem: BUDGET_NOTE }),
+      ...(description?.kind === 'scenario' ? { scenarioDescription: description.description, scenarioDescribedBy: `${source(description.record)} Scenario description (${description.lifecycle}); not a fixture-specific description.` } : {}),
+      assessment: { ...built.assessment, ...(assessment ? { reason: assessment.reason, reasonBy: source(assessment.record), sources: assessment.sources } : {}) },
+    });
+  }
+  return { fixtureBytes: out, ...(problem ? { problem } : {}) };
 }

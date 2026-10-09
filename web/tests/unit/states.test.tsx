@@ -34,7 +34,7 @@ describe('no benchmark run for this checkout', () => {
     ['/report', {}],
     ['/report/families', {}],
     ['/report/rows/[level]', { level: 'T1' }],
-    ['/report/fixtures', {}],
+    ['/report/corpus', {}],
     ['/report/detectors', {}],
     ['/comparison/accuracy', {}],
   ])('%s states that nothing is measured and what produces it', async (route, params) => {

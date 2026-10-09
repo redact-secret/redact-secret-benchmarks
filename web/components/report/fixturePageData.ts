@@ -220,7 +220,7 @@ const twinFile: FixtureFileData = {
 
 export const twin: FixtureTwinData = {
   id: 'example-provider-block-alphabet-twin',
-  href: '/report/fixtures/example-suite/?fixture=example-provider-block-alphabet-twin',
+  href: '/report/corpus/example-suite/?fixture=example-provider-block-alphabet-twin',
   title: 'Alphabet twin',
   description: "alphabet: one character in the middle of segment 2 replaced with '!', outside every cited alphabet; length unchanged",
   changed: 'byte 52 changed',
@@ -284,7 +284,7 @@ export const fixtureDetail: FixtureDetailData = {
     tags: [{ label: 'Must redact' }, { label: 'T2 · Tool-corroborated' }, { label: 'sdk-config', mono: true }, { label: 'Synthetic value', dashed: true }],
   },
   crumbs: [{ label: 'Report', href: '/report/' }, { label: 'Providers', href: '/report/providers/' }, { label: 'Example', href: '/report/providers/?q=Example' }, { label: 'Example API key', href: '/report/families/example--api-key/' }, { label: 'example-provider-block' }],
-  suiteHref: '/report/fixtures/example-suite/',
+  suiteHref: '/report/corpus/example-suite/',
   verdict: verdictExact,
   input: inputFile,
   output: outputFile,
@@ -301,6 +301,6 @@ export const fixtureDetail: FixtureDetailData = {
   sources: [{ href: 'https://docs.example.com/tokens', label: 'docs.example.com/tokens' }, { href: 'https://example.com/community/36441', label: 'example.com/community' }],
   escaped: `"provider \\"example\\" {\\n  owner = \\"acme\\"\\n  token = \\"${FAKE}\\"\\n}\\n"`,
   command: 'npm run bench -- --category=example-suite',
-  actions: { download: { href: 'data:text/plain;charset=utf-8,example', filename: 'example-provider-block.tf' }, corpusHref: '/report/fixtures/example-suite/' },
+  actions: { download: { href: 'data:text/plain;charset=utf-8,example', filename: 'example-provider-block.tf' }, corpusHref: '/report/corpus/example-suite/' },
   peers,
 };

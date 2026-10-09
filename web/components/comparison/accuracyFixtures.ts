@@ -114,7 +114,7 @@ export const leftOutQuestion: AccuracyQuestionData = {
   notes: ['3 test files left out: at least one of the two has no recorded result. Not measured, never counted as a pass or a zero.'],
 };
 
-const files = (prefix: string, n: number) => Array.from({ length: n }, (_, i) => ({ slug: `${prefix}-${String(i + 1).padStart(2, '0')}`, href: `/report/fixtures/story-suite/?fixture=${prefix}-${i + 1}` }));
+const files = (prefix: string, n: number) => Array.from({ length: n }, (_, i) => ({ slug: `${prefix}-${String(i + 1).padStart(2, '0')}`, href: `/report/corpus/story-suite/?fixture=${prefix}-${i + 1}` }));
 const NOTE = 'Each list holds the files one tool hid and the other did not (readable or only partly hidden). A list is empty when every file one tool hid, the other hid too; that says nothing about the rest of its results, which are in its bar above.';
 const TITLE_US = 'Hidden by redact-secret, not hidden by Examplescan';
 const TITLE_THEM = 'Hidden by Examplescan, not hidden by redact-secret';

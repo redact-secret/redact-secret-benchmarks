@@ -34,17 +34,21 @@ CloudFront viewer-request function code in `redact-secret-sites`; that repositor
 | `/performance` | `/comparison/performance/` | a comparison page now |
 | `/how-to-read`, `/methodology` | `/comparison/` | no such page; the overview says which page answers which question |
 | `/scenarios/:id` | `/report/` | scenarios have no page |
-| `/suites/:id` | `/report/fixtures/:id/` | same ids |
-| `/fixture/:category--:rest` | `/report/fixtures/:category/?fixture=:rest` | a fixture opens on its suite page |
+| `/suites/:id` | `/report/corpus/:id/` | same ids |
+| `/fixture/:category--:rest` | `/report/corpus/:category/?fixture=:rest` | a fixture opens on its suite page |
 | `/workbench/changes` | `/evaluation/rc/` | the candidate against the release |
 | `/workbench/qualification` | `/evaluation/qualification/` | same subject |
 | `/next`, `/next/...` | the same path without `/next` | the retired preview prefix |
+| `/report/fixtures`, `/report/fixtures/:id` | `/report/corpus/`, `/report/corpus/:id/` | Credential Corpus is the canonical directory |
+| `/evaluation/scanner` | `/comparison/scanner/` | the scanner roster belongs to Comparison |
 
 ## Before the host rule: the not-found page (#594)
 
+Credential Corpus lives at `/report/corpus/` and `/report/corpus/<suite>/` (#893). The previous `/report/fixtures/` directory and its current suite pages are exported as compatibility pages. In the browser they replace the old address with its corpus counterpart, preserving the entire query and fragment; a link remains available without JavaScript. The host table also records those redirects, so the current edge mapping continues to work before its mirror is updated. The fixture records stay at `/data/fixtures/<suite>/records.json`. `/evaluation/scanner/` also exports a compatibility page for `/comparison/scanner/`, preserving the query and fragment.
+
 Until the CloudFront function carries the `fixture` row, and on any host without it, `/fixture/<suite>--<id>` reaches the export's `404.html`. The not-found page
 then resolves it in the browser (`web/app/LegacyFixtureLookup.tsx`, `web/lib/legacy-fixture.ts`): split at the first `--`, validate both ids, check the suite's
-records file, and replace a known fixture with `/report/fixtures/<suite>/?fixture=<id>` (original query minus `fixture`, hash kept). An unknown suite or fixture
+records file, and replace a known fixture with `/report/corpus/<suite>/?fixture=<id>` (original query minus `fixture`, hash kept). An unknown suite or fixture
 stays a 404 that says which ([decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md)). The host rule is still the answer of record.
 
 ## Decisions where the new site has no equal page

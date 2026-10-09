@@ -48,7 +48,7 @@ const ROUTES = ['report', 'report/?level=T2', 'report/?level=T3&peers=1', 'repor
   // #562/#563: outcome rows, the legend and shares in every measured panel, at each view that changes what is drawn.
   'comparison/runtime/?analysis=internal&domain=pii&view=accuracy', 'comparison/runtime/?analysis=internal&domain=credentials', 'comparison/runtime/?analysis=external&domain=credentials&view=accuracy', 'comparison/runtime/?analysis=external&domain=pii&view=speed',
   // #612: the scanner roster and one environment profile per scanner.
-  'evaluation/scanner'];
+  'comparison/scanner'];
 // The real family pages (#556): the family with the most fixtures (paged rows), one with a few, and one with none.
 const repoRoot = path.resolve(webRoot, '..');
 const taxonomy = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/support/taxonomy.json'), 'utf8'));
@@ -74,7 +74,7 @@ if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?page=2`);
 // #589: a family with a long dossier (notes, open questions, look-alikes, six sources, seven research issues), and one with several peer rules.
 if (authority === 'legacy') ROUTES.push('report/families/github--fine-grained-personal-access-token');
 // The rows, suite, fixture, detector and findings pages (#559), and the level and scanner controls (#560).
-ROUTES.push('report/rows/T1', 'report/rows/T2/?show=leaked&scanners=product', 'report/rows/T3/?show=flagged', 'report/fixtures', 'report/detectors', 'report/detectors/?show=signal', 'report/findings', 'report/families/?level=T2', 'report/providers/?level=T3');
+ROUTES.push('report/rows/T1', 'report/rows/T2/?show=leaked&scanners=product', 'report/rows/T3/?show=flagged', 'report/corpus', 'report/detectors', 'report/detectors/?show=signal', 'report/findings', 'report/families/?level=T2', 'report/providers/?level=T3');
 if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?scanners=all&level=T1`);
 const detectors = authority === 'new' ? [...new Set(viewCases.flatMap(c => c.detectors))].sort().map(id => ({ id })) : JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/detectors.json'), 'utf8')).detectors;
 if (!detectors.length) detectors.push(...JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/detectors.json'), 'utf8')).detectors.slice(0, 1));
@@ -83,25 +83,19 @@ const suites = authority === 'new' ? (viewCases.length ? [...new Set(viewCases.m
 // A fixture page: the first fixture of a small suite, and the largest single fixture of the corpus (a 72 KB line-heavy input).
 const firstOf = new Map();
 for (const f of index.fixtures) { const [category, ...rest] = f.slug.split('--'); if (!firstOf.has(category)) firstOf.set(category, rest.join('--')); }
-let smallSuite = suites.find(c => c.id === 'common-formats') ?? suites[0];
-if (authority === 'new') {
-  // The fixture-loading skeleton cannot know a family's breadcrumb, so the state checks use a fixture no family owns (the same crumbs as the skeleton);
-  // a fixture with a long family and provider name is still laid out by the page checks.
-  const unowned = viewCases.find(c => !index.fixtures.find(f => f.slug === c.id)?.familyIds.length);
-  if (unowned) { smallSuite = { id: unowned.id.split('--')[0] }; firstOf.set(smallSuite.id, unowned.id.split('--').slice(1).join('--')); }
-}
-ROUTES.push(`report/fixtures/${smallSuite.id}`, ...(firstOf.get(smallSuite.id) ? [`report/fixtures/${smallSuite.id}/?fixture=${firstOf.get(smallSuite.id)}`] : []));
+const smallSuite = suites.find(c => c.id === 'common-formats') ?? suites[0];
+ROUTES.push(`report/corpus/${smallSuite.id}`, ...(firstOf.get(smallSuite.id) ? [`report/corpus/${smallSuite.id}/?fixture=${firstOf.get(smallSuite.id)}`] : []));
 if (authority === 'new') {
   // A fixture of the view with a near-twin: the page that names its twin without the bytes.
   const twin = viewCases.find(c => c.twinOf);
-  if (twin) ROUTES.push(`report/fixtures/${twin.id.split('--')[0]}/?fixture=${twin.id.split('--').slice(1).join('--')}`);
-} else ROUTES.push('report/fixtures/context-edges');
+  if (twin) ROUTES.push(`report/corpus/${twin.id.split('--')[0]}/?fixture=${twin.id.split('--').slice(1).join('--')}`);
+} else ROUTES.push('report/corpus/context-edges');
 if (authority === 'legacy') try {
   const corpus = JSON.parse(await readFile(path.join(repoRoot, 'fixtures/generated/context-edges.json'), 'utf8'));
   const big = corpus.fixtures.reduce((a, b) => (b.content.length > a.content.length ? b : a));
-  ROUTES.push(`report/fixtures/context-edges/?fixture=${big.id}`);
+  ROUTES.push(`report/corpus/context-edges/?fixture=${big.id}`);
   // The fixture page of #588: a fixture with two twins and a family crumb, one with hidden characters, and the quiet twin.
-  ROUTES.push('report/fixtures/beta8-211/?fixture=github-fine-grained-pat-terraform-provider', 'report/fixtures/context-edges/?fixture=bom', 'report/fixtures/beta8-211/?fixture=github-fine-grained-pat-terraform-provider-alphabet-twin');
+  ROUTES.push('report/corpus/beta8-211/?fixture=github-fine-grained-pat-terraform-provider', 'report/corpus/context-edges/?fixture=bom', 'report/corpus/beta8-211/?fixture=github-fine-grained-pat-terraform-provider-alphabet-twin');
 } catch { /* the generated corpus is materialised by npm ci */ }
 // The performance pair page (#569): the default pair, the other library, and the setting that changes what redact-secret did.
 ROUTES.push('comparison/performance', 'comparison/performance/?with=openredaction&setting=default', 'comparison/performance/?with=openredaction&setting=pii-global');
@@ -112,8 +106,8 @@ const STATES = [
   { name: 'rows error', route: 'report/rows/T1/?show=leaked', abort: true, wait: 'main div[role="alert"]' },
   ...(largest ? [{ name: 'family rows loading', route: `report/families/${slugOf(largest)}/?scanners=all`, gate: true, wait: '[aria-busy="true"]', loaded: () => !document.querySelector('[aria-busy="true"]'), anchor: 'main [role="region"]' }] : []),
   ...(firstFixture ? [
-    { name: 'fixture loading', route: `report/fixtures/${smallSuite.id}/?fixture=${firstFixture}`, gate: true, wait: '[data-fixture-state="loading"]', loaded: () => !!document.querySelector('[data-fixture-ready]'), anchor: '[data-fixture-state] h1' },
-    { name: 'fixture error', route: `report/fixtures/${smallSuite.id}/?fixture=${firstFixture}`, abort: true, wait: '[data-fixture-state="error"]' },
+    { name: 'fixture loading', route: `report/corpus/${smallSuite.id}/?fixture=${firstFixture}`, gate: true, wait: '[data-fixture-state="loading"]', loaded: () => !!document.querySelector('[data-fixture-ready]'), anchor: '[data-fixture-state] h1' },
+    { name: 'fixture error', route: `report/corpus/${smallSuite.id}/?fixture=${firstFixture}`, abort: true, wait: '[data-fixture-state="error"]' },
   ] : []),
 ];
 // A new-pipeline export with no view has no rows or fixture files to hold back: its pages are checked as pages, and the no-view text by check:routes.
@@ -129,7 +123,8 @@ const firstDir = (rel) => { try { return readdirSync(path.join(webRoot, 'out', r
 const checksList = (() => {
   for (const method of ['twin', 'benign', 'metamorphic', 'mutation', 'differential']) {
     const row = firstDir(`data/evaluation/${method}`), scanner = row && firstDir(`data/evaluation/${method}/${row}`), status = scanner && firstDir(`data/evaluation/${method}/${row}/${scanner}`);
-    if (status) return `evaluation/method/${method}/checks/?row=${encodeURIComponent(row)}&scanner=${encodeURIComponent(scanner)}&status=${status}`;
+    // Static export needs an unavailable placeholder; it has no list to fetch or hold back.
+    if (status && row !== 'not-published') return `evaluation/method/${method}/checks/?row=${encodeURIComponent(row)}&scanner=${encodeURIComponent(scanner)}&status=${status}`;
   }
   return undefined;
 })();

@@ -11,15 +11,16 @@ This repository measures and records. A title and a description are display text
 | --- | --- | --- | --- |
 | a case of the public evidence snapshot (`public-evidence-snapshot`) | credential-evidence | the case record of the pinned release (`records/cases/<case>.json`: `title`, `summary`, `lifecycle`) | `benchmarks/evidence-case-metadata.json`, a projection derived by `npm run evidence:case-metadata`, never edited by hand |
 | a fixture of a product-owned category (`regression-corpus`, `policy-corpus`; `benchmarks/generated-populations.json`) | this repository | `benchmarks/fixture-descriptions.json` | read by the legacy catalog; refused for any slug outside a product-owned category |
-| anything else (a public remainder fixture of the legacy corpora, a public fixture the release attaches to a scenario rather than a case) | nobody records one | — | the page says "What it tests: Not recorded" and titles the page with the id |
+| a public fixture targeting a scenario | credential-evidence owns the scenario text | the pinned scenario record, via the verified display projection below | labelled "What it tests (scenario)"; the heading stays the fixture id |
+| a public remainder fixture of the legacy corpora | nobody records a fixture description | — | the page says "What it tests: Not recorded" and titles the page with the id |
 
 A public case's text is never authored here: a correction is a credential-evidence change, picked up by the next pinned release. A product fixture's text
 is never sent upstream: the product populations are not public evidence ([generated populations](generated-populations.md)).
 
 ## The projection of the pinned release
 
-`npm run evidence:case-metadata` downloads three assets of the release that `benchmarks/official-runs.json` pins for `public-evidence-snapshot`
-(`release-manifest.json`, `records-bundle.json`, `fixtures-materialized-manifest.json`) into `results-output/evidence-case-metadata/` and refuses unless:
+`npm run evidence:case-metadata` downloads the assets of the release that `benchmarks/official-runs.json` pins for `public-evidence-snapshot`
+(`release-manifest.json`, `records-bundle.json`, `fixtures-materialized-manifest.json`, plus the display snapshot below) into `results-output/evidence-case-metadata/` and refuses unless:
 
 - the release manifest's sha256 is the pinned `manifestDigest` and it names the pinned tag;
 - each asset's bytes and size are the ones the manifest's `files[]` lists;
@@ -103,3 +104,56 @@ A fixture opens one `data/fixtures/<suite>/records.json` file. Its SHA256 identi
 only the identity field itself. The suite page carries that digest. Its client refuses a different suite, record count, digest, malformed id or duplicate
 id. Thus even a text-only deployment over the same measured run rejects an older records file. Export checks independently recompute this digest and
 recount release and compact observed ranges/actions. The existing per-file export budget remains the limit; no browser fetch of artifacts or bundles is added.
+
+## Verified public fixture display evidence (#885)
+
+The same `npm run evidence:case-metadata` command also derives
+`benchmarks/inputs/fixture-display-v1.json`. This is a current display input, not
+a historical artifact or a new measurement. `--verify` checks both projections
+byte for byte; `fixture-metadata:check` checks their integrity and pin binding
+offline in `validate-sources`. Regenerate both in the accepted repin change.
+Candidate adoption leaves the current projections and all authority records alone.
+
+The fourth asset, `credential-eval-corpus-snapshot.json`, is checked against the
+pinned manifest's asset digest and byte size. Its source revision, schema, corpus
+digest and case count must match the release. Each synthetic input must match
+the materialized fixture's id, path, UTF-8 size, SHA256 and authored span
+coordinates, roles and envelope bounds. Construction notes and decoded
+representation metadata are not part of the RunArtifact's span contract. Every
+record in the bundle is hash-checked before use. Description targets are explicit
+case or scenario records; rationale is the fixture's own evidence reference in
+its fixture-set record, with URLs resolved through the recorded source ids. An
+absent fixture-specific rationale stays absent; scenario semantics never fill it.
+Rationales may cite full public source digests; short titles and descriptions
+retain their existing no-opaque-value rule.
+
+The projection retains source commitments, shared description and assessment
+dictionaries, fixture commitments and a digest of its entire payload. It copies
+only display fields, not observations or support decisions. The committed file
+uses a gzip-compressed canonical base64 transport envelope because synthetic credential-shaped
+inputs trigger repository push protection. Decoding checks the envelope's byte
+count, SHA256 and strict UTF-8 before checking the unchanged inner commitments.
+Encoded input is bounded to 2 MiB and decoded output to 16 MiB before expansion.
+This encoding preserves the public inputs; it is not redaction. For suites with at
+most **1 MiB of input bytes**, it includes every exact input; a suite over that
+budget includes no input bytes and says the pinned release has them but the
+display limit omits them. The remaining **1 MiB** of the existing **2 MiB per
+records fetch** budget is reserved for spans, outcomes and metadata; the export
+gate still enforces the final file size.
+
+`withFixtureDisplay` binds tag, manifest digest and corpus digest to the measured
+report population, then each id, path, kind, tier, group and complete RunArtifact
+span representation. Missing, corrupt, stale or mismatched evidence displays an
+explicit unavailable reason. Valid inputs support the existing byte view,
+synthetic-file download and escaped disclosure. Scanner output is drawn only
+when the run recorded its offsets; restored input never invents those offsets.
+Case titles remain the case projection's own text. A scenario supplies a labelled
+scenario description and its draft/review lifecycle, never a fixture-specific
+title or evidence rationale. Rationale and sources name their fixture-set record
+and release. The legacy rollback path is unchanged.
+
+`check-export-credential.mjs` independently joins the projection to measured
+cases and recounts exact inputs, hashes, scenario descriptions, rationale, URLs
+and provenance in each emitted records file. The records identity binds these
+display changes, so a stale cached file is refused even when the run is unchanged.
+No browser fetch of a snapshot, raw record bundle or authority file is added.

@@ -1,5 +1,5 @@
 /**
- * `/evaluation/scanner` (#612): the scanners the benchmark ran with and the environment each one ran in. Pure:
+ * `/comparison/scanner` (#612): the scanners the benchmark ran with and the environment each one ran in. Pure:
  * the services' raw facts in, block props out.
  *
  * Boundary rule: this states what the repository records (a pin, a command, a platform, a count of rules) and says
@@ -343,8 +343,8 @@ export function resolveScanners(input: ScannerInput): ScannerOverviewProps {
     id: p.id, name: p.name, kind: p.kind, version: p.version, pinnedIn: ordered[i].source.pin.file, mode: ordered[i].scanner?.mode ?? null,
   }));
   return {
-    breadcrumb: [{ label: 'Evaluation', href: '/evaluation/' }, { label: 'Scanners' }],
-    eyebrow: 'Evaluation',
+    breadcrumb: [{ label: 'Comparison', href: '/comparison/' }, { label: 'Scanners' }],
+    eyebrow: 'Comparison',
     title: 'Scanners and where they ran',
     lede: 'The scanners this benchmark ran with: the version of each, how it was installed, how it was run, where it was observed and what was left out. Results are on the report and comparison pages.',
     meta: [

@@ -18,6 +18,7 @@ import {
   EVIDENCE_CASE_METADATA_FILE, EVIDENCE_REPOSITORY, FIXTURE_DESCRIPTIONS_FILE, MATERIALIZED_MANIFEST_ASSET, RECORDS_BUNDLE_ASSET,
   deriveEvidenceCaseMetadata, evidenceCaseMetadataProblems, fixtureDescriptionsProblems, serializeCaseMetadata,
 } from '../benchmarks/lib/fixture-metadata.ts';
+import { FIXTURE_DISPLAY_FILE, deriveFixtureDisplay, encodeFixtureDisplay, fixtureDisplayProblems, SNAPSHOT_ASSET } from '../benchmarks/lib/fixture-display.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = rel => JSON.parse(readFileSync(path.join(root, rel), 'utf8'));
@@ -43,6 +44,7 @@ function productSlugs() {
 if (mode === 'check') {
   const problems = [
     ...evidenceCaseMetadataProblems(read(EVIDENCE_CASE_METADATA_FILE), pin).map(p => `${EVIDENCE_CASE_METADATA_FILE}: ${p}`),
+    ...fixtureDisplayProblems(read(FIXTURE_DISPLAY_FILE), pin).map(p => `${FIXTURE_DISPLAY_FILE}: ${p}`),
     ...fixtureDescriptionsProblems(read(FIXTURE_DESCRIPTIONS_FILE), productSlugs()).map(p => `${FIXTURE_DESCRIPTIONS_FILE}: ${p}`),
   ];
   if (problems.length) { console.error(problems.map(p => `  - ${p}`).join('\n')); process.exit(1); }
@@ -51,19 +53,26 @@ if (mode === 'check') {
 } else {
   const dir = path.resolve(option('dir') ?? path.join(root, 'results-output/evidence-case-metadata'));
   mkdirSync(dir, { recursive: true });
-  const assets = ['release-manifest.json', RECORDS_BUNDLE_ASSET, MATERIALIZED_MANIFEST_ASSET];
+  const assets = ['release-manifest.json', RECORDS_BUNDLE_ASSET, MATERIALIZED_MANIFEST_ASSET, SNAPSHOT_ASSET];
   if (!assets.every(a => existsSync(path.join(dir, a))))
     execFileSync('gh', ['release', 'download', pin.release.tag, '-R', EVIDENCE_REPOSITORY, '-D', dir, ...assets.flatMap(a => ['-p', a]), '--clobber'], { stdio: 'inherit' });
-  const derived = serializeCaseMetadata(deriveEvidenceCaseMetadata({
+  const inputs = {
     pin, manifestBytes: readFileSync(path.join(dir, 'release-manifest.json')),
     recordsBundleBytes: readFileSync(path.join(dir, RECORDS_BUNDLE_ASSET)), materializedBytes: readFileSync(path.join(dir, MATERIALIZED_MANIFEST_ASSET)),
-  }));
+    snapshotBytes: readFileSync(path.join(dir, SNAPSHOT_ASSET)),
+  };
+  const derived = serializeCaseMetadata(deriveEvidenceCaseMetadata(inputs));
+  const display = `${JSON.stringify(encodeFixtureDisplay(deriveFixtureDisplay(inputs)))}\n`;
+  const displayTarget = path.join(root, FIXTURE_DISPLAY_FILE);
   const target = path.join(root, EVIDENCE_CASE_METADATA_FILE);
   if (mode === 'verify') {
     if (!existsSync(target) || readFileSync(target, 'utf8') !== derived) { console.error(`${EVIDENCE_CASE_METADATA_FILE} is not the derivation of ${pin.release.tag}: run npm run evidence:case-metadata`); process.exit(1); }
-    console.log(`${EVIDENCE_CASE_METADATA_FILE} is the derivation of ${pin.release.tag}`);
+    if (!existsSync(displayTarget) || readFileSync(displayTarget, 'utf8') !== display) { console.error(`${FIXTURE_DISPLAY_FILE} is not the derivation of ${pin.release.tag}: run npm run evidence:case-metadata`); process.exit(1); }
+    console.log(`${EVIDENCE_CASE_METADATA_FILE} and ${FIXTURE_DISPLAY_FILE} are the derivation of ${pin.release.tag}`);
   } else {
     writeFileSync(target, derived);
-    console.log(`Wrote ${EVIDENCE_CASE_METADATA_FILE} from ${pin.release.tag}`);
+    mkdirSync(path.dirname(displayTarget), { recursive: true });
+    writeFileSync(displayTarget, display);
+    console.log(`Wrote ${EVIDENCE_CASE_METADATA_FILE} and ${FIXTURE_DISPLAY_FILE} from ${pin.release.tag}`);
   }
 }

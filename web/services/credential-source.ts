@@ -13,10 +13,12 @@
  * Rolling back is changing the one committed value; this module is where it takes effect for the Next app.
  */
 import { validateAccounting } from '../../benchmarks/consumer/credential-metrics';
+import { createHash } from 'node:crypto';
+import { FIXTURE_DISPLAY_FILE } from '../../benchmarks/lib/fixture-display';
 import type { AccountingConfig } from '../../benchmarks/shared/accounting-types';
 import { loadAuthority, type Authority, type QualificationAuthority } from './authority';
 import { assembleCatalog, loadDetectorTitles, loadTaxonomy, type BuiltFixture, type Catalog } from './credential-catalog';
-import { bridgeQualificationView, withCaseText } from './credential-bridge';
+import { bridgeQualificationView, withCaseText, withFixtureDisplay } from './credential-bridge';
 import { EVIDENCE_CASE_METADATA_FILE, evidenceCaseMetadataProblems, type EvidenceCaseMetadata, type EvidencePin } from '../../benchmarks/lib/fixture-metadata';
 import { loadQualificationView, measurementHostProblems, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type MeasurementHost, type QualificationView, type RosterNotMeasured } from './qualification';
 import { once, readJson } from './repo';
@@ -158,6 +160,9 @@ async function newSource(authority: QualificationAuthority): Promise<CredentialS
   if ('problem' in bridged) return unavailable(authority, 'incompatible', `${QUALIFICATION_FILE} cannot be read as a report: ${bridged.problem}.`);
   const { population } = bridged;
   const [reviewDisclosure, text] = await Promise.all([loadReviewDisclosure(population.artifact.evidence.release?.tag), caseText(bridged.fixtureBytes, registry, population.artifact.evidence)]);
+  const display = withFixtureDisplay(text.fixtureBytes, await readJson<unknown>(FIXTURE_DISPLAY_FILE).catch(() => undefined), population);
+  const fixtureHashes = new Map([...display.fixtureBytes].flatMap(([id, f]) => f.contentRecorded === false ? [] : [[id, createHash('sha256').update(f.content).digest('hex')] as const]));
+  const fixtureTextProblem = [text.problem, display.problem].filter(Boolean).join(' ');
   return {
     pipeline: {
       authority: 'new', from: 'committed', ...(reviewDisclosure ? { reviewDisclosure } : {}),
@@ -168,7 +173,7 @@ async function newSource(authority: QualificationAuthority): Promise<CredentialS
         ...(load.view.scannerRoster?.notMeasured.length ? { notMeasured: load.view.scannerRoster.notMeasured } : {}),
       },
     },
-    catalog: bridged.catalog, run: bridged.run, fixtureBytes: text.fixtureBytes, fixtureHashes: new Map(), ...(text.problem ? { fixtureTextProblem: text.problem } : {}),
+    catalog: bridged.catalog, run: bridged.run, fixtureBytes: display.fixtureBytes, fixtureHashes, ...(fixtureTextProblem ? { fixtureTextProblem } : {}),
     support: {
       version: bridged.run.productVersion, recordedOn: recorded?.recordedOn ?? null, familyCount: load.view.families.length,
       distribution: { stable: load.view.distribution.stable ?? 0, provisional: load.view.distribution.provisional ?? 0, pending: load.view.distribution.pending ?? 0, unsupported: load.view.distribution.unsupported ?? 0 },

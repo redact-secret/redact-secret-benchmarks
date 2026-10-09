@@ -31,7 +31,7 @@ const EVERYTHING = [
 const NEW_PATH_SCRIPTS = /^scripts\/(build-qualification-|export-qualification-|official-run|run-official-|check-official-runs|check-qualification-|record-official-run|provision-official-peers|adopt-evidence-snapshot|check-evidence-adoption|compare-adoption-views|derive-snapshot-inputs|export-|assemble-site|check-evaluation-bundle-publication|evaluation-bundle-retention|lib\/evaluation-bundle-deployment|check-feature-dataset-exclusion|check-blind-public|research-projection|evidence-case-metadata\.mjs$)/
 
 /** Benchmark-owned files read by the view or the pages, never the legacy measurement (research and fixture metadata are display facts only). */
-const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.json$|official-run|qualification-|support\/research-projection\.(json|mjs)$|evidence-case-metadata\.json$|fixture-descriptions\.json$|lib\/fixture-metadata\.ts$)/
+const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.json$|official-run|qualification-|support\/research-projection\.(json|mjs)$|evidence-case-metadata\.json$|fixture-descriptions\.json$|lib\/fixture-(metadata|display)\.ts$|inputs\/fixture-display-v1\.json$)/
 
 /**
  * PII migration tooling and data (#666): the pii-eval consumer, the dual-run and linux-replay scripts, the committed pins and artifacts, the PII

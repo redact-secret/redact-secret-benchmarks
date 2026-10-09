@@ -19,7 +19,7 @@ describe('parseLegacyFixturePath', () => {
   test.each([
     '/fixture/', '/fixture/s', '/fixture/--abc', '/fixture/s--', '/fixture/S--abc', '/fixture/s_t--abc', '/fixture/s-t-', '/fixture/-s--abc',
     '/fixture/s--.abc', '/fixture/s--a%2Fb', '/fixture/s--a/b', '/fixture/s--a%20b', '/fixture/s--%E0%A4%A', '/fixture/s--a%00b',
-    `/fixture/s--${'a'.repeat(201)}`, '/fixtures/s--abc', '/report/fixtures/s/', '/fixture/s--abc/extra',
+    `/fixture/s--${'a'.repeat(201)}`, '/fixtures/s--abc', '/report/corpus/s/', '/fixture/s--abc/extra',
   ])('refuses %j', path => {
     expect(parseLegacyFixturePath(path)).toBeUndefined();
   });
@@ -31,11 +31,11 @@ describe('parseLegacyFixturePath', () => {
 
 describe('parseSuiteLandingPath', () => {
   test('reads the suite and fixture id the host redirect carries', () => {
-    expect(parseSuiteLandingPath('/report/fixtures/example-suite/', '?fixture=alpha-1')).toEqual({ suite: 'example-suite', id: 'alpha-1' });
-    expect(parseSuiteLandingPath('/base/report/fixtures/s', '?fixture=a--b&x=1', '/base')).toEqual({ suite: 's', id: 'a--b' });
+    expect(parseSuiteLandingPath('/report/corpus/example-suite/', '?fixture=alpha-1')).toEqual({ suite: 'example-suite', id: 'alpha-1' });
+    expect(parseSuiteLandingPath('/base/report/corpus/s', '?fixture=a--b&x=1', '/base')).toEqual({ suite: 's', id: 'a--b' });
   });
 
-  test.each([['/report/fixtures/s/', ''], ['/report/fixtures/s/', '?fixture='], ['/report/fixtures/S/', '?fixture=a'], ['/report/fixtures/s/x/', '?fixture=a'], ['/report/families/s/', '?fixture=a'], ['/report/fixtures/s/', '?fixture=a%2Fb']])('refuses %j %j', (path, search) => {
+  test.each([['/report/corpus/s/', ''], ['/report/corpus/s/', '?fixture='], ['/report/corpus/S/', '?fixture=a'], ['/report/corpus/s/x/', '?fixture=a'], ['/report/families/s/', '?fixture=a'], ['/report/corpus/s/', '?fixture=a%2Fb']])('refuses %j %j', (path, search) => {
     expect(parseSuiteLandingPath(path, search)).toBeUndefined();
   });
 });
@@ -44,19 +44,19 @@ describe('legacyFixtureTarget', () => {
   const ref = { suite: 'example-suite', id: 'alpha-1' };
 
   test('is the suite page with ?fixture=', () => {
-    expect(legacyFixtureTarget(ref)).toBe('/report/fixtures/example-suite/?fixture=alpha-1');
-    expect(legacyFixtureTarget({ suite: 's', id: 'a.b_c' }, '', '', '/base')).toBe('/base/report/fixtures/s/?fixture=a.b_c');
+    expect(legacyFixtureTarget(ref)).toBe('/report/corpus/example-suite/?fixture=alpha-1');
+    expect(legacyFixtureTarget({ suite: 's', id: 'a.b_c' }, '', '', '/base')).toBe('/base/report/corpus/s/?fixture=a.b_c');
   });
 
   test('keeps the original query (not its own fixture) and the hash on purpose', () => {
-    expect(legacyFixtureTarget(ref, '?show=leaked&fixture=other&q=a%20b', '#spans')).toBe('/report/fixtures/example-suite/?fixture=alpha-1&show=leaked&q=a+b#spans');
+    expect(legacyFixtureTarget(ref, '?show=leaked&fixture=other&q=a%20b', '#spans')).toBe('/report/corpus/example-suite/?fixture=alpha-1&show=leaked&q=a+b#spans');
   });
 
   test('drops an empty or oversized hash and cannot leave the app', () => {
     expect(legacyFixtureTarget(ref, '', '#')).not.toContain('#');
     expect(legacyFixtureTarget(ref, '', `#${'x'.repeat(300)}`)).not.toContain('#');
     for (const hostile of ['?next=https://evil.example', '?a=//evil.example']) {
-      expect(legacyFixtureTarget(ref, hostile, '#//evil.example').startsWith('/report/fixtures/example-suite/?fixture=alpha-1')).toBe(true);
+      expect(legacyFixtureTarget(ref, hostile, '#//evil.example').startsWith('/report/corpus/example-suite/?fixture=alpha-1')).toBe(true);
     }
   });
 });
@@ -118,7 +118,7 @@ describe('lookupLegacyFixture', () => {
     render(<mod.LegacyFixtureLookup><p>ordinary not found</p></mod.LegacyFixtureLookup>);
     await waitFor(() => expect(screen.getByText('No fixture “missing-id” in the suite example-suite')).toBeTruthy());
     expect(screen.queryByText('ordinary not found')).toBeNull();
-    expect(screen.getByRole('link', { name: 'Fixtures in example-suite' }).getAttribute('href')).toMatch(/^\/report\/fixtures\/example-suite\/?$/);
+    expect(screen.getByRole('link', { name: 'Fixtures in example-suite' }).getAttribute('href')).toMatch(/^\/report\/corpus\/example-suite\/?$/);
   });
 
   test('a legacy link to an unknown suite points to the suite list', async () => {
@@ -126,12 +126,19 @@ describe('lookupLegacyFixture', () => {
     window.history.replaceState(null, '', '/fixture/no-such-suite--abc');
     render(<mod.LegacyFixtureLookup />);
     await waitFor(() => expect(screen.getByText('No suite “no-such-suite”')).toBeTruthy());
-    expect(screen.getByRole('link', { name: 'All suites' }).getAttribute('href')).toMatch(/^\/report\/fixtures\/?$/);
+    expect(screen.getByRole('link', { name: 'All suites' }).getAttribute('href')).toMatch(/^\/report\/corpus\/?$/);
   });
 
   test('the host redirect landing on a suite this export does not have is explained without a request', async () => {
-    window.history.replaceState(null, '', '/report/fixtures/old-corpus/?fixture=abc');
+    window.history.replaceState(null, '', '/report/corpus/old-corpus/?fixture=abc');
     render(<mod.LegacyFixtureLookup><p>ordinary not found</p></mod.LegacyFixtureLookup>);
+    await waitFor(() => expect(screen.getByText('No suite “old-corpus”')).toBeTruthy());
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  test('the former fixture route still explains a suite that is absent, without a request', async () => {
+    window.history.replaceState(null, '', '/report/fixtures/old-corpus/?fixture=abc');
+    render(<mod.LegacyFixtureLookup />);
     await waitFor(() => expect(screen.getByText('No suite “old-corpus”')).toBeTruthy());
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -143,7 +150,7 @@ describe('lookupLegacyFixture', () => {
     Object.defineProperty(window, 'location', { configurable: true, value: { pathname: '/fixture/example-suite--alpha-1', search: '?show=leaked', hash: '#spans', replace } });
     try {
       render(<mod.LegacyFixtureLookup />);
-      await waitFor(() => expect(replace).toHaveBeenCalledWith('/report/fixtures/example-suite/?fixture=alpha-1&show=leaked#spans'));
+      await waitFor(() => expect(replace).toHaveBeenCalledWith('/report/corpus/example-suite/?fixture=alpha-1&show=leaked#spans'));
     } finally {
       Object.defineProperty(window, 'location', { configurable: true, value: original });
     }

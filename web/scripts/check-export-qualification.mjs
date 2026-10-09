@@ -126,7 +126,7 @@ for (const n of notMeasured) {
   const pointer = n.lastMeasurement ? `recorded ${n.lastMeasurement.recordedOn}` : 'No earlier measurement of it is recorded';
   const pages = [
     ['evaluation/qualification/index.html', true],
-    ...['report', 'report/families', 'report/detectors', 'report/providers', 'report/fixtures', 'evaluation/credential', 'comparison/accuracy'].map(rel => [`${rel}/index.html`, null]),
+    ...['report', 'report/families', 'report/detectors', 'report/providers', 'report/corpus', 'evaluation/credential', 'comparison/accuracy'].map(rel => [`${rel}/index.html`, null]),
   ];
   for (const [rel, always] of pages) {
     if (!existsSync(out(rel))) continue;

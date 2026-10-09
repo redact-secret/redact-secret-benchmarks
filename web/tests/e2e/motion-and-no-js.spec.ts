@@ -10,7 +10,7 @@ const running = (page: Page) => page.evaluate(() => document.getAnimations().fil
 test.describe('reduced motion', () => {
   test('the loading skeleton pulses for a reader who has not asked for less motion', async ({ page }) => {
     await page.route(`**/data/fixtures/${SUITE}/records.json`, () => new Promise(() => {}));
-    await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
+    await page.goto(`${BASE}/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
     await expect(page.getByRole('status').filter({ visible: true })).toContainText('Loading fixture');
     await expect.poll(() => running(page)).toBeGreaterThan(0);
   });
@@ -20,7 +20,7 @@ test.describe('reduced motion', () => {
 
     test('nothing animates while the skeleton stands in for a fixture', async ({ page }) => {
       await page.route(`**/data/fixtures/${SUITE}/records.json`, () => new Promise(() => {}));
-      await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
+      await page.goto(`${BASE}/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
       await expect(page.getByRole('status').filter({ visible: true })).toContainText('Loading fixture');
       expect(await running(page)).toBe(0);
     });
@@ -74,7 +74,7 @@ test.describe('without script', () => {
   });
 
   test('a suite page with ?fixture= still shows the suite (the fixture needs script), never a blank page', async ({ page }) => {
-    await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
+    await page.goto(`${BASE}/report/corpus/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
     await expect(page.getByRole('heading', { level: 1 }).filter({ visible: true })).toHaveCount(1);
     expect(await page.locator('main table tbody tr').count()).toBeGreaterThan(0);
   });

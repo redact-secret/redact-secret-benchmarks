@@ -145,7 +145,7 @@ describe('the page under the new authority', () => {
     const table = screen.getByRole('table', { name: /Cases per population/ });
     expect(within(table).getByRole('columnheader', { name: 'Population' })).toBeInTheDocument();
     expect(within(table).getAllByRole('row')).toHaveLength(1 + DIFF_POPULATIONS.length);
-    expect(container.querySelectorAll('a[href*="/report/fixtures/"]')).toHaveLength(0);
+    expect(container.querySelectorAll('a[href*="/report/corpus/"]')).toHaveLength(0);
   });
 
   test('rendered with no diff: the not-recorded state, the last release for reference', async () => {

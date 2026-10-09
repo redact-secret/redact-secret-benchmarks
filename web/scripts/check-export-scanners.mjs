@@ -1,5 +1,5 @@
 /**
- * Post-build check of `/evaluation/scanner/` (#612), run by `npm run check:routes` after `next build`.
+ * Post-build check of `/comparison/scanner/` (#612), run by `npm run check:routes` after `next build`.
  *
  * The page's facts are read again here, independently of web/services and web/resolvers: every scanner the run
  * lists is on the page with the version the run recorded and the mode line it recorded; every pin comes from the file
@@ -19,16 +19,16 @@ const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel)
 // The legacy recount, kept intact as the oracle (#658): it applies when the authority is `legacy`. Under `new` the page is built from the official run
 // and check-export-comparison.mjs recounts it against the qualification view.
 if ((await readAuthority(repoRoot)) === 'new') {
-  console.log('/evaluation/scanner/: the authority is new, so check-export-comparison.mjs recounts it against the qualification view');
+  console.log('/comparison/scanner/: the authority is new, so check-export-comparison.mjs recounts it against the qualification view');
   process.exit(0);
 }
 const problems = [];
 const fail = message => problems.push(message);
 
-const html = await readFile(path.join(webRoot, 'out/evaluation/scanner/index.html'), 'utf8');
+const html = await readFile(path.join(webRoot, 'out/comparison/scanner/index.html'), 'utf8');
 const main = /<main[\s\S]*?<\/main>/.exec(html)?.[0] ?? html;
 const text = main.replace(/<(script|style)\b[\s\S]*?<\/\1[^>]*>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/\s+/g, ' ');
-if ((html.match(/<h1[\s>]/g) ?? []).length !== 1) fail('/evaluation/scanner/ must have exactly one <h1>');
+if ((html.match(/<h1[\s>]/g) ?? []).length !== 1) fail('/comparison/scanner/ must have exactly one <h1>');
 
 const suite = await readJson('qualification/suite-v1.json');
 const pkg = await readJson('package.json');
@@ -42,7 +42,7 @@ try { summary = await readJson('public/results/summary.json'); } catch { /* no r
 
 if (!summary) {
   if (!process.env.WEB_REQUIRE_RUN) {
-    if (!text.includes('No benchmark run is published')) fail('/evaluation/scanner/ has no run and must say so');
+    if (!text.includes('No benchmark run is published')) fail('/comparison/scanner/ has no run and must say so');
   } else fail('WEB_REQUIRE_RUN is set but public/results/summary.json is absent');
 }
 
@@ -52,35 +52,35 @@ for (const id of ids) {
   const scanner = summary?.scanners.find(s => s.id === id);
   const name = scanner?.name ?? id;
   const position = html.indexOf(`id="${id}"`);
-  if (position < 0) { fail(`/evaluation/scanner/ has no section #${id}`); continue; }
-  if (position < at) fail(`/evaluation/scanner/ lists ${id} out of the run's order`);
+  if (position < 0) { fail(`/comparison/scanner/ has no section #${id}`); continue; }
+  if (position < at) fail(`/comparison/scanner/ lists ${id} out of the run's order`);
   at = position;
-  if (!html.includes(`href="#${id}"`)) fail(`/evaluation/scanner/ roster does not link #${id}`);
+  if (!html.includes(`href="#${id}"`)) fail(`/comparison/scanner/ roster does not link #${id}`);
   const version = scanner?.version ?? pinOf(id);
-  if (!version || !text.includes(`${name} ${version}`)) fail(`/evaluation/scanner/ does not state ${name} ${version}`);
+  if (!version || !text.includes(`${name} ${version}`)) fail(`/comparison/scanner/ does not state ${name} ${version}`);
   const pin = pinOf(id);
-  if (!pin || !text.includes(pin)) fail(`/evaluation/scanner/ does not state the pin ${pin} of ${id}`);
-  if (scanner && !text.includes(scanner.mode)) fail(`/evaluation/scanner/ does not state the mode line of ${id}: ${scanner.mode}`);
+  if (!pin || !text.includes(pin)) fail(`/comparison/scanner/ does not state the pin ${pin} of ${id}`);
+  if (scanner && !text.includes(scanner.mode)) fail(`/comparison/scanner/ does not state the mode line of ${id}: ${scanner.mode}`);
   const table = checksums[id];
   if (table?.assets) {
     const shown = Object.values(table.assets).some(a => text.includes(a.archive) && text.includes(a.sha256.slice(0, 12)));
-    if (!shown) fail(`/evaluation/scanner/ does not name a pinned release archive and its SHA-256 for ${id}`);
+    if (!shown) fail(`/comparison/scanner/ does not name a pinned release archive and its SHA-256 for ${id}`);
   }
-  for (const statement of registry[id]?.outOfScope ?? []) if (!text.includes(statement)) fail(`/evaluation/scanner/ does not show the out-of-scope statement for ${id}: ${statement}`);
+  for (const statement of registry[id]?.outOfScope ?? []) if (!text.includes(statement)) fail(`/comparison/scanner/ does not show the out-of-scope statement for ${id}: ${statement}`);
 }
 if (summary) {
-  if (!/Published|Candidate/.test(text)) fail('/evaluation/scanner/ does not state published or candidate');
-  if (!text.includes('Mode')) fail('/evaluation/scanner/ does not state the mode of the run');
+  if (!/Published|Candidate/.test(text)) fail('/comparison/scanner/ does not state published or candidate');
+  if (!text.includes('Mode')) fail('/comparison/scanner/ does not state the mode of the run');
 }
 
 const FORBIDDEN = /fastest|slowest|faster|slower|\bbest\b|worst|winner|better|\brank(ed|ing)?\b|recommended|\bmissed\b|\bcaught\b/i;
-if (FORBIDDEN.test(text)) fail(`/evaluation/scanner/ contains a ranking or verdict word: ${FORBIDDEN.exec(text)[0]}`);
+if (FORBIDDEN.test(text)) fail(`/comparison/scanner/ contains a ranking or verdict word: ${FORBIDDEN.exec(text)[0]}`);
 for (const [, href] of html.matchAll(/<a [^>]*href="(\/[^"#]*)/g)) {
-  if (!(await linkResolves(path.join(webRoot, 'out'), '', href))) fail(`/evaluation/scanner/ links outside the export: ${href}`);
+  if (!(await linkResolves(path.join(webRoot, 'out'), '', href))) fail(`/comparison/scanner/ links outside the export: ${href}`);
 }
 
 if (problems.length) {
   for (const p of problems) console.error(`::error::${p}`);
   process.exit(1);
 }
-console.log(`/evaluation/scanner/ matches the pins, the run and the registry for ${ids.length} scanners`);
+console.log(`/comparison/scanner/ matches the pins, the run and the registry for ${ids.length} scanners`);

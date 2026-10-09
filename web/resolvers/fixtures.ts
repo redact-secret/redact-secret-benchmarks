@@ -149,6 +149,9 @@ export interface FixtureRecord {
   content: string;
   /** True when the source records no bytes for the fixture (the qualification view): `content` is empty and the page says so. */
   noContent?: true;
+  bytesNote?: string;
+  scenarioAbout?: number;
+  scenarioAboutBy?: number;
   expected: Span[];
   detectors: string[];
   families: string[];
@@ -181,7 +184,7 @@ export interface SuiteShared {
   category: string;
   suite: { title: string; reviewStatus: string };
   scanners: { id: string; name: string; version: string | null; mode: string; status: string; observed: string[] }[];
-  assessments: { reason?: string; sources: string[] }[];
+  assessments: { reason?: string; reasonBy?: string; sources: string[] }[];
   followUps: { number: number; url: string; milestone: string }[];
   detectorTitles: Record<string, string>;
   familyNames: Record<string, string>;
@@ -288,11 +291,11 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
 
   const records = input.fixtures.map((entry): FixtureRecord => {
     const built = input.bytes.get(entry.slug)!;
-    const key = JSON.stringify([built.assessment.reason ?? '', built.assessment.sources ?? []]);
+    const key = JSON.stringify([built.assessment.reason ?? '', built.assessment.reasonBy ?? '', built.assessment.sources ?? []]);
     let index = assessmentIndex.get(key);
     if (index === undefined) {
       index = assessments.length;
-      assessments.push({ ...(built.assessment.reason ? { reason: built.assessment.reason } : {}), sources: built.assessment.sources ?? [] });
+      assessments.push({ ...(built.assessment.reason ? { reason: built.assessment.reason } : {}), ...(built.assessment.reasonBy ? { reasonBy: built.assessment.reasonBy } : {}), sources: built.assessment.sources ?? [] });
       assessmentIndex.set(key, index);
     }
     for (const id of entry.detectors) detectorTitles[id] = input.detectorTitles.get(id) ?? id;
@@ -316,6 +319,8 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       ...(built.mutation ? { mutation: built.mutation } : {}), ...(built.mutationKind ? { mutationKind: built.mutationKind } : {}),
       ...(built.issue ? { issue: built.issue } : {}),
       content: built.content, ...(built.contentRecorded === false ? { noContent: true as const } : {}), expected: built.expected as Span[],
+      ...(built.contentProblem ? { bytesNote: built.contentProblem } : {}),
+      ...(built.scenarioDescription ? { scenarioAbout: text(built.scenarioDescription), scenarioAboutBy: text(built.scenarioDescribedBy) } : {}),
       detectors: entry.detectors, families: entry.familyIds,
       assessment: index,
       followUps: input.findings.flatMap((finding, i) => (finding.fixtures.includes(entry.slug) ? [i] : [])),
@@ -574,7 +579,7 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     for (const f of findings) open = open.flatMap(r => (overlaps(r, f) ? [{ start: r.start, end: Math.min(r.end, f.start) }, { start: Math.max(r.start, f.end), end: r.end }].filter(x => x.end > x.start) : [r]));
     for (const r of open) outputMarks.push({ ...r, kind: 'exposed' });
   });
-  const output: FixtureFileData | undefined = productRow && hasBytes ? {
+  const output: FixtureFileData | undefined = productRow?.actual !== undefined && hasBytes ? {
     label: 'Output with the reported ranges drawn over the input',
     title: findings.length ? `${count(findings.length, 'range')} reported` : 'no range reported',
     facts,
@@ -591,7 +596,7 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     ...(notice ? { notice } : {}),
   } : undefined;
   const product = shared.scanners[productIndex];
-  const outputNote = productRow ? undefined
+  const outputNote = productRow ? 'This run records the scanner’s outcomes but not its reported offsets. The output cannot be drawn over the input.'
     : shared.runProblem ?? (product && product.status !== 'complete' ? `${PRODUCT_ID} did not complete in this run (${product.status}).` : product ? 'The run holds no row for these bytes.' : 'No benchmark run is published for this checkout.');
 
   const shapes = new Set(outputMarks.map(m => m.kind));
@@ -645,14 +650,15 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     const original = byId.get(record.twinOf);
     if (original) {
       const ob = encoder.encode(original.content);
-      const diff = hasBytes ? changedRanges(bytes, ob) : [];
+      const bothBytes = hasBytes && !original.noContent;
+      const diff = bothBytes ? changedRanges(bytes, ob) : [];
       const o = relatedOutcome(shared, original, productIndex);
       related.push({ label: original.id, record: original });
       twinItems.push({
         id: original.id, href: fixtureHref({ category: shared.category, id: original.id }), title: 'The original',
         description: `${original.id} is the file this one was made from.${record.mutation ? ` What was changed: ${record.mutation}` : ''}`,
-        changed: hasBytes ? changedText(diff, bytes.length, ob.length) : 'Bytes not recorded',
-        ...(hasBytes ? { file: {
+        changed: bothBytes ? changedText(diff, bytes.length, ob.length) : 'Byte differences unavailable in this view',
+        ...(bothBytes ? { file: {
           label: 'The original, changed lines', title: original.path, facts: fileFacts(ob), note: changedText(diff, bytes.length, ob.length),
           rows: fileRows(ob, diff.map(r => ({ ...r, kind: 'changed' })), marks => (marks.length ? { mark: 'changed' as const, title: 'A byte this twin differs by' } : {})),
         } } : {}),
@@ -664,15 +670,16 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     const twin = byId.get(id);
     if (!twin) continue;
     const tb = encoder.encode(twin.content);
-    const diff = hasBytes ? changedRanges(bytes, tb) : [];
+    const bothBytes = hasBytes && !twin.noContent;
+    const diff = bothBytes ? changedRanges(bytes, tb) : [];
     const o = relatedOutcome(shared, twin, productIndex);
     related.push({ label: twin.id, record: twin });
     twinItems.push({
       id: twin.id, href: fixtureHref({ category: shared.category, id: twin.id }),
       title: twin.mutationKind ? `${capital(twin.mutationKind)} twin` : twin.id,
       description: twin.mutation ?? 'The corpus records no description of what was changed.',
-      changed: hasBytes ? changedText(diff, bytes.length, tb.length) : 'Bytes not recorded',
-      ...(hasBytes ? { file: {
+      changed: bothBytes ? changedText(diff, bytes.length, tb.length) : 'Byte differences unavailable in this view',
+      ...(bothBytes ? { file: {
         label: `${twin.id}, changed lines`, title: twin.path, facts: fileFacts(tb), note: changedText(diff, bytes.length, tb.length),
         rows: fileRows(tb, diff.map(r => ({ ...r, kind: 'changed' })), marks => (marks.length ? { mark: 'changed' as const, title: 'A byte that differs from this fixture' } : {})),
       } } : {}),
@@ -695,6 +702,7 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
   const release = text(record.release);
   const title = text(record.title);
   const about = title ? text(record.about) : undefined;
+  const scenarioAbout = text(record.scenarioAbout);
   const scenarioTitles = record.scenarios.map(i => shared.scenarios[i]?.title).filter(Boolean) as string[];
   // The old site read the issue from the group label ("#211 · …") when the fixture names none.
   const issueNumber = record.issue ?? (Number(/#(\d+)/.exec(group ?? '')?.[1]) || undefined);
@@ -705,8 +713,9 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
   const factList: FixtureFactData[] = [
     about
       ? { term: 'What it tests', value: about, ...(text(record.aboutBy) ? { note: text(record.aboutBy) } : {}) }
+      : scenarioAbout ? { term: 'What it tests (scenario)', value: scenarioAbout, note: text(record.scenarioAboutBy) }
       : { term: 'What it tests', notRecorded: true, note: `${group ? `The corpus records a group label, “${group}”, and no description.` : 'The corpus records no description of this fixture.'}${shared.textProblem ? ` ${shared.textProblem}` : ''}` },
-    assessment.reason ? { term: REASON_TERM[record.kind] ?? 'Reason', value: assessment.reason } : { term: REASON_TERM[record.kind] ?? 'Reason', notRecorded: true },
+    assessment.reason ? { term: REASON_TERM[record.kind] ?? 'Reason', value: assessment.reason, ...(assessment.reasonBy ? { note: assessment.reasonBy } : {}) } : { term: REASON_TERM[record.kind] ?? 'Reason', notRecorded: true },
     ...(record.contract ? [{ term: 'Contract', value: record.contract, mono: true }] : []),
     { term: 'Evidence level', value: evidence, ...(record.tier === 'T0' ? { note: 'Pending review: excluded from comparative scores.' } : {}) },
     record.families.length
@@ -730,7 +739,7 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     },
     ...(issues.length ? [{ term: 'Issues', links: issues }] : []),
     { term: 'Review', value: record.tier === 'T0' ? 'Pending review: excluded from comparative scores.' : `Authored from construction and evidence, never from scanner output.${shared.suite.reviewStatus ? ` ${shared.suite.reviewStatus}.` : ''}` },
-    { term: 'File', value: record.path, mono: true, note: hasBytes ? `${count(bytes.length, 'byte')}${record.sha ? ` · sha256 ${record.sha}…` : ''}` : 'The bytes are not recorded by this pipeline.' },
+    { term: 'File', value: record.path, mono: true, note: hasBytes ? `${count(bytes.length, 'byte')}${record.sha ? ` · sha256 ${record.sha}…` : ''}` : record.bytesNote ?? 'The bytes are not recorded by this pipeline.' },
   ];
 
   // ---- The other scanners ----
@@ -742,11 +751,11 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
       id: s.id, name: `${s.name}${s.version ? ` ${s.version}` : ''}`,
       detail: `${s.observed.length ? `Results from ${s.observed.join(', ')} · ` : ''}${s.version ? '' : 'version unavailable · '}${s.mode}`,
       fixture: verdictsOf(record.kind, row, s.status),
-      ranges: row ? (row.actual || hasBytes ? rangesText(row.actual) : `${count(reportedCount(row), 'range')}, offsets not recorded`) : '—',
+      ranges: row ? (row.actual !== undefined ? rangesText(row.actual) : `${count(reportedCount(row), 'range')}, offsets not recorded`) : '—',
       ...(related.length ? { related: related.map(r => ({ label: r.label, outcome: verdictsOf(r.record.kind, rowOf(r.record, i), s.status) })) } : {}),
     };
   });
-  const laneScanners = !hasBytes ? [] : shared.scanners.flatMap((s, i) => { const row = rowOf(record, i); return row ? [{ s, i, row, marks: laneMarks(secrets, row.spanOutcomes, row.actual ?? []) }] : []; });
+  const laneScanners = !hasBytes ? [] : shared.scanners.flatMap((s, i) => { const row = rowOf(record, i); return row?.actual !== undefined ? [{ s, i, row, marks: laneMarks(secrets, row.spanOutcomes, row.actual) }] : []; });
   const lines = byteLines(bytes);
   const active = new Set(lines.filter(line => spans.some(s => touches(line, s)) || envelopes.some(r => touches(line, r)) || laneScanners.some(l => l.marks.some(m => touches(line, m)))).map(l => l.index));
   if (!active.size && lines.length) active.add(0);
@@ -784,7 +793,7 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
   const provider = record.families.length ? shared.providerNames[record.families[0]] ?? NOT_PROVIDER_SPECIFIC.name : undefined;
   const crumbs = record.families.length
     ? [{ label: 'Report', href: '/report/' }, { label: 'Providers', href: '/report/providers/' }, { label: provider!, href: `/report/providers/?q=${encodeURIComponent(provider!)}` }, { label: shared.familyNames[record.families[0]] ?? record.families[0], href: familyHref(record.families[0]) }, { label: record.id }]
-    : [{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: shared.suite.title, href: suiteHref(shared.category) }, { label: record.id }];
+    : [{ label: 'Report', href: '/report/' }, { label: 'Credential Corpus', href: '/report/corpus/' }, { label: shared.suite.title, href: suiteHref(shared.category) }, { label: record.id }];
 
   return {
     id: record.id,
@@ -803,7 +812,7 @@ export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared,
     crumbs,
     suiteHref: suiteHref(shared.category),
     verdict: verdictOf(shared, record.kind, record.tier, productRow, product?.status),
-    ...(input ? { input } : { bytesNote: 'This fixture comes from the qualification view, which records each case’s expected spans and each scanner’s outcome for it but not the file’s bytes. They are not drawn, and none is made up.' }),
+    ...(input ? { input } : { bytesNote: record.bytesNote ?? 'This fixture comes from the qualification view, which records each case’s expected spans and each scanner’s outcome for it but not the file’s bytes. They are not drawn, and none is made up.' }),
     ...(output ? { output } : { outputNote }),
     key: hasBytes ? key : [],
     spans: spanRows,

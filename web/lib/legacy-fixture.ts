@@ -1,5 +1,5 @@
 /**
- * The address of a fixture on the legacy site, `/fixture/<suite>--<id>`, and the page that replaced it, `/report/fixtures/<suite>/?fixture=<id>` (#594).
+ * The address of a fixture on the legacy site, `/fixture/<suite>--<id>`, and the page that replaced it, `/report/corpus/<suite>/?fixture=<id>` (#594).
  * Pure strings, no `window`, no `fetch`: `LegacyFixtureLookup` (the client island on the 404 page) reads the location and calls these, and the
  * unit test calls them with synthetic addresses. Decision: `docs/decisions/2026-10-07-resolve-legacy-fixture-links-on-the-not-found-page.md`.
  *
@@ -8,7 +8,7 @@
  *   letter or digit. Both are the characters `lib/data-paths.ts` already allows in a build-emitted file name, so a mapped address can name nothing else.
  * - The query is carried over except `fixture` (the target owns it) and the hash is kept as written: a reader who followed `/fixture/x--y?show=leaked#spans`
  *   lands on the suite page with the same `show` and `#spans`. Nothing else of the original address is trusted: the target is always root-relative and begins
- *   `/report/fixtures/`, so no address can send a reader to another origin.
+ *   `/report/corpus/`, so no address can send a reader to another origin.
  */
 export interface LegacyFixtureRef { suite: string; id: string }
 
@@ -35,12 +35,12 @@ export function parseLegacyFixturePath(pathname: string, basePath = ''): LegacyF
 }
 
 /**
- * The address the host's own redirect (`benchmarks/legacy-url-redirects.json`, rule `fixture`) sends an old link to: `/report/fixtures/<suite>/?fixture=<id>`.
+ * The address the host's own redirect (`benchmarks/legacy-url-redirects.json`, rule `fixture`) sends an old link to: `/report/corpus/<suite>/?fixture=<id>`.
  * It reaches the 404 page when that suite is not a page of this export, and then carries the same suite and fixture id the old slug did.
  */
 export function parseSuiteLandingPath(pathname: string, search: string, basePath = ''): LegacyFixtureRef | undefined {
-  const prefix = `${basePath}/report/fixtures/`;
-  if (!pathname.startsWith(prefix)) return undefined;
+  const prefix = [`${basePath}/report/corpus/`, `${basePath}/report/fixtures/`].find(p => pathname.startsWith(p));
+  if (!prefix) return undefined;
   const suite = pathname.slice(prefix.length).replace(/\/$/, '');
   const id = new URLSearchParams(search).get('fixture') ?? '';
   return SUITE.test(suite) && FIXTURE_ID.test(id) ? { suite, id } : undefined;
@@ -53,5 +53,5 @@ export function legacyFixtureTarget(ref: LegacyFixtureRef, search = '', hash = '
   const query = new URLSearchParams({ fixture: ref.id });
   carried.forEach((value, key) => query.append(key, value));
   const fragment = hash.startsWith('#') && hash.length > 1 && hash.length <= MAX_HASH ? hash : '';
-  return `${basePath}/report/fixtures/${ref.suite}/?${query.toString()}${fragment}`;
+  return `${basePath}/report/corpus/${ref.suite}/?${query.toString()}${fragment}`;
 }

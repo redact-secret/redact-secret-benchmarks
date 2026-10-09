@@ -19,7 +19,7 @@ import { importersOf } from './legacy-callers.mjs'
 
 /** A change to these files changes every check: workflows and composite actions that run them, the lockfiles and the compiler/runtime pins. */
 const EVERYTHING = [
-  /^\.github\/workflows\/(validate|legacy-oracle)\.yml$/, /^\.github\/actions\//, /^package\.json$/, /^package-lock\.json$/, /^tsconfig\.json$/,
+  /^\.github\/workflows\/(validate|legacy-oracle|publish-site)\.yml$/, /^\.github\/actions\//, /^package\.json$/, /^package-lock\.json$/, /^tsconfig\.json$/,
   /^web\/package(-lock)?\.json$/, /^scripts\/ci-plan\.mjs$/, /^scripts\/legacy-callers\.mjs$/, /^schemas\//, /^Dockerfile$/, /^\.dockerignore$/,
 ]
 
@@ -42,6 +42,7 @@ const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.js
  * (`benchmarks/evaluation/domains/pii/`, which is the oracle) stays a legacy input.
  */
 export const PII_MIGRATION = [
+  /^benchmarks\/support\/pii-publication-product\.(mjs|d\.mts)$/,
   /^scripts\/pii-evidence-publication\.d\.mts$/,
   /^scripts\/(preflight-pii-evidence|pii-evidence-comparison-plan|run-pii-evidence-comparison|record-pii-evidence-comparison|fetch-pii-evidence-inputs|check-pii-evidence-dispatch|prepare-pii-evidence-adoption|pii-evidence-publication)\.mjs$/,
   /^scripts\/lib\/pii-evidence-(contract|comparison-plan|json|adoption|adoption-apply)\.mjs$/,
@@ -73,7 +74,7 @@ const DOCS = (f) => /^docs\//.test(f) || /\.md$/.test(f) || f === 'LICENSE' || f
 
 /** Files no measurement and no page reads: prose, the root unit tests (their own job always runs), other workflows, agent and editor configuration. */
 const IGNORED = [
-  DOCS, /^tests\//, /^\.github\/(?!workflows\/(validate|legacy-oracle)\.yml$|actions\/)/, /^\.(claude|agents|vscode)\//, /^graft\//, /^\.gitguardian\.yaml$/, /^\.ignore$/, /^\.mcp\.json$/,
+  DOCS, /^tests\//, /^\.github\/(?!workflows\/(validate|legacy-oracle|publish-site)\.yml$|actions\/)/, /^\.(claude|agents|vscode)\//, /^graft\//, /^\.gitguardian\.yaml$/, /^\.ignore$/, /^\.mcp\.json$/,
 ]
 
 function matches(rules, f) { return rules.some((r) => (typeof r === 'function' ? r(f) : r.test(f))) }

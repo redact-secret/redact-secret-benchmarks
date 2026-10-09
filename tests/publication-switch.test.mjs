@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import YAML from 'yaml';
@@ -274,8 +274,8 @@ test('publish-site.yml builds the view and the matrix before anything slow runs,
   assert.match(consumers, /support=public\/results\/support-matrix-v1\.json\n\s+roadmap_matrix=results-output\/support-matrix\.json/, 'the legacy rollback keeps the legacy files');
   assert.match(consumers, /dossiers:publish -- --require-matrix --matrix="\$roadmap_matrix"/);
   assert.match(consumers, /eval:publish:domains -- --support="\$support"/);
-  assert.equal((consumers.match(/--credential-support="\$support"/g) ?? []).length, 2, 'both PII index calls read the credential support of the authority');
-  // The PII authority path is untouched: the staging bindings and the isolated job stay as they were.
+  assert.equal((consumers.match(/--credential-support="\$support"/g) ?? []).length, 1, 'the PII index call read the credential support of the authority');
+  // The independent PII authority preserves transport bindings and the isolated job.
   for (const flag of ['--pii-eval-pins=benchmarks/pii-eval-public-synthetic-pins.json', '--pii-eval-pins=benchmarks/pii-eval-population-pins.json', '--pii-eval-artifact="$RUNNER_TEMP/pii-eval-public/public-synthetic-artifact.json"', '--product-commit="$PRODUCT_COMMIT"', '--population-mode=not-measured'])
     assert.ok(consumers.includes(flag), flag);
   assert.equal(workflow.jobs['pii-public-synthetic'].uses, './.github/workflows/pii-public-synthetic.yml');
@@ -287,4 +287,51 @@ test('the new authority publishes no candidate-evidence file and the candidate s
   assert.ok(!/public\/results/.test(step.run), 'the candidate diff is internal and never placed under public/');
   assert.ok(!/--output-dir/.test(step.run));
   assert.deepEqual(workflow.jobs.publish.permissions, { contents: 'read', 'id-token': 'write' });
+});
+
+// Execute the real workflow shell with command recording instead of scanners.
+test('publication executes only the selected independent credential and PII producers', () => {
+  const dir = scratch();
+  const bin = path.join(dir, 'bin');
+  mkdirSync(bin);
+  const calls = path.join(dir, 'calls');
+  writeFileSync(path.join(bin, 'npm'), '#!/bin/sh\nprintf "%s\n" "$*" >> "$CALLS"\n');
+  chmodSync(path.join(bin, 'npm'), 0o755);
+  mkdirSync(path.join(dir, 'results-output/pii'), { recursive: true });
+  const producer = stepNamed('Measure the corpus').run;
+  const observer = stepNamed('Observe PII populations');
+  assert.match(stepNamed('Measure the corpus').if, /steps\.authority\.outputs\.authority == 'legacy'/);
+  assert.match(observer.if, /steps\.pii-authority\.outputs\.authority == 'legacy'/);
+  const consumer = stepNamed('Publish the provider roadmap').run;
+  for (const credential of ['new', 'legacy']) for (const pii of ['new', 'legacy']) {
+    writeFileSync(calls, '');
+    // A stale bundle must not turn on the old path under new authority.
+    writeFileSync(path.join(dir, 'results-output/pii/population-release-v1.json'), '{}');
+    const env = { ...process.env, PATH: `${bin}:${process.env.PATH}`, CALLS: calls, TARGET: 'staging', AUTHORITY: credential, PII_AUTHORITY: pii,
+      PRODUCT_COMMIT: 'a'.repeat(40), CORE_PACKAGE: 'core.tgz', NODE_PACKAGE: 'node.tgz', WASM_PACKAGE: 'wasm.tgz', RUNNER_TEMP: dir };
+    const execute = shell => {
+      const result = spawnSync('bash', ['-c', shell], { cwd: dir, env, encoding: 'utf8' });
+      assert.equal(result.status, 0, result.stderr);
+    };
+    if (credential === 'legacy') execute(producer);
+    if (pii === 'legacy') execute(observer.run);
+    execute(consumer);
+    const commands = readFileSync(calls, 'utf8');
+    assert.equal(/run bench /.test(commands), credential === 'legacy');
+    assert.equal(/run pii:observe:populations /.test(commands), pii === 'legacy');
+    assert.equal(commands.includes('--bounded-population-oracle'), pii === 'legacy');
+    assert.equal(commands.includes('--population-mode=not-measured'), pii === 'new');
+    assert.ok(commands.includes('--pii-eval-artifact=benchmarks/pii-eval-official-run/qualification-plan.public-synthetic-artifact.json'));
+    assert.ok(commands.includes(`--credential-support=public/results/support-matrix-${credential === 'new' ? 'view-v1' : 'v1'}.json`));
+  }
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('publication keeps discovery live and passes the validated credential authority to assembly', () => {
+  const discovery = stepNamed('Produce the evaluation reports').run;
+  assert.match(discovery, /npm run eval:discover -- --scanner=/);
+  const assembly = stepNamed('Assemble the site root').run;
+  assert.match(assembly, /assemble-site\.mjs --credential-authority "\$AUTHORITY"/);
+  assert.match(assembly, /if \[ "\$AUTHORITY" = legacy \]; then test -s dist\/results\/run\.json/);
+  assert.ok(indexOfStep('Assemble the site root') < steps.findIndex(s => s.uses?.startsWith('aws-actions/configure-aws-credentials@')));
 });

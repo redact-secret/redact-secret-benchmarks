@@ -29,14 +29,40 @@ async function* walk(dir) {
 }
 
 /** Builds `out` from the export and the results. Returns `{ files }`; throws with every problem named. */
-export async function assembleSite({ webOut, results, out, requireBundle = false }) {
+export async function assembleSite({ webOut, results, out, requireBundle = false, credentialAuthority = 'legacy', publicationContext }) {
   const { bundleProblems, internalPathProblem } = await import('./lib/evaluation-bundle-deployment.mjs');
   const problems = [];
   for (const required of ['index.html', 'robots.txt', 'favicon.svg', '404.html', 'evaluation/qualification/index.html', 'report/index.html']) {
     if (!(await exists(path.join(webOut, required)))) problems.push(`the export has no ${required}`);
   }
   if (await exists(path.join(webOut, 'results'))) problems.push('the export has its own results/: the measured files must be the only owner of /results/');
-  if (!(await exists(path.join(results, 'run.json')))) problems.push(`${results} has no run.json: the measured files were not written`);
+  if (!['new', 'legacy'].includes(credentialAuthority)) problems.push('credential authority must be new or legacy');
+  if (credentialAuthority === 'legacy' && !(await exists(path.join(results, 'run.json')))) problems.push(`${results} has no run.json: the measured files were not written`);
+  if (credentialAuthority === 'new') {
+    try {
+      const [{ validateQualificationView }, { buildMatrixArtifact }, { loadViewSupportContext, viewMatrixProblems }] = await Promise.all([
+        import('../benchmarks/qualification/view-schema.ts'), import('../benchmarks/qualification/matrix-artifact.ts'), import('../benchmarks/qualification/matrix-publication.ts'),
+      ]);
+      const view = JSON.parse(await readFile(path.join(results, 'qualification-v1.json'), 'utf8'));
+      const shape = validateQualificationView(view);
+      if (shape.length) problems.push(`qualification-v1.json is invalid: ${shape.join('; ')}`);
+      else {
+        const context = publicationContext ?? await loadViewSupportContext();
+        const pins = context.registry;
+        if (view.publication !== 'public') problems.push('qualification view is not public');
+        problems.push(...viewMatrixProblems(buildMatrixArtifact(view, 'published'), context));
+        for (const population of view.populations) {
+          if (population.artifact.engineRunClass !== 'official' || population.artifact.publication !== 'public') problems.push(`${population.population} is not an official public artifact`);
+          const pin = pins.populations.find(row => row.id === population.population);
+          const evidence = population.artifact.evidence;
+          if (!pin || evidence.revision !== pin.evidence.revision || evidence.corpus_digest !== pin.evidence.corpusDigest ||
+              evidence.release?.tag !== pin.evidence.release.tag || evidence.release?.manifest_digest !== pin.evidence.release.manifestDigest)
+            problems.push(`${population.population} qualification evidence differs from the publication pin`);
+        }
+        for (const pin of pins.populations) if (!view.populations.some(row => row.population === pin.id)) problems.push(`${pin.id} is absent from the qualification view`);
+      }
+    } catch (error) { problems.push(`qualification-v1.json cannot be used: ${error.message}`); }
+  }
   const hasBundle = (await exists(path.join(results, 'evaluation-bundle-v1.json'))) || (await exists(path.join(results, 'evaluation-bundles')));
   if (requireBundle && !hasBundle) problems.push(`${results} has no evaluation-bundle-v1.json: the evaluation bundle was not published (npm run eval:publish)`);
   if (problems.length) throw new Error(problems.join('\n'));
@@ -80,7 +106,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
   const flag = (name, fallback) => { const i = process.argv.indexOf(`--${name}`); return path.resolve(root, i >= 0 ? process.argv[i + 1] : fallback); };
   try {
-    const { files } = await assembleSite({ webOut: flag('web-out', 'web/out'), results: flag('results', 'public/results'), out: flag('out', 'dist'), requireBundle: !process.argv.includes('--no-bundle') });
+    const authorityAt = process.argv.indexOf('--credential-authority');
+    if (authorityAt >= 0 && !['new', 'legacy'].includes(process.argv[authorityAt + 1])) throw new Error('--credential-authority requires new or legacy');
+    const { files } = await assembleSite({ webOut: flag('web-out', 'web/out'), results: flag('results', 'public/results'), out: flag('out', 'dist'), requireBundle: !process.argv.includes('--no-bundle'), credentialAuthority: authorityAt >= 0 ? process.argv[authorityAt + 1] : 'legacy' });
     console.log(`site root assembled: ${files} files (export at /, measured files at /results/, robots.txt and favicon.svg present, no /next/ prefix)`);
   } catch (error) {
     console.error(`::error::${String(error.message).replaceAll('\n', '%0A')}`);

@@ -96,7 +96,7 @@ test('an empty or unlistable change runs everything (the plan fails closed)', ()
 });
 
 test('prose and root unit tests alone select no legacy measurement and no site build', () => {
-  const plan = pr(['docs/specs/anything.md', 'docs/decisions/x.md', 'README.md', 'tests/some.test.mjs', '.github/workflows/publish-site.yml']);
+  const plan = pr(['docs/specs/anything.md', 'docs/decisions/x.md', 'README.md', 'tests/some.test.mjs', '.github/workflows/scorecard.yml']);
   assert.deepEqual([plan.legacy, plan.web, plan.browser, plan.webScope], [false, false, false, 'none']);
 });
 
@@ -171,7 +171,7 @@ test('shared web inputs are the full browser suite', () => {
 });
 
 test('shared design tokens invalidate legacy and current exports and both cached data input sets', () => {
-  for (const file of ['shared/design-tokens/tokens.css', 'shared/design-tokens/tokens.json']) {
+  for (const file of ['shared/design-tokens/tokens.css', 'shared/design-tokens/tokens.json', 'benchmarks/consumer/credential-metrics.ts', 'benchmarks/shared/statistical-primitives.ts']) {
     const plan = pr([file]);
     assert.equal(plan.legacy, true);
     assert.equal(plan.web, true);
@@ -361,4 +361,24 @@ test('the actual validate shell gate refuses failed or missing reuse dependencie
   assert.equal(run({ WEB: 'false', BROWSER: 'false', LEGACY_RESULTS: 'skipped', VIEW: 'skipped', WEB_BUILD: 'skipped', WEB_UNIT: 'skipped', WEB_BROWSER: 'skipped' }).status, 0, 'legacy-only generation still completes');
   assert.equal(run({ LEGACY: 'false', ORACLE: 'skipped' }).status, 0, 'an explicitly unselected oracle may skip');
   assert.equal(run({ LEGACY: '', ORACLE: 'skipped' }).status, 1, 'a missing plan does not authorise a skip');
+});
+
+test('publication workflow changes run the complete retained validation suite', () => {
+  const plan = pr(['.github/workflows/publish-site.yml']);
+  assert.deepEqual([plan.legacy, plan.web, plan.browser, plan.webScope], [true, true, true, 'full']);
+});
+
+test('validate final assembly receives the existing validated credential seam after the rollback build', async () => {
+  const workflow = parse(await readFile(new URL('../.github/workflows/validate.yml', import.meta.url), 'utf8'));
+  const steps = workflow.jobs['web-build'].steps;
+  const seam = steps.find(step => step.id === 'assembly-authority');
+  assert.ok(seam);
+  assert.equal(seam.run, 'node --import tsx scripts/credential-publication.ts authority');
+  const rollback = steps.findIndex(step => step.run?.includes('with-authority.mjs legacy'));
+  const committed = steps.findIndex(step => step.name?.startsWith('The committed authority builds'));
+  const assembled = steps.find(step => step.name?.startsWith('The assembled site root'));
+  assert.ok(rollback < steps.indexOf(seam) && steps.indexOf(seam) < committed && committed < steps.indexOf(assembled));
+  assert.equal(assembled.env.AUTHORITY, '${{ steps.assembly-authority.outputs.authority }}');
+  assert.match(assembled.run, /assemble-site\.mjs --credential-authority "\$AUTHORITY"/);
+  assert.doesNotMatch(assembled.run, /--credential-authority (?:new|legacy)/);
 });

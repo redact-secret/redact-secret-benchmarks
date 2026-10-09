@@ -10,7 +10,7 @@ Project-maintained, reproducible synthetic benchmarks comparing
 established secret-scanning tools on identical fixture sets.
 
 Measurement protocol **v4** ([spec](docs/specs/measurement-v4.md),
-[decision record](docs/decisions/2026-09-17-adopt-measurement-protocol-v4.md)):
+[decision record](https://github.com/redact-secret/redact-secret-benchmarks/blob/hygiene-records-before-removal-872-20261008/docs/decisions/2026-09-17-adopt-measurement-protocol-v4.md)):
 every fixture declares a **kind** (must-redact, must-not-flag, policy) and an
 evidence **tier** (T1 provider-documented, T2 tool-corroborated, T3 project
 policy, T0 pending); every secret span may carry an authored **envelope**; each
@@ -18,7 +18,7 @@ span is scored on a five-state lattice (EXACT · COVERED · OVERBROAD · PARTIAL
 MISS). Headline numbers per (kind × tier): **leaked span rate**, **false alarm
 rate**, **collateral ratio** and **twin discrimination**. There is no mixed
 overall score and no precision/recall/F1. See the
-[corpus audit](docs/reports/2026-09-17/corpus-audit.md) for evidence tiers and the
+[corpus audit](https://github.com/redact-secret/redact-secret-benchmarks/blob/hygiene-records-before-removal-872-20261008/docs/reports/2026-09-17/corpus-audit.md) for evidence tiers and the
 generated [release comparison](docs/generated/release-comparison.md) for baselines.
 Full scoring semantics, the fixture schema, and how the app is built are in
 [ARCHITECTURE.md](ARCHITECTURE.md) and [CONVENTIONS.md](CONVENTIONS.md); how to
@@ -235,7 +235,7 @@ results (beta.3 through beta.8, the SendGrid investigation, and the
 closed-issue coverage matrix). Durable measurement evidence tied to one
 `redact-secret` issue lives in [`evidence/<issue>/`](evidence/README.md), not
 in that repository's own frozen-evidence archive — see
-[the evidence decision record](docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md).
+[the evidence decision record](https://github.com/redact-secret/redact-secret-benchmarks/blob/hygiene-records-before-removal-872-20261008/docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md).
 
 `npm run test:coverage` measures code coverage of the scoring/validation and
 scanner-adapter modules only, and requires all five tools (Gitleaks and
@@ -285,3 +285,5 @@ Production rejects `product_sha`.
 MIT — see [LICENSE](./LICENSE). This license covers this repository's own
 code and fixtures only; it does not extend to, and this repo does not
 redistribute, any third-party scanner's source.
+
+Historical decisions and reports are outside active HEAD. Restore exact original bytes using the independently retrieved archives in [`docs/retention/archive.json`](docs/retention/archive.json); current owner checks use scoped structured provenance, never archived Markdown text. New history belongs in an issue, current contracts in `docs/specs/`, and reviewed owner records in `benchmarks/governance/authorisations/`.

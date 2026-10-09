@@ -35,3 +35,14 @@ test('PII comparison exposes readable results with raw evidence in a dialog', as
   await page.getByRole('dialog').getByRole('button', { name: 'Close', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
 });
+
+test('performance reading guidance opens from an info icon and restores focus', async ({ page }) => {
+  await page.goto(`${BASE}/comparison/performance/`);
+  const trigger = page.getByRole('button', { name: 'How to read performance results' }).filter({ visible: true });
+  await expect(page.getByRole('note').filter({ hasText: 'Read this first', visible: true })).toHaveCount(0);
+  await trigger.click();
+  await expect(page.getByRole('dialog')).toContainText('Times are absolute and recorded');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});

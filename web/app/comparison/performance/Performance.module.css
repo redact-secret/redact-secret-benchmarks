@@ -1,4 +1,21 @@
 @layer components {
+  .infoButton {
+    display: grid;
+    place-items: center;
+    width: var(--space-12);
+    height: var(--space-12);
+    padding: var(--space-3);
+    color: var(--ink-muted);
+    background: var(--surface);
+    border: var(--hairline) solid var(--ink-muted);
+    cursor: pointer;
+  }
+
+  .infoButton svg {
+    width: 100%;
+    height: 100%;
+  }
+
   /*
    * Every pair and setting is pre-rendered as its own panel (two libraries, three settings). Which one
    * shows is decided by `data-peer` and `data-setting` on the root element (PerformanceSync and the inline

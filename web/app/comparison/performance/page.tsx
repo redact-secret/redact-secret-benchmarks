@@ -4,6 +4,7 @@ import { PerformancePair } from '../../../components/comparison';
 import { DEFAULT_PEER, DEFAULT_SETTING } from '../../../resolvers/performance';
 import { resolvePerformancePairPage } from '../../../resolvers/pages';
 import { PerformanceSync } from './PerformanceSync';
+import { PerformanceDropdowns, PerformanceReadingDialog } from './PerformanceControls';
 import { PERFORMANCE_SCRIPT } from './performance-script';
 import styles from './Performance.module.css';
 
@@ -22,7 +23,7 @@ export default async function Page() {
       <Suspense fallback={null}><PerformanceSync /></Suspense>
       {panels.map(panel => (
         <div key={panel.key} className={styles.panel} data-peer={panel.peer} data-setting={panel.setting} data-default={panel.peer === DEFAULT_PEER && panel.setting === DEFAULT_SETTING ? '' : undefined}>
-          <PerformancePair {...panel.props} />
+          <PerformancePair {...panel.props} pickerContent={<PerformanceDropdowns picker={panel.props.picker} />} firstContent={<PerformanceReadingDialog note={panel.props.first} />} />
         </div>
       ))}
     </>

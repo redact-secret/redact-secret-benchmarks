@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { cx } from '../../lib/cx';
 import { EmptyState, Note } from '../feedback';
 import { Stack } from '../layout';
@@ -27,6 +28,8 @@ export interface PerformancePairProps {
   /** A link to the page that sets all three libraries side by side. */
   related?: { href: string; label: string };
   picker: PerformancePickerProps;
+  pickerContent?: ReactNode;
+  firstContent?: ReactNode;
   sides: [PairSideInfo, PairSideInfo];
   /** "Read this first": how the times may be read. */
   first: { title: string; items: string[] };
@@ -44,7 +47,7 @@ export interface PerformancePairProps {
  * shared time axis. Absolute times only: no ratio, no ordering by time, the two sides drawn alike. A pair with no
  * shared measurement says so instead of drawing an empty chart.
  */
-export function PerformancePair({ breadcrumb, eyebrow, title, lede, related, picker, sides, first, measured, empty, own, gaps, method, className }: PerformancePairProps) {
+export function PerformancePair({ breadcrumb, eyebrow, title, lede, related, picker, pickerContent, firstContent, sides, first, measured, empty, own, gaps, method, className }: PerformancePairProps) {
   const names: [string, string] = [sides[0].name, sides[1].name];
   return (
     <Stack gap="xl" className={cx(styles.page, className)}>
@@ -56,11 +59,11 @@ export function PerformancePair({ breadcrumb, eyebrow, title, lede, related, pic
         actions={related && <Link className={styles.related} href={related.href}>{related.label}</Link>}
       />
       <Stack gap="lg">
-        <PerformancePicker {...picker} />
+        {pickerContent ?? <PerformancePicker {...picker} />}
         <PerformancePairHead sides={sides} />
-        <Note title={first.title}>
+        {firstContent ?? <Note title={first.title}>
           <ul>{first.items.map(item => <li key={item}>{item}</li>)}</ul>
-        </Note>
+        </Note>}
       </Stack>
       {measured ? (
         <>

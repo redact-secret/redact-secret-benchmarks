@@ -353,6 +353,10 @@ The section navigation has at most three quick links. The footer directory holds
 Comparison and Development links. `/evaluation/method/` separates credential method links from PII method descriptions;
 Internationalization and Evidence resources are explicit planned pages until their reports exist.
 
+Performance comparison uses native dropdowns for the peer and redact-secret setting. Changes preserve both URL
+parameters and browser history. Reading guidance opens from an accessible information icon in a dialog; its exact
+caveats remain in the static export. Link controls remain available without script.
+
 Credential source stamps on the report hub, provider/family/detector lists and family/detector detail pages,
 credential evaluation and accuracy comparison open in a dialog. English review-state wording, fixture counts and
 optional-profile provenance remain available there. The scanner roster omits optional-profile explanations and opens

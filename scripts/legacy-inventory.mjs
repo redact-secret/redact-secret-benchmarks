@@ -25,6 +25,7 @@ export const COMPLETE_FOR = [
   'benchmarks/evaluation/domains/credential/',
   'benchmarks/evaluation/model/', 'benchmarks/scoring/', 'benchmarks/evaluation/evidence.ts', 'benchmarks/accounting/index.ts', 'benchmarks/qualification/legacy-review.ts',
   'benchmarks/support/legacy-review-queue.json',
+  'benchmarks/consumer/', 'benchmarks/shared/statistical-primitives.ts',
 ]
 
 const cells = (line) => line.split('|').slice(1, -1).map((c) => c.trim())

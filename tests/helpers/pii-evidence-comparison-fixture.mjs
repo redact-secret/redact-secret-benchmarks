@@ -6,8 +6,8 @@ const read = path => JSON.parse(readFileSync(new URL('../../' + path, import.met
 const h = character => character.repeat(64);
 // Synthetic metrics use the existing three-case wire fixture. They are never ledger evidence.
 export function syntheticEvidenceComparison(options = {}) {
-  const populationIndex = options.populationIndex ?? read('benchmarks/pii-evidence-comparison/population-index.json');
-  const runtime = { ...options, populationIndex, ...(options.productTuple && !options.executionPaths ? { executionPaths: { planPath: 'benchmarks/pii-evidence-comparison/synthetic-products/plan.json', costDecisionPath: 'benchmarks/pii-evidence-comparison/synthetic-products/cost-decision.json' } } : {}) };
+  const populationIndex = options.populationIndex ?? read('benchmarks/pii-evidence-comparison/historical-v1/population-index.json');
+  const runtime = { preflight: read('benchmarks/inputs/pii-evidence-initial-active-v1/preflight.json'), ...options, populationIndex, ...(options.productTuple && !options.executionPaths ? { executionPaths: { planPath: 'benchmarks/pii-evidence-comparison/synthetic-products/plan.json', costDecisionPath: 'benchmarks/pii-evidence-comparison/synthetic-products/cost-decision.json' } } : {}) };
   const costDecision = { schema: 'pii-evidence-comparison-cost-decision/1', state: 'prepared', decidedBy: null, decidedAt: null,
     scope: executionScope(runtime) };
   const plan = evidenceComparisonPlan({ costDecision, ...runtime });

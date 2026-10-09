@@ -32,7 +32,7 @@ export interface CoverageDelta {
 }
 export interface PiiCoveragePublication {
   schema: string; sources: { path: string; sha256: string }[]; supportClaims: false; qualified: false;
-  coverage: { inventories: Record<'active' | 'proposed', CoverageInventory>; matrices: Record<'active' | 'proposed', Record<'baseline' | 'candidate', CoverageJoined>> };
+  coverage: { proposalState?: 'accepted' | 'proposed'; inventories: Record<'active' | 'proposed', CoverageInventory>; matrices: Record<'active' | 'proposed', Record<'baseline' | 'candidate', CoverageJoined>> };
   deltas: Record<'baseline' | 'candidate', CoverageDelta>;
 }
 export const PII_COVERAGE_VIEW: string;

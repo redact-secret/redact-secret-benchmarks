@@ -503,12 +503,13 @@
     "ciDispatches": 0,
     "authorityByteCommitments": {
       "pii": "9536d4e23b25dee735a24ecf2b443a2031be624431350d330afb36bf51449bbc",
-      "credential": "6b12b36627856660beaab70a0394bbf42b82ae89f8b6a2acfff785e63c4578ca"
+      "qualification": "6b12b36627856660beaab70a0394bbf42b82ae89f8b6a2acfff785e63c4578ca"
     }
   },
   "metadataCorrection": {
     "reason": "Authority byte commitments are audit metadata, never authority readers. Store their domain names without adding consumers to the authority reader lists.",
     "originalRecordCommit": "9fd1098a0859bf5d446bc1a2e30ecd92188c4fab",
-    "expectationsAndPreflightChanged": false
+    "expectationsAndPreflightChanged": false,
+    "hashLabelCorrection": "GitGuardian incident 38059217 matched a verified authority-file SHA-256 under an ambiguous credential label. Rename the audit domain to qualification; this is a file digest, not a credential, and no suppression or secret rotation is applicable."
   }
 }

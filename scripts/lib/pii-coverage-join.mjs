@@ -48,7 +48,7 @@ export function joinPiiCoverageInventory({ inventory, comparison = { state: 'abs
       capability: { state: declaration?.state ?? 'unknown', source: declaration ? capabilityDeclarations.source : null,
         productCommitment: declaration ? identity.productCommitment : null },
       mapping: { state: kind.mapping.state, losses: kind.mapping.losses, requiredAxes: kind.mapping.requiredAxes, representableAxes: kind.mapping.representableAxes },
-      // Schema 1.4 carries case/assertion outcomes, not validated per-kind denominators.
+      // Imported artifacts have no validated per-kind denominator/loss projection.
       observation: { status: usable ? 'withheld' : status, identity: null, axes: [], source: usable ? `artifact:${product.artifactDigest}` : null },
       applicability: { state: 'unknown', source: null }, reasons: [] }, identity);
   });
@@ -90,5 +90,7 @@ export async function loadPiiCoverage(root, { comparison = { state: 'absent' }, 
       capabilityDeclarations: capabilityDeclarations[role]?.[side] ?? declarations });
     }
   }
-  return { schema: 'pii-coverage-view/1', inventories, matrices, supportClaims: false, qualified: false };
+  const sameSnapshot = same(inventories.active.source, inventories.proposed.source);
+  if (sameSnapshot && !same(inventories.active.consumer, inventories.proposed.consumer)) fail('accepted-proposal-consumer-mismatch');
+  return { schema: 'pii-coverage-view/1', proposalState: sameSnapshot ? 'accepted' : 'proposed', inventories, matrices, supportClaims: false, qualified: false };
 }

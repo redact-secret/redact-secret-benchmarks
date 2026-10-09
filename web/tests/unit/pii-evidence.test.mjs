@@ -3,7 +3,8 @@ import { afterEach, describe, expect, test, vi } from 'vitest';
 import { syntheticEvidenceComparison } from '../../../tests/helpers/pii-evidence-comparison-fixture.mjs';
 import { loadPiiEvidenceComparison } from '../../../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
 import { resolvePiiOutcomeSummary, resolvePiiEvidenceView, evidenceMetricText, evidenceOutcomeText } from '../../resolvers/pii-evidence';
-import { overlay } from './overlay';
+import { piiCoveragePublication } from '../../../scripts/pii-coverage-publication.mjs';
+import { overlay, REAL_ROOT } from './overlay';
 
 const directory = 'benchmarks/pii-evidence-comparison';
 const unavailable = state => ({ state, reason: 'synthetic-unavailable', publicOnly: true, supportClaims: false, qualified: false });
@@ -13,7 +14,7 @@ const recorded = () => {
   return result;
 };
 const table = (view, id) => view.coverage.tables.find(row => row.id === id);
-afterEach(() => { vi.unstubAllEnvs(); vi.resetModules(); });
+afterEach(() => { vi.doUnmock('../../services/pii-coverage'); vi.unstubAllEnvs(); vi.resetModules(); });
 
 function files(input) {
   return {
@@ -122,6 +123,8 @@ describe('independent public service identity checks', () => {
 
   test('page-level resolver assembles this service without accessing the benchmark-owned PII loader', async () => {
     await service({ [`${directory}/receipt.json`]: null, [`${directory}/record.json`]: null });
+    // The page composes two independent services, use a real safe root for the sealed coverage service.
+    vi.doMock('../../services/pii-coverage', () => ({ loadPiiCoveragePage: () => piiCoveragePublication(REAL_ROOT) }));
     const { resolvePiiEvidencePage } = await import('../../resolvers/pii-evidence-pages');
     expect((await resolvePiiEvidencePage()).head.currentHref).toBe('/evaluation/pii/evidence/');
   });

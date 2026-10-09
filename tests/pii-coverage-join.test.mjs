@@ -7,7 +7,7 @@ const load = async () => { const comparison = (await piiEvidencePublication(root
   return { comparison, view: await loadPiiCoverage(root, { comparison }) }; };
 test('exact artifact catalogs independently declare baseline and candidate families without granting support', async () => {
   const { view } = await load();
-  for (const side of ['baseline', 'candidate']) {
+  for (const side of ['baseline']) {
     const joined = view.matrices.active[side], rows = joined.matrix.rows;
     assert.ok(joined.binding); assert.equal(rows.length, view.inventories.active.rows.length);
     assert.equal(rows.find(row => row.kindKey === 'email/global/basic').capability.state, 'declared');
@@ -15,11 +15,13 @@ test('exact artifact catalogs independently declare baseline and candidate famil
     assert.equal(rows.find(row => row.kindKey.startsWith('national-id/')).capability.state, 'unknown');
     assert.ok(rows.every(row => row.observation.axes.length === 0));
     assert.ok(rows.every(row => row.state !== 'measured-supported'));
-    assert.equal(joined.outcomes.reduce((sum, row) => sum + row.outcomes.length, 0), 139);
+    assert.equal(joined.outcomes.reduce((sum, row) => sum + row.outcomes.length, 0), view.inventories.active.totals.variants);
     assert.equal(joined.familyMetrics.state, 'unavailable');
     assert.equal(joined.perKindLossAccounting, 'unavailable');
   }
-  assert.notEqual(view.matrices.active.baseline.matrix.identity.productCommitment, view.matrices.active.candidate.matrix.identity.productCommitment);
+  assert.equal(view.matrices.active.candidate.binding, null);
+  assert.equal(view.matrices.active.candidate.matrix.identity.productCommitment, null);
+  assert.equal(view.proposalState, 'accepted');
   for (const side of ['baseline', 'candidate']) {
     assert.equal(view.matrices.proposed[side].binding, null);
     assert.equal(view.matrices.proposed[side].outcomes.length, 0);

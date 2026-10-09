@@ -4,7 +4,7 @@
  * a state the committed tree is not in: a run that was never published, a summary that does not
  * validate, a snapshot that is absent. The content written into it is synthetic.
  */
-import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterAll } from 'vitest';
@@ -35,7 +35,7 @@ export const piiAuthorityFile = (authority: 'legacy' | 'new', authorised = true)
  * itself, the root is pinned to the legacy pipeline: the tests that use an overlay exercise the legacy data path, and they must do so
  * whichever value is committed, so the committed value is what flips (and the legacy path stays under test after the switch).
  */
-export function overlay(overrides: Record<string, string | null>): string {
+export function overlay(overrides: Record<string, string | null>, options: { materializeEvidence?: boolean } = {}): string {
   if (!(AUTHORITY_FILE in overrides)) overrides = { ...overrides, [AUTHORITY_FILE]: authorityFile('legacy') };
   // Likewise the PII authority: an overlay is the legacy PII evaluation unless the test chooses another value.
   if (!(PII_AUTHORITY_FILE in overrides)) overrides = { ...overrides, [PII_AUTHORITY_FILE]: piiAuthorityFile('legacy') };
@@ -47,6 +47,12 @@ export function overlay(overrides: Record<string, string | null>): string {
     for (const entry of readdirSync(path.join(REAL_ROOT, rel))) {
       const child = rel ? `${rel}/${entry}` : entry;
       if (keys.includes(child)) continue;
+      // Sealed adoption validation refuses symlinks, even in a test-only root.
+      if (options.materializeEvidence && ['benchmarks/pii-evidence', 'benchmarks/pii-evidence-comparison'].includes(child)) {
+        cpSync(path.join(REAL_ROOT, child), path.join(root, child), { recursive: true,
+          filter: source => !keys.includes(path.relative(REAL_ROOT, source)) });
+        continue;
+      }
       if (keys.some(k => k.startsWith(`${child}/`))) mirror(child);
       else symlinkSync(path.join(REAL_ROOT, child), path.join(root, child));
     }

@@ -6,7 +6,7 @@ import { BASE, expect, onlyFontHosts, test } from './fixtures';
 
 // The site assembly copies results separately; Next reads this same prebuild sidecar.
 const publication = JSON.parse(readFileSync(path.resolve(__dirname, '../../../public/results/pii-coverage-view-v1.json'), 'utf8')) as PiiCoveragePublication;
-const roles = ['active', 'proposed'] as const;
+const roles = (['active', 'proposed'] as const).filter(role => role === 'active' || publication.coverage.proposalState !== 'accepted');
 const sides = ['baseline', 'candidate'] as const;
 const format = (count: number) => count.toLocaleString('en-US');
 

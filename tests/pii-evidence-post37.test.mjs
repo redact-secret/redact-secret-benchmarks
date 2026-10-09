@@ -36,7 +36,7 @@ test('successor proposal recomputes separately and retains the original v1 prede
   assert.deepEqual(validatePreflightReport(preflight, policy, {
     snapshotPin: preflight.evidence, consumerPin: preflight.consumer,
   }), preflight);
-  const previousPreflight = read('benchmarks/pii-evidence/preflight.json');
+  const previousPreflight = read('benchmarks/inputs/pii-evidence-initial-active-v1/preflight.json');
   const candidate = read(`${base}/candidate.json`);
   assert.deepEqual(preparePiiEvidenceAdoption({ preflight, policy, previousPreflight, scanner: read(`${base}/scanner.json`) }), candidate);
   assert.deepEqual(candidate.historical.identity.evidence, previousPreflight.evidence);

@@ -56,7 +56,7 @@ test('prepared plan is not an official execution allowance', async () => {
   const { plan } = syntheticEvidenceComparison(); validateEvidenceComparisonPlan(plan);
   await assert.rejects(runEvidenceComparison({ plan, requireCanonical: true, out: '/tmp/evidence-refusal-never-created' }), /fresh-cost/);
   const cost = { schema: 'pii-evidence-comparison-cost-decision/1', state: 'prepared', decidedBy: null, decidedAt: null, scope: plan.execution };
-  validateEvidenceCostDecision(cost); cost.state = 'approved'; assert.throws(() => validateEvidenceCostDecision(cost));
+  validateEvidenceCostDecision(cost, {preflight: plan.preflight, populationIndexDigest: plan.populationIndexDigest}); cost.state = 'approved'; assert.throws(() => validateEvidenceCostDecision(cost, {preflight: plan.preflight, populationIndexDigest: plan.populationIndexDigest}));
 });
 test('plan digest detects any changed evidence or execution budget', () => {
   const { plan } = syntheticEvidenceComparison(), digest = evidenceDigest(plan); plan.execution.runs++;
@@ -160,7 +160,7 @@ test('reviewed future product tuple collects with a fresh full-tuple cost scope'
   assert.equal(collectEvidenceComparison(e).summary.state, 'recorded');
   assert.equal(collectEvidenceComparison(e).summary.candidate.sourceCommit, tuple.candidate.sourceCommit);
   const old = syntheticEvidenceOfficialUpload();
-  assert.throws(() => validateEvidenceCostDecision(old.costDecision, { productTuple: tuple, executionPaths: e.plan.executionPaths }), /cost-decision-invalid/);
+  assert.throws(() => validateEvidenceCostDecision(old.costDecision, { preflight: e.plan.preflight, populationIndex: e.populationIndex, productTuple: tuple, executionPaths: e.plan.executionPaths }), /cost-decision-invalid/);
   const stale = structuredClone(e); stale.costDecision.scope.productTupleDigest = old.plan.execution.preflightDigest;
   assert.throws(() => collectEvidenceComparison(stale));
   const mutated = structuredClone(e); mutated.plan.productTuple.candidate.sourceCommit = '7'.repeat(40);
@@ -180,9 +180,9 @@ for (const [name, mutate] of [
   ['invalid candidate hash', t => t.candidate.coreTarballSha256 = 'bad'],
 ]) test('reviewed future product tuple refuses ' + name, () => { const t = reviewedFutureProducts(); mutate(t); assert.throws(() => validateEvidenceProductTuple(t)); });
 test('without the optional tuple, canonical initial plan and cost remain exact', () => {
-  const plan = JSON.parse(readFileSync(new URL('../benchmarks/pii-evidence-comparison/plan.json', import.meta.url)));
-  const cost = JSON.parse(readFileSync(new URL('../benchmarks/pii-evidence-comparison/cost-decision.json', import.meta.url)));
-  assert.deepEqual(evidenceComparisonPlan({ costDecision: cost, preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest }), plan);
+  const plan = JSON.parse(readFileSync(new URL('../benchmarks/pii-evidence-comparison/historical-v1/plan.json', import.meta.url)));
+  const cost = JSON.parse(readFileSync(new URL('../benchmarks/pii-evidence-comparison/historical-v1/cost-decision.json', import.meta.url)));
+  assert.deepEqual(evidenceComparisonPlan({ costDecision: cost, preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest, productTuple: plan.productTuple, executionPaths: plan.executionPaths }), plan);
   assert.ok(!Object.hasOwn(plan, 'productTuple')); assert.ok(!Object.hasOwn(cost.scope, 'productTupleDigest'));
 });
 
@@ -198,7 +198,7 @@ test('CLI prepares a separate reviewed product plan and emits only origin-bound 
     writeFileSync(tupleFile, JSON.stringify(productTuple)); writeFileSync(pathsFile, JSON.stringify(executionPaths));
     writeFileSync(join(dir, 'cost-decision.json'), JSON.stringify(e.costDecision));
     const run = args => execFileSync(process.execPath, [fileURLToPath(new URL('../scripts/pii-evidence-comparison-plan.mjs', import.meta.url)), ...args], { encoding: 'utf8' });
-    run([`--product-tuple=${tupleFile}`, `--execution-paths=${pathsFile}`, `--cost-decision=${executionPaths.costDecisionPath}`, '--write', `--out=${join(dir, 'plan.json')}`]);
+    run(['--preflight=benchmarks/inputs/pii-evidence-initial-active-v1/preflight.json', '--population-index=benchmarks/pii-evidence-comparison/historical-v1/population-index.json', `--product-tuple=${tupleFile}`, `--execution-paths=${pathsFile}`, `--cost-decision=${executionPaths.costDecisionPath}`, '--write', `--out=${join(dir, 'plan.json')}`]);
     assert.deepEqual(JSON.parse(readFileSync(join(dir, 'plan.json'))), e.plan);
     verifyCurrentDispatch({ environment: { EVIDENCE_PLAN: executionPaths.planPath, GITHUB_REPOSITORY: e.run.repository.full_name, GITHUB_RUN_ID: String(e.run.id), GITHUB_RUN_ATTEMPT: '1', GITHUB_REF: 'refs/heads/' + e.run.head_branch },
       readDecision: () => JSON.stringify(e.costDecision), readApi: endpoint => endpoint.includes('/runs?')

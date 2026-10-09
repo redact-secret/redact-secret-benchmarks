@@ -49,7 +49,7 @@ describe('full PII coverage pure resolver, synthetic inputs', () => {
       expect(panel.rows.every(record => record.id.startsWith(`${panel.id}-`))).toBe(true);
     }
     expect(new Set(view.panels.flatMap(panel => panel.rows.map(record => record.id))).size).toBe(COVERAGE_STATES.length * 4);
-    expect(view.panels[2].title).toContain('inactive, unmeasured');
+    expect(view.panels[2].title).toContain('inactive');
     expect(view.panels[2].note).toContain('No active observation is reused');
   });
   test('aggregate links name actual contributing kinds and preserve the full denominator', () => {

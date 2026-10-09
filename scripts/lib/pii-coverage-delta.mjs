@@ -112,7 +112,7 @@ export function buildPiiCoverageDelta({ previous, next, mode, renames = [], prev
 }
 
 /** Publish both independently bound scanner sides without copying old observations. */
-export function buildPiiCoverageDeltas(coverage) {
+export function buildPiiCoverageDeltas(coverage, { historicalCoverage = null, acceptance = null } = {}) {
   if (coverage?.schema !== 'pii-coverage-view/1' || !coverage.inventories?.active || !coverage.inventories?.proposed ||
       !coverage.matrices?.active || !coverage.matrices?.proposed) refuse('coverage-view-invalid');
   const source = inventory => {
@@ -123,21 +123,30 @@ export function buildPiiCoverageDeltas(coverage) {
       archiveSha256: pin.release.archive.tarGzSha256, manifestSha256: pin.snapshot.manifestSha256,
       reason: 'immutable-pin-and-archive-locator-retained-source-availability-not-verified' };
   };
+  const accepted = coverage.proposalState === 'accepted';
+  if (accepted && (!historicalCoverage?.matrices?.active || !acceptance?.source ||
+      !same(coverage.inventories.active.source, coverage.inventories.proposed.source))) refuse('accepted-history-or-acceptance-required');
+  const before = accepted ? historicalCoverage : coverage, afterRole = accepted ? 'active' : 'proposed';
   return Object.fromEntries(['baseline', 'candidate'].map(side => {
-    const previous = coverage.matrices.active[side]?.matrix, next = coverage.matrices.proposed[side]?.matrix;
-    for (const [role, matrix] of [['active', previous], ['proposed', next]]) {
-      const pin = coverage.inventories[role].source;
+    const previous = before.matrices.active[side]?.matrix, next = coverage.matrices[afterRole][side]?.matrix;
+    for (const [inventory, matrix] of [[before.inventories.active, previous], [coverage.inventories[afterRole], next]]) {
+      const pin = inventory.source;
       if (!matrix || pin?.snapshot?.id !== matrix.identity?.snapshotId || pin.snapshot.contentDigest !== matrix.identity.snapshotCommitment ||
           !/^[a-f0-9]{40}$/.test(pin.release?.commit) || !/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(pin.release?.repository) ||
           !/^[a-f0-9]{64}$/.test(pin.release?.archive?.tarGzSha256) || !/^[a-f0-9]{64}$/.test(pin.snapshot.manifestSha256)) refuse('inventory-matrix-source-mismatch');
     }
     const delta = buildPiiCoverageDelta({ previous, next,
-      mode: 'active-vs-proposed' });
-    delta.previous.source = source(coverage.inventories.active);
-    delta.next.source = source(coverage.inventories.proposed);
+      mode: accepted ? 'accepted-before-after' : 'active-vs-proposed' });
+    delta.previous.source = source(before.inventories.active);
+    delta.next.source = source(coverage.inventories[afterRole]);
+    if (accepted) {
+      delta.activePinsChanged = true;
+      delta.ownerAcceptance = structuredClone(acceptance);
+      delta.adoption = { applied: true, workflow: 'existing-verify-preflight-acceptance-rehearsal', ownerAcceptanceSupplied: true };
+    }
     delta.limitations = ['deferred-case-and-fixture-counts-not-exposed-by-source',
       'mapping-commitment-includes-population-so-scope-and-mapping-effects-cannot-be-isolated',
-      'proposed-snapshot-has-no-bound-product-or-measurement-no-product-regression-comparison'];
+      'different-evidence-populations-are-not-a-held-constant-product-regression-comparison'];
     return [side, delta];
   }));
 }

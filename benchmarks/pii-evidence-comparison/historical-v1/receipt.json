@@ -1,0 +1,157 @@
+{
+ "schema": "pii-evidence-comparison-receipt/1",
+ "publicOnly": true,
+ "supportClaims": false,
+ "authorityChanged": false,
+ "planDigest": "2765868f12e2f7238645f7ea95847374ff8e658f93c3f786b8339434298b91b4",
+ "mode": "official",
+ "engine": {
+  "commit": "e99128f5633c5905497342623e249ad90d902800",
+  "binarySha256": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
+  "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8",
+  "platform": "linux-x64",
+  "canonical": true
+ },
+ "importer": {
+  "binarySha256": "c77dae077d3cdbd1b871ee68ed672e258f8334d9d134bcf11f6e8a31c20b08c6",
+  "buildReceipt": {
+   "schema": "pii-evidence-consumer-build-receipt/1",
+   "sourceCommit": "e99128f5633c5905497342623e249ad90d902800",
+   "sourceArchiveSha256": "da47d780545ccdefe65258cf6f0cbe77b06e1ec77610b6ccdb94994ce173d84d",
+   "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+   "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+   "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+   "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+   "platform": "linux-x64",
+   "binarySha256": "c77dae077d3cdbd1b871ee68ed672e258f8334d9d134bcf11f6e8a31c20b08c6"
+  }
+ },
+ "replayInputs": [
+  {
+   "name": "replay-inputs/baseline/manifest.json",
+   "sha256": "b3a3d976e977796bff5c7903e034890b7e2fb3ea15c359e2071a994891a80842"
+  },
+  {
+   "name": "replay-inputs/baseline/observation.json",
+   "sha256": "418867e3b597d7ec0da2e8f769d63b48679cae8019c0f098ac030f5e387c5388"
+  },
+  {
+   "name": "replay-inputs/baseline/run-artifact.json",
+   "sha256": "b856f8db9ccca1cefc62aa9055db32631e880b1a463a5aa5ca44386c0a02fb5a"
+  },
+  {
+   "name": "replay-inputs/candidate/manifest.json",
+   "sha256": "3f7c2e708a80b342bf20a479d9e72c7b7c00eb24d0190e753f0fb4319150e813"
+  },
+  {
+   "name": "replay-inputs/candidate/observation.json",
+   "sha256": "6e4c89ea50baee6fd067c4912d8c7ccb1f2be6cec3a069172cb84625732ad4f4"
+  },
+  {
+   "name": "replay-inputs/candidate/run-artifact.json",
+   "sha256": "141800302a38a33a94759937920c8354f7f0a65c985decc90d8d62a4bbf6fac5"
+  }
+ ],
+ "import": {
+  "population": {
+   "id": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb",
+   "version": 1,
+   "digest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
+   "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb"
+  },
+  "counts": {
+   "evidenceCases": 49,
+   "evidenceCasesCarried": 47,
+   "evidenceCasesWithoutFixtures": 2,
+   "evidenceFixtures": 139,
+   "evidenceSkipped": 8,
+   "corpusCases": 55,
+   "corpusVariants": 139,
+   "occurrences": 139,
+   "locatedOccurrences": 98,
+   "rangeLessOccurrences": 41
+  },
+  "losses": {
+   "contexts-not-carried": 37,
+   "phi-domain-not-carried": 37,
+   "sensitivity-context-dependent-flattened": 11,
+   "identity-weakened-no-span": 17,
+   "sensitivity-weakened-no-span": 19
+  },
+  "snapshotSha256": "7396c86b3683c51999a22978bc3a007b32d31eb0fc0cd55378c54f0aa42f3067",
+  "bindingSha256": "723090ce467a09d453d9f154e26abfa393e952538a9092573dcde9a02a88f928",
+  "populationIndexDigest": "e898ea657b4247858b905407275513510cc7db6b8efe3824ae982d2ddb6e0b55"
+ },
+ "github": {
+  "repository": "redact-secret/redact-secret-benchmarks",
+  "runId": 37829344445,
+  "runAttempt": 1,
+  "headSha": "836a020fe06e1c941185be95da6964f9eb0385a4",
+  "workflowRef": "redact-secret/redact-secret-benchmarks/.github/workflows/pii-official-run.yml@refs/heads/feat/834-pii-evidence-population"
+ },
+ "baseline": {
+  "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+  "version": "0.1.0-beta.14",
+  "packageTreeSha256": "d980822694524ed0e6b1bd121a92dbe98ac578f52c1d8743431ddb1529513030",
+  "addonTreeSha256": "ac23cff4c37dcab8835ad9ae2e30793b3d6fc7a96adc30df5b28fde1f7b1ba67",
+  "wasmTreeSha256": "bb7560b0da5695f88ccd4146e03187032f9cdf34bbae3c38a60519f7289e1562",
+  "tarballs": {
+   "core": "5908f85933cd322b741f6e067b261b7827e3d16dece9d1b645cabae8f3a866a2",
+   "node": "69efc0c10ebe2299855b38a865a2ce1a0008d2325119aed4d73385769480d25a",
+   "wasm": "d2acc0dd0dcf325799a0ec824f2c5353c56e35a9deaf7b968f0770c226777fc4"
+  },
+  "tarballIntegrity": {
+   "core": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+   "node": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+   "wasm": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ=="
+  },
+  "manifestDigest": "fdb58935bf30c1bed1f494df42759322b8b37bf16435cfba10698d29ebdb0188",
+  "artifactDigest": "183fd9628bfd5fa38b7dffa189f8caa588120e9767ea2bd3f8c701e11861ee8d",
+  "artifactSha256": "9b08931e846ada8fe103e223236bdf7bc4c34b50f87916286a8de4744bc37388",
+  "replays": [
+   {
+    "state": "replayed",
+    "parity": "identical",
+    "publicArtifactDigest": "183fd9628bfd5fa38b7dffa189f8caa588120e9767ea2bd3f8c701e11861ee8d"
+   },
+   {
+    "state": "replayed",
+    "parity": "identical",
+    "publicArtifactDigest": "183fd9628bfd5fa38b7dffa189f8caa588120e9767ea2bd3f8c701e11861ee8d"
+   }
+  ]
+ },
+ "candidate": {
+  "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
+  "version": "0.1.0-beta.14",
+  "packageTreeSha256": "fa1265cc72f78b24c4b3cfee29d8743717e02ff0a09c261134abc8e14040523c",
+  "addonTreeSha256": "9cbf760725ac5f1f9840deef435308da58be61b0a90bc855d9dac09032384c1c",
+  "wasmTreeSha256": "9059d6736b94e4a286396ef6aa2b51192e6ae065cde9b56072ff68f137a83981",
+  "tarballs": {
+   "core": "42c0447c124ace12c128768b30e33d83b4c58b8af2d0d8502c6d42f795c62c35",
+   "node": "cc9bda9802092fdc60d1458657f27f04d74f4789b64f31685a3abb721a43ea72",
+   "wasm": "77af5822255f28f13b4fc6e2de3ce393abdfe6ce205e7d2e61cb858808c4c037"
+  },
+  "tarballIntegrity": {
+   "core": "sha512-8CrZi6TJSVOo5ZFSFqSbotM9En3stzv5nHBn64AYdN0F3uWR9xpDXnvaMBgyLmlsie6fYTamhH2qej/Ox7GmxA==",
+   "node": "sha512-usaYmbUqmUX2vlcJamm9MzbMe8hsgswCCIzNlRhY+Du1xLl2Rk9NqAbnsMwJNL3UwvJz2SdEsOgejAanr7X9xA==",
+   "wasm": "sha512-iw5sdqtbhbJ72i8vpzSzlxh/5aCKPTB/2ph/jNb1HNALLLcV1FKdez1bhRIx3kq9Eg0FJI5xc21a1+xsnavguA=="
+  },
+  "manifestDigest": "348e7d7c25b9990d05dbd7582bf8d0b41f4a6b5b66954d3ab34ff1dcc57ab731",
+  "artifactDigest": "2179a516f80550ffe8a73e3980a4ee4235fb834ec6df3466ef9cab2dad1362be",
+  "artifactSha256": "3657ed7d4fb3e236f467580dd574a3360639c7f76229c3561cf3436ade3373ca",
+  "replays": [
+   {
+    "state": "replayed",
+    "parity": "identical",
+    "publicArtifactDigest": "2179a516f80550ffe8a73e3980a4ee4235fb834ec6df3466ef9cab2dad1362be"
+   },
+   {
+    "state": "replayed",
+    "parity": "identical",
+    "publicArtifactDigest": "2179a516f80550ffe8a73e3980a4ee4235fb834ec6df3466ef9cab2dad1362be"
+   }
+  ]
+ },
+ "durationMs": 2453
+}

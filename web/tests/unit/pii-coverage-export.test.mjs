@@ -106,10 +106,20 @@ test('source/run provenance, inactive labeling and baseline/candidate side ident
   const changes = [
     text => text.replaceAll(hex('a'), hex('f')), text => text.replaceAll(hex('c'), hex('f')), text => text.replaceAll(hex('d'), hex('f')),
     text => text.replaceAll(hex('1'), hex('2')), text => text.replaceAll(hex('3'), hex('4')),
-    text => text.replaceAll('inactive, unmeasured', 'released'),
+    text => text.replaceAll('inactive', 'released'),
     text => text.replace('data-coverage-panel="coverage-active-baseline"', 'data-coverage-panel="coverage-active-candidate"'),
     text => text.replace('data-coverage-delta="true"', 'data-coverage-delta="false"'),
     text => text.replace('Kind counts are not detection accuracy', 'Full product accuracy'),
   ];
   for (const change of changes) rejected(change(html), value);
+});
+
+
+test('an accepted proposal renders only active panels and preserves the full denominator', () => {
+  const value = publication();
+  value.coverage.proposalState = 'accepted';
+  const html = render(value);
+  expect(coverageExportProblems(html, value)).toEqual([]);
+  expect(html).not.toContain('data-coverage-panel="coverage-proposed-');
+  expect(html).toContain('Previous vs active snapshot denominator');
 });

@@ -15,3 +15,14 @@ The current successor is `benchmarks/inputs/pii-evidence-snapshot-v2-activation-
 Earlier canonical attempts `37980597369` and `37981404978` failed at the engine run command. Original diagnostics discarded the refusal reason. Their scanner execution counts are unknown, and neither is a valid measurement. The second retains a Linux importer build receipt. The fresh successor plan and cost decision are `benchmarks/pii-evidence-comparison/v2-post37-published-retry2/`, bounded to the same one-job, 15-minute public/synthetic scope.
 
 A complete measured bundle with `acceptance: null` is checked with `prepare-pii-evidence-adoption.mjs --prepare-acceptance BUNDLE --out-dir results-output/pii-evidence-adoption/NAME`. This verifies canonical artifacts and retained history and prepares active writes and rollback bytes. It cannot pass the active validator or apply pins until an independently supplied acceptance binds its exact candidate digest.
+
+
+Canonical run 37983968336 succeeded with scanner replay agreement and both
+scanner-free replays reproducing public artifact
+`1ef5055358535a380e3a6c5cae5477ec5ce6ac819b0cdef4e2bd31c80a6d64b0`.
+Milo Kang explicitly accepted candidate
+`5010b3ae838adc760fdbcbb65b1db6324226a178c36959af34f65d4d71856693`,
+recorded at https://github.com/redact-secret/redact-secret-benchmarks/issues/841#issuecomment-6088439113 .
+The guarded apply updated active snapshot/consumer/preflight and measurement records.
+The historical v1 records remain reproducible. Coverage shows v2 active, with the
+accepted before/after delta and no product support, authority or threshold change.

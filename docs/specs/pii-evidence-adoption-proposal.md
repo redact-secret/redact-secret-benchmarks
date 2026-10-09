@@ -1,5 +1,10 @@
 # Pending PII evidence adoption proposal
 
+Historical proposal stage. Released and accepted v2 now uses the current source-of-truth
+pins and receipts described in [pii-evidence-adoption.md](pii-evidence-adoption.md).
+The stage-specific release and execution blockers below are retained for reproduction.
+
+
 The mapping-2 proposal below is retained historical preparation. The current
 post-#37 successor and unresolved release/execution prerequisites are described
 in [pii-evidence-adoption-post37.md](pii-evidence-adoption-post37.md). Neither

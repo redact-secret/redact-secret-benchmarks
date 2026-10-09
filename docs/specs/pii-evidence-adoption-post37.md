@@ -1,5 +1,10 @@
 # PII evidence v2 post-#37 adoption preparation
 
+Historical proposal stage. Released and accepted v2 now uses the current source-of-truth
+pins and receipts described in [pii-evidence-adoption.md](pii-evidence-adoption.md).
+The stage-specific release and execution blockers below are retained for reproduction.
+
+
 The successor package is **blocked before canonical measurement**, not
 ready-for-acceptance. Its input directory is
 `benchmarks/inputs/pii-evidence-snapshot-v2-post37-candidate/`.

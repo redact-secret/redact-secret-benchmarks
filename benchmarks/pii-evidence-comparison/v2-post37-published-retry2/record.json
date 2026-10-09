@@ -1,0 +1,52 @@
+{
+ "schema": "pii-evidence-comparison-record/1",
+ "publicOnly": true,
+ "supportClaims": false,
+ "authorityChanged": false,
+ "planDigest": "9c89e423adf8519782266f23ce4d0ec739bb1e07afb2ce2d487a4c0d8af35791",
+ "workflow": {
+  "repository": "redact-secret/redact-secret-benchmarks",
+  "path": ".github/workflows/pii-official-run.yml",
+  "reusablePath": ".github/workflows/pii-evidence-comparison.yml",
+  "runId": 37983968336,
+  "runAttempt": 1,
+  "event": "workflow_dispatch",
+  "headSha": "8f7dda93ac97d82194075cf3ce87acd0f4d3e1d4",
+  "headBranch": "milocosmopolitan/pii",
+  "conclusion": "success"
+ },
+ "actionsArtifact": {
+  "id": 11641523250,
+  "name": "pii-evidence-comparison",
+  "archiveSha256": "7118add9375d5dff0ee3249636ac0946a015cb23fa0213147a8d7b3db5cd3805",
+  "sizeInBytes": 51120
+ },
+ "receipt": {
+  "sha256": "f46f689943359ce1c024fa0bbbd039477220788c0024b6c789f3fb2fc6698b7d",
+  "documentDigest": "e3bd5a4e55b5d1c8bd084e7e1e685b02424a55af50a693a09e9728032f7073f6"
+ },
+ "buildReceipt": {
+  "sha256": "6d04ef72bafdb5be9eb020f5f93aa86351a0fbccbb46dd182c2af90e26122975",
+  "documentDigest": "db55910cbb29ccd5d81eecc1db22452be8975a875b30d3c0457763b56c8a98ee"
+ },
+ "artifacts": [
+  {
+   "side": "baseline",
+   "sha256": "db3d026f488baf6f4d846604a07348243cca8ab12f08d96768a1cc655338dd3d"
+  }
+ ],
+ "replayInputs": [
+  {
+   "name": "replay-inputs/baseline/manifest.json",
+   "sha256": "0ae4af5ad7ffcb9a00feb0113f1685176b23a6863942ab928ad066ac060ace58"
+  },
+  {
+   "name": "replay-inputs/baseline/observation.json",
+   "sha256": "3a7e3e4f9eb9b5b66f814e501eb2dadba601271c79f1ace77dd50ed9182c4d9b"
+  },
+  {
+   "name": "replay-inputs/baseline/run-artifact.json",
+   "sha256": "9a841aad2b5d8a5cc6209901e92bc8dcecfd1cc024a9519b977527bce2536fbf"
+  }
+ ]
+}

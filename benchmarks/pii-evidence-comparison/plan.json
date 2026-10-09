@@ -15,19 +15,19 @@
   },
   "release": {
    "repository": "redact-secret/pii-evidence",
-   "tag": "snapshot-public-pii-phi-2026-10-07-9d4e8e036bbb",
-   "commit": "c436ae013011b9c8b1126f589d1b14d99a84baf5",
+   "tag": "snapshot-public-pii-phi-2026-10-08-ee61c7afc32d",
+   "commit": "e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0",
    "archive": {
-    "name": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb.tar.gz",
-    "tarGzSha256": "8962f02ec04687c3b26bc70a95c57629eb31161b809f8b8317851ff1baa7498b",
-    "tarSha256": "05d9dcd1483c70c5e763338a70366364b650658af1883b6a98bae0f4ab08b5a6"
+    "name": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d.tar.gz",
+    "tarSha256": "ae0324a180361a70bd6f225859fe46f7fde6f02f4d9d317a2336ae432c0a2e36",
+    "tarGzSha256": "e86648cf7c54fd6fcc62a17e58859aa334557b6cb9ba30954d12a42cc087c626"
    }
   },
   "snapshot": {
-   "id": "public-pii-phi/2026-10-07/9d4e8e036bbb",
-   "contentDigest": "9d4e8e036bbb180fb3a09569a2993e51ad10fbc183765882325f2bc10b321ba2",
-   "manifestSha256": "a9e24b6dc73bc876f9fce341c7305421b054ae399df83d198513bede03555ca9",
-   "sourceManifestDigest": "e6f26033e83341c9a106dfa2542573e956912266cacfae0fcc1a6fb46d07c47c"
+   "id": "public-pii-phi/2026-10-08/ee61c7afc32d",
+   "contentDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+   "manifestSha256": "acf14bf012740f25083a6c50134afffa406605061138208bbe83d7f83ad8eb0b",
+   "sourceManifestDigest": "0230e2c92daefe0292284c5e61ebd520585ced52be96e77484dd23340a54a82f"
   }
  },
  "consumer": {
@@ -36,8 +36,8 @@
   "supportClaims": false,
   "source": {
    "repository": "redact-secret/pii-eval",
-   "commit": "e99128f5633c5905497342623e249ad90d902800",
-   "sourceArchiveSha256": "da47d780545ccdefe65258cf6f0cbe77b06e1ec77610b6ccdb94994ce173d84d",
+   "commit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+   "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
    "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
    "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
@@ -47,20 +47,20 @@
    "engineVersion": "0.0.0",
    "protocol": {
     "id": "pii-v1",
-    "revision": 2
+    "revision": 3
    },
-   "corpusSchema": "1.4",
-   "artifactSchema": "1.4",
+   "corpusSchema": "1.5",
+   "artifactSchema": "1.5",
    "mapping": {
     "id": "pii-evidence-to-corpus",
-    "revision": 1
+    "revision": 3
    }
   },
   "executionEngine": {
    "platform": "linux-x64",
-   "binarySha256": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
+   "binarySha256": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb",
    "workflow": {
-    "runId": 37637513834,
+    "runId": 37983467352,
     "runAttempt": 1,
     "path": ".github/workflows/ci.yml",
     "event": "push",
@@ -68,15 +68,16 @@
     "conclusion": "success"
    },
    "archive": {
-    "id": 11490276889,
-    "name": "pii-eval-engine-e99128f5633c5905497342623e249ad90d902800-linux-x86_64",
-    "sha256": "eeddad4deba3a7c28a0d5d3bfc28a6a0f4f27d1403818e9de7c103b3f209a1b0",
+    "id": 11641827260,
+    "name": "pii-eval-engine-bfa93c79013dd9804fe16abedbc27990e76d01fb-linux-x86_64",
+    "sha256": "8975a52ba238a038b5040c57ec50621340f70b3d45a5618af5a276fe740fdee7",
     "members": {
-     "pii-eval": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
-     "build-info.json": "c172a059c7380680026a053da1165cb2f5a293f1a9a35454bf78014a9468410f",
-     "SHA256SUMS": "bcd492c124f16f43fef8ba33fa741ae4ffc5dc93056d7f18ebc81e61b2aad746"
+     "SHA256SUMS": "78b3d5bb33f9af35a4fdb9a4152000c16edc3e1fa4e4ed7d7118f3cab761910c",
+     "build-info.json": "d817cf145d81d8baf826eaceda5f88a7293b491c938d4025709161de27e63ae1",
+     "pii-eval": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb"
     }
-   }
+   },
+   "binaryBytes": 4668056
   },
   "evidenceConsumer": {
    "binary": "pii-eval-evidence",
@@ -91,16 +92,16 @@
    },
    "localVerification": {
     "platform": "darwin-arm64",
-    "binarySha256": "53add85cecefb9fb10ccc82e735d09ae8d36381edb014dd6790a95d41bf5e591",
+    "binarySha256": "5a29ba5861cdffa4a4e311a513d82f9fdb6c5a194d98a1ad85b162bb12713b20",
     "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
     "canonical": false
    }
   },
   "importedPopulation": {
-   "id": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb",
-   "version": 1,
-   "digest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
-   "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb"
+   "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+   "version": 3,
+   "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+   "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
   },
   "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
  },
@@ -120,19 +121,19 @@
    },
    "release": {
     "repository": "redact-secret/pii-evidence",
-    "tag": "snapshot-public-pii-phi-2026-10-07-9d4e8e036bbb",
-    "commit": "c436ae013011b9c8b1126f589d1b14d99a84baf5",
+    "tag": "snapshot-public-pii-phi-2026-10-08-ee61c7afc32d",
+    "commit": "e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0",
     "archive": {
-     "name": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb.tar.gz",
-     "tarGzSha256": "8962f02ec04687c3b26bc70a95c57629eb31161b809f8b8317851ff1baa7498b",
-     "tarSha256": "05d9dcd1483c70c5e763338a70366364b650658af1883b6a98bae0f4ab08b5a6"
+     "name": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d.tar.gz",
+     "tarSha256": "ae0324a180361a70bd6f225859fe46f7fde6f02f4d9d317a2336ae432c0a2e36",
+     "tarGzSha256": "e86648cf7c54fd6fcc62a17e58859aa334557b6cb9ba30954d12a42cc087c626"
     }
    },
    "snapshot": {
-    "id": "public-pii-phi/2026-10-07/9d4e8e036bbb",
-    "contentDigest": "9d4e8e036bbb180fb3a09569a2993e51ad10fbc183765882325f2bc10b321ba2",
-    "manifestSha256": "a9e24b6dc73bc876f9fce341c7305421b054ae399df83d198513bede03555ca9",
-    "sourceManifestDigest": "e6f26033e83341c9a106dfa2542573e956912266cacfae0fcc1a6fb46d07c47c"
+    "id": "public-pii-phi/2026-10-08/ee61c7afc32d",
+    "contentDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+    "manifestSha256": "acf14bf012740f25083a6c50134afffa406605061138208bbe83d7f83ad8eb0b",
+    "sourceManifestDigest": "0230e2c92daefe0292284c5e61ebd520585ced52be96e77484dd23340a54a82f"
    }
   },
   "consumer": {
@@ -141,8 +142,8 @@
    "supportClaims": false,
    "source": {
     "repository": "redact-secret/pii-eval",
-    "commit": "e99128f5633c5905497342623e249ad90d902800",
-    "sourceArchiveSha256": "da47d780545ccdefe65258cf6f0cbe77b06e1ec77610b6ccdb94994ce173d84d",
+    "commit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+    "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
     "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
     "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
     "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
@@ -152,20 +153,20 @@
     "engineVersion": "0.0.0",
     "protocol": {
      "id": "pii-v1",
-     "revision": 2
+     "revision": 3
     },
-    "corpusSchema": "1.4",
-    "artifactSchema": "1.4",
+    "corpusSchema": "1.5",
+    "artifactSchema": "1.5",
     "mapping": {
      "id": "pii-evidence-to-corpus",
-     "revision": 1
+     "revision": 3
     }
    },
    "executionEngine": {
     "platform": "linux-x64",
-    "binarySha256": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
+    "binarySha256": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb",
     "workflow": {
-     "runId": 37637513834,
+     "runId": 37983467352,
      "runAttempt": 1,
      "path": ".github/workflows/ci.yml",
      "event": "push",
@@ -173,15 +174,16 @@
      "conclusion": "success"
     },
     "archive": {
-     "id": 11490276889,
-     "name": "pii-eval-engine-e99128f5633c5905497342623e249ad90d902800-linux-x86_64",
-     "sha256": "eeddad4deba3a7c28a0d5d3bfc28a6a0f4f27d1403818e9de7c103b3f209a1b0",
+     "id": 11641827260,
+     "name": "pii-eval-engine-bfa93c79013dd9804fe16abedbc27990e76d01fb-linux-x86_64",
+     "sha256": "8975a52ba238a038b5040c57ec50621340f70b3d45a5618af5a276fe740fdee7",
      "members": {
-      "pii-eval": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
-      "build-info.json": "c172a059c7380680026a053da1165cb2f5a293f1a9a35454bf78014a9468410f",
-      "SHA256SUMS": "bcd492c124f16f43fef8ba33fa741ae4ffc5dc93056d7f18ebc81e61b2aad746"
+      "SHA256SUMS": "78b3d5bb33f9af35a4fdb9a4152000c16edc3e1fa4e4ed7d7118f3cab761910c",
+      "build-info.json": "d817cf145d81d8baf826eaceda5f88a7293b491c938d4025709161de27e63ae1",
+      "pii-eval": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb"
      }
-    }
+    },
+    "binaryBytes": 4668056
    },
    "evidenceConsumer": {
     "binary": "pii-eval-evidence",
@@ -196,91 +198,105 @@
     },
     "localVerification": {
      "platform": "darwin-arm64",
-     "binarySha256": "53add85cecefb9fb10ccc82e735d09ae8d36381edb014dd6790a95d41bf5e591",
+     "binarySha256": "5a29ba5861cdffa4a4e311a513d82f9fdb6c5a194d98a1ad85b162bb12713b20",
      "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
      "canonical": false
     }
    },
    "importedPopulation": {
-    "id": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb",
-    "version": 1,
-    "digest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
-    "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb"
+    "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+    "version": 3,
+    "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+    "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
    },
    "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
   },
   "population": {
-   "id": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb",
-   "version": 1,
-   "digest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
-   "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb"
+   "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+   "version": 3,
+   "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+   "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
   },
   "counts": {
-   "evidenceCases": 49,
-   "evidenceCasesCarried": 47,
-   "evidenceCasesWithoutFixtures": 2,
-   "evidenceFixtures": 139,
-   "evidenceSkipped": 8,
-   "corpusCases": 55,
-   "corpusVariants": 139,
-   "occurrences": 139,
-   "locatedOccurrences": 98,
-   "rangeLessOccurrences": 41
+   "corpusCases": 123,
+   "corpusVariants": 285,
+   "evidenceCases": 118,
+   "evidenceCasesCarried": 115,
+   "evidenceCasesWithoutFixtures": 3,
+   "evidenceFixtures": 285,
+   "evidenceSkipped": 18,
+   "locatedOccurrences": 198,
+   "occurrences": 285,
+   "rangeLessOccurrences": 87
   },
   "losses": {
-   "contexts-not-carried": 37,
-   "phi-domain-not-carried": 37,
-   "sensitivity-context-dependent-flattened": 11,
-   "identity-weakened-no-span": 17,
-   "sensitivity-weakened-no-span": 19
+   "contexts-not-carried": 0,
+   "phi-domain-not-carried": 0,
+   "sensitivity-context-dependent-flattened": 0,
+   "identity-weakened-no-span": 0,
+   "sensitivity-weakened-no-span": 4
   },
   "outputs": {
-   "snapshot.json": {
-    "bytes": 132062,
-    "sha256": "7396c86b3683c51999a22978bc3a007b32d31eb0fc0cd55378c54f0aa42f3067"
-   },
    "binding.json": {
-    "bytes": 154912,
-    "sha256": "723090ce467a09d453d9f154e26abfa393e952538a9092573dcde9a02a88f928"
+    "bytes": 306216,
+    "sha256": "4f277405d9bed223d6a382e7d5ff2b14308dd4e68070066ae9612c69767425b2"
+   },
+   "snapshot.json": {
+    "bytes": 356837,
+    "sha256": "dfdd244f6e00215c987f82ab6f84580adbcfb1ebb02c47649ef5a647dc6a70c6"
    }
   },
   "mappedKinds": [
+   "date-of-birth/global/labeled-field",
    "email/global/basic",
    "health-claim-identifier/us/claim-field",
    "health-plan-member-id/us/member-field",
    "medical-record-number/us/labeled-field",
    "phone/global/basic",
    "prescription-order-identifier/us/order-field",
+   "uk-nino/uk/structured",
    "us-ssn/us/structured"
   ],
   "mappedFamilies": {
+   "pii:gb:national-insurance-number": {
+    "cases": 7,
+    "variants": 15
+   },
+   "pii:global:date-of-birth": {
+    "cases": 8,
+    "variants": 20
+   },
    "pii:global:email": {
-    "cases": 28,
-    "variants": 92
+    "cases": 44,
+    "variants": 145
    },
    "pii:global:phone": {
-    "cases": 2,
-    "variants": 10
+    "cases": 7,
+    "variants": 32
+   },
+   "pii:us:date-of-birth": {
+    "cases": 4,
+    "variants": 8
    },
    "pii:us:health-claim-identifier": {
-    "cases": 1,
-    "variants": 1
+    "cases": 3,
+    "variants": 3
    },
    "pii:us:health-plan-member-id": {
-    "cases": 5,
-    "variants": 9
+    "cases": 12,
+    "variants": 16
    },
    "pii:us:medical-record-number": {
-    "cases": 9,
-    "variants": 17
+    "cases": 15,
+    "variants": 23
    },
    "pii:us:prescription-order-identifier": {
-    "cases": 1,
-    "variants": 1
+    "cases": 6,
+    "variants": 6
    },
    "pii:us:ssn": {
-    "cases": 9,
-    "variants": 9
+    "cases": 17,
+    "variants": 17
    }
   },
   "excludedKinds": [
@@ -306,7 +322,10 @@
   },
   "blockers": [
    "canonical-linux-evidence-consumer-build-receipt-pending",
-   "fresh-exact-execution-cost-decision-required"
+   "fresh-exact-execution-cost-decision-required",
+   "immutable-snapshot-release-verification-required",
+   "schema-1.5-measurement-path-review-required",
+   "explicit-maintainer-adoption-acceptance-required"
   ]
  },
  "policy": {
@@ -432,14 +451,14 @@
  },
  "engine": {
   "repository": "redact-secret/pii-eval",
-  "commit": "e99128f5633c5905497342623e249ad90d902800",
-  "binarySha256": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
+  "commit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+  "binarySha256": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb",
   "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
  },
  "protocol": {
   "id": "pii-v1",
-  "revision": 2,
-  "artifactSchema": "1.4"
+  "revision": 3,
+  "artifactSchema": "1.5"
  },
  "scanner": {
   "adapter": {
@@ -511,90 +530,163 @@
    }
   }
  },
- "candidate": {
-  "provenance": "qualified-unpublished-artifacts",
-  "version": "0.1.0-beta.14",
-  "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
-  "qualificationRunId": "37772337995",
-  "inventorySha256": "ce4e59de91d00514f29a0035333912d2ec470a8d56a1a0ecbb12fbcc9fd1cb74",
-  "coreTarballSha256": "42c0447c124ace12c128768b30e33d83b4c58b8af2d0d8502c6d42f795c62c35",
-  "piiWasmTarballSha256": "77af5822255f28f13b4fc6e2de3ce393abdfe6ce205e7d2e61cb858808c4c037",
-  "nativeLinuxTarballSha256": "cc9bda9802092fdc60d1458657f27f04d74f4789b64f31685a3abb721a43ea72",
-  "localNativeDarwinTarballSha256": "1e165fe460548f6df664870d647f8c077b331e4e4da453f76b3895d82bcc91b9",
-  "piiWasmBinarySha256": "f52314fa95a51a064a42d0e03458ab8575dd32b4c42398191dc015e6983201e3"
+ "candidate": null,
+ "productTuple": {
+  "schema": "pii-evidence-reviewed-products/1",
+  "reviewedBy": "milocosmopolitan (session-authorized exact published artifact audit)",
+  "reviewedAt": "2026-10-09T19:26:47Z",
+  "baseline": {
+   "provenance": "published-npm-lockfile",
+   "version": "0.1.0-beta.14",
+   "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+   "packages": {
+    "@redact-secret/core": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/core/-/core-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-darwin-arm64": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-ARFG6EaEZwHGOCnaPqqtlF5BljxQ6sNAA74N7QU159EvVYCEZvg8gzSeDgt0kjJdJL+vlEjT1zWov+MoZV8KMA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-arm64/-/node-darwin-arm64-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-darwin-x64": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-xAiObLUcaFjPXJ07NRt/LcfjNUKUYCwEpf9lE2v3PfXY7xnkSBop9h06rLjEziR4XjPilb2pQeuuiO3PbzBNKA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-x64/-/node-darwin-x64-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-arm64-gnu": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-v1yP2VwFyP0o9qV32jECFId9jTvRjGTFyDpwn3wMCix+9iST7fSDhakEaEKJMifBCx/tfMy/1mXltF/pKPYdDA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-gnu/-/node-linux-arm64-gnu-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-arm64-musl": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-R8Fp1QHyVIOH+qGKcfLZbmEP4gG3sLpIKkmuzfx1sjN23WEvUz3O4UYL9DXJpXYZPG4QWPZuxSewpmGYuw6f2A==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-musl/-/node-linux-arm64-musl-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-x64-gnu": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-gnu/-/node-linux-x64-gnu-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-x64-musl": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-DOvm796wqFx9aWL49ZCAmEaHymqxVMHbJudnmSxtrPY2kdWeTR4Hy+fTKZ8lODCTsbWfJoeMK6W55F2TcNC4HA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-musl/-/node-linux-x64-musl-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-win32-arm64-msvc": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-OoNSo5+AyT4s2Za9lmKhvp7qcCDOVd/DluuB02n7gmpg2Wf1TfSZCkDwvgK1RWUw92onghrKXKVWgDjMjZL2zw==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-arm64-msvc/-/node-win32-arm64-msvc-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-win32-x64-msvc": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-L3y7yMRCtkZIfQkx44UdRLbPPGqN8xyO+RCYo903IMeaVmoBV+7wOS6bCghyzvj57D+EKDl4ORJq952dsFvcpA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-x64-msvc/-/node-win32-x64-msvc-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/wasm": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/wasm/-/wasm-0.1.0-beta.14.tgz"
+    }
+   }
+  },
+  "candidate": null
+ },
+ "executionPaths": {
+  "planPath": "benchmarks/pii-evidence-comparison/v2-post37-published-retry2/plan.json",
+  "costDecisionPath": "benchmarks/pii-evidence-comparison/v2-post37-published-retry2/cost-decision.json"
  },
  "population": {
-  "id": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb",
-  "version": 1,
-  "digest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
-  "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb"
+  "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+  "version": 3,
+  "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+  "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
  },
- "populationIndexDigest": "e898ea657b4247858b905407275513510cc7db6b8efe3824ae982d2ddb6e0b55",
+ "populationIndexDigest": "00d7ac4075a42d158d66e378656d5a339d0d361c91556c730a168b4d5e7b8f84",
  "counts": {
-  "evidenceCases": 49,
-  "evidenceCasesCarried": 47,
-  "evidenceCasesWithoutFixtures": 2,
-  "evidenceFixtures": 139,
-  "evidenceSkipped": 8,
-  "corpusCases": 55,
-  "corpusVariants": 139,
-  "occurrences": 139,
-  "locatedOccurrences": 98,
-  "rangeLessOccurrences": 41
+  "corpusCases": 123,
+  "corpusVariants": 285,
+  "evidenceCases": 118,
+  "evidenceCasesCarried": 115,
+  "evidenceCasesWithoutFixtures": 3,
+  "evidenceFixtures": 285,
+  "evidenceSkipped": 18,
+  "locatedOccurrences": 198,
+  "occurrences": 285,
+  "rangeLessOccurrences": 87
  },
  "losses": {
-  "contexts-not-carried": 37,
-  "phi-domain-not-carried": 37,
-  "sensitivity-context-dependent-flattened": 11,
-  "identity-weakened-no-span": 17,
-  "sensitivity-weakened-no-span": 19
+  "contexts-not-carried": 0,
+  "phi-domain-not-carried": 0,
+  "sensitivity-context-dependent-flattened": 0,
+  "identity-weakened-no-span": 0,
+  "sensitivity-weakened-no-span": 4
  },
  "mappedFamilies": {
+  "pii:gb:national-insurance-number": {
+   "cases": 7,
+   "variants": 15
+  },
+  "pii:global:date-of-birth": {
+   "cases": 8,
+   "variants": 20
+  },
   "pii:global:email": {
-   "cases": 28,
-   "variants": 92
+   "cases": 44,
+   "variants": 145
   },
   "pii:global:phone": {
-   "cases": 2,
-   "variants": 10
+   "cases": 7,
+   "variants": 32
+  },
+  "pii:us:date-of-birth": {
+   "cases": 4,
+   "variants": 8
   },
   "pii:us:health-claim-identifier": {
-   "cases": 1,
-   "variants": 1
+   "cases": 3,
+   "variants": 3
   },
   "pii:us:health-plan-member-id": {
-   "cases": 5,
-   "variants": 9
+   "cases": 12,
+   "variants": 16
   },
   "pii:us:medical-record-number": {
-   "cases": 9,
-   "variants": 17
+   "cases": 15,
+   "variants": 23
   },
   "pii:us:prescription-order-identifier": {
-   "cases": 1,
-   "variants": 1
+   "cases": 6,
+   "variants": 6
   },
   "pii:us:ssn": {
-   "cases": 9,
-   "variants": 9
+   "cases": 17,
+   "variants": 17
   }
  },
  "execution": {
   "baselineSourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
-  "candidateSourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
-  "qualificationRunId": "37772337995",
-  "inventorySha256": "ce4e59de91d00514f29a0035333912d2ec470a8d56a1a0ecbb12fbcc9fd1cb74",
-  "engineCommit": "e99128f5633c5905497342623e249ad90d902800",
-  "engineBinarySha256": "5bf386ced06361ff46649fb085a51148548b70b2ca2276c34e7e0e028c617046",
-  "sourceArchiveSha256": "da47d780545ccdefe65258cf6f0cbe77b06e1ec77610b6ccdb94994ce173d84d",
-  "snapshotDigest": "9d4e8e036bbb180fb3a09569a2993e51ad10fbc183765882325f2bc10b321ba2",
-  "populationDigest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
-  "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb",
-  "preflightDigest": "e7a97c3700a7c80163202bce6cd171125f7c63dbdf555d40ac08200ea4192ccd",
+  "candidateSourceCommit": null,
+  "qualificationRunId": null,
+  "inventorySha256": null,
+  "productTupleDigest": "90e12431a4a6be5a812803eaf85ce9380b2fd6951a8fa068edb9177933fbad61",
+  "planPath": "benchmarks/pii-evidence-comparison/v2-post37-published-retry2/plan.json",
+  "costDecisionPath": "benchmarks/pii-evidence-comparison/v2-post37-published-retry2/cost-decision.json",
+  "scannerConfigurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+  "scannerActivationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+  "engineCommit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+  "engineBinarySha256": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb",
+  "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
+  "snapshotDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+  "populationDigest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+  "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d",
+  "preflightDigest": "053e1d50a4f1f57b87b7bcb35e9f1eb2971ce0e88c32beab240432025e82b599",
   "policyDigest": "4e64f49fb934d68add4503f47c3b56e8d30bbafbdea047e4c62ba991232b0708",
-  "populationIndexDigest": "e898ea657b4247858b905407275513510cc7db6b8efe3824ae982d2ddb6e0b55",
+  "populationIndexDigest": "00d7ac4075a42d158d66e378656d5a339d0d361c91556c730a168b4d5e7b8f84",
   "importerBuild": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
-  "runs": 2,
+  "runs": 1,
   "replaysPerRun": 2,
   "protectedRuns": 0,
   "maxJobs": 1,
@@ -603,22 +695,22 @@
  "localVerification": {
   "platform": "darwin-arm64",
   "canonical": false,
-  "engineBinarySha256": "dee8ea89b3d78e5d36ab4aa5ac7daf3a9697cc8d730e80c288d15b0f167e8350",
-  "sourceCommit": "e99128f5633c5905497342623e249ad90d902800",
-  "sourceArchiveSha256": "da47d780545ccdefe65258cf6f0cbe77b06e1ec77610b6ccdb94994ce173d84d",
+  "engineBinarySha256": null,
+  "sourceCommit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+  "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
   "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
   "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval --bin pii-eval-evidence -j 2",
   "maximumExecutionSeconds": 60
  },
  "dispatch": {
   "authorised": true,
-  "costDecision": "benchmarks/pii-evidence-comparison/cost-decision.json",
-  "costDecisionSha256": "0377a0219f14dc1237cd2deb271519c8bdd8c589c6f22dfa98e4e8aa84f012f0",
-  "sourceApproval": "reviewed-e991-consumer-contract-and-released-evidence-pin",
+  "costDecision": "benchmarks/pii-evidence-comparison/v2-post37-published-retry2/cost-decision.json",
+  "costDecisionSha256": "de364b50c96f2ec1f18ec519b862d4d04866875ff8f511046fd2e7a2a8396a2a",
+  "sourceApproval": "reviewed-post37-consumer-contract-and-released-evidence-pin",
   "actualCostRecord": null
  },
  "limitations": {
-  "familyMetrics": "unavailable-no-family-projection-in-unprojected-schema-1.4",
+  "familyMetrics": "unavailable-no-family-projection-in-unprojected-schema-1.5",
   "lostAxes": "pending-until-faithfully-represented",
   "protected": "not-operational",
   "baseline": "published npm provenance; engine uses candidate tree binding for both products",

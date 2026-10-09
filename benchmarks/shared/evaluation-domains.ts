@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import schema from '../../schemas/evaluation-domains-v1.json';
-import { credentialIdentity } from '../evaluation/domains/credential/identity.ts';
+import { credentialIdentity } from '../consumer/credential-identity.ts';
 import { piiIdentity } from '../evaluation/domains/pii/identity.ts';
 import { piiV1Profile } from '../evaluation/domains/pii/profile.ts';
 

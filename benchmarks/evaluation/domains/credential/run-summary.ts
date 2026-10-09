@@ -1,6 +1,5 @@
 import type { AccountedGroup, AccountingConfig, ScoredRow } from '../../../types.ts';
-import { groupKey } from '../../../scoring/lattice.ts';
-import { accountGroups, credentialAccountingIdentity, readCredentialAccountingIdentity, assertCredentialAccountingIdentities } from './accounting.ts';
+import { accountGroups, readCredentialAccountingIdentity, assertCredentialAccountingIdentities } from './accounting.ts';
 
 /**
  * Cross-suite groups for one run, published beside the suite reports as
@@ -9,15 +8,8 @@ import { accountGroups, credentialAccountingIdentity, readCredentialAccountingId
  * accountGroups that accounts each suite. The site displays these values; it
  * derives none of them.
  */
-export const SUMMARY_SCHEMA_VERSION = 1;
-interface SummaryScanner { id: string; name: string; version: string | null; mode: string; status: string; completeSuites: number }
-export interface RunSummary {
-  schemaVersion: typeof SUMMARY_SCHEMA_VERSION; accountingVersion: string; runId: string; generatedAt: string;
-  domain: string; evaluationProfile: string; domainAccountingVersion: string;
-  categories: string[]; accounting: AccountingConfig; scanners: SummaryScanner[];
-  overall: Record<string, Record<string, AccountedGroup>>;
-  byDetector: Record<string, Record<string, Record<string, AccountedGroup>>>;
-}
+export { SUMMARY_SCHEMA_VERSION, type RunSummary, type SummaryScanner } from '../../../consumer/credential-metrics.ts';
+import { SUMMARY_SCHEMA_VERSION, selectionGroups as recordedSelectionGroups, type RunSummary, type SummaryScanner } from '../../../consumer/credential-metrics.ts';
 interface SuiteReport {
   runId: string; category: string; accountingVersion: string; accounting: AccountingConfig;
   domain?: string; evaluationProfile?: string; domainAccountingVersion?: string;
@@ -36,17 +28,9 @@ type SuiteRow = ScoredRow & { category: string };
  * live only in other suites do not consume this group's measurable share;
  * whether they should is an accounting question, not one this module settles.
  */
+/** Compatibility for oracle/rollback summary writers, including their range diagnostics. */
 export function selectionGroups(all: SuiteRow[], selected: Set<string>, config: AccountingConfig): Record<string, AccountedGroup> {
-  const mine = all.filter(r => selected.has(r.id));
-  const pending = new Set(mine.filter(r => r.tier === 'T0').map(r => r.id));
-  const groups: Record<string, AccountedGroup> = {};
-  for (const key of [...new Set(mine.map(r => groupKey(r.kind, r.tier)))].sort()) {
-    const members = mine.filter(r => groupKey(r.kind, r.tier) === key);
-    const own = new Set(members.map(r => r.id)), suites = new Set(members.map(r => r.category));
-    const group = accountGroups(all.filter(r => suites.has(r.category) && (own.has(r.id) || pending.has(r.id) || (r.twinOf != null && own.has(r.twinOf)))), config)[key];
-    if (group) groups[key] = group;
-  }
-  return groups;
+  return recordedSelectionGroups(all, selected, config, accountGroups);
 }
 
 export function summarizeRun(reports: SuiteReport[], assignments: Record<string, string[]>, generatedAt = new Date().toISOString()): RunSummary {

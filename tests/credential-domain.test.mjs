@@ -99,10 +99,14 @@ test('legacy module paths are re-export shims and production entrypoints select 
 });
 
 test('the #276 move leaves accounting and serialized report versions untouched', async () => {
-  const accounting = await text('benchmarks/evaluation/domains/credential/accounting.ts');
+  const accounting = await import('../benchmarks/evaluation/domains/credential/accounting.ts');
+  const consumer = await import('../benchmarks/consumer/credential-metrics.ts');
   const execution = await text('benchmarks/evaluation/domains/credential/execution.ts');
   const publicReport = await text('benchmarks/evaluation/domains/credential/public-report.ts');
-  assert.match(accounting, /ACCOUNTING_VERSION = '1\.1'/);
+  assert.equal(accounting.ACCOUNTING_VERSION, '1.1');
+  assert.equal(accounting.ACCOUNTING_VERSION, consumer.ACCOUNTING_VERSION);
+  assert.deepEqual(accounting.credentialAccountingIdentity('measurement-v4'), consumer.credentialAccountingIdentity('measurement-v4'));
+  assert.deepEqual(accounting.credentialAccountingIdentity('evaluation-v1'), consumer.credentialAccountingIdentity('evaluation-v1'));
   assert.match(execution, /schemaVersion: 3/);
   assert.match(publicReport, /schemaVersion: 2, accountingVersion: '1\.1'/);
 });

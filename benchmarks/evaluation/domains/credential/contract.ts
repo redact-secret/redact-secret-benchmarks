@@ -4,7 +4,7 @@ import { createOperators } from './operators/index.ts';
 import { loadCases } from './cases.ts';
 import { validateAssessment, validateContracts, classifyFixture, controlAxis, contracts, scoredContractIds } from './assessment.ts';
 import { publicEvaluation } from './public-report.ts';
-import { credentialIdentity } from './identity.ts';
+import { credentialIdentity } from '../../../consumer/credential-identity.ts';
 import { familyEvidence, classifyFamilySupport, statusCriteria, buildSupportMatrix, completenessReasons, validateQualificationEvidence } from './qualification.ts';
 import { reviewEntryId } from './review.ts';
 import * as accounting from './accounting.ts';

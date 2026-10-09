@@ -6,7 +6,7 @@ Per
 produced that a `redact-secret` ADR or release relies on — belongs in this
 repository, never in `redact-secret/redact-secret`'s own frozen-evidence
 archive. This directory is where. See
-[`docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md`](../docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md)
+[`docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md)
 for the decision record.
 
 ## Layout

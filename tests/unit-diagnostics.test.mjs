@@ -281,19 +281,7 @@ test('the real published product: actual sanitized output is verified end to end
   assert.equal(row.spans[0].sanitization, 'removed');
 });
 
-const committed = [
-  new URL('../docs/reports/2026-09-28-beta11-380-unit-diagnostics-published.json', import.meta.url),
-  new URL('../docs/reports/2026-09-28-beta11-380-unit-diagnostics-candidate.json', import.meta.url),
-];
-test('committed unit-diagnostics reports stay schema-valid and invariant-clean', { skip: !committed.every(u => existsSync(u)) }, async () => {
-  for (const url of committed) {
-    const report = JSON.parse(await readFile(url, 'utf8'));
-    assert.ok(validateSchema(report), `${url.pathname}: ${JSON.stringify(validateSchema.errors?.slice(0, 3))}`);
-    assert.equal(reportProblem(report), null, url.pathname);
-  }
-});
-
-test('reproducibility: the published product over the pinned corpus yields the same digest twice, and matches the committed report when inputs agree', async () => {
+test('reproducibility: the published product over the pinned corpus yields the same digest twice, and validates its fresh report', async () => {
   const { measure } = await import('../benchmarks/unit-diagnostics.ts');
   const first = await measure({});
   const second = await measure({});
@@ -301,8 +289,5 @@ test('reproducibility: the published product over the pinned corpus yields the s
   assert.equal(reportProblem(first.report, first.rows), null);
   // v4 stays authoritative: diagnostics reproduce its per kind × tier counts (checked inside measure()).
   assert.ok(Object.keys(first.report.v4Reference).length > 0);
-  if (!existsSync(committed[0])) return;
-  const frozen = JSON.parse(await readFile(committed[0], 'utf8'));
-  if (frozen.corpus.identity !== first.report.corpus.identity || frozen.product.version !== first.report.product.version || frozen.product.lockHash !== first.report.product.lockHash) return;
-  assert.equal(first.report.digest, frozen.digest, 'same product, same pinned corpus: the committed published report must reproduce');
+  assert.ok(validateSchema(first.report), JSON.stringify(validateSchema.errors?.slice(0, 3)));
 });

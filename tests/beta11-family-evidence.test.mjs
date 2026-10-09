@@ -2,14 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { RATIONALE, REVISIONS } from '../fixtures/generated/beta8/379.mjs';
+import { RATIONALE, REVISIONS } from '../fixtures/generators/credential-regressions/379.mjs';
 import { contracts } from '../benchmarks/lib/assessment.ts';
-import { PROFILE_FLOORS } from '../benchmarks/lib/beta8/profiles.ts';
+import { PROFILE_FLOORS } from '../benchmarks/lib/credential-regressions/profiles.ts';
 import { auditTwin, secretValues, skeleton } from '../benchmarks/lib/fixture-independence.ts';
 
 // #379: independent family evidence for the fifteen families #377's frozen ledger selected.
 const read = async path => JSON.parse(await readFile(new URL(`../${path}`, import.meta.url), 'utf8'));
-const ledger = await read('docs/reports/2026-09-28/beta-11-family-axis-ledger.json');
+const ledger = await read('benchmarks/inputs/credential/family-axis-ledger.json');
 const generated = buildCorpora();
 const corpus = generated['beta8-379'].fixtures;
 const targetOf = f => (f.detectors ?? f.arrivalTargets ?? [])[0];

@@ -15,7 +15,7 @@
 //      every oracle-versus-engine difference; the engine side of that comparator is compared with the CLI artifact too.
 //   5. The same comparison runs for every (family), (family, language) and (family, control class) cell of the artifact's
 //      product projection, so each projected number has an oracle counterpart.
-// `--write` records scripts' results under benchmarks/pii-eval-population-dual-run/ and docs/reports/; `--check`
+// `--write` records scripts' results under benchmarks/pii-eval-population-dual-run/ with the human report in results-output/; `--check`
 // regenerates everything and fails on any byte of difference in the recorded, platform-independent part.
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -30,7 +30,7 @@ import { renderReport } from './lib/pii-population-report.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const OUT_DIR = join(ROOT, 'benchmarks/pii-eval-population-dual-run');
 export const REPORT_JSON = join(OUT_DIR, 'report.json');
-export const REPORT_MD = join(ROOT, 'docs/reports/2026-10-05-pii-eval-population-dual-run.md');
+export const REPORT_MD = join(ROOT, 'results-output/pii-population-dual-run/summary.md');
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const sh = (cmd, args, options = {}) => execFileSync(cmd, args, { encoding: 'utf8', maxBuffer: 1 << 28, ...options });
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
@@ -485,7 +485,8 @@ export async function main(argv) {
       const recorded = readFileSync(REPORT_JSON, 'utf8');
       if (recorded !== `${JSON.stringify(record, null, 1)}\n`) throw new Error('benchmarks/pii-eval-population-dual-run/report.json differs from a fresh run');
       for (const p of populations) if (!readFileSync(p.publicPath).equals(readFileSync(join(OUT_DIR, `${p.view}.public-synthetic-artifact.json`)))) throw new Error(`${p.view} public artifact differs from a fresh run`);
-      if (readFileSync(REPORT_MD, 'utf8') !== renderReport(record)) throw new Error('the Markdown report differs from the record');
+      const retained = JSON.parse(readFileSync(join(ROOT, 'benchmarks/inputs/pii-population-report-receipt.json'), 'utf8'));
+      if (sha256(renderReport(record)) !== retained.markdownSha256) throw new Error('the regenerated report differs from the retained accepted report digest');
       console.log('the recorded dual run equals a fresh run');
     }
     console.log(JSON.stringify({ verdict: record.verdict, environment }, null, 1));

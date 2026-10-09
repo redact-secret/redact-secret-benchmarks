@@ -36,7 +36,7 @@ This replacement record binds core
   all 36 applicable regression-budget triggers were within budget.
 - Blind run `95310b97-5b2e-4838-a297-5f95009388f1`: complete on the fresh
   `beta9-e2` epoch. Its separate record is
-  [`2026-09-26-beta9-142-blind-evaluation-e2.md`](../../../docs/reports/2026-09-26-beta9-142-blind-evaluation-e2.md).
+  [`2026-09-26-beta9-142-blind-evaluation-e2.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-26-beta9-142-blind-evaluation-e2.md).
 
 Pinned peer preflight reported TruffleHog `3.97.4`. Candidate-mode support
 classification measured 74 scorer families: 63 stable (39 documented, 24

@@ -1,10 +1,10 @@
 # Blind evaluation report template
 
-Copy this file to `docs/reports/<YYYY-MM-DD>-<milestone>-142-blind-evaluation.md`
+Copy this file to `results-output/blind-reports/<YYYY-MM-DD>-<milestone>-142-blind-evaluation.md`
 and copy the released aggregate (`results-output/blind/blind-aggregate-<run-id>.json`,
 git-ignored) beside it as
-`docs/reports/<YYYY-MM-DD>-<milestone>-142-blind-aggregate.json`, byte for byte.
-`npm run blind:check-public` validates that JSON in CI. Fill every
+`results-output/blind-reports/<YYYY-MM-DD>-<milestone>-142-blind-aggregate.json`, byte for byte.
+Keep these outputs transient. Archive publication requires a reviewed public-only aggregate; `npm run blind:check-public` validates retained public payloads in CI. Fill every
 `<…>` from the aggregate alone. Do not add anything the aggregate does not
 contain. Rules: [blind-evaluation.md](blind-evaluation.md).
 

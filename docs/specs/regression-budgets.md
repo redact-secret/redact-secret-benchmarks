@@ -3,11 +3,11 @@
 Issue: [#143](https://github.com/redact-secret/redact-secret-benchmarks/issues/143),
 part of [#138](https://github.com/redact-secret/redact-secret-benchmarks/issues/138).
 Timing follow-up: [#303](https://github.com/redact-secret/redact-secret-benchmarks/issues/303).
-Decisions: [`2026-09-25-introduce-reviewed-performance-regression-budgets.md`](../decisions/2026-09-25-introduce-reviewed-performance-regression-budgets.md),
+Decisions: [`2026-09-25-introduce-reviewed-performance-regression-budgets.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-25-introduce-reviewed-performance-regression-budgets.md),
 amended for latency and initialization by
-[`2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md`](../decisions/2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md).
-Baseline and derivation evidence: [`docs/reports/2026-09-25-beta9-143-regression-budgets.md`](../reports/2026-09-25-beta9-143-regression-budgets.md)
-and, for paired timing, [`docs/reports/2026-09-25-beta9-303-paired-timing-budgets.md`](../reports/2026-09-25-beta9-303-paired-timing-budgets.md).
+[`2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md).
+Baseline and derivation evidence: [`docs/reports/2026-09-25-beta9-143-regression-budgets.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-25-beta9-143-regression-budgets.md)
+and, for paired timing, [`docs/reports/2026-09-25-beta9-303-paired-timing-budgets.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-25-beta9-303-paired-timing-budgets.md).
 Library: `benchmarks/lib/regression-budgets.ts`. CLIs: `scripts/regression-budgets.mjs`
 (`npm run performance:budgets:*`) and `scripts/paired-performance.mjs`. Tests: `tests/regression-budgets.test.mjs`.
 
@@ -140,7 +140,7 @@ allocation, `derived.adapterOverheadRatio`, and, under the harness's
 `--baseline`, a per-result `baseline` and `change` against the previous
 adapter release measured in the same process. The v2 fields are budgeted by
 the rules in
-[`2026-09-29-judge-adapter-traversal-on-same-session-change.md`](../decisions/2026-09-29-judge-adapter-traversal-on-same-session-change.md):
+[`2026-09-29-judge-adapter-traversal-on-same-session-change.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-29-judge-adapter-traversal-on-same-session-change.md):
 
 - **Traversal** is judged on `change.traversal`, as the current/previous
   ratio, median over at least five processes per language (a single process is

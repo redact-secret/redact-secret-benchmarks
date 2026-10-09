@@ -1,7 +1,7 @@
 # Measurement protocol v4
 
 Status: **accepted and implemented (2026-09-17).** Decision record:
-[`decisions/2026-09-17-adopt-measurement-protocol-v4.md`](../decisions/2026-09-17-adopt-measurement-protocol-v4.md),
+[`decisions/2026-09-17-adopt-measurement-protocol-v4.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-17-adopt-measurement-protocol-v4.md),
 which also answers the open questions in §8. Report `schemaVersion: 4`, corpus
 schema 2, generated `release-comparison.md`, dashboard rework.
 
@@ -188,7 +188,7 @@ sets rather than loose negatives. Un-twinned positives are reported as a coverag
 gap (`twinned: 138/195`), not silently averaged.
 
 **Amendment, 2026-09-20 (#36).** Two extensions, decided in
-[`2026-09-20-extend-twins-to-assignment-context`](../decisions/2026-09-20-extend-twins-to-assignment-context.md):
+[`2026-09-20-extend-twins-to-assignment-context`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-20-extend-twins-to-assignment-context.md):
 
 - A family whose value has no grammar (`generic-token`, `connection-string`)
   cannot have one property of its value mutated. Its twin keeps the value and
@@ -209,7 +209,7 @@ fixture pair may be lexically inseparable: `fixtures:check` runs
 frozen pattern belonging to a `must-redact`, scored-tier positive of the same
 declared contract. A `policy/T3` expectation never conflicts with a
 contract-scoped negative — see
-[`2026-09-21-check-lexical-separability`](../decisions/2026-09-21-check-lexical-separability.md)
+[`2026-09-21-check-lexical-separability`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-21-check-lexical-separability.md)
 for the full rule, the boundary-gating identifier-embedding controls (#64)
 need, and the exemption path (`assessment.lexicalExemption`) for a documented
 example that is genuinely unavoidable.

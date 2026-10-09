@@ -49,7 +49,7 @@ A fixture targets one of two kinds of family:
   the product claims, unless the family has a recorded finding-type mapping
   (below): then the product's findings carry the arrival id and the family is
   scored like a registry family
-  ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md), #730).
+  ([`2026-09-24-score-arrival-families-by-finding-type.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md), #730).
 
 An arrival id never equals a registry id.
 
@@ -127,7 +127,7 @@ so their findings keep the detector id too.
 ### Scoring a mapped arrival family (#730)
 
 An arrival family with a row in the table above is scored like a registry
-family ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md)).
+family ([`2026-09-24-score-arrival-families-by-finding-type.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md)).
 It amends the rule that arrival ids get no status:
 
 - `eval:classify` classifies every registry id plus `scoredArrivalIds`
@@ -556,11 +556,11 @@ the published beta.14 build. The registry-only intake at `5fddf1a` gives Ory and
 synthetic coverage minimums in `detector-coverage`; the full reviewed Ory corpus and measurement remain in #827. The owner authorised proceeding with the new-version repin in the 2026-10-08 session.
 Core [PR #1282](https://github.com/redact-secret/redact-secret/pull/1282) merged the adopted `ory-token`
 detector at `5fddf1a`; issuance gates only the admin keys, per the
-[decision](../decisions/2026-10-08-defer-the-ory-sibling-contracts-until-a-product-detector-exists.md). Slice `583p` records those two pending contracts; neither is a T1 benchmark format claim or a support promotion. The registry snapshot
+[decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-08-defer-the-ory-sibling-contracts-until-a-product-detector-exists.md). Slice `583p` records those two pending contracts; neither is a T1 benchmark format claim or a support promotion. The registry snapshot
 (`benchmarks/detectors.json`, `detector-inventory.json`, `detector-finding-types.json`) pins core `main`
 `5fddf1a60d0297f0914e4b15c42a33c90a3d8fdf`; its release revision and published package remain beta.14
 `0c62fd38bca75c5b28b042dc79789b708ebf1d17`; the earlier ahead-of-release registry decision is
-[historical](../decisions/2026-10-05-claim-square-stable-widths-under-q8-and-pin-the-registry-ahead-of-the-release.md).
+[historical](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-10-05-claim-square-stable-widths-under-q8-and-pin-the-registry-ahead-of-the-release.md).
 
 - **`583a` (`benchmarks/lib/beta8/583a.ts`, `fixtures/generated/beta8/583a.mjs`, category `beta8-583a`).** Contracts for
   `square-token` (a registry detector, the `EAAA` access token: `EAAA` + exactly 60 `[A-Za-z0-9_-]`) and the arrival
@@ -619,7 +619,7 @@ detector at `5fddf1a`; issuance gates only the admin keys, per the
 [#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376)) adds category
 `beta8-379` (`fixtures/generated/beta8/379.mjs`, no contract module: every family already has its
 contract and profile). The fixture index labels it `beta.11`. It follows #377's frozen family/axis
-ledger (`docs/reports/2026-09-28/beta-11-family-axis-ledger.json`) for fifteen existing families and
+ledger (`benchmarks/inputs/credential/family-axis-ledger.json`) for fifteen existing families and
 adds no family, contract, tier, status or floor. Conventions beyond the ones above:
 
 - **Independence is checked, not claimed.** Every positive has a value and a value-masked skeleton
@@ -686,7 +686,7 @@ Each module's `profiles` declares the Beta.8 profile that each target it owns
 is authored toward: `arrival-24`, `documented-24`, `empirical-40` or
 `context-48`. A later issue may take over a target's declaration when it raises that target to a higher profile: #263 declares `empirical-40` for nine T2 registry families and `context-48` for travisci-api-token, adding its own corpus (`beta8-263`) instead of editing theirs, so their source hashes and ledger ids stay unchanged.
 
-`npm run beta8:profiles` counts every fixture in every corpus
+`npm run fixtures:profiles` counts every fixture in every corpus
 that targets a declared family and prints the remaining debt per cell: total,
 positives, independent controls, twin pairs, context-twin pairs, positive axes
 and control axes. The floors transcribe #206's draft. The report is advisory

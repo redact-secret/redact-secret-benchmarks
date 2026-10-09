@@ -6,7 +6,7 @@ Benchmark side of [redact-secret#860](https://github.com/redact-secret/redact-se
 ([#912](https://github.com/redact-secret/redact-secret/issues/912)–[#917](https://github.com/redact-secret/redact-secret/issues/917)),
 [redact-secret-benchmarks#436](https://github.com/redact-secret/redact-secret-benchmarks/issues/436), per
 [`evidence/README.md`](../../README.md). Corpus and contracts:
-[`docs/reports/2026-09-28/beta-11-tier-b-corpus-handoff.md`](../../../docs/reports/2026-09-28/beta-11-tier-b-corpus-handoff.md).
+[`docs/reports/2026-09-28/beta-11-tier-b-corpus-handoff.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-28/beta-11-tier-b-corpus-handoff.md).
 No matched plaintext or example credential is retained here.
 
 ## Source revisions

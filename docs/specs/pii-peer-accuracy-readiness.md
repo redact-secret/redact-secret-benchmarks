@@ -59,7 +59,7 @@ validate the resulting pii-eval public artifacts. Replays are reproducibility
 checks, not extra samples. Publication must preserve scanner identity, authored
 counts, effective N, absent/unsupported/withheld states and per-family strata.
 
-The [bounded local observations](../reports/pii-peer-local-defaults.md) now
+The [bounded local observations](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/pii-peer-local-defaults.md) now
 record reviewed default adapters and eight validated same-population artifacts.
 Independent ground-truth/diversity review, sensitivity semantics and a canonical
 release comparison remain unavailable. `/comparison/accuracy/?data=pii` therefore

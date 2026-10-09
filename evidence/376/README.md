@@ -6,7 +6,7 @@ after.
 
 Full narrative, per-issue fixture mapping, policy-change table, anomalies,
 and the closing published-package re-measurement are in
-[`docs/reports/beta-5/results.md`](../../docs/reports/beta-5/results.md).
+[`docs/reports/beta-5/results.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/beta-5/results.md).
 This file exists so a permalink to it, plus the one-line result above, is
 everything the core repository's own evidence archive needs to keep — per
 [`evidence/README.md`](../README.md).
@@ -44,7 +44,7 @@ npm run benchmark:candidate -- \
 ## Core-side stub (for reference — authored in `redact-secret`, not here)
 
 What `redact-secret/redact-secret`'s own `docs/audits/evidence/376/` keeps,
-per this repository's [evidence decision](../../docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md):
+per this repository's [evidence decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md):
 
 > Benchmark gate: PASS. Fixed-corpus twin false alarms 24 → 0 (56/56
 > discrimination); 0 required-positive misses. Full evidence:

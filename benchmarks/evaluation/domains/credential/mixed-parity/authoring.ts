@@ -18,9 +18,11 @@
  */
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import Ajv2020 from 'ajv/dist/2020.js';
 
 export const CREDENTIAL_MIXED_PARITY_PLAN_FILE = 'benchmarks/evaluation/domains/credential/mixed-parity/credential-mixed-parity-v1.json';
-export const FAMILY_LEDGER_FILE = 'docs/reports/2026-09-28/beta-11-family-axis-ledger.json';
+export const FAMILY_LEDGER_FILE = 'benchmarks/inputs/credential/family-axis-ledger.json';
+const HISTORICAL_LEDGER_LOCATOR = 'docs/reports/2026-09-28/beta-11-family-axis-ledger.json';
 
 /** Families of #860 (#434 Tier A and #436 Tier B), in corpus order, with the generated category that carries them. */
 export const NEW_FAMILIES: Array<[string, string]> = [
@@ -75,7 +77,12 @@ export function loadCorpora(categories = [LEDGER_CATEGORY, ...new Set(NEW_FAMILI
 }
 
 export function ledgerFamilies(file = FAMILY_LEDGER_FILE): string[] {
-  return JSON.parse(readFileSync(file, 'utf8')).selection.map((row: { family: string }) => row.family);
+  const validateFamilyInput = new Ajv2020({ strict: true, allErrors: true }).compile(JSON.parse(readFileSync('schemas/credential-family-axis-input-v1.json', 'utf8')));
+  const input = JSON.parse(readFileSync(file, 'utf8'));
+  if (!validateFamilyInput(input)) throw new Error('Invalid reviewed family-axis input');
+  const families = input.selection.map((row: { family: string }) => row.family);
+  if (new Set(families).size !== families.length) throw new Error('Duplicate family in reviewed family-axis input');
+  return families;
 }
 
 const targetOf = (f: GeneratedFixture) => (f.arrivalTargets ?? f.detectors ?? [])[0];
@@ -250,5 +257,5 @@ export function buildCredentialMixedParityPlan(corpora: CorpusMap, contracts: Re
   longLine.push({ text: FILLER.log[3], role: 'ordinary' });
   documents.push({ id: 'long-minified-line', title: 'Positive after an over-long minified token', purpose: 'a positive that follows, on the same line, a single run longer than the 8 KiB incremental token limit', lines: longLine });
   return { schemaVersion: 1, issue: 'redact-secret/redact-secret-benchmarks#381', plan: 'credential-mixed-parity-v1', families: families.map(([family]) => family),
-    selection: { rule: SELECTION_RULE, ledger: FAMILY_LEDGER_FILE, ledgerSha256: sha256(readFileSync(FAMILY_LEDGER_FILE)) }, documents };
+    selection: { rule: SELECTION_RULE, ledger: HISTORICAL_LEDGER_LOCATOR, ledgerSha256: sha256(readFileSync(FAMILY_LEDGER_FILE)) }, documents };
 }

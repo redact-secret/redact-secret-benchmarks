@@ -51,7 +51,7 @@ core facade tarball hash differs.
 - **Differential of the two builds:** a whole-input and incremental differential of the 1db8ff3 and 8f97f14 Node
   packages over all 4,992 public fixtures (the 46 categories, including the calibration-only one) finds 0 differing
   fixtures. The record is next to the blind aggregate:
-  [`../../../docs/reports/2026-09-29-beta11-142-blind-carry-over.md`](../../../docs/reports/2026-09-29-beta11-142-blind-carry-over.md).
+  [`../../../docs/reports/2026-09-29-beta11-142-blind-carry-over.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-29-beta11-142-blind-carry-over.md).
 
 ## Known gaps
 

@@ -695,7 +695,24 @@
       "maxBytes": 3874655
     }
   ],
-  "exceptions": [],
+  "exceptions": [
+    {
+      "path": "benchmarks/pii-evidence/adoption.json",
+      "owner": "Milo Kang",
+      "rationale": "Retain exact v1, initial v2 and current core-repin approvals, canonical artifacts and replay bytes. Only these two bounded history bundles may exceed the general payload cap; no evidence bytes are dropped.",
+      "issue": "https://github.com/redact-secret/redact-secret-benchmarks/issues/898",
+      "expires": "2026-11-09",
+      "maxBytes": 4194304
+    },
+    {
+      "path": "benchmarks/pii-evidence/history.json",
+      "owner": "Milo Kang",
+      "rationale": "Retain exact v1, initial v2 and current core-repin approvals, canonical artifacts and replay bytes. Only these two bounded history bundles may exceed the general payload cap; no evidence bytes are dropped.",
+      "issue": "https://github.com/redact-secret/redact-secret-benchmarks/issues/898",
+      "expires": "2026-11-09",
+      "maxBytes": 4194304
+    }
+  ],
   "enforcePrunedBaseline": true,
   "baselinePrunedAfterIssues": [
     872,

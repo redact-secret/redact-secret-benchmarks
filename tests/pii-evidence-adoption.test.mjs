@@ -234,6 +234,33 @@ test('future acceptance keeps the complete canonical initial history and refuses
   }
 });
 
+test('same-population core repin requires a new core and canonical run, preserving prior approval and bytes', () => {
+  const first = activeInput(), frozen = adoptionDigest(first);
+  const tuple = { schema: 'pii-evidence-reviewed-products/1', reviewedBy: 'Synthetic reviewer', reviewedAt: '2026-10-09T12:00:00Z',
+    baseline: first.comparison.plan.baseline, candidate: { ...first.comparison.plan.candidate, sourceCommit: '4'.repeat(40) } };
+  const upload = syntheticEvidenceOfficialUpload({ productTuple: tuple });
+  upload.run.id = 10; upload.artifact.workflow_run.id = 10; upload.receipt.github.runId = 10;
+  upload.files['receipt.json'] = JSON.stringify(upload.receipt);
+  const next = activeInput(upload, first);
+  next.history = [{ preflight: first.preflight, candidate: first.candidate, acceptance: first.acceptance,
+    comparison: first.comparison, retainedFiles: first.retainedFiles }];
+  const checked = validateActiveEvidenceAdoption(next);
+  assert.equal(checked.measurement.workflowRunId, 10);
+  assert.equal(checked.historical[0].measurement.workflowRunId, 9);
+  assert.deepEqual(checked.snapshotPin, first.snapshotPin);
+  assert.equal(adoptionDigest(first), frozen);
+  const reused = structuredClone(upload);
+  reused.run.id = 9; reused.artifact.workflow_run.id = 9; reused.receipt.github.runId = 9;
+  reused.files['receipt.json'] = JSON.stringify(reused.receipt);
+  const invalid = activeInput(reused, first); invalid.history = next.history;
+  assert.throws(() => validateActiveEvidenceAdoption(invalid), /history-canonical-run-reused/);
+  const repeated = activeInput(syntheticEvidenceOfficialUpload(), first); repeated.history = next.history;
+  assert.throws(() => validateActiveEvidenceAdoption(repeated), /history-snapshot-duplicate/);
+  const pending = structuredClone(next); pending.acceptance = null;
+  assert.equal(validateReadyEvidenceAdoption(pending).state, 'ready-for-acceptance');
+  assert.throws(() => validateActiveEvidenceAdoption(pending), /maintainer-acceptance-invalid/);
+});
+
 test('acceptance CLI prepares reversible reviewed changes and preserves raw historical evidence without active writes', () => sandbox(root => {
   const initial = activeInput(), next = activeInput(syntheticFutureEvidenceOfficialUpload(), initial);
   next.history = [{ preflight: initial.preflight, candidate: initial.candidate, acceptance: initial.acceptance, comparison: initial.comparison, retainedFiles: initial.retainedFiles }];

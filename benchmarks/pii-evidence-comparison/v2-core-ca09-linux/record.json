@@ -1,0 +1,68 @@
+{
+ "schema": "pii-evidence-comparison-record/1",
+ "publicOnly": true,
+ "supportClaims": false,
+ "authorityChanged": false,
+ "planDigest": "e588116919f21e3e909f9eeacde23c9802f43be68facb9ce8894ee1b36f48d0e",
+ "workflow": {
+  "repository": "redact-secret/redact-secret-benchmarks",
+  "path": ".github/workflows/pii-official-run.yml",
+  "reusablePath": ".github/workflows/pii-evidence-comparison.yml",
+  "runId": 38000504948,
+  "runAttempt": 1,
+  "event": "workflow_dispatch",
+  "headSha": "2105c362b1a013826d816c2d2a654597d9654db0",
+  "headBranch": "pii-core-ca09-remeasure",
+  "conclusion": "success"
+ },
+ "actionsArtifact": {
+  "id": 11649840054,
+  "name": "pii-evidence-comparison",
+  "archiveSha256": "e3cb8da1e67f6e2d7646390c669e543b1ee00178501ab7c615f4a3fcf5422200",
+  "sizeInBytes": 93731
+ },
+ "receipt": {
+  "sha256": "b0ccfd71bc6ca24458f63049a2c057156e5caf87bb5725e0c9c0708f33bb3d0b",
+  "documentDigest": "a274e1f28499ad6a7daaac7d0ad47e2ea6189d789c92ccd8c89ca402e25b2214"
+ },
+ "buildReceipt": {
+  "sha256": "6d04ef72bafdb5be9eb020f5f93aa86351a0fbccbb46dd182c2af90e26122975",
+  "documentDigest": "db55910cbb29ccd5d81eecc1db22452be8975a875b30d3c0457763b56c8a98ee"
+ },
+ "artifacts": [
+  {
+   "side": "baseline",
+   "sha256": "db3d026f488baf6f4d846604a07348243cca8ab12f08d96768a1cc655338dd3d"
+  },
+  {
+   "side": "candidate",
+   "sha256": "89cbdc416a66dae66f9711df0fb358115361a31339388393c74e15effd4f389a"
+  }
+ ],
+ "replayInputs": [
+  {
+   "name": "replay-inputs/baseline/manifest.json",
+   "sha256": "0ae4af5ad7ffcb9a00feb0113f1685176b23a6863942ab928ad066ac060ace58"
+  },
+  {
+   "name": "replay-inputs/baseline/observation.json",
+   "sha256": "3a7e3e4f9eb9b5b66f814e501eb2dadba601271c79f1ace77dd50ed9182c4d9b"
+  },
+  {
+   "name": "replay-inputs/baseline/run-artifact.json",
+   "sha256": "9a841aad2b5d8a5cc6209901e92bc8dcecfd1cc024a9519b977527bce2536fbf"
+  },
+  {
+   "name": "replay-inputs/candidate/manifest.json",
+   "sha256": "b3a07c17dbc351c7019d0b06843e0f136f7bcc1fdea4c1936abb63e85d26f668"
+  },
+  {
+   "name": "replay-inputs/candidate/observation.json",
+   "sha256": "17d99ebb166f6eff28419b726839cf1fd1e7e4ac22e100e943af9cb499ad68ee"
+  },
+  {
+   "name": "replay-inputs/candidate/run-artifact.json",
+   "sha256": "f3c5f5f1eda052f810779e1329805f689141b70a764ba59fac456d5e0b4911f5"
+  }
+ ]
+}

@@ -173,15 +173,22 @@ function validateAdoptionChain(input, pendingAcceptance) {
   validatePiiPopulationPolicy(input.policy);
   if (!Array.isArray(input.history) || input.history.length > 100) refuse('history-invalid');
   let previous = null;
-  const historical = [], identities = new Set();
+  const historical = [], snapshots = new Set(), identities = new Set(), runs = new Set();
   for (const entry of [...input.history, input]) {
     const selected = { preflight: entry.preflight, candidate: entry.candidate, acceptance: entry.acceptance, comparison: entry.comparison, retainedFiles: entry.retainedFiles };
     if (entry !== input && !exact(entry, Object.keys(selected))) refuse('history-invalid');
     const initialHistoricalAnchor = entry !== input && previous === null && selected.acceptance === null;
     const checked = checkedAdoptionEntry(selected, input.policy, previous, { initialHistoricalAnchor, pendingAcceptance: pendingAcceptance && entry === input }), id = checked.preflight.evidence.snapshot.id;
-    if (identities.has(id)) refuse('history-snapshot-duplicate');
+    // A core repin keeps the exact population, but requires a different core
+    // source and a fresh canonical run. Revisited populations still refuse.
+    if (snapshots.has(id) && (!previous || previous.preflight.evidence.snapshot.id !== id ||
+        adoptionDigest(previous.preflight) !== adoptionDigest(checked.preflight) ||
+        previous.scanner.sourceCommit === checked.scanner.sourceCommit)) refuse('history-snapshot-duplicate');
+    const tuple = adoptionDigest(checked.candidate.identity), run = `${id}:${checked.measurement.workflowRunId}`;
+    if (identities.has(tuple)) refuse('history-measurement-identity-duplicate');
+    if (runs.has(run)) refuse('history-canonical-run-reused');
     if (!previous && adoptionDigest(checked.preflight.evidence) !== adoptionDigest(SNAPSHOT_PIN)) refuse('history-initial-anchor-missing');
-    identities.add(id);
+    snapshots.add(id); identities.add(tuple); runs.add(run);
     if (entry !== input) historical.push({ candidateDigest: checked.candidate.candidateDigest,
       identity: checked.candidate.identity, acceptance: checked.acceptance, measurement: checked.measurement });
     previous = checked;

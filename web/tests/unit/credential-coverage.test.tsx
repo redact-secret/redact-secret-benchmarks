@@ -88,5 +88,7 @@ describe('credential methodology projection', () => {
     expect(screen.getByRole('link', { name: /Open credential coverage/ })).toHaveAttribute('href', '/coverage/credential/');
     expect(screen.getByRole('link', { name: 'qualification rationale and exclusions' })).toHaveAttribute('href', expect.stringContaining('/docs/specs/policy-qualified-credentials.md'));
     expect(screen.getByText(/independent benign\/twin controls/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'credential corpus detail' }).closest('p')).toHaveAttribute('id', 'by-kind');
+    expect(screen.getByRole('link', { name: 'qualification method results' }).closest('p')).toHaveAttribute('id', 'by-method');
   });
 });

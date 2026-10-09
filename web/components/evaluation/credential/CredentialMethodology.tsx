@@ -32,6 +32,8 @@ export function CredentialMethodology({ head, method, reading, limits, className
       <p>Intervals describe the authored population. Unresolved, withheld and unavailable observations retain their stated reasons. None is a production traffic rate or a pooled cross-population score.</p>
     </Section>
     <Section title="Detailed evidence and results">
+      <p id="by-kind">The fixture-kind and evidence-level inventory moved to the <a href="/report/corpus/">credential corpus detail</a>. This preserves the former overview bookmark.</p>
+      <p id="by-method">Recorded case and variant counts by method now live in <a href="/evaluation/qualification/">qualification method results</a> and each method’s detail page.</p>
       <ul>
         <li><a href="/report/corpus/">Credential corpus and fixture inputs</a></li>
         <li><a href="/evaluation/qualification/">Official populations, qualification criteria and optional-scanner provenance</a></li>

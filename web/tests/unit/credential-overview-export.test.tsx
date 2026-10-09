@@ -40,5 +40,6 @@ describe('independent credential overview export guards', () => {
     expect(credentialMethodologyExportProblems(html, 'legacy')).toEqual([]);
     expect(credentialMethodologyExportProblems(html.replace('href="https://github.com/redact-secret/credential-eval"', 'href="/wrong/"'), 'legacy')).toContain('methodology-link:https://github.com/redact-secret/credential-eval');
     expect(credentialMethodologyExportProblems(`${html}<table><caption>Fixtures by kind and level</caption></table>`, 'legacy')).toContain('methodology-result-inventory');
+    expect(credentialMethodologyExportProblems(html.replace('id="by-kind"', 'id="old-bookmark-lost"'), 'legacy')).toContain('methodology-bookmark:by-kind');
   });
 });

@@ -67,6 +67,10 @@ export function credentialMethodologyExportProblems(html, authority) {
       if (!hasLink(root, href)) problems.push(`methodology-link:${href}`);
     }
     if ([...root.querySelectorAll('table caption')].some(node => /Fixtures by kind|Cases and variants|Families by/.test(node.textContent))) problems.push('methodology-result-inventory');
+    for (const [anchor, href] of [['by-kind', '/report/corpus/'], ['by-method', '/evaluation/qualification/']]) {
+      const replacement = root.getElementById(anchor);
+      if (!visible(replacement) || !hasLink(replacement, href)) problems.push(`methodology-bookmark:${anchor}`);
+    }
     const stamp = stampOf(html);
     if (stamp?.pipeline !== authority || stamp?.role !== 'authority') problems.push('methodology-authority-stamp');
     return problems;

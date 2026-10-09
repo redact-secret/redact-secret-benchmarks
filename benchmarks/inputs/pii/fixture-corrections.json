@@ -1,0 +1,94 @@
+{
+  "schema": "redact-secret/pii-fixture-corrections/v1",
+  "supportClaims": false,
+  "source": {
+    "commit": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+    "path": "evidence/901/426/pii-c3-reviewed-corrections-v1.json",
+    "sha256": "7c7cf9ff09cd9b749164fe0103994799f46b407360df1a9c33f37022b2e8ce3b"
+  },
+  "contract": {
+    "repository": "redact-secret/redact-secret",
+    "commit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314",
+    "files": [
+      "docs/contracts/pii/pii-context-v1.json",
+      "docs/contracts/pii/us-ssn-v1.md",
+      "docs/contracts/pii/phone-v1.md"
+    ]
+  },
+  "corrections": [
+    {
+      "family": "pii:us:ssn",
+      "caseId": "db-en-example-suffix",
+      "reasonCode": "parenthesized-label-is-not-a-whole-token",
+      "contractBasis": "pii-context/v1 normalization.tokenSeparators excludes parentheses; us-ssn-v1 lets only an associated whole example/documentation label win after positive context, so the ssn field label stands.",
+      "frozen": {
+        "publicFinding": false,
+        "identity": "valid",
+        "sensitivity": "not-established"
+      },
+      "corrected": {
+        "publicFinding": true,
+        "oracle": {
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        }
+      }
+    },
+    {
+      "family": "pii:global:phone",
+      "caseId": "db-en-contact-details-after",
+      "reasonCode": "parenthesized-label-is-not-a-whole-token",
+      "contractBasis": "pii-context/v1 normalization.tokenSeparators excludes parentheses, so a parenthesized contact details phrase is not the high-signal natural-language label and no other context is associated.",
+      "frozen": {
+        "publicFinding": true,
+        "identity": "valid",
+        "sensitivity": "sensitive"
+      },
+      "corrected": {
+        "publicFinding": false,
+        "oracle": {
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        }
+      }
+    },
+    {
+      "family": "pii:global:phone",
+      "caseId": "bh-ko-example-suffix",
+      "reasonCode": "parenthesized-label-is-not-a-whole-token",
+      "contractBasis": "pii-context/v1 normalization.tokenSeparators excludes parentheses; phone-v1 names ko-example-label as an occurrence exclusion only when associated, so the 전화번호 field label stands.",
+      "frozen": {
+        "publicFinding": false,
+        "identity": "valid",
+        "sensitivity": "not-established"
+      },
+      "corrected": {
+        "publicFinding": true,
+        "oracle": {
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        }
+      }
+    }
+  ],
+  "projectionCommitment": "e71a91575f59588499861c7b4348ed16bb0840d48dfa26bdf57283f066a97c6f"
+}

@@ -1,18 +1,23 @@
+import { historicalReplayOptions, historicalJson, historicalBytes } from './helpers/historical-evidence-archive.mjs';
+import { loadPiiProtectedSupportEvidence } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
+import { piiReviewedProtectedRoute } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
+import { fileURLToPath } from 'node:url';
 // benchmarks #428: maintainer-accepted PII profile-cost tradeoffs (benchmarks/accepted-pii-profile-cost.json).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { b11ProfileCostAcceptance, piiProfileCostAcceptanceProblems, piiProfileCostAcceptances } from '../benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts';
-import { B11P_BETA11_CORE_COMMIT, b11ProtectedFamilySlug, b11ProtectedPublicGates, buildB11ProtectedDisposition, validateB11ProtectedSeal } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
+import { B11P_BETA11_CORE_COMMIT, b11ProtectedFamilySlug, b11ProtectedPublicGates, buildB11ProtectedDisposition, deriveB11ProtectedDisposition, validateB11ProtectedSeal } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
 import { B11_FAMILIES } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
 
 const json = file => JSON.parse(readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'));
-const bound = directory => {
+const receipt = json('benchmarks/inputs/pii/protected-route.json');
+const current = await loadPiiProtectedSupportEvidence(fileURLToPath(new URL('../', import.meta.url)), piiReviewedProtectedRoute(receipt.bindingId));
+const historicalBound = directory => {
   const dir = `evidence/901/428/${directory}/`;
-  return { report: json(`${dir}pii-beta11-report-v2.json`), disposition: json(`${dir}pii-beta11-disposition-v2.json`),
-    profileCost: { runs: json(`${dir}pii-profile-cost-v2-runs.json`), candidate: json(`${dir}pii-profile-cost-v2-candidate.json`), size: json(`${dir}pii-profile-cost-v2-size.json`) } };
+  return { report: historicalJson(`${dir}pii-beta11-report-v2.json`), disposition: historicalJson(`${dir}pii-beta11-disposition-v2.json`),
+    profileCost: { runs: historicalJson(`${dir}pii-profile-cost-v2-runs.json`), candidate: historicalJson(`${dir}pii-profile-cost-v2-candidate.json`), size: historicalJson(`${dir}pii-profile-cost-v2-size.json`) } };
 };
-const current = bound(`core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}`);
 const entry = piiProfileCostAcceptances.find(row => row.candidate.sourceCommit === B11P_BETA11_CORE_COMMIT);
 const withEntry = patch => [{ ...structuredClone(entry), ...patch }];
 
@@ -51,7 +56,7 @@ test('an acceptance never stretches: a missing, excluded or changed cell, anothe
   const noSize = b11ProfileCostAcceptance({ ...current, ledger: withEntry({ sizeRows: entry.sizeRows.slice(1) }) });
   assert.equal(noSize.status, 'not-covered');
   // The ec9224d9 record has no entry and stays not-met.
-  assert.equal(b11ProfileCostAcceptance(bound('core-ec9224d97430')).status, 'none');
+  assert.equal(b11ProfileCostAcceptance({ ...current, report: { ...current.report, candidate: { ...current.report.candidate, sourceCommit: '0'.repeat(40) } } }).status, 'none');
 });
 
 test('schema problems are reported in the #143 ledger style', () => {
@@ -71,7 +76,7 @@ test('the protected route treats an accepted profile-cost gate as met, and all s
     assert.deepEqual(gates.unresolved, []);
     assert.deepEqual(gates.acceptedTradeoffs, [`profile-cost:${entry.id}`]);
   }
-  const record = buildB11ProtectedDisposition({ report: current.report, disposition: current.disposition, seal: null, runs: [], costAcceptance: acceptance });
+  const record = deriveB11ProtectedDisposition({ report: current.report, disposition: current.disposition, seal: null, runs: [], costAcceptance: acceptance });
   assert.deepEqual(record.distribution, { pending: 6, provisional: 0, stable: 0 });
   for (const row of record.families) {
     assert.equal(row.protected.state, 'unspent');
@@ -79,7 +84,7 @@ test('the protected route treats an accepted profile-cost gate as met, and all s
     assert.deepEqual(row.publicGates.notMet, []);
   }
   // Without the acceptance the same record refuses every family on profile-cost.
-  assert.ok(buildB11ProtectedDisposition({ report: current.report, disposition: current.disposition, seal: null, runs: [] })
+  assert.ok(deriveB11ProtectedDisposition({ report: current.report, disposition: current.disposition, seal: null, runs: [] })
     .families.every(row => row.protected.reason === 'public-gates-failed:profile-cost'));
   // A not-covered acceptance, or one bound to another report, never lifts the gate.
   const partial = b11ProfileCostAcceptance({ ...current, ledger: withEntry({ cells: entry.cells.slice(1) }) });
@@ -88,13 +93,14 @@ test('the protected route treats an accepted profile-cost gate as met, and all s
     /cost-acceptance-not-bound-to-report|Holdout operation rejected/);
 });
 
-test('the committed 8b6a5fde protected disposition re-derives byte for byte from the report, the disposition, the acceptance, the seal and the protected runs', () => {
+test('historical 8b6a5fde protected disposition re-derives byte for byte from verified archived originals', historicalReplayOptions, () => {
+  const current = historicalBound(`core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}`);
   // The sealed protected corpus (holdout/pii-b11-17dae942ee4b-seal.json) and one aggregate plus trust resolution per family.
   const dir = `evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/protected/`;
-  const runs = B11_FAMILIES.map(family => ({ aggregate: json(`${dir}${b11ProtectedFamilySlug(family)}-aggregate-v1.json`),
-    trust: json(`${dir}${b11ProtectedFamilySlug(family)}-trust-resolution-v1.json`) }));
-  const record = buildB11ProtectedDisposition({ report: current.report, disposition: current.disposition,
+  const runs = B11_FAMILIES.map(family => ({ aggregate: historicalJson(`${dir}${b11ProtectedFamilySlug(family)}-aggregate-v1.json`),
+    trust: historicalJson(`${dir}${b11ProtectedFamilySlug(family)}-trust-resolution-v1.json`) }));
+  const record = deriveB11ProtectedDisposition({ report: current.report, disposition: current.disposition,
     seal: validateB11ProtectedSeal(json('holdout/pii-b11-17dae942ee4b-seal.json')), runs, costAcceptance: b11ProfileCostAcceptance(current) });
   assert.equal(`${JSON.stringify(record, null, 2)}\n`,
-    readFileSync(new URL(`../evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/pii-beta11-protected-disposition-v2.json`, import.meta.url), 'utf8'));
+    historicalBytes(`evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/pii-beta11-protected-disposition-v2.json`).toString('utf8'));
 });

@@ -22,13 +22,10 @@ test('the population observer requests one selector per registered scope under o
   assert.deepEqual(piiPopulationScannerConfiguration().requestedSelectors, piiPopulationSelectors());
 });
 
-test('committed product evidence binds only for the exact measured product', async () => {
-  const recorded = await productEvidenceFor(PHONE_PRODUCT, 'evidence');
-  assert.match(recorded.directory, /evidence\/880$/);
-  assert.equal(recorded.binding.activationArtifact.product.sourceCommit, PHONE_PRODUCT.sourceCommit);
-  assert.equal(await productEvidenceFor({ ...PHONE_PRODUCT, sourceCommit: 'f'.repeat(40) }, 'evidence'), null);
-  await assert.rejects(productEvidenceFor({ ...PHONE_PRODUCT, coreSha256: 'a'.repeat(64) }, 'evidence'), /another core artifact/);
-  await assert.rejects(productEvidenceFor({ ...PHONE_PRODUCT, sourceCommit: 'not-a-sha' }, 'evidence'), /Invalid measured product/);
+test('historical activation records do not describe the current measured products', async () => {
+  assert.equal(await productEvidenceFor(PHONE_PRODUCT), null);
+  assert.equal(await productEvidenceFor({ ...PHONE_PRODUCT, sourceCommit: 'f'.repeat(40) }), null);
+  await assert.rejects(productEvidenceFor({ ...PHONE_PRODUCT, sourceCommit: 'not-a-sha' }), /Invalid measured product/);
 });
 
 test('a population bundle binds only when its candidate is the measured product', () => {
@@ -43,10 +40,11 @@ test('a population bundle binds only when its candidate is the measured product'
 });
 
 test('a candidate that is the released lockfile package writes no population bundle', async () => {
-  const { mkdtemp, rm, access } = await import('node:fs/promises'), { tmpdir } = await import('node:os'), path = await import('node:path');
+  const { mkdtemp, mkdir, rm, access } = await import('node:fs/promises'), { tmpdir } = await import('node:os'), path = await import('node:path');
   const { execFile } = await import('node:child_process'), { promisify } = await import('node:util');
   const { packLockfileRelease } = await import('../scripts/observe-pii-populations.mjs');
-  const scratch = await mkdtemp(path.join(tmpdir(), 'pii-population-released-')), output = path.join(scratch, 'out', 'bundle.json');
+  await mkdir('results-output', {recursive:true});
+  const scratch = await mkdtemp(path.resolve('results-output/pii-population-released-')), output = path.join(scratch, 'out', 'bundle.json');
   try {
     const released = await packLockfileRelease(scratch);
     const { stdout } = await promisify(execFile)(process.execPath, ['--import', 'tsx', 'scripts/observe-pii-populations.mjs',

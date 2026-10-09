@@ -1,3 +1,6 @@
+import { historicalReplayOptions, historicalJson } from './helpers/historical-evidence-archive.mjs';
+import { syntheticPiiProduct } from './helpers/synthetic-pii-product.mjs';
+import { validatePiiProductBindingStructure, validatePiiProductBinding } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -54,12 +57,12 @@ test('unbound support projects zero strata while explicitly bound canonical repo
   assert.ok(summaries(bound).every(row => row.status === 'not-measured' && row.strata > 0));
 });
 
-test('trusted product binding is artifact-derived and still fails closed without population and qualification gates', async () => {
+test('trusted product binding is artifact-derived and still fails closed without population and qualification gates', historicalReplayOptions, async () => {
   const value = piiSupportRegistry;
   const [candidateEvidence, activationArtifact, qualificationArtifact] = await Promise.all([
-    readFile('evidence/875/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/875/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/875/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    Promise.resolve(historicalJson('evidence/875/candidate-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/875/pii-activation-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/875/pii-family-qualification-v1.json')),
   ]);
   const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
   const matrix = buildPiiSupportMatrixV2({ registry: value, product });
@@ -97,11 +100,11 @@ test('trusted product binding is artifact-derived and still fails closed without
   }
 });
 
-test('email binding keeps installed offsets and exact-source conformance separately committed', async () => {
+test('email binding keeps installed offsets and exact-source conformance separately committed', historicalReplayOptions, async () => {
   const [candidateEvidence, activationArtifact, qualificationArtifact] = await Promise.all([
-    readFile('evidence/876/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/876/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/876/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    Promise.resolve(historicalJson('evidence/876/candidate-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/876/pii-activation-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/876/pii-family-qualification-v1.json')),
   ]);
   const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
   const matrix = buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product });
@@ -138,11 +141,11 @@ test('email binding keeps installed offsets and exact-source conformance separat
   }
 });
 
-test('IBAN binding pins authority and validator provenance while unresolved evidence stays pending', async () => {
+test('IBAN binding pins authority and validator provenance while unresolved evidence stays pending', historicalReplayOptions, async () => {
   const [candidateEvidence, activationArtifact, qualificationArtifact, plan] = await Promise.all([
-    readFile('evidence/878/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/878/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/878/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    Promise.resolve(historicalJson('evidence/878/candidate-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/878/pii-activation-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/878/pii-family-qualification-v1.json')),
     readFile('benchmarks/evaluation/domains/pii/iban-qualification-v1.json', 'utf8').then(JSON.parse),
   ]);
   const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
@@ -177,11 +180,11 @@ test('IBAN binding pins authority and validator provenance while unresolved evid
   assert.throws(() => buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product: hostile }), /trusted PII qualification evidence/);
 });
 
-test('payment-card binding separates Luhn controls from semantic collisions and stays pending without populations', async () => {
+test('payment-card binding separates Luhn controls from semantic collisions and stays pending without populations', historicalReplayOptions, async () => {
   const [candidateEvidence, activationArtifact, qualificationArtifact, plan] = await Promise.all([
-    readFile('evidence/877/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/877/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/877/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    Promise.resolve(historicalJson('evidence/877/candidate-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/877/pii-activation-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/877/pii-family-qualification-v1.json')),
     readFile('benchmarks/evaluation/domains/pii/payment-card-qualification-v1.json', 'utf8').then(JSON.parse),
   ]);
   const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
@@ -221,11 +224,11 @@ test('payment-card binding separates Luhn controls from semantic collisions and 
   assert.throws(() => buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product: hostile }), /trusted PII qualification evidence/);
 });
 
-test('phone binding preserves narrow authority, context, and extension axes while staying pending', async () => {
+test('phone binding preserves narrow authority, context, and extension axes while staying pending', historicalReplayOptions, async () => {
   const [candidateEvidence, activationArtifact, qualificationArtifact, plan] = await Promise.all([
-    readFile('evidence/880/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/880/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
-    readFile('evidence/880/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    Promise.resolve(historicalJson('evidence/880/candidate-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/880/pii-activation-evidence-v1.json')),
+    Promise.resolve(historicalJson('evidence/880/pii-family-qualification-v1.json')),
     readFile('benchmarks/evaluation/domains/pii/phone-qualification-v1.json', 'utf8').then(JSON.parse),
   ]);
   const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
@@ -287,8 +290,8 @@ test('trusted activation or qualification alone cannot forge provisional support
   assert.throws(() => validatePiiSupportMatrixV2(matrix), /semantics/);
 });
 
-test('a fully measured no-regression matrix cannot forge a repository-sanctioned product tuple', async () => {
-  const forged = JSON.parse(await readFile('evidence/875/pii-support-matrix-v2.json', 'utf8'));
+test('a fully measured no-regression matrix cannot forge a repository-sanctioned product tuple', historicalReplayOptions, async () => {
+  const forged = historicalJson('evidence/875/pii-support-matrix-v2.json');
   forged.activationContract.productSourceCommit = '9'.repeat(40);
   forged.activationContract.productArtifactCommitment = 'a'.repeat(64);
   forged.activationContract.candidateEvidenceCommitment = 'b'.repeat(64);
@@ -537,4 +540,45 @@ test('a manifest rewritten in place under the same pointer is detected', async (
   const evidence = await readCredentialEvidence(results, supportFile);
   await writeFile(path.join(directory, 'manifest.json'), `${await readFile(path.join(directory, 'manifest.json'), 'utf8')} `);
   assert.match(await credentialEvidenceChangeProblem(evidence), /changed during publication|unreadable/);
+});
+
+test('synthetic product binding structure remains valid while an invented product never gains repository sanction', () => {
+  const family = 'pii:global:network-address';
+  const product = syntheticPiiProduct(family);
+  const bound = validatePiiProductBindingStructure(product, [family]);
+  assert.deepEqual(bound.availableFamilies, [family]);
+  assert.equal(bound.sourceCommit, product.candidateEvidence.candidate.sourceCommit);
+  assert.throws(() => validatePiiProductBinding(product, [family]), /not repository-sanctioned/);
+  assert.throws(() => buildPiiSupportMatrixV2({ product }), /not repository-sanctioned/);
+  for (const mutate of [
+    value => value.candidateEvidence.candidate.sourceState = 'dirty',
+    value => value.activationArtifact.availableFamilies.push('pii:global:unknown'),
+    value => value.activationArtifact.product.sourceCommit = '9'.repeat(40),
+    value => value.qualificationArtifacts[0].status = 'qualified',
+    value => value.qualificationArtifacts[0].classAccounting[0].observations = 0,
+  ]) {
+    const changed = structuredClone(product); mutate(changed);
+    assert.throws(() => validatePiiProductBindingStructure(changed, [family]));
+  }
+});
+
+test('synthetic conformance keeps native UTF16 and canonical UTF8 offsets plus source-family commitments distinct', () => {
+  const family = 'pii:global:email';
+  const product = syntheticPiiProduct(family, { conformance: true });
+  const bound = validatePiiProductBindingStructure(product, [family]);
+  const qualification = bound.qualification[0];
+  const row = qualification.installedArtifactConformance.lanes[0].observations[0];
+  assert.equal(row.canonicalRange.start - row.nativeRange.start, 2);
+  for (const mutate of [
+    value => value.qualificationArtifacts[0].installedArtifactConformance.lanes[0].observations[0].nativeRange.end = 0,
+    value => value.qualificationArtifacts[0].sourceConformance.lanes[0].fixture = 'conformance/fixtures/pii-iban-v1.json',
+    value => value.qualificationArtifacts[0].sourceConformance.sourceCommit = '9'.repeat(40),
+  ]) {
+    const changed = structuredClone(product); mutate(changed);
+    const q = changed.qualificationArtifacts[0];
+    q.installedArtifactConformance.artifactCommitment = piiBindingArtifactCommitment(q.installedArtifactConformance);
+    q.sourceConformance.artifactCommitment = piiBindingArtifactCommitment(q.sourceConformance);
+    q.artifactCommitment = piiBindingArtifactCommitment(q);
+    assert.throws(() => validatePiiProductBindingStructure(changed, [family]), /qualification evidence/);
+  }
 });

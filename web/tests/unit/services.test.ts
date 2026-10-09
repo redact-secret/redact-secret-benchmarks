@@ -148,12 +148,12 @@ describe('own performance', () => {
   });
 
   test('summary absent: not published', async () => {
-    const s = await services(overlay({ [`${dir}/summary.json`]: null }));
+    const s = await services(overlay({ ['benchmarks/inputs/performance/current.json']: null }));
     await expect(s.performance.loadOwnPerformance()).resolves.toMatchObject({ state: 'not-published' });
   });
 
   test('summary that does not validate: invalid, with what failed', async () => {
-    const s = await services(overlay({ [`${dir}/summary.json`]: '{"status":"complete"}' }));
+    const s = await services(overlay({ ['benchmarks/inputs/performance/current.json']: '{"status":"complete"}' }));
     await expect(s.performance.loadOwnPerformance()).resolves.toMatchObject({ state: 'invalid', reason: expect.stringContaining('did not validate') });
   });
 
@@ -162,10 +162,10 @@ describe('own performance', () => {
     await expect(s.performance.loadOwnPerformance()).resolves.toMatchObject({ state: 'invalid', reason: expect.stringContaining('is not the complete run of') });
   });
 
-  test('without runner.json the runner is null, not made up', async () => {
-    const s = await services(overlay({ [`${dir}/runner.json`]: null }));
-    const own = await s.performance.loadOwnPerformance();
-    expect(own).toMatchObject({ state: 'measured', runner: null });
+  test('missing source-bound runner rejects the incomplete current input', async () => {
+    const file = 'benchmarks/inputs/performance/current.json';
+    const s = await services(overlay({ [file]: edited(file, v => { delete v.records.runner; }) }));
+    await expect(s.performance.loadOwnPerformance()).resolves.toMatchObject({ state: 'invalid' });
   });
 });
 
@@ -180,8 +180,8 @@ describe('peer runtime', () => {
 
   test('snapshots absent: each says not published, and tool facts still come from the plan', async () => {
     const files = Object.fromEntries([
-      ['evidence/429/peer-pii-runtime-throughput.json', null],
-      ...readdirSync(path.join(REAL, 'evidence/562')).filter(f => f.startsWith('runtime-comparison-')).map(f => [`evidence/562/${f}`, null] as const),
+      ['benchmarks/inputs/runtime/peer-pii-runtime-throughput.json', null],
+      ...readdirSync(path.join(REAL, 'benchmarks/inputs/runtime')).filter(f => f.startsWith('runtime-comparison-')).map(f => [`benchmarks/inputs/runtime/${f}`, null] as const),
     ]);
     const s = await services(overlay(files));
     const runtime = await s.runtime.loadPeerRuntime();
@@ -192,8 +192,8 @@ describe('peer runtime', () => {
 
   test('snapshots that do not validate are invalid and never read', async () => {
     const files = Object.fromEntries([
-      ['evidence/429/peer-pii-runtime-throughput.json', '{"schema":"wrong"}'],
-      ...readdirSync(path.join(REAL, 'evidence/562')).filter(f => f.startsWith('runtime-comparison-')).map(f => [`evidence/562/${f}`, '{}'] as const),
+      ['benchmarks/inputs/runtime/peer-pii-runtime-throughput.json', '{"schema":"wrong"}'],
+      ...readdirSync(path.join(REAL, 'benchmarks/inputs/runtime')).filter(f => f.startsWith('runtime-comparison-')).map(f => [`benchmarks/inputs/runtime/${f}`, '{}'] as const),
     ]);
     const s = await services(overlay(files));
     const runtime = await s.runtime.loadPeerRuntime();

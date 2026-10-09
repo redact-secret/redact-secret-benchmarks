@@ -1,11 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import { findingTypeSource, findingTypesFor } from '../benchmarks/support/finding-types.ts';
 import { PII_RECORD_REVISION, PII_REQUALIFICATION_STATEMENT } from '../benchmarks/support/pii-families.ts';
+import { loadPiiProtectedSupportEvidence } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
+import protectedBindings from '../benchmarks/evaluation/domains/pii/protected-support-bindings-v1.json' with { type: 'json' };
 import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
 import { arrivalFindingTypes } from '../scanners/families.mjs';
 import { piiSection, withMatrixExtras } from './support-matrix-extras.mjs';
@@ -109,10 +112,26 @@ test('the PII identity is the Beta.11 qualification and says it has not been re-
   assert.match(q.requalification.statement, /not been re-qualified/);
 });
 
-test('the PII record revision names a benchmarks commit that holds the same aggregate disposition (skipped without that history)', async t => {
+test('the current protected projection preserves the separately reviewed original disposition identity', async () => {
+  const binding = protectedBindings.bindings.find(row => row.id === protectedBindings.current);
+  const current = await loadPiiProtectedSupportEvidence(fileURLToPath(new URL('..', import.meta.url)), binding);
+  const sources = current.currentInput.sources.filter(row => row.path === piiSection.piiQualification.disposition);
+  assert.equal(sources.length, 1);
+  assert.equal(sources[0].sha256, 'f3199393037249087c9c17f379d0936e04ef5182ba88425048745b0db5c68e37');
+  assert.equal(current.protectedDisposition.artifactCommitment, binding.artifactCommitment);
+  assert.equal(current.protectedDisposition.artifactCommitment, piiSection.piiQualification.commitments.protectedDisposition);
+  assert.notEqual(current.currentInput.projectionCommitment, sources[0].sha256);
+});
+
+test('the PII record revision holds the original aggregate bytes named by the current projection (skipped without history)', async t => {
   let blob;
-  try { blob = execFileSync('git', ['show', `${PII_RECORD_REVISION}:${piiSection.piiQualification.disposition}`], { stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 1 << 24 }); } catch { t.skip('history not available'); return; }
-  assert.equal(createHash('sha256').update(blob).digest('hex'), createHash('sha256').update(await read(piiSection.piiQualification.disposition)).digest('hex'));
+  try { blob = execFileSync('git', ['show', `${PII_RECORD_REVISION}:${piiSection.piiQualification.disposition}`], { stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 1 << 24 }); } catch { t.skip('Original recorded source history not available'); return; }
+  const binding = protectedBindings.bindings.find(row => row.id === protectedBindings.current);
+  const current = await loadPiiProtectedSupportEvidence(fileURLToPath(new URL('..', import.meta.url)), binding);
+  const original = current.currentInput.sources.find(row => row.path === piiSection.piiQualification.disposition);
+  assert.equal(createHash('sha256').update(blob).digest('hex'), original.sha256);
+  assert.equal(blob.length, original.bytes);
+  assert.deepEqual(JSON.parse(blob), current.protectedDisposition);
 });
 
 test('PII rows stay out of the credential counts, and a PII claim above the record is refused', () => {

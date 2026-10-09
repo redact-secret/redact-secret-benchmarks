@@ -1,3 +1,4 @@
+import { piiScorerReference } from '../benchmarks/evaluation/domains/pii/scorer-reference.mjs';
 #!/usr/bin/env node
 // Dual run of the four frozen benchmark PII populations (#664): the pinned TypeScript oracle against the extracted
 // pii-eval engine, over identical inputs, with every difference classified. No scanner is run: the frozen Beta.13
@@ -418,7 +419,8 @@ function bindingRejections(ctx) {
 // Benchmark report agreement on identities and counts
 // ---------------------------------------------------------------------------------------------------------------
 function benchmarkReportCounts(migration, populations) {
-  const report = readJson(join(ROOT, migration.benchmarkPopulations.report.path));
+  if (migration.benchmarkPopulations.report.path !== 'evidence/901/428/core-401158d09a67/pii-beta11-report-v2.json') throw new Error('Unregistered benchmark population report source');
+  const report = piiScorerReference;
   const rows = [];
   for (const family of report.families) {
     for (const view of family.views.reviewed) {

@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
+import runtimeInputIndex from '../benchmarks/inputs/runtime/index.json' with { type: 'json' };
+import { runtimeInputPaths, validateCurrentRuntimeInput } from '../benchmarks/lib/current-runtime-inputs.mjs';
 import { Telemetry, classifyChanges, identityDigest, planExecution, planPerformance, renderExecutionPlan } from '../benchmarks/qualification/execution-plan.ts';
 
 const axes = JSON.parse(readFileSync(new URL('../benchmarks/execution-axes.json', import.meta.url), 'utf8'));
@@ -134,8 +136,15 @@ test('a plan labels reused performance as independent historical measurements, n
 test('the committed cell register points at artifacts whose bytes match their recorded digests (#709)', () => {
   const committed = JSON.parse(readFileSync(new URL('../benchmarks/performance-cells.json', import.meta.url), 'utf8'));
   assert.ok(committed.cells.length > 0);
-  for (const a of new Map(committed.cells.map(c => [c.artifact.path, c.artifact])).values())
-    assert.equal(`sha256:${createHash('sha256').update(readFileSync(new URL(`../${a.path}`, import.meta.url))).digest('hex')}`, a.byteDigest, a.path);
+  for (const a of new Map(committed.cells.map(c => [c.artifact.path, c.artifact])).values()) {
+    const entry = Object.entries(runtimeInputIndex.records).find(([, record]) => record.source.path === a.path);
+    assert.ok(entry, `Current runtime artifact must have an independently bound canonical source: ${a.path}`);
+    const [id, record] = entry;
+    const bytes = readFileSync(new URL(`../${runtimeInputPaths[id]}`, import.meta.url));
+    validateCurrentRuntimeInput(id, JSON.parse(bytes));
+    assert.equal(`sha256:${record.source.sha256}`, a.byteDigest, a.path);
+    assert.equal(`sha256:${createHash('sha256').update(bytes).digest('hex')}`, a.byteDigest, a.path);
+  }
   for (const c of committed.cells) assert.equal(c.identityDigest, identityDigest(c.identity), c.id);
   assert.ok(committed.measurements.every(m => m.granularity === 'measurement'));
 });

@@ -25,6 +25,8 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { B11_FAMILIES, b11CaseTables } from '../../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
+import { loadPiiConversionObservation, PII_CONVERSION_OBSERVATION_SOURCE } from '../../benchmarks/evaluation/domains/pii/conversion-observation.mjs';
+import { piiScorerReferenceSource, validateScorerReference } from '../../benchmarks/evaluation/domains/pii/scorer-reference.mjs';
 import { canonicalize, semanticDigest } from '../../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -70,9 +72,10 @@ function laneFor(observation, family) {
 export function buildConversion({ root = ROOT } = {}) {
   const migration = readMigration(root);
   const populations = migration.benchmarkPopulations;
-  const observationBody = pinned(root, populations.observation);
-  pinned(root, populations.report);
-  const observation = JSON.parse(observationBody.toString('utf8'));
+  for (const [pin, source] of [[populations.observation, PII_CONVERSION_OBSERVATION_SOURCE], [populations.report, piiScorerReferenceSource]])
+    if (pin.path !== source.path || pin.sha256 !== source.sha256) throw new Error('Migration input differs from reviewed original source');
+  validateScorerReference(JSON.parse(readFileSync(join(root, 'benchmarks/inputs/pii/scorer-reference.json'), 'utf8')));
+  const observation = loadPiiConversionObservation(root);
   const candidate = populations.candidate;
   if (observation.candidate.sourceCommit !== candidate.sourceCommit || observation.candidate.artifactSetCommitment !== candidate.artifactSetCommitment)
     throw new Error('the frozen observation is not the pinned candidate');
@@ -112,7 +115,7 @@ export function buildConversion({ root = ROOT } = {}) {
         if (bytes(prefix) !== start || bytes(value) !== end - start || `${prefix}${value}${suffix}` !== row.input) throw new Error(`range is not on character boundaries: ${id}`);
         split = { prefix, value, suffix };
         kept = seen.family.filter(([s, e]) => !row.lineSensitive.some(span => span.start === s && span.end === e));
-        if (seen.otherPii.length > 0 && seen.otherPiiAtTarget) throw new Error(`located other-family finding has no type mapping: ${id}`);
+        if (seen.otherPiiCount > 0 && seen.otherPiiAtTarget) throw new Error(`located other-family finding has no type mapping: ${id}`);
       }
       // A case that sits in several benchmark views is a member of each population; each population is its own artifact.
       for (const view of row.views) {
@@ -122,7 +125,7 @@ export function buildConversion({ root = ROOT } = {}) {
           continue;
         }
         bucket.lineSensitiveDropped += seen.family.length - kept.length;
-        if (seen.otherPii.length > 0 && !rangeless) bucket.unlocatedOtherFamily += 1;
+        if (seen.otherPiiCount > 0 && !rangeless) bucket.unlocatedOtherFamily += 1;
         bucket.cases.push({
           id, family, benchmarkCaseId: row.id, source: row.source, language: row.language, text: row.input, ...split,
           candidate: rangeless ? null : { start, end }, rangeless, type: row.identity, sensitivity: row.sensitivity, axis: row.axis,

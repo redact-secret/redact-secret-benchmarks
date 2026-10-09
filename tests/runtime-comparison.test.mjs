@@ -131,7 +131,7 @@ test('the report validator rejects a setting whose activation identity disagrees
 });
 
 test('the committed snapshots, when present, validate and belong to this plan', async () => {
-  const dir = new URL('../evidence/562/', import.meta.url);
+  const dir = new URL('../benchmarks/inputs/runtime/', import.meta.url);
   const files = (await readdir(dir).catch(() => [])).filter(name => /^runtime-comparison-.+\.json$/.test(name));
   for (const name of files) {
     const report = JSON.parse(await readFile(new URL(name, dir), 'utf8'));
@@ -150,7 +150,7 @@ test('a report measured from the published package validates, and names the pack
 });
 
 test('the committed snapshots measured the pinned published release, not a local build (#562)', async () => {
-  const dir = new URL('../evidence/562/', import.meta.url);
+  const dir = new URL('../benchmarks/inputs/runtime/', import.meta.url);
   const manifest = JSON.parse(await readFile(new URL('../benchmarks/pin-manifest.json', import.meta.url), 'utf8'));
   const files = (await readdir(dir)).filter(name => /^runtime-comparison-.+\.json$/.test(name));
   assert.equal(files.length, SETTING_IDS.length);

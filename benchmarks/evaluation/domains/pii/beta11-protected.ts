@@ -704,6 +704,12 @@ export function buildB11ProtectedDisposition({ report, disposition, seal, runs, 
   if (!report || report.artifactCommitment !== b11Commitment({ ...report, artifactCommitment: undefined })) throw new HoldoutError('report-commitment-mismatch');
   if (!disposition || disposition.reportCommitment !== report.artifactCommitment ||
       disposition.artifactCommitment !== b11Commitment({ ...disposition, artifactCommitment: undefined })) throw new HoldoutError('disposition-not-bound-to-report');
+  return deriveB11ProtectedDisposition({ report, disposition, seal, runs, costAcceptance });
+}
+
+/** Source integrity is checked by the full-source builder or the digest-bound current-input consumer before derivation. */
+export function deriveB11ProtectedDisposition({ report, disposition, seal, runs, costAcceptance = null }: { report: any; disposition: any; seal: B11ProtectedSeal | null;
+  runs: Array<{ aggregate: B11ProtectedAggregate; trust: B11ProtectedTrust }>; costAcceptance?: any }) {
   if (seal) validateB11ProtectedSeal(seal);
   const sourceCommit = report.candidate.sourceCommit as string, freezeCommitment = report.freeze.freezeCommitment as string;
   if (new Set(runs.map(row => row.aggregate.family)).size !== runs.length) throw new HoldoutError('duplicate-protected-run');

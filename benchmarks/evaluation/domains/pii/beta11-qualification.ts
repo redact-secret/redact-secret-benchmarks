@@ -26,7 +26,7 @@ import { B11_V2_PLAN_FILES } from './beta11-population-v2.ts';
 import usSsnStress from './us-ssn-stress-v2.json';
 import phoneStress from './phone-stress-v2.json';
 import revisionData from './pii-context-v2-expectation-revisions-v1.json';
-import c3CorrectionData from '../../../../evidence/901/426/pii-c3-reviewed-corrections-v1.json';
+import { piiFixtureCorrections as c3CorrectionData } from './current-inputs.ts';
 import piiV1Profile from '../../../../qualification/pii-v1.json';
 
 export const B11_ISSUE = 'redact-secret/redact-secret-benchmarks#428';

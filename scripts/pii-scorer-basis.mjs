@@ -15,6 +15,8 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { piiScorerReference } from '../benchmarks/evaluation/domains/pii/scorer-reference.mjs';
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
 import { ambiguousIds } from '../benchmarks/evaluation/domains/pii/metric-basis.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -25,8 +27,7 @@ const arg = name => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(na
 const fixed = d => (d ? Number(`${d.mantissa}e-${d.scale}`) : null);
 
 const migration = readJson('benchmarks/pii-eval-migration.json');
-const b11Report = readJson(migration.benchmarkPopulations.report.path);
-if (sha256(readFileSync(path.join(ROOT, migration.benchmarkPopulations.report.path))) !== migration.benchmarkPopulations.report.sha256) throw new Error('the frozen Beta.13 report drifted');
+const b11Report = piiScorerReference;
 const pins = readJson('benchmarks/pii-eval-population-pins.json');
 const VIEWS = migration.benchmarkPopulations.views.map(v => v.id);
 const FAMILIES = b11Report.families.map(f => f.family);
@@ -107,10 +108,13 @@ const text = value => `${JSON.stringify(sortKeys(value), null, 1)}\n`;
 const mode = process.argv.includes('--write') ? 'write' : process.argv.includes('--check') ? 'check' : 'print';
 const previous = (() => { try { return readJson(OUT); } catch { return null; } })();
 const next = record(arg('before-ref'), previous);
-if (mode === 'write') { writeFileSync(path.join(ROOT, OUT), text(next)); console.log(`wrote ${OUT}`); }
+if (mode === 'write') {
+  const output = measurementOutput(path.resolve(ROOT, arg('output') ?? `results-output/pii-scorer-basis/${Date.now()}/comparison.json`), ROOT);
+  writeMeasurement(output, text(next)); console.log(`wrote ${output}`);
+}
 else if (mode === 'check') {
   if (!previous) throw new Error(`${OUT} is absent`);
-  if (text(next) !== text(previous)) throw new Error(`${OUT} differs from a fresh derivation (run: node scripts/pii-scorer-basis.mjs --write)`);
+  if (text(next) !== text(previous)) throw new Error(`${OUT} differs from a fresh derivation (prepare a reviewed comparison under results-output with --write)`);
   // The `before` figures are the schema 1.2 artifacts, which are no longer in the tree: each must name a retired semantic digest of its pin.
   for (const p of previous.populations) {
     const pin = pins.populations.find(x => x.label === p.view);

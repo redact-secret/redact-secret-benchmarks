@@ -1,3 +1,4 @@
+import { validateCredentialSupportInputs } from '../../benchmarks/lib/current-credential-support.mjs';
 /**
  * What the two evaluation domains record, read for `/evaluation/pii/` and `/evaluation/credential/` (#611).
  *
@@ -196,8 +197,8 @@ function loadPiiEvidence(): Promise<PiiEvidence> {
         state: 'recorded',
         mode: candidate.released ? 'published' : 'candidate',
         core: { commit: route.coreCommit, versionString: candidate.versionString ?? null },
-        route: { id: route.id, record: route.record, maximumStatus: route.maximumStatus,
-          report: `${route.evidenceDirectory}/pii-beta11-report-v2.json`, reportCommitment: route.reportCommitment },
+        route: { id: route.id, record: `https://github.com/redact-secret/redact-secret-benchmarks/blob/65ffe7dcb3e7124e7f66cff96cab814f0365f69a/${route.record}`, maximumStatus: route.maximumStatus,
+          report: `https://github.com/redact-secret/redact-secret-benchmarks/blob/65ffe7dcb3e7124e7f66cff96cab814f0365f69a/${route.evidenceDirectory}/pii-beta11-report-v2.json`, reportCommitment: route.reportCommitment },
         profile,
         distribution: { ...matrix.distribution },
         families,
@@ -313,8 +314,9 @@ export interface SupportRecord {
   version: string;
   sourceCommit: string | null;
   generatedAt: string;
-  /** Repository-relative path of the record. */
+  /** Original locator, with a pinned retrieval URL when archived. */
   path: string;
+  sourceHref?: string;
   familyCount: number;
   distribution: Record<'stable' | 'provisional' | 'pending' | 'unsupported', number>;
   stable: { documented: number; empirical: number; policyQualified: number };
@@ -344,39 +346,35 @@ function supportRecordOf(raw: RawSupportRecord): boolean {
   return STATUS_KEYS.every(key => raw.distribution[key] === raw.families.filter(f => stateOf(f) === key).length);
 }
 
-async function evidenceFiles(name: string): Promise<string[]> {
-  const out: string[] = [];
-  const top = path.join(REPO_ROOT, 'evidence');
-  for (const issue of await readdir(top, { withFileTypes: true })) {
-    if (!issue.isDirectory()) continue;
-    for (const run of await readdir(path.join(top, issue.name), { withFileTypes: true })) {
-      if (run.isDirectory()) out.push(`evidence/${issue.name}/${run.name}/${name}`);
-    }
-  }
-  return out;
-}
-
 /**
- * The newest support record of the run's own mode and build: `support-status-published.json` for the published package
- * version the run measured, or `support-status-candidate.json` for the candidate commit it measured. With no run, or no
- * matching record, there is no count to show.
+ * A reviewed current support binding for the run's exact mode and build.
+ * Historical issue directories are never scanned; unmatched runs have no support count.
  */
 export function loadSupportRecord(run: RunLoad): Promise<SupportRecord | undefined> {
   if (run.state !== 'measured') return Promise.resolve(undefined);
   const key = run.mode === 'candidate' ? `candidate:${run.candidate?.sourceCommit ?? ''}` : `published:${run.productVersion ?? ''}`;
   return once(`support-record:${key}`, async () => {
-    const file = run.mode === 'candidate' ? 'support-status-candidate.json' : 'support-status-published.json';
+    const registry = await readJsonIfPresent<unknown>('benchmarks/inputs/credential/support-bindings.json');
+    if (!registry) return undefined;
+    let records;
+    try {
+      const expected = await readJsonIfPresent<unknown>('benchmarks/inputs/credential/support-bindings-index.json');
+      records = validateCredentialSupportInputs(registry, expected);
+    }
+    catch { return undefined; }
     let best: SupportRecord | undefined;
-    for (const relative of await evidenceFiles(file)) {
-      const raw = await readJsonIfPresent<RawSupportRecord>(relative);
-      if (!raw || !supportRecordOf(raw)) continue;
+    for (const entry of records) {
+      if (entry.mode !== run.mode) continue;
+      const raw = entry.data as RawSupportRecord;
+      if (!supportRecordOf(raw)) continue;
       const matches = run.mode === 'candidate'
         ? !!run.candidate && raw.product?.sourceCommit === run.candidate.sourceCommit
         : !!run.productVersion && raw.publishedPackage?.version === run.productVersion;
       if (!matches || (best && best.generatedAt >= raw.generatedAt)) continue;
       best = {
         mode: run.mode, version: run.mode === 'candidate' ? raw.product!.declaredVersion : raw.publishedPackage!.version,
-        sourceCommit: raw.product?.sourceCommit ?? null, generatedAt: raw.generatedAt, path: relative, familyCount: raw.familyCount,
+        sourceCommit: raw.product?.sourceCommit ?? null, generatedAt: raw.generatedAt, path: entry.source.path,
+        sourceHref: `https://github.com/redact-secret/redact-secret-benchmarks/blob/${entry.source.revision}/${entry.source.path}`, familyCount: raw.familyCount,
         distribution: { stable: raw.distribution.stable, provisional: raw.distribution.provisional, pending: raw.distribution.pending, unsupported: raw.distribution.unsupported },
         stable: raw.stableDistribution,
       };

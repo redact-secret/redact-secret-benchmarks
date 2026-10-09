@@ -27,7 +27,8 @@ import { createHash } from 'node:crypto';
 import { execFile, spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 import { cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
+import { measurementOutput, stagedMeasurementDirectory } from './lib/measurement-output.mjs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -38,6 +39,7 @@ import {
 } from '../benchmarks/evaluation/domains/pii/mixed-parity/parity.ts';
 import { buildMixedParityReport, SURFACES } from '../benchmarks/evaluation/domains/pii/mixed-parity/report.ts';
 import { renderMixedParityPlan } from './generate-pii-mixed-parity.mjs';
+import { piiGapPolicy } from '../benchmarks/evaluation/domains/pii/current-inputs.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 import { packLockfileRelease } from './observe-pii-populations.mjs';
 
@@ -45,7 +47,7 @@ const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const args = Object.fromEntries(process.argv.slice(2).map(argument => {
-  const match = /^--(target|core-commit|core-repo|surfaces|observation|report|keep-scratch|plan)(?:=(.+))?$/.exec(argument);
+  const match = /^--(target|core-commit|core-repo|surfaces|observation|report|out-dir|keep-scratch|plan)(?:=(.+))?$/.exec(argument);
   if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2] ?? true];
 }));
 const target = args.target ?? 'published';
@@ -59,9 +61,12 @@ for (const surface of surfacesRequested) if (!SURFACES.includes(surface)) throw 
 const planVersion = Number(args.plan ?? (target === 'published' ? 1 : 2));
 const MIXED_PARITY_PLAN_FILE = MIXED_PARITY_PLAN_FILES[planVersion];
 if (!MIXED_PARITY_PLAN_FILE) throw new Error('--plan must be 1 or 2');
-const defaultStem = target === 'published' ? `evidence/901/427/mixed-parity-published-beta10${planVersion === 1 ? '' : `-plan-v${planVersion}`}` : `evidence/901/427/mixed-parity-core-${String(args['core-commit']).slice(0, 12)}-plan-v${planVersion}`;
-const observationFile = path.resolve(root, args.observation ?? `${defaultStem}-observation-v1.json`);
-const reportFile = path.resolve(root, args.report ?? `${defaultStem}-report-v1.json`);
+const runDirectory = path.resolve(root, args['out-dir'] ?? `results-output/pii-mixed-parity/${target}-${Date.now()}`);
+const observationFile = path.resolve(root, args.observation ?? path.join(runDirectory, 'observation-v1.json'));
+const reportFile = path.resolve(root, args.report ?? path.join(runDirectory, 'report-v1.json'));
+if (path.dirname(observationFile) !== path.dirname(reportFile) || observationFile === reportFile)
+  throw new Error('observation and report must have distinct names in the same fresh run directory');
+const outputDir = measurementOutput(path.dirname(observationFile), root, { directory: true });
 const PUBLISHED = { version: '0.1.0-beta.10', pythonVersion: '0.1.0b10', sourceCommit: 'af7f863f29f9fe482dd233c8b7bc5b77dc427314' };
 const INCREMENTAL_LIMITS = { maxInput: 1 << 20, maxBuffered: 1 << 16, maxToken: 8192, maxMultiline: 16384 };
 const digest = async (file, algorithm = 'sha256') => createHash(algorithm).update(await readFile(file)).digest('hex');
@@ -103,7 +108,7 @@ const rustJob = job => [`SEL ${job.selectors.join(' ')}`.trimEnd(), `ILIM ${job.
 const nodePackage = () => ({ 'darwin-arm64': 'node-darwin-arm64', 'darwin-x64': 'node-darwin-x64', 'linux-x64': 'node-linux-x64-gnu', 'linux-arm64': 'node-linux-arm64-gnu' })[`${process.platform}-${process.arch}`];
 
 async function publishedArtifacts(scratch) {
-  const ledger = JSON.parse(await readFile(path.join(root, 'evidence/901/pii-gap-ledger-v1.json'), 'utf8')).finalCandidate;
+  const ledger = piiGapPolicy.finalCandidate;
   if (ledger.version !== PUBLISHED.version || ledger.sourceCommit !== PUBLISHED.sourceCommit) throw new Error('ledger final candidate is not the beta.10 release');
   const rows = artifact => ledger.artifacts.filter(row => row.artifact === artifact);
   const verified = [];
@@ -440,10 +445,11 @@ try {
     benchmark: { commit: benchmarkCommit, harnessDirty }, target: artifacts.identity,
     platform: `${process.platform}-${process.arch}`, node: process.version, incrementalLimits: INCREMENTAL_LIMITS, surfaces,
   };
-  await mkdir(path.dirname(observationFile), { recursive: true });
-  await writeFile(observationFile, `${JSON.stringify(observation)}\n`);
   const report = buildMixedParityReport(observation);
-  await writeFile(reportFile, `${JSON.stringify(report, null, 2)}\n`);
+  stagedMeasurementDirectory(outputDir, staging => {
+    writeFileSync(path.join(staging, path.basename(observationFile)), `${JSON.stringify(observation)}\n`);
+    writeFileSync(path.join(staging, path.basename(reportFile)), `${JSON.stringify(report, null, 2)}\n`);
+  });
   for (const row of report.surfaceSummary) console.log(JSON.stringify(row));
   console.log(JSON.stringify(report.acceptance));
 } finally {

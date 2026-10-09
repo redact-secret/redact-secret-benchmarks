@@ -1,0 +1,1653 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bindingId",
+    "data",
+    "projectionCommitment",
+    "schema",
+    "source",
+    "sources",
+    "supportClaims"
+  ],
+  "properties": {
+    "bindingId": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disposition",
+        "freeze",
+        "profileCost",
+        "protectedDisposition",
+        "report",
+        "runs",
+        "seal"
+      ],
+      "properties": {
+        "disposition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifactCommitment",
+            "reportCommitment"
+          ],
+          "properties": {
+            "artifactCommitment": {
+              "type": "string"
+            },
+            "reportCommitment": {
+              "type": "string"
+            }
+          }
+        },
+        "freeze": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "candidate",
+            "contracts",
+            "freezeCommitment",
+            "populationPlanSet",
+            "benchmark"
+          ],
+          "properties": {
+            "candidate": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sourceCommit"
+              ],
+              "properties": {
+                "sourceCommit": {
+                  "type": "string"
+                }
+              }
+            },
+            "contracts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "changedSinceBeta10",
+                  "path",
+                  "sha256",
+                  "sha256AtBeta10"
+                ],
+                "properties": {
+                  "changedSinceBeta10": {
+                    "type": "boolean"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string"
+                  },
+                  "sha256AtBeta10": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "freezeCommitment": {
+              "type": "string"
+            },
+            "populationPlanSet": {
+              "type": "string"
+            },
+            "benchmark": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "baseRevision"
+              ],
+              "properties": {
+                "baseRevision": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{40}$"
+                }
+              }
+            }
+          }
+        },
+        "profileCost": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "candidate",
+            "runs",
+            "size"
+          ],
+          "properties": {
+            "candidate": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "artifactCommitment",
+                "evaluation",
+                "planCommitment",
+                "runId",
+                "sourceCommit"
+              ],
+              "properties": {
+                "artifactCommitment": {
+                  "type": "string"
+                },
+                "evaluation": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "key",
+                      "metric",
+                      "verdict"
+                    ],
+                    "properties": {
+                      "baselineMaximum": {
+                        "type": "number"
+                      },
+                      "baselineMedian": {
+                        "type": "number"
+                      },
+                      "baselineP95": {
+                        "type": "number"
+                      },
+                      "comparisonMaximum": {
+                        "type": "number"
+                      },
+                      "comparisonMedian": {
+                        "type": "number"
+                      },
+                      "comparisonP95": {
+                        "type": "number"
+                      },
+                      "deltaBytes": {
+                        "type": "number"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "medianRatio": {
+                        "type": "number"
+                      },
+                      "metric": {
+                        "type": "string"
+                      },
+                      "reasonCode": {
+                        "type": "string"
+                      },
+                      "relative": {
+                        "type": "number"
+                      },
+                      "tailRatio": {
+                        "type": "number"
+                      },
+                      "verdict": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "planCommitment": {
+                  "type": "string"
+                },
+                "runId": {
+                  "type": "string"
+                },
+                "sourceCommit": {
+                  "type": "string"
+                }
+              }
+            },
+            "runs": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "runs"
+              ],
+              "properties": {
+                "runs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "phase",
+                      "runId"
+                    ],
+                    "properties": {
+                      "phase": {
+                        "type": "string"
+                      },
+                      "runId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "size": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "artifactCommitment",
+                "comparison",
+                "planCommitment"
+              ],
+              "properties": {
+                "artifactCommitment": {
+                  "type": "string"
+                },
+                "comparison": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "sourceCommit"
+                  ],
+                  "properties": {
+                    "sourceCommit": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "planCommitment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "protectedDisposition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifactCommitment",
+            "candidate",
+            "costAcceptance",
+            "dispositionCommitment",
+            "distribution",
+            "domainSeparation",
+            "families",
+            "freezeCommitment",
+            "issue",
+            "maximumStatus",
+            "productIssue",
+            "reportCommitment",
+            "reportType",
+            "route",
+            "schemaVersion",
+            "sealCommitment",
+            "supportClaims"
+          ],
+          "properties": {
+            "artifactCommitment": {
+              "type": "string"
+            },
+            "candidate": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sourceCommit"
+              ],
+              "properties": {
+                "sourceCommit": {
+                  "type": "string"
+                }
+              }
+            },
+            "costAcceptance": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "accepted",
+                "acceptedBy",
+                "entryCommitment",
+                "excluded",
+                "reportCommitment",
+                "sourceCommit",
+                "status",
+                "uncovered"
+              ],
+              "properties": {
+                "accepted": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "cells",
+                    "sizeRows"
+                  ],
+                  "properties": {
+                    "cells": {
+                      "type": "number"
+                    },
+                    "sizeRows": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "acceptedBy": {
+                  "type": "string"
+                },
+                "entryCommitment": {
+                  "type": "string"
+                },
+                "excluded": {
+                  "type": "array",
+                  "items": {}
+                },
+                "reportCommitment": {
+                  "type": "string"
+                },
+                "sourceCommit": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "uncovered": {
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            },
+            "dispositionCommitment": {
+              "type": "string"
+            },
+            "distribution": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pending",
+                "provisional",
+                "stable"
+              ],
+              "properties": {
+                "pending": {
+                  "type": "number"
+                },
+                "provisional": {
+                  "type": "number"
+                },
+                "stable": {
+                  "type": "number"
+                }
+              }
+            },
+            "domainSeparation": {
+              "type": "string"
+            },
+            "families": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "family",
+                  "protected",
+                  "publicGates",
+                  "status"
+                ],
+                "properties": {
+                  "family": {
+                    "type": "string"
+                  },
+                  "protected": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "aggregateCommitment",
+                      "epochCommitment",
+                      "reason",
+                      "runs",
+                      "sealed",
+                      "state",
+                      "trustCommitment"
+                    ],
+                    "properties": {
+                      "aggregateCommitment": {
+                        "type": "string"
+                      },
+                      "epochCommitment": {
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "string"
+                      },
+                      "runs": {
+                        "type": "string"
+                      },
+                      "sealed": {
+                        "type": "boolean"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "trustCommitment": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "publicGates": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "acceptedTradeoffs",
+                      "met",
+                      "notMet",
+                      "unresolved"
+                    ],
+                    "properties": {
+                      "acceptedTradeoffs": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "met": {
+                        "type": "number"
+                      },
+                      "notMet": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "unresolved": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    }
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "freezeCommitment": {
+              "type": "string"
+            },
+            "issue": {
+              "type": "string"
+            },
+            "maximumStatus": {
+              "type": "string"
+            },
+            "productIssue": {
+              "type": "string"
+            },
+            "reportCommitment": {
+              "type": "string"
+            },
+            "reportType": {
+              "type": "string"
+            },
+            "route": {
+              "type": "string"
+            },
+            "schemaVersion": {
+              "type": "number"
+            },
+            "sealCommitment": {
+              "type": "string"
+            },
+            "supportClaims": {
+              "type": "boolean"
+            }
+          }
+        },
+        "report": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifactCommitment",
+            "candidate",
+            "families",
+            "freeze"
+          ],
+          "properties": {
+            "artifactCommitment": {
+              "type": "string"
+            },
+            "candidate": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "artifactSetCommitment",
+                "components",
+                "released",
+                "sourceCommit",
+                "versionString"
+              ],
+              "properties": {
+                "artifactSetCommitment": {
+                  "type": "string"
+                },
+                "components": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "core",
+                    "node",
+                    "wasm"
+                  ],
+                  "properties": {
+                    "core": {
+                      "type": "string"
+                    },
+                    "node": {
+                      "type": "string"
+                    },
+                    "wasm": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "released": {
+                  "type": "boolean"
+                },
+                "sourceCommit": {
+                  "type": "string"
+                },
+                "versionString": {
+                  "type": "string"
+                }
+              }
+            },
+            "families": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "family",
+                  "gates",
+                  "protected",
+                  "views"
+                ],
+                "properties": {
+                  "family": {
+                    "type": "string"
+                  },
+                  "gates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "id",
+                        "status"
+                      ],
+                      "properties": {
+                        "evidence": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "sizeRows"
+                          ],
+                          "properties": {
+                            "sizeRows": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                  "acceptedBy",
+                                  "deltaBytes",
+                                  "key",
+                                  "trigger"
+                                ],
+                                "properties": {
+                                  "acceptedBy": {
+                                    "anyOf": [
+                                      {
+                                        "type": "null"
+                                      },
+                                      {
+                                        "type": "string"
+                                      }
+                                    ]
+                                  },
+                                  "deltaBytes": {
+                                    "type": "number"
+                                  },
+                                  "key": {
+                                    "type": "string"
+                                  },
+                                  "trigger": {
+                                    "anyOf": [
+                                      {
+                                        "type": "null"
+                                      },
+                                      {
+                                        "type": "string"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "protected": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "epochCommitment"
+                    ],
+                    "properties": {
+                      "epochCommitment": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "views": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "reviewed"
+                    ],
+                    "properties": {
+                      "reviewed": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "cases",
+                            "metrics",
+                            "nonSensitive",
+                            "notEstablished",
+                            "sensitive",
+                            "view"
+                          ],
+                          "properties": {
+                            "cases": {
+                              "type": "number"
+                            },
+                            "metrics": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                  "denominator",
+                                  "direction",
+                                  "id",
+                                  "numerator",
+                                  "status",
+                                  "threshold",
+                                  "value"
+                                ],
+                                "properties": {
+                                  "denominator": {
+                                    "type": "number"
+                                  },
+                                  "direction": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "numerator": {
+                                    "type": "number"
+                                  },
+                                  "status": {
+                                    "type": "string"
+                                  },
+                                  "threshold": {
+                                    "type": "number"
+                                  },
+                                  "value": {
+                                    "anyOf": [
+                                      {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "required": [
+                                          "bound",
+                                          "direction",
+                                          "n",
+                                          "point"
+                                        ],
+                                        "properties": {
+                                          "bound": {
+                                            "type": "number"
+                                          },
+                                          "direction": {
+                                            "type": "string"
+                                          },
+                                          "n": {
+                                            "type": "number"
+                                          },
+                                          "point": {
+                                            "type": "number"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "null"
+                                      },
+                                      {
+                                        "type": "string"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "nonSensitive": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "cases"
+                              ],
+                              "properties": {
+                                "cases": {
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "notEstablished": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "cases"
+                              ],
+                              "properties": {
+                                "cases": {
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "sensitive": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "cases"
+                              ],
+                              "properties": {
+                                "cases": {
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "view": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "freeze": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "commit",
+                "file",
+                "freezeCommitment"
+              ],
+              "properties": {
+                "commit": {
+                  "type": "string"
+                },
+                "file": {
+                  "type": "string"
+                },
+                "freezeCommitment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "runs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "aggregate",
+              "trust"
+            ],
+            "properties": {
+              "aggregate": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "binding",
+                  "candidate",
+                  "caseCount",
+                  "corpus",
+                  "domain",
+                  "domainAccountingVersion",
+                  "evaluationProfile",
+                  "family",
+                  "finishedAt",
+                  "gates",
+                  "identity",
+                  "independence",
+                  "methodology",
+                  "planHash",
+                  "protectedGate",
+                  "reportType",
+                  "runId",
+                  "schemaVersion",
+                  "startedAt",
+                  "status",
+                  "supportClaims",
+                  "surfaces",
+                  "views"
+                ],
+                "properties": {
+                  "binding": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "benchmarkRevision",
+                      "configurationHash",
+                      "coreCommit",
+                      "epochCommitment",
+                      "freezeCommitment",
+                      "manifestCommitment",
+                      "reportCommitment",
+                      "sealCommitment"
+                    ],
+                    "properties": {
+                      "benchmarkRevision": {
+                        "type": "string"
+                      },
+                      "configurationHash": {
+                        "type": "string"
+                      },
+                      "coreCommit": {
+                        "type": "string"
+                      },
+                      "epochCommitment": {
+                        "type": "string"
+                      },
+                      "freezeCommitment": {
+                        "type": "string"
+                      },
+                      "manifestCommitment": {
+                        "type": "string"
+                      },
+                      "reportCommitment": {
+                        "type": "string"
+                      },
+                      "sealCommitment": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "candidate": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "candidateArtifactHash",
+                      "lockHash",
+                      "sourceHash"
+                    ],
+                    "properties": {
+                      "candidateArtifactHash": {
+                        "type": "string"
+                      },
+                      "lockHash": {
+                        "type": "string"
+                      },
+                      "sourceHash": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "caseCount": {
+                    "type": "number"
+                  },
+                  "corpus": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "corpusHash",
+                      "id",
+                      "lifecycle",
+                      "purpose",
+                      "revision",
+                      "seedHash"
+                    ],
+                    "properties": {
+                      "corpusHash": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "lifecycle": {
+                        "type": "string"
+                      },
+                      "purpose": {
+                        "type": "string"
+                      },
+                      "revision": {
+                        "type": "number"
+                      },
+                      "seedHash": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "domain": {
+                    "type": "string"
+                  },
+                  "domainAccountingVersion": {
+                    "type": "string"
+                  },
+                  "evaluationProfile": {
+                    "type": "string"
+                  },
+                  "family": {
+                    "type": "string"
+                  },
+                  "finishedAt": {
+                    "type": "string"
+                  },
+                  "gates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "id",
+                        "reasons",
+                        "status"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "reasons": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "identity": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "correct",
+                      "eligible",
+                      "equivalenceDisagreements",
+                      "identityMissed",
+                      "identityOnlyCompared",
+                      "identityOverAccepted",
+                      "sensitivityMismatch"
+                    ],
+                    "properties": {
+                      "correct": {
+                        "type": "number"
+                      },
+                      "eligible": {
+                        "type": "number"
+                      },
+                      "equivalenceDisagreements": {
+                        "type": "number"
+                      },
+                      "identityMissed": {
+                        "type": "number"
+                      },
+                      "identityOnlyCompared": {
+                        "type": "number"
+                      },
+                      "identityOverAccepted": {
+                        "type": "number"
+                      },
+                      "sensitivityMismatch": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "independence": {
+                    "type": "string"
+                  },
+                  "methodology": {
+                    "type": "string"
+                  },
+                  "planHash": {
+                    "type": "string"
+                  },
+                  "protectedGate": {
+                    "type": "string"
+                  },
+                  "reportType": {
+                    "type": "string"
+                  },
+                  "runId": {
+                    "type": "string"
+                  },
+                  "schemaVersion": {
+                    "type": "number"
+                  },
+                  "startedAt": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "supportClaims": {
+                    "type": "boolean"
+                  },
+                  "surfaces": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "activationProblems",
+                      "crossSurfaceDisagreements",
+                      "observedSelections",
+                      "piiOffFindingCases"
+                    ],
+                    "properties": {
+                      "activationProblems": {
+                        "type": "number"
+                      },
+                      "crossSurfaceDisagreements": {
+                        "type": "number"
+                      },
+                      "observedSelections": {
+                        "type": "number"
+                      },
+                      "piiOffFindingCases": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "views": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "benign-heavy-stress",
+                      "diagnostic-balanced"
+                    ],
+                    "properties": {
+                      "benign-heavy-stress": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "benignAxisCount",
+                          "cases",
+                          "collateralFindings",
+                          "credentialFindingCases",
+                          "metrics",
+                          "nonSensitive",
+                          "notEstablished",
+                          "outsideModifiedCases",
+                          "scanRedactDisagreements",
+                          "sensitive",
+                          "twinPairs"
+                        ],
+                        "properties": {
+                          "benignAxisCount": {
+                            "type": "number"
+                          },
+                          "cases": {
+                            "type": "number"
+                          },
+                          "collateralFindings": {
+                            "type": "number"
+                          },
+                          "credentialFindingCases": {
+                            "type": "number"
+                          },
+                          "metrics": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "denominator",
+                                "id",
+                                "numerator",
+                                "status"
+                              ],
+                              "properties": {
+                                "denominator": {
+                                  "type": "number"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "numerator": {
+                                  "type": "number"
+                                },
+                                "status": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "nonSensitive": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "cases",
+                              "falseAlarm"
+                            ],
+                            "properties": {
+                              "cases": {
+                                "type": "number"
+                              },
+                              "falseAlarm": {
+                                "type": "number"
+                              }
+                            }
+                          },
+                          "notEstablished": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "cases",
+                              "falseAlarm"
+                            ],
+                            "properties": {
+                              "cases": {
+                                "type": "number"
+                              },
+                              "falseAlarm": {
+                                "type": "number"
+                              }
+                            }
+                          },
+                          "outsideModifiedCases": {
+                            "type": "number"
+                          },
+                          "scanRedactDisagreements": {
+                            "type": "number"
+                          },
+                          "sensitive": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "actionMismatch",
+                              "cases",
+                              "detected",
+                              "leakedAfterRedaction",
+                              "missed",
+                              "rangeMismatch"
+                            ],
+                            "properties": {
+                              "actionMismatch": {
+                                "type": "number"
+                              },
+                              "cases": {
+                                "type": "number"
+                              },
+                              "detected": {
+                                "type": "number"
+                              },
+                              "leakedAfterRedaction": {
+                                "type": "number"
+                              },
+                              "missed": {
+                                "type": "number"
+                              },
+                              "rangeMismatch": {
+                                "type": "number"
+                              }
+                            }
+                          },
+                          "twinPairs": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "diagnostic-balanced": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "benignAxisCount",
+                          "cases",
+                          "collateralFindings",
+                          "credentialFindingCases",
+                          "metrics",
+                          "nonSensitive",
+                          "notEstablished",
+                          "outsideModifiedCases",
+                          "scanRedactDisagreements",
+                          "sensitive",
+                          "twinPairs"
+                        ],
+                        "properties": {
+                          "benignAxisCount": {
+                            "type": "number"
+                          },
+                          "cases": {
+                            "type": "number"
+                          },
+                          "collateralFindings": {
+                            "type": "number"
+                          },
+                          "credentialFindingCases": {
+                            "type": "number"
+                          },
+                          "metrics": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "denominator",
+                                "id",
+                                "numerator",
+                                "status"
+                              ],
+                              "properties": {
+                                "denominator": {
+                                  "type": "number"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "numerator": {
+                                  "type": "number"
+                                },
+                                "status": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "nonSensitive": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "cases",
+                              "falseAlarm"
+                            ],
+                            "properties": {
+                              "cases": {
+                                "type": "number"
+                              },
+                              "falseAlarm": {
+                                "type": "number"
+                              }
+                            }
+                          },
+                          "notEstablished": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "cases",
+                              "falseAlarm"
+                            ],
+                            "properties": {
+                              "cases": {
+                                "type": "number"
+                              },
+                              "falseAlarm": {
+                                "type": "number"
+                              }
+                            }
+                          },
+                          "outsideModifiedCases": {
+                            "type": "number"
+                          },
+                          "scanRedactDisagreements": {
+                            "type": "number"
+                          },
+                          "sensitive": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "actionMismatch",
+                              "cases",
+                              "detected",
+                              "leakedAfterRedaction",
+                              "missed",
+                              "rangeMismatch"
+                            ],
+                            "properties": {
+                              "actionMismatch": {
+                                "type": "number"
+                              },
+                              "cases": {
+                                "type": "number"
+                              },
+                              "detected": {
+                                "type": "number"
+                              },
+                              "leakedAfterRedaction": {
+                                "type": "number"
+                              },
+                              "missed": {
+                                "type": "number"
+                              },
+                              "rangeMismatch": {
+                                "type": "number"
+                              }
+                            }
+                          },
+                          "twinPairs": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "trust": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "aggregateCommitment",
+                  "aggregateStatus",
+                  "artifactCommitment",
+                  "attempts",
+                  "coreCommit",
+                  "corpusHash",
+                  "custodian",
+                  "decision",
+                  "epochCommitment",
+                  "family",
+                  "freezeCommitment",
+                  "protectedGate",
+                  "reportType",
+                  "reviewedAt",
+                  "reviewer",
+                  "runId",
+                  "schemaVersion",
+                  "sealCommitment",
+                  "supportClaims"
+                ],
+                "properties": {
+                  "aggregateCommitment": {
+                    "type": "string"
+                  },
+                  "aggregateStatus": {
+                    "type": "string"
+                  },
+                  "artifactCommitment": {
+                    "type": "string"
+                  },
+                  "attempts": {
+                    "type": "number"
+                  },
+                  "coreCommit": {
+                    "type": "string"
+                  },
+                  "corpusHash": {
+                    "type": "string"
+                  },
+                  "custodian": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  },
+                  "epochCommitment": {
+                    "type": "string"
+                  },
+                  "family": {
+                    "type": "string"
+                  },
+                  "freezeCommitment": {
+                    "type": "string"
+                  },
+                  "protectedGate": {
+                    "type": "string"
+                  },
+                  "reportType": {
+                    "type": "string"
+                  },
+                  "reviewedAt": {
+                    "type": "string"
+                  },
+                  "reviewer": {
+                    "type": "string"
+                  },
+                  "runId": {
+                    "type": "string"
+                  },
+                  "schemaVersion": {
+                    "type": "number"
+                  },
+                  "sealCommitment": {
+                    "type": "string"
+                  },
+                  "supportClaims": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "seal": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "absentFamilies",
+            "artifactCommitment",
+            "evaluation",
+            "families",
+            "inputCommitment",
+            "issue",
+            "reportType",
+            "review",
+            "schemaVersion",
+            "sealId",
+            "seedCommitment",
+            "supportClaims"
+          ],
+          "properties": {
+            "absentFamilies": {
+              "type": "array",
+              "items": {}
+            },
+            "artifactCommitment": {
+              "type": "string"
+            },
+            "evaluation": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "domain",
+                "domainAccountingVersion",
+                "evaluationProfile",
+                "schemaVersion"
+              ],
+              "properties": {
+                "domain": {
+                  "type": "string"
+                },
+                "domainAccountingVersion": {
+                  "type": "string"
+                },
+                "evaluationProfile": {
+                  "type": "string"
+                },
+                "schemaVersion": {
+                  "type": "number"
+                }
+              }
+            },
+            "families": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "corpusHash",
+                  "family",
+                  "manifest",
+                  "manifestCommitment",
+                  "maxRuns",
+                  "seedHash"
+                ],
+                "properties": {
+                  "corpusHash": {
+                    "type": "string"
+                  },
+                  "family": {
+                    "type": "string"
+                  },
+                  "manifest": {
+                    "type": "string"
+                  },
+                  "manifestCommitment": {
+                    "type": "string"
+                  },
+                  "maxRuns": {
+                    "type": "number"
+                  },
+                  "seedHash": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "inputCommitment": {
+              "type": "string"
+            },
+            "issue": {
+              "type": "string"
+            },
+            "reportType": {
+              "type": "string"
+            },
+            "review": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "custodian",
+                "declaration",
+                "reviewedAt",
+                "reviewer",
+                "statements"
+              ],
+              "properties": {
+                "custodian": {
+                  "type": "string"
+                },
+                "declaration": {
+                  "type": "string"
+                },
+                "reviewedAt": {
+                  "type": "string"
+                },
+                "reviewer": {
+                  "type": "string"
+                },
+                "statements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "schemaVersion": {
+              "type": "number"
+            },
+            "sealId": {
+              "type": "string"
+            },
+            "seedCommitment": {
+              "type": "string"
+            },
+            "supportClaims": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "projectionCommitment": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "schema": {
+      "const": "redact-secret/pii-protected-current-input/v1"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "sha256",
+        "contentCommitment"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^evidence/[0-9]+/[A-Za-z0-9._/-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "contentCommitment": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bytes",
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "bytes": {
+            "type": "number"
+          },
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        }
+      },
+      "minItems": 21,
+      "maxItems": 21
+    },
+    "supportClaims": {
+      "const": false
+    }
+  },
+  "$id": "redact-secret/pii-protected-current-input/v1"
+}

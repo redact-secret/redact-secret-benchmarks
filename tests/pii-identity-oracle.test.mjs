@@ -1,3 +1,4 @@
+import { historicalReplayOptions, historicalJson } from './helpers/historical-evidence-archive.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -34,16 +35,19 @@ const evaluate = (family, extra = {}) => {
     artifactSetCommitment: piiArrivalCommitment(COMPONENTS), publicObservations: [publicLane(plan), publicLane(plan)], ...extra });
 };
 
-test('the committed oracle binds every family 1:1 to the exact plan the frozen qualification evidence used', async () => {
+test('the current independent oracle binds every family 1:1 to its exact authored plan', async () => {
   const oracle = validatePiiIdentityOracle(piiIdentityOracle);
   assert.deepEqual(oracle.families.map(row => row.family).sort(), [...FAMILIES].sort());
   for (const family of FAMILIES) {
     const plan = PII_ORACLE_PLANS[family], entry = familyOf(oracle, family);
-    const frozen = JSON.parse(await readFile(`evidence/${EVIDENCE[family]}/pii-family-qualification-v1.json`, 'utf8'));
-    assert.equal(entry.planCommitment, frozen.planCommitment, family);
     assert.equal(entry.planCommitment, piiOraclePlanCommitment(plan));
     assert.deepEqual(entry.labels.map(row => row.caseId), plan.cases.map(row => row.id));
   }
+});
+
+test('original qualification receipts used the same independent oracle plan commitment', historicalReplayOptions, () => {
+  for (const family of FAMILIES) assert.equal(familyOf(piiIdentityOracle, family).planCommitment,
+    historicalJson(`evidence/${EVIDENCE[family]}/pii-family-qualification-v1.json`).planCommitment);
 });
 
 test('every family has supported sensitive, invalid lookalike and identity-only rows; non-sensitive rows only where an authority exists', () => {
@@ -233,7 +237,8 @@ test('the public projection validator rejects extra fields, free-text reasons an
 });
 
 test('US SSN population gates are independent signals, unlike the frozen v1 derivation', async () => {
-  const bundle = JSON.parse(await readFile('evidence/879/pii-population-arrival-v1.json', 'utf8'));
+  const bundle = { status: 'regression', candidate: { reports: ['diagnostic-balanced', 'benign-heavy-stress'].map(population => ({ population, status: 'measured' })) },
+    comparisons: [{ population: 'diagnostic-balanced', verdict: 'no-regression' }, { population: 'benign-heavy-stress', verdict: 'regression' }] };
   // Frozen v1 derivation: identity-only, diagnostic and benign-heavy all read one "every report measured" signal.
   assert.equal(piiArrivalGateStatuses(bundle, { status: 'regression' }, 'unspent').identity, 'met');
   const v2 = piiArrivalViewGateStatuses(bundle, { status: 'regression' }, 'unspent');

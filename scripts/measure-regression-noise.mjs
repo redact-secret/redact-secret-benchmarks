@@ -30,6 +30,8 @@ import path from "node:path";
 import { performance } from "node:perf_hooks";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+const root = fileURLToPath(new URL('../', import.meta.url));
 const PROFILES = ["scale-logs-small-whole", "scale-logs-medium-fixed4096"];
 const SELF = fileURLToPath(import.meta.url);
 
@@ -126,6 +128,7 @@ async function main() {
   const options = parseArgs(argv);
   if (options.sampleNode) return sampleNode(options.coreRepo, options.profile);
 
+  if (options.out !== "-") options.out = measurementOutput(path.resolve(root, options.out), root);
   const require = createRequire(import.meta.url);
   const coreVersion = JSON.parse(readFileSync(require.resolve("@redact-secret/core/package.json"), "utf8")).version;
   const profilesPath = path.join(options.coreRepo, "assessment", "fixtures", "workload-profiles.json");
@@ -197,7 +200,7 @@ async function main() {
   };
   const text = `${JSON.stringify(output, null, 2)}\n`;
   if (options.out === "-") process.stdout.write(text);
-  else writeFileSync(options.out, text);
+  else writeMeasurement(options.out, text);
 }
 
 await main();

@@ -1,3 +1,5 @@
+import { PII_CONVERSION_OBSERVATION_SOURCE, loadPiiConversionObservation } from '../benchmarks/evaluation/domains/pii/conversion-observation.mjs';
+import { piiScorerReference, piiScorerReferenceSource } from '../benchmarks/evaluation/domains/pii/scorer-reference.mjs';
 import { retainedPiiPopulationReportProblems } from './lib/retained-pii-population-report.mjs';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
@@ -30,7 +32,12 @@ if (record.upstreamParity?.compatibilityDifferences !== 0 || record.upstreamPari
 const expectedViews = [['oracle-plan', 146], ['qualification-plan', 266], ['diagnostic-balanced', 477], ['benign-heavy-stress', 299]];
 if (JSON.stringify(record.benchmarkPopulations?.views?.map(row => [row.id, row.cases])) !== JSON.stringify(expectedViews))
   fail('population identities or counts');
-for (const item of [record.benchmarkPopulations.report, record.benchmarkPopulations.observation, ...record.benchmarkPopulations.plans]) {
+// Original report/observation checksums identify archived bytes; their minimal current projections are independently bound.
+for (const [item, expected] of [[record.benchmarkPopulations.report, piiScorerReferenceSource], [record.benchmarkPopulations.observation, PII_CONVERSION_OBSERVATION_SOURCE]])
+  if (item.path !== expected.path || item.sha256 !== expected.sha256) fail('original report or observation source binding drift');
+void piiScorerReference;
+loadPiiConversionObservation(fileURLToPath(new URL('../', import.meta.url)));
+for (const item of record.benchmarkPopulations.plans) {
   if (await digest(item.path) !== item.sha256) fail(`digest drift at ${item.path}`);
 }
 if (!/^[0-9a-f]{40}$/.test(record.pins?.privateCustodian) || !/^[0-9a-f]{40}$/.test(record.pins?.privateLedger))

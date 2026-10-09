@@ -1,3 +1,4 @@
+import { validateCurrentPerformanceInputs, type CurrentMeasuredSummary } from '../../benchmarks/lib/current-performance-inputs';
 /**
  * redact-secret's own throughput, read the way the existing Performance page reads it
  * (`src/pages/performance.ts`): the summary of the run the acceptance criteria name as the
@@ -10,8 +11,6 @@
  * derived here beyond picking the Node surface.
  */
 import { measuredRows } from '../../benchmarks/lib/measured-performance';
-import { completeAssessmentProblem } from '../../benchmarks/lib/performance-schema';
-import type { CompleteAssessment } from '../../benchmarks/lib/performance-schema';
 import { once, readJson, readJsonIfPresent } from './repo';
 
 export interface OwnRow {
@@ -51,14 +50,16 @@ export function loadOwnPerformance(): Promise<OwnPerformance> {
     const criteria = await readJson<Criteria>('benchmarks/performance-criteria.json');
     const dir = criteria.baseline.verificationPath.replace(/\/[^/]*$/, '');
     const summaryPath = `${dir}/summary.json`;
-    const found = await readJsonIfPresent<unknown>(summaryPath);
+    const found = await readJsonIfPresent<unknown>('benchmarks/inputs/performance/current.json');
     if (!found) return { state: 'not-published', reason: `${summaryPath} is absent: the accepted run's summary has not been committed.` };
-    const problem = completeAssessmentProblem(found);
-    const summary = found as CompleteAssessment;
-    if (problem) return { state: 'invalid', reason: `${summaryPath} did not validate: ${problem}.` };
+    let current;
+    try { current = validateCurrentPerformanceInputs(found); }
+    catch (error) { return { state: 'invalid', reason: `${summaryPath} did not validate: ${(error as Error).message}.` }; }
+    const summary = current.records.accepted.data as CurrentMeasuredSummary;
+    if (current.records.accepted.source.path !== summaryPath) return { state: 'invalid', reason: 'Accepted performance source locator differs from criteria.' };
     if (summary.status !== 'complete' || summary.sourceCommit !== criteria.baseline.verifiedCommit)
       return { state: 'invalid', reason: `${summaryPath} is not the complete run of ${criteria.baseline.verifiedCommit}.` };
-    const runner = await readJsonIfPresent<Runner>(`${dir}/runner.json`);
+    const runner = current.records.runner.data as Runner;
     const distribution = new Map<string, { minimum: number; maximum: number; samples: readonly number[] }>(summary.runs.flatMap(run => {
       const processing = run.kind === 'performance' ? run.result?.performance?.processing : undefined;
       return processing ? [[`${run.surface}/${run.profileId}`, processing] as const] : [];

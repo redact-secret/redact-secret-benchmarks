@@ -174,7 +174,8 @@ function selectorClosure(selectors: readonly string[], registryFamilies: readonl
   return [...closure].sort();
 }
 
-export function validatePiiProductBinding(input: PiiTrustedProductBinding, registryFamilies: readonly string[]): ValidatedPiiProductBinding {
+/** Structural validation alone never authorises a publication or support claim. */
+export function validatePiiProductBindingStructure(input: PiiTrustedProductBinding, registryFamilies: readonly string[]): ValidatedPiiProductBinding {
   validateEvidence(input.candidateEvidence, 'candidate');
   const candidate = input.candidateEvidence as any;
   if (candidate.status !== 'complete' || candidate.selection?.scope !== 'full-suite' || candidate.benchmark?.dirty !== false ||
@@ -236,6 +237,16 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
       row.status !== (failed.length ? 'not-qualified' : 'qualified') || JSON.stringify(row.reasonCodes) !== JSON.stringify(failed) ||
       row.artifactCommitment !== commitment(row);
   })) throw new Error('Invalid trusted PII qualification evidence');
+  return { sourceCommit: activation.product.sourceCommit, artifactCommitment: activation.product.artifactCommitment,
+    candidateEvidenceCommitment, activationIdentity: activation.activationIdentity, activationArtifactCommitment: activation.artifactCommitment,
+    availableFamilies: [...activation.availableFamilies], qualification: qualifications };
+}
+
+/** Production publication additionally requires the unchanged repository sanction registry. */
+export function validatePiiProductBinding(input: PiiTrustedProductBinding, registryFamilies: readonly string[]): ValidatedPiiProductBinding {
+  const validated = validatePiiProductBindingStructure(input, registryFamilies);
+  const activation = input.activationArtifact, candidateEvidenceCommitment = validated.candidateEvidenceCommitment;
+  const qualifications = validated.qualification;
   const sanctioned = trustedBindings.bindings.find(row => row.product.sourceCommit === activation.product.sourceCommit &&
     row.product.artifactCommitment === activation.product.artifactCommitment &&
     row.product.candidateEvidenceCommitment === candidateEvidenceCommitment &&
@@ -243,9 +254,7 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
     JSON.stringify(row.availableFamilies) === JSON.stringify(activation.availableFamilies));
   if (!sanctioned || JSON.stringify(sanctioned.qualifications) !== JSON.stringify(qualifications.map(piiQualificationSanctionedProjection)
     .sort((a, b) => a.family.localeCompare(b.family)))) throw new Error('PII product binding is not repository-sanctioned');
-  return { sourceCommit: activation.product.sourceCommit, artifactCommitment: activation.product.artifactCommitment,
-    candidateEvidenceCommitment, activationIdentity: activation.activationIdentity, activationArtifactCommitment: activation.artifactCommitment,
-    availableFamilies: [...activation.availableFamilies], qualification: qualifications };
+  return validated;
 }
 
 export const piiBindingArtifactCommitment = commitment;

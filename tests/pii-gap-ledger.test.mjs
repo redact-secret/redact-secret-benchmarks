@@ -1,3 +1,4 @@
+import { historicalJson, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -7,12 +8,12 @@ import {
 } from '../benchmarks/evaluation/domains/pii/gap-ledger.ts';
 
 const LEDGER = 'evidence/901/pii-gap-ledger-v1.json';
-const load = async () => JSON.parse(await readFile(LEDGER, 'utf8'));
+const load = async () => historicalJson(LEDGER);
 const recommit = ledger => { ledger.contentCommitment = piiGapLedgerCommitment(ledger); return ledger; };
 const blocker = (ledger, family, category) =>
   ledger.families.find(row => row.family === family).blockers.find(row => row.category === category);
 
-test('the committed #422 ledger validates and every file it freezes is unchanged', async () => {
+test('the committed #422 ledger validates and every file it freezes is unchanged', historicalReplayOptions, async () => {
   const ledger = validatePiiGapLedger(await load());
   assert.deepEqual(ledger.families.map(row => row.family), [...PII_GAP_LEDGER_FAMILIES]);
   for (const row of ledger.families) {
@@ -20,10 +21,10 @@ test('the committed #422 ledger validates and every file it freezes is unchanged
     assert.equal(row.supportState, 'pending');
     assert.ok(ledger.axisBacklog.some(axis => axis.family === row.family && axis.owner === PII_GAP_LEDGER_FAMILY_GROUP_OWNER[row.family]));
   }
-  assert.deepEqual(await piiGapLedgerFileDrift(ledger, process.cwd()), []);
+  assert.deepEqual(await piiGapLedgerFileDrift(ledger, process.env.HYGIENE_ORIGINAL_SOURCE_ROOT), []);
 });
 
-test('the ledger binds one final candidate and never a mix of per-family merge commits', async () => {
+test('the ledger binds one final candidate and never a mix of per-family merge commits', historicalReplayOptions, async () => {
   const ledger = await load();
   assert.equal(ledger.finalCandidate.status, 'identified');
   assert.equal(ledger.finalCandidate.piiEvidenceBound, false);
@@ -40,7 +41,7 @@ test('the ledger binds one final candidate and never a mix of per-family merge c
   assert.throws(() => validatePiiGapLedger(recommit(mislabelled)), /misstates its binding/);
 });
 
-test('the five blocker states cannot stand in for each other', async () => {
+test('the five blocker states cannot stand in for each other', historicalReplayOptions, async () => {
   const cases = [
     ['not-measured', 'none', /cannot be not-measured with classification none/],
     ['passed', 'measurement-gap', /cannot be passed with classification measurement-gap/],
@@ -57,7 +58,7 @@ test('the five blocker states cannot stand in for each other', async () => {
   assert.throws(() => validatePiiGapLedger(recommit(notApplicable)), /not-applicable without a non-goal decision/);
 });
 
-test('every unresolved blocker has an owning issue or explicit decision', async () => {
+test('every unresolved blocker has an owning issue or explicit decision', historicalReplayOptions, async () => {
   const ledger = await load();
   for (const row of ledger.families) for (const entry of row.blockers)
     if (entry.status !== 'passed') assert.notEqual(entry.owner, 'none', `${row.family}/${entry.category}`);
@@ -66,7 +67,7 @@ test('every unresolved blocker has an owning issue or explicit decision', async 
   assert.throws(() => validatePiiGapLedger(recommit(orphan)), /has no owner/);
 });
 
-test('fixture corrections and product defects stay separate and fully referenced', async () => {
+test('fixture corrections and product defects stay separate and fully referenced', historicalReplayOptions, async () => {
   const ledger = await load();
   assert.deepEqual(ledger.families.flatMap(row => row.productDefects), []);
   assert.ok(ledger.evaluatorFindings.every(finding => finding.productDefect === false));
@@ -85,7 +86,7 @@ test('fixture corrections and product defects stay separate and fully referenced
   assert.throws(() => validatePiiGapLedger(recommit(unrecorded)), /fixture correction has no recorded correction/);
 });
 
-test('independence metrics reproduce from the plans the immutable records bound', async () => {
+test('independence metrics reproduce from the plans the immutable records bound', historicalReplayOptions, async () => {
   const ledger = await load();
   for (const row of ledger.families) {
     const prior = ledger.priorEvidence.find(entry => entry.id === row.evidence);
@@ -100,7 +101,7 @@ test('independence metrics reproduce from the plans the immutable records bound'
   assert.throws(() => validatePiiGapLedger(recommit(inflatedPopulation)), /Population audit does not reproduce/);
 });
 
-test('the ledger is input-free and commitment-bound', async () => {
+test('the ledger is input-free and commitment-bound', historicalReplayOptions, async () => {
   const [family] = Object.keys(PII_GAP_LEDGER_PLANS);
   const positive = PII_GAP_LEDGER_PLANS[family].plan.cases.find(row => row.expected.publicFinding);
   const leaked = await load();
@@ -115,7 +116,7 @@ test('the ledger is input-free and commitment-bound', async () => {
   assert.throws(() => validatePiiGapLedger(tampered), /commitment mismatch/);
 });
 
-test('the axis backlog is contiguous and owned by the matching family-group child', async () => {
+test('the axis backlog is contiguous and owned by the matching family-group child', historicalReplayOptions, async () => {
   const ledger = await load();
   assert.deepEqual(ledger.axisBacklog.map(axis => axis.order), ledger.axisBacklog.map((_, index) => index + 1));
   const misrouted = await load();

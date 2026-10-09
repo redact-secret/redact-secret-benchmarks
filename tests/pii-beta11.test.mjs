@@ -1,3 +1,4 @@
+import { historicalArchive, historicalReplayOptions, historicalJson, historicalBytes, originalSourceBytes } from './helpers/historical-evidence-archive.mjs';
 // Beta.11 PII E (#428): freeze integrity, pre-registered revisions, deterministic re-score and evidence safety.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -10,9 +11,12 @@ import { PII_ORACLE_PLANS, piiIdentityOracle } from '../benchmarks/evaluation/do
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const root = new URL('../', import.meta.url);
-const json = file => JSON.parse(readFileSync(new URL(file, root), 'utf8'));
-const candidateDirs = existsSync(new URL('evidence/901/428/', root)) ?
-  readdirSync(new URL('evidence/901/428/', root)).filter(name => /^core-[0-9a-f]{12}$/.test(name)) : [];
+const json = historicalJson;
+const candidateDirs = historicalArchive ? [...new Set([...historicalArchive.files.keys()]
+  .map(file => /^evidence\/901\/428\/(core-[0-9a-f]{12})\//.exec(file)?.[1]).filter(Boolean))] : [];
+test('historical beta11 freeze and byte replay requires an explicitly restored verified archive', historicalReplayOptions, () => {
+  assert.ok(candidateDirs.length > 0);
+});
 
 test('the v2 revisions are grounded in the case text and touch no SSN, phone or oracle-plan case', () => {
   assert.equal(b11Revisions.revisions.length, 14);
@@ -131,7 +135,7 @@ const SIZE_TRIGGERS_SHA256 = 'bc6ef025a4327c78f0391254619aad0e3d786463200fcd65f0
 
 // Every committed record, for every population plan set: `pii-beta11-*-<file version>.json` next to its freeze.
 const records = candidateDirs.flatMap(directory => Object.values(B11_PLAN_SETS).map(row => row.fileVersion)
-  .filter(version => existsSync(new URL(`evidence/901/428/${directory}/pii-beta11-freeze-${version}.json`, root))).map(version => ({ directory, version })));
+  .filter(version => historicalArchive.files.has(`evidence/901/428/${directory}/pii-beta11-freeze-${version}.json`)).map(version => ({ directory, version })));
 for (const { directory, version } of records) {
   const base = `evidence/901/428/${directory}/`;
   test(`${directory} (${version}): the freeze still binds its frozen files`, () => {
@@ -143,30 +147,30 @@ for (const { directory, version } of records) {
       // The budgets file is re-derived when the adapter-overhead baseline is re-taken (#472). The freezes read only its
       // size triggers (b11SizeBudgetRows), so those are bound by their own digest; the rest of the file may evolve.
       if (row.path === 'benchmarks/regression-budgets.json') {
-        assert.equal(sha256(Buffer.from(JSON.stringify(json(row.path).triggers.filter(trigger => trigger.dimension === 'size')))), SIZE_TRIGGERS_SHA256, row.path);
-      } else assert.equal(sha256(readFileSync(new URL(row.path, root))), row.sha256, row.path);
+        assert.equal(sha256(Buffer.from(JSON.stringify(JSON.parse(originalSourceBytes(row.path)).triggers.filter(trigger => trigger.dimension === 'size')))), SIZE_TRIGGERS_SHA256, row.path);
+      } else assert.equal(sha256(originalSourceBytes(row.path)), row.sha256, row.path);
     }
   });
-  if (!existsSync(new URL(`${base}pii-beta11-observation-${version}.json`, root))) continue;
+  if (!historicalArchive.files.has(`${base}pii-beta11-observation-${version}.json`)) continue;
   test(`${directory} (${version}): report and disposition re-score byte for byte and carry no case text`, () => {
     const freeze = json(`${base}pii-beta11-freeze-${version}.json`), observation = json(`${base}pii-beta11-observation-${version}.json`),
       operational = json(`${base}pii-beta11-operational-${version}.json`);
     const planSet = b11PlanSetOf(freeze);
     const parityFile = `evidence/901/427/mixed-parity-core-${directory.slice(5)}-plan-v2-report-v1.json`;
-    const parity = existsSync(new URL(parityFile, root)) ? { file: parityFile, report: json(parityFile) } : null;
+    const parity = historicalArchive.files.has(parityFile) ? { file: parityFile, report: json(parityFile) } : null;
     // Scoring code may be fixed after an observation only through a new freeze; the committed report must re-derive exactly.
     const cost = name => `${base}pii-profile-cost-v2-${name}.json`;
-    const profileCost = ['runs', 'candidate', 'size'].every(name => existsSync(new URL(cost(name), root))) ?
+    const profileCost = ['runs', 'candidate', 'size'].every(name => historicalArchive.files.has(cost(name))) ?
       { runs: json(cost('runs')).runs.map(row => `${row.phase}:${row.runId}`), candidate: json(cost('candidate')), size: json(cost('size')) } : null;
     const report = buildB11Report({ freeze, observation, operational, parity, profileCost });
-    assert.equal(`${JSON.stringify(report, null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-report-${version}.json`, root), 'utf8'));
-    assert.equal(`${JSON.stringify(buildB11Disposition(report), null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-disposition-${version}.json`, root), 'utf8'));
+    assert.equal(`${JSON.stringify(report, null, 2)}\n`, historicalBytes(`${base}pii-beta11-report-${version}.json`).toString('utf8'));
+    assert.equal(`${JSON.stringify(buildB11Disposition(report), null, 2)}\n`, historicalBytes(`${base}pii-beta11-disposition-${version}.json`).toString('utf8'));
     const texts = B11_FAMILIES.flatMap(family => b11CaseTables(family, planSet).frozen.flatMap(row => {
       const bytes = Buffer.from(row.input, 'utf8');
       return [row.input, ...(row.target ? [bytes.subarray(row.target.start, row.target.end).toString('utf8')] : [])];
     })).filter(text => text.length >= 8);
     for (const file of ['observation', 'report', 'disposition', 'operational'].map(kind => `pii-beta11-${kind}-${version}.json`)) {
-      const content = readFileSync(new URL(`${base}${file}`, root), 'utf8');
+      const content = historicalBytes(`${base}${file}`).toString('utf8');
       for (const text of texts) assert.ok(!content.includes(JSON.stringify(text).slice(1, -1)), `${file} carries case text`);
     }
     assert.ok(report.families.every(row => row.status === 'pending' || row.gates.every(gate => gate.status === 'met')));

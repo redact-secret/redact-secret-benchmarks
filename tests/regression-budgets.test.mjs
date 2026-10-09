@@ -1,3 +1,4 @@
+import { currentPerformanceFixture } from './helpers/current-performance-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -621,9 +622,11 @@ test('evaluate --summary without --wasm-sizes exits 2 and names the wasm size ro
   const { tmpdir } = await import('node:os');
   const path = await import('node:path');
   const dir = mkdtempSync(path.join(tmpdir(), 'wasm-sizes-'));
-  const summary = readJson('evidence/603/summary.json');
+  const summary = currentPerformanceFixture();
+  const summaryFile = path.join(dir, 'synthetic-summary.json');
+  writeFileSync(summaryFile, JSON.stringify(summary));
   const evaluateCli = extra => spawnSync(process.execPath, ['--import', 'tsx', 'scripts/regression-budgets.mjs', 'evaluate',
-    '--summary', 'evidence/603/summary.json', '--source-commit', summary.sourceCommit, '--json-out', path.join(dir, 'r.json'),
+    '--summary', summaryFile, '--source-commit', summary.sourceCommit, '--json-out', path.join(dir, 'r.json'),
     '--markdown-out', path.join(dir, 'r.md'), ...extra], { encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: '' } });
 
   const missing = evaluateCli([]);
@@ -909,25 +912,27 @@ test('runner-reruns reduces same-pin performance runs and rejects a different pi
   const { tmpdir } = await import('node:os');
   const path = await import('node:path');
   const dir = mkdtempSync(path.join(tmpdir(), 'runner-reruns-'));
-  const summary = readJson('evidence/603/summary.json');
+  const summary = currentPerformanceFixture();
+  const summaryFile = path.join(dir, 'synthetic-summary.json');
+  writeFileSync(summaryFile, JSON.stringify(summary));
   const entry = (runId, file) => ({ runId, url: `https://example.invalid/${runId}`, runner: { label: 'ubuntu-latest' },
     artifact: { digest: 'sha256:0' }, completedAt: `2026-09-25T00:0${runId}:00Z`, summary: file });
   const manifest = path.join(dir, 'manifest.json');
   const out = path.join(dir, 'out.json');
   const run = () => execFileSync(process.execPath, ['--import', 'tsx', 'scripts/regression-budgets.mjs', 'runner-reruns', '--runs', manifest, '--out', out], { stdio: 'pipe' });
 
-  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, 'evidence/603/summary.json'), entry(2, 'evidence/603/summary.json')], limitations: [] }));
+  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, summaryFile), entry(2, summaryFile)], limitations: [] }));
   run();
   const study = readJson(out);
   assert.equal(study.sourceCommit, summary.sourceCommit);
   assert.equal(study.method.runs, 2);
-  assert.equal(study.runs[0].summarySha256, sha256OfText(readFileSync('evidence/603/summary.json', 'utf8')));
+  assert.equal(study.runs[0].summarySha256, sha256OfText(readFileSync(summaryFile, 'utf8')));
   assert.ok(study.series.length > 0 && study.series.every(s => s.runs.length === 2));
   assert.equal(study.series[0].runs[0].processing.median, study.series[0].runs[1].processing.median);
 
   const other = path.join(dir, 'other.json');
   writeFileSync(other, JSON.stringify({ ...summary, sourceCommit: COMMIT_B }));
-  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, 'evidence/603/summary.json'), entry(2, other)], limitations: [] }));
+  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, summaryFile), entry(2, other)], limitations: [] }));
   assert.throws(run, /different pinned commit/);
 });
 
@@ -937,11 +942,13 @@ test('paired-performance reduces interleaved invocations into one paired evidenc
   const { tmpdir } = await import('node:os');
   const path = await import('node:path');
   const dir = mkdtempSync(path.join(tmpdir(), 'paired-'));
-  const summary = readJson('evidence/603/summary.json');
+  const summary = currentPerformanceFixture();
+  const summaryFile = path.join(dir, 'synthetic-summary.json');
+  writeFileSync(summaryFile, JSON.stringify(summary));
   const order = roundOrder(2);
   order.forEach((entry, i) => {
     mkdirSync(path.join(dir, `${i}-${entry.side}`));
-    copyFileSync('evidence/603/summary.json', path.join(dir, `${i}-${entry.side}`, 'summary.json'));
+    copyFileSync(summaryFile, path.join(dir, `${i}-${entry.side}`, 'summary.json'));
   });
   writeFileSync(path.join(dir, 'invocations.json'), JSON.stringify({ rounds: 2, runsPerInvocation: summary.repetitions,
     invocations: order.map((entry, i) => ({ ...entry, output: `${i}-${entry.side}`, durationMs: 1 })) }));

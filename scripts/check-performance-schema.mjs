@@ -1,3 +1,4 @@
+import { currentPerformanceInputs } from '../benchmarks/lib/current-performance-inputs.mjs';
 /**
  * Schema drift check for the performance-evaluation intake (redact-secret#603
  * / #136). Validates:
@@ -38,14 +39,12 @@ function report(label, valid, validator) {
 const criteria = await read('benchmarks/performance-criteria.json');
 report('benchmarks/performance-criteria.json matches schemas/performance-criteria-v1.json', validCriteria(criteria), validCriteria);
 
-const evidenceSummary = await read('evidence/603/summary.json');
-report('evidence/603/summary.json matches schemas/performance-assessment-v1.json (pinned core result contract)', validAssessment(evidenceSummary), validAssessment);
-
-// #405: the accepted run's own summary (the one the performance page reads its Measured columns from) is held to
-// the same standard as a freshly submitted one, including naming which artifact served the node runs.
-const acceptedPath = `${criteria.baseline.verificationPath.replace(/\/[^/]+$/, '')}/summary.json`;
-const acceptedSummary = await read(acceptedPath);
-report(`${acceptedPath} (accepted run at ${criteria.baseline.verifiedCommit.slice(0, 7)}) matches schemas/performance-assessment-v1.json`, validAssessment(acceptedSummary), validAssessment);
+const current = currentPerformanceInputs();
+const evidenceSummary = current.baseline;
+const acceptedSummary = current.accepted;
+const acceptedPath = current.records.accepted.source.path;
+console.log('OK: current performance projections match reviewed original source identities and digests');
+if (current.records.baseline.source.path !== criteria.baseline.summaryPath || current.records.acceptance.source.path !== criteria.baseline.verificationPath) throw new Error('Current performance inputs do not match committed criteria locators');
 if (acceptedSummary.sourceCommit !== criteria.baseline.verifiedCommit) {
   failed = true;
   console.error(`FAILED: ${acceptedPath} sourceCommit ${acceptedSummary.sourceCommit} is not baseline.verifiedCommit ${criteria.baseline.verifiedCommit}`);

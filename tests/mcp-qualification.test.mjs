@@ -11,6 +11,7 @@ import {
 } from '../benchmarks/lib/mcp-qualification.ts';
 import { metricsFromAdapterOverhead } from '../benchmarks/lib/regression-budgets.ts';
 import * as W from '../benchmarks/mcp-qualification/consumer/workloads.mjs';
+import { historicalBytes, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
 
 const FILES = { 'package/package.json': '{"name":"x"}\n', 'package/dist/index.js': 'export const a = 1;\n', 'package/README.md': '# x\n' };
 // Computed by redact-secret's scripts/adapter-pins.py digest_entries over FILES (core 5213be1).
@@ -243,10 +244,10 @@ for (const [dir, controls] of [
   ['evidence/843', 2],
   ['evidence/843/public-release-2026.09.26', 2],
 ]) {
-test(`the committed MCP evidence in ${dir} is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell`, async () => {
+test(`the committed MCP evidence in ${dir} is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell`, historicalReplayOptions, async () => {
   const { default: Ajv } = await import('ajv');
   const schema = JSON.parse(readFileSync('schemas/mcp-qualification-v1.json', 'utf8'));
-  const text = readFileSync(path.join(dir, 'mcp-qualification.json'), 'utf8');
+  const text = historicalBytes(path.join(dir, 'mcp-qualification.json')).toString('utf8');
   const report = JSON.parse(text);
   const validate = new Ajv({ strict: false, allErrors: true }).compile(schema);
   assert.ok(validate(report), JSON.stringify(validate.errors?.slice(0, 3)));
@@ -270,9 +271,9 @@ test(`the committed MCP evidence in ${dir} is a complete, clean, schema-valid ru
   assert.deepEqual([report.summary.leaks, report.summary.deviations, report.summary.processOutputLeaks], [0, 0, 0]);
   if (controls === 2) assert.equal(report.summary.resourceControlsDetected, 24);
   for (const file of ['mcp-qualification.json', 'mcp-qualification.md', 'mcp-overhead-series.json', 'README.md']) {
-    assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join(dir, file), 'utf8'), W.allSecrets()), file);
+    assert.doesNotThrow(() => assertNoPlaintext(historicalBytes(path.join(dir, file)).toString('utf8'), W.allSecrets()), file);
   }
-  const series = JSON.parse(readFileSync(path.join(dir, 'mcp-overhead-series.json'), 'utf8'));
+  const series = JSON.parse(historicalBytes(path.join(dir, 'mcp-overhead-series.json')).toString('utf8'));
   assert.deepEqual(series, report.operational.overhead.series);
   const { metrics, profiles } = metricsFromAdapterOverhead(series.outputs);
   assert.ok(profiles['mcp-javascript']);
@@ -280,9 +281,9 @@ test(`the committed MCP evidence in ${dir} is a complete, clean, schema-valid ru
 });
 }
 
-test('the release-train consumer check committed with the rc requalification passed and carries no plaintext', () => {
+test('the release-train consumer check committed with the rc requalification passed and carries no plaintext', historicalReplayOptions, () => {
   const dir = 'evidence/612/release-2026.09.25';
-  const report = JSON.parse(readFileSync(path.join(dir, 'registry-consumer-check.json'), 'utf8'));
+  const report = JSON.parse(historicalBytes(path.join(dir, 'registry-consumer-check.json')).toString('utf8'));
   assert.equal(report.pass, true);
   for (const c of Object.values(report.consumers)) {
     assert.equal(c.install.exit, 0);
@@ -291,14 +292,14 @@ test('the release-train consumer check committed with the rc requalification pas
     for (const e of Object.values(c.examples)) assert.deepEqual([e.exit, e.leak, e.expectedOutput], [0, false, true]);
   }
   for (const file of ['registry-consumer-check.json', 'rc-release-pin.json']) {
-    assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join(dir, file), 'utf8'), W.allSecrets()), file);
+    assert.doesNotThrow(() => assertNoPlaintext(historicalBytes(path.join(dir, file)).toString('utf8'), W.allSecrets()), file);
   }
 });
 
-test('the #321 final evidence pins the public post-#36 adapter packages', () => {
+test('the #321 final evidence pins the public post-#36 adapter packages', historicalReplayOptions, () => {
   const dir = 'evidence/843/public-release-2026.09.26';
-  const report = JSON.parse(readFileSync(path.join(dir, 'mcp-qualification.json'), 'utf8'));
-  const pinText = readFileSync(path.join(dir, 'public-release-pin.json'), 'utf8');
+  const report = JSON.parse(historicalBytes(path.join(dir, 'mcp-qualification.json')).toString('utf8'));
+  const pinText = historicalBytes(path.join(dir, 'public-release-pin.json')).toString('utf8');
   const pin = JSON.parse(pinText);
   assert.equal(report.benchmark.commit, '37451453678a76b30b3f7884b31c1ea555bedbfd');
   assert.equal(report.artifacts.adapters.commit, 'be3f2ad5088d108867b7bae13933d706d8f1f861');

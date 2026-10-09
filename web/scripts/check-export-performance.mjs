@@ -1,3 +1,4 @@
+import { validateCurrentPerformanceInputs } from '../../benchmarks/lib/current-performance-inputs.mjs';
 /**
  * Post-build check of `/comparison/performance/` (#569), run by `npm run check:routes` after `next build`.
  *
@@ -30,7 +31,7 @@ const NAME = { 'redact-secret': 'redact-secret', 'flare-redact': 'flare-redact',
 
 const plan = await readJson('qualification/runtime-comparison-v2.json');
 const reports = {};
-for (const id of SETTINGS) { try { reports[id] = await readJson(`evidence/562/runtime-comparison-${id}.json`); } catch { /* not committed */ } }
+for (const id of SETTINGS) { try { reports[id] = await readJson(`benchmarks/inputs/runtime/runtime-comparison-${id}.json`); } catch { /* not committed */ } }
 
 const chunks = html.split('data-peer="').slice(1).map(c => ({ peer: c.slice(0, c.indexOf('"')), setting: /data-setting="([^"]+)"/.exec(c)?.[1], html: c }));
 if (chunks.length !== PEERS.length * SETTINGS.length) fail(`/comparison/performance/ has ${chunks.length} panels, expected ${PEERS.length * SETTINGS.length}`);
@@ -125,7 +126,7 @@ for (const { peer, setting, html: chunk } of chunks) {
 const criteria = await readJson('benchmarks/performance-criteria.json');
 const dir = criteria.baseline.verificationPath.replace(/\/[^/]*$/, '');
 let summary;
-try { summary = await readJson(`${dir}/summary.json`); } catch { /* not committed */ }
+try { summary = validateCurrentPerformanceInputs(await readJson('benchmarks/inputs/performance/current.json')).records.accepted.data; } catch { /* not committed */ }
 const any = text(chunks[0]?.html ?? '');
 if (summary) {
   for (const run of summary.runs.filter(r => r.kind === 'performance' && r.surface === 'node' && r.status === 'complete')) {

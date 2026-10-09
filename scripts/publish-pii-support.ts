@@ -15,7 +15,7 @@ const piiEvalPinFiles = args.flatMap(arg => /^--pii-eval-pins=(.+)$/.exec(arg)?.
 const boundedPopulationOracle = args.includes('--bounded-population-oracle');
 const options = Object.fromEntries(args.filter(arg => arg !== '--bounded-population-oracle' && !arg.startsWith('--pii-eval-artifact=') && !arg.startsWith('--pii-eval-pins=')).map(arg => {
   if (arg.startsWith('--evaluation=')) throw new Error('--evaluation (a full evaluation-v1.json) is the legacy credential contract and is no longer an input: pass --credential-results=<results directory with evaluation-bundle-v1.json>');
-  const match = /^--(credential-results|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root|custodian-bundle)=(.+)$/.exec(arg);
+  const match = /^--(credential-results|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|product-bindings|custodian-bundle)=(.+)$/.exec(arg);
   if (!match) throw new Error('Usage: npm run eval:publish:pii-support -- [--credential-results=<results directory holding evaluation-bundle-v1.json>] [--credential-support=...] [--pii-directory=...] [--output=...] [--product-commit=<sha> --product-core=<core.tgz>] [--pii-eval-pins=<pins> --pii-eval-artifact=<artifact>...] [--custodian-bundle=<public-synthetic-bundle>] (--population-bundle=... | --population-mode=not-measured)');
   return [match[1], match[2]];
 }));
@@ -42,7 +42,7 @@ const bindings: PiiSupportBuildOptions = {};
 if (piiEvalPinFiles.length) bindings.piiEvalMeasurement = await piiEvalMeasurementFrom(piiEvalPinFiles.map(file => path.resolve(root, file)), piiEvalArtifacts.map(file => path.resolve(root, file)), product);
 if (options['custodian-bundle']) bindings.custodianConformance = await custodianConformanceFrom(location('custodian-bundle', ''));
 if (product) {
-  const recorded = await productEvidenceFor(product, location('evidence-root', 'evidence'));
+  const recorded = await productEvidenceFor(product, location('product-bindings', 'benchmarks/inputs/pii/product-bindings.json'));
   if (recorded) { bindings.product = recorded.binding; console.log(`PII product activation: bound ${path.relative(root, recorded.directory)} for ${product.sourceCommit}`); }
   else console.log(`PII product activation: no committed record for ${product.sourceCommit}; activation stays not-measured`);
 }

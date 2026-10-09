@@ -1,4 +1,5 @@
-import { readFile } from 'node:fs/promises';
+import { loadPiiProtectedSupportEvidence } from '../evaluation/domains/pii/protected-support-binding.ts';
+import type { PiiProtectedRoute } from '../evaluation/domains/pii/support-semantics.ts';
 import path from 'node:path';
 import { buildPiiCurrentQualification, type PiiCurrentQualification } from './pii-current-qualification.ts';
 import bindingsFile from '../evaluation/domains/pii/protected-support-bindings-v1.json';
@@ -9,10 +10,9 @@ import { PII_ORACLE_PLANS } from '../evaluation/domains/pii/identity-oracle.ts';
  * The six opt-in PII families in the support matrix (#647), at the qualification the published Beta.11 disposition records
  * and no other. Nothing here decides or re-derives a status: each row is the reviewed `pii-v1` projection
  * (`benchmarks/evaluation/domains/pii/protected-support-bindings-v1.json`, entry `beta11-8b6a5fd-pii-protected`) checked
- * field by field against the published aggregate protected disposition it was written from
- * (`evidence/901/428/core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json`). The binder `bindPiiProtectedSupport`
- * is deliberately not called: it re-derives the disposition from the sealed protected partition, which this generator never
- * opens. Only the committed aggregate, the freeze and the registry are read.
+ * field by field against the reviewed protected disposition. The canonical current input retains
+ * aggregate custody and cost commitments, and its loader validates the separate source index and
+ * re-derives the disposition without opening protected raw inputs.
  *
  * The PII rows sit beside the credential families, never in them: `providerCount`, `familyCount`, `distribution` and
  * `stableDistribution` stay credential-only (docs/specs/support-matrix.md, "PII rows").
@@ -21,7 +21,6 @@ export const PII_BINDING_ID = 'beta11-8b6a5fd-pii-protected';
 /** The benchmarks merge that put the final record and the protected disposition on `develop`; the core cites its permalinks. */
 export const PII_RECORD_REVISION = 'be0fb9f35045bf05e5b999a2c0ed368541f9e963';
 const DISPOSITION_FILE = 'pii-beta11-protected-disposition-v2.json';
-const FREEZE_FILE = 'pii-beta11-freeze-v2.json';
 const COMMIT = /^[0-9a-f]{40}$/, DIGEST = /^[0-9a-f]{64}$/, EPOCH_OF_SEAL = /^holdout\/pii-b11-([0-9a-f]{12})-seal\.json$/;
 
 export type PiiStatus = 'pending' | 'provisional';
@@ -66,9 +65,9 @@ export async function buildPiiMatrixSection(root: string): Promise<PiiMatrixSect
   const binding = bindingsFile.bindings.find(entry => entry.id === bindingsFile.current);
   if (!binding || binding.id !== PII_BINDING_ID) throw new Error(`The reviewed PII binding is not ${PII_BINDING_ID}; this matrix projection is bound to that entry.`);
   if (binding.maximumStatus !== 'provisional') throw new Error('The PII route must cap status at provisional.');
-  const json = (file: string) => readFile(path.join(root, file), 'utf8').then(JSON.parse);
-  const disposition = await json(path.posix.join(binding.evidenceDirectory, DISPOSITION_FILE));
-  const freeze = await json(path.posix.join(binding.evidenceDirectory, FREEZE_FILE));
+  const current = await loadPiiProtectedSupportEvidence(root, binding as PiiProtectedRoute);
+  const disposition = current.protectedDisposition;
+  const freeze = current.freeze;
   if (disposition.reportType !== 'pii-beta11-protected-disposition' || disposition.supportClaims !== false || disposition.maximumStatus !== 'provisional') throw new Error('Not the published protected disposition.');
   same('core commit', binding.coreCommit, disposition.candidate.sourceCommit);
   same('core commit in the freeze', binding.coreCommit, freeze.candidate.sourceCommit);

@@ -176,9 +176,9 @@ function checkBuildChip(report) {
   if (!runtimePage.includes(local ? 'local build · unreleased' : 'npm')) fail(`/comparison/runtime/ does not state the redact-secret build as ${local ? 'a local unreleased build' : 'the npm package'} (${kind})`);
   if (!local && runtimePage.includes('local build · unreleased')) fail('/comparison/runtime/ calls a published redact-secret a local unreleased build');
 }
-for (const id of SETTINGS) { try { reports[id] = await readJson(`evidence/562/runtime-comparison-${id}.json`); } catch { /* not committed */ } }
+for (const id of SETTINGS) { try { reports[id] = await readJson(`benchmarks/inputs/runtime/runtime-comparison-${id}.json`); } catch { /* not committed */ } }
 let snapshot;
-try { snapshot = await readJson('evidence/429/peer-pii-runtime-throughput.json'); } catch { /* not committed */ }
+try { snapshot = await readJson('benchmarks/inputs/runtime/peer-pii-runtime-throughput.json'); } catch { /* not committed */ }
 const cells = html => [...html.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)].map(m => ({ outcome: /data-outcome="([^"]+)"/.exec(m[1])?.[1], text: text(m[1]).trim() }));
 const rowsOf = html => [...html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/g)].map(m => ({ label: text(/<th\b[^>]*>([\s\S]*?)<\/th>/.exec(m[1])?.[1] ?? '').trim(), cells: cells(m[1]) })).filter(r => r.label);
 const panelChunk = key => runtimeHtml.split('data-key="').find(chunk => chunk.startsWith(`${key}"`));

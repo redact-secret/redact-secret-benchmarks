@@ -25,6 +25,8 @@ import {
   validatePeerRuntimeThroughputReport,
 } from '../benchmarks/evaluation/domains/pii/peer-runtime-throughput.ts';
 
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+
 const root = fileURLToPath(new URL('..', import.meta.url));
 const args = {};
 for (const argument of process.argv.slice(2)) {
@@ -33,13 +35,13 @@ for (const argument of process.argv.slice(2)) {
   args[match[1]] = match[2];
 }
 
+const outPath = measurementOutput(path.resolve(root, args.out ?? `results-output/peer-pii-runtime-throughput/${Date.now()}/report.json`), root);
 const need = name => process.env[name] || (() => { throw new Error(`${name} is not set: run this through scripts/run-peer-pii-runtime-throughput-docker.sh (#513)`); })();
 const pinRef = JSON.parse(await readFile(path.join(root, 'benchmarks/pin-manifest.json'), 'utf8')).pins.redactSecretRevision;
 const productRef = need('REDACT_SECRET_REF');
 const imageDigest = need('IMAGE_DIGEST');
 const cpuLimit = Number(need('CPU_LIMIT'));
 const emulated = need('EMULATED') === 'true';
-const outPath = path.resolve(args.out ?? path.join(root, 'public/results/peer-pii-runtime-throughput.json'));
 // Fail before measuring, not after: a refused snapshot must not cost a full run.
 const refusal = snapshotWriteRefusal({ ref: productRef, pinRef, emulated, outPath, root });
 if (refusal) throw new Error(refusal);
@@ -111,6 +113,5 @@ report.artifactCommitment = commitment(report);
 
 validatePeerRuntimeThroughputReport(report);
 
-await mkdir(path.dirname(outPath), { recursive: true });
-await writeFile(outPath, JSON.stringify(report, null, 2) + '\n');
+writeMeasurement(outPath, JSON.stringify(report, null, 2) + '\n');
 console.log(`Wrote ${outPath}`);

@@ -1,0 +1,879 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "reportType",
+    "issue",
+    "productIssue",
+    "supportClaims",
+    "role",
+    "roleNote",
+    "candidate",
+    "ciQualification",
+    "operationalBaseline",
+    "populationBaseline",
+    "benchmark",
+    "contracts",
+    "frozenInputs",
+    "evaluationSchema",
+    "activation",
+    "protectedEpochs",
+    "freezeCommitment"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "reportType": {
+      "const": "pii-beta11-freeze"
+    },
+    "issue": {
+      "const": "redact-secret/redact-secret-benchmarks#428"
+    },
+    "productIssue": {
+      "const": "redact-secret/redact-secret#901"
+    },
+    "supportClaims": {
+      "const": false
+    },
+    "populationPlanSet": {
+      "enum": [
+        "b11-population-v1",
+        "b11-population-v2"
+      ]
+    },
+    "role": {
+      "enum": [
+        "interim",
+        "final"
+      ]
+    },
+    "roleNote": {
+      "type": "string"
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "sourceCommit",
+        "versionString",
+        "released",
+        "releaseNote",
+        "coreCrateTree",
+        "expectedContextVocabulary",
+        "buildRecipe",
+        "platform",
+        "toolchain",
+        "artifacts",
+        "wasmPayloads",
+        "identityExample"
+      ],
+      "properties": {
+        "repository": {
+          "const": "redact-secret/redact-secret"
+        },
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "versionString": {
+          "type": "string"
+        },
+        "released": {
+          "const": false
+        },
+        "releaseNote": {
+          "type": "string"
+        },
+        "coreCrateTree": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "expectedContextVocabulary": {
+          "const": "pii-context/v2"
+        },
+        "buildRecipe": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "platform": {
+          "type": "string"
+        },
+        "toolchain": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "node",
+            "rustc",
+            "cargo",
+            "wasm-bindgen",
+            "wasm-opt"
+          ],
+          "properties": {
+            "node": {
+              "type": "string"
+            },
+            "rustc": {
+              "type": "string"
+            },
+            "cargo": {
+              "type": "string"
+            },
+            "wasm-bindgen": {
+              "type": "string"
+            },
+            "wasm-opt": {
+              "type": "string"
+            }
+          }
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "core",
+            "node",
+            "wasm"
+          ],
+          "properties": {
+            "core": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "file",
+                "sha256",
+                "bytes"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.@+-]+\\.tgz$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "node": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "file",
+                "sha256",
+                "bytes"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.@+-]+\\.tgz$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "wasm": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "file",
+                "sha256",
+                "bytes"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.@+-]+\\.tgz$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        "wasmPayloads": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "file",
+              "role",
+              "sha256",
+              "raw",
+              "gzip",
+              "brotli"
+            ],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "raw": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "gzip": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "brotli": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "identityExample": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "binarySha256"
+          ],
+          "properties": {
+            "path": {
+              "const": "crates/secret-scan-core/examples/pii_identity_evaluation.rs"
+            },
+            "binarySha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "ciQualification": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "runId",
+            "inventorySha256",
+            "productVersion",
+            "packages",
+            "binaries",
+            "wasm"
+          ],
+          "properties": {
+            "status": {
+              "const": "available"
+            },
+            "runId": {
+              "type": "string"
+            },
+            "inventorySha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "productVersion": {
+              "type": "string"
+            },
+            "packages": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "core",
+                "node",
+                "wasm"
+              ],
+              "properties": {
+                "core": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  }
+                },
+                "node": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  }
+                },
+                "wasm": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  }
+                }
+              }
+            },
+            "binaries": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "wasm": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "artifact",
+                  "file",
+                  "role",
+                  "sha256",
+                  "raw",
+                  "gzip",
+                  "brotli"
+                ],
+                "properties": {
+                  "artifact": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "raw": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "gzip": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "brotli": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "not-available"
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "operationalBaseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceCommit",
+        "source",
+        "version",
+        "artifacts",
+        "wasmPayloads"
+      ],
+      "properties": {
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "source": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "core",
+            "node",
+            "wasm"
+          ],
+          "properties": {
+            "core": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "file",
+                "sha256",
+                "bytes"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.@+-]+\\.tgz$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "node": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "file",
+                "sha256",
+                "bytes"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.@+-]+\\.tgz$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "wasm": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "file",
+                "sha256",
+                "bytes"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.@+-]+\\.tgz$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        "wasmPayloads": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "file",
+              "role",
+              "sha256",
+              "raw",
+              "gzip",
+              "brotli"
+            ],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "raw": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "gzip": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "brotli": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "populationBaseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "version",
+        "verification"
+      ],
+      "properties": {
+        "kind": {
+          "const": "lockfile-release"
+        },
+        "version": {
+          "type": "string"
+        },
+        "verification": {
+          "const": "package-lock.json sha512 integrity"
+        }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "baseRevision",
+        "lockfileSha256"
+      ],
+      "properties": {
+        "repository": {
+          "const": "redact-secret/redact-secret-benchmarks"
+        },
+        "baseRevision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "lockfileSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256",
+          "sha256AtBeta10",
+          "changedSinceBeta10"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9_./-]+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "sha256AtBeta10": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "changedSinceBeta10": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "frozenInputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9_./-]+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "evaluationSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9_./-]+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pii:global",
+        "pii:us",
+        "off",
+        "pii:family:global:network-address",
+        "pii:family:global:email",
+        "pii:family:global:payment-card",
+        "pii:family:global:iban",
+        "pii:family:us:ssn",
+        "pii:family:global:phone"
+      ],
+      "properties": {
+        "pii:global": {
+          "type": "string"
+        },
+        "pii:us": {
+          "type": "string"
+        },
+        "off": {
+          "type": "string"
+        },
+        "pii:family:global:network-address": {
+          "type": "string"
+        },
+        "pii:family:global:email": {
+          "type": "string"
+        },
+        "pii:family:global:payment-card": {
+          "type": "string"
+        },
+        "pii:family:global:iban": {
+          "type": "string"
+        },
+        "pii:family:us:ssn": {
+          "type": "string"
+        },
+        "pii:family:global:phone": {
+          "type": "string"
+        }
+      }
+    },
+    "protectedEpochs": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "family",
+              "epochCommitment",
+              "maxRuns",
+              "runs",
+              "state",
+              "protectedCorpus"
+            ],
+            "properties": {
+              "family": {
+                "type": "string"
+              },
+              "epochCommitment": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "maxRuns": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "runs": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "state": {
+                "type": "string"
+              },
+              "protectedCorpus": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "note"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "family",
+              "epochCommitment",
+              "maxRuns",
+              "runs",
+              "state",
+              "protectedCorpus"
+            ],
+            "properties": {
+              "family": {
+                "type": "string"
+              },
+              "epochCommitment": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "maxRuns": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "runs": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "state": {
+                "type": "string"
+              },
+              "protectedCorpus": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "priorEpoch",
+                  "note"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "priorEpoch": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "record",
+                      "productSourceCommit",
+                      "epochCommitment",
+                      "runs",
+                      "maxRuns"
+                    ],
+                    "properties": {
+                      "record": {
+                        "type": "string"
+                      },
+                      "productSourceCommit": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{40}$"
+                      },
+                      "epochCommitment": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "runs": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "maxRuns": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "freezeCommitment": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "redact-secret/prepared-pii-freeze/v1",
+  "title": "Mechanical PII freeze candidate, independently registered before use"
+}

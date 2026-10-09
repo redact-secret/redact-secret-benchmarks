@@ -1,0 +1,23 @@
+{
+  "schema": "redact-secret/pii-current-product-bindings/v1",
+  "supportClaims": false,
+  "source": {
+    "commit": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+    "path": "benchmarks/pii-candidate-comparison/plan.json",
+    "sha256": "ed25d3affb0fa224dc547a176bcdf22da023fcabdcef4f50769147165147efc4"
+  },
+  "products": [
+    {
+      "role": "baseline",
+      "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+      "coreSha256": "5908f85933cd322b741f6e067b261b7827e3d16dece9d1b645cabae8f3a866a2"
+    },
+    {
+      "role": "candidate",
+      "sourceCommit": "5696d7e1a2950bdf54fa21244f351e1c4b171f25",
+      "coreSha256": "42c0447c124ace12c128768b30e33d83b4c58b8af2d0d8502c6d42f795c62c35"
+    }
+  ],
+  "bindings": [],
+  "projectionCommitment": "570d6ffdf2fd6502be7bb6691e77cf035736399da2ff062474ab6be72722e531"
+}

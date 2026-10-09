@@ -1,18 +1,23 @@
-// The per-issue final artifacts of #752, #753 and #754 and the round-4 replay on the published 0.1.0-beta.14.
-// They check that the committed files are what the renderer writes from the committed round data, that every row is accounted for, and that nothing is left dangling.
-// No ledger value is asserted here, and no scanner runs.
+// Historical final reports replay only from the verified original archive.
+// Current role coverage stays an ordinary offline test.
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
 import test from 'node:test';
-import { fileURLToPath } from 'node:url';
+import { historicalBytes, historicalJson, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
+import { ROWS as providerRows } from '../benchmarks/corpora/provider-contracts/corpus-group-c.mjs';
+import { ROWS as protocolRows } from '../benchmarks/corpora/protocol-credentials/corpus-group-d.mjs';
+import { ROWS as sessionRows } from '../benchmarks/corpora/session-material/corpus-e.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const read = (p) => readFileSync(path.join(root, p), 'utf8');
-const json = (p) => JSON.parse(read(p));
+const read = (p) => historicalBytes(p).toString('utf8');
+const json = historicalJson;
 const ROWS = { 752: 11, 753: 23, 754: 9 };
 
-test('every issue README accounts for all rows and keeps the counts separate', () => {
+test('current provider, protocol and session corpus roles account for the 43 authored rows', () => {
+  const roles = [providerRows, protocolRows, sessionRows];
+  assert.deepEqual(roles.map(rows => Object.keys(rows).length), [11, 23, 9]);
+  assert.equal(new Set(roles.flatMap(rows => Object.keys(rows))).size, 43);
+});
+
+test('every issue README accounts for all rows and keeps the counts separate', historicalReplayOptions, () => {
   const report = json('evidence/groups-cde/round3/report.json');
   for (const [issue, rows] of Object.entries(ROWS)) {
     const lineage = json(`evidence/${issue}/lineage.json`);
@@ -27,7 +32,7 @@ test('every issue README accounts for all rows and keeps the counts separate', (
   assert.equal(Object.values(ROWS).reduce((a, b) => a + b, 0), 43);
 });
 
-test('round 4: the published beta.14 reproduces the round-3 candidate on every case', () => {
+test('round 4: the published beta.14 reproduces the round-3 candidate on every case', historicalReplayOptions, () => {
   const s = json('evidence/groups-cde/round4-published-beta14/scores.json');
   assert.equal(s.casesCompared, 2281);
   assert.equal(s.differentFindings.length, 0);
@@ -42,7 +47,7 @@ test('round 4: the published beta.14 reproduces the round-3 candidate on every c
   assert.equal(id.published.npm['@redact-secret/core'].tarballSha256, id.roundThreeCandidate.tarballSha256['redact-secret-core-0.1.0-beta.14.tgz']);
 });
 
-test('round 4 regression controls: no scored Batch 1 or Batch 2 case failed or regressed', () => {
+test('round 4 regression controls: no scored Batch 1 or Batch 2 case failed or regressed', historicalReplayOptions, () => {
   const c = json('evidence/groups-cde/round4-published-beta14/controls/controls.json');
   for (const k of ['b1', 'r1', 'r2']) {
     assert.equal(c.corpora[k].positivesFailing, 0, k);

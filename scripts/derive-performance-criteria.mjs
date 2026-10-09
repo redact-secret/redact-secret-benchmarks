@@ -1,3 +1,4 @@
+import { currentPerformanceInputs } from '../benchmarks/lib/current-performance-inputs.ts';
 /**
  * Derives `benchmarks/performance-criteria.json` from one complete,
  * release-build `CompleteAssessment` summary, mechanically applying the
@@ -32,9 +33,10 @@ const flag = name => {
 };
 
 const summaryPath = flag('--summary') ?? 'evidence/603/summary.json';
-const summary = JSON.parse(await readFile(new URL(summaryPath, root), 'utf8'));
+const frozen = currentPerformanceInputs();
+const summary = summaryPath === frozen.records.baseline.source.path ? frozen.baseline : JSON.parse(await readFile(new URL(summaryPath, root), 'utf8'));
 
-const problem = completeAssessmentProblem(summary);
+const problem = summaryPath === frozen.records.baseline.source.path ? null : completeAssessmentProblem(summary);
 if (problem) throw new Error(`Cannot derive criteria: ${problem}`);
 
 const target = new URL('../benchmarks/performance-criteria.json', import.meta.url);
@@ -72,7 +74,7 @@ const criteria = deriveCriteria(summary, {
 });
 validateAcceptanceCriteria(criteria);
 
-const acceptance = JSON.parse(await readFile(new URL(criteria.baseline.verificationPath, root), 'utf8'));
+const acceptance = criteria.baseline.verificationPath === frozen.records.acceptance.source.path ? frozen.records.acceptance.data : JSON.parse(await readFile(new URL(criteria.baseline.verificationPath, root), 'utf8'));
 if (
   acceptance.status !== 'accepted' ||
   acceptance.sourceCommit !== criteria.baseline.verifiedCommit ||

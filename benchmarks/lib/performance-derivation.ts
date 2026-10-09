@@ -1,3 +1,4 @@
+import type { CurrentPerformanceSummary } from './current-performance-inputs.ts';
 /**
  * Mechanical threshold derivation from one release-build `CompleteAssessment`
  * run, so recalibration is a pure function of observed numbers rather than a
@@ -63,7 +64,7 @@ export interface DeriveCriteriaOptions {
  * (a debug-build Rust timing cannot license a threshold anyone else is held
  * to, per redact-secret's own "release-build-required" acceptance check).
  */
-export function deriveCriteria(summary: CompleteAssessment, options: DeriveCriteriaOptions): AcceptanceCriteria {
+export function deriveCriteria(summary: CurrentPerformanceSummary, options: DeriveCriteriaOptions): AcceptanceCriteria {
   if (summary.status !== 'complete') throw new Error('performance-derivation:summary-incomplete');
   if (summary.repetitions < 5) throw new Error('performance-derivation:insufficient-repetitions');
   if (summary.accuracyCorpus === undefined || summary.workloadProfiles === undefined) {

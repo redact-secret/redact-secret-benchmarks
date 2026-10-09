@@ -37,6 +37,45 @@ export function workflowScriptReferences(text) {
   return refs;
 }
 
+export function evidenceRetirementProblems({ files, retirement }) {
+  const problems = [];
+  if (retirement?.schema !== 'redact-secret/evidence-retirement/v1' || retirement.sourceCommit !== '65ffe7dcb3e7124e7f66cff96cab814f0365f69a' ||
+      retirement.sourceTag !== 'hygiene-evidence-before-removal-879-20261008' || retirement.originalFileCount !== 684 || retirement.originalBytes !== 191515606 ||
+      retirement.archive?.status !== 'PASS' || retirement.archive?.archiveSha256 !== '8aea6b5af11369c4b8df6c1d22e6209133297ef5c12194deadb67b0af1ef7370' ||
+      retirement.archive?.verifiedOriginalFiles !== 684 || retirement.archive?.regularMembers !== 685 || retirement.files?.length !== 684)
+    return ['evidence-retirement-879: invalid original source/archive scope'];
+  const seen = new Set();
+  let bytes = 0;
+  for (const row of retirement.files) {
+    if (!/^evidence\/[A-Za-z0-9_./-]+$/.test(row.path ?? '') || row.path.split('/').includes('..') || seen.has(row.path) ||
+        !/^[a-f0-9]{64}$/.test(row.sha256 ?? '') || !/^[a-f0-9]{40}$/.test(row.gitBlob ?? '') || !Number.isSafeInteger(row.bytes) || row.bytes < 0 ||
+        !['migrate-policy', 'migrate-current-fields-and-archive-original', 'archive-original-and-remove-head'].includes(row.disposition) ||
+        !retirement.accessReviewRules?.[row.accessClassification]) problems.push(`${row.path}: invalid evidence disposition/source/access review`);
+    seen.add(row.path); bytes += row.bytes;
+  }
+  if (bytes !== retirement.originalBytes) problems.push('evidence-retirement-879: original byte scope changed');
+  const inputs = new Map();
+  for (const row of retirement.canonicalInputs ?? []) {
+    if (inputs.has(row.path) || !/^benchmarks\/inputs\/(?:credential|pii|performance|runtime)\/[a-z0-9.-]+\.json$/.test(row.path ?? '') ||
+        !/^[a-f0-9]{64}$/.test(row.sha256 ?? '') || !Number.isSafeInteger(row.bytes) || !row.role || row.reviewIssue !== 879)
+      problems.push(`${row.path}: invalid reviewed current input`);
+    inputs.set(row.path, row);
+  }
+  const present = new Set();
+  for (const file of files) {
+    present.add(file.path);
+    if (file.path.startsWith('evidence/') && file.path !== 'evidence/README.md')
+      problems.push(`${file.path}: historical evidence belongs in verified archive; current inputs require explicit source-bound role review`);
+    if (/^benchmarks\/inputs\/(?:credential|pii|performance|runtime)\//.test(file.path)) {
+      const row = inputs.get(file.path);
+      if (!row || row.bytes !== file.size || row.sha256 !== file.sha256)
+        problems.push(`${file.path}: unreviewed or drifted canonical input; prevent full historical payload accumulation`);
+    }
+  }
+  for (const path of inputs.keys()) if (!present.has(path)) problems.push(`${path}: reviewed current input missing`);
+  return problems;
+}
+
 export function hygieneProblems({ files, policy, inventory, today, archive, removals }) {
   const problems = [];
   if (policy.schemaVersion !== 1 || !/^[a-f0-9]{40}$/.test(policy.baselineCommit) || !Number.isSafeInteger(policy.maxNewPayloadBytes) || policy.maxNewPayloadBytes <= 0)
@@ -151,7 +190,9 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const paths = execFileSync('git', ['ls-files', '-z'], { cwd: root }).toString().split('\0').filter(Boolean);
   const files = paths.map(path => ({ path, size: lstatSync(resolve(root, path)).size, ...((path.startsWith('.github/workflows/') || path.startsWith('benchmarks/governance/authorisations/')) ? { text: readFileSync(resolve(root, path), 'utf8') } : {}) }));
   const json = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
-  const problems = hygieneProblems({ files, policy: json('docs/retention/policy.json'), inventory: inventoryAt(root), archive: json('docs/retention/archive.json'), removals: json('docs/retention/removals.json'), today: new Date().toISOString().slice(0, 10) });
+  const inventory = inventoryAt(root);
+  const problems = hygieneProblems({ files, policy: json('docs/retention/policy.json'), inventory, archive: json('docs/retention/archive.json'), removals: json('docs/retention/removals.json'), today: new Date().toISOString().slice(0, 10) });
+  problems.push(...evidenceRetirementProblems({ files: inventory.entries.map(row => ({ path: row.path, size: row.size, sha256: row.sha256 })), retirement: json('docs/retention/evidence-retirement-879.json') }));
   if (problems.length) { console.error(problems.join('\n')); process.exitCode = 1; }
   else console.log(`Repository hygiene: ${files.length} tracked files checked; generated outputs, payload sizes and new script/workflow entrypoints valid.`);
 }

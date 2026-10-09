@@ -178,7 +178,8 @@
     "hygiene:ci-invocations": "node scripts/ci-invocations.mjs",
     "hygiene:check": "node scripts/check-repository-hygiene.mjs",
     "hygiene:restore": "node scripts/restore-retained-file.mjs",
-    "fixtures:profiles": "node --import tsx scripts/report-fixture-profiles.mjs"
+    "fixtures:profiles": "node --import tsx scripts/report-fixture-profiles.mjs",
+    "pii:inputs:prepare": "node --import tsx scripts/prepare-pii-protected-current-input.mjs"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",

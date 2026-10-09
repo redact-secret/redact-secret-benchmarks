@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "inputs"
+  ],
+  "properties": {
+    "schema": {
+      "const": "redact-secret/pii-current-inputs-index/v1"
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "path",
+          "source",
+          "projectionCommitment"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "gap-policy",
+              "fixture-corrections",
+              "protected-route",
+              "product-bindings"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^benchmarks/inputs/pii/[a-z-]+\\.json$"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "commit",
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "commit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^(evidence|benchmarks)/[A-Za-z0-9._/-]+$"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "contentCommitment": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          },
+          "projectionCommitment": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

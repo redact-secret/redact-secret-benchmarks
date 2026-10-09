@@ -3,7 +3,7 @@ import { execFile } from 'node:child_process';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import { piiDomain } from '../benchmarks/evaluation/domains/pii/contract.ts';
@@ -16,6 +16,8 @@ import { piiArrivalContract, piiArrivalPopulationScannerConfiguration,
   piiArrivalSelectionEvidence } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
 import { installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+const root = fileURLToPath(new URL('../', import.meta.url));
 const execFileAsync = promisify(execFile);
 const raw = Object.fromEntries(process.argv.slice(2).map(argument => {
   const match = /^--([a-z-]+)=(.+)$/.exec(argument); if (!match) throw new Error('invalid arguments'); return [match[1], match[2]];
@@ -25,6 +27,7 @@ for (const side of ['baseline', 'candidate']) for (const key of ['evidence', 'co
 if (!raw['candidate-source'] || !raw.output) throw new Error('missing --candidate-source or --output');
 const args = Object.fromEntries(Object.entries(raw).map(([key, value]) =>
   [key, key === 'output' || key === 'candidate-source' || key.includes('evidence') || ['core', 'node', 'wasm'].some(role => key.endsWith(role)) ? path.resolve(value) : value]));
+args.output = measurementOutput(args.output, root);
 const digestFile = async location => createHash('sha256').update(await readFile(location)).digest('hex');
 const canonical = value => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonical(child)])) : value;
@@ -164,5 +167,5 @@ const projection = { schemaVersion: 1, reportType: 'pii-population-arrival-bundl
   comparisons, identitySourceEvidence: sourceProof,
   status: candidateReports.every(report => report.status === 'measured') && comparisons.every(comparison => comparison.verdict === 'no-regression') ? 'complete' : 'incomplete' };
 const bundle = { ...projection, artifactCommitment: commitment(projection) };
-await writeFile(args.output, `${JSON.stringify(bundle, null, 2)}\n`);
+writeMeasurement(args.output, `${JSON.stringify(bundle, null, 2)}\n`);
 console.log(`${bundle.artifactCommitment} ${bundle.status}`);

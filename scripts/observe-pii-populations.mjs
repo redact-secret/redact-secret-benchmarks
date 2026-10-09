@@ -13,6 +13,7 @@
  * Run: npm run pii:observe:populations -- --candidate-core=… --candidate-node=… --candidate-wasm=… --output=…
  *      [--baseline-core=… --baseline-node=… --baseline-wasm=…]   (default: pack the lockfile release)
  */
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
 import { createHash, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
@@ -125,6 +126,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2]];
   }));
   for (const key of ['candidate-core', 'candidate-node', 'candidate-wasm', 'output']) if (!args[key]) throw new Error(`missing --${key}`);
+  const root = fileURLToPath(new URL('../', import.meta.url));
+  const output = measurementOutput(path.resolve(args.output), root);
   if (args['candidate-source-commit'] && !/^[0-9a-f]{40}$/.test(args['candidate-source-commit'])) throw new Error('--candidate-source-commit must be 40 hex');
   const explicit = ['baseline-core', 'baseline-node', 'baseline-wasm'].filter(key => args[key]);
   if (explicit.length !== 0 && explicit.length !== 3) throw new Error('Pass all three --baseline-* tarballs or none');
@@ -140,8 +143,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       process.exit(0);
     }
     const bundle = await observePiiPopulations({ baseline, candidate, candidateSourceCommit: args['candidate-source-commit'] ?? null });
-    await mkdir(path.dirname(path.resolve(args.output)), { recursive: true });
-    await writeFile(path.resolve(args.output), `${JSON.stringify(bundle)}\n`);
+    writeMeasurement(output, `${JSON.stringify(bundle)}\n`);
     console.log(bundle.comparisons.map(row => `${row.population}: ${row.verdict} (candidate ${row.candidateReport.status})`).join('\n'));
   } finally { await rm(scratch, { recursive: true, force: true }); }
 }

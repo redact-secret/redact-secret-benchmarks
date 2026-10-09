@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 // @vitest-environment node
 /**
  * The evaluation-domain services (#611) decide what `/evaluation/pii/` and `/evaluation/credential/` may say. The happy path
@@ -65,10 +66,10 @@ describe('PII evaluation', () => {
   test('a frozen report that is not the one the binding commits to refuses the whole page', async () => {
     const binding = piiCurrentProtectedRoute()!;
     const dir = `${binding.evidenceDirectory}`;
-    const real = JSON.parse(readFileSync(`${REAL}/${dir}/pii-beta11-report-v2.json`, 'utf8'));
+    const real = JSON.parse(readFileSync(`${REAL}/benchmarks/inputs/pii/protected-route.json`, 'utf8'));
     // The binding validator re-derives the report, so a changed report is refused whole, never read in part.
-    real.artifactCommitment = '0'.repeat(64);
-    const pii = await (await domains(overlay({ [`${dir}/pii-beta11-report-v2.json`]: JSON.stringify(real) }))).loadPiiEvaluation();
+    real.data.report.artifactCommitment = '0'.repeat(64);
+    const pii = await (await domains(overlay({ ['benchmarks/inputs/pii/protected-route.json']: JSON.stringify(real) }))).loadPiiEvaluation();
     expect(pii.state).toBe('not-recorded');
     if (pii.state === 'not-recorded') expect(pii.reason).toMatch(/did not validate/);
   });
@@ -85,7 +86,7 @@ describe('PII evaluation', () => {
 
   test('a missing evidence file is not recorded, with the reason', async () => {
     const dir = piiCurrentProtectedRoute()!.evidenceDirectory;
-    const pii = await (await domains(overlay({ [`${dir}/pii-beta11-protected-disposition-v2.json`]: null }))).loadPiiEvaluation();
+    const pii = await (await domains(overlay({ ['benchmarks/inputs/pii/protected-route.json']: null }))).loadPiiEvaluation();
     expect(pii).toMatchObject({ state: 'not-recorded', reason: expect.stringContaining('did not validate') });
   });
 
@@ -113,7 +114,7 @@ describe('PII evaluation', () => {
     const publicOnly = await (await domains(overlay({
       'public/results/evaluation-domains-v2.json': JSON.stringify(index),
       [`public${href}`]: JSON.stringify(matrix),
-      [`${dir}/pii-beta11-protected-disposition-v2.json`]: null,
+      ['benchmarks/inputs/pii/protected-route.json']: null,
     }))).loadPiiEvaluation();
     expect(publicOnly.state).toBe('public-recorded');
     if (publicOnly.state !== 'public-recorded') throw new Error(publicOnly.state);
@@ -181,34 +182,47 @@ describe('PII evaluation', () => {
 const record = (over: Record<string, unknown> = {}) => JSON.stringify({
   schemaVersion: 1, generatedAt: '2030-01-02T00:00:00.000Z', familyCount: 3,
   distribution: { stable: 2, provisional: 1, pending: 0, unsupported: 0 }, stableDistribution: { documented: 1, empirical: 1, policyQualified: 0 },
-  families: [{ status: 'stable' }, { status: 'stable' }, { status: 'provisional' }],
+  families: [{ family: 'synthetic-a', status: 'stable' }, { family: 'synthetic-b', status: 'stable' }, { family: 'synthetic-c', status: 'provisional' }],
   publishedPackage: { version: '9.9.9' }, product: null, ...over,
 });
+
+const supportRegistry = (raw: string, mode = 'published') => {
+  const data = JSON.parse(raw);
+  const commit = data.product?.sourceCommit ?? 'a'.repeat(40);
+  return JSON.stringify({ schemaVersion: 1, inputType: 'current-credential-support-bindings',
+    scope: { publishedVersion: data.publishedPackage?.version ?? '9.9.9', publishedSourceCommit: commit, candidateSourceCommits: mode === 'candidate' ? [commit] : [] },
+    records: [{ mode, source: { path: 'evidence/991/bbb/support-status-' + mode + '.json', revision: 'a'.repeat(40), sha256: 'a'.repeat(64), productSourceCommit: commit },
+      dataSha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), data }],
+  });
+};
+
+const supportOverlay = (raw: string, mode = 'published') => {
+  const registry = supportRegistry(raw, mode);
+  const value = JSON.parse(registry);
+  const expected = JSON.stringify({ schemaVersion: 1, inputType: 'reviewed-credential-support-binding-index',
+    registryPath: 'benchmarks/inputs/credential/support-bindings.json',
+    registryCommitment: createHash('sha256').update(JSON.stringify(value)).digest('hex'), scope: value.scope, sources: value.records.map((r: { source: unknown }) => r.source) });
+  return overlay({ 'benchmarks/inputs/credential/support-bindings.json': registry,
+    'benchmarks/inputs/credential/support-bindings-index.json': expected });
+};
 
 describe('support record', () => {
   const published = { state: 'measured', mode: 'published', productVersion: '9.9.9' } as never;
 
-  test('is the newest record of the run’s own version, recounted from its families', async () => {
-    const root = overlay({
-      'evidence/990/aaa/support-status-published.json': record({ generatedAt: '2030-01-01T00:00:00.000Z' }),
-      'evidence/991/bbb/support-status-published.json': record(),
-      'evidence/992/ccc/support-status-published.json': record({ publishedPackage: { version: '1.0.0' } }),
-    });
+  test('uses the explicit current record of the run’s own version, recounted from its families', async () => {
+    const root = supportOverlay(record());
     const found = await (await domains(root)).loadSupportRecord(published);
     expect(found).toMatchObject({ mode: 'published', version: '9.9.9', path: 'evidence/991/bbb/support-status-published.json', familyCount: 3 });
     expect(found?.distribution.stable).toBe(2);
   });
 
   test('a record whose distribution does not recount from its families is never shown', async () => {
-    const root = overlay({ 'evidence/990/aaa/support-status-published.json': record({ distribution: { stable: 3, provisional: 0, pending: 0, unsupported: 0 } }) });
+    const root = supportOverlay(record({ distribution: { stable: 3, provisional: 0, pending: 0, unsupported: 0 } }));
     await expect((await domains(root)).loadSupportRecord(published)).resolves.toBeUndefined();
   });
 
   test('a candidate run reads the candidate record of its commit, and a published record does not stand in for it', async () => {
-    const root = overlay({
-      'evidence/990/aaa/support-status-candidate.json': record({ publishedPackage: null, product: { sourceCommit: 'c'.repeat(40), declaredVersion: '9.9.9-rc' } }),
-      'evidence/991/bbb/support-status-published.json': record(),
-    });
+    const root = supportOverlay(record({ publishedPackage: null, product: { sourceCommit: 'c'.repeat(40), declaredVersion: '9.9.9-rc' } }), 'candidate');
     const d = await domains(root);
     const candidate = { state: 'measured', mode: 'candidate', productVersion: null, candidate: { sourceCommit: 'c'.repeat(40), declaredVersion: '9.9.9-rc' } } as never;
     await expect(d.loadSupportRecord(candidate)).resolves.toMatchObject({ mode: 'candidate', version: '9.9.9-rc', sourceCommit: 'c'.repeat(40) });

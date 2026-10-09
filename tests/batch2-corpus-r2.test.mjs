@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { historicalJson, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
 import { AXES, cases, corpusDigest, partDigest, PARTS, FAMILY_IDS } from '../benchmarks/corpora/credential-carriers/corpus-r2.mjs';
 import { corpusDigest as round1Digest } from '../benchmarks/corpora/credential-carriers/corpus.mjs';
 
@@ -26,8 +27,14 @@ test('every case names axes that are defined, ids are unique, spans are in bound
   assert.ok(FAMILY_IDS.length >= 57);
 });
 
-test('new-rows part covers exactly the rows evidence marked newly ready', () => {
-  const readiness = read('evidence/739/readiness.json');
+test('new-rows part retains its 28 distinct authored families', () => {
+  const newly = new Set(cases.filter((c) => c.part === 'new-rows').map((c) => c.family));
+  assert.equal(newly.size, 28);
+  for (const family of newly) assert.ok(FAMILY_IDS.includes(family), family);
+});
+
+test('new-rows part covers exactly the rows original evidence marked newly ready', historicalReplayOptions, () => {
+  const readiness = historicalJson('evidence/739/readiness.json');
   const newly = new Set(cases.filter((c) => c.part === 'new-rows').map((c) => c.family));
   assert.equal(newly.size, 28);
   for (const f of newly) assert.equal(readiness.families.find((r) => r.family === f).status, 'ready');

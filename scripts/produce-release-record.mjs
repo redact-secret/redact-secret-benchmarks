@@ -1,3 +1,4 @@
+import { loadPiiProtectedSupportEvidence } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
 /**
  * Produce one cross-domain release record by binding the credential and PII domains' own evidence for one release
  * source commit (#287, #449). It measures nothing: every identity and evidence path is an argument, supplied by
@@ -75,7 +76,7 @@ export async function produceSchema2(args) {
   const route = args['pii-route'];
   // --suite names the snapshot a frozen record was produced with; without it a new record is checked against the live qualification/suite-v1.json.
   if (route === PII_TRUSTED_PRODUCT_ROUTE) requireArgs(args, [...base, 'pii-qualification', 'pii-binding'], [...base, 'pii-qualification', 'pii-binding', 'suite']);
-  else if (route === PII_PROTECTED_ROUTE) requireArgs(args, [...base, 'pii-protected-binding'], [...base, 'pii-protected-binding', 'source-equivalence', 'suite']);
+  else if (route === PII_PROTECTED_ROUTE) requireArgs(args, [...base, 'pii-protected-binding'], [...base, 'pii-protected-binding', 'source-equivalence', 'source-equivalence-root', 'suite']);
   else if (!route) requireArgs(args, base, [...base, 'suite']);
   else throw new Error(`--pii-route must be '${PII_TRUSTED_PRODUCT_ROUTE}' or '${PII_PROTECTED_ROUTE}'`);
   if (!/^[a-f0-9]{40}$/.test(args['source-commit'])) throw new Error('--source-commit must be 40 hex characters');
@@ -92,10 +93,10 @@ export async function produceSchema2(args) {
   } else {
     const binding = piiReviewedProtectedRoute(args['pii-protected-binding']);
     if (!binding) throw new Error('--pii-protected-binding does not name a reviewed entry');
-    const disposition = await readJson(path.join(repositoryRoot, binding.evidenceDirectory, 'pii-beta11-protected-disposition-v2.json'));
+    const disposition = (await loadPiiProtectedSupportEvidence(repositoryRoot, binding)).protectedDisposition;
     record = assembleReleaseRecordV2({ ...common, piiRoute: route, piiProtectedBinding: binding, piiProtectedDisposition: disposition });
   }
-  await verifyReleaseRecordEvidence(record, registryFamilies, repositoryRoot, common.suite);
+  await verifyReleaseRecordEvidence(record, registryFamilies, repositoryRoot, common.suite, args['source-equivalence-root'] ? path.resolve(args['source-equivalence-root']) : repositoryRoot);
   return write(record, args.output);
 }
 

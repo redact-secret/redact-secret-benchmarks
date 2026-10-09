@@ -1,10 +1,11 @@
+import { historicalArchive, historicalReplayOptions, historicalJson } from './helpers/historical-evidence-archive.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { cases, corpusDigest, CORPUS_VERSION, FAMILY_IDS } from '../benchmarks/corpora/credential-carriers/corpus.mjs';
 
 const frozen = JSON.parse(readFileSync(new URL('../benchmarks/corpora/credential-carriers/FROZEN.json', import.meta.url), 'utf8'));
-const readiness = JSON.parse(readFileSync(new URL('../evidence/739/readiness.json', import.meta.url), 'utf8'));
+const readiness = historicalArchive ? historicalJson('evidence/739/readiness.json') : null;
 
 test('the Batch 2 corpus is the frozen one', () => {
   assert.equal(CORPUS_VERSION, frozen.corpusVersion);
@@ -12,7 +13,7 @@ test('the Batch 2 corpus is the frozen one', () => {
   assert.equal(cases.length, frozen.cases);
 });
 
-test('round 1 covers only families evidence marked ready, and each has cases', () => {
+test('historical round 1 uses only families marked ready in original evidence', historicalReplayOptions, () => {
   const ready = new Set(readiness.families.filter((f) => f.status === 'ready').map((f) => f.family));
   for (const f of FAMILY_IDS) assert.ok(ready.has(f), f);
   assert.equal(FAMILY_IDS.length, 30);
@@ -26,4 +27,9 @@ test('case ids are unique, spans are in bounds, and every positive carries a con
     assert.ok(c.expected.end > c.expected.start && c.expected.end <= Buffer.byteLength(c.text), c.id);
     assert.ok(c.expectedType && c.expectedAction, c.id);
   }
+});
+
+test('every current carrier family has authored cases', () => {
+  assert.equal(new Set(FAMILY_IDS).size, FAMILY_IDS.length);
+  for (const family of FAMILY_IDS) assert.ok(cases.some(row => row.family === family), family);
 });

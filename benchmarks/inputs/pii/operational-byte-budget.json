@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "inputType": "pii-operational-byte-baseline",
+  "source": {
+    "path": "evidence/879/pii-operational-evidence-v1.json",
+    "revision": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+    "sha256": "53ce7b1a2b7c892c6ab0f4e4ec3df5c8c6da514f67bd032f109bf9c82ec03a85",
+    "artifactCommitment": "0da0ab98b57b971816e6496b022ef374101f25a37389396629398bef2c762b67",
+    "baseline": {
+      "sourceCommit": "63a834e0a2b44c11f307ece8c539b933dabb68f1",
+      "artifactSetCommitment": "afb6419ea4e4b3f5f88f32f8bc418a3cec4f176aee9620a11a77082591f47a82",
+      "components": {
+        "core": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "node": "65f426e018444a4b79fff7752ce769bc863b2e67da5c0b74e110271517596ee5",
+        "wasm": "9185b041b0e70afce45ab89c694d0cd3beb9ea43c4020c35fe881247eb04f126"
+      }
+    },
+    "candidate": {
+      "sourceCommit": "a0709d2a41b70217874da9afeffb40fb2a1a2596",
+      "artifactSetCommitment": "0b4e40821cfe93936c4879f29aa9b17f27cb4fdb412f2e35df5d20f134487ea7",
+      "components": {
+        "core": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "node": "765ed179df9ed59ca0d2bd74dd877774e907f04d87046ecd3810509c41bbc87a",
+        "wasm": "d7616385ab85c31ecd6b2951589f595db5e567240c36a726b9017aaa258c78d9"
+      }
+    }
+  },
+  "dataSha256": "673bbda60917378ed18c453d52d8119d35c4f6498f182e468d5e42b4b8e03378",
+  "data": {
+    "byteComparisons": {
+      "wasmCommonRaw": {
+        "baseline": 730074,
+        "maximumIncrease": 0
+      },
+      "wasmCommonGzip": {
+        "baseline": 270896,
+        "maximumIncrease": 0
+      },
+      "wasmCommonBrotli": {
+        "baseline": 214732,
+        "maximumIncrease": 0
+      }
+    }
+  }
+}

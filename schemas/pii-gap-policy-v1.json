@@ -1,0 +1,811 @@
+{
+  "$id": "redact-secret/pii-gap-policy/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "supportClaims",
+    "source",
+    "finalCandidate",
+    "axisBacklog",
+    "projectionCommitment"
+  ],
+  "properties": {
+    "schema": {
+      "const": "redact-secret/pii-gap-policy/v1"
+    },
+    "supportClaims": {
+      "const": false
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "sha256",
+        "contentCommitment"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._/-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "contentCommitment": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "finalCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "repository",
+        "version",
+        "tag",
+        "sourceCommit",
+        "releaseManifest",
+        "artifactInventorySha256",
+        "conformanceIdentity",
+        "artifacts"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "identified",
+            "not-identifiable"
+          ]
+        },
+        "repository": {
+          "const": "redact-secret/redact-secret"
+        },
+        "version": {
+          "const": "0.1.0-beta.10"
+        },
+        "tag": {
+          "const": "v0.1.0-beta.10"
+        },
+        "sourceCommit": {
+          "$ref": "#/$defs/commit"
+        },
+        "releaseManifest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "file",
+            "sha256"
+          ],
+          "properties": {
+            "file": {
+              "type": "string",
+              "pattern": "^docs/releases/0\\.1\\.0-beta\\.10/manifest\\.json$"
+            },
+            "sha256": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        },
+        "artifactInventorySha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "conformanceIdentity": {
+          "$ref": "#/$defs/commit"
+        },
+        "artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "artifact",
+              "file",
+              "algorithm",
+              "digest"
+            ],
+            "properties": {
+              "artifact": {
+                "type": "string",
+                "pattern": "^(?:crate|npm|pypi):[@a-z0-9/._-]+$"
+              },
+              "file": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._/-]+$"
+              },
+              "algorithm": {
+                "enum": [
+                  "sha256",
+                  "sha1"
+                ]
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^(?:[a-f0-9]{64}|[a-f0-9]{40})$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "axisBacklog": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "$ref": "#/$defs/axis"
+      }
+    },
+    "projectionCommitment": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "code": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600
+    },
+    "repoFile": {
+      "type": "string",
+      "pattern": "^(?:evidence|qualification|benchmarks|schemas)/[A-Za-z0-9._/-]+\\.json$"
+    },
+    "family": {
+      "enum": [
+        "pii:global:network-address",
+        "pii:global:email",
+        "pii:global:payment-card",
+        "pii:global:iban",
+        "pii:us:ssn",
+        "pii:global:phone"
+      ]
+    },
+    "owner": {
+      "enum": [
+        "#423",
+        "#424",
+        "#425",
+        "#426",
+        "#427",
+        "#428",
+        "core-901-follow-up",
+        "non-goal",
+        "none"
+      ]
+    },
+    "status": {
+      "enum": [
+        "not-run",
+        "not-measured",
+        "failed",
+        "not-applicable",
+        "passed"
+      ]
+    },
+    "category": {
+      "enum": [
+        "identity-only-observability",
+        "sensitive-positive-false-negative",
+        "benign-false-positive",
+        "context-validator-collision",
+        "diagnostic-balanced-population",
+        "benign-heavy-population",
+        "protected-partition",
+        "cross-surface-output",
+        "activation",
+        "performance-size",
+        "contract-fixture-discrepancy",
+        "exact-candidate-binding"
+      ]
+    },
+    "classification": {
+      "enum": [
+        "measurement-gap",
+        "evaluator-observability",
+        "fixture-correction",
+        "product-defect",
+        "product-cost-decision",
+        "non-goal",
+        "none"
+      ]
+    },
+    "counter": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/count"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z0-9:-]{1,80}$"
+      }
+    },
+    "populationAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entries",
+        "families",
+        "languages",
+        "candidateKinds",
+        "generators",
+        "evidenceClasses",
+        "emptyEvidenceClasses",
+        "candidateCommitmentsReused",
+        "entriesSharingACandidate",
+        "fieldLabelsReusedAcrossViews",
+        "declaredTwins",
+        "declaredCollisions"
+      ],
+      "properties": {
+        "entries": {
+          "$ref": "#/$defs/count"
+        },
+        "families": {
+          "$ref": "#/$defs/counter"
+        },
+        "languages": {
+          "$ref": "#/$defs/counter"
+        },
+        "candidateKinds": {
+          "$ref": "#/$defs/counter"
+        },
+        "generators": {
+          "$ref": "#/$defs/counter"
+        },
+        "evidenceClasses": {
+          "$ref": "#/$defs/counter"
+        },
+        "emptyEvidenceClasses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code"
+          }
+        },
+        "candidateCommitmentsReused": {
+          "$ref": "#/$defs/count"
+        },
+        "entriesSharingACandidate": {
+          "$ref": "#/$defs/count"
+        },
+        "fieldLabelsReusedAcrossViews": {
+          "$ref": "#/$defs/count"
+        },
+        "declaredTwins": {
+          "$ref": "#/$defs/count"
+        },
+        "declaredCollisions": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "fileHash": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "sha256"
+      ],
+      "properties": {
+        "file": {
+          "$ref": "#/$defs/repoFile"
+        },
+        "sha256": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "priorEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "coreIssue",
+        "benchmarkIssue",
+        "kind",
+        "families",
+        "productSourceCommit",
+        "benchmarkInputCommit",
+        "boundToFinalCandidate",
+        "summary",
+        "files"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^evidence/[0-9]+$"
+        },
+        "coreIssue": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "benchmarkIssue": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "enum": [
+            "family-qualification",
+            "profile-cost"
+          ]
+        },
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/family"
+          }
+        },
+        "productSourceCommit": {
+          "$ref": "#/$defs/commit"
+        },
+        "benchmarkInputCommit": {
+          "$ref": "#/$defs/commit"
+        },
+        "boundToFinalCandidate": {
+          "type": "boolean"
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "qualificationStatus": {
+          "enum": [
+            "not-qualified",
+            "qualified"
+          ]
+        },
+        "supportState": {
+          "enum": [
+            "pending",
+            "provisional",
+            "stable",
+            "unsupported"
+          ]
+        },
+        "planCommitment": {
+          "$ref": "#/$defs/digest"
+        },
+        "candidateEvidenceCommitment": {
+          "$ref": "#/$defs/digest"
+        },
+        "supportMatrixCommitment": {
+          "$ref": "#/$defs/digest"
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code"
+          }
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/fileHash"
+          }
+        }
+      }
+    },
+    "correction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "family",
+        "kind",
+        "references",
+        "affects",
+        "rewritesPriorEvidence",
+        "summary",
+        "remeasureOwner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/code"
+        },
+        "family": {
+          "$ref": "#/$defs/family"
+        },
+        "kind": {
+          "const": "fixture-correction"
+        },
+        "references": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^(?:benchmarks|core)#[0-9]+$"
+          }
+        },
+        "affects": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^evidence/[0-9]+$"
+          }
+        },
+        "rewritesPriorEvidence": {
+          "const": false
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "remeasureOwner": {
+          "$ref": "#/$defs/owner"
+        }
+      }
+    },
+    "evaluatorFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "families",
+        "location",
+        "summary",
+        "owner",
+        "productDefect"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/code"
+        },
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/family"
+          }
+        },
+        "location": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._/-]+(?::L[0-9]+(?:-L[0-9]+)?)?$"
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "productDefect": {
+          "const": false
+        }
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "status",
+        "classification",
+        "owner",
+        "reason",
+        "detail"
+      ],
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/category"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "reason": {
+          "$ref": "#/$defs/code"
+        },
+        "detail": {
+          "$ref": "#/$defs/text"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?:evidence/[0-9]+|benchmarks#[0-9]+|core#[0-9]+)$"
+          }
+        },
+        "resolution": {
+          "$ref": "#/$defs/code"
+        },
+        "coreIssue": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "planIndependence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planFile",
+        "planCommitment",
+        "cases",
+        "publicFindingCases",
+        "publicAbsenceCases",
+        "distinctPositiveSpans",
+        "dominantPositiveCases",
+        "casesContainingDominantPositive",
+        "languages",
+        "koreanPublicFinding",
+        "koreanPublicAbsence",
+        "classesMeasured",
+        "classesUnresolved"
+      ],
+      "properties": {
+        "planFile": {
+          "$ref": "#/$defs/repoFile"
+        },
+        "planCommitment": {
+          "$ref": "#/$defs/digest"
+        },
+        "cases": {
+          "$ref": "#/$defs/count"
+        },
+        "publicFindingCases": {
+          "$ref": "#/$defs/count"
+        },
+        "publicAbsenceCases": {
+          "$ref": "#/$defs/count"
+        },
+        "distinctPositiveSpans": {
+          "$ref": "#/$defs/count"
+        },
+        "dominantPositiveCases": {
+          "$ref": "#/$defs/count"
+        },
+        "casesContainingDominantPositive": {
+          "$ref": "#/$defs/count"
+        },
+        "languages": {
+          "$ref": "#/$defs/counter"
+        },
+        "koreanPublicFinding": {
+          "$ref": "#/$defs/count"
+        },
+        "koreanPublicAbsence": {
+          "$ref": "#/$defs/count"
+        },
+        "classesMeasured": {
+          "$ref": "#/$defs/count"
+        },
+        "classesUnresolved": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "independence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan",
+        "populationEntries",
+        "contractLanguages",
+        "languageGaps",
+        "jurisdiction",
+        "authorityControls",
+        "twins",
+        "generatorFindings"
+      ],
+      "properties": {
+        "plan": {
+          "$ref": "#/$defs/planIndependence"
+        },
+        "populationEntries": {
+          "$ref": "#/$defs/count"
+        },
+        "contractLanguages": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "en",
+              "ko"
+            ]
+          }
+        },
+        "languageGaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code"
+          }
+        },
+        "jurisdiction": {
+          "$ref": "#/$defs/text"
+        },
+        "authorityControls": {
+          "$ref": "#/$defs/text"
+        },
+        "twins": {
+          "$ref": "#/$defs/text"
+        },
+        "generatorFindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code"
+          }
+        }
+      }
+    },
+    "nonGoal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "basis"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/code"
+        },
+        "basis": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "familyRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "scope",
+        "contract",
+        "evidence",
+        "supportState",
+        "blockers",
+        "independence",
+        "fixtureCorrections",
+        "productDefects",
+        "nonGoals"
+      ],
+      "properties": {
+        "family": {
+          "$ref": "#/$defs/family"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^(?:global|jurisdiction:[A-Z]{2})$"
+        },
+        "contract": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+-v1$"
+        },
+        "evidence": {
+          "type": "string",
+          "pattern": "^evidence/[0-9]+$"
+        },
+        "supportState": {
+          "const": "pending"
+        },
+        "blockers": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/blocker"
+          }
+        },
+        "independence": {
+          "$ref": "#/$defs/independence"
+        },
+        "fixtureCorrections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code"
+          }
+        },
+        "productDefects": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "nonGoals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonGoal"
+          }
+        }
+      }
+    },
+    "axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order",
+        "id",
+        "family",
+        "owner",
+        "views",
+        "languages",
+        "resolves"
+      ],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "id": {
+          "$ref": "#/$defs/code"
+        },
+        "family": {
+          "$ref": "#/$defs/family"
+        },
+        "owner": {
+          "enum": [
+            "#424",
+            "#425",
+            "#426"
+          ]
+        },
+        "views": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "qualification-plan",
+              "diagnostic-balanced",
+              "benign-heavy-stress"
+            ]
+          }
+        },
+        "languages": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "en",
+              "ko"
+            ]
+          }
+        },
+        "resolves": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/category"
+          }
+        }
+      }
+    }
+  }
+}

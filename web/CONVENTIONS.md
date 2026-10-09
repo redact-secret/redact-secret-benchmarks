@@ -231,14 +231,14 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
 - Resolver tests live in `web/tests/unit` (`resolvers.test.mjs`, `report-rows.test.mjs`, ...; synthetic
   data only) and also enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.
-- Runtime outcomes and per-setting times (#562, #563): `evidence/562/runtime-comparison-<setting>.json` (three
+- Runtime outcomes and per-setting times (#562, #563): `benchmarks/inputs/runtime/runtime-comparison-<setting>.json` (three
   reports, from `qualification/runtime-comparison-v2.json`) are read by `services/runtime.ts` and validated with
   `validatePeerRuntimeThroughputReport`. A combination with a measurement is pre-rendered once per view
   (`external-pii-all|speed|accuracy`, ...); one without is a single "Not measured yet" panel keyed `analysis-domain`.
   `check:routes` recomputes every outcome, share and time from the committed reports. Decision:
   `docs/decisions/2026-09-30-record-runtime-outcomes-and-time-redact-secret-settings.md`.
 - `/comparison/performance` (#569) pre-renders one panel per pair and setting (`?with=`, `?setting=`, picked by `data-peer` and
-  `data-setting` on the root, as the runtime page does). Pair times come from `evidence/562` (only the chosen setting's run, both
+  `data-setting` on the root, as the runtime page does). Pair times come from `benchmarks/inputs/runtime/` (only the chosen setting's run, both
   sides), redact-secret's own throughput from the accepted run via `services/performance.ts`; the two are never drawn on one axis.
   `check:routes` recomputes every time, spread and mark position (`scripts/check-export-performance.mjs`). Decision:
   `docs/decisions/2026-09-30-show-the-performance-pair-as-same-run-times-with-a-noise-rule.md`.

@@ -29,7 +29,7 @@ import { stressCommitment, stressPlans } from './card-iban-stress/stress.ts';
 import { STRESS_PLAN_FILES } from './card-iban-stress/authoring.ts';
 import { c3Files, c3PlanCommitment, type C3Case, type C3File } from './ssn-phone-stress.ts';
 import revisionData from './pii-context-v2-expectation-revisions-v1.json';
-import c3CorrectionData from '../../../../evidence/901/426/pii-c3-reviewed-corrections-v1.json';
+import { piiFixtureCorrections as c3CorrectionData } from './current-inputs.ts';
 
 export const B11_V2_PLAN_SET = 'b11-population-v2';
 /** Contract text the new cases were authored against: core main at the interim candidate (#930). */

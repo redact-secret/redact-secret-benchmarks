@@ -8,38 +8,44 @@
  * addon and the Wasm package. Only counts, commitments and deviating case ids are written; never an input,
  * candidate value, range or finding text. The protected partition is not run here (#428).
  *
- * Run: node --import tsx scripts/measure-pii-ssn-phone-stress.mjs --core=… --node=… --wasm=… --output-dir=evidence/901/426
+ * Run: node --import tsx scripts/measure-pii-ssn-phone-stress.mjs --core=… --node=… --wasm=… --output-dir=results-output/pii-ssn-phone/<fresh-run>
  */
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { brotliCompressSync, constants as zlib, gzipSync } from 'node:zlib';
 import { applyC3Corrections, c3Files, c3Commitment, materializeC3Case, summarizeC3Surface, validateC3File } from '../benchmarks/evaluation/domains/pii/ssn-phone-stress.ts';
 import { PII_ORACLE_PLANS, PII_ORACLE_UNAVAILABLE_REASON, piiIdentityOracle, piiIdentityOracleCommitment, piiOraclePlanCommitment,
   validatePiiIdentityOracle } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
+import { operationalByteBaseline } from '../benchmarks/evaluation/domains/pii/operational-byte-baseline.ts';
+import { piiGapPolicy } from '../benchmarks/evaluation/domains/pii/current-inputs.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 import { observePiiPopulations, packLockfileRelease } from './observe-pii-populations.mjs';
 
+import { writeFileSync } from 'node:fs';
+import { measurementOutput, stagedMeasurementDirectory } from './lib/measurement-output.mjs';
+
+const root = fileURLToPath(new URL('../', import.meta.url));
 const exec = promisify(execFile);
 const args = Object.fromEntries(process.argv.slice(2).map(argument => {
   const match = /^--(core|node|wasm|output-dir|iterations|corrections)=(.+)$/.exec(argument);
   if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2]];
 }));
-for (const key of ['core', 'node', 'wasm', 'output-dir']) if (!args[key]) throw new Error(`missing --${key}`);
+for (const key of ['core', 'node', 'wasm']) if (!args[key]) throw new Error(`missing --${key}`);
 const ITERATIONS = Number(args.iterations ?? 25);
 const tarballs = { core: path.resolve(args.core), node: path.resolve(args.node), wasm: path.resolve(args.wasm) };
-const outputDir = path.resolve(args['output-dir']);
+const outputDir = measurementOutput(path.resolve(root, args['output-dir'] ?? `results-output/pii-ssn-phone/${Date.now()}`), root, { directory: true });
 const digest = (bytes, algorithm = 'sha256') => createHash(algorithm).update(bytes).digest('hex');
 const git = async (...command) => (await exec('git', command)).stdout.trim();
 
 // ---------------------------------------------------------------------------------------------------------------
 // 1. Exact candidate binding: the published tarballs must equal the beta.10 release manifest the ledger copied.
 // ---------------------------------------------------------------------------------------------------------------
-const ledger = JSON.parse(await readFile('evidence/901/pii-gap-ledger-v1.json', 'utf8'));
+const ledger = piiGapPolicy;
 const candidate = ledger.finalCandidate;
 const manifestFiles = artifact => candidate.artifacts.filter(row => row.artifact === artifact);
 async function extract(tarball) {
@@ -228,7 +234,7 @@ for (const [family, config] of Object.entries(FAMILIES)) {
 // ---------------------------------------------------------------------------------------------------------------
 // 3. Package cost against the frozen #879 common-Wasm zero-growth budget (the cost decision itself is core #794).
 // ---------------------------------------------------------------------------------------------------------------
-const frozenOperational = JSON.parse(await readFile('evidence/879/pii-operational-evidence-v1.json', 'utf8'));
+const frozenOperational = operationalByteBaseline();
 const wasmRoot = await extract(tarballs.wasm);
 const payload = async name => { const bytes = await readFile(path.join(wasmRoot, name));
   return { raw: bytes.length, gzip: gzipSync(bytes, { level: 9 }).length,
@@ -247,15 +253,14 @@ const packageCost = { tarballBytes: Object.fromEntries(Object.entries(binding.ta
 // ---------------------------------------------------------------------------------------------------------------
 // 4. Before-state population re-measure (#408/#411-corrected corpus) on the exact candidate.
 // ---------------------------------------------------------------------------------------------------------------
-await mkdir(outputDir, { recursive: true });
 const scratch = await mkdtemp(path.join(tmpdir(), 'pii-426-baseline-'));
-let populationV1;
+let populationV1, populationText;
 try {
   const baseline = await packLockfileRelease(scratch);
   const bundle = await observePiiPopulations({ baseline, candidate: tarballs, candidateSourceCommit: candidate.sourceCommit });
   if (bundle.candidate.artifactSetCommitment === bundle.baseline.artifactSetCommitment) throw new Error('baseline equals candidate');
   const text = `${JSON.stringify(bundle)}\n`;
-  await writeFile(path.join(outputDir, 'pii-population-v1-remeasure.json'), text);
+  populationText = text;
   populationV1 = { file: 'pii-population-v1-remeasure.json', sha256: digest(text), contractCommitment: bundle.contractCommitment,
     corpusCommitment: bundle.corpusCommitment, baselineVersion: bundle.baseline.version, candidateVersion: bundle.candidate.version,
     candidateComponents: bundle.candidate.components,
@@ -272,7 +277,10 @@ const evidence = { schemaVersion: 1, reportType: 'pii-c3-ssn-phone-stress-eviden
   families, packageCost, populationV1,
   corrections: corrections ? { file: path.basename(args.corrections), sha256: digest(await readFile(path.resolve(args.corrections))) } : null, artifactCommitment: '' };
 evidence.artifactCommitment = c3Commitment({ ...evidence, artifactCommitment: '' });
-await writeFile(path.join(outputDir, 'pii-c3-ssn-phone-evidence-v1.json'), `${JSON.stringify(evidence, null, 2)}\n`);
+stagedMeasurementDirectory(outputDir, staging => {
+  writeFileSync(path.join(staging, 'pii-population-v1-remeasure.json'), populationText);
+  writeFileSync(path.join(staging, 'pii-c3-ssn-phone-evidence-v1.json'), `${JSON.stringify(evidence, null, 2)}\n`);
+});
 for (const row of families) {
   const views = row.stress.addon.views;
   console.log(`${row.family}: ${Object.entries(views).map(([view, value]) => `${view} ${JSON.stringify(value.publicStream)}`).join('; ')}; ` +

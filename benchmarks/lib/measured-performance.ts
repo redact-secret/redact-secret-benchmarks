@@ -1,3 +1,4 @@
+import type { CurrentMeasuredSummary } from './current-performance-inputs.ts';
 /**
  * Measured per-surface throughput for the performance page (#405) and the dispatch model each row was measured
  * under (#450). Pure functions over a core `CompleteAssessment` summary: the page reads the summary this repository
@@ -49,7 +50,7 @@ export interface MeasuredRow {
   readonly resolvedArtifact: string | null;
 }
 
-export function measuredRows(summary: CompleteAssessment): MeasuredRow[] {
+export function measuredRows(summary: CurrentMeasuredSummary): MeasuredRow[] {
   const rows: MeasuredRow[] = [];
   for (const run of summary.runs) {
     const performance = run.result?.performance;

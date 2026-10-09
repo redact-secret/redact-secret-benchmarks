@@ -1,0 +1,2294 @@
+{
+  "schemaVersion": 1,
+  "inputType": "pii-scorer-reference",
+  "source": {
+    "path": "evidence/901/428/core-401158d09a67/pii-beta11-report-v2.json",
+    "revision": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+    "sha256": "f1413ad3f7674c9b28d4dd62e2fc8f2b739eaeec76338c373cc508dcef90e59e",
+    "role": "frozen-scorer-comparison-reference"
+  },
+  "data": {
+    "families": [
+      {
+        "family": "pii:global:network-address",
+        "views": {
+          "reviewed": [
+            {
+              "view": "oracle-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 8,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.324416
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 8,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.324416
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 8,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.324416
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 11,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.25884
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 17,
+                  "denominator": 17,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.815676
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 8,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.324416
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 25,
+                  "denominator": 25,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.866804
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 6,
+                "falseAlarm": 0
+              },
+              "scoredCases": 25,
+              "unscoredCases": 0,
+              "cases": 25
+            },
+            {
+              "view": "qualification-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.16113
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.16113
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.16113
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 2,
+                  "denominator": 2,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 4,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.5101
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.16113
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 24,
+                  "denominator": 25,
+                  "status": "met",
+                  "value": {
+                    "point": 0.96,
+                    "bound": 0.804555
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 4,
+                "falseAlarm": 0
+              },
+              "scoredCases": 24,
+              "unscoredCases": 1,
+              "cases": 25
+            },
+            {
+              "view": "diagnostic-balanced",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 41,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.08567
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 41,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.08567
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 41,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.08567
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 15,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.203889
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 17,
+                  "denominator": 17,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.815676
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 56,
+                  "denominator": 56,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.935804
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 45,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.078654
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 97,
+                  "denominator": 97,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.961905
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 41,
+                "falseAlarm": 0
+              },
+              "scoredCases": 97,
+              "unscoredCases": 0,
+              "cases": 97
+            },
+            {
+              "view": "benign-heavy-stress",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 24,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.137981
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 24,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.137981
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 24,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.137981
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 19,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.168184
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 8,
+                  "denominator": 8,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.675584
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 56,
+                  "denominator": 56,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.935804
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 28,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.120647
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 80,
+                  "denominator": 80,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.95418
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 37,
+                "falseAlarm": 0
+              },
+              "scoredCases": 80,
+              "unscoredCases": 0,
+              "cases": 80
+            }
+          ]
+        }
+      },
+      {
+        "family": "pii:global:email",
+        "views": {
+          "reviewed": [
+            {
+              "view": "oracle-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.4899
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.4899
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.4899
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 3,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 16,
+                  "denominator": 16,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.806387
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.4899
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 20,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.83887
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 13,
+                "falseAlarm": 0
+              },
+              "scoredCases": 20,
+              "unscoredCases": 0,
+              "cases": 20
+            },
+            {
+              "view": "qualification-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 35,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.098904
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 35,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.098904
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 35,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.098904
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 11,
+                  "denominator": 11,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.74116
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 17,
+                  "denominator": 17,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.815676
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 37,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.094061
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 52,
+                  "denominator": 52,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.931205
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 17,
+                "falseAlarm": 0
+              },
+              "scoredCases": 52,
+              "unscoredCases": 0,
+              "cases": 52
+            },
+            {
+              "view": "diagnostic-balanced",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 44,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.080298
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 44,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.080298
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 44,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.080298
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 20,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.83887
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 42,
+                  "denominator": 42,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.916198
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 47,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.07556
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 86,
+                  "denominator": 86,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.95724
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 35,
+                "falseAlarm": 0
+              },
+              "scoredCases": 86,
+              "unscoredCases": 0,
+              "cases": 86
+            },
+            {
+              "view": "benign-heavy-stress",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 12,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.242501
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 12,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.242501
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 12,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.242501
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 11,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.25884
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 7,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.645661
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 39,
+                  "denominator": 39,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.91033
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 51,
+                  "denominator": 51,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.929951
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 28,
+                "falseAlarm": 0
+              },
+              "scoredCases": 51,
+              "unscoredCases": 0,
+              "cases": 51
+            }
+          ]
+        }
+      },
+      {
+        "family": "pii:global:payment-card",
+        "views": {
+          "reviewed": [
+            {
+              "view": "oracle-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 1,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 14,
+                  "denominator": 14,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.784683
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 19,
+                  "denominator": 19,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.831816
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 13,
+                "falseAlarm": 0
+              },
+              "scoredCases": 19,
+              "unscoredCases": 0,
+              "cases": 19
+            },
+            {
+              "view": "qualification-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 67,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.054228
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 67,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.054228
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 67,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.054228
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 1,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 45,
+                  "denominator": 45,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.921346
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 47,
+                  "denominator": 47,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.92444
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 67,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.054228
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 114,
+                  "denominator": 114,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.9674
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 46,
+                "falseAlarm": 0
+              },
+              "scoredCases": 114,
+              "unscoredCases": 0,
+              "cases": 114
+            },
+            {
+              "view": "diagnostic-balanced",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 71,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.05133
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 71,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.05133
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 71,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.05133
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 10,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.27754
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 59,
+                  "denominator": 59,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.938869
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 90,
+                  "denominator": 90,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.959063
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 71,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.05133
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 161,
+                  "denominator": 161,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.976695
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 80,
+                "falseAlarm": 0
+              },
+              "scoredCases": 161,
+              "unscoredCases": 0,
+              "cases": 161
+            },
+            {
+              "view": "benign-heavy-stress",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 10,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.27754
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 5,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.565509
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 42,
+                  "denominator": 42,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.916198
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 55,
+                  "denominator": 55,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.934713
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 32,
+                "falseAlarm": 0
+              },
+              "scoredCases": 55,
+              "unscoredCases": 0,
+              "cases": 55
+            }
+          ]
+        }
+      },
+      {
+        "family": "pii:global:iban",
+        "views": {
+          "reviewed": [
+            {
+              "view": "oracle-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 2,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 2,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 2,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 19,
+                  "denominator": 19,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.831816
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 2,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 21,
+                  "denominator": 21,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.845356
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 19,
+                "falseAlarm": 0
+              },
+              "scoredCases": 21,
+              "unscoredCases": 0,
+              "cases": 21
+            },
+            {
+              "view": "qualification-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 34,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.101518
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 34,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.101518
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 34,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.101518
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 9,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.700847
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 9,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.700847
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 34,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.101518
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 43,
+                  "denominator": 43,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.917987
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 9,
+                "falseAlarm": 0
+              },
+              "scoredCases": 43,
+              "unscoredCases": 0,
+              "cases": 43
+            },
+            {
+              "view": "diagnostic-balanced",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 39,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.08967
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 39,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.08967
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 39,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.08967
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 27,
+                  "denominator": 27,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.875441
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 54,
+                  "denominator": 54,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.933584
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 39,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.08967
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 93,
+                  "denominator": 93,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.960331
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 54,
+                "falseAlarm": 0
+              },
+              "scoredCases": 93,
+              "unscoredCases": 0,
+              "cases": 93
+            },
+            {
+              "view": "benign-heavy-stress",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 4,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.5101
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 45,
+                  "denominator": 45,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.921346
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 50,
+                  "denominator": 50,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.92865
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 45,
+                "falseAlarm": 0
+              },
+              "scoredCases": 50,
+              "unscoredCases": 0,
+              "cases": 50
+            }
+          ]
+        }
+      },
+      {
+        "family": "pii:us:ssn",
+        "views": {
+          "reviewed": [
+            {
+              "view": "oracle-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 3,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 3,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 3,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 17,
+                  "denominator": 17,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.815676
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 3,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 20,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.83887
+                  }
+                },
+                {
+                  "id": "wrong-jurisdiction-rate",
+                  "numerator": 0,
+                  "denominator": 3,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "jurisdiction-collision-rate",
+                  "numerator": 20,
+                  "denominator": 20,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.83887
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 17,
+                "falseAlarm": 0
+              },
+              "scoredCases": 20,
+              "unscoredCases": 0,
+              "cases": 20
+            },
+            {
+              "view": "qualification-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 7,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.645661
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 8,
+                  "denominator": 8,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.675584
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 15,
+                  "denominator": 15,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.796111
+                  }
+                },
+                {
+                  "id": "wrong-jurisdiction-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "jurisdiction-collision-rate",
+                  "numerator": 15,
+                  "denominator": 15,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.796111
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 8,
+                "falseAlarm": 0
+              },
+              "scoredCases": 15,
+              "unscoredCases": 0,
+              "cases": 15
+            },
+            {
+              "view": "diagnostic-balanced",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 5,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.565509
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 10,
+                  "denominator": 10,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.72246
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 19,
+                  "denominator": 19,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.831816
+                  }
+                },
+                {
+                  "id": "wrong-jurisdiction-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "jurisdiction-collision-rate",
+                  "numerator": 19,
+                  "denominator": 19,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.831816
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 10,
+                "falseAlarm": 0
+              },
+              "scoredCases": 19,
+              "unscoredCases": 0,
+              "cases": 19
+            },
+            {
+              "view": "benign-heavy-stress",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 4,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.5101
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 22,
+                  "denominator": 22,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.85134
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 29,
+                  "denominator": 29,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.883026
+                  }
+                },
+                {
+                  "id": "wrong-jurisdiction-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "jurisdiction-collision-rate",
+                  "numerator": 29,
+                  "denominator": 29,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.883026
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 22,
+                "falseAlarm": 0
+              },
+              "scoredCases": 29,
+              "unscoredCases": 0,
+              "cases": 29
+            }
+          ]
+        }
+      },
+      {
+        "family": "pii:global:phone",
+        "views": {
+          "reviewed": [
+            {
+              "view": "oracle-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 14,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.215317
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 14,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.215317
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 14,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.215317
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 2,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 27,
+                  "denominator": 27,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.875441
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 14,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.215317
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 41,
+                  "denominator": 41,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.91433
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 25,
+                "falseAlarm": 0
+              },
+              "scoredCases": 41,
+              "unscoredCases": 0,
+              "cases": 41
+            },
+            {
+              "view": "qualification-plan",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 0,
+                  "status": "not-applicable",
+                  "value": null
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 3,
+                  "denominator": 3,
+                  "status": "insufficient-denominator",
+                  "value": {
+                    "point": null,
+                    "bound": null
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 4,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.5101
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 13,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.228102
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 17,
+                  "denominator": 17,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.815676
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 4,
+                "falseAlarm": 0
+              },
+              "scoredCases": 17,
+              "unscoredCases": 0,
+              "cases": 17
+            },
+            {
+              "view": "diagnostic-balanced",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.434491
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 5,
+                  "denominator": 5,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.565509
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 12,
+                  "denominator": 12,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.757499
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 9,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.299153
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 21,
+                  "denominator": 21,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.845356
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 7,
+                "falseAlarm": 0
+              },
+              "scoredCases": 21,
+              "unscoredCases": 0,
+              "cases": 21
+            },
+            {
+              "view": "benign-heavy-stress",
+              "metrics": [
+                {
+                  "id": "type-miss-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "wrong-family-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "sensitive-miss-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "non-sensitive-flag-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "context-discrimination-rate",
+                  "numerator": 4,
+                  "denominator": 4,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.5101
+                  }
+                },
+                {
+                  "id": "benign-suppression-rate",
+                  "numerator": 27,
+                  "denominator": 27,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.875441
+                  }
+                },
+                {
+                  "id": "range-collateral-rate",
+                  "numerator": 0,
+                  "denominator": 7,
+                  "status": "met",
+                  "value": {
+                    "point": 0,
+                    "bound": 0.354339
+                  }
+                },
+                {
+                  "id": "measurable-share",
+                  "numerator": 34,
+                  "denominator": 34,
+                  "status": "met",
+                  "value": {
+                    "point": 1,
+                    "bound": 0.898482
+                  }
+                }
+              ],
+              "notEstablished": {
+                "cases": 20,
+                "falseAlarm": 0
+              },
+              "scoredCases": 34,
+              "unscoredCases": 0,
+              "cases": 34
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "dataSha256": "63222cbc47ed87ed4e3d0d5dbec796cdbdd6394440618ee06477803b091bd6f2"
+}

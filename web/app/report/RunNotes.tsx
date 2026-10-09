@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { EmptyState, Note } from '../../components/feedback';
 import { PipelineStamp } from '../../components/qualification';
 import { Code } from '../../components/text';
-import type { RunState } from '../../resolvers/pages';
+import type { RunState } from '../../resolvers/run';
 import styles from './Report.module.css';
 
 /**

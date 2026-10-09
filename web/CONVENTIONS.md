@@ -36,7 +36,7 @@ Components are pure render: props in, elements out.
   state should be shareable (`SegmentedNav` before `SegmentedControl`).
 - Native elements first (`<details>`, `<select>`, `<table>`, `<a>`). MUI only where
   accessibility behaviour is costly to get right: today `Tabs`, `SegmentedControl`
-  and `ThemeToggle`. Dialogs and menus will be MUI-backed when a block needs one.
+  and dialogs. Theme preference uses the MUI provider with a native icon button.
 
 ## Styling
 
@@ -346,3 +346,23 @@ Playwright tests that opened `?show=leaked` and expected a pager found zero leak
   the PR body, with the evidence that your change did not cause it (the same check red on `develop`'s tip).
 - **A merge is done when `develop` is green.** After merging, read the push-triggered runs on `develop`'s merge commit
   (`gh run list --branch develop`) and say what they show. If they are red, fixing it comes before anything else.
+
+## Compact navigation and evidence presentation
+
+The section navigation has at most three quick links. The footer directory holds Coverage, Evaluation, Evidence,
+Comparison and Development links. `/evaluation/method/` separates credential method links from PII method descriptions;
+Internationalization and Evidence resources are explicit planned pages until their reports exist.
+
+Credential source stamps on the report hub, provider/family/detector lists and family/detector detail pages,
+credential evaluation and accuracy comparison open in a dialog. English review-state wording, fixture counts and
+optional-profile provenance remain available there. The scanner roster omits optional-profile explanations and opens
+its published/candidate explanation in a dialog; qualification retains the full optional-profile pointers.
+
+The PII page separates public measurement from current product qualification and protected execution/audit. Its
+population/report and metric/category selectors show one recorded result at a time; source and execution metadata
+open in a dialog. Existing family anchors select their corresponding result. Independent PII evidence shows changed,
+unchanged and unresolved variant counts, with changed variants first. Unresolved overlaps the other two counts;
+changes describe recorded differences and never imply improvement, regression or support qualification.
+
+The theme icon toggles light and dark, persisting explicit preferences. Before a reader chooses, an existing system
+preference still resolves to the operating system's effective theme.

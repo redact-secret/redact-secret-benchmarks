@@ -444,7 +444,18 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
     ],
   });
 
+  const protectedPending = pii.authority.protectedPending.length > 0;
+  const presentationSummary: GlanceItem[] = [
+    { label: 'Public synthetic measurement', value: piiEval ? 'Validated' : 'Not recorded',
+      detail: piiEval ? `${piiEvalRow.value}. The measurement artifact is validated; this is not a product support approval.` : 'No validated public measurement is recorded.' },
+    { label: 'Current product support qualification', value: 'Not established',
+      detail: pii.state === 'public-recorded' ? `No usable protected support record is bound. ${pii.protectedReason} Public measurement remains separate.` : 'Historical family status and public measurements do not establish support qualification for the current candidate.' },
+    { label: 'Protected execution and audit', value: protectedPending ? 'Not operational' : 'See recorded evidence',
+      detail: protectedPending ? 'The protected execution and audit paths are pending. They do not gate public synthetic measurement.' : 'The exact recorded state is available in Sources and execution details. Public measurement does not imply a live protected path.' },
+  ];
+
   return {
+    presentationSummary,
     head: {
       domain: 'pii',
       eyebrow: 'Evaluation · PII',

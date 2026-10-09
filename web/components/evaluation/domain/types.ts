@@ -103,6 +103,7 @@ export interface DomainViewData {
   /** Which pipeline produced the credential numbers (#608). Only the credential page has one: the PII domain has a single pipeline. */
   pipeline?: PipelineStampProps;
   glance: GlanceItem[];
+  presentationSummary?: GlanceItem[];
   method: DomainMethodData;
   coverage: DomainCoverageData;
   status: DomainStatusData;

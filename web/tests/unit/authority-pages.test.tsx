@@ -42,7 +42,7 @@ async function open(root: string, dir: string | undefined, route: string, params
 beforeEach(() => { vi.unstubAllEnvs(); });
 afterEach(() => { vi.unstubAllEnvs(); for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true }); });
 
-const stamp = (container: HTMLElement) => container.querySelector('aside[data-pipeline]');
+const stamp = (container: HTMLElement) => container.querySelector('aside[data-pipeline][aria-label="Where these numbers come from"]');
 
 describe('authority legacy', () => {
   const root = () => overlay({ [AUTHORITY_FILE]: authorityFile('legacy') });

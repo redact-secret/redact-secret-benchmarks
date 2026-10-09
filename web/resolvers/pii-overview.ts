@@ -18,7 +18,7 @@ export function resolvePiiCatalog(publication: PiiCoveragePublication | null, pi
   const current = pii.currentQualification;
   const qualification = current
     ? `Current target ${current.sourceCommit}: qualification not established. Public synthetic measurement ${current.publicMeasurement.state}; public qualification ${current.gates.publicQualification}; protected path ${current.gates.protectedPath}; protected partition ${current.gates.protectedPartition}. Public evidence does not qualify product support.`
-    : 'Current product qualification is not recorded. Historical reviewed bindings and public synthetic measurements do not establish current support; protected execution and audit remain unavailable unless independently bound.';
+    : 'Current product qualification is not recorded. Historical reviewed bindings and public synthetic measurements do not establish current support; protected execution and audit remain unavailable unless bound to their own validated evidence.';
   const comparison = pii.candidateComparison;
   const activation = comparison?.state === 'recorded'
     ? (['baseline', 'candidate'] as const).map(side => ({ title: `${side === 'baseline' ? 'Published comparison baseline' : 'Candidate build, not a release'} activation`,
@@ -57,11 +57,11 @@ export function resolvePiiCatalog(publication: PiiCoveragePublication | null, pi
 export function resolvePiiMethodology(view: DomainViewData): PiiMethodologyData {
   const qualification = (view.presentationSummary ?? []).filter(item => item.label !== 'Public synthetic measurement').map(item => `${item.label}: ${item.value ?? 'Not recorded'}. ${item.detail}`).join(' ')
     || 'Current product qualification is not recorded. Public synthetic measurement does not establish protected qualification.';
-  return { method: { ...view.method, metrics: { ...view.method.metrics, summary: 'pii-v1 metric definitions and independent denominators',
+  return { method: { ...view.method, metrics: { ...view.method.metrics, summary: 'pii-v1 metric definitions and separate denominators',
     rows: view.method.metrics.rows.map(row => ({ ...row, id: `pii-v1:${row.id}` })) } }, qualification,
     repositories: [
       { label: 'pii-evidence on GitHub', href: 'https://github.com/redact-secret/pii-evidence', responsibility: 'Authors source cases, taxonomy, evidence provenance and expected-answer contracts before a scanner runs.' },
-      { label: 'pii-eval on GitHub', href: 'https://github.com/redact-secret/pii-eval', responsibility: 'Runs source-bound measurement and records authored type, range and sensitivity/context assertions with independent metric denominators.' },
+      { label: 'pii-eval on GitHub', href: 'https://github.com/redact-secret/pii-eval', responsibility: 'Runs source-bound measurement and records authored type, range and sensitivity/context assertions with separate metric denominators.' },
       { label: 'redact-secret core on GitHub', href: 'https://github.com/redact-secret/redact-secret', responsibility: 'Implements the scanner and its explicit activation configuration; scanner findings do not author the expected answer.' },
       { label: 'Benchmarks on GitHub', href: repo, responsibility: 'Consumes validated artifacts, keeps populations separate and owns interpretation and qualification policy. It does not adopt evidence or infer a support verdict from this overview.' },
     ],

@@ -9,6 +9,7 @@ import { PiiCatalog } from '../../components/coverage/pii';
 import { PiiMethodology } from '../../components/evaluation/pii';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { catalogExportProblems, piiDetailDestinationsProblems } from '../../scripts/check-export-pii-coverage.mjs';
+import { independenceClaims } from '../../../benchmarks/lib/evidence-classes';
 
 const pii = (extra = {}) => ({ state: 'not-recorded', reason: 'synthetic absent', authority: { authority: 'legacy', protectedPending: ['synthetic-protected'], unmet: [], total: 0 }, ...extra });
 function publication() {
@@ -129,6 +130,7 @@ describe('independent PII catalog export recount', () => {
 describe('PII methodology and preserved result destinations', () => {
   test('keeps authored type and sensitivity axes and six methods, independent denominators and all repository links', () => {
     const view = resolvePiiView(pii()), overview = resolvePiiMethodology(view);
+    expect(independenceClaims(renderToStaticMarkup(React.createElement(PiiMethodology, overview)))).toEqual([]);
     expect(overview.method.vocabularies.map(row => row.title)).toEqual(['Type identity', 'Sensitivity in context']);
     expect(overview.method.methods).toHaveLength(6);
     expect(overview.repositories.map(repo => repo.href)).toContain('https://github.com/redact-secret/pii-evidence');

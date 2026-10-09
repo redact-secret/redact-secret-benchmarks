@@ -118,4 +118,3 @@ export function assembleCatalog({ fixtures, taxonomy, suites, detectors, scenari
     detectorCount: detectors.length, suites, detectors, fixturesByDetector, fixturesBySuite, scenarioTitles,
   };
 }
-

@@ -46,4 +46,3 @@ export interface PiiAccountingReport extends AccountingArtifactIdentity {
     context: { applicable: number; evaluated: number }; jurisdiction: { applicable: number; evaluated: number };
     reference: { applicable: number; evaluated: number; unavailable: number } };
 }
-

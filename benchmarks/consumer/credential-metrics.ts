@@ -210,4 +210,3 @@ export function selectionGroups<T extends SuiteRow>(all: T[], selected: Set<stri
   }
   return groups;
 }
-

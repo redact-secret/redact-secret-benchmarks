@@ -26,7 +26,7 @@ export default async function Page() {
       <script dangerouslySetInnerHTML={{ __html: LEVEL_SCRIPT }} />
       <Suspense fallback={null}><LevelSync /></Suspense>
       <PageHead eyebrow={data.head.eyebrow} title={data.head.title} lede={data.head.lede} />
-      <RunNotes state={data.runState} />
+      <RunNotes state={data.runState} detailsInDialog />
       <ReportHubTiles tiles={data.tiles} label="Report sections" />
 
       {data.byLevel?.map(({ level }) => (

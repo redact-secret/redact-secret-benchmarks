@@ -1,6 +1,7 @@
 import { loadPiiEvidenceComparisonPage } from '../services/pii-evidence';
-import { resolvePiiEvidenceView } from './pii-evidence';
+import { resolvePiiEvidenceView, resolvePiiOutcomeSummary } from './pii-evidence';
 
 export async function resolvePiiEvidencePage() {
-  return resolvePiiEvidenceView(await loadPiiEvidenceComparisonPage());
+  const comparison = await loadPiiEvidenceComparisonPage();
+  return { ...resolvePiiEvidenceView(comparison), outcomes: resolvePiiOutcomeSummary(comparison) };
 }

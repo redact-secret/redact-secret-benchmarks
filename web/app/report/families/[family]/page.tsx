@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ family: strin
       />
       <StatusBar label={`Benchmark dossier for ${family.name}`} items={data.status} />
       {family.about.note && <Note>{family.about.note}</Note>}
-      <RunNotes state={data.runState} />
+      <RunNotes state={data.runState} detailsInDialog />
       <FamilyView
         name={family.name}
         providerName={family.providerName}

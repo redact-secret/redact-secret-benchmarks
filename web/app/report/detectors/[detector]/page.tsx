@@ -41,7 +41,7 @@ export default async function Page({ params }: { params: Promise<{ detector: str
         meta={data.head.meta}
         actions={<Link href="/report/detectors/">All detectors</Link>}
       />
-      <RunNotes state={data.runState} />
+      <RunNotes state={data.runState} detailsInDialog />
 
       {detector.belowMinimum && <p><StatusBadge status={detector.belowMinimum.status}>{detector.belowMinimum.label}</StatusBadge> {detector.fixtureCount} fixtures against the run’s minimum sample size: bounds for this detector may be withheld.</p>}
 

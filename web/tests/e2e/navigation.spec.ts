@@ -65,7 +65,7 @@ test.describe('phone navigation', () => {
     const bar = page.getByRole('navigation', { name: 'Primary, bottom bar' });
     await expect(bar).toBeVisible();
     await expect(page.getByRole('navigation', { name: 'Primary', exact: true })).toBeHidden();
-    await expect(page.getByRole('group', { name: 'Color theme' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Color theme:/ })).toBeVisible();
     const box = (await bar.boundingBox())!;
     const viewport = page.viewportSize()!;
     expect(Math.round(box.y + box.height)).toBe(viewport.height);

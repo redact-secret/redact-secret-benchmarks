@@ -1,0 +1,5 @@
+@layer components {
+  .explorer { display: grid; gap: var(--space-3); min-width: 0; }
+  .explorer h2, .explorer p { margin: 0; }
+  .explorer select { max-width: 100%; min-width: 0; min-height: var(--touch); padding: var(--space-2); font: var(--text-small); background: var(--surface); color: var(--ink); border: var(--hairline) solid var(--line); }
+}

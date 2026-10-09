@@ -1,7 +1,7 @@
 import { Stack } from '../../layout';
 import { Breadcrumb, PageHead } from '../../page';
 import type { Crumb, MetaItem } from '../../page';
-import { OptionalScannerNote } from '../../qualification/OptionalScannerNote';
+import type { ReactNode } from 'react';
 import type { NotMeasuredScanner } from '../../qualification/types';
 import { ScannerModeNote } from './ScannerModeNote';
 import { ScannerProfile } from './ScannerProfile';
@@ -17,19 +17,19 @@ export interface ScannerOverviewProps {
   meta: MetaItem[];
   roster: { title: string; description: string; rows: ScannerRosterRow[] };
   modeNote: ScannerModeNoteData;
+  modeNoteContent?: ReactNode;
   profiles: ScannerProfileData[];
-  /** Optional scanners the run did not measure (#763): stated beside the roster, so a scanner left out is never a silent absence. */
+  /** Optional scanner provenance remains in the resolved data; detailed explanations are shown on the qualification page. */
   notMeasured?: NotMeasuredScanner[];
 }
 
 /** `/evaluation/scanner`: the roster, the published and candidate note, then one profile per scanner. */
-export function ScannerOverview({ breadcrumb, eyebrow, title, lede, meta, roster, modeNote, profiles, notMeasured }: ScannerOverviewProps) {
+export function ScannerOverview({ breadcrumb, eyebrow, title, lede, meta, roster, modeNote, profiles, modeNoteContent }: ScannerOverviewProps) {
   return (
     <Stack gap="xl" className={styles.overview}>
       <PageHead before={<Breadcrumb items={breadcrumb} />} eyebrow={eyebrow} title={title} lede={lede} meta={meta} />
       <ScannerRoster {...roster} />
-      {notMeasured && <OptionalScannerNote scanners={notMeasured} variant="compact" />}
-      <ScannerModeNote {...modeNote} />
+      {modeNoteContent ?? <ScannerModeNote {...modeNote} />}
       {profiles.map(profile => <ScannerProfile key={profile.id} {...profile} />)}
     </Stack>
   );

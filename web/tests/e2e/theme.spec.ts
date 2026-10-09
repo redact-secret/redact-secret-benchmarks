@@ -3,15 +3,15 @@ import { BASE, expect, test } from './fixtures';
 
 const KEY = 'redact-secret-benchmarks:theme';
 const theme = (page: Page) => page.locator('html').getAttribute('data-theme');
-const toggle = (page: Page) => page.getByRole('group', { name: 'Color theme' });
+const toggle = (page: Page) => page.getByRole('button', { name: /Color theme:/ });
 const background = (page: Page) => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
 
 test.describe('theme', () => {
-  test('with no saved choice the theme follows the operating system, and "System" is the pressed choice', async ({ page }) => {
+  test('with no saved choice the theme follows the operating system, and the icon reports the effective theme', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto(`${BASE}/report/`);
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await expect(toggle(page).getByRole('button', { name: 'System' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(toggle(page)).toHaveAttribute('data-mode', 'dark');
     await page.emulateMedia({ colorScheme: 'light' });
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   });
@@ -20,27 +20,27 @@ test.describe('theme', () => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto(`${BASE}/report/`);
     const light = await background(page);
-    await toggle(page).getByRole('button', { name: 'Dark' }).click();
+    await toggle(page).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await expect(toggle(page).getByRole('button', { name: 'Dark' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(toggle(page)).toHaveAttribute('data-mode', 'dark');
     expect(await background(page)).not.toBe(light);
     expect(await page.evaluate(k => localStorage.getItem(k), KEY)).toBe('dark');
 
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await expect(toggle(page).getByRole('button', { name: 'Dark' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(toggle(page)).toHaveAttribute('data-mode', 'dark');
 
     await page.getByRole('navigation', { name: 'Primary', exact: true }).getByRole('link', { name: 'Comparison' }).click();
     await expect(page).toHaveURL(`${BASE}/comparison/`);
     expect(await theme(page)).toBe('dark');
   });
 
-  test('a saved choice beats the operating system, and choosing System removes the override', async ({ page }) => {
+  test('a saved choice beats the operating system, and toggling selects an explicit light preference', async ({ page }) => {
     await page.addInitScript(k => localStorage.setItem(k, 'dark'), KEY);
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto(`${BASE}/report/`);
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await toggle(page).getByRole('button', { name: 'System' }).click();
+    await toggle(page).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   });
 

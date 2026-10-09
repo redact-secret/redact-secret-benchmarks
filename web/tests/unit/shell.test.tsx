@@ -58,11 +58,14 @@ describe('AppChrome', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
-  test('every route is reachable from the header', () => {
+  test('quick navigation has three links and the footer exposes the full directory', () => {
     visit('/comparison/');
     render(<AppChrome><p>x</p></AppChrome>);
-    const links = screen.getAllByRole('link').map(a => a.getAttribute('href'));
-    for (const route of ROUTES.filter(r => r.href.startsWith('/comparison/'))) expect(links.some(h => h?.replace(/\/$/, '') === route.href.replace(/\/$/, '')), route.href).toBe(true);
+    expect(within(screen.getByRole('navigation', { name: 'Comparison pages' })).getAllByRole('link')).toHaveLength(3);
+    const directory = screen.getByRole('navigation', { name: 'Site directory' });
+    expect(within(directory).getAllByRole('heading')).toHaveLength(5);
+    expect(within(directory).getByRole('link', { name: 'Qualification' })).toHaveAttribute('href', expect.stringMatching(/\/evaluation\/qualification\/?$/));
+    expect(within(directory).getByRole('link', { name: 'Internationalization' })).toHaveAttribute('href', expect.stringMatching(/\/coverage\/internationalization\/?$/));
   });
 });
 

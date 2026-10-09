@@ -27,7 +27,7 @@ export default async function Page() {
       <style dangerouslySetInnerHTML={{ __html: panelCss(panels.map(p => p.key)) }} />
       <script dangerouslySetInnerHTML={{ __html: pairScript(options) }} />
       <Suspense fallback={null}><AccuracySync options={options} /></Suspense>
-      {runState.kind === 'measured' && <RunNotes state={runState} />}
+      {runState.kind === 'measured' && <RunNotes state={runState} detailsInDialog />}
       {panels.map(panel => (
         <div key={panel.key} className={styles.panel} data-acc-panel="" data-key={panel.key} data-default={panel.key === defaultKey ? '' : undefined}>
           <AccuracyPairComparison

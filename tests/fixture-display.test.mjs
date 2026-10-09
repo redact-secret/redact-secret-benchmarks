@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { gzipSync } from 'node:zlib';
 import { deriveFixtureDisplay, decodeFixtureDisplay, encodeFixtureDisplay, displayDigest, displayMatchesCase, fixtureDisplayProblems, SUITE_CONTENT_BUDGET } from '../benchmarks/lib/fixture-display.ts';
 
 const sha = v => createHash('sha256').update(v).digest('hex');
@@ -68,7 +69,7 @@ test('a fixture join requires path, grouping and the complete authored spans', (
 });
 
 
-test('base64 transport preserves exact UTF-8 and hides all authored literal fields in the serialized projection', () => {
+test('compressed base64 transport preserves exact UTF-8 and hides all authored literal fields in the serialized projection', () => {
   const input = release({ content: 'env=合成😀\n', expected: [{ start: 4, end: 14, role: 'secret' }] });
   const out = deriveFixtureDisplay(input), encoded = encodeFixtureDisplay(out);
   assert.deepEqual(decodeFixtureDisplay(encoded), out);
@@ -84,10 +85,12 @@ test('transport rejects malformed base64, altered commitments, invalid UTF-8, JS
     assert.throws(() => decodeFixtureDisplay({ ...encoded, ...over }));
     assert.ok(fixtureDisplayProblems({ ...encoded, ...over }, input.pin).length);
   }
-  const transport = b => ({ ...encoded, bytes: b.length, sha256: sha(b), payload: b.toString('base64') });
+  const transport = b => ({ ...encoded, bytes: b.length, sha256: sha(b), payload: gzipSync(b).toString('base64') });
   for (const b of [Buffer.from([0xc3, 0x28]), Buffer.from('{'), Buffer.from('{"schema":"other"}')]) assert.throws(() => decodeFixtureDisplay(transport(b)));
   // Nonzero padding bits are accepted by Buffer, but are not canonical base64.
   assert.throws(() => decodeFixtureDisplay({ ...transport(Buffer.from('x')), payload: 'eB==' }));
+  assert.throws(() => decodeFixtureDisplay({ ...encoded, bytes: 1 }));
+  assert.throws(() => decodeFixtureDisplay({ ...encoded, payload: 'A'.repeat(2 * 1024 * 1024 + 4) }));
   const corrupt = deriveFixtureDisplay(input);
   corrupt.fixtures['demo--one'].content = 'different'; corrupt.digest = displayDigest(corrupt);
   assert.ok(fixtureDisplayProblems(encodeFixtureDisplay(corrupt), input.pin).some(p => p.includes('byte commitment')));

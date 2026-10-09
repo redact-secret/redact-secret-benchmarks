@@ -130,9 +130,10 @@ retain their existing no-opaque-value rule.
 The projection retains source commitments, shared description and assessment
 dictionaries, fixture commitments and a digest of its entire payload. It copies
 only display fields, not observations or support decisions. The committed file
-uses a canonical base64 transport envelope because synthetic credential-shaped
+uses a gzip-compressed canonical base64 transport envelope because synthetic credential-shaped
 inputs trigger repository push protection. Decoding checks the envelope's byte
 count, SHA256 and strict UTF-8 before checking the unchanged inner commitments.
+Encoded input is bounded to 2 MiB and decoded output to 16 MiB before expansion.
 This encoding preserves the public inputs; it is not redaction. For suites with at
 most **1 MiB of input bytes**, it includes every exact input; a suite over that
 budget includes no input bytes and says the pinned release has them but the

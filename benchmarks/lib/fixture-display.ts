@@ -1,5 +1,6 @@
 /** Current public display evidence, derived from byte-verified release assets, never used to score a run. */
 import { createHash } from 'node:crypto';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import { authoredTextProblems, deriveEvidenceCaseMetadata, evidenceCaseMetadataProblems, type EvidencePin, type EvidenceCaseMetadata } from './fixture-metadata.ts';
 
 export const FIXTURE_DISPLAY_FILE = 'benchmarks/inputs/fixture-display-v1.json';
@@ -32,21 +33,23 @@ export const displayDigest = ({ digest: _digest, ...payload }: FixtureDisplay) =
 /** Encode the whole verified projection, including literals quoted in authored explanations. */
 export function encodeFixtureDisplay(value: FixtureDisplay) {
   const bytes = Buffer.from(JSON.stringify(value), 'utf8');
-  return { schema: FIXTURE_DISPLAY_TRANSPORT_SCHEMA, encoding: 'base64', bytes: bytes.length, sha256: sha(bytes), payload: bytes.toString('base64') };
+  return { schema: FIXTURE_DISPLAY_TRANSPORT_SCHEMA, encoding: 'gzip+base64', bytes: bytes.length, sha256: sha(bytes), payload: gzipSync(bytes, { level: 9 }).toString('base64') };
 }
 
 /** Decode before source and fixture commitments are checked. Base64 is transport, never redaction. */
 export function decodeFixtureDisplay(value: unknown): FixtureDisplay {
   const f = value as Record<string, unknown>;
   if (f?.schema === FIXTURE_DISPLAY_SCHEMA) return value as FixtureDisplay;
-  if (!f || f.schema !== FIXTURE_DISPLAY_TRANSPORT_SCHEMA || f.encoding !== 'base64' ||
+  if (!f || f.schema !== FIXTURE_DISPLAY_TRANSPORT_SCHEMA || f.encoding !== 'gzip+base64' ||
       Object.keys(f).sort().join(',') !== 'bytes,encoding,payload,schema,sha256' ||
       !Number.isSafeInteger(f.bytes) || (f.bytes as number) < 1 || (f.bytes as number) > 16 * 1024 * 1024 ||
       typeof f.sha256 !== 'string' || !hex.test(f.sha256) || typeof f.payload !== 'string' ||
-      f.payload.length !== 4 * Math.ceil((f.bytes as number) / 3) || !/^[A-Za-z0-9+/]*={0,2}$/.test(f.payload))
+      f.payload.length < 4 || f.payload.length > 2 * 1024 * 1024 || !/^[A-Za-z0-9+/]*={0,2}$/.test(f.payload))
     throw new Error('malformed fixture display transport');
-  const bytes = Buffer.from(f.payload, 'base64');
-  if (bytes.length !== f.bytes || bytes.toString('base64') !== f.payload || sha(bytes) !== f.sha256)
+  const compressed = Buffer.from(f.payload, 'base64');
+  if (compressed.toString('base64') !== f.payload) throw new Error('noncanonical fixture display transport');
+  const bytes = gunzipSync(compressed, { maxOutputLength: f.bytes as number });
+  if (bytes.length !== f.bytes || sha(bytes) !== f.sha256)
     throw new Error('fixture display transport byte commitment mismatch');
   const decoded = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
   if (decoded?.schema !== FIXTURE_DISPLAY_SCHEMA) throw new Error('invalid decoded fixture display schema');

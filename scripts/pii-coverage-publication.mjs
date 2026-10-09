@@ -36,8 +36,11 @@ export function validatePiiCoverageMembership(coverage) {
 export async function piiCoveragePublication(root) {
   const evidencePublication = await piiEvidencePublication(root);
   const comparison = evidencePublication.view.comparison;
+  const proposedPublication = await piiEvidencePublication(root, { directory: 'benchmarks/pii-evidence-comparison/v2-post37-published-retry1' });
+  const proposedComparison = proposedPublication.view.comparison;
+  if (proposedComparison.state === 'invalid') throw new Error('pii-coverage-invalid-proposed-observation-source');
   if (comparison.state === 'invalid') throw new Error('pii-coverage-invalid-observation-source');
-  const coverage = await loadPiiCoverage(root, { comparison });
+  const coverage = await loadPiiCoverage(root, { comparison, proposedComparison });
   for (const role of roles) for (const side of sides) {
     const joined = coverage.matrices[role][side];
     joined.summary = summarizeCoverage(joined.matrix);
@@ -54,7 +57,7 @@ export async function piiCoveragePublication(root) {
   }), ...sides.map(side => `benchmarks/inputs/pii-coverage/${side}-product-catalog.json`),
   'scripts/lib/pii-coverage-model.mjs', 'scripts/lib/pii-coverage-inventory.mjs', 'scripts/lib/pii-coverage-join.mjs',
   'scripts/lib/pii-coverage-summary.mjs', 'scripts/lib/pii-coverage-delta.mjs', 'scripts/pii-coverage-publication.mjs'];
-  const sources = [...await Promise.all(paths.map(async file => ({ path: file, sha256: sha(await readFile(path.join(root, file))) }))), ...evidencePublication.view.sources];
+  const sources = [...await Promise.all(paths.map(async file => ({ path: file, sha256: sha(await readFile(path.join(root, file))) }))), ...evidencePublication.view.sources, ...proposedPublication.view.sources];
   return { schema: 'pii-coverage-publication/1', supportClaims: false, qualified: false, sources, coverage, deltas };
 }
 

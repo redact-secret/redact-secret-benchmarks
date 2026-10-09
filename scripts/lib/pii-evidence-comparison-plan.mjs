@@ -182,6 +182,14 @@ function runtimeInputs({ preflight, policy, populationIndex, populationIndexDige
   if (productTuple !== undefined && executionPaths === undefined) throw new Error('reviewed-product-execution-paths-required');
   return { preflight, policy, populationIndexDigest: indexDigest, ...(executionPaths === undefined ? {} : { executionPaths: validateEvidenceExecutionPaths(executionPaths) }), ...(productTuple === undefined ? {} : { productTuple: validateEvidenceProductTuple(productTuple) }) };
 }
+function evidenceScanner(preflight) {
+  const scanner = structuredClone(PRODUCT_PINS.scanner);
+  if (preflight.consumer.contract.mapping.revision === 3) {
+    scanner.activation = [...new Set(['pii:global', ...Object.keys(preflight.mappedFamilies).map(family => `pii:${family.split(':')[1]}`)])].sort();
+    scanner.activationDigest = sha256(`pii-eval-semantic-digest/1\npii-eval.scanner-activation/1\n${JSON.stringify(scanner.activation)}`);
+  }
+  return scanner;
+}
 export function executionScope(runtime) {
   const inputs = runtimeInputs(runtime), { preflight } = inputs;
   const products = inputs.productTuple ?? PRODUCT_PINS, consumer = preflight.consumer;
@@ -189,6 +197,8 @@ export function executionScope(runtime) {
     qualificationRunId: products.candidate?.qualificationRunId ?? null, inventorySha256: products.candidate?.inventorySha256 ?? null,
     ...(inputs.productTuple ? { productTupleDigest: evidenceDigest(inputs.productTuple) } : {}),
     ...(inputs.executionPaths ? inputs.executionPaths : {}),
+    ...(consumer.contract.mapping.revision === 3 ? { scannerConfigurationDigest: evidenceScanner(preflight).configurationDigest,
+      scannerActivationDigest: evidenceScanner(preflight).activationDigest } : {}),
     engineCommit: consumer.source.commit, engineBinarySha256: consumer.executionEngine.binarySha256,
     sourceArchiveSha256: consumer.source.sourceArchiveSha256, snapshotDigest: preflight.evidence.snapshot.contentDigest,
     populationDigest: preflight.population.digest, bindingDigest: preflight.population.bindingDigest,
@@ -216,7 +226,7 @@ export function evidenceComparisonPlan({ costDecision, preflight, policy, popula
     evidence: structuredClone(preflight.evidence), consumer: structuredClone(preflight.consumer), preflight: structuredClone(preflight), policy: structuredClone(policy),
     engine: { repository: consumer.source.repository, commit: consumer.source.commit,
       binarySha256: consumer.executionEngine.binarySha256, shimSha256: consumer.source.shimSha256 },
-    protocol: old.protocol, scanner: old.scanner, baseline: old.baseline, candidate: old.candidate,
+    protocol: old.protocol, scanner: evidenceScanner(preflight), baseline: old.baseline, candidate: old.candidate,
     ...(productTuple === undefined ? {} : { productTuple: structuredClone(productTuple) }),
     ...(executionPaths === undefined ? {} : { executionPaths: structuredClone(executionPaths) }),
     population: structuredClone(preflight.population), populationIndexDigest: inputs.populationIndexDigest, counts: structuredClone(preflight.counts), losses: structuredClone(preflight.losses),

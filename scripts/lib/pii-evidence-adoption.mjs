@@ -112,7 +112,7 @@ function measuredScanner(comparison) {
     configurationDigest: plan.scanner.configurationDigest, activationDigest: plan.scanner.activationDigest });
 }
 
-function checkedAdoptionEntry(entry, policy, previous) {
+function checkedAdoptionEntry(entry, policy, previous, { initialHistoricalAnchor = false } = {}) {
   if (!exact(entry, ['preflight', 'candidate', 'acceptance', 'comparison', 'retainedFiles']) ||
       !exact(entry.comparison, ['plan', 'receipt', 'receiptText', 'record', 'artifacts', 'populationIndex'])) refuse('adoption-entry-invalid');
   const preflight = checkedPreflight(entry.preflight, policy), comparison = entry.comparison;
@@ -142,7 +142,14 @@ function checkedAdoptionEntry(entry, policy, previous) {
   const expected = preparePiiEvidenceAdoption({ policy, preflight, scanner,
     previousPreflight: previous?.preflight ?? null, previousScanner: previous?.scanner ?? null });
   if (adoptionDigest(entry.candidate) !== adoptionDigest(expected)) refuse('candidate-measurement-mismatch');
-  const acceptance = validateMaintainerAcceptance(entry.acceptance, expected.candidateDigest);
+  // The initial active v1 predates the acceptance package. Retain its exact
+  // canonical evidence without inventing retrospective owner acceptance.
+  if (initialHistoricalAnchor && (entry.acceptance !== null || previous !== null ||
+      adoptionDigest(preflight.evidence) !== adoptionDigest(SNAPSHOT_PIN) ||
+      adoptionDigest(preflight) !== 'e7a97c3700a7c80163202bce6cd171125f7c63dbdf555d40ac08200ea4192ccd' ||
+      adoptionDigest(comparison.record) !== '1fdbe819c39da14a92edb20453e5c3ac3e0f95709f13043eb69f68075fd72a67' ||
+      comparison.record.workflow.runId !== 37829344445)) refuse('initial-historical-anchor-mismatch');
+  const acceptance = initialHistoricalAnchor ? null : validateMaintainerAcceptance(entry.acceptance, expected.candidateDigest);
   return { preflight, scanner, candidate: expected, acceptance,
     measurement: { planDigest: adoptionDigest(plan), recordDigest: adoptionDigest(comparison.record),
       receiptSha256: comparison.record.receipt.sha256, workflowRunId: comparison.record.workflow.runId } };
@@ -159,7 +166,8 @@ export function validateActiveEvidenceAdoption(input) {
   for (const entry of [...input.history, input]) {
     const selected = { preflight: entry.preflight, candidate: entry.candidate, acceptance: entry.acceptance, comparison: entry.comparison, retainedFiles: entry.retainedFiles };
     if (entry !== input && !exact(entry, Object.keys(selected))) refuse('history-invalid');
-    const checked = checkedAdoptionEntry(selected, input.policy, previous), id = checked.preflight.evidence.snapshot.id;
+    const initialHistoricalAnchor = entry !== input && previous === null && selected.acceptance === null;
+    const checked = checkedAdoptionEntry(selected, input.policy, previous, { initialHistoricalAnchor }), id = checked.preflight.evidence.snapshot.id;
     if (identities.has(id)) refuse('history-snapshot-duplicate');
     if (!previous && adoptionDigest(checked.preflight.evidence) !== adoptionDigest(SNAPSHOT_PIN)) refuse('history-initial-anchor-missing');
     identities.add(id);

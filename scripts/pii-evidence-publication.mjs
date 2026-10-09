@@ -16,11 +16,12 @@ async function optional(root, relative) {
 }
 
 /** Fixed public paths only. The consumer verifies every measurement identity. */
-export async function piiEvidencePublication(root) {
+export async function piiEvidencePublication(root, { directory = PII_EVIDENCE_DIRECTORY } = {}) {
+  if (directory !== PII_EVIDENCE_DIRECTORY && directory !== 'benchmarks/pii-evidence-comparison/v2-post37-published-retry1') throw new Error('evidence-publication-directory-unreviewed');
   const sources = [];
   const texts = new Map();
   const json = async name => {
-    const relative = `${PII_EVIDENCE_DIRECTORY}/${name}.json`;
+    const relative = `${directory}/${name}.json`;
     const text = await optional(root, relative);
     if (text === undefined) return undefined;
     sources.push({ path: relative, sha256: sha256(text) });
@@ -37,7 +38,7 @@ export async function piiEvidencePublication(root) {
     if (receipt && !plan) throw new Error('evidence-plan-missing');
     const artifacts = [];
     if (receipt) for (const side of evidenceSides(plan)) {
-      const relative = `${PII_EVIDENCE_DIRECTORY}/${side}.public-synthetic-artifact.json`;
+      const relative = `${directory}/${side}.public-synthetic-artifact.json`;
       const text = await optional(root, relative);
       if (text === undefined) throw new Error('missing-public-artifact');
       sources.push({ path: relative, sha256: sha256(text) });

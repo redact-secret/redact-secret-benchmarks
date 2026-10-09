@@ -1,12 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseEvidenceJson } from './pii-evidence-json.mjs';
+import { checkActiveEvidenceFiles } from './pii-evidence-adoption-apply.mjs';
 import { sha256, mappingKindsOf, validateEvidencePins, validateProposedConsumerPin, validatePreflightReport } from './pii-evidence-contract.mjs';
 
 const fail = reason => { throw new Error(`PII coverage inventory refusal: ${reason}`); };
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const integer = value => Number.isSafeInteger(value) && value >= 0;
-export const PROPOSED_EVIDENCE_DIRECTORY = 'benchmarks/inputs/pii-evidence-snapshot-v2-post37-candidate';
+export const PROPOSED_EVIDENCE_DIRECTORY = 'benchmarks/inputs/pii-evidence-snapshot-v2-released-candidate';
 const set = (values, reason) => {
   if (!Array.isArray(values) || values.some(value => typeof value !== 'string' || !value) || new Set(values).size !== values.length) fail(reason);
   return [...values].sort();
@@ -15,7 +16,12 @@ const set = (values, reason) => {
 // The pinned manifest authenticates the taxonomy bytes, including zero-case entries.
 export function consumePiiCoverageInventory({ manifestBytes, taxonomyBytes, snapshotPin, consumerPin, preflight, policy, role, repoRoot }) {
   if (!['active', 'proposed'].includes(role)) fail('role-invalid');
-  if (role === 'active') validateEvidencePins(snapshotPin, consumerPin);
+  if (role === 'active' && consumerPin.contract.mapping.revision === 1) validateEvidencePins(snapshotPin, consumerPin);
+  else if (role === 'active') {
+    if (!repoRoot) fail('active-adoption-root-required');
+    const active = checkActiveEvidenceFiles(repoRoot);
+    if (!same(active.snapshotPin, snapshotPin) || !same(active.consumerPin, consumerPin)) fail('active-adoption-pin-mismatch');
+  }
   else validateProposedConsumerPin(consumerPin, snapshotPin, { repoRoot });
   validatePreflightReport(preflight, policy, { snapshotPin, consumerPin, repoRoot });
   if (sha256(manifestBytes) !== snapshotPin.snapshot.manifestSha256) fail('manifest-bytes-mismatch');

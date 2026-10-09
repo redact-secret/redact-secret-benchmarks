@@ -73,7 +73,15 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
     const remaining = deadline - Date.now(); if (remaining <= 0) fail('execution-budget-exhausted');
     const result = spawnSync(binary, args, { encoding: 'utf8', timeout: Math.min(120000, remaining), maxBuffer: 16 * 1024 * 1024,
       cwd, env: Object.fromEntries(Object.entries(process.env).filter(([key]) => !/(TOKEN|SECRET|PRIVATE_KEY)/i.test(key))) });
-    if (result.status !== 0) fail(result.error?.code === 'ETIMEDOUT' ? 'command-timed-out' : 'command-failed');
+    if (result.status !== 0) {
+      let reason = 'command-failed';
+      try {
+        const refusal = parseEvidenceJson(result.stdout);
+        const code = refusal.error?.reason, at = refusal.error?.at;
+        if (/^[a-z][a-z0-9-]{0,63}$/.test(code ?? '') && /^[a-z][a-z0-9.-]{0,63}$/.test(at ?? '')) reason = `${code}:${at}`;
+      } catch { /* Never include raw process output or evidence values in diagnostics. */ }
+      fail(result.error?.code === 'ETIMEDOUT' ? 'command-timed-out' : `${args[0]}:${reason}`);
+    }
     return asJson ? parseEvidenceJson(result.stdout) : result.stdout;
   };
   const started = Date.now();
@@ -98,6 +106,7 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
         snapshotSha256: sha256(outputs['snapshot.json']), bindingSha256: sha256(outputs['binding.json']), populationIndexDigest: plan.populationIndexDigest } };
     if (requireCanonical) receipt.github = executionContext.github;
     mkdirSync(out, { recursive: true }); const artifacts = [];
+    if (requireCanonical) writeFileSync(join(out, 'build-receipt.json'), json(consumerReceipt));
     for (const side of sides) {
       const installation = { root: join(scratch, `${side}-package`) }; mkdirSync(installation.root);
       try {
@@ -148,7 +157,6 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
     const summary = loadPiiEvidenceComparison({ plan, receipt, artifacts, populationIndex, allowUnrecordedOfficial: true });
     if (summary.state !== 'recorded') fail(summary.reason);
     writeFileSync(join(out, 'plan.json'), json(plan)); writeFileSync(join(out, 'receipt.json'), json(receipt));
-    if (requireCanonical) writeFileSync(join(out, 'build-receipt.json'), json(consumerReceipt));
     return { receipt, summary };
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 }

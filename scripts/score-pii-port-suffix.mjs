@@ -8,12 +8,16 @@
  *
  * Run: node scripts/score-pii-port-suffix.mjs [--check]
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import path from 'node:path';
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
 import { fileURLToPath } from 'node:url';
 
 const root = new URL('../', import.meta.url);
 const OBSERVATION = 'evidence/901/428/core-79c0a66119fb/pii-beta11-observation-v2.json';
-const OUTPUT = 'evidence/901/451/pii-network-port-suffix-scoring-v1.json';
+const OBSERVATION_SHA256 = 'e2c6155c9c24c0aa45c94b56567706635e3caa1fa960734fbfb687ddcd2d57f7';
+const SOURCE_REVISION = '65ffe7dcb3e7124e7f66cff96cab814f0365f69a';
 const FAMILY = 'pii:global:network-address';
 const CASE_ID = 'net-p-port-suffix';
 
@@ -54,11 +58,24 @@ export function buildScoring(observation) {
   };
 }
 
-export const render = () => `${JSON.stringify(buildScoring(JSON.parse(readFileSync(new URL(OBSERVATION, root), 'utf8'))), null, 2)}\n`;
+export function render(observationFile) {
+  if (!observationFile) throw new Error('Historical scoring requires --observation=<restored original archive member>; no implicit evidence input');
+  const raw = readFileSync(observationFile);
+  if (createHash('sha256').update(raw).digest('hex') !== OBSERVATION_SHA256)
+    throw new Error('Restored observation differs from the original source-bound archive input');
+  return `${JSON.stringify(buildScoring(JSON.parse(raw)), null, 2)}\n`;
+}
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const text = render();
-  if (process.argv.includes('--check')) {
-    if (readFileSync(new URL(OUTPUT, root), 'utf8') !== text) { console.error(`${OUTPUT} is stale; run node scripts/score-pii-port-suffix.mjs`); process.exit(1); }
-  } else writeFileSync(new URL(OUTPUT, root), text);
+  const args = Object.fromEntries(process.argv.slice(2).map(argument => {
+    const match = /^--(observation|source-ref|output|check)=(.+)$/.exec(argument);
+    if (!match) throw new Error('Use --observation=<archive file> --source-ref=<original commit> [--output=<ignored file>|--check=<archive scoring file>]');
+    return [match[1], match[2]];
+  }));
+  if (args['source-ref'] !== SOURCE_REVISION) throw new Error('Historical replay must name original source revision ' + SOURCE_REVISION);
+  const output = args.check ? null : measurementOutput(path.resolve(fileURLToPath(root), args.output ?? `results-output/pii-port-suffix/${Date.now()}/scoring.json`), fileURLToPath(root));
+  const text = render(args.observation);
+  if (args.check) {
+    if (readFileSync(args.check, 'utf8') !== text) throw new Error('Restored scoring record differs from original observation derivation');
+  } else writeMeasurement(output, text);
 }

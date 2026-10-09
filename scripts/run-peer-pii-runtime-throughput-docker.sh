@@ -9,7 +9,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-out="public/results/peer-pii-runtime-throughput.json"
+out="results-output/peer-pii-runtime-throughput/run-$(date +%s)-$$/report.json"
 cpus=4
 for argument in "$@"; do
   case "$argument" in
@@ -18,6 +18,16 @@ for argument in "$@"; do
     *) echo "unrecognized argument: $argument" >&2; exit 2 ;;
   esac
 done
+
+# Validate before Docker can build or measure; normalize the bind mount to the repository.
+out=$(node --input-type=module - "$out" <<'NODE'
+import path from 'node:path';
+import { measurementOutput } from './scripts/lib/measurement-output.mjs';
+const root = process.cwd();
+const target = measurementOutput(path.resolve(root, process.argv[2]), root, { directory: false });
+console.log(path.relative(root, target));
+NODE
+)
 
 pin=$(node -e "console.log(JSON.parse(require('fs').readFileSync('benchmarks/pin-manifest.json','utf8')).pins.redactSecretRevision)")
 ref="${REDACT_SECRET_REF:-$pin}"

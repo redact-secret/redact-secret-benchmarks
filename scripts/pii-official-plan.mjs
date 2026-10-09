@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { loadPiiConversionObservation, PII_CONVERSION_OBSERVATION_SOURCE } from '../benchmarks/evaluation/domains/pii/conversion-observation.mjs';
 import { decisionStatus as recordedDecisionStatus } from './lib/decision-provenance.mjs';
 // The frozen execution plan of the first official public/synthetic PII measurement (#796), derived from the committed pins and never typed:
 //
@@ -33,7 +34,10 @@ export const CANDIDATE_BUILD = { repository: 'redact-secret/redact-secret', work
  *  - only the `core` tarball is the same everywhere (CI linux, CI and local darwin); the platform package is not (the addon), so even the commitment of the linux build differs.
  */
 function candidatePackage(migration) {
-  const observation = readJson(migration.benchmarkPopulations.observation.path).candidate;
+  const source = migration.benchmarkPopulations.observation;
+  if (source.path !== PII_CONVERSION_OBSERVATION_SOURCE.path || source.sha256 !== PII_CONVERSION_OBSERVATION_SOURCE.sha256)
+    throw new Error('Official plan observation source differs from its separately bound current input');
+  const observation = loadPiiConversionObservation(ROOT).candidate;
   return {
     name: '@redact-secret/core', entry: 'dist/index.js', coreTarballSha256: observation.components.core,
     treeSha256: 'computed-at-execution', addon: { name: '@redact-secret/node-linux-x64-gnu', pinned: 'extraArtifacts tree, digest computed at execution from the qualified tarball' },

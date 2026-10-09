@@ -114,13 +114,13 @@ file's own `derivation` field):
   across artifacts, not a fresh measurement.
 
 The current criteria were derived from
-[`evidence/603/summary.json`](../../evidence/603/summary.json), this
+[`evidence/603/summary.json`](https://github.com/redact-secret/redact-secret-benchmarks/blob/65ffe7dcb3e7124e7f66cff96cab814f0365f69a/evidence/603/summary.json), this
 repository's own real
 [`performance-evaluation.yml` run 36078460497](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36078460497)
 against the commit `benchmarks/pin-manifest.json` pinned at measurement time
 (`3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c`, product `main` after #773) — release builds, five repetitions, matching the
 current pin (`npm run pins:check` fails otherwise; see #150). Its evaluation,
-recorded in [`evidence/603/acceptance.md`](../../evidence/603/acceptance.md),
+recorded in [`evidence/603/acceptance.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/65ffe7dcb3e7124e7f66cff96cab814f0365f69a/evidence/603/acceptance.md),
 reads `ACCEPTED`: it passed all 46 timing, throughput, memory and
 accuracy-count checks against the criteria committed *before* the run (derived
 from the `f2082ab` run 36052694026), with the accuracy corpus unchanged
@@ -150,7 +150,9 @@ npm test  # benchmarks/lib/performance-derivation.ts and performance-acceptance.
 
 `npm run performance:criteria:check` (wired into `validate.yml`) fails CI if
 `benchmarks/performance-criteria.json` no longer matches what
-`deriveCriteria` would produce from `evidence/603/summary.json` — the same
+`deriveCriteria` would produce from the source-bound current baseline projection in
+`benchmarks/inputs/performance/current.json`, whose original locator remains
+`evidence/603/summary.json`. This uses the same
 generate-then-check pattern `pins:manifest` / `pins:manifest:check` uses.
 `npm run pins:check` (also wired into `validate.yml`) separately fails if
 `benchmarks/performance-criteria.json`'s `baseline.verifiedCommit` no longer
@@ -180,30 +182,28 @@ them. To re-pin after a detector change:
    new product commit. Use it only if both the RC acceptance and the
    regression budgets read ACCEPTED; a REJECTED run is never recalibrated
    away.
-2. Freeze the run's `acceptance.json`/`.md`, `regression-budgets.json`/`.md`,
-   `paired.json`, `runner.json` and `summary.json` under
-   `evidence/603/verified-<short-commit>/`, and add a README section.
-3. Set `benchmarks/detectors.json` `sourceRevision` and
-   `benchmarks/detector-inventory.json` `redactSecretRevision` to the new
-   commit (after reviewing the product's `detectors/mod.rs` for registry
-   changes), then run
-   `npm run performance:criteria -- --verified-commit <sha> --verification-path evidence/603/verified-<short>/acceptance.json`
-   and `npm run pins:manifest`.
-4. Update the two hard-coded accepted-summary paths in `src/pages/performance.ts`
-   (the `import accepted from '../../evidence/<dir>/summary.json'` and the path in
-   the "Measured columns" sentence), or `tests/pages.test.mjs` fails (#581).
-5. Re-measure the runtime comparison (#562): run
-   `scripts/run-runtime-comparison-docker.sh --out-dir=evidence/562` (default
-   `--source=published`: the `@redact-secret/core` release `package.json` pins),
-   replace the three `evidence/562/runtime-comparison-*.json` snapshots, and
-   update `evidence/562/README.md`. The Next app's `/comparison/` pages read
-   those files, and publish does not re-run the measurement, so a missed step
-   leaves them naming the old version. `npm run pins:check` (the network-free
-   part, also `pins:check:local`) and `tests/runtime-comparison.test.mjs` fail
-   when a snapshot's redact-secret version, build kind (it must be
-   `published-npm-package`) or commit differs from the pin. Timings are
-   machine-bound: the report records the host, and a run on a new host is not
-   compared with the previous one.
+2. Preserve the full reviewed run as checksum-bound release assets, including its
+   `acceptance.json`/`.md`, regression budgets, paired results, runner and full
+   summary. Keep exploratory and downloaded output in ignored `results-output/`;
+   do not create a new `evidence/603/verified-*` tree in HEAD.
+3. Review the new registry identity and accepted evaluation before updating
+   detector and pin records. Keep the derivation baseline unchanged. Update only
+   the current accepted performance projection, its original source/digest
+   binding and acceptance receipt in `benchmarks/inputs/performance/current.json`,
+   with its strict validator and retirement review. A changed candidate needs its
+   own accepted facts, never a reused historical acceptance.
+4. Run `performance:criteria:check`, `performance:schema:check` and the current
+   service tests. Fresh full producer summaries still use the pinned intake schema
+   through `performance:schema:check -- --summary <ignored-summary-path>`;
+   narrowing archived payloads does not relax that contract.
+5. Re-measure runtime comparison (#562) with the pinned published package into
+   ignored `results-output/`. Promote only the three reviewed setting snapshots
+   under `benchmarks/inputs/runtime/`, updating their exact registry/source digest
+   bindings and retirement review. The Next app reads that explicit registry;
+   publication does not re-run measurement. `pins:check:local` and runtime tests
+   reject a version, build kind or commit that differs from the current pin.
+   Timings are machine-bound, so a run on a new host is not compared with the old
+   run as an equivalent replication.
 
 `performance:criteria:check` refuses a `verificationPath` that is not an
 ACCEPTED evaluation of `verifiedCommit` under the same criteria id and fixed

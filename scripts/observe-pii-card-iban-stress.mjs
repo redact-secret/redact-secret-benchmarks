@@ -24,18 +24,24 @@ import { STRESS_PLAN_FILES, buildStressPlan } from '../benchmarks/evaluation/dom
 import { ibanIdentity, paymentCardIdentity } from '../benchmarks/evaluation/domains/pii/card-iban-stress/contract-model.ts';
 import { STRESS_FAMILIES, stressPlans, validateStressPlans } from '../benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts';
 import { buildStressReport } from '../benchmarks/evaluation/domains/pii/card-iban-stress/report.ts';
+import { piiGapPolicy } from '../benchmarks/evaluation/domains/pii/current-inputs.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 import { packLockfileRelease } from './observe-pii-populations.mjs';
+import { measurementOutput, stagedMeasurementDirectory } from './lib/measurement-output.mjs';
+import { writeFileSync } from 'node:fs';
 
 const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const args = Object.fromEntries(process.argv.slice(2).map(argument => {
-  const match = /^--(observation|report)=(.+)$/.exec(argument);
+  const match = /^--(observation|report|out-dir)=(.+)$/.exec(argument);
   if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2]];
 }));
-const observationFile = path.resolve(root, args.observation ?? 'evidence/901/425/card-iban-stress-observation-v1.json');
-const reportFile = path.resolve(root, args.report ?? 'evidence/901/425/card-iban-stress-report-v1.json');
+const runDirectory = path.resolve(root, args['out-dir'] ?? `results-output/pii-card-iban-stress/${Date.now()}`);
+const observationFile = path.resolve(root, args.observation ?? path.join(runDirectory, 'card-iban-stress-observation-v1.json'));
+const reportFile = path.resolve(root, args.report ?? path.join(runDirectory, 'card-iban-stress-report-v1.json'));
+if (path.dirname(observationFile) !== path.dirname(reportFile) || observationFile === reportFile) throw new Error('Observation and report must use different files in one fresh run directory');
+const outputDirectory = measurementOutput(path.dirname(observationFile), root, { directory: true });
 const CANDIDATE_VERSION = '0.1.0-beta.10', CANDIDATE_COMMIT = 'af7f863f29f9fe482dd233c8b7bc5b77dc427314';
 const BASELINE_COMMIT = 'f726f2ffb0fd854cc3eeb4c35798695fde3161d3'; // v0.1.0-beta.9
 const digest = async (file, algorithm = 'sha256') => createHash(algorithm).update(await readFile(file)).digest('hex');
@@ -61,7 +67,7 @@ const nodePackage = () => {
 
 /** Pack the published candidate and bind it to the frozen release-manifest digests; any mismatch fails closed. */
 async function packCandidate(directory) {
-  const ledger = JSON.parse(await readFile(path.join(root, 'evidence/901/pii-gap-ledger-v1.json'), 'utf8'));
+  const ledger = piiGapPolicy;
   const final = ledger.finalCandidate;
   if (final.version !== CANDIDATE_VERSION || final.sourceCommit !== CANDIDATE_COMMIT) throw new Error('ledger final candidate is not the beta.10 release');
   const manifest = artifact => final.artifacts.filter(row => row.artifact === artifact);
@@ -173,9 +179,10 @@ try {
     candidateManifestVerification: { ledger: 'evidence/901/pii-gap-ledger-v1.json', verified },
     baselineVerification: 'package-lock.json sha512 integrity', sides,
   };
-  await mkdir(path.dirname(observationFile), { recursive: true });
-  await writeFile(observationFile, `${JSON.stringify(observation)}\n`);
   const report = buildStressReport(observation);
-  await writeFile(reportFile, `${JSON.stringify(report, null, 2)}\n`);
+  stagedMeasurementDirectory(outputDirectory, stage => {
+    writeFileSync(path.join(stage, path.basename(observationFile)), `${JSON.stringify(observation)}\n`);
+    writeFileSync(path.join(stage, path.basename(reportFile)), `${JSON.stringify(report, null, 2)}\n`);
+  });
   for (const row of report.summary) console.log(JSON.stringify(row));
 } finally { await rm(scratch, { recursive: true, force: true }); }

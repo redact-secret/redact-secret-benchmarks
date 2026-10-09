@@ -15,7 +15,7 @@ export interface PinFacts {
   /** `performance-criteria.json` `baseline.verifiedCommit`: the latest ACCEPTED evaluation against the unchanged thresholds. */
   performanceCriteriaVerifiedCommit: string;
   /**
-   * What each committed `evidence/562/runtime-comparison-*.json` snapshot recorded for redact-secret (#562). Optional so a caller
+   * What each committed `benchmarks/inputs/runtime/runtime-comparison-*.json` snapshot recorded for redact-secret (#562). Optional so a caller
    * that has no snapshots (or a test of the other pins) omits it; the real `pins:check` always supplies it.
    */
   runtimeComparisonSnapshots?: RuntimeComparisonSnapshotFacts[];

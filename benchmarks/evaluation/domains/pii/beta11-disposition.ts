@@ -14,7 +14,8 @@ import { C1_POPULATION_PLANS, C1_POPULATION_PLANS_V2 } from './email-network-pop
 import { PII_ORACLE_PLANS } from './identity-oracle.ts';
 import regressionBudgets from '../../../regression-budgets.json';
 import acceptedRegressions from '../../../accepted-regressions.json';
-import operational879 from '../../../../evidence/879/pii-operational-evidence-v1.json';
+import { operationalByteBaseline } from './operational-byte-baseline.ts';
+const operational879 = operationalByteBaseline();
 import arrivalContract from '../../../../qualification/pii-national-id-arrival-v1.json';
 
 export const B11_BASELINE_879 = Object.freeze({ sourceCommit: '63a834e0a2b44c11f307ece8c539b933dabb68f1' });

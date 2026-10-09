@@ -1,0 +1,1007 @@
+{
+  "schemaVersion": 1,
+  "inputType": "current-performance-inputs",
+  "criteriaSha256": "5fc07c205a5cd42378f37e68975fcacec528c9a310701b9abf02f0b953b511b4",
+  "records": {
+    "baseline": {
+      "source": {
+        "path": "evidence/603/summary.json",
+        "revision": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+        "sha256": "aeb93a0e8c95da46e793533018ef6bfc45dd905d3dc7e08c0933a85e05a44119"
+      },
+      "dataSha256": "65dc6e1105452b286786c1b76826040f90b58a07af553eab00de4bc6760287fa",
+      "data": {
+        "status": "complete",
+        "sourceCommit": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+        "repetitions": 5,
+        "accuracyCorpus": {
+          "version": "3",
+          "hash": "ca96dddd9cb189e83db6cde203060e559f116670f823dd9631c3850aed4892d0"
+        },
+        "workloadProfiles": {
+          "version": "1",
+          "hash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806"
+        },
+        "runs": [
+          {
+            "surface": "rust-core",
+            "kind": "accuracy",
+            "profileId": "accuracy-corpus",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "accuracy": {
+                "falseNegatives": 5,
+                "falsePositives": 1,
+                "policyMismatches": 0,
+                "truePositives": 21
+              },
+              "provenance": {
+                "buildProfile": "release"
+              }
+            }
+          },
+          {
+            "surface": "rust-core",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "buildProfile": "release"
+              },
+              "performance": {
+                "initialization": {
+                  "p95": 0.028283
+                },
+                "processing": {
+                  "p95": 18.380934
+                },
+                "throughput": {
+                  "minimum": 3566412.892837763
+                },
+                "memory": {
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 3911680
+                      }
+                    ]
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "rust-core",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "buildProfile": "release"
+              },
+              "performance": {
+                "initialization": {
+                  "p95": 0.027922000000000002
+                },
+                "processing": {
+                  "p95": 79.303971
+                },
+                "throughput": {
+                  "minimum": 3305685.663584236
+                },
+                "memory": {
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 3870720
+                      }
+                    ]
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "python",
+            "kind": "accuracy",
+            "profileId": "accuracy-corpus",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "accuracy": {
+                "truePositives": 21,
+                "falsePositives": 1,
+                "falseNegatives": 5,
+                "policyMismatches": 0
+              },
+              "provenance": {}
+            }
+          },
+          {
+            "surface": "python",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 0.970198
+                },
+                "processing": {
+                  "p95": 15.89261
+                },
+                "throughput": {
+                  "minimum": 4124810.2105318136
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 75205
+                      }
+                    ]
+                  },
+                  "processRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 21610496
+                      }
+                    ]
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "python",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 1.026253
+                },
+                "processing": {
+                  "p95": 81.351337
+                },
+                "throughput": {
+                  "minimum": 3222491.598386392
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 537604
+                      }
+                    ]
+                  },
+                  "processRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 21368832
+                      }
+                    ]
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "node",
+            "kind": "accuracy",
+            "profileId": "accuracy-corpus",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "accuracy": {
+                "truePositives": 21,
+                "falsePositives": 1,
+                "falseNegatives": 5,
+                "policyMismatches": 0
+              },
+              "provenance": {}
+            }
+          },
+          {
+            "surface": "node",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 6.092246000000003
+                },
+                "processing": {
+                  "p95": 15.847566
+                },
+                "throughput": {
+                  "minimum": 4136534.2791441916
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 7470936
+                      }
+                    ]
+                  },
+                  "nodeRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 68087808
+                      }
+                    ]
+                  },
+                  "nodeExternal": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 2316568
+                      }
+                    ]
+                  },
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": []
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "node",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 6.395963999999992
+                },
+                "processing": {
+                  "p95": 90.48937000000001
+                },
+                "throughput": {
+                  "minimum": 2897069.5673978054
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 21724840
+                      }
+                    ]
+                  },
+                  "nodeRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 97259520
+                      }
+                    ]
+                  },
+                  "nodeExternal": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 2348439
+                      }
+                    ]
+                  },
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": []
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "browser-wasm",
+            "kind": "accuracy",
+            "profileId": "accuracy-corpus",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "accuracy": {
+                "truePositives": 21,
+                "falsePositives": 1,
+                "falseNegatives": 5,
+                "policyMismatches": 0
+              },
+              "provenance": {}
+            }
+          },
+          {
+            "surface": "browser-wasm",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 13.099999999976717
+                },
+                "processing": {
+                  "p95": 35.29999999998836
+                },
+                "throughput": {
+                  "minimum": 1857053.8243632186
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "browserJsHeap": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 10000000
+                      }
+                    ]
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": []
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "browser-wasm",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 17.399999999965075
+                },
+                "processing": {
+                  "p95": 115.5
+                },
+                "throughput": {
+                  "minimum": 2269731.6017316016
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "browserJsHeap": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 39600000
+                      }
+                    ]
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": []
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "cli",
+            "kind": "accuracy",
+            "profileId": "accuracy-corpus",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "accuracy": {
+                "truePositives": 21,
+                "falsePositives": 1,
+                "falseNegatives": 5,
+                "policyMismatches": 0
+              },
+              "provenance": {}
+            }
+          },
+          {
+            "surface": "cli",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 2.6162920000000014
+                },
+                "processing": {
+                  "p95": 23.399737000000016
+                },
+                "throughput": {
+                  "minimum": 2801484.4782229797
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 3244032
+                      }
+                    ]
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "surface": "cli",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "standard-input",
+            "status": "complete",
+            "result": {
+              "provenance": {},
+              "performance": {
+                "initialization": {
+                  "p95": 2.8320870000000014
+                },
+                "processing": {
+                  "p95": 85.56273599999997
+                },
+                "throughput": {
+                  "minimum": 3063880.5192017243
+                },
+                "memory": {
+                  "nodeHeap": {
+                    "samples": []
+                  },
+                  "nodeRss": {
+                    "samples": []
+                  },
+                  "nodeExternal": {
+                    "samples": []
+                  },
+                  "browserJsHeap": {
+                    "samples": []
+                  },
+                  "wasmLinearMemory": {
+                    "samples": []
+                  },
+                  "pythonHeap": {
+                    "samples": []
+                  },
+                  "processRss": {
+                    "samples": [
+                      {
+                        "maximumObservedBytes": 3284992
+                      }
+                    ]
+                  },
+                  "streamingBuffer": {
+                    "samples": []
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "accepted": {
+      "source": {
+        "path": "evidence/603/verified-0c62fd3/summary.json",
+        "revision": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+        "sha256": "9bc98fd22d2777228b01bf2c6db6de9dbf0d830032be4882fef2c5539a8cfbf3"
+      },
+      "dataSha256": "de848dedc4afde2901ff53b0fbf0a2234fd8389e10b1d4d5c07b5021279e54cc",
+      "data": {
+        "status": "complete",
+        "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+        "repetitions": 5,
+        "runs": [
+          {
+            "surface": "rust-core",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "buildProfile": "release",
+                "artifactIdentity": "redact-secret@0.1.0-beta.14",
+                "runtime": "rustc-1.99.0 (b940084d7 2026-09-28)"
+              },
+              "performance": {
+                "processing": {
+                  "median": 2.012283,
+                  "p95": 2.0417590000000003,
+                  "minimum": 2.0000310000000003,
+                  "maximum": 2.0417590000000003,
+                  "samples": [
+                    2.0417590000000003,
+                    2.0237760000000002,
+                    2.012283,
+                    2.0000310000000003,
+                    2.00492
+                  ]
+                },
+                "throughput": {
+                  "median": 32576928.791825004
+                }
+              }
+            }
+          },
+          {
+            "surface": "rust-core",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "buildProfile": "release",
+                "artifactIdentity": "redact-secret@0.1.0-beta.14",
+                "runtime": "rustc-1.99.0 (b940084d7 2026-09-28)"
+              },
+              "performance": {
+                "processing": {
+                  "median": 13.233842,
+                  "p95": 13.303913000000001,
+                  "minimum": 13.181464,
+                  "maximum": 13.303913000000001,
+                  "samples": [
+                    13.280819,
+                    13.181464,
+                    13.303913000000001,
+                    13.231557,
+                    13.233842
+                  ]
+                },
+                "throughput": {
+                  "median": 19809364.506543152
+                }
+              }
+            }
+          },
+          {
+            "surface": "python",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "redact-secret==0.1.0b14",
+                "runtime": "cpython-3.12.14"
+              },
+              "performance": {
+                "processing": {
+                  "median": 2.007064,
+                  "p95": 2.045085,
+                  "minimum": 1.996074,
+                  "maximum": 2.045085,
+                  "samples": [
+                    2.004699,
+                    2.007064,
+                    2.018906,
+                    2.045085,
+                    1.996074
+                  ]
+                },
+                "throughput": {
+                  "median": 32661639.09073153
+                }
+              }
+            }
+          },
+          {
+            "surface": "python",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "redact-secret==0.1.0b14",
+                "runtime": "cpython-3.12.14"
+              },
+              "performance": {
+                "processing": {
+                  "median": 13.614494,
+                  "p95": 13.799179,
+                  "minimum": 13.520057,
+                  "maximum": 13.799179,
+                  "samples": [
+                    13.799179,
+                    13.614494,
+                    13.520057,
+                    13.71938,
+                    13.570211
+                  ]
+                },
+                "throughput": {
+                  "median": 19255508.137136787
+                }
+              }
+            }
+          },
+          {
+            "surface": "node",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "@redact-secret/core@0.1.0-beta.14",
+                "runtime": "node-22.23.3",
+                "resolvedArtifact": "node-addon"
+              },
+              "performance": {
+                "processing": {
+                  "median": 2.072856999999999,
+                  "p95": 2.2867670000000118,
+                  "minimum": 2.0409080000000017,
+                  "maximum": 2.2867670000000118,
+                  "samples": [
+                    2.073588000000001,
+                    2.0409080000000017,
+                    2.2867670000000118,
+                    2.052819999999997,
+                    2.072856999999999
+                  ]
+                },
+                "throughput": {
+                  "median": 31624950.491037264
+                }
+              }
+            }
+          },
+          {
+            "surface": "node",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "@redact-secret/core@0.1.0-beta.14",
+                "runtime": "node-22.23.3",
+                "resolvedArtifact": "node-addon"
+              },
+              "performance": {
+                "processing": {
+                  "median": 13.801393999999988,
+                  "p95": 13.851968,
+                  "minimum": 13.768280999999973,
+                  "maximum": 13.851968,
+                  "samples": [
+                    13.801393999999988,
+                    13.792406,
+                    13.81579099999999,
+                    13.851968,
+                    13.768280999999973
+                  ]
+                },
+                "throughput": {
+                  "median": 18994747.921840377
+                }
+              }
+            }
+          },
+          {
+            "surface": "browser-wasm",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.14",
+                "runtime": "chromium-153.0.8010.12"
+              },
+              "performance": {
+                "processing": {
+                  "median": 9.5,
+                  "p95": 12.199999999982538,
+                  "minimum": 8.700000000011642,
+                  "maximum": 12.199999999982538,
+                  "samples": [
+                    8.700000000011642,
+                    12.199999999982538,
+                    9.699999999982538,
+                    9.5,
+                    9.300000000017462
+                  ]
+                },
+                "throughput": {
+                  "median": 6900421.052631579
+                }
+              }
+            }
+          },
+          {
+            "surface": "browser-wasm",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "incremental",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.14",
+                "runtime": "chromium-153.0.8010.12"
+              },
+              "performance": {
+                "processing": {
+                  "median": 22.400000000023283,
+                  "p95": 23.10000000000582,
+                  "minimum": 21.199999999982538,
+                  "maximum": 23.10000000000582,
+                  "samples": [
+                    22.199999999982538,
+                    22.400000000023283,
+                    21.199999999982538,
+                    23.10000000000582,
+                    22.70000000001164
+                  ]
+                },
+                "throughput": {
+                  "median": 11703303.571416406
+                }
+              }
+            }
+          },
+          {
+            "surface": "cli",
+            "kind": "performance",
+            "profileId": "scale-logs-small-whole",
+            "path": "whole-input",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "redact-secret@0.1.0-beta.14",
+                "runtime": "rustc 1.99.0 (b940084d7 2026-09-28)"
+              },
+              "performance": {
+                "processing": {
+                  "median": 5.681097000000008,
+                  "p95": 6.005472999999995,
+                  "minimum": 5.556623999999999,
+                  "maximum": 6.005472999999995,
+                  "samples": [
+                    5.681097000000008,
+                    5.80190300000001,
+                    5.635772000000003,
+                    5.556623999999999,
+                    6.005472999999995
+                  ]
+                },
+                "throughput": {
+                  "median": 11538968.618208755
+                }
+              }
+            }
+          },
+          {
+            "surface": "cli",
+            "kind": "performance",
+            "profileId": "scale-logs-medium-fixed4096",
+            "path": "standard-input",
+            "status": "complete",
+            "result": {
+              "provenance": {
+                "artifactIdentity": "redact-secret@0.1.0-beta.14",
+                "runtime": "rustc 1.99.0 (b940084d7 2026-09-28)"
+              },
+              "performance": {
+                "processing": {
+                  "median": 15.438388000000003,
+                  "p95": 15.802559000000002,
+                  "minimum": 15.382373000000001,
+                  "maximum": 15.802559000000002,
+                  "samples": [
+                    15.41566499999999,
+                    15.438388000000003,
+                    15.382373000000001,
+                    15.448176999999987,
+                    15.802559000000002
+                  ]
+                },
+                "throughput": {
+                  "median": 16980658.861533985
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "acceptance": {
+      "source": {
+        "path": "evidence/603/verified-0c62fd3/acceptance.json",
+        "revision": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+        "sha256": "b6d4bc56a8b171af68ed06657b6f96c8be1220c34be1589cec7515ee9b6b97df"
+      },
+      "dataSha256": "03429d2e2507f92ca9040419b65ad21733c44925ac3583fc97379ac1e539900b",
+      "data": {
+        "status": "accepted",
+        "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+        "criteriaId": "rc-performance-resource-linux-x64-benchmarks-v1",
+        "criteriaFixedAt": "2026-09-23",
+        "failures": []
+      }
+    },
+    "runner": {
+      "source": {
+        "path": "evidence/603/verified-0c62fd3/runner.json",
+        "revision": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+        "sha256": "9deacc4801008d4dbe0ea468668b1bab75ba4ed300076f29f3fbd22b96930c1c"
+      },
+      "dataSha256": "b893b842285444c3c9a1aba4c1b4067c941cad62ff5bfdb3169d485a5e427104",
+      "data": {
+        "cpuModel": "AMD EPYC 7763 64-Core Processor",
+        "logicalCpus": 4,
+        "image": "ubuntu24 20260927.320.1"
+      }
+    }
+  }
+}

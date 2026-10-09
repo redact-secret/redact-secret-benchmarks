@@ -1,3 +1,5 @@
+import { historicalJson, historicalArchive, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
+import { loadPiiProtectedSupportEvidence } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFile as execFileCallback } from 'node:child_process';
@@ -16,11 +18,11 @@ import { piiReviewedProtectedRoute } from '../benchmarks/evaluation/domains/pii/
 const execFile = promisify(execFileCallback);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const registryFamilies = registry.families.map(row => row.family);
-const json = async file => JSON.parse(await readFile(path.join(root, file), 'utf8'));
+const json = async file => file.startsWith('evidence/') ? historicalJson(file) : JSON.parse(await readFile(path.join(root, file), 'utf8'));
 const RELEASE = '94fc18a974f659ea882c89120dbf1adb3acf2f28', PII_COMMIT = '8b6a5fde52ecb4dfce13f09c7a947062d21483c7';
 // The frozen Beta.11 record is validated against the suite it was produced with, not the live pin that every re-pin bumps.
 const SUITE_PATH = 'evidence/449/suite-v1.json';
-const suite = JSON.parse(await readFile(path.join(root, SUITE_PATH), 'utf8'));
+const suite = historicalArchive ? historicalJson(SUITE_PATH) : undefined;
 const binding = piiReviewedProtectedRoute('beta11-8b6a5fd-pii-protected');
 
 async function beta11Input(overrides = {}) {
@@ -30,12 +32,12 @@ async function beta11Input(overrides = {}) {
     credentialCandidateEvidence: await json('evidence/449/credential-candidate-94fc18a-v1.json'),
     credentialQualification: await json('evidence/449/credential-qualification-engine-v1.json'),
     sourceEquivalenceId: 'beta11-8b6a5fd-to-94fc18a', piiRoute: 'pii-b11-protected-v1', piiProtectedBinding: binding,
-    piiProtectedDisposition: await json(`${binding.evidenceDirectory}/pii-beta11-protected-disposition-v2.json`),
+    piiProtectedDisposition: (await loadPiiProtectedSupportEvidence(process.cwd(), binding)).protectedDisposition,
     suite, ...overrides,
   };
 }
 
-test('assembles a Beta.11 schema 2 record from committed evidence and verifies it against the repository', async () => {
+test('assembles a Beta.11 schema 2 record from committed evidence and verifies it against the repository', historicalReplayOptions, async () => {
   const record = assembleReleaseRecordV2(await beta11Input());
   assert.equal(record.reportType, 'release-record');
   assert.deepEqual(record.release, { version: '0.1.0-beta.11', sourceCommit: RELEASE });
@@ -45,35 +47,35 @@ test('assembles a Beta.11 schema 2 record from committed evidence and verifies i
   assert.equal(record.identity.holdoutState.pii, 'complete');
   assert.doesNotThrow(() => assertNoCrossDomainAggregate(record));
   assert.equal(validateReleaseRecord(structuredClone(record), registryFamilies, suite).artifactCommitment, record.artifactCommitment);
-  await verifyReleaseRecordEvidence(structuredClone(record), registryFamilies, root, suite);
+  await verifyReleaseRecordEvidence(structuredClone(record), registryFamilies, root, suite, historicalArchive.root);
 });
 
-test('the frozen Beta.11 record reproduces from its embedded artifacts and the committed evidence', async () => {
+test('the frozen Beta.11 record reproduces from its embedded artifacts and the committed evidence', historicalReplayOptions, async () => {
   const record = await json('evidence/449/release-record-v2.json');
   validateReleaseRecordV2(record, registryFamilies, suite);
-  await verifyReleaseRecordEvidence(record, registryFamilies, root, suite);
+  await verifyReleaseRecordEvidence(record, registryFamilies, root, suite, historicalArchive.root);
   assert.equal(record.release.sourceCommit, RELEASE);
 });
 
-test('a PII evidence commit different from the release commit needs a reviewed source equivalence', async () => {
+test('a PII evidence commit different from the release commit needs a reviewed source equivalence', historicalReplayOptions, async () => {
   await assert.rejects(async () => assembleReleaseRecordV2(await beta11Input({ sourceEquivalenceId: null })), /no reviewed source equivalence/);
   await assert.rejects(async () => assembleReleaseRecordV2(await beta11Input({ sourceEquivalenceId: 'not-reviewed' })), /no reviewed source equivalence/);
 });
 
-test('rejects a release commit or version the credential run does not name', async () => {
+test('rejects a release commit or version the credential run does not name', historicalReplayOptions, async () => {
   await assert.rejects(async () => assembleReleaseRecordV2(await beta11Input({ sourceCommit: PII_COMMIT })), /release source commit/);
   await assert.rejects(async () => assembleReleaseRecordV2(await beta11Input({ releaseVersion: '0.1.0-beta.12' })), /release version/);
   await assert.rejects(async () => assembleReleaseRecordV2(await beta11Input({ releaseVersion: 'beta11' })), /Invalid release version/);
 });
 
-test('rejects an unreviewed protected route or a disposition that differs from it', async () => {
+test('rejects an unreviewed protected route or a disposition that differs from it', historicalReplayOptions, async () => {
   await assert.rejects(async () => assembleReleaseRecordV2(await beta11Input({ piiProtectedBinding: { ...binding, maximumStatus: 'stable' } })), /not a reviewed binding/);
   const input = await beta11Input();
   input.piiProtectedDisposition.families[0].status = 'stable';
   assert.throws(() => assembleReleaseRecordV2(input), /does not match its reviewed route|never projects stable/);
 });
 
-test('a tampered frozen record fails validation', async () => {
+test('a tampered frozen record fails validation', historicalReplayOptions, async () => {
   const record = assembleReleaseRecordV2(await beta11Input());
   const tampered = structuredClone(record); tampered.pii.protectedDisposition.distribution.provisional = 6;
   assert.throws(() => validateReleaseRecordV2(tampered, registryFamilies));
@@ -81,11 +83,11 @@ test('a tampered frozen record fails validation', async () => {
   assert.throws(() => validateReleaseRecordV2(extra, registryFamilies), /Invalid release record shape/);
 });
 
-test('source equivalence parity re-derives from the two committed runs and rejects a wrong count', async () => {
+test('source equivalence parity re-derives from the two committed runs and rejects a wrong count', historicalReplayOptions, async () => {
   const entry = reviewedReleaseSourceEquivalence('beta11-8b6a5fd-to-94fc18a');
-  assert.deepEqual(await verifySourceEquivalenceParity(root, entry), { fixtures: 4827, differingFixtures: 0 });
-  await assert.rejects(verifySourceEquivalenceParity(root, { ...entry, credentialParity: { ...entry.credentialParity, fixtures: 1 } }), /does not re-derive/);
-  await assert.rejects(verifySourceEquivalenceParity(root, { ...entry, fromCommit: RELEASE }), /not a clean full-suite run/);
+  assert.deepEqual(await verifySourceEquivalenceParity(historicalArchive.root, entry), { fixtures: 4827, differingFixtures: 0 });
+  await assert.rejects(verifySourceEquivalenceParity(historicalArchive.root, { ...entry, credentialParity: { ...entry.credentialParity, fixtures: 1 } }), /does not re-derive/);
+  await assert.rejects(verifySourceEquivalenceParity(historicalArchive.root, { ...entry, fromCommit: RELEASE }), /not a clean full-suite run/);
 });
 
 test('the CLI rejects an unknown PII route, missing flags and flags of the other route', async () => {
@@ -98,16 +100,16 @@ test('the CLI rejects an unknown PII route, missing flags and flags of the other
     error => /Unknown --<flag>: pii-binding/.test(error.stderr));
 });
 
-test('the CLI writes a verified Beta.11 record', async () => {
+test('the CLI writes a verified Beta.11 record', historicalReplayOptions, async () => {
   await mkdir(path.join(root, 'results-output'), {recursive: true});
   const directory = await mkdtemp(path.join(root, 'results-output/release-record-v2-'));
   try {
     const output = path.join(directory, 'record.json');
     const args = ['--import', 'tsx', 'scripts/produce-release-record.mjs', '--release-version=0.1.0-beta.11',
       `--source-commit=${RELEASE}`, '--benchmark-revision=c82a15ab797452fe200fc74674604ae9cd03cac3', '--credential-profile=measurement-v4',
-      '--performance-budget=evidence/860/94fc18a-release/regression-budgets.json', '--credential-candidate=evidence/449/credential-candidate-94fc18a-v1.json',
-      '--credential-qualification=evidence/449/credential-qualification-engine-v1.json', '--pii-route=pii-b11-protected-v1',
-      `--suite=${SUITE_PATH}`, '--pii-protected-binding=beta11-8b6a5fd-pii-protected', '--source-equivalence=beta11-8b6a5fd-to-94fc18a', `--output=${output}`];
+      `--performance-budget=${historicalArchive.root}/evidence/860/94fc18a-release/regression-budgets.json`, `--credential-candidate=${historicalArchive.root}/evidence/449/credential-candidate-94fc18a-v1.json`,
+      `--credential-qualification=${historicalArchive.root}/evidence/449/credential-qualification-engine-v1.json`, '--pii-route=pii-b11-protected-v1',
+      `--suite=${historicalArchive.root}/${SUITE_PATH}`, `--source-equivalence-root=${historicalArchive.root}`, '--pii-protected-binding=beta11-8b6a5fd-pii-protected', '--source-equivalence=beta11-8b6a5fd-to-94fc18a', `--output=${output}`];
     await execFile(process.execPath, args, { cwd: root, timeout: 60_000 });
     const record = JSON.parse(await readFile(output, 'utf8'));
     assert.deepEqual(record, assembleReleaseRecordV2(await beta11Input()));
@@ -122,7 +124,7 @@ test('the CLI writes a verified Beta.11 record', async () => {
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 
-test('a record produced against a stale suite snapshot is still rejected against the live suite', async () => {
+test('a record produced against a stale suite snapshot is still rejected against the live suite', historicalReplayOptions, async () => {
   const qualification = await json('evidence/449/credential-qualification-engine-v1.json');
   validateEvidence(qualification, 'qualification', suite);
   const stale = { ...suite, scanners: { ...suite.scanners, 'redact-secret': '0.0.0-stale' } };

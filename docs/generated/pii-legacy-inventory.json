@@ -67,12 +67,12 @@
    "benchmark-scorer": {
     "disposition": "retain-until-criterion",
     "files": 4,
-    "externalCallerFiles": 9
+    "externalCallerFiles": 11
    },
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 43
+    "externalCallerFiles": 46
    }
   }
  },
@@ -559,7 +559,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 32,
+     "retainedConsumerCount": 34,
      "retainedConsumers": [
       "benchmarks/corpora/session-name-inventory.json",
       "benchmarks/evaluation/domains/pii/accounting-types.ts",
@@ -597,7 +597,7 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 25,
+     "retainedConsumerCount": 27,
      "retainedConsumers": [
       "benchmarks/corpora/session-name-inventory.json",
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
@@ -1455,9 +1455,9 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 27,
+    "total": 28,
     "withinCandidates": 2,
-    "testCallers": 6,
+    "testCallers": 7,
     "external": 19,
     "externalByClass": {
      "benchmarks": 6,
@@ -1617,20 +1617,22 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 15,
+    "total": 17,
     "withinCandidates": 2,
     "testCallers": 6,
-    "external": 7,
+    "external": 9,
     "externalByClass": {
-     "benchmarks": 4,
-     "script": 3
+     "benchmarks": 5,
+     "script": 4
     },
     "externalFiles": [
      "benchmarks/corpora/session-name-inventory.json (benchmarks, path)",
      "benchmarks/evaluation/domains/pii/metric-basis.mjs (benchmarks, path)",
+     "benchmarks/evaluation/domains/pii/protected-current-inputs.ts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
      "scripts/lib/pii-population-conversion.mjs (script, import+path)",
+     "scripts/lib/prepared-pii-freeze.mjs (script, import+path)",
      "scripts/pii-beta11-protected.mjs (script, import+path)",
      "scripts/pii-beta11.mjs (script, import+path)"
     ]
@@ -1670,17 +1672,18 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 5,
+    "total": 6,
     "withinCandidates": 0,
     "testCallers": 2,
-    "external": 3,
+    "external": 4,
     "externalByClass": {
      "benchmarks": 1,
-     "script": 2
+     "script": 3
     },
     "externalFiles": [
      "benchmarks/corpora/session-name-inventory.json (benchmarks, path)",
      "scripts/check-pii-protected-readiness.mjs (script, path)",
+     "scripts/lib/prepared-pii-freeze.mjs (script, import+path)",
      "scripts/pii-beta11.mjs (script, import+path)"
     ]
    }
@@ -1695,16 +1698,17 @@
    "owner": "benchmarks (the benchmark scorer b11ScoreTable and its population plans)",
    "prerequisite": "criterion population-dual-run-complete: an engine contract that can state the 156 not-established case memberships, or an explicit owner decision to drop them, and criterion scorer-basis-decided",
    "callers": {
-    "total": 6,
+    "total": 7,
     "withinCandidates": 0,
     "testCallers": 3,
-    "external": 3,
+    "external": 4,
     "externalByClass": {
-     "benchmarks": 2,
+     "benchmarks": 3,
      "script": 1
     },
     "externalFiles": [
      "benchmarks/corpora/session-name-inventory.json (benchmarks, path)",
+     "benchmarks/evaluation/domains/pii/protected-current-inputs.ts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "scripts/pii-beta11-protected.mjs (script, import+path)"
     ]
@@ -1773,21 +1777,24 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 12,
+    "total": 17,
     "withinCandidates": 0,
-    "testCallers": 4,
-    "external": 8,
+    "testCallers": 6,
+    "external": 11,
     "externalByClass": {
-     "benchmarks": 5,
-     "script": 2,
+     "benchmarks": 7,
+     "script": 3,
      "web (Next app)": 1
     },
     "externalFiles": [
+     "benchmarks/evaluation/domains/pii/protected-current-inputs.ts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/support-v2.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record-evidence.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
      "benchmarks/shared/pii-support-model.ts (benchmarks, import)",
+     "benchmarks/support/pii-families.ts (benchmarks, import)",
+     "scripts/prepare-pii-protected-current-input.mjs (script, import+path)",
      "scripts/produce-release-record.mjs (script, import+path)",
      "scripts/record-pii-support-evidence.ts (script, import+path)",
      "web/services/domains.ts (web (Next app), import)"
@@ -1804,9 +1811,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 8,
+    "total": 10,
     "withinCandidates": 1,
-    "testCallers": 2,
+    "testCallers": 4,
     "external": 5,
     "externalByClass": {
      "benchmarks": 3,
@@ -1831,17 +1838,21 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 6,
+    "total": 13,
     "withinCandidates": 0,
-    "testCallers": 1,
-    "external": 5,
+    "testCallers": 4,
+    "external": 9,
     "externalByClass": {
-     "benchmarks": 1,
-     "script": 3,
+     "benchmarks": 3,
+     "script": 5,
      "web (Next app)": 1
     },
     "externalFiles": [
+     "benchmarks/evaluation/domains/pii/protected-current-inputs.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record-evidence.ts (benchmarks, import)",
+     "benchmarks/support/pii-families.ts (benchmarks, import)",
+     "scripts/prepare-pii-protected-current-input.mjs (script, import+path)",
+     "scripts/produce-release-record.mjs (script, import+path)",
      "scripts/publish-pii-support.ts (script, import+path)",
      "scripts/record-pii-support-evidence.ts (script, import+path)",
      "scripts/rehearse-pii-authority-rollback.mjs (script, import+path)",
@@ -1947,9 +1958,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 12,
+    "total": 13,
     "withinCandidates": 0,
-    "testCallers": 9,
+    "testCallers": 10,
     "external": 3,
     "externalByClass": {
      "script": 2,

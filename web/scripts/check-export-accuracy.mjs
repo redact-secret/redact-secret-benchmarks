@@ -129,7 +129,7 @@ if (html) {
 
     // ---- personal data: the recorded runtime comparison, read independently -------------
     try {
-      const report = await readJson('evidence/562/runtime-comparison-pii-global-us.json');
+      const report = await readJson('benchmarks/inputs/runtime/runtime-comparison-pii-global-us.json');
       const plan = await readJson('qualification/runtime-comparison-v2.json');
       const ids = report.tools.map(t => t.id).filter(id => id !== 'redact-secret');
       for (const id of ids) {

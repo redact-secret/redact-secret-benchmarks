@@ -19,6 +19,8 @@ import {
   runtimeComparisonPlan as plan, runtimeComparisonWriteRefusal, summarizeSamples, validateRuntimeComparisonReport,
 } from '../benchmarks/evaluation/domains/pii/runtime-comparison.ts';
 
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+
 const root = fileURLToPath(new URL('..', import.meta.url));
 const args = {};
 for (const argument of process.argv.slice(2)) {
@@ -30,7 +32,7 @@ if (!SETTING_IDS.includes(args.setting)) throw new Error(`--setting must be one 
 const setting = plan.settings.find(s => s.id === args.setting);
 const source = args.source ?? 'published';
 if (!['published', 'local-source-build'].includes(source)) throw new Error('--source must be published or local-source-build');
-if (!args.out) throw new Error('--out=<path> is required');
+const outPath = measurementOutput(path.resolve(root, args.out ?? `results-output/runtime-comparison/${Date.now()}/runtime-comparison-${args.setting}.json`), root);
 
 const need = name => process.env[name] || (() => { throw new Error(`${name} is not set: run this through scripts/run-runtime-comparison-docker.sh`); })();
 const pinRef = JSON.parse(await readFile(path.join(root, 'benchmarks/pin-manifest.json'), 'utf8')).pins.releaseSourceRevision;
@@ -38,7 +40,6 @@ const productRef = need('REDACT_SECRET_REF');
 const imageDigest = need('IMAGE_DIGEST');
 const cpuLimit = Number(need('CPU_LIMIT'));
 const emulated = need('EMULATED') === 'true';
-const outPath = path.resolve(args.out);
 const pinnedVersion = JSON.parse(await readFile(path.join(root, 'benchmarks/pin-manifest.json'), 'utf8')).pins.packageVersion;
 const refusal = runtimeComparisonWriteRefusal({ ref: productRef, pinRef, emulated, outPath, root });
 if (refusal) throw new Error(refusal);
@@ -116,6 +117,5 @@ const report = {
 report.artifactCommitment = runtimeComparisonCommitment(report);
 validateRuntimeComparisonReport(report);
 
-await mkdir(path.dirname(outPath), { recursive: true });
-await writeFile(outPath, JSON.stringify(report, null, 2) + '\n');
+writeMeasurement(outPath, JSON.stringify(report, null, 2) + '\n');
 console.log(`Wrote ${outPath}`);

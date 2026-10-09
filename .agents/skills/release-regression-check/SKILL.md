@@ -128,7 +128,7 @@ the same way, joining on `fixtureId`.
 ## Boundaries
 
 This produces discovery evidence only. Per
-`docs/decisions/2026-09-18-govern-benchmark-promotion.md`, a regression found
+[the preserved promotion decision](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-18-govern-benchmark-promotion.md), a regression found
 here is not itself a release-blocking product bug until it is entered into
 `benchmarks/known-gaps.json`'s `observed → reviewed → promoted → fixed →
 verified` lifecycle, and this workflow "does not authorize versioning,
@@ -140,7 +140,11 @@ or `review-pr` from here.
 
 `<outdir>` here stays a general, git-ignored release sweep — it is not
 per-issue evidence. When one of its rows backs a specific `redact-secret`
-issue reaching `known-gaps.json`'s `verified` state, that issue's durable
-evidence is committed separately to `evidence/<issue>/README.md` (see
-[`evidence/README.md`](../../../evidence/README.md)), not left only in this
-disposable output directory.
+issue reaching `known-gaps.json`'s `verified` state, preserve that issue's reviewed public evidence in a checksum-bound release archive,
+with its original benchmark/product revisions, exact artifact digests and retrieval
+manifest linked from the issue. Validate a fresh download before discarding the
+local original. Retain only an explicitly reviewed, source-bound current machine
+input under `benchmarks/inputs/` when an active consumer needs it; update its schema,
+independent expected binding and retention review. Never infer an owner acceptance
+from this archive or create a new historical `evidence/<issue>/` payload tree.
+See [`evidence/README.md`](../../../evidence/README.md).

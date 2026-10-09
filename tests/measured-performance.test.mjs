@@ -1,3 +1,4 @@
+import { currentPerformanceInputs } from '../benchmarks/lib/current-performance-inputs.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -6,7 +7,7 @@ import { dispatchModel, comparableRows, measuredRows, workloadGuidance } from '.
 // #405 / #450: measured rows come only from the pinned accepted summary, and every row states its dispatch model.
 const read = async p => JSON.parse(await readFile(new URL('../' + p, import.meta.url), 'utf8'));
 const criteria = await read('benchmarks/performance-criteria.json');
-const summary = await read(criteria.baseline.verificationPath.replace(/\/[^/]+$/, '/summary.json'));
+const summary = currentPerformanceInputs().accepted;
 const rows = measuredRows(summary);
 
 test('one measured row per criterion, from the accepted commit\'s own run', () => {

@@ -29,6 +29,8 @@ import { B11P_BETA11_CORE_COMMIT, b11ProtectedCandidatePlan, b11ProtectedCounts,
 import { b11ProfileCostAcceptance } from '../benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+
 const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -36,13 +38,17 @@ const fileSha256 = async file => sha256(await readFile(file));
 const git = async (...argv) => (await exec('git', argv, { cwd: root, maxBuffer: 16 * 1024 * 1024 })).stdout.trim();
 const tracked = async file => { try { await git('ls-files', '--error-unmatch', path.relative(root, file)); return true; } catch { return false; } };
 const readJson = async file => JSON.parse(await readFile(file, 'utf8'));
+const protectedOutput = file => {
+  try { return measurementOutput(file, root); }
+  catch { throw new HoldoutError('measurement-output-rejected'); }
+};
 
 const [command, ...rest] = process.argv.slice(2);
 const args = {};
 let fileVersion = null;
 function parseArguments() {
   for (const argument of rest) {
-    const match = /^--(input|review|core-commit|family|seal|plan-set|work|output|decision|custodian|reviewer|reviewed-at)=(.+)$/.exec(argument);
+    const match = /^--(input|review|core-commit|family|seal|plan-set|work|output|public-dir|protected-dir|aggregate|decision|custodian|reviewer|reviewed-at)=(.+)$/.exec(argument);
     if (!match || match[1] in args) throw new HoldoutError('invalid-arguments');
     args[match[1]] = match[2];
   }
@@ -54,9 +60,10 @@ function parseArguments() {
 function evidencePaths() {
   const commit = args['core-commit'];
   if (!/^[0-9a-f]{40}$/.test(commit ?? '')) throw new HoldoutError(`core-commit-required:beta.11-candidate-is-${B11P_BETA11_CORE_COMMIT}`);
-  const dir = path.join(root, 'evidence/901/428', `core-${commit.slice(0, 12)}`);
+  if (!args['public-dir']) throw new HoldoutError('public-dir-required:explicit-source-bound-public-bundle');
+  const dir = path.resolve(args['public-dir']);
   return { commit, dir, freeze: path.join(dir, `pii-beta11-freeze-${fileVersion}.json`), report: path.join(dir, `pii-beta11-report-${fileVersion}.json`),
-    disposition: path.join(dir, `pii-beta11-disposition-${fileVersion}.json`), protectedDir: path.join(dir, 'protected'),
+    disposition: path.join(dir, `pii-beta11-disposition-${fileVersion}.json`), protectedDir: args['protected-dir'] ? path.resolve(args['protected-dir']) : path.join(dir, 'protected'),
     protectedDisposition: path.join(dir, `pii-beta11-protected-disposition-${fileVersion}.json`) };
 }
 /** Maintainer acceptance of the profile-cost gate for this report (benchmarks/accepted-pii-profile-cost.json), or null. */
@@ -158,7 +165,7 @@ async function run() {
   const paths = evidencePaths(), family = familyArg();
   if (!args.seal) throw new HoldoutError('seal-required');
   const sealFile = path.resolve(args.seal);
-  const output = path.resolve(args.output ?? runFiles(paths, family).aggregate);
+  const output = protectedOutput(path.resolve(root, args.output ?? `results-output/pii-protected/${Date.now()}/${b11ProtectedFamilySlug(family)}-aggregate-v1.json`));
   if (existsSync(output)) throw new HoldoutError('output-exists');
   // Freeze everything below before the lifecycle opens protected bytes.
   if (await git('status', '--porcelain')) throw new HoldoutError('benchmark-tree-dirty:commit-the-seal-record-and-manifests-first');
@@ -204,8 +211,7 @@ async function run() {
   };
   const aggregate = await runB11ProtectedFamily({ sealFile, family, scanner, candidate, verifyCandidate });
   validateB11ProtectedAggregate(aggregate);
-  await mkdir(path.dirname(output), { recursive: true });
-  await writeFile(output, `${JSON.stringify(aggregate, null, 2)}\n`, { mode: 0o644, flag: 'wx' });
+  writeMeasurement(output, `${JSON.stringify(aggregate, null, 2)}\n`);
   console.log(`${family}: run ${aggregate.status}, protected gate ${aggregate.protectedGate}. Aggregate: ${path.relative(root, output)}`);
   process.exitCode = aggregate.status === 'complete' ? 0 : 1;
 }
@@ -213,17 +219,19 @@ async function run() {
 async function resolve() {
   const paths = evidencePaths(), family = familyArg(), files = runFiles(paths, family);
   if (!['accepted', 'rejected'].includes(args.decision)) throw new HoldoutError('decision-required');
-  if (existsSync(files.trust)) throw new HoldoutError('trust-resolution-exists');
-  const aggregate = validateB11ProtectedAggregate(await readJson(files.aggregate));
+  if (!args.aggregate) throw new HoldoutError('aggregate-required:explicit-reviewed-run');
+  const output = protectedOutput(path.resolve(root, args.output ?? `results-output/pii-protected/${Date.now()}/${b11ProtectedFamilySlug(family)}-trust-resolution-v1.json`));
+  const aggregate = validateB11ProtectedAggregate(await readJson(path.resolve(args.aggregate)));
   if (aggregate.family !== family || aggregate.binding.coreCommit !== paths.commit) throw new HoldoutError('aggregate-not-bound');
   const trust = buildB11ProtectedTrust({ aggregate, decision: args.decision, custodian: args.custodian ?? '', reviewer: args.reviewer ?? '',
     reviewedAt: args['reviewed-at'] ?? new Date().toISOString().replace(/\.\d+Z$/, 'Z') });
-  await writeFile(files.trust, `${JSON.stringify(trust, null, 2)}\n`, { mode: 0o644, flag: 'wx' });
-  console.log(`${family}: trust resolution ${trust.decision} written to ${path.relative(root, files.trust)}`);
+  writeMeasurement(output, `${JSON.stringify(trust, null, 2)}\n`);
+  console.log(`${family}: trust resolution ${trust.decision} written to ${path.relative(root, output)}`);
 }
 
 async function disposition() {
   const paths = evidencePaths();
+  const output = protectedOutput(path.resolve(root, args.output ?? `results-output/pii-protected/${Date.now()}/disposition-${fileVersion}.json`));
   const report = await readJson(paths.report), committed = await readJson(paths.disposition);
   const sealRecord = args.seal ? validateB11ProtectedSeal(await readJson(path.resolve(args.seal))) : null;
   const runs = [];
@@ -234,10 +242,10 @@ async function disposition() {
     runs.push({ aggregate: await readJson(files.aggregate), trust: await readJson(files.trust) });
   }
   const record = buildB11ProtectedDisposition({ report, disposition: committed, seal: sealRecord, runs, costAcceptance: await costAcceptanceFor(paths, report) });
-  await writeFile(paths.protectedDisposition, `${JSON.stringify(record, null, 2)}\n`);
+  writeMeasurement(output, `${JSON.stringify(record, null, 2)}\n`);
   if (record.costAcceptance) console.log(`profile-cost acceptance ${record.costAcceptance.acceptedBy}: ${record.costAcceptance.status}`);
   for (const row of record.families) console.log(`${row.family}: ${row.status} (protected ${row.protected.state}: ${row.protected.reason})`);
-  console.log(`Wrote ${path.relative(root, paths.protectedDisposition)}`);
+  console.log(`Wrote ${path.relative(root, output)}`);
 }
 
 const commands = { validate, seal, run, resolve, disposition };

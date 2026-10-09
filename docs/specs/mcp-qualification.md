@@ -16,7 +16,7 @@ Runner: `benchmarks/mcp-qualification.ts` (`npm run mcp:qualify`). Pure
 pieces (artifact digests, the leak scan, verdicts): `benchmarks/lib/mcp-qualification.ts`.
 Consumer-side host, server and workload corpus: `benchmarks/mcp-qualification/consumer/`.
 Report schema: `schemas/mcp-qualification-v1.json`. Tests: `tests/mcp-qualification.test.mjs`.
-First run: [`evidence/612/`](../../evidence/612/README.md), reported in
+First run: [`evidence/612/`](https://github.com/redact-secret/redact-secret-benchmarks/blob/65ffe7dcb3e7124e7f66cff96cab814f0365f69a/evidence/612/README.md), reported in
 [`docs/reports/2026-09-25-beta9-281-mcp-qualification.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/reports/2026-09-25-beta9-281-mcp-qualification.md).
 
 How this relates to the adapters' own qualification and to the detector

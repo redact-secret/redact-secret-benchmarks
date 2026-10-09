@@ -9,19 +9,24 @@ import { execFile } from 'node:child_process';
 import { mkdtemp, readdir, readFile, rm, writeFile, mkdir } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { C1_FAMILIES, C1_POPULATION_PLANS, C1_PII_V1_MECHANICS, c1Commitment, c1PriorPlanCandidates, compareC1, scoreC1Surface,
   validateC1PopulationPlan } from '../benchmarks/evaluation/domains/pii/email-network-population.ts';
 import { PII_ORACLE_UNAVAILABLE_REASON, piiIdentityOracle } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
 import { PII_GAP_LEDGER_PLANS } from '../benchmarks/evaluation/domains/pii/gap-ledger.ts';
+import { piiGapPolicy } from '../benchmarks/evaluation/domains/pii/current-inputs.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+
+const root = fileURLToPath(new URL('../', import.meta.url));
 const exec = promisify(execFile);
 const args = Object.fromEntries(process.argv.slice(2).map(arg => {
   const match = /^--([a-z-]+)=(.+)$/.exec(arg); if (!match) throw new Error('invalid arguments'); return [match[1], match[2]];
 }));
-for (const key of ['artifacts-dir', 'product-repo', 'output']) if (!args[key]) throw new Error(`missing --${key}`);
+for (const key of ['artifacts-dir', 'product-repo']) if (!args[key]) throw new Error(`missing --${key}`);
+const output = measurementOutput(path.resolve(root, args.output ?? `results-output/pii-email-network/${Date.now()}/report.json`), root);
 const RELEASES = [
   { role: 'baseline', version: args['baseline-version'] ?? '0.1.0-beta.9' },
   { role: 'candidate', version: args['candidate-version'] ?? '0.1.0-beta.10' },
@@ -30,7 +35,7 @@ const PACKAGES = [['core', '@redact-secret/core', 'redact-secret-core'], ['node'
   ['wasm', '@redact-secret/wasm', 'redact-secret-wasm']];
 const SELECTORS = ['pii:global'];
 const sha = (algorithm, data, encoding = 'hex') => createHash(algorithm).update(data).digest(encoding);
-const ledger = JSON.parse(await readFile('evidence/901/pii-gap-ledger-v1.json', 'utf8'));
+const ledger = piiGapPolicy;
 
 // 1. Frozen plans must validate before anything is scanned.
 const plans = {};
@@ -194,7 +199,7 @@ const families = C1_FAMILIES.map(family => {
 const report = {
   schemaVersion: 1, reportType: 'pii-family-population-evidence', id: 'pii-email-network-population-evidence-v1', supportClaims: false,
   issue: 'redact-secret/redact-secret-benchmarks#424', productIssue: 'redact-secret/redact-secret#901', evidenceKind: 'development',
-  ledger: { file: 'evidence/901/pii-gap-ledger-v1.json', contentCommitment: ledger.contentCommitment },
+  ledger: { file: 'evidence/901/pii-gap-ledger-v1.json', contentCommitment: ledger.source.contentCommitment },
   benchmark: { repository: 'redact-secret/redact-secret-benchmarks', revision: benchmarkHead.trim(), dirty: benchmarkStatus.trim() !== '',
     lockfileSha256: sha('sha256', await readFile('package-lock.json')) },
   runtime: { node: process.version, platform: process.platform, arch: process.arch },
@@ -212,7 +217,6 @@ const report = {
   artifactCommitment: '',
 };
 report.artifactCommitment = c1Commitment({ ...report, artifactCommitment: undefined });
-await mkdir(path.dirname(args.output), { recursive: true });
-await writeFile(args.output, `${JSON.stringify(report, null, 2)}\n`);
+writeMeasurement(output, `${JSON.stringify(report, null, 2)}\n`);
 for (const row of families) console.log(`${row.family}: ${row.disagreements.length} disagreement(s); reasons ${row.reasonCodes.join(', ')}`);
 console.log(`C1 population evidence ${report.artifactCommitment}`);

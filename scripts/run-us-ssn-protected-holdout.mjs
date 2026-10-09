@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+import { measurementOutput } from './lib/measurement-output.mjs';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -17,6 +19,7 @@ const raw = Object.fromEntries(parsed);
 for (const key of ['manifest', 'candidate-evidence', 'population-evidence', 'core', 'node', 'wasm', 'output'])
   if (!raw[key]) throw new Error(`missing --${key}`);
 const args = Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, path.resolve(value)]));
+args.output = measurementOutput(args.output, fileURLToPath(new URL('../', import.meta.url)));
 const digestFile = async location => createHash('sha256').update(await readFile(location)).digest('hex');
 const candidateEvidence = JSON.parse(await readFile(args['candidate-evidence'], 'utf8'));
 validateEvidence(candidateEvidence, 'candidate');

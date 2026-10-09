@@ -1,7 +1,10 @@
+import { historicalJson, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
+import { syntheticPiiProduct } from './helpers/synthetic-pii-product.mjs';
+import { validatePiiProductBindingStructure, validatePiiProductBinding } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 /**
  * Reviewed v2 binding path from the Beta.11 protected disposition to pii-support-matrix-v2 (benchmarks #428).
- * The committed evidence under evidence/901/428/core-8b6a5fde52ec is the positive case; every rejection mutates a
- * copy of it and re-commits what it changed, so each check fails on its own rule rather than on a stale hash.
+ * The current minimal receipt is bound separately from its own hash. Negative cases mutate
+ * semantic fields and re-derive records, then must still fail the reviewed receipt binding.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -13,7 +16,7 @@ import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
 import { b11Commitment } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
-import { buildB11ProtectedDisposition } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
+import { deriveB11ProtectedDisposition } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
 import { b11ProfileCostAcceptance, piiProfileCostAcceptances } from '../benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts';
 import { bindPiiProtectedSupport, loadPiiProtectedSupportEvidence, validatePiiProtectedSupportBinding } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
 import { piiCurrentProtectedRoute, piiProtectedRouteProblem } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
@@ -27,11 +30,12 @@ const evidence = await loadPiiProtectedSupportEvidence(repo, binding);
 const commit = (value, key = 'artifactCommitment') => { value[key] = b11Commitment({ ...value, [key]: undefined }); return value; };
 const reject = (mutate, code) => {
   const copy = structuredClone(evidence); mutate(copy);
-  assert.throws(() => validatePiiProtectedSupportBinding(binding, copy), new RegExp(`rejected: ${code}`));
+  const changed = JSON.stringify(Object.fromEntries(Object.entries(copy).filter(([key]) => !['ledger', 'currentInput'].includes(key)))) !== JSON.stringify(Object.fromEntries(Object.entries(evidence).filter(([key]) => !['ledger', 'currentInput'].includes(key))));
+  assert.throws(() => validatePiiProtectedSupportBinding(binding, copy), changed ? /current-input-(source-or-projection-mismatch|data-changed|schema)/ : new RegExp(`rejected: ${code}`));
 };
 const family = (record, id) => record.families.find(row => row.family === id);
 /** Rebuild the protected disposition from mutated runs, as the protected route itself would. */
-const rederived = copy => buildB11ProtectedDisposition({ report: copy.report, disposition: copy.disposition, seal: copy.seal, runs: copy.runs,
+const rederived = copy => deriveB11ProtectedDisposition({ report: copy.report, disposition: copy.disposition, seal: copy.seal, runs: copy.runs,
   costAcceptance: b11ProfileCostAcceptance({ report: copy.report, profileCost: copy.profileCost }) });
 
 test('the reviewed binding re-derives from committed evidence and projects five provisional and us-ssn pending, never stable', async () => {
@@ -70,12 +74,11 @@ test('pii:support:record projects the committed Beta.11 evidence through the rev
     '--protected-binding=not-a-reviewed-binding', `--output=${output}`], { cwd: repo }), /not a reviewed binding/);
 });
 
-test('a v1 product record and the v2 protected route never bind one matrix, and v1 records keep working', async () => {
-  const product = { candidateEvidence: JSON.parse(await readFile('evidence/875/candidate-evidence-v1.json', 'utf8')),
-    activationArtifact: JSON.parse(await readFile('evidence/875/pii-activation-evidence-v1.json', 'utf8')),
-    qualificationArtifacts: [JSON.parse(await readFile('evidence/875/pii-family-qualification-v1.json', 'utf8'))] };
-  assert.equal(buildPiiSupportMatrixV2({ product }).activationContract.productArtifact, 'trusted');
-  assert.throws(() => buildPiiSupportMatrixV2({ product, protectedRoute: binding }), /cannot bind one matrix/);
+test('a structurally valid synthetic product remains unsanctioned and cannot mix with the protected route', () => {
+  const product = syntheticPiiProduct();
+  assert.equal(validatePiiProductBindingStructure(product, piiSupportRegistry.families.map(row => row.family)).sourceCommit, 'a'.repeat(40));
+  assert.throws(() => validatePiiProductBinding(product, piiSupportRegistry.families.map(row => row.family)), /not repository-sanctioned/);
+  assert.throws(() => buildPiiSupportMatrixV2({ product, protectedRoute: binding }), /not repository-sanctioned/);
 });
 
 test('a disposition whose core commit, freeze, report or seal differs from the reviewed binding is rejected', () => {
@@ -158,4 +161,10 @@ test('a disposition that does not re-derive from its runs, or an unreviewed bind
     'protected-disposition-not-rederived');
   const other = { ...structuredClone(binding), id: 'unreviewed-route' };
   assert.throws(() => validatePiiProtectedSupportBinding(other, evidence), /not-a-reviewed-binding/);
+});
+
+test('sanctioned archived product and current protected route cannot bind one matrix', historicalReplayOptions, () => {
+  const product = { candidateEvidence: historicalJson('evidence/875/candidate-evidence-v1.json'), activationArtifact: historicalJson('evidence/875/pii-activation-evidence-v1.json'), qualificationArtifacts: [historicalJson('evidence/875/pii-family-qualification-v1.json')] };
+  assert.equal(buildPiiSupportMatrixV2({ product }).activationContract.productArtifact, 'trusted');
+  assert.throws(() => buildPiiSupportMatrixV2({ product, protectedRoute: binding }), /cannot bind one matrix/);
 });

@@ -7,7 +7,7 @@ import emailPopulationPlan from './email-population-plan-v2.json';
 import networkAddressPopulationPlan from './network-address-population-plan-v1.json';
 import emailPopulationPlanV3 from './email-population-plan-v3.json';
 import networkAddressPopulationPlanV2 from './network-address-population-plan-v2.json';
-import gapLedger from '../../../../evidence/901/pii-gap-ledger-v1.json';
+import { piiGapPolicy as gapLedger } from './current-inputs.ts';
 import piiV1Profile from '../../../../qualification/pii-v1.json';
 
 /**
@@ -374,7 +374,7 @@ export function validateC1PopulationPlan(value: unknown, priorPlanCandidates: re
           !prior.plan.plan.cases.some(item => item.id === row.v1CaseId)))
       throw new Error('C1 supersession record does not match the frozen predecessor');
   }
-  const ledger = gapLedger as unknown as { contentCommitment: string };
+  const ledger = { contentCommitment: gapLedger.source.contentCommitment };
   if (plan.ledger?.file !== LEDGER_FILE || plan.ledger.contentCommitment !== ledger.contentCommitment)
     throw new Error('C1 population plan is not bound to the frozen #422 ledger');
   const axes = c1LedgerAxes(plan.family);

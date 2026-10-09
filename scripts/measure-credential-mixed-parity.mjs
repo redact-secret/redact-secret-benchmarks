@@ -13,13 +13,13 @@
  * detector, action and ranges; outputs are SHA-256 digests plus the ids of targets whose value survived.
  *
  * Run: node --import tsx scripts/measure-credential-mixed-parity.mjs --core-commit=<sha> --core-repo=<path>
- *        [--surfaces=a,b] [--out-dir=evidence/860/381/<sha12>] [--keep-scratch]
+ *        [--surfaces=a,b] [--out-dir=results-output/credential-mixed-parity/<fresh-run>] [--keep-scratch]
  */
 import { createHash } from 'node:crypto';
 import { execFile, spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 import { cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,6 +29,7 @@ import { VARIANTS, bytePartitions, loadPlan, materialize, offsetTables, partitio
 import { SURFACES, buildCredentialParityReport } from '../benchmarks/evaluation/domains/credential/mixed-parity/report.ts';
 import { renderCredentialMixedParityPlan } from './generate-credential-mixed-parity.mjs';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
+import { measurementOutput, stagedMeasurementDirectory } from './lib/measurement-output.mjs';
 
 const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -41,7 +42,7 @@ if (!/^[0-9a-f]{40}$/.test(args['core-commit'] ?? '') || !path.isAbsolute(args['
   throw new Error('needs --core-commit=<40-hex sha> and an absolute --core-repo=<path>');
 const surfacesRequested = args.surfaces ? String(args.surfaces).split(',') : SURFACES;
 for (const surface of surfacesRequested) if (!SURFACES.includes(surface)) throw new Error(`unknown surface ${surface}`);
-const outDir = path.resolve(root, args['out-dir'] ?? `evidence/860/381/${String(args['core-commit']).slice(0, 12)}`);
+const outDir = measurementOutput(path.resolve(root, args['out-dir'] ?? `results-output/credential-mixed-parity/${String(args['core-commit']).slice(0, 12)}-${Date.now()}`), root, { directory: true });
 const INCREMENTAL_LIMITS = { maxInput: 1 << 20, maxBuffered: 1 << 16, maxToken: 8192, maxMultiline: 16384 };
 const digest = async file => createHash('sha256').update(await readFile(file)).digest('hex');
 const run = async (command, argv, options = {}) => (await exec(command, argv, { maxBuffer: 512 * 1024 * 1024, timeout: 60 * 60_000, ...options })).stdout;
@@ -316,10 +317,11 @@ try {
     benchmark: { commit: benchmarkCommit, harnessDirty }, target: artifacts.identity,
     platform: `${process.platform}-${process.arch}`, node: process.version, incrementalLimits: INCREMENTAL_LIMITS, surfaces,
   };
-  await mkdir(outDir, { recursive: true });
-  await writeFile(path.join(outDir, 'credential-mixed-parity-observation-v1.json'), `${JSON.stringify(observation)}\n`);
   const report = buildCredentialParityReport(observation, documents);
-  await writeFile(path.join(outDir, 'credential-mixed-parity-report-v1.json'), `${JSON.stringify(report, null, 2)}\n`);
+  stagedMeasurementDirectory(outDir, stage => {
+    writeFileSync(path.join(stage, 'credential-mixed-parity-observation-v1.json'), `${JSON.stringify(observation)}\n`);
+    writeFileSync(path.join(stage, 'credential-mixed-parity-report-v1.json'), `${JSON.stringify(report, null, 2)}\n`);
+  });
   for (const row of report.surfaceSummary) console.log(JSON.stringify(row));
   console.log(JSON.stringify(report.acceptance));
 } finally {

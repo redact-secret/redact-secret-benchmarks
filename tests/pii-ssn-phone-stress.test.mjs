@@ -1,3 +1,5 @@
+import { piiGapPolicy, piiFixtureCorrections } from '../benchmarks/evaluation/domains/pii/current-inputs.ts';
+import { historicalArchive, historicalReplayOptions, historicalJson } from './helpers/historical-evidence-archive.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -7,7 +9,7 @@ import {
 } from '../benchmarks/evaluation/domains/pii/ssn-phone-stress.ts';
 import { PII_ORACLE_REFERENCE_VALIDATORS, piiIdentityOracle, validatePiiIdentityOracle } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
 
-const ledger = JSON.parse(await readFile(new URL('../evidence/901/pii-gap-ledger-v1.json', import.meta.url), 'utf8'));
+const ledger = piiGapPolicy;
 const clone = value => structuredClone(value);
 const ssn = () => clone(c3Files['pii:us:ssn'].file), phone = () => clone(c3Files['pii:global:phone'].file);
 const validate = (file, family = file.family) => validateC3File(file, ledger.axisBacklog, c3Files[family].path);
@@ -121,11 +123,11 @@ test('the surface summary is counts only and separates misses, range errors and 
   for (const row of file.cases) { assert.ok(!text.includes(row.id)); assert.ok(!text.includes(materializeC3Case(row).candidate)); }
 });
 
-const evidence = JSON.parse(await readFile(new URL('../evidence/901/426/pii-c3-ssn-phone-evidence-v1.json', import.meta.url), 'utf8'));
-const corrections = JSON.parse(await readFile(new URL('../evidence/901/426/pii-c3-reviewed-corrections-v1.json', import.meta.url), 'utf8'));
+const evidence = historicalArchive ? historicalJson('evidence/901/426/pii-c3-ssn-phone-evidence-v1.json') : null;
+const corrections = piiFixtureCorrections;
 
-test('reviewed corrections touch only scan-contradicted cases, keep the frozen plan and leave no unexplained deviation', () => {
-  assert.equal(corrections.productDefect, false);
+test('reviewed corrections touch only scan-contradicted cases, keep the frozen plan and leave no unexplained deviation', historicalReplayOptions, () => {
+  assert.equal(historicalJson('evidence/901/426/pii-c3-reviewed-corrections-v1.json').productDefect, false);
   for (const row of evidence.families) {
     const { file } = c3Files[row.family];
     const deviating = row.stress.deviations.map(item => item.id);
@@ -139,7 +141,7 @@ test('reviewed corrections touch only scan-contradicted cases, keep the frozen p
   assert.throws(() => applyC3Corrections(c3Files['pii:us:ssn'].file, corrections.corrections, []), /did not contradict/);
 });
 
-test('the #426 evidence binds the exact beta.10 candidate, stays input-free and types what it did not measure', () => {
+test('the #426 evidence binds the exact beta.10 candidate, stays input-free and types what it did not measure', historicalReplayOptions, () => {
   assert.equal(evidence.candidate.sourceCommit, ledger.finalCandidate.sourceCommit);
   assert.equal(evidence.candidate.version, '0.1.0-beta.10');
   assert.ok(evidence.candidate.verifiedFiles > 0);
@@ -159,4 +161,15 @@ test('the #426 evidence binds the exact beta.10 candidate, stays input-free and 
   assert.equal(ssnRow.activation.foreign.familyAvailable, false, 'pii:global never selects the US SSN family');
   assert.equal(ssnRow.activation.foreign.casesWithFamilyFinding, 0);
   assert.ok(evidence.populationV1.comparisons.every(row => row.verdict === 'no-regression' && row.placeholderFalseAlarms === 0));
+});
+
+test('current source-bound corrections apply only to explicitly contradicted cases and preserve original frozen plans', () => {
+  for (const { file } of Object.values(c3Files)) {
+    const family = file.family;
+    const ids = corrections.corrections.filter(row => row.family === family).map(row => row.caseId);
+    const original = c3PlanCommitment(file);
+    applyC3Corrections(file, corrections.corrections, ids);
+    assert.equal(c3PlanCommitment(file), original);
+  }
+  assert.throws(() => applyC3Corrections(c3Files['pii:us:ssn'].file, corrections.corrections, []), /did not contradict/);
 });

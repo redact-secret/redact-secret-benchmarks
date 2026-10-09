@@ -1,7 +1,7 @@
 /**
  * Data shapes for the comparison blocks (#546). Every field is plain, already
  * formatted text or a small enum: the caller shapes ledger and report outputs
- * (`evidence/429/peer-pii-runtime-throughput.json`, `benchmarks/feature-claims.json`,
+ * (`benchmarks/inputs/runtime/peer-pii-runtime-throughput.json`, `benchmarks/feature-claims.json`,
  * the runtime plan) into these, and a block never derives a count, a rate or a
  * status from them. Ordering is the caller's; blocks render rows in the order given.
  */

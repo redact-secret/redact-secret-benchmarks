@@ -3,7 +3,7 @@ import { execFile } from 'node:child_process';
 import { mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import { validatePiiArrivalCandidateBinding, validatePiiArrivalOperational, validatePiiArrivalQualificationReadiness,
@@ -15,10 +15,16 @@ import { evaluatePiiIdentityOracle, piiIdentityOracle, validatePiiIdentityOracle
 import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
+import { writeFileSync } from 'node:fs';
+import { measurementOutput, stagedMeasurementDirectory } from './lib/measurement-output.mjs';
+const root = fileURLToPath(new URL('../', import.meta.url));
 const args = Object.fromEntries(process.argv.slice(2).map(arg => {
   const match = /^--([a-z-]+)=(.+)$/.exec(arg); if (!match) throw new Error('invalid arguments'); return [match[1], path.resolve(match[2])];
 }));
 for (const key of ['candidate-evidence', 'core', 'node', 'wasm', 'plan', 'activation-output', 'qualification-output']) if (!args[key]) throw new Error(`missing --${key}`);
+if (path.dirname(args['activation-output']) !== path.dirname(args['qualification-output']) || args['activation-output'] === args['qualification-output'])
+  throw new Error('activation and qualification require distinct files in the same fresh run directory');
+const outputDir = measurementOutput(path.dirname(args['activation-output']), root, { directory: true });
 const candidate = JSON.parse(await readFile(args['candidate-evidence'], 'utf8')); validateEvidence(candidate, 'candidate');
 if (candidate.status !== 'complete' || candidate.candidate.sourceState !== 'clean' || candidate.benchmark.dirty !== false) throw new Error('candidate evidence is not complete and clean');
 const artifact = role => candidate.candidate.artifacts.find(row => row.role === role)?.sha256;
@@ -362,6 +368,8 @@ const qualification = { schemaVersion: 2, reportType: 'pii-family-qualification'
   status: reasonCodes.length ? 'not-qualified' : 'qualified',
   reasonCodes, artifactCommitment: '' };
 qualification.artifactCommitment = piiBindingArtifactCommitment(qualification);
-await Promise.all([writeFile(args['activation-output'], `${JSON.stringify(activation, null, 2)}\n`),
-  writeFile(args['qualification-output'], `${JSON.stringify(qualification, null, 2)}\n`)]);
+stagedMeasurementDirectory(outputDir, stage => {
+  writeFileSync(path.join(stage, path.basename(args['activation-output'])), `${JSON.stringify(activation, null, 2)}\n`);
+  writeFileSync(path.join(stage, path.basename(args['qualification-output'])), `${JSON.stringify(qualification, null, 2)}\n`);
+});
 console.log(`PII activation ${activation.artifactCommitment}; qualification ${qualification.artifactCommitment} (${qualification.status})`);

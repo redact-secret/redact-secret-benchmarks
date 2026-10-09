@@ -1,0 +1,191 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "supportClaims",
+    "source",
+    "contract",
+    "corrections",
+    "projectionCommitment"
+  ],
+  "properties": {
+    "schema": {
+      "const": "redact-secret/pii-fixture-corrections/v1"
+    },
+    "supportClaims": {
+      "const": false
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._/-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "contentCommitment": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit",
+        "files"
+      ],
+      "properties": {
+        "repository": {
+          "const": "redact-secret/redact-secret"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "corrections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "family",
+          "caseId",
+          "reasonCode",
+          "contractBasis",
+          "frozen",
+          "corrected"
+        ],
+        "properties": {
+          "family": {
+            "enum": [
+              "pii:us:ssn",
+              "pii:global:phone"
+            ]
+          },
+          "caseId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reasonCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contractBasis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "frozen": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "publicFinding",
+              "identity",
+              "sensitivity"
+            ],
+            "properties": {
+              "publicFinding": {
+                "type": "boolean"
+              },
+              "identity": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sensitivity": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "corrected": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "publicFinding",
+              "oracle"
+            ],
+            "properties": {
+              "publicFinding": {
+                "type": "boolean"
+              },
+              "oracle": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "identity",
+                  "identityBasis",
+                  "sensitivity",
+                  "sensitivityBasis"
+                ],
+                "properties": {
+                  "identity": {
+                    "enum": [
+                      "valid",
+                      "invalid",
+                      "unknown"
+                    ]
+                  },
+                  "identityBasis": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "uniqueItems": true
+                  },
+                  "sensitivity": {
+                    "enum": [
+                      "sensitive",
+                      "non-sensitive",
+                      "not-established"
+                    ]
+                  },
+                  "sensitivityBasis": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "uniqueItems": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "projectionCommitment": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "$id": "redact-secret/pii-fixture-corrections/v1"
+}

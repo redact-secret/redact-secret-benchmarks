@@ -1,3 +1,4 @@
+import { validateCurrentQualificationSuite } from './lib/current-qualification-suite.ts';
 import { readFile } from 'node:fs/promises';
 import { validateEvidence } from './evaluation/evidence.ts';
 
@@ -9,7 +10,10 @@ try {
   if (!reportPath || reportPath.startsWith('--') || flags.length > 1 || (flags.length === 1 && !/^--suite=.+/.test(flags[0]))) throw new Error();
   const report = JSON.parse(await readFile(reportPath, 'utf8'));
   if (!['holdout', 'qualification', 'candidate'].includes(report.reportType)) throw new Error();
-  const suite = flags.length ? JSON.parse(await readFile(flags[0].slice('--suite='.length), 'utf8')) : undefined;
+  const suitePath = flags[0]?.slice('--suite='.length);
+  const suiteText = suitePath ? await readFile(suitePath, 'utf8') : undefined;
+  const suite = suiteText === undefined ? undefined : suitePath === 'benchmarks/inputs/credential/qualification-suite.json'
+    ? validateCurrentQualificationSuite(suiteText) : JSON.parse(suiteText);
   validateEvidence(report, report.reportType, suite);
   console.log('Evidence schema and consistency checks passed.');
 } catch { console.error('Invalid or incomplete evidence.'); process.exitCode = 1; }

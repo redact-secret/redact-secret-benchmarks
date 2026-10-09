@@ -1,76 +1,25 @@
-# Benchmark measurement evidence, per core issue
+# Benchmark evidence retention
 
-Per
-[`decision-decide-artifact-taxonomy-spec-routing-and-evidence-placement`](https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-22-decide-artifact-taxonomy-spec-routing-and-evidence-placement.md),
-"final evidence, benchmark measurement" — anything a benchmark or scanner run
-produced that a `redact-secret` ADR or release relies on — belongs in this
-repository, never in `redact-secret/redact-secret`'s own frozen-evidence
-archive. This directory is where. See
-[`docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/40809e8ce53eb94509d3b6bb3ae877ca8d4021f4/docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md)
-for the decision record.
+Historical measurement payloads are preserved outside the current checkout. A measurement having existed, a test reading it, or a manual reproduction command referring to it does not make its full history a current machine input.
 
-## Layout
+## Original bytes and retrieval
 
-```
-evidence/<core-issue-number>/README.md
-```
+The #879 original snapshot contains 684 files, 191,515,606 bytes, from benchmark commit `65ffe7dcb3e7124e7f66cff96cab814f0365f69a`. The permanent source tag is `hygiene-evidence-before-removal-879-20261008`; keep it indefinitely without moving or deleting it.
 
-One directory per `redact-secret/redact-secret` issue whose measurement
-evidence lives here, named by that issue's number — not by benchmark issue,
-release version, or date. A benchmark-side finding that has not yet crossed
-into a core issue (still `observed`/`reviewed` in `benchmarks/known-gaps.json`)
-has no `evidence/` directory yet; one is added once a core issue exists to
-key it to.
+Download [evidence-original-879-v1.tar.gz](https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/evidence-original-879-v1.tar.gz). Its SHA256 is `8aea6b5af11369c4b8df6c1d22e6209133297ef5c12194deadb67b0af1ef7370`, size 12,287,622 bytes. The archive has 685 regular members: the 684 original paths and `evidence-original-879-v1.manifest.json`. That manifest has SHA256 `8d5166a4a1d1757e3040e00077c244996065251a22cdc672985b08efe80cc37b`; each row binds the original path, byte length, SHA256 and Git blob SHA1, with its reviewed public access classification.
 
-## What `README.md` must state
+The release is an asset host; its tag is not the original snapshot revision. A fresh download was independently checked against every original Git blob before retirement. GitHub permalinks alone are not the preservation mechanism.
 
-- **The one-line result** as the first line under the title — pass/fail or
-  the headline before/after numbers, safe to read without the rest of the
-  file (this is also the line a core-side stub, below, copies verbatim).
-- **Source revisions** — the exact `redact-secret` commit or published
-  version under test, and the `redact-secret-benchmarks` commit the
-  corpus/scoring came from. Both clean, both named explicitly; never "current
-  main" without a resolved SHA.
-- **Pinned scanner versions** — every scanner that produced a finding in this
-  evidence (`redact-secret`/`redact-secret-candidate`, and `gitleaks` /
-  `trufflehog` when the run included them), with the exact version or
-  artifact identity measured. State plainly when a run is candidate-only and
-  carries no peer-scanner comparison.
-- **The command** that reproduces the run, copy-pasteable.
+Extract only into an ignored scratch directory after validating the archive digest and member paths. Validate each member against the manifest and original source commit. Replay historical commands from their matching preserved source checkout with their original pins; do not run them against current candidates or overwrite current receipts. Existing SHA-pinned references retain their original source identities. The retirement manifest separately records pre-rebase benchmark source preservation and any preexisting unavailable implementation revision; archived output bytes do not recover a missing source tree.
 
-A README may link to a fuller narrative report already committed under
-`docs/reports/` instead of repeating its tables, but the four items above
-must be self-contained here — a reader must not need the linked report to
-get the result, the revisions, the scanner versions, and the command.
+## Current inputs
 
-Supporting raw evidence (a `candidate-evidence-v1.json` or equivalent) may
-sit alongside `README.md` in the same directory when it is worth keeping
-past the run that produced it; it is optional, the README contract above is
-not.
+Current consumers use explicitly selected, source-bound contracts under `benchmarks/inputs/credential/`, `benchmarks/inputs/performance/`, `benchmarks/inputs/runtime/` and `benchmarks/inputs/pii/`. Their validators retain the exact consumed measurements, original candidate/artifact identities and accepted facts. The retirement manifest records each original file's disposition and consumers. Frozen historical locator strings remain provenance; they do not authorize a new candidate or imply that a payload must remain in HEAD.
 
-Never commit matched plaintext or raw scanner error text here, same as
-everywhere else in this repository.
+Authority, official runs, accepted ledgers, protected seals and owner exits have their own gates. This cleanup grants no authority, performs no protected run, changes no accepted result and provides no permission to retire the remaining #851 oracle or rollback code.
 
-## What the core repository keeps instead
+## Producing new measurements
 
-Per the same core ADR, `redact-secret/redact-secret` does not duplicate this
-content. Its own `docs/audits/evidence/<issue>/` stub for a benchmark-owned
-finding holds exactly two things:
+Write exploratory runs and reproduction outputs into ignored `results-output/`. Retain a new current input only through explicit review, with its execution role, schema, original source/artifact identity, digest, size and affected readers. Publish reviewed historical records as checksum-bound release assets rather than creating issue, release or session payload trees in this directory.
 
-1. A permalink to this file, pinned to a `main` commit per that ADR's
-   permalink rule:
-   `https://github.com/redact-secret/redact-secret-benchmarks/blob/<40-hex main commit>/evidence/<issue>/README.md`.
-2. The one-line result copied from this file, so a reader of the core repo
-   never has to cross the repo boundary just to learn pass/fail.
-
-Nothing here writes that stub — it is authored in the core repository, by
-whoever's core-side ADR or release relies on this evidence, once this
-directory exists to point at.
-
-## Scope
-
-This applies forward only. A folder like `redact-secret`'s
-`docs/audits/evidence/367/` that already exists there is not moved here by
-this convention; whether and how existing core evidence folders get
-resolved against the taxonomy is that repository's own DS epic (DS3/DS4),
-not this repository's to decide.
+Never publish matched plaintext, raw scanner errors, private corpus bytes, protected fixtures, case text, private seeds or tuning material. The preserved archive contains reviewed public metadata and synthetic observations; protected references contain only existing sanitized aggregate or custody receipts.

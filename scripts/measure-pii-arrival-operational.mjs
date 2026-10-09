@@ -10,6 +10,8 @@ import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 import { parsePiiArrivalRuntimeSampleProcess, piiArrivalOperationalSampleProtocol,
   validatePiiArrivalWasmPayloadRoster } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
 
+import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+const root = fileURLToPath(new URL('../', import.meta.url));
 const execFile = promisify(execFileCallback);
 const rawArgs = Object.fromEntries(process.argv.slice(2).map(argument => {
   const match = /^--([a-z-]+)=(.+)$/.exec(argument); if (!match) throw new Error('invalid arguments'); return [match[1], match[2]];
@@ -21,6 +23,7 @@ for (const side of ['baseline', 'candidate']) if (!/^[a-f0-9]{40}$/.test(rawArgs
 if (!rawArgs.output || !rawArgs.contract) throw new Error('missing --output or --contract');
 const args = Object.fromEntries(Object.entries(rawArgs).map(([key, value]) =>
   [key, key.endsWith('commit') ? value : path.resolve(value)]));
+args.output = measurementOutput(args.output, root);
 const contract = JSON.parse(await readFile(args.contract, 'utf8'));
 const samples = contract.operational.minimumPairedSamples;
 if (!Number.isInteger(samples) || samples < 10) throw new Error('operational contract requires at least ten paired samples');
@@ -163,5 +166,5 @@ const projection = { schemaVersion: 1, reportType: 'pii-arrival-operational', su
   status: runtimeComparisons.every(row => Object.values(row.metrics).every(metric => metric.pass)) &&
     Object.values(byteComparisons).every(row => row.pass) ? 'complete' : 'regression' };
 const report = { ...projection, artifactCommitment: commitment(projection) };
-await writeFile(args.output, `${JSON.stringify(report, null, 2)}\n`);
+writeMeasurement(args.output, `${JSON.stringify(report, null, 2)}\n`);
 console.log(`${report.artifactCommitment} ${report.status}`);

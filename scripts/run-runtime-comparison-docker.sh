@@ -15,7 +15,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-out_dir="public/results/runtime-comparison"
+out_dir="results-output/runtime-comparison/run-$(date +%s)-$$"
 cpus=4
 source_mode="published"
 for argument in "$@"; do
@@ -27,6 +27,16 @@ for argument in "$@"; do
   esac
 done
 case "$source_mode" in published|local-build) ;; *) echo "--source must be published or local-build" >&2; exit 2 ;; esac
+
+# Validate before Docker can build or measure; normalize the bind mount to the repository.
+out_dir=$(node --input-type=module - "$out_dir" <<'NODE'
+import path from 'node:path';
+import { measurementOutput } from './scripts/lib/measurement-output.mjs';
+const root = process.cwd();
+const target = measurementOutput(path.resolve(root, process.argv[2]), root, { directory: true });
+console.log(path.relative(root, target));
+NODE
+)
 
 pin=$(node -e "console.log(JSON.parse(require('fs').readFileSync('benchmarks/pin-manifest.json','utf8')).pins.releaseSourceRevision)")
 ref="${REDACT_SECRET_REF:-$pin}"

@@ -1,3 +1,4 @@
+import { currentPerformanceInputs, validateCurrentPerformanceInputs } from '../benchmarks/lib/current-performance-inputs.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -9,11 +10,11 @@ const ajv = new Ajv({ strict: true, allErrors: true });
 const validAssessment = ajv.compile(await read('schemas/performance-assessment-v1.json'));
 const validCriteria = ajv.compile(await read('schemas/performance-criteria-v1.json'));
 
-test('the committed release-build evidence summary matches the pinned assessment schema', async () => {
-  const summary = await read('evidence/603/summary.json');
-  const valid = validAssessment(summary);
-  assert.ok(valid, JSON.stringify(validAssessment.errors));
-  assert.equal(completeAssessmentProblem(summary), null);
+test('current performance input preserves reviewed source identity and rejects changed measurements', async () => {
+  const input = await read('benchmarks/inputs/performance/current.json');
+  assert.doesNotThrow(() => validateCurrentPerformanceInputs(input));
+  input.records.accepted.data.runs.find(r => r.result?.performance).result.performance.processing.median += 1;
+  assert.throws(() => validateCurrentPerformanceInputs(input), /source or projection binding mismatch/);
 });
 
 test('the committed performance criteria match their schema', async () => {
@@ -86,7 +87,8 @@ test('check-performance-schema --summary fails a node performance run without re
   const { tmpdir } = await import('node:os');
   const path = await import('node:path');
   const dir = mkdtempSync(path.join(tmpdir(), 'perf-schema-'));
-  const summary = await read('evidence/603/summary.json');
+  const summary = nodePerformanceSummary({ commit: 'a'.repeat(40), artifactIdentity: 'synthetic', corpusVersion: '1', corpusHash: 'h', os: 'linux', cpu: 'x64', runtime: 'node-22', command: 'synthetic' });
+  summary.runs[0].result.performance.memory = Object.fromEntries(['nodeHeap','nodeRss','nodeExternal','browserJsHeap','wasmLinearMemory','pythonHeap','processRss','streamingBuffer'].map(k => [k, { unit: 'bytes', samples: [], samplingLimit: 'synthetic unavailable' }]));
   const nodePerformance = run => run.surface === 'node' && run.kind === 'performance' && run.result?.provenance;
   const check = value => {
     const file = path.join(dir, 'summary.json');

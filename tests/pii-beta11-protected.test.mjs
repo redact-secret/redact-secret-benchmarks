@@ -1,3 +1,4 @@
+import { historicalReplayOptions, historicalJson } from './helpers/historical-evidence-archive.mjs';
 /**
  * Six-family PII protected lifecycle (benchmarks #428). Every fixture here is the disposable public control of
  * `b11ProtectedPublicControl`: a public seed, `PUBLIC CONTROL` prose and reserved `example.invalid` addresses. No
@@ -371,11 +372,11 @@ test('the disposition reaches provisional only when public gates, cost and the p
     /protected-run-not-bound/);
 });
 
-test('bound to the committed final #428 record (core 8b6a5fde, the beta.11 candidate): all six pending, unspent, refused on the failed public gates', () => {
+test('historical final #428 record: all six pending, unspent, refused on the failed public gates', historicalReplayOptions, () => {
   assert.equal(B11P_BETA11_CORE_COMMIT, '8b6a5fde52ecb4dfce13f09c7a947062d21483c7');
-  const dir = new URL(`../evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/`, import.meta.url);
-  const report = JSON.parse(readFileSync(new URL('pii-beta11-report-v2.json', dir), 'utf8'));
-  const disposition = JSON.parse(readFileSync(new URL('pii-beta11-disposition-v2.json', dir), 'utf8'));
+  const dir = `evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/`;
+  const report = historicalJson(dir + 'pii-beta11-report-v2.json');
+  const disposition = historicalJson(dir + 'pii-beta11-disposition-v2.json');
   assert.equal(report.candidate.sourceCommit, B11P_BETA11_CORE_COMMIT);
   const record = buildB11ProtectedDisposition({ report, disposition, seal: null, runs: [] });
   assert.deepEqual(record.distribution, { pending: 6, provisional: 0, stable: 0 });

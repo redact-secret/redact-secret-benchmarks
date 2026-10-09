@@ -630,7 +630,7 @@ export function resolveCredentialView(input: CredentialEvaluation): DomainViewDa
     recordedRows.push({
       id: 'support', label: 'Support classification', status: 'info', statusWord: 'Recorded', value: distributionText(support.distribution),
       detail: `Of ${int(support.familyCount)} scored families: ${int(support.stable.documented)} documented, ${int(support.stable.empirical)} empirical, ${int(support.stable.policyQualified)} policy-qualified. ${modeWord(support.mode)}, ${support.version}.`,
-      link: { label: 'Evidence record', href: blob(support.path), external: true },
+      link: { label: 'Evidence record', href: support.sourceHref ?? blob(support.path), external: true },
     });
   } else {
     notMeasuredRows.push({ id: 'support', label: 'Support classification', status: 'not-measured', statusWord: 'Not recorded', detail: 'No support record matches the mode and build of the run.' });

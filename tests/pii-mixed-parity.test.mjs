@@ -1,3 +1,4 @@
+import { historicalArchive, historicalReplayOptions, historicalBytes } from './helpers/historical-evidence-archive.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -106,16 +107,17 @@ test('#427 output-only operations accept exactly one admissible optional subset'
   assert.equal(scoreOperation(log, 'pii-on', { ...outputOnly([]), outputSha256: sha256(log.input) }).outputCorrect, false);
 });
 
-test('#427 committed observations re-score to their committed reports byte for byte', async () => {
+test('#427 committed observations re-score to their committed reports byte for byte', historicalReplayOptions, async () => {
   const { buildMixedParityReport } = await import('../benchmarks/evaluation/domains/pii/mixed-parity/report.ts');
   const { readdir } = await import('node:fs/promises');
-  const files = (await readdir('evidence/901/427').catch(() => [])).filter(file => file.endsWith('-observation-v1.json'));
+  const files = [...historicalArchive.files.keys()].filter(file => file.startsWith('evidence/901/427/') && file.endsWith('-observation-v1.json')).map(file => file.slice('evidence/901/427/'.length));
+  assert.ok(files.length > 0);
   for (const file of files) {
-    const observation = JSON.parse(await readFile(`evidence/901/427/${file}`, 'utf8'));
-    const report = await readFile(`evidence/901/427/${file.replace('-observation-v1.json', '-report-v1.json')}`, 'utf8');
+    const observation = JSON.parse(historicalBytes(`evidence/901/427/${file}`).toString('utf8'));
+    const report = historicalBytes(`evidence/901/427/${file.replace('-observation-v1.json', '-report-v1.json')}`).toString('utf8');
     assert.equal(`${JSON.stringify(buildMixedParityReport(observation), null, 2)}\n`, report, file);
     // Evidence stays input-free: no finding carries text and every output is a digest.
-    const text = await readFile(`evidence/901/427/${file}`, 'utf8');
+    const text = historicalBytes(`evidence/901/427/${file}`).toString('utf8');
     for (const document of documents) for (const target of document.targets) assert.ok(!text.includes(slice(document.input, target.start, target.end)));
   }
 });

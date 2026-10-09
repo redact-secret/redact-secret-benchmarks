@@ -128,7 +128,7 @@ jobs:
       - name: Fixture titles are the pinned evidence release's case records and this repository's product-owned overlay, nothing else (#593)
         run: npm run fixture-metadata:check
       - name: Validate published engine qualification evidence (frozen Beta.11 report, against the suite snapshot it was produced with)
-        run: npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=evidence/449/suite-v1.json
+        run: npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=benchmarks/inputs/credential/qualification-suite.json
       - name: No detector family arrives without its required evidence (#52)
         run: npm run arrival:check
       - name: Fixture profile coverage report and spec table match the corpus (#206)

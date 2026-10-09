@@ -1,3 +1,4 @@
+import { historicalArchive, historicalReplayOptions, historicalBytes } from './helpers/historical-evidence-archive.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -125,10 +126,10 @@ test('scoring keeps validator correctness, semantic collision, leakage, collater
   assert.throws(() => scoreLane(plan, { lane: 'node-addon', selection: 'pii-global-and-us', activationIdentity: null, cases: perfect.slice(1) }), /one-to-one/);
 });
 
-test('#425 evidence re-scores byte for byte from its observation and carries no case value', async () => {
+test('#425 evidence re-scores byte for byte from its observation and carries no case value', historicalReplayOptions, async () => {
   const { buildStressReport } = await import('../benchmarks/evaluation/domains/pii/card-iban-stress/report.ts');
-  const observationText = await readFile('evidence/901/425/card-iban-stress-observation-v1.json', 'utf8');
-  const reportText = await readFile('evidence/901/425/card-iban-stress-report-v1.json', 'utf8');
+  const observationText = historicalBytes('evidence/901/425/card-iban-stress-observation-v1.json').toString('utf8');
+  const reportText = historicalBytes('evidence/901/425/card-iban-stress-report-v1.json').toString('utf8');
   assert.equal(`${JSON.stringify(buildStressReport(JSON.parse(observationText)), null, 2)}\n`, reportText);
   const report = JSON.parse(reportText);
   assert.equal(report.supportClaims, false);

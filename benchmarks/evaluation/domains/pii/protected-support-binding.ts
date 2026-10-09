@@ -18,11 +18,13 @@ import { B11_FAMILIES, b11Commitment } from './beta11-qualification.ts';
 import { b11ProfileCostAcceptance, piiProfileCostAcceptances, type PiiProfileCostAcceptance } from './profile-cost-acceptance.ts';
 import { piiCurrentProtectedRoute, piiProtectedRouteProblem, piiReviewedProtectedRoute, type PiiProtectedRoute } from './support-semantics.ts';
 import { piiSupportRegistry } from './support-v2.ts';
+import { validateCurrentPiiProtectedEvidence } from './protected-current-inputs.ts';
 
 export interface PiiProtectedSupportEvidence {
   freeze: any; report: any; disposition: any; protectedDisposition: any; seal: any;
   runs: Array<{ aggregate: any; trust: any }>; profileCost: { runs: any; candidate: any; size: any };
   ledger?: readonly PiiProfileCostAcceptance[];
+  currentInput?: unknown;
 }
 
 const reject = (code: string): never => { throw new Error(`PII protected support binding rejected: ${code}`); };
@@ -37,6 +39,7 @@ const same = (a: unknown, b: unknown) => JSON.stringify(canonical(a)) === JSON.s
  * Every rejection names its code; none echoes a value from the evidence.
  */
 export function validatePiiProtectedSupportBinding(binding: PiiProtectedRoute, evidence: PiiProtectedSupportEvidence): PiiProtectedRoute {
+  if (evidence.currentInput !== undefined) return validateCurrentPiiProtectedEvidence(binding, evidence);
   const reviewed = piiReviewedProtectedRoute(binding?.id);
   if (!reviewed || !same(reviewed, binding)) reject('not-a-reviewed-binding');
   const shape = piiProtectedRouteProblem(binding, piiSupportRegistry.families);
@@ -128,6 +131,15 @@ export function validatePiiProtectedSupportBinding(binding: PiiProtectedRoute, e
 
 /** Read the committed evidence one reviewed entry names, relative to the repository root. */
 export async function loadPiiProtectedSupportEvidence(root: string, binding: PiiProtectedRoute): Promise<PiiProtectedSupportEvidence> {
+  const bytes = await readFile(path.join(root, 'benchmarks/inputs/pii/protected-route.json'), 'utf8');
+  const receipt = JSON.parse(bytes);
+  const evidence = { ...receipt.data, currentInput: receipt };
+  validateCurrentPiiProtectedEvidence(binding, evidence);
+  return evidence;
+}
+
+/** Explicit replay over a restored original source tree. Current publication never scans these historical directories. */
+export async function loadPiiProtectedSupportOriginalEvidence(root: string, binding: PiiProtectedRoute): Promise<PiiProtectedSupportEvidence> {
   const read = (file: string) => readFile(path.join(root, file), 'utf8').then(JSON.parse);
   const dir = binding.evidenceDirectory;
   const [freeze, report, disposition, protectedDisposition, seal, runs, costRuns, candidate, size] = await Promise.all([

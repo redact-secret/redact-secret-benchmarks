@@ -1,4 +1,5 @@
-import { readFile, readdir } from 'node:fs/promises';
+import { runtimeInputPaths, validateCurrentRuntimeInput } from '../benchmarks/lib/current-runtime-inputs.mjs';
+import { readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import {
   checkPinConsistency, checkPinAncestry, collectKnownGapCommits, extractRegistryIds, PRODUCT_REPO, PRODUCT_BRANCH, REGISTRY_PATH,
@@ -31,11 +32,12 @@ async function main() {
     read('benchmarks/performance-criteria.json'),
   ]);
   // The runtime-comparison snapshots the site reads (#562): their redact-secret identity must follow the pin.
-  const snapshotDir = new URL('evidence/562/', root);
   const runtimeComparisonSnapshots = [];
-  for (const name of (await readdir(snapshotDir)).filter(n => /^runtime-comparison-.+\.json$/.test(n)).sort()) {
-    const tool = JSON.parse(await readFile(new URL(name, snapshotDir), 'utf8')).tools.find(t => t.id === 'redact-secret');
-    runtimeComparisonSnapshots.push({ file: `evidence/562/${name}`, version: tool.version, kind: tool.provenance.kind, commit: tool.provenance.commit });
+  for (const setting of ['default', 'pii-global', 'pii-global-us']) {
+    const file = runtimeInputPaths[setting];
+    const snapshot = validateCurrentRuntimeInput(setting, await read(file));
+    const tool = snapshot.tools.find(t => t.id === 'redact-secret');
+    runtimeComparisonSnapshots.push({ file, version: tool.version, kind: tool.provenance.kind, commit: tool.provenance.commit });
   }
   const facts = {
     runtimeComparisonSnapshots,

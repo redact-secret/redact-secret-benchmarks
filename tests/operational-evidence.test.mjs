@@ -1,3 +1,5 @@
+import { currentPerformanceInputs } from '../benchmarks/lib/current-performance-inputs.mjs';
+import { historicalJson, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -8,15 +10,15 @@ import Ajv from 'ajv';
 const read = async p => JSON.parse(await readFile(new URL(p, import.meta.url), 'utf8'));
 const schema = await read('../schemas/operational-evidence-v1.json');
 const evidence = await read('../benchmarks/operational-evidence.json');
-const summary = await read('../evidence/603/summary.json');
-const acceptance = await read('../evidence/603/acceptance.json');
+const summary = currentPerformanceInputs().baseline;
 
 test('the committed evidence is schema-valid', () => {
   const validate = new Ajv({ strict: false }).compile(schema);
   assert.ok(validate(evidence), JSON.stringify(validate.errors));
 });
 
-test('it describes the same commit as the performance summary and verdict it cites', () => {
+test('original operational verdict reproduces from the explicit archive', historicalReplayOptions, () => {
+  const acceptance = historicalJson('evidence/603/acceptance.json');
   assert.equal(evidence.sourceCommit, summary.sourceCommit);
   assert.equal(evidence.sourceCommit, acceptance.sourceCommit);
   assert.equal(evidence.judgement.status, acceptance.status);

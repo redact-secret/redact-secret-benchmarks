@@ -1,0 +1,855 @@
+{
+  "schema": "redact-secret/pii-gap-policy/v1",
+  "supportClaims": false,
+  "source": {
+    "commit": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+    "path": "evidence/901/pii-gap-ledger-v1.json",
+    "sha256": "72bfcf59e5920ffd8c5d0625d02f8fa8bfd84a635d37a6f286f03304901ebbb2",
+    "contentCommitment": "7fcbba702d93849ce1452ee5a9adf3d20e493179107ec0c6bbda36cb9e5fd116"
+  },
+  "finalCandidate": {
+    "status": "identified",
+    "repository": "redact-secret/redact-secret",
+    "version": "0.1.0-beta.10",
+    "tag": "v0.1.0-beta.10",
+    "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314",
+    "releaseManifest": {
+      "file": "docs/releases/0.1.0-beta.10/manifest.json",
+      "sha256": "344b1579ac9dae75dda8ed3de58bca79ef2ecbc19c19cd92d4dbb2f0c80a1e28"
+    },
+    "artifactInventorySha256": "c79f69288e4de2eac698e5361685d364813d213625d0bdb01c457af6b7e38fe6",
+    "conformanceIdentity": "3ee338adda67b30d80a0c7b1e74411423388a3e6",
+    "artifacts": [
+      {
+        "artifact": "crate:redact-secret",
+        "file": "redact-secret-0.1.0-beta.10.crate",
+        "algorithm": "sha256",
+        "digest": "6ceb095271b42d1e7653e9060d1f00a6b7aec9cb4bb266131767815c5922583e"
+      },
+      {
+        "artifact": "crate:redact-secret-cli",
+        "file": "redact-secret-cli-0.1.0-beta.10.crate",
+        "algorithm": "sha256",
+        "digest": "bdc701e7ec42b75fde0a342dd554a46ba90c89e58464f689cb53e3f60c24ce1b"
+      },
+      {
+        "artifact": "npm:@redact-secret/core",
+        "file": "packages/javascript",
+        "algorithm": "sha1",
+        "digest": "fe20341dd7a0586f9a8600bec79ca0ccbdcf4871"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-arm64",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-arm64",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-arm64",
+        "file": "redact-secret.darwin-arm64.node",
+        "algorithm": "sha256",
+        "digest": "effe64bb761ce19ca1c7046b53f5192aca97bb97009ac60793e2b27de1469809"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-x64",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-x64",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-x64",
+        "file": "redact-secret.darwin-x64.node",
+        "algorithm": "sha256",
+        "digest": "c87dbd64fcef83d0bbc6cb2fbaea77e8d7ed8e29439ae8a17fbae5ef501fff73"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-gnu",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-gnu",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-gnu",
+        "file": "redact-secret.linux-arm64-gnu.node",
+        "algorithm": "sha256",
+        "digest": "e653756ad5777fddc4c7d761e8040c3ade9bab25e4829f735c35e93d5a6e0262"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-musl",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-musl",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-musl",
+        "file": "redact-secret.linux-arm64-musl.node",
+        "algorithm": "sha256",
+        "digest": "d278c1800ee539cbc0d269857421ac417c1c9372b8fab64bd59caaf3a4726953"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-gnu",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-gnu",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-gnu",
+        "file": "redact-secret.linux-x64-gnu.node",
+        "algorithm": "sha256",
+        "digest": "3e2b06730a5900215a52b9b96e8c6defe00271d4962bffc727cd5098dcd06779"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-musl",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-musl",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-musl",
+        "file": "redact-secret.linux-x64-musl.node",
+        "algorithm": "sha256",
+        "digest": "146adc02c3b9bb0711171c30c6ecb1b2700feabfd6658e4d1c06a62b297b2313"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-arm64-msvc",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-arm64-msvc",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-arm64-msvc",
+        "file": "redact-secret.win32-arm64-msvc.node",
+        "algorithm": "sha256",
+        "digest": "264582aa7fc4bbbacaa1043bad291454c6980c11755e4672dac5fff969810937"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-x64-msvc",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-x64-msvc",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-x64-msvc",
+        "file": "redact-secret.win32-x64-msvc.node",
+        "algorithm": "sha256",
+        "digest": "c45008c2ee58bd20dbe5f676c8e6201d07aa83af054b254ca27f7614a1b4e2ec"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm.d.ts",
+        "algorithm": "sha256",
+        "digest": "44f2540d682a1fa66e49fdebda997148bd1ccd072c679912ae758219cd8de820"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm.js",
+        "algorithm": "sha256",
+        "digest": "bfbb354acf5e2256f35fab9864cf51a00f8cbe49e082285a29f1c0df65dcdc9a"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_bg.wasm",
+        "algorithm": "sha256",
+        "digest": "8a15b0dba434d99e976b71c3e795905d46157da16fd370346addd3ad44bad217"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_bg.wasm.d.ts",
+        "algorithm": "sha256",
+        "digest": "a673a3d035e9f9278cb51f3abed567f250c0723f4842832b8bb1aac3e226f25e"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common.d.ts",
+        "algorithm": "sha256",
+        "digest": "44f2540d682a1fa66e49fdebda997148bd1ccd072c679912ae758219cd8de820"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common.js",
+        "algorithm": "sha256",
+        "digest": "816fa500b79e6ec1c2a28b84a826fb3e1a9222e362bcb1a017a52e71b2a4ed50"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common_bg.wasm",
+        "algorithm": "sha256",
+        "digest": "85f4159fed55bb6659df405735c90282953b459663e2ff35c0fe31f829b064a4"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common_bg.wasm.d.ts",
+        "algorithm": "sha256",
+        "digest": "a673a3d035e9f9278cb51f3abed567f250c0723f4842832b8bb1aac3e226f25e"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10.tar.gz",
+        "algorithm": "sha256",
+        "digest": "4e8d0d061abea51892df69a898319310fb0b5911411a150d19fc5101dae30a81"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-macosx_11_0_arm64.whl",
+        "algorithm": "sha256",
+        "digest": "1cdba1d64ebbc0b80cb82e67aeda939f215b2d9a6860a67bcab57c0b0e0980b7"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-win_arm64.whl",
+        "algorithm": "sha256",
+        "digest": "f047d863bd26fa28233ceb2e63c8643617cb232fe9d658ba58167c7c64035610"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+        "algorithm": "sha256",
+        "digest": "59a023a884186cc0e7299c238b23eba82bca09c49627d6fe247161c52177cec1"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-musllinux_1_2_aarch64.whl",
+        "algorithm": "sha256",
+        "digest": "ed2cf582d2e935166c54d02195f59e3d0539f9ce40e53ed0c517b229f4103db2"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-macosx_10_12_x86_64.whl",
+        "algorithm": "sha256",
+        "digest": "78d0e2c9c4fe975867851be68fd15a690190f1d00a23b59d15496c1482528286"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-win_amd64.whl",
+        "algorithm": "sha256",
+        "digest": "809239592b704c80371395769be831054762c66a90fe2c6d2ff5378ee05d9517"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "algorithm": "sha256",
+        "digest": "1cc495eaec4ece3bca9d0b1615463b74169ad4d20d030d726c91d2bf30f63313"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-musllinux_1_2_x86_64.whl",
+        "algorithm": "sha256",
+        "digest": "7a321dcb7de3cb08713806b6b1cfd4737689aa8daaf65408854e4c144b0976b0"
+      }
+    ]
+  },
+  "axisBacklog": [
+    {
+      "order": 1,
+      "id": "network-public-global-positives",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ]
+    },
+    {
+      "order": 2,
+      "id": "network-operational-log-config-context",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 3,
+      "id": "network-reserved-documentation-benchmark",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "diagnostic-balanced-population"
+      ]
+    },
+    {
+      "order": 4,
+      "id": "network-version-boundary-url-collisions",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 5,
+      "id": "network-korean-field-context",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ]
+    },
+    {
+      "order": 6,
+      "id": "email-independent-sensitive-positives",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ]
+    },
+    {
+      "order": 7,
+      "id": "email-reserved-documentation-controls",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 8,
+      "id": "email-public-contact-addresses",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 9,
+      "id": "email-example-label-context-negatives",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 10,
+      "id": "email-userinfo-credential-collisions",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 11,
+      "id": "email-smtputf8-boundary-twins",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ]
+    },
+    {
+      "order": 12,
+      "id": "card-independent-sensitive-positives",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ]
+    },
+    {
+      "order": 13,
+      "id": "card-official-test-values",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 14,
+      "id": "card-luhn-valid-benign-collisions",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 15,
+      "id": "card-checksum-invalid-near-miss",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 16,
+      "id": "card-issuer-range-scope-boundary",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ]
+    },
+    {
+      "order": 17,
+      "id": "card-separator-display-twins",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ]
+    },
+    {
+      "order": 18,
+      "id": "card-korean-field-and-example-context",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 19,
+      "id": "iban-multi-country-positives",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ]
+    },
+    {
+      "order": 20,
+      "id": "iban-mod97-valid-lookalikes",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 21,
+      "id": "iban-reference-documentation-controls",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 22,
+      "id": "iban-print-format-separator-twins",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ]
+    },
+    {
+      "order": 23,
+      "id": "ssn-remeasure-corrected-placeholder",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-heavy-population",
+        "contract-fixture-discrepancy"
+      ]
+    },
+    {
+      "order": 24,
+      "id": "ssn-independent-sensitive-positives",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ]
+    },
+    {
+      "order": 25,
+      "id": "ssn-korean-field-and-negation",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 26,
+      "id": "ssn-population-value-and-label-independence",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "diagnostic-balanced-population",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 27,
+      "id": "ssn-ordinary-identifier-collisions",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 28,
+      "id": "ssn-declared-twins",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 29,
+      "id": "phone-independent-sensitive-positives",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ]
+    },
+    {
+      "order": 30,
+      "id": "phone-reserved-555-and-n11-controls",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 31,
+      "id": "phone-order-reference-collisions",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ]
+    },
+    {
+      "order": 32,
+      "id": "phone-extension-seams",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "context-validator-collision"
+      ]
+    },
+    {
+      "order": 33,
+      "id": "phone-korean-high-signal-vs-ambiguous",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ]
+    }
+  ],
+  "projectionCommitment": "c847840c4a9d860fdc982787c9eaaf0e23a7d406dd1452fc96e3adbcd79e6774"
+}

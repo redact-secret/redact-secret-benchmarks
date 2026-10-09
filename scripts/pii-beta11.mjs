@@ -4,14 +4,12 @@
  *
  *   npm run pii:beta11 -- --core-commit=<40-hex> --core-repo=<absolute path to a redact-secret clone> --role=interim|final
  *
- * 1. No committed freeze for that commit yet: build the candidate from a temporary detached worktree (the core
- *    `benchmark-candidate` recipe plus the maintainer-local identity example of redact-secret#910), build the
- *    evidence/879 operational baseline, fetch the commit's CI artifact-qualification inventory when it exists, and
- *    write `evidence/901/428/core-<sha12>/pii-beta11-freeze-<v>.json`. It then stops: commit the freeze.
- * 2. Freeze committed and the tree clean: verify every frozen hash, observe every frozen case on the installed Node
- *    addon and forced Wasm under every selection (candidate and the lockfile beta.10 release), run the identity seam
- *    on the six oracle plans, measure runtime and artifact size, and write the observation, operational and report
- *    files plus the six-row disposition next to the freeze.
+ * 1. Build and prepare a fresh ignored freeze under results-output. Review it, then --promote-freeze publishes
+ *    an exclusive mechanical candidate receipt at benchmarks/inputs/pii/prepared-freeze.json. Independent registration is required before measuring.
+ * 2. A committed current freeze binds every current input, schema, artifact and source file before measurement.
+ *    Observation, operational, report and disposition are published together in a fresh ignored output directory.
+ * 3. Historical --rescore=true requires an explicit restored --replay-dir and exact --archive-source. Input bytes
+ *    and each freeze's original scorer source hashes are separate checks; source drift requires the original checkout.
  *
  * `<v>` is the file version of the population plan set the run binds (`--plan-set`, default the current set):
  * `v1` for `b11-population-v1` (the interim record), `v2` for `b11-population-v2` (the #428 successor plans).
@@ -35,14 +33,17 @@ import { b11FreezeFiles, B11_BASELINE_879, b11ProtectedEpochs, buildB11Report, b
 import { PII_PRODUCT_IDENTITY_FORMAT, PII_ORACLE_PLANS } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
 import { piiArrivalCommitment } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
+import { verifyHistoricalScorerSources } from './lib/historical-scorer-source.mjs';
+import { stagedAsyncMeasurementDirectory } from './lib/staged-async-measurement.mjs';
 import { measurementOutput, writeMeasurement } from './lib/measurement-output.mjs';
+import { PREPARED_PII_FREEZE_PATH, validatePreparedPiiFreeze, publishPreparedPiiFreeze, requireReviewedPreparedPiiFreeze } from './lib/prepared-pii-freeze.mjs';
 import { packLockfileRelease } from './observe-pii-populations.mjs';
 
 const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const args = Object.fromEntries(process.argv.slice(2).map(argument => {
-  const match = /^--(core-commit|core-repo|role|work|samples|plan-set|rescore|out-dir|promote-freeze)=(.+)$/.exec(argument);
+  const match = /^--(core-commit|core-repo|role|work|samples|plan-set|rescore|out-dir|promote-freeze|replay-dir|archive-source|parity-file|profile-cost-dir)=(.+)$/.exec(argument);
   if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2]];
 }));
 if (!/^[0-9a-f]{40}$/.test(args['core-commit'] ?? '') || !path.isAbsolute(args['core-repo'] ?? '') || !['interim', 'final'].includes(args.role))
@@ -51,13 +52,30 @@ if (!/^[0-9a-f]{40}$/.test(args['core-commit'] ?? '') || !path.isAbsolute(args['
 const planSet = args['plan-set'] ?? B11_CURRENT_PLAN_SET;
 if (!Object.hasOwn(B11_PLAN_SETS, planSet)) throw new Error(`Unknown --plan-set ${planSet}`);
 const fileVersion = B11_PLAN_SETS[planSet].fileVersion;
-const freezeFiles = b11FreezeFiles(planSet);
+const historicalFreezeFiles = b11FreezeFiles(planSet);
+const currentInputs = {
+  'evidence/901/426/pii-c3-reviewed-corrections-v1.json': 'benchmarks/inputs/pii/fixture-corrections.json',
+  'evidence/901/pii-gap-ledger-v1.json': 'benchmarks/inputs/pii/gap-policy.json',
+  'evidence/879/pii-operational-evidence-v1.json': 'benchmarks/inputs/pii/operational-byte-budget.json',
+};
+const freezeFiles = { ...historicalFreezeFiles,
+  benchmarkInputs: historicalFreezeFiles.benchmarkInputs.map(file => currentInputs[file] ?? file),
+  evaluationSchema: [...historicalFreezeFiles.evaluationSchema, 'benchmarks/evaluation/domains/pii/current-inputs.ts',
+    'benchmarks/evaluation/domains/pii/operational-byte-baseline.ts', 'benchmarks/inputs/pii/current-inputs-index.json',
+    'schemas/pii-gap-policy-v1.json', 'schemas/pii-fixture-corrections-v1.json',
+    'schemas/prepared-pii-freeze-v1.json', 'scripts/lib/prepared-pii-freeze.mjs'],
+};
 const commit = args['core-commit'], sha12 = commit.slice(0, 12);
 const workRoot = path.resolve(args.work ?? path.join(root, 'results-output/pii-beta11'));
 const work = path.join(workRoot, `core-${sha12}`);
-const evidenceDir = path.join(root, 'evidence/901/428', `core-${sha12}`);
-const outputDir = measurementOutput(args['out-dir'] ?? path.join(root, 'results-output/pii-oracle', `core-${sha12}`, `${Date.now()}`), root, {directory: true});
-const freezeFile = path.join(evidenceDir, `pii-beta11-freeze-${fileVersion}.json`);
+const acceptedDir = path.join(root, 'benchmarks/inputs/pii');
+const evidenceDir = args['replay-dir'] ? path.resolve(args['replay-dir']) : acceptedDir;
+if (args['replay-dir'] && args['archive-source'] !== '65ffe7dcb3e7124e7f66cff96cab814f0365f69a')
+  throw new Error('Historical replay requires the original archive source revision via --archive-source');
+if (args['promote-freeze'] && args['replay-dir']) throw new Error('Historical replay cannot promote a fresh freeze');
+const outputTarget = measurementOutput(args['out-dir'] ?? path.join(root, 'results-output/pii-oracle', `core-${sha12}`, `${Date.now()}`), root, {directory: true});
+let outputDir = outputTarget;
+const freezeFile = args['replay-dir'] ? path.join(evidenceDir, `pii-beta11-freeze-${fileVersion}.json`) : path.join(root, PREPARED_PII_FREEZE_PATH);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const fileSha256 = async file => sha256(await readFile(file));
 const run = async (command, argv, options = {}) => (await exec(command, argv, { maxBuffer: 64 * 1024 * 1024, timeout: 30 * 60_000,
@@ -204,7 +222,7 @@ async function freeze() {
   value.freezeCommitment = b11Commitment({ ...value, freezeCommitment: undefined });
   const prepared = path.join(outputDir, `pii-beta11-freeze-${fileVersion}.json`);
   await writeJson(prepared, value);
-  console.log(`Prepared ${path.relative(root, prepared)} (${value.freezeCommitment}). Review it, then explicitly --promote-freeze=<prepared file> into a new accepted path and commit before measuring.`);
+  console.log(`Prepared ${path.relative(root, prepared)} (${value.freezeCommitment}). Review it, then explicitly --promote-freeze=<prepared file> into the bounded candidate path. Independent exact-byte registration is required before measurement.`);
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -213,22 +231,31 @@ async function freeze() {
 async function verifyFreeze({ preparedFile = freezeFile, requireCommitted = true } = {}) {
   if (requireCommitted && await git('status', '--porcelain')) throw new Error('benchmark tree is not clean; measure only from the committed freeze');
   if (requireCommitted) await git('ls-files', '--error-unmatch', path.relative(root, freezeFile));
-  const frozen = JSON.parse(await readFile(preparedFile, 'utf8'));
+  const rawFreeze = await readFile(preparedFile);
+  const frozen = validatePreparedPiiFreeze(JSON.parse(rawFreeze), { commit, role: args.role, planSet,
+    baseRevision: requireCommitted ? JSON.parse(rawFreeze).benchmark.baseRevision : await git('rev-parse', 'HEAD'),
+    inputs: freezeFiles.benchmarkInputs, schemaPaths: freezeFiles.evaluationSchema });
+  if (requireCommitted) requireReviewedPreparedPiiFreeze(root, rawFreeze, JSON.parse(await readFile(path.join(root, 'docs/retention/evidence-retirement-879.json'), 'utf8')));
   if (frozen.freezeCommitment !== b11Commitment({ ...frozen, freezeCommitment: undefined }) || frozen.candidate.sourceCommit !== commit ||
       b11PlanSetOf(frozen) !== planSet)
     throw new Error('freeze commitment mismatch');
+  if (!requireCommitted) {
+    for (const [rows, expected] of [[frozen.frozenInputs, freezeFiles.benchmarkInputs], [frozen.evaluationSchema, freezeFiles.evaluationSchema]])
+      if (JSON.stringify(rows.map(row => row.path).sort()) !== JSON.stringify([...expected].sort()))
+        throw new Error('Prepared freeze must bind the complete current input and schema scope');
+  }
   for (const row of [...frozen.frozenInputs, ...frozen.evaluationSchema])
     if (await fileSha256(path.join(root, row.path)) !== row.sha256) throw new Error(`frozen file changed after the freeze: ${row.path}`);
   const tarballs = {};
   for (const role of ['core', 'node', 'wasm']) {
     const file = path.join(work, 'npm', frozen.candidate.artifacts[role].file);
-    if (await fileSha256(file) !== frozen.candidate.artifacts[role].sha256) throw new Error(`candidate ${role} artifact differs from the freeze`);
+    if (await fileSha256(file) !== frozen.candidate.artifacts[role].sha256 || (await stat(file)).size !== frozen.candidate.artifacts[role].bytes) throw new Error(`candidate ${role} artifact differs from the freeze`);
     tarballs[role] = file;
   }
   const baselineTarballs = {};
   for (const role of ['core', 'node', 'wasm']) {
     const file = path.join(workRoot, `baseline-${B11_BASELINE_879.sourceCommit.slice(0, 12)}`, 'npm', frozen.operationalBaseline.artifacts[role].file);
-    if (await fileSha256(file) !== frozen.operationalBaseline.artifacts[role].sha256) throw new Error(`baseline ${role} artifact differs from the freeze`);
+    if (await fileSha256(file) !== frozen.operationalBaseline.artifacts[role].sha256 || (await stat(file)).size !== frozen.operationalBaseline.artifacts[role].bytes) throw new Error(`baseline ${role} artifact differs from the freeze`);
     baselineTarballs[role] = file;
   }
   const example = path.join(work, 'bin', 'pii_identity_evaluation');
@@ -428,15 +455,16 @@ async function measure() {
 
 /** Official profile-cost v2 results bound next to the freeze (`pii-profile-cost-v2-{runs,candidate,size}.json`), or null. */
 async function profileCostEvidence() {
-  const file = name => path.join(evidenceDir, `pii-profile-cost-v2-${name}.json`);
+  if (!args['profile-cost-dir']) return null;
+  const file = name => path.join(path.resolve(args['profile-cost-dir']), `pii-profile-cost-v2-${name}.json`);
   if (!['runs', 'candidate', 'size'].every(name => existsSync(file(name)))) return null;
   const [runs, candidate, size] = await Promise.all(['runs', 'candidate', 'size'].map(async name => JSON.parse(await readFile(file(name), 'utf8'))));
   return { runs: runs.runs.map(row => `${row.phase}:${row.runId}`), candidate, size };
 }
 
 async function writeReport(frozen, observation, operationalEvidence) {
-  const parityFile = path.join(root, 'evidence/901/427', `mixed-parity-core-${sha12}-plan-v2-report-v1.json`);
-  const parity = existsSync(parityFile) ? { file: path.relative(root, parityFile), report: JSON.parse(await readFile(parityFile, 'utf8')) } : null;
+  const parityFile = args['parity-file'] ? path.resolve(args['parity-file']) : null;
+  const parity = parityFile && existsSync(parityFile) ? { file: path.relative(root, parityFile), report: JSON.parse(await readFile(parityFile, 'utf8')) } : null;
   const report = buildB11Report({ freeze: frozen, observation, operational: operationalEvidence, parity, profileCost: await profileCostEvidence() });
   await writeJson(path.join(outputDir, `pii-beta11-report-${fileVersion}.json`), report);
   const disposition = buildB11Disposition(report);
@@ -445,23 +473,44 @@ async function writeReport(frozen, observation, operationalEvidence) {
   console.log(`protected eligibility: ${disposition.protectedPartition.eligibleFamilies.length ? disposition.protectedPartition.eligibleFamilies.join(', ') : 'none'}`);
 }
 
+async function execute() {
 if (args['promote-freeze']) {
   // Publishing a mechanical freeze does not authorise a measurement authority or owner exit.
   if (existsSync(freezeFile)) throw new Error('Accepted freeze already exists; historical records are immutable');
-  const { frozen } = await verifyFreeze({ preparedFile: path.resolve(args['promote-freeze']), requireCommitted: false });
+  const preparedFile = path.resolve(args['promote-freeze']);
+  const relativePrepared = path.relative(path.join(root, 'results-output'), preparedFile);
+  if (relativePrepared.startsWith('..') || path.isAbsolute(relativePrepared)) throw new Error('Prepared freeze must come from ignored results-output');
+  const { frozen } = await verifyFreeze({ preparedFile, requireCommitted: false });
   if (frozen.freezeCommitment !== b11Commitment({ ...frozen, freezeCommitment: undefined }) ||
       frozen.candidate?.sourceCommit !== commit || frozen.role !== args.role || b11PlanSetOf(frozen) !== planSet || frozen.benchmark?.baseRevision !== await git('rev-parse', 'HEAD'))
     throw new Error('Prepared freeze identity/commitment differs from the requested product, plan or benchmark');
+  for (const [rows, expected] of [[frozen.frozenInputs, freezeFiles.benchmarkInputs], [frozen.evaluationSchema, freezeFiles.evaluationSchema]])
+    if (JSON.stringify(rows.map(row => row.path).sort()) !== JSON.stringify([...expected].sort()))
+      throw new Error('Prepared freeze must bind the complete current input and schema scope');
   for (const row of [...frozen.frozenInputs, ...frozen.evaluationSchema])
     if (await fileSha256(path.join(root, row.path)) !== row.sha256) throw new Error(`Prepared freeze input changed: ${row.path}`);
-  await writeJson(freezeFile, frozen);
-  console.log(`Published new freeze ${path.relative(root, freezeFile)}; commit and review before measurement. No authority changed.`);
+  publishPreparedPiiFreeze(root, frozen, { commit, role: args.role, planSet, baseRevision: await git('rev-parse', 'HEAD'),
+    inputs: freezeFiles.benchmarkInputs, schemaPaths: freezeFiles.evaluationSchema });
+  console.log(`Prepared candidate ${path.relative(root, freezeFile)}; independently register its exact bytes before measurement. No authority changed.`);
 } else if (args.rescore === 'true') {
   // Re-derive the report and disposition from the committed observation and operational evidence, e.g. after binding the
   // official profile-cost runs. Nothing is measured again.
-  const frozen = JSON.parse(await readFile(freezeFile, 'utf8'));
+  if (!args['replay-dir']) throw new Error('Rescoring requires --replay-dir=<restored original archive directory>');
+  const original = async name => {
+    const file = `pii-beta11-${name}-${fileVersion}.json`;
+    const raw = await readFile(path.join(evidenceDir, file));
+    const expected = await run('git', ['show', `${args['archive-source']}:evidence/901/428/core-${sha12}/${file}`], { cwd: root });
+    if (sha256(raw) !== sha256(expected)) throw new Error(`Restored historical input differs from original source: ${file}`);
+    return JSON.parse(raw);
+  };
+  const frozen = await original('freeze');
+  await verifyHistoricalScorerSources(frozen, root);
   if (frozen.candidate?.sourceCommit !== commit || b11PlanSetOf(frozen) !== planSet || frozen.freezeCommitment !== b11Commitment({...frozen, freezeCommitment: undefined})) throw new Error('Rescore requires the exact accepted freeze product, plan and commitment');
-  const read = async name => JSON.parse(await readFile(path.join(evidenceDir, `pii-beta11-${name}-${fileVersion}.json`), 'utf8'));
-  await writeReport(frozen, await read('observation'), await read('operational'));
-} else if (existsSync(freezeFile) && (await git('ls-files', path.relative(root, freezeFile)))) await measure();
+  await writeReport(frozen, await original('observation'), await original('operational'));
+} else if (args['replay-dir']) throw new Error('Historical freezes are replay inputs only; use --rescore=true or restore the original source checkout for measurement');
+else if (existsSync(freezeFile) && (await git('ls-files', path.relative(root, freezeFile)))) await measure();
 else await freeze();
+
+}
+if (args['promote-freeze']) await execute();
+else await stagedAsyncMeasurementDirectory(outputTarget, async stage => { outputDir = stage; await execute(); });

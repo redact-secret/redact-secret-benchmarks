@@ -1,11 +1,12 @@
+import { historicalArchive, historicalReplayOptions, historicalJson } from './helpers/historical-evidence-archive.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const assignment = read('benchmarks/corpora/credential-carriers/families.json');
-const readiness = read('evidence/739/readiness.json');
-const ledger = read('evidence/739/ledger.json');
+const readiness = historicalArchive ? historicalJson('evidence/739/readiness.json') : null;
+const ledger = historicalArchive ? historicalJson('evidence/739/ledger.json') : null;
 
 test('assignment is exactly 58 unique families in groups 23/13/12/4/3/3', () => {
   const names = assignment.families.map((f) => f.family);
@@ -15,7 +16,7 @@ test('assignment is exactly 58 unique families in groups 23/13/12/4/3/3', () => 
   assert.deepEqual(sizes, { G1: 23, G2: 13, G3: 12, G4: 4, G5: 3, G6: 3 });
 });
 
-test('readiness inventory and ledger cover every assigned family exactly once', () => {
+test('readiness inventory and ledger cover every assigned family exactly once', historicalReplayOptions, () => {
   const names = assignment.families.map((f) => f.family).sort();
   assert.deepEqual(readiness.families.map((f) => f.family).sort(), names);
   assert.deepEqual(ledger.families.map((f) => f.family).sort(), names);
@@ -23,11 +24,11 @@ test('readiness inventory and ledger cover every assigned family exactly once', 
   assert.equal(c.ready + c['carrier-unresolved'], 58);
 });
 
-test('status is evidence\'s', () => {
+test('status is evidence\'s', historicalReplayOptions, () => {
   for (const r of readiness.families) assert.ok(['ready', 'carrier-unresolved'].includes(r.status));
 });
 
-test('every family has a measured disposition; a gap names its issue', () => {
+test('every family has a measured disposition; a gap names its issue', historicalReplayOptions, () => {
   assert.equal(ledger.families.length, 58);
   for (const l of ledger.families) {
     assert.ok(l.coverage && !/^not-measured/.test(l.coverage), l.family);

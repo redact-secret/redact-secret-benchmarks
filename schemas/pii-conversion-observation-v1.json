@@ -1,0 +1,192 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "inputType",
+    "source",
+    "dataSha256",
+    "data"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "inputType": {
+      "const": "pii-conversion-observation"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "revision",
+        "sha256",
+        "role"
+      ],
+      "properties": {
+        "path": {
+          "const": "evidence/901/428/core-401158d09a67/pii-beta11-observation-v2.json"
+        },
+        "revision": {
+          "const": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a"
+        },
+        "sha256": {
+          "const": "74d2c16dcf68c35b615ca96848f73fcc9eb4911350c582fcf0c680ecb198903f"
+        },
+        "role": {
+          "const": "frozen-engine-conversion-observation"
+        }
+      }
+    },
+    "dataSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate"
+      ],
+      "properties": {
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sourceCommit",
+            "components",
+            "artifactSetCommitment",
+            "families"
+          ],
+          "properties": {
+            "sourceCommit": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "components": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "core",
+                "node",
+                "wasm"
+              ],
+              "properties": {
+                "core": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "node": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "wasm": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            },
+            "artifactSetCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "families": {
+              "type": "array",
+              "minItems": 6,
+              "maxItems": 6,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "family",
+                  "lanes"
+                ],
+                "properties": {
+                  "family": {
+                    "type": "string"
+                  },
+                  "lanes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "lane",
+                        "selection",
+                        "activationIdentity",
+                        "cases"
+                      ],
+                      "properties": {
+                        "lane": {
+                          "const": "node-addon"
+                        },
+                        "selection": {
+                          "const": "union"
+                        },
+                        "activationIdentity": {
+                          "type": "string"
+                        },
+                        "cases": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "id",
+                              "family",
+                              "otherPiiCount",
+                              "otherPiiAtTarget"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "family": {
+                                "type": "array",
+                                "items": {
+                                  "type": "array",
+                                  "minItems": 3,
+                                  "maxItems": 3,
+                                  "prefixItems": [
+                                    {
+                                      "type": "integer",
+                                      "minimum": 0
+                                    },
+                                    {
+                                      "type": "integer",
+                                      "minimum": 0
+                                    },
+                                    {
+                                      "type": "string"
+                                    }
+                                  ],
+                                  "items": false
+                                }
+                              },
+                              "otherPiiCount": {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              "otherPiiAtTarget": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "redact-secret/pii-conversion-observation/v1"
+}

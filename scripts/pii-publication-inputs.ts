@@ -1,18 +1,23 @@
+import Ajv from 'ajv';
+import registrySchema from '../schemas/pii-current-product-bindings-v1.json';
 import { createHash } from 'node:crypto';
-import { readdir, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii/benign-collision-contract.ts';
 import { piiPopulationContract, type PiiPopulationReport } from '../benchmarks/evaluation/domains/pii/population-contracts.ts';
 import type { PiiAccountingRow } from '../benchmarks/evaluation/domains/pii/accounting-types.ts';
-import type { PiiTrustedProductBinding } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
+import { validatePiiProductBinding, type PiiTrustedProductBinding } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
+import currentIndex from '../benchmarks/inputs/pii/current-inputs-index.json';
+import supportRegistry from '../benchmarks/evaluation/domains/pii/support-registry-v1.json';
+import { piiInputCommitment } from '../benchmarks/evaluation/domains/pii/current-inputs.ts';
 import type { PiiEvalMeasurement } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 import type { CustodianConformance } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 
 /**
  * Inputs one PII support publication may bind. Both describe one product: the
  * product commit this publication measured. Committed product evidence
- * (`evidence/<n>/`) is bound only when its source commit and core tarball are
+ * in the explicit current registry is bound only when its source commit and core tarball are
  * that product; a population bundle only when its candidate is that product.
  * Anything else stays not-measured rather than describing another build.
  */
@@ -90,28 +95,54 @@ export async function custodianConformanceFrom(bundleFile: string): Promise<Cust
   return { ...report, bundleSha256: createHash('sha256').update(bytes).digest('hex') } as CustodianConformance;
 }
 
-const EVIDENCE_FILES = { candidateEvidence: 'candidate-evidence-v1.json', activationArtifact: 'pii-activation-evidence-v1.json',
-  qualificationArtifact: 'pii-family-qualification-v1.json' } as const;
+const registryShape = new Ajv({ allErrors: true, strict: false }).compile<PiiCurrentProductRegistry>(registrySchema);
 
-/** The committed product evidence recorded for exactly this product, or null. Two records for one product fail closed. */
-export async function productEvidenceFor(product: PiiMeasuredProduct, evidenceRoot: string): Promise<{ directory: string; binding: PiiTrustedProductBinding } | null> {
-  if (!/^[0-9a-f]{40}$/.test(product.sourceCommit) || !/^[0-9a-f]{64}$/.test(product.coreSha256)) throw new Error('Invalid measured product identity');
-  const matches: string[] = [];
-  for (const entry of await readdir(evidenceRoot, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
-    const file = path.join(evidenceRoot, entry.name, EVIDENCE_FILES.activationArtifact);
-    let activation: any;
-    try { activation = JSON.parse(await readFile(file, 'utf8')); } catch (error: any) { if (error.code === 'ENOENT') continue; throw error; }
-    if (activation?.product?.sourceCommit === product.sourceCommit) matches.push(path.join(evidenceRoot, entry.name));
+export interface PiiCurrentProductRegistry {
+  schema: 'redact-secret/pii-current-product-bindings/v1'; supportClaims: false;
+  source: { commit: string; path: string; sha256: string };
+  products: Array<PiiMeasuredProduct & { role: 'baseline' | 'candidate' }>;
+  bindings: Array<{ sourceCommit: string; coreSha256: string; bindingCommitment: string; binding: PiiTrustedProductBinding }>;
+  projectionCommitment: string;
+}
+
+/** Explicit bindings are reviewed independently of the receipt's self-hash. Absence means not measured. */
+export function validateCurrentPiiProductRegistry(value: any): PiiCurrentProductRegistry {
+  const expected = currentIndex.inputs.filter(row => row.role === 'product-bindings');
+  if (!registryShape(value) || !value || value.schema !== 'redact-secret/pii-current-product-bindings/v1' || value.supportClaims !== false ||
+      Object.keys(value).sort().join(',') !== 'bindings,products,projectionCommitment,schema,source,supportClaims' ||
+      !Array.isArray(value.products) || !Array.isArray(value.bindings) || expected.length !== 1 ||
+      expected[0].path !== 'benchmarks/inputs/pii/product-bindings.json') throw new Error('Invalid, ambiguous or missing current PII product registry');
+  const { projectionCommitment, ...projection } = value;
+  if (projectionCommitment !== expected[0].projectionCommitment || piiInputCommitment(projection) !== projectionCommitment ||
+      piiInputCommitment(value.source) !== piiInputCommitment(expected[0].source)) throw new Error('Current PII product registry source or projection mismatch');
+  const identities = new Set<string>(), roles = new Set<string>();
+  for (const product of value.products) {
+    if (!product || Object.keys(product).sort().join(',') !== 'coreSha256,role,sourceCommit' ||
+        !['baseline', 'candidate'].includes(product.role) || !/^[a-f0-9]{40}$/.test(product.sourceCommit) || !/^[a-f0-9]{64}$/.test(product.coreSha256) ||
+        identities.has(product.sourceCommit) || roles.has(product.role)) throw new Error('Ambiguous or invalid current PII product identity');
+    identities.add(product.sourceCommit); roles.add(product.role);
   }
-  if (matches.length > 1) throw new Error(`More than one committed PII product record for ${product.sourceCommit}: ${matches.map(dir => path.basename(dir)).join(', ')}`);
-  if (!matches.length) return null;
-  const [directory] = matches;
-  const [candidateEvidence, activationArtifact, qualificationArtifact] = await Promise.all(Object.values(EVIDENCE_FILES)
-    .map(name => readFile(path.join(directory, name), 'utf8').then(JSON.parse)));
-  if (activationArtifact.product.artifactCommitment !== product.coreSha256)
-    throw new Error(`Committed PII product record ${path.basename(directory)} names another core artifact than the measured product`);
-  return { directory, binding: { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] } };
+  const bindings = new Set<string>();
+  for (const row of value.bindings) {
+    if (!row || Object.keys(row).sort().join(',') !== 'binding,bindingCommitment,coreSha256,sourceCommit' || bindings.has(row.sourceCommit) ||
+        !value.products.some((product: PiiMeasuredProduct) => product.sourceCommit === row.sourceCommit && product.coreSha256 === row.coreSha256) ||
+        piiInputCommitment(row.binding) !== row.bindingCommitment) throw new Error('Ambiguous or mismatched current PII activation binding');
+    validatePiiProductBinding(row.binding, supportRegistry.families.map(row => row.family));
+    if (row.binding.activationArtifact.product.sourceCommit !== row.sourceCommit || row.binding.activationArtifact.product.artifactCommitment !== row.coreSha256)
+      throw new Error('Current PII activation binding names another product');
+    bindings.add(row.sourceCommit);
+  }
+  return structuredClone(value);
+}
+
+/** No evidence-directory discovery: only the separately bound current registry can describe this product. */
+export async function productEvidenceFor(product: PiiMeasuredProduct, registryFile = fileURLToPath(new URL('../benchmarks/inputs/pii/product-bindings.json', import.meta.url))): Promise<{ directory: string; binding: PiiTrustedProductBinding } | null> {
+  if (!/^[0-9a-f]{40}$/.test(product.sourceCommit) || !/^[0-9a-f]{64}$/.test(product.coreSha256)) throw new Error('Invalid measured product identity');
+  const registry = validateCurrentPiiProductRegistry(JSON.parse(await readFile(registryFile, 'utf8')));
+  const selected = registry.products.find(row => row.sourceCommit === product.sourceCommit);
+  if (selected && selected.coreSha256 !== product.coreSha256) throw new Error('Current PII product registry names another core artifact than the measured product');
+  const record = registry.bindings.find(row => row.sourceCommit === product.sourceCommit);
+  return record ? { directory: registryFile, binding: record.binding } : null;
 }
 
 type BundleRow = { population: 'diagnostic-balanced' | 'benign-heavy-stress'; baselineReport: PiiPopulationReport;

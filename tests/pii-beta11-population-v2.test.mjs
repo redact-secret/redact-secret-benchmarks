@@ -1,3 +1,4 @@
+import { piiGapPolicy, piiFixtureCorrections } from '../benchmarks/evaluation/domains/pii/current-inputs.ts';
 // Beta.11 PII E (#428): the pii-context/v2 population plan set closes the interim population gaps without editing a frozen plan.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -18,8 +19,8 @@ import { B11_FREEZE_FILES, b11FreezeFiles } from '../benchmarks/evaluation/domai
 
 const root = new URL('../', import.meta.url);
 const sha256 = file => createHash('sha256').update(readFileSync(new URL(file, root))).digest('hex');
-const ledger = JSON.parse(readFileSync(new URL('evidence/901/pii-gap-ledger-v1.json', root), 'utf8'));
-const corrections = JSON.parse(readFileSync(new URL('evidence/901/426/pii-c3-reviewed-corrections-v1.json', root), 'utf8')).corrections;
+const ledger = piiGapPolicy;
+const corrections = piiFixtureCorrections.corrections;
 const prior = family => c1PriorPlanCandidates(PII_GAP_LEDGER_PLANS[family].plan, piiIdentityOracle.families.find(row => row.family === family));
 const at = (input, text) => { const start = Buffer.byteLength(input.slice(0, input.indexOf(text))); return { start, end: start + Buffer.byteLength(text) }; };
 const planOf = family => family === 'pii:global:email' || family === 'pii:global:network-address' ? C1_POPULATION_PLANS_V2[family].plan :

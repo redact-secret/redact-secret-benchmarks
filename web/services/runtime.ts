@@ -1,8 +1,9 @@
+import { runtimeInputPaths, validateCurrentRuntimeInput } from '../../benchmarks/lib/current-runtime-inputs.mjs';
 /**
  * The peer runtime comparison, read from what the repository commits: the plan
  * (`qualification/peer-pii-runtime-throughput-v1.json`), the workloads it reuses
  * (`qualification/pii-profile-cost-workloads-v1.json`) and the frozen snapshot
- * (`evidence/429/peer-pii-runtime-throughput.json`).
+ * (`benchmarks/inputs/runtime/peer-pii-runtime-throughput.json`).
  *
  * The snapshot is validated with the same function the existing site's tests use
  * (`validatePeerRuntimeThroughputReport`: it re-renders each workload, checks the
@@ -15,9 +16,13 @@ import { validatePeerRuntimeThroughputReport } from '../../benchmarks/evaluation
 import { runtimeComparisonPlan, validateRuntimeComparisonPlan } from '../../benchmarks/evaluation/domains/pii/runtime-comparison';
 import { once, readJson, readJsonIfPresent } from './repo';
 
-export const RUNTIME_SNAPSHOT = 'evidence/429/peer-pii-runtime-throughput.json';
+export const RUNTIME_SNAPSHOT = 'benchmarks/inputs/runtime/peer-pii-runtime-throughput.json';
 /** #562/#563: one report per redact-secret setting, from `qualification/runtime-comparison-v2.json`. */
-export const COMPARISON_SNAPSHOT = (settingId: string): string => `evidence/562/runtime-comparison-${settingId}.json`;
+export const COMPARISON_SNAPSHOT = (settingId: string): string => {
+  const input = runtimeInputPaths[settingId];
+  if (!input || settingId === 'peer') throw new Error(`Unsupported runtime setting: ${settingId}`);
+  return input;
+};
 
 interface PlanTool { id: string; package: string; provenance: string; call: string; async: boolean; piiSelectors?: string[] }
 interface Plan { tools: PlanTool[]; sampleProtocol: { samplesPerCell: number; warmupSamples: number } }
@@ -166,7 +171,7 @@ export function loadPeerRuntime(): Promise<PeerRuntime> {
       measurement = { state: 'not-published', reason: `${RUNTIME_SNAPSHOT} is absent: no runtime comparison has been committed.` };
     } else {
       try {
-        valid = validatePeerRuntimeThroughputReport(snapshot) as Snapshot;
+        valid = validatePeerRuntimeThroughputReport(validateCurrentRuntimeInput('peer', snapshot)) as Snapshot;
         measurement = {
           state: 'measured',
           generatedAt: valid.generatedAt,
@@ -222,7 +227,7 @@ async function loadComparison(): Promise<RuntimeComparison> {
       run = { state: 'not-published', reason: `${path} is absent: this setting has not been measured.` };
     } else {
       try {
-        const report = validatePeerRuntimeThroughputReport(found) as ComparisonReport;
+        const report = validatePeerRuntimeThroughputReport(validateCurrentRuntimeInput(s.id, found)) as ComparisonReport;
         run = {
           state: 'measured',
           generatedAt: report.generatedAt,

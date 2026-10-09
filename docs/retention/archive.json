@@ -48,12 +48,20 @@
     {
       "path": "evidence/286/pii-profile-cost-candidate-v1.json",
       "disposition": "retain-pending-review",
-      "reason": "No direct active code caller in inventory; gap-ledger and README reproduction references remain."
+      "reason": "No direct active code caller in inventory; gap-ledger and README reproduction references remain.",
+      "supersededByIssue879": {
+        "disposition": "archive-original-and-remove-head",
+        "manifest": "docs/retention/evidence-retirement-879.json"
+      }
     },
     {
       "path": "evidence/449/credential-candidate-8b6a5fd-v1.json",
       "disposition": "retain-release-anchor",
-      "reason": "release-source-equivalences and release record require this historical identity."
+      "reason": "release-source-equivalences and release record require this historical identity.",
+      "supersededByIssue879": {
+        "disposition": "archive-original-and-remove-head",
+        "manifest": "docs/retention/evidence-retirement-879.json"
+      }
     }
   ],
   "historicalRecordsRetrieval": {
@@ -228,5 +236,55 @@
       "downloadUrl": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/adversarial-originals-875-v1.tar.gz",
       "verifiedAt": "2026-10-09T01:45:51.484308+00:00"
     }
-  ]
+  ],
+  "evidencePayloadRetirement": {
+    "manifest": "docs/retention/evidence-retirement-879.json",
+    "sourceCommit": "65ffe7dcb3e7124e7f66cff96cab814f0365f69a",
+    "preservationTag": "hygiene-evidence-before-removal-879-20261008",
+    "asset": "evidence-original-879-v1.tar.gz",
+    "sha256": "8aea6b5af11369c4b8df6c1d22e6209133297ef5c12194deadb67b0af1ef7370",
+    "bytes": 12287622,
+    "manifestSha256": "8d5166a4a1d1757e3040e00077c244996065251a22cdc672985b08efe80cc37b",
+    "verifiedOriginalFiles": 684,
+    "verifiedOriginalBytes": 191515606,
+    "downloadUrl": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/evidence-original-879-v1.tar.gz",
+    "retrievedIndependently": true,
+    "regularMembers": 685,
+    "verification": "Each retrieved member byte-for-byte equals git show65ffe:path, SHA256, Gitblob SHA1 and manifest length; exact member set, no extraction."
+  },
+  "historicalBenchmarkSourceRetrieval879": {
+    "issue": 879,
+    "manifest": "docs/retention/evidence-retirement-879.json",
+    "asset": "historical-benchmark-source-879-v2.tar.gz",
+    "sourceCommits": [
+      "55c65e628a79a5085590d33fb757d122c426c9bc",
+      "6e2567d6f2f84dc1061cf5b34f2660772a8bf372",
+      "eceaf0a055a3552ee3d470c8e4a302a9c2787288",
+      "a2b268ad45c8508725bb204417c8dc0e46c31953"
+    ],
+    "retrievedIndependently": true,
+    "downloadUrl": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/historical-benchmark-source-879-v2.tar.gz",
+    "bytes": 11765845,
+    "sha256": "9eab2b91df335834a2c19f60c7ceb4cf279cc51e86807403facf5cec099e9576",
+    "manifestSha256": "140de66bc28495ba0dcaae736927d6d322f934524afa0b3bbb2036a3f34f3474",
+    "sourceTreeCount": 4,
+    "sourceFileCount": 2012,
+    "members": 2013,
+    "regularMembers": 2005,
+    "symlinkMembers": 8,
+    "executableSourceFiles": 9,
+    "sourceBytes": 122327208,
+    "originalGitModesAndSymlinkTargetsVerified": true,
+    "ancestorHistoryPublished": false,
+    "verification": "Exact2013member scope, each2012Gitblob byteSHA/length, exact tree path set, all originalGit100644/100755/120000 modes and symlink targetbytes.",
+    "preexistingUnavailableSource": {
+      "revision": "b1f685d127532481d68a8d77414750b332f277a9",
+      "originalLocator": "evidence/857/README.md",
+      "repository": "redact-secret/redact-secret-benchmarks",
+      "status": "not-local-and-GitHub-commit-unavailable-at-review",
+      "meaning": "The original evidence archive preserves the exact historical record and its declared identity, but cannot recover an unavailable implementation tree. No replacement revision or full reproduction guarantee is asserted.",
+      "retrievalReview": "Local refs/reflog contain no exact source; GitHub exact commit unavailable; benchmark issue365 linked PR368/385 expose different merged/rebased revisions; exact-head workflow run search returned zero. No replacement source identity is asserted."
+    },
+    "retentionBoundary": "Reviewed exact source trees only, no ancestor history or ignored custody files. Local permanent source refs preventGC; no remote oldtag publication."
+  }
 }

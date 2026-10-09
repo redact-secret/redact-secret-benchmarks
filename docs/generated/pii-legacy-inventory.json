@@ -62,7 +62,7 @@
    "mixed-split": {
     "disposition": "split-then-decide",
     "files": 15,
-    "externalCallerFiles": 50
+    "externalCallerFiles": 51
    },
    "benchmark-scorer": {
     "disposition": "retain-until-criterion",
@@ -72,7 +72,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 47
+    "externalCallerFiles": 49
    }
   }
  },
@@ -1421,14 +1421,14 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 17,
+    "total": 19,
     "withinCandidates": 4,
-    "testCallers": 2,
-    "external": 11,
+    "testCallers": 3,
+    "external": 12,
     "externalByClass": {
      "benchmarks": 7,
      "script": 3,
-     "web (Next app)": 1
+     "web (Next app)": 2
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/authority.ts (benchmarks, path)",
@@ -1441,7 +1441,8 @@
      "scripts/check-pii-authority.mjs (script, path)",
      "scripts/check-pii-protected-readiness.mjs (script, path)",
      "scripts/pii-official-plan.mjs (script, path)",
-     "web/resolvers/domains.ts (web (Next app), path)"
+     "web/resolvers/domains.ts (web (Next app), path)",
+     "web/resolvers/pii-overview.ts (web (Next app), path)"
     ]
    }
   },
@@ -1984,17 +1985,19 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 8,
+    "total": 10,
     "withinCandidates": 0,
     "testCallers": 4,
-    "external": 4,
+    "external": 6,
     "externalByClass": {
-     "web (Next app)": 4
+     "web (Next app)": 6
     },
     "externalFiles": [
      "web/resolvers/domains.ts (web (Next app), import)",
      "web/resolvers/pages.ts (web (Next app), import)",
      "web/resolvers/pii-method-coverage.ts (web (Next app), import)",
+     "web/resolvers/pii-overview.ts (web (Next app), import)",
+     "web/services/credential-coverage.ts (web (Next app), import)",
      "web/services/credential-source.ts (web (Next app), path)"
     ]
    }

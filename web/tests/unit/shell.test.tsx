@@ -78,7 +78,7 @@ describe('pages around the routes', () => {
     expect(links).toEqual(expect.arrayContaining(['All families', 'All providers', 'Report']));
   });
 
-  test('the root is the landing page: one h1, the three questions, the rules, and no redirect', async () => {
+  test('the root is the landing page: one h1, the four questions, the rules, and no redirect', async () => {
     render(await Home());
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     const questions = screen.getByRole('navigation', { name: 'What the benchmark answers' });

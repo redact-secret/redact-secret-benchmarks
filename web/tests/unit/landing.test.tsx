@@ -22,7 +22,7 @@ describe('landing resolver', () => {
     expect(scopeText({ families: null, piiKinds: null })).toBe('');
   });
 
-  test('the three questions lead to pages of the export', () => {
+  test('the four questions lead to pages of the export', () => {
     const { questions } = resolveLanding({ families: null, piiKinds: null });
     expect(questions.map(q => q.href)).toEqual(['/report/', '/comparison/performance/', '/evaluation/', '/coverage/credential/']);
   });

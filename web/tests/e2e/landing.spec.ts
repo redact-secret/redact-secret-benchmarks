@@ -4,17 +4,17 @@
  */
 import { BASE, expect, test } from './fixtures';
 
-test('the root is the landing page: one h1, the three questions and the rules', async ({ page }) => {
+test('the root is the landing page: one h1, the four questions and the rules', async ({ page }) => {
   await page.goto(`${BASE}/`);
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   const questions = page.getByRole('navigation', { name: 'What the benchmark answers' });
-  await expect(questions.getByRole('link')).toHaveCount(3);
+  await expect(questions.getByRole('link')).toHaveCount(4);
   await expect(page.getByRole('list', { name: 'The rules of the benchmark' }).getByRole('listitem')).not.toHaveCount(0);
   await expect(page.getByRole('contentinfo').getByRole('navigation', { name: 'Footer' }).getByRole('link')).not.toHaveCount(0);
 });
 
 test('each question leads to its page', async ({ page }) => {
-  for (const [name, path] of [[/Does it hide every secret/, '/report/'], [/How long does it take/, '/comparison/performance/'], [/How do we know/, '/evaluation/']] as const) {
+  for (const [name, path] of [[/Does it hide every secret/, '/report/'], [/How long does it take/, '/comparison/performance/'], [/How do we know/, '/evaluation/'], [/Which credentials and personal data/, '/coverage/credential/']] as const) {
     await page.goto(`${BASE}/`);
     await page.getByRole('navigation', { name: 'What the benchmark answers' }).getByRole('link', { name }).click();
     await expect(page).toHaveURL(`${BASE}${path}`);
@@ -57,11 +57,11 @@ test.describe('with reduced motion', () => {
 test.describe('without script', () => {
   test.use({ javaScriptEnabled: false });
 
-  test('the page is the same: the question, the example, the three questions and the footer', async ({ page }) => {
+  test('the page is the same: the question, the example, the four questions and the footer', async ({ page }) => {
     await page.goto(`${BASE}/`);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(page.locator('figure pre')).toContainText('provider');
-    await expect(page.getByRole('navigation', { name: 'What the benchmark answers' }).getByRole('link')).toHaveCount(3);
+    await expect(page.getByRole('navigation', { name: 'What the benchmark answers' }).getByRole('link')).toHaveCount(4);
     await expect(page.getByRole('contentinfo')).toBeVisible();
   });
 });

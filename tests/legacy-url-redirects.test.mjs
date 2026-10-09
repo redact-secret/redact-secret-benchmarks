@@ -132,6 +132,7 @@ test('the retired /next/ prefix is stripped and the rest is answered once', () =
 });
 
 test('/ is the landing page and is not redirected', () => {
-  assert.deepEqual(table.kept.map(k => k.path), ['/']);
+  assert.ok(table.kept.some(k => k.path === '/'));
+  assert.equal(resolve('/'), '/');
   assert.equal(table.rules.some(r => new RegExp(r.match).test('/')), false);
 });

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { callersOf } from '../scripts/legacy-callers.mjs';
-import { PII_MIGRATION, planChecks } from '../scripts/ci-plan.mjs';
+import { PII_MIGRATION, planChecks, inputFiles, keyOf } from '../scripts/ci-plan.mjs';
 
 // #666: repetitive PII measurement does not run in unrelated pull request builds, and no required check is weakened to get there.
 // The PII gates read committed files and run on every change; the measurement itself is dispatch-only or runs on a push.
@@ -59,6 +59,27 @@ test('the PII oracle code, the credential measurement and an unknown path still 
   }
   // A change that mixes both runs the legacy measurement.
   assert.equal(plan(['scripts/replay-pii-populations.mjs', 'benchmarks/run.ts']).legacy, true);
+});
+
+test('coverage publication changes validate sources and the site without remeasuring the legacy corpus', () => {
+  const files = ['scripts/lib/pii-coverage-model.mjs', 'scripts/lib/pii-coverage-inventory.mjs',
+    'scripts/lib/pii-coverage-join.mjs', 'scripts/lib/pii-coverage-summary.mjs', 'scripts/lib/pii-coverage-delta.mjs',
+    'scripts/pii-coverage-publication.mjs', 'scripts/pii-coverage-publication.d.mts',
+    'benchmarks/inputs/pii-coverage/active/manifest.json', 'benchmarks/inputs/pii-coverage/proposed/privacy-kinds.json',
+    'benchmarks/inputs/pii-coverage/baseline-product-catalog.json'];
+  for (const file of files) {
+    const selected = plan([file]);
+    assert.equal(selected.legacy, false, `${file} is publication data, not a scanner input`);
+    assert.equal(selected.web, true, `${file} must rebuild the site`);
+    assert.equal(selected.webScope, 'full', `${file} changes the site's source data`);
+    assert.ok(!inputFiles('legacy', files).includes(file));
+    assert.ok(inputFiles('view', files).includes(file));
+    assert.equal(keyOf('legacy', files, () => Buffer.from('before')), keyOf('legacy', files, path => Buffer.from(path === file ? 'after' : 'before')));
+    assert.notEqual(keyOf('view', files, () => Buffer.from('before')), keyOf('view', files, path => Buffer.from(path === file ? 'after' : 'before')));
+  }
+  assert.equal(plan(files).legacy, false);
+  assert.equal(plan([...files, 'benchmarks/run.ts']).legacy, true, 'mixed measurement changes still require the oracle');
+  assert.equal(plan(['scripts/lib/pii-coverage-unknown.mjs']).legacy, true, 'a new unreviewed coverage script is still shared code');
 });
 
 test('no legacy-measurement file depends on a carved-out file: the only non-test, non-web callers are publish-time PII code and workflows', () => {

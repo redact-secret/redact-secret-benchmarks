@@ -11,3 +11,5 @@ export type { DomainStatusProps } from './DomainStatus';
 export { DomainView } from './DomainView';
 export type { DomainViewProps } from './DomainView';
 export type * from './types';
+export { PiiCoverageMatrix } from './PiiCoverageMatrix';
+export type { PiiCoverageMatrixData } from './PiiCoverageMatrix';

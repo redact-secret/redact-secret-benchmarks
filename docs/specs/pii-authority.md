@@ -37,6 +37,12 @@ only while every PUBLIC exit criterion is met and every named part equals the tr
 synthetic negative-control reference (#848): it proves generated-output publication
 rejects the PII authority destination, without reading or writing the committed
 value. It is registered in `PII_AUTHORITY_READERS`; other test paths remain refused.
+`tests/pii-coverage-publication.test.mjs` is an exact approved test-only reader
+(#864). It copies and hashes original PII and credential authority bytes before
+and after coverage publication to prove they are unchanged. It neither
+interprets the values nor writes them, and grants no runtime reader exception
+or coupling between the two authorities. Other test paths remain refused.
+
 Web tests choose the authority by an overlay root (`web/tests/unit/overlay.ts` pins `legacy` unless a test chooses), so the suite means the same whichever value is committed.
 
 ## Exit criteria
@@ -82,8 +88,18 @@ The gate compares the candidates and the callers that would block a removal (not
 
 ## CI lanes
 
-Repetitive PII measurement is not run for unrelated pull requests, and no required check is weaker for it. `scripts/ci-plan.mjs` (`PII_MIGRATION`) does not select the legacy oracle for a change to only the PII migration tooling and data; the PII oracle domain code, the product policy and the PII publication code remain legacy inputs.
+Repetitive PII measurement is not run for unrelated pull requests, and no required check is weaker for it. `scripts/ci-plan.mjs` (`PII_MIGRATION`) does not select the legacy oracle for a change to only the PII migration tooling and data; the PII oracle domain code, the product policy and the retained oracle publication code remain legacy inputs.
 Routine PII measurement is the dispatch-only official run (`pii-official-run.yml`), the replay and cost workflows and the push-time publication; a pull request validates committed artifacts, pins and policy. Every PII gate runs in `validate-sources` on every change; the root unit tests (every PII test) run on every change; the site is built for a PII data change. The measurement workflows (`pii-profile-cost*`, `peer-pii-runtime-throughput`, `pii-population-replay`) are dispatch-only; `publish-site.yml` measures the populations on a push. `tests/pii-ci-lanes.test.mjs` holds this.
+
+The discovered-kind coverage projection is also publication work: the five
+`scripts/lib/pii-coverage-{model,inventory,join,summary,delta}.mjs` modules,
+`scripts/pii-coverage-publication.{mjs,d.mts}` and the verified metadata in
+`benchmarks/inputs/pii-coverage/` belong to `PII_MIGRATION`. Changes to only these
+files rebuild and validate the site and its source contracts without selecting
+the legacy measurement or changing its corpus cache key. They do change the
+publication view key. Unknown coverage script names and changes mixed with
+measurement inputs still select the legacy oracle; workflow, package, lockfile
+and CI-planner changes retain the full validation rule.
 
 ## Commands
 

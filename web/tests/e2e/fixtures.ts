@@ -138,7 +138,7 @@ export const ROUTES: string[] = [
   '/comparison/performance/', '/comparison/accuracy/', '/comparison/accuracy/?data=pii',
   '/evaluation/credential/', '/evaluation/pii/', '/evaluation/pii/evidence/',
   '/evaluation/rc/', '/evaluation/scanner/', '/evaluation/qualification/', '/evaluation/qualification/unattributed/1/',
-  '/evaluation/', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/evaluation/method/${m}/`),
+  '/evaluation/', '/evaluation/method/', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/evaluation/method/${m}/`),
   ...['twin', 'benign', 'metamorphic', 'mutation', 'differential'].map(m => `/evaluation/method/${m}/checks/`),
   ...(CHECKS_LIST ? [CHECKS_LIST] : []),
 ].filter(selected).map(route => `${BASE}${route}`);

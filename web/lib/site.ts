@@ -17,7 +17,7 @@ export const FOOTER_GROUPS = [
     { label: 'Detectors', href: '/report/detectors/' },
     { label: 'Credentials', href: '/report/families/' },
     { label: 'PII + PHI', href: '/evaluation/pii/' },
-    { label: 'Internationalization', href: '/coverage/internationalization/' },
+    { label: 'Internationalization', href: '/report/internationalization/' },
   ] },
   { label: 'Evaluation', links: [
     { label: 'Methods', href: '/evaluation/method/' },

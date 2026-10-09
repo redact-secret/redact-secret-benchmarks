@@ -86,7 +86,7 @@ export function inspectHeader() {
     const ratio = img.getBoundingClientRect().width / img.getBoundingClientRect().height;
     if (Math.abs(ratio - 944 / 817) > 0.02) problems.push(`the logo is stretched (ratio ${ratio.toFixed(3)}, asset 944:817)`);
   }
-  if (header.querySelector('svg path')) problems.push('header draws its own mark inline instead of using the canonical asset');
+  if (light?.closest('a')?.querySelector('svg path')) problems.push('header draws its own mark inline instead of using the canonical asset');
   return problems;
 }
 

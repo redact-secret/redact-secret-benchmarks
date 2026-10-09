@@ -70,8 +70,8 @@ test.describe('lists (?q= ?show= ?level=)', () => {
   test('Back after navigating away and returning restores the list as it was left', async ({ page }) => {
     await page.goto(`${BASE}/report/detectors/?q=stripe`);
     await expect(page.getByRole('searchbox', { name: 'Find' })).toHaveValue('stripe');
-    await page.getByRole('navigation', { name: 'Report pages' }).getByRole('link', { name: 'Findings' }).click();
-    await expect(page).toHaveURL(`${BASE}/report/findings/`);
+    await page.getByRole('navigation', { name: 'Report pages' }).getByRole('link', { name: 'Providers' }).click();
+    await expect(page).toHaveURL(`${BASE}/report/providers/`);
     await page.goBack();
     await expect(page).toHaveURL(`${BASE}/report/detectors/?q=stripe`);
     await expect(page.getByRole('searchbox', { name: 'Find' })).toHaveValue('stripe');

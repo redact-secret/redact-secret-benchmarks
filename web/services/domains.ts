@@ -137,7 +137,7 @@ async function loadPublishedPiiEvidence(): Promise<{ piiEvalMeasurement: PiiEval
 async function committedPiiEvalMeasurement(): Promise<PiiEvalMeasurement> {
   const dir = (await readJsonIfPresent<unknown>('benchmarks/pii-eval-official-run/record.json')) ? 'benchmarks/pii-eval-official-run' : 'benchmarks/pii-eval-population-dual-run';
   return piiEvalMeasurementFrom(path.join(REPO_ROOT, 'benchmarks/pii-eval-population-pins.json'),
-    PII_VIEW_IDS.map(view => path.join(REPO_ROOT, `${dir}/${view}.public-synthetic-artifact.json`)), null);
+    PII_VIEW_IDS.map(view => path.join(REPO_ROOT, `${dir}/${view}.public-synthetic-artifact.json`)), null, { repoRoot: REPO_ROOT });
 }
 
 function loadPiiEvidence(): Promise<PiiEvidence> {

@@ -39,6 +39,8 @@ A source-commit match alone is insufficient. `piiEvalMeasurementFrom` resolves t
 
 Missing or invalid proof with the same source commit is `publication-artifact-not-bound`. A different source or a verified other product is `other-product`. Without a measured publication product it is `publication-product-not-measured`. These are measurement identity states, never support verdicts. New matched rows persist `productBinding.proof` (core tarball, engine package tree, engine commit, scorer and population digest), plus the independent expected `publicationProduct` source/core identity. Readback reconciles every proof field with those identities and the scanner/population; a historical source-only matched row without proof is invalid. Trusted activation, when bound, must also agree on the source/core identity. Tests may inject a receipt resolver, but all returned identities are still checked.
 
+Bundled Next consumers supply the repository root explicitly; source CLI consumers resolve it from the source module. Receipt lookup never treats a bundled module location as the repository.
+
 The existing paired official comparison from #616/#842 is consumed without another scanner run. A later candidate cannot borrow that comparison. No unverified pin-supplied tarball statement substitutes for the receipt.
 
 ## Bounded oracle and rollback

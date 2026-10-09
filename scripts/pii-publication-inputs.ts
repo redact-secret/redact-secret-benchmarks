@@ -21,6 +21,8 @@ export type PiiPublicationProductBinding = { state: 'matched'; sourceCommit: str
   packageTreeSha256: string; engineCommit: string; protocol: { id: string; revision: number };
   populationDigests: Record<string, string> } | { state: 'absent' | 'invalid' | 'other-product'; reason: string };
 export interface PiiPublicationInputOptions {
+  /** Bundled callers supply their repository root; CLI callers use this source module location. */
+  repoRoot?: string;
   /** Tests may supply a reviewed receipt resolver; every returned identity is still checked below. */
   productBindingLoader?: (root: string, product: PiiMeasuredProduct) => Promise<PiiPublicationProductBinding> | PiiPublicationProductBinding;
 }
@@ -56,7 +58,7 @@ export async function piiEvalMeasurementFrom(pinsFile: string | string[], artifa
   const proof = product ? await (options.productBindingLoader ?? (async (root, measured) => {
     const { loadPiiPublicationProductBinding } = await import('../benchmarks/support/pii-publication-product.mjs');
     return loadPiiPublicationProductBinding(root, measured);
-  }))(fileURLToPath(new URL('../', import.meta.url)), product) : null;
+  }))(options.repoRoot ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), product) : null;
   const populations = reports.flatMap(({ report, pins }: any) => report.populations.map((row: any) => {
     const pin = pins.populations.find((item: any) => item.label === row.label);
     const scanner = pin.scanners[0], sourceCommit: string | null = scanner.candidateSourceCommit ?? null;

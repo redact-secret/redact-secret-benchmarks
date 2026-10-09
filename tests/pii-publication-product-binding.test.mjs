@@ -35,6 +35,10 @@ test('default publication resolver matches real recorded artifacts and persists 
     const artifacts = plan.populations.map(({ view }) => path.join(directory, `candidate.${view}.public-synthetic-artifact.json`));
     const measurement = await piiEvalMeasurementFrom(pins, artifacts, productOf(receipt));
     assert.ok(measurement.populations.every(row => row.productBinding.state === 'measures-publication-product' && row.productBinding.proof));
+    const explicitRoot = await piiEvalMeasurementFrom(pins, artifacts, productOf(receipt), { repoRoot: root });
+    assert.deepEqual(explicitRoot, measurement, 'bundled callers use the injected repository root');
+    const missingRoot = await piiEvalMeasurementFrom(pins, artifacts, productOf(receipt), { repoRoot: scratch });
+    assert.ok(missingRoot.populations.every(row => row.productBinding.state === 'publication-artifact-not-bound'), 'another root cannot borrow source-module comparison receipts');
     const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement });
     assert.equal(validatePiiSupportMatrixV2(JSON.parse(JSON.stringify(matrix))).artifactCommitment, matrix.artifactCommitment);
   } finally { await rm(scratch, { recursive: true, force: true }); }

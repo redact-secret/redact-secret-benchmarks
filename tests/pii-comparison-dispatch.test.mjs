@@ -1,3 +1,5 @@
+import { readFileSync, existsSync } from 'node:fs';
+import { parse } from 'yaml';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { checkDispatch, verifyCurrentDispatch } from '../scripts/check-pii-comparison-dispatch.mjs';
@@ -35,4 +37,20 @@ test('GitHub API null metadata is valid while the committed decision stays stric
     : JSON.stringify({ encoding: 'base64', content: Buffer.from(text).toString('base64'), _links: { git: null } });
   assert.doesNotThrow(() => verifyCurrentDispatch({ plan, environment, readApi, readDecision: () => text }));
   assert.throws(() => verifyCurrentDispatch({ plan, environment, readApi, readDecision: () => '{"decidedAt":null}' }), /null-not-allowed/);
+});
+
+test('official dispatch routes comparison lanes to existing same-repository reusable workflows', () => {
+  const workflow = parse(readFileSync(new URL('../.github/workflows/pii-official-run.yml', import.meta.url), 'utf8'));
+  for (const [lane, file] of [['candidate-comparison', 'pii-candidate-comparison.yml'], ['evidence-comparison', 'pii-evidence-comparison.yml']]) {
+    const job = workflow.jobs[lane];
+    assert.equal(job.uses, `./.github/workflows/${file}`);
+    assert.match(job.if, new RegExp(`inputs\\.lane == '${lane}'`));
+    const target = new URL(`../${job.uses}`, import.meta.url);
+    assert.ok(existsSync(target), `the ${lane} dispatch workflow exists`);
+    const reusable = parse(readFileSync(target, 'utf8'));
+    assert.ok(reusable.on.workflow_call, `the ${lane} workflow accepts a reusable call`);
+    assert.deepEqual(job.permissions, { contents: 'read', actions: 'read' });
+  }
+  for (const job of Object.values(workflow.jobs)) if (job.uses?.includes('/.github/workflows/'))
+    assert.ok(job.uses.startsWith('./.github/workflows/'), 'local reusable workflows use ./, never $/');
 });

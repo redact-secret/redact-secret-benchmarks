@@ -1,11 +1,11 @@
-import { firstRunPath, HISTORICAL_PACK_PATHS } from '../benchmarks/lib/adversarial-packs.ts';
+import { firstRunPath, firstRunPackPath, firstRunDigests, HISTORICAL_PACK_PATHS } from '../benchmarks/lib/adversarial-packs.ts';
 import { spawnSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { compareResult, normalizeFindings, outcomeTable } from '../benchmarks/lib/adversarial-first-run.ts';
-import { derivedQualification, expectationsDigest, fileDigest, validateIntake } from '../benchmarks/lib/adversarial-intake.ts';
+import { derivedQualification, expectationsDigest, fileDigest, firstRunImmutabilityProblems, validateIntake } from '../benchmarks/lib/adversarial-intake.ts';
 import { SOURCES, fixtures as authoredFixtures } from '../adversarial/packs/public-source-regression/build-intake.mjs';
 
 const pack = fileURLToPath(new URL('../adversarial/packs/public-source-regression/', import.meta.url));
@@ -81,4 +81,23 @@ test('historical pack CLI resolves the purpose path and refuses a second freeze 
   assert.notEqual(run.status, 0);
   assert.match(run.stderr, /must be at safety-review/);
   assert.doesNotMatch(run.stderr, /ENOENT|peer.*pin|trufflehog/i);
+});
+
+
+test('frozen first-run comparison accepts only the fixed relocation and still rejects changed or removed bytes', () => {
+  const currentPath = HISTORICAL_PACK_PATHS[intake.id];
+  const oldPath = 'adversarial/packs/beta9-external-inputs/first-run.json';
+  const movedPath = 'adversarial/run-records/public-source-regression/first-run.json';
+  const current = firstRunDigests([{ path: currentPath, record: intake, firstRunBytes }]);
+  for (const path of [oldPath, movedPath, `${currentPath}/first-run.json`]) {
+    const baseline = new Map([[firstRunPackPath(path), fileDigest(firstRunBytes)]]);
+    assert.deepEqual(firstRunImmutabilityProblems(current, baseline), []);
+    const changed = firstRunDigests([{ path: currentPath, record: intake, firstRunBytes: firstRunBytes + '\n' }]);
+    assert.match(firstRunImmutabilityProblems(changed, baseline).join(), /changed since the base revision/);
+    assert.match(firstRunImmutabilityProblems(new Map(), baseline).join(), /was removed/);
+  }
+  assert.equal(firstRunPackPath('adversarial/packs/another-pack/first-run.json'), 'adversarial/packs/another-pack');
+  assert.equal(firstRunPackPath('adversarial/samples/beta9-external-inputs/first-run.json'), 'adversarial/samples/beta9-external-inputs');
+  assert.equal(firstRunPackPath('adversarial/run-records/another-pack/first-run.json'), null);
+  assert.equal(firstRunPackPath('adversarial/packs/public-source-regression/reruns/first-run.json'), null);
 });

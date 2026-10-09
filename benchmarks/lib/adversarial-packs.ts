@@ -20,6 +20,18 @@ export function firstRunPath(root: string, packPath: string): string {
     : `${packPath}/first-run.json`);
 }
 
+/** Resolve only the fixed migration when comparing frozen bytes across Git trees. */
+export function firstRunPackPath(path: string): string | null {
+  if (path === 'adversarial/run-records/public-source-regression/first-run.json') {
+    return HISTORICAL_PACK_PATHS['beta9-external-inputs'];
+  }
+  const match = /^(adversarial\/(?:packs|samples)\/([^/]+))\/first-run\.json$/.exec(path);
+  if (!match) return null;
+  return match[1] === 'adversarial/packs/beta9-external-inputs'
+    ? HISTORICAL_PACK_PATHS['beta9-external-inputs']
+    : match[1];
+}
+
 export const PACK_DIRECTORIES = ['adversarial/packs', 'adversarial/samples'] as const;
 
 export interface LoadedPack {

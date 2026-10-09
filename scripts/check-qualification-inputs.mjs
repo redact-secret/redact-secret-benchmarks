@@ -10,6 +10,7 @@
  */
 import { readFile, stat } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
+import { decisionStatus } from './lib/decision-provenance.mjs';
 
 const root = new URL('../', import.meta.url);
 export const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-corpus', 'candidate-regression-inputs', 'protected-holdout'];
@@ -21,8 +22,8 @@ const SUPERSEDED_RELEASES = ['snapshot-2026.10.01'];
 
 const exists = async path => stat(new URL(path, root)).then(() => true, () => false);
 
-/** Pure structural check of a parsed manifest; `pathExists` is injected so tests need no disk. */
-export async function qualificationInputProblems(manifest, pathExists) {
+/** Pure structural check of a parsed manifest; `pathExists` and `decisionAccepted` are injected so structural tests need no disk. */
+export async function qualificationInputProblems(manifest, pathExists, decisionAccepted = pathExists) {
   const problems = [];
   const populations = manifest.populations ?? [];
   const ids = populations.map(p => p.id);
@@ -79,18 +80,18 @@ export async function qualificationInputProblems(manifest, pathExists) {
 
   for (const change of manifest.supportStatusChanges ?? []) {
     if (!change.family || !change.reason || !change.decision || !change.productPolicyRevision) problems.push('supportStatusChanges entries need family, reason, decision and productPolicyRevision');
-    if (change.decision && !(await pathExists(change.decision))) problems.push(`supportStatusChanges: decision does not exist: ${change.decision}`);
+    if (change.decision && !(await decisionAccepted(change.decision))) problems.push(`supportStatusChanges: decision has no validated accepted provenance: ${change.decision}`);
     // The stamp is defined by the adapter (#605, docs/specs/qualification-adapter.md).
     if (change.productPolicyRevision && !/^rs-policy-\d+:sha256:[0-9a-f]{64}$/.test(change.productPolicyRevision)) problems.push(`supportStatusChanges: productPolicyRevision must be an adapter stamp (rs-policy-<n>:sha256:<64 hex>) for ${change.family}`);
   }
   if (!(await pathExists(manifest.spec))) problems.push(`spec does not exist: ${manifest.spec}`);
-  if (!(await pathExists(manifest.decision))) problems.push(`decision does not exist: ${manifest.decision}`);
+  if (!(await decisionAccepted(manifest.decision))) problems.push(`decision has no validated accepted provenance: ${manifest.decision}`);
   return problems;
 }
 
 export async function checkQualificationInputs() {
   const manifest = JSON.parse(await readFile(new URL('benchmarks/qualification-inputs.json', root), 'utf8'));
-  const problems = await qualificationInputProblems(manifest, exists);
+  const problems = await qualificationInputProblems(manifest, exists, path => decisionStatus(path) === 'accepted');
   // The two corpus manifests partition the catalog; each category belongs to exactly one population view.
   const [development, regression, catalog] = await Promise.all(['corpora/development/manifest.json', 'corpora/regression/manifest.json', 'benchmarks/categories.json']
     .map(path => readFile(new URL(path, root), 'utf8').then(JSON.parse)));

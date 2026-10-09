@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { piiFindingIdentity } from '../scanners/candidate.mjs';
 import { piiPopulationSelectors, piiPopulationScannerConfiguration } from '../scripts/observe-pii-populations.mjs';
-import { populationBindingsFrom, productEvidenceFor } from '../scripts/pii-publication-inputs.ts';
+import { populationOracleBindingsFrom as populationBindingsFrom, productEvidenceFor } from '../scripts/pii-publication-inputs.ts';
 import { piiSupportRegistry } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 
 const PHONE_PRODUCT = { sourceCommit: '2e1bdcf0905f7a374c4c54b7caac41303cd7d88b', coreSha256: 'ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1' };

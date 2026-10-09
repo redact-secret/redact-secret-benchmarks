@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CANDIDATE_DIFF_SCHEMA, buildCandidateDiff, candidateDiffArtifactProblems, candidateDiffProblems, receiptFilesProblems, METHODS_KEY, PLAIN_POPULATIONS } from '../benchmarks/qualification/candidate-diff.ts';
 import { MATRIX_ARTIFACT_SCHEMA, buildMatrixArtifact, matrixArtifactProblems } from '../benchmarks/qualification/matrix-artifact.ts';
-import { supportMatrixProblem } from '../src/support-model.ts';
+import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
 
 // Synthetic only (#657): the registry, the artifacts, the receipts and every digest are built here. No committed ledger value, count or run is read, and the expected
 // numbers below are written by hand from the case tables, not by calling the code under test.

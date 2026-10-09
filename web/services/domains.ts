@@ -14,7 +14,7 @@
  */
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { ACCOUNTING_VERSION } from '../../benchmarks/accounting/index';
+import { ACCOUNTING_VERSION } from '../../benchmarks/consumer/credential-metrics';
 import { PII_METRIC_IDS, PII_METRIC_LABELS, piiV1Profile } from '../../benchmarks/evaluation/domains/pii/profile';
 import { PII_CONTEXT_LANGUAGES } from '../../benchmarks/evaluation/domains/pii/context-languages';
 import { PII_JURISDICTION_STANDARD } from '../../benchmarks/evaluation/domains/pii/jurisdictions';
@@ -137,7 +137,7 @@ async function loadPublishedPiiEvidence(): Promise<{ piiEvalMeasurement: PiiEval
 async function committedPiiEvalMeasurement(): Promise<PiiEvalMeasurement> {
   const dir = (await readJsonIfPresent<unknown>('benchmarks/pii-eval-official-run/record.json')) ? 'benchmarks/pii-eval-official-run' : 'benchmarks/pii-eval-population-dual-run';
   return piiEvalMeasurementFrom(path.join(REPO_ROOT, 'benchmarks/pii-eval-population-pins.json'),
-    PII_VIEW_IDS.map(view => path.join(REPO_ROOT, `${dir}/${view}.public-synthetic-artifact.json`)), null);
+    PII_VIEW_IDS.map(view => path.join(REPO_ROOT, `${dir}/${view}.public-synthetic-artifact.json`)), null, { repoRoot: REPO_ROOT });
 }
 
 function loadPiiEvidence(): Promise<PiiEvidence> {

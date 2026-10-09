@@ -14,13 +14,13 @@
 #   develop -> staging.benchmarks.redactsecret.dev
 #   main    -> benchmarks.redactsecret.dev
 #
-# Both measure the corpus against the released `@redact-secret/core` in the
-# lockfile. Staging also measures a qualified `redact-secret` `main` commit with
-# `eval:candidate`, from the artifacts that commit's own `artifact-qualification`
-# run qualified, and ships it as candidate evidence (#152); production does not,
-# and its Workbench Changes page says it reads the release instead (#213).
-# Both publish a qualification run and a support matrix: staging's matrix
-# classifies the candidate, production's the released package.
+# Credential and PII authorities select their producers independently (#870).
+# New credential publication consumes recorded canonical engine RunArtifacts;
+# staging candidate evidence requires the qualified tarballs' registered replay.
+# New PII publication consumes exact pinned engine artifacts with separate product
+# binding. Neither calls an old accuracy run a fresh candidate measurement.
+# Legacy accuracy producers remain only for each supported rollback authority.
+# Live discovery and separately registered performance contracts remain intact.
 #
 # The site is the Next.js app (`web/`, a static export) at the ROOT of the host,
 # built from the same run and the same measured files, with the measured JSON
@@ -146,6 +146,10 @@ jobs:
 
       # The one place the workflow learns the qualification authority (#657): the committed value, validated, as a step output. `new` makes the qualification,
       # the support matrix and the candidate evidence consumers of validated artifacts; `legacy` is the rollback and runs the legacy steps unchanged.
+      - name: Read the independent PII measurement authority
+        id: pii-authority
+        run: node --import tsx scripts/check-pii-authority.mjs --github-output
+
       - name: Read the credential qualification authority
         id: authority
         run: node --import tsx scripts/credential-publication.ts authority
@@ -272,12 +276,12 @@ jobs:
         if: env.TARGET == 'staging'
         run: node scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/qualified" --packed "$RUNNER_TEMP/candidate"
 
-      # --strict: a scanner that is unavailable fails the run instead of being
-      # published as an "unavailable" row. Staging (#201) measures redact-secret
-      # from the qualified main candidate, so its Report shows how that
-      # exact source behaves; every report and run.json names it as unreleased.
-      # Production measures the released lockfile package.
-      - name: Measure the corpus
+      # Remove only this run's optional rollback comparison, never accepted evidence.
+      - name: Clear the transient PII comparison
+        run: rm -f results-output/pii/population-release-v1.json
+
+      - name: Measure the corpus (credential rollback)
+        if: steps.authority.outputs.authority == 'legacy'
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
@@ -285,25 +289,31 @@ jobs:
           WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
         run: |
           set -euo pipefail
-          # Only a bundle produced during this run may affect publication.
-          rm -f results-output/pii/population-release-v1.json
           if [ "$TARGET" = staging ]; then
             npm run bench -- --strict \
               --candidate-package="$CORE_PACKAGE" \
               --candidate-node-package="$NODE_PACKAGE" \
               --candidate-wasm-package="$WASM_PACKAGE" \
               --candidate-source-commit="$PRODUCT_COMMIT"
-            # PII populations: the released lockfile package is the baseline,
-            # this qualified candidate the candidate. The bundle binds only here.
-            npm run pii:observe:populations -- \
-              --candidate-core="$CORE_PACKAGE" \
-              --candidate-node="$NODE_PACKAGE" \
-              --candidate-wasm="$WASM_PACKAGE" \
-              --candidate-source-commit="$PRODUCT_COMMIT" \
-              --output=results-output/pii/population-release-v1.json
           else
             npm run bench -- --strict
           fi
+
+      - name: Observe PII populations (bounded rollback oracle)
+        if: env.TARGET == 'staging' && steps.pii-authority.outputs.authority == 'legacy'
+        env:
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
+          NODE_PACKAGE: ${{ steps.candidate.outputs.node }}
+          WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
+        run: |
+          set -euo pipefail
+          npm run pii:observe:populations -- \
+            --candidate-core="$CORE_PACKAGE" \
+            --candidate-node="$NODE_PACKAGE" \
+            --candidate-wasm="$WASM_PACKAGE" \
+            --candidate-source-commit="$PRODUCT_COMMIT" \
+            --output=results-output/pii/population-release-v1.json
 
       # The discovery evaluation below, and under the legacy authority the qualification's distinct holdout lifecycle, execute the
       # scanners live. The four-scanner comparison above has already consumed snapshots and cannot accidentally fall back to these binaries.
@@ -334,8 +344,8 @@ jobs:
           scanners="$(jq -r '.runClasses.official.required | join(",")' benchmarks/support/scanner-roster.json)"
           # Only the store written by this run may be published: drop any earlier discovery store or single-file report and bundle pointer.
           rm -rf results-output/evaluation results-output/evaluation.json public/results/evaluation-bundle-v1.json
-          npm run eval -- --scanner="$scanners"
-          test -s results-output/evaluation/manifest.json || { echo "::error::npm run eval wrote no discovery store (results-output/evaluation/manifest.json)"; exit 1; }
+          npm run eval:discover -- --scanner="$scanners"
+          test -s results-output/evaluation/manifest.json || { echo "::error::npm run eval:discover wrote no discovery store (results-output/evaluation/manifest.json)"; exit 1; }
           qualification_args=()
           if [ "$AUTHORITY" = legacy ]; then
             qualification=results-output/qualification/engine-v1.json
@@ -432,6 +442,7 @@ jobs:
       - name: Publish the provider roadmap, the domain gate and the PII support
         env:
           AUTHORITY: ${{ steps.authority.outputs.authority }}
+          PII_AUTHORITY: ${{ steps.pii-authority.outputs.authority }}
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
         run: |
@@ -456,32 +467,32 @@ jobs:
           # complete credential bundle + PII set and renames the v2 index last.
           # Staging names the product it measured, so committed activation
           # evidence recorded for exactly that product (evidence/<n>/) binds;
-          # production measures the release and binds none.
+          # production consumes recorded measurements and binds no candidate.
           product_args=()
-          pii_eval_args=()
+          # Official engine measurements are inputs on production too; product binding remains separately checked.
+          pii_eval_args=(
+            --pii-eval-pins=benchmarks/pii-eval-population-pins.json
+            --pii-eval-artifact=benchmarks/pii-eval-official-run/oracle-plan.public-synthetic-artifact.json
+            --pii-eval-artifact=benchmarks/pii-eval-official-run/qualification-plan.public-synthetic-artifact.json
+            --pii-eval-artifact=benchmarks/pii-eval-official-run/diagnostic-balanced.public-synthetic-artifact.json
+            --pii-eval-artifact=benchmarks/pii-eval-official-run/benign-heavy-stress.public-synthetic-artifact.json
+          )
           if [ "$TARGET" = staging ]; then
             product_args=(--product-commit="$PRODUCT_COMMIT" --product-core="$CORE_PACKAGE")
             # The transport-verified CI measurement and the four committed benchmark populations (#664; the artifacts of the recorded
             # official run, #796) are separate pin sets: each artifact is judged by the set that names its population, and a candidate is bound to this
             # publication's product only when its pin names exactly this commit.
-            pii_eval_args=(
+            pii_eval_args+=(
               --pii-eval-pins=benchmarks/pii-eval-public-synthetic-pins.json
-              --pii-eval-pins=benchmarks/pii-eval-population-pins.json
               --pii-eval-artifact="$RUNNER_TEMP/pii-eval-public/public-synthetic-artifact.json"
-              --pii-eval-artifact=benchmarks/pii-eval-official-run/oracle-plan.public-synthetic-artifact.json
-              --pii-eval-artifact=benchmarks/pii-eval-official-run/qualification-plan.public-synthetic-artifact.json
-              --pii-eval-artifact=benchmarks/pii-eval-official-run/diagnostic-balanced.public-synthetic-artifact.json
-              --pii-eval-artifact=benchmarks/pii-eval-official-run/benign-heavy-stress.public-synthetic-artifact.json
             )
           fi
           population_bundle=results-output/pii/population-release-v1.json
-          if [ -s "$population_bundle" ]; then
-            npm run eval:publish:pii-support -- --credential-support="$support" "${product_args[@]}" "${pii_eval_args[@]}" --population-bundle="$population_bundle"
-          else
-            # No bundle: measured PII populations were skipped (for example, #515: core main equals the published release).
-            echo "::notice::PII populations not measured for this publish: no comparison bundle was written (candidate equals the published release; no comparison)."
-            npm run eval:publish:pii-support -- --credential-support="$support" "${product_args[@]}" "${pii_eval_args[@]}" --population-mode=not-measured
+          population_args=(--population-mode=not-measured)
+          if [ "$PII_AUTHORITY" = legacy ] && [ -s "$population_bundle" ]; then
+            population_args=(--bounded-population-oracle --population-bundle="$population_bundle")
           fi
+          npm run eval:publish:pii-support -- --credential-support="$support" "${product_args[@]}" "${pii_eval_args[@]}" "${population_args[@]}"
 
       # The site, exported statically for the root of the host (empty BASE_PATH). check:routes recounts the pages
       # from the files this run measured; WEB_REQUIRE_QUALIFICATION makes the "view not built" state (the normal
@@ -502,15 +513,18 @@ jobs:
       # The site root: the export at /, the measured files at /results/, robots.txt and favicon.svg from the export.
       # The guards scan what is about to ship (dist/ and public/); a refusal here is before anything is signed in.
       - name: Assemble the site root and run the publication guards on it
+        env:
+          AUTHORITY: ${{ steps.authority.outputs.authority }}
         run: |
           set -euo pipefail
           # Under tsx: assembling validates the whole evaluation bundle (every part, one at a time) and copies only the bundle the pointer names.
-          node --import tsx scripts/assemble-site.mjs
+          node --import tsx scripts/assemble-site.mjs --credential-authority "$AUTHORITY"
           npm run features:check-public
           npm run blind:check-public
           # One coherent run: the pointer, its manifest, every referenced part and the domain index commitment agree; no staging or raw discovery file is in dist.
           npm run evaluation-bundle:check-publication
-          test -s dist/robots.txt -a -s dist/favicon.svg -a -s dist/results/run.json -a -s dist/results/evaluation-bundle-v1.json
+          test -s dist/robots.txt -a -s dist/favicon.svg -a -s dist/results/evaluation-bundle-v1.json
+          if [ "$AUTHORITY" = legacy ]; then test -s dist/results/run.json; else test -s dist/results/qualification-v1.json; fi
           echo "site root: $(find dist -type f | wc -l) files, $(du -sm dist | cut -f1) MB"
 
       - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
@@ -621,6 +635,7 @@ jobs:
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           QUALIFICATION_RUN_URL: ${{ steps.product.outputs.run-url }}
+          PII_AUTHORITY: ${{ steps.pii-authority.outputs.authority }}
           PREVIOUS_BUNDLE: ${{ steps.publish.outputs.previous-id }}
           AUTHORITY: ${{ steps.authority.outputs.authority }}
         run: |
@@ -629,8 +644,13 @@ jobs:
             echo
             echo "- credential qualification authority: \`$AUTHORITY\` ($([ "$AUTHORITY" = new ] && echo 'artifact consumers: view, support matrix and candidate diff; nothing measured for them' || echo 'rollback: the legacy qualification, classification and candidate steps ran'))"
             echo "- benchmarks commit: \`${{ github.sha }}\`"
-            echo "- run id: $(jq -r .runId public/results/run.json)"
-            echo "- redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
+            if [ "$AUTHORITY" = legacy ]; then
+              echo "- rollback benchmark run id: $(jq -r .runId public/results/run.json)"
+              echo "- rollback redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
+            else
+              echo "- credential measurement source: recorded official credential-eval artifacts, consumed without a fresh benchmark measurement"
+              echo "- recorded engines and scanners: $(jq -r '[.populations[] | .population + ": " + .artifact.engine.name + "@" + .artifact.engine.version + " [" + ([.artifact.scanners[] | .id + "@" + .version] | join(", ")) + "] " + .artifact.semanticDigest] | join("; ")' public/results/qualification-v1.json)"
+            fi
             bundle_id=$(jq -r .bundleId public/results/evaluation-bundle-v1.json)
             bundle="public/results/evaluation-bundles/$bundle_id"
             echo "- evaluation bundle \`$bundle_id\`: $(jq -r '"\(.totals.cases) cases, \(.totals.reviews) reviews in \(.cases | length) case parts and \(.reviews | length) review parts"' "$bundle/manifest.json"); previous live bundle \`${PREVIOUS_BUNDLE:-none}\` kept for rollback"
@@ -642,6 +662,7 @@ jobs:
             fi
             echo "- site root (Next export at /, measured files at /results/): $(find dist -type f | wc -l) files; qualification view $(jq -r '.distribution.stable|tostring' public/results/qualification-v1.json) stable, policy \`$(jq -r .policy.revision public/results/qualification-v1.json)\`, official run artifacts checked against benchmarks/official-runs.json"
             pii_artifact=$(jq -r '.domains[] | select(.domain=="pii") | .support.href | ltrimstr("/")' public/results/evaluation-domains-v2.json)
+            echo "- PII measurement authority: $PII_AUTHORITY; new authority consumes pinned pii-eval measurements, rollback population comparison is optional"
             echo "- PII populations: $(jq -r '[.populationComparisons[] | .id + "=" + .verdict] | join(", ")' "public/$pii_artifact")"
             if [ "$TARGET" = staging ] && [ "$AUTHORITY" = new ]; then
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\`: the candidate diff above (state \`${{ steps.candidate-diff.outputs.state }}\`); no candidate-evidence-v1.json is written under the new authority, artifacts from $QUALIFICATION_RUN_URL"

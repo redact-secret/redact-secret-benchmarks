@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { credentialEvaluationReference, credentialEvidenceChangeProblem, readCredentialEvidence } from '../benchmarks/shared/credential-evidence.ts';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2, type PiiSupportBuildOptions } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
-import { custodianConformanceFrom, piiEvalMeasurementFrom, populationBindingsFrom, productEvidenceFor, type PiiMeasuredProduct } from './pii-publication-inputs.ts';
+import { custodianConformanceFrom, piiEvalMeasurementFrom, populationOracleBindingsFrom, productEvidenceFor, type PiiMeasuredProduct } from './pii-publication-inputs.ts';
 import { bindPiiProtectedSupport } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
 import { buildEvaluationDomainsV2, evaluationDomainsV2Problem } from '../benchmarks/shared/evaluation-domains-v2.ts';
 import { publishArtifactAndIndex } from './atomic-publication.ts';
@@ -12,7 +12,8 @@ import { publishArtifactAndIndex } from './atomic-publication.ts';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2), piiEvalArtifacts = args.flatMap(arg => /^--pii-eval-artifact=(.+)$/.exec(arg)?.[1] ?? []);
 const piiEvalPinFiles = args.flatMap(arg => /^--pii-eval-pins=(.+)$/.exec(arg)?.[1] ?? []);
-const options = Object.fromEntries(args.filter(arg => !arg.startsWith('--pii-eval-artifact=') && !arg.startsWith('--pii-eval-pins=')).map(arg => {
+const boundedPopulationOracle = args.includes('--bounded-population-oracle');
+const options = Object.fromEntries(args.filter(arg => arg !== '--bounded-population-oracle' && !arg.startsWith('--pii-eval-artifact=') && !arg.startsWith('--pii-eval-pins=')).map(arg => {
   if (arg.startsWith('--evaluation=')) throw new Error('--evaluation (a full evaluation-v1.json) is the legacy credential contract and is no longer an input: pass --credential-results=<results directory with evaluation-bundle-v1.json>');
   const match = /^--(credential-results|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root|custodian-bundle)=(.+)$/.exec(arg);
   if (!match) throw new Error('Usage: npm run eval:publish:pii-support -- [--credential-results=<results directory holding evaluation-bundle-v1.json>] [--credential-support=...] [--pii-directory=...] [--output=...] [--product-commit=<sha> --product-core=<core.tgz>] [--pii-eval-pins=<pins> --pii-eval-artifact=<artifact>...] [--custodian-bundle=<public-synthetic-bundle>] (--population-bundle=... | --population-mode=not-measured)');
@@ -27,6 +28,8 @@ const indexTarget = location('output', 'public/results/evaluation-domains-v2.jso
 const evidence = await readCredentialEvidence(credentialResults, credentialSupport);
 console.log(`Credential evidence: bundle ${evidence.bundleId} (${evidence.totals.cases} cases in ${evidence.totals.caseParts} parts, ${evidence.totals.reviews} reviews in ${evidence.totals.reviewParts} parts; largest part ${evidence.totals.maxPartBytes} bytes)`);
 const hasBundle = Boolean(options['population-bundle']);
+if (hasBundle && !boundedPopulationOracle) throw new Error('Legacy PII population bundles require --bounded-population-oracle; current publication uses --population-mode=not-measured and validated pii-eval artifacts');
+if (boundedPopulationOracle && !hasBundle) throw new Error('--bounded-population-oracle requires --population-bundle');
 if (hasBundle === (options['population-mode'] === 'not-measured'))
   throw new Error('Choose exactly one of --population-bundle or --population-mode=not-measured');
 if (!hasBundle && options['population-mode'] !== 'not-measured') throw new Error('Unknown PII population publication mode');
@@ -49,15 +52,17 @@ if (!bindings.product) {
   const route = await bindPiiProtectedSupport(root);
   if (route) { bindings.protectedRoute = route; console.log(`PII protected route: bound ${route.id} (${route.route}, core ${route.coreCommit.slice(0, 12)}, record ${route.record})`); }
 }
-if (hasBundle) Object.assign(bindings, populationBindingsFrom(JSON.parse(await readFile(location('population-bundle', 'results-output/pii/population-release-v1.json'), 'utf8')), product));
-const pii = validatePiiSupportMatrixV2(buildPiiSupportMatrixV2(bindings), bindings);
+if (hasBundle) Object.assign(bindings, populationOracleBindingsFrom(JSON.parse(await readFile(location('population-bundle', 'results-output/pii/population-release-v1.json'), 'utf8')), product));
+const publication = boundedPopulationOracle ? await import('../benchmarks/evaluation/domains/pii/support-oracle.ts') :
+  { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 };
+const pii = publication.validatePiiSupportMatrixV2(publication.buildPiiSupportMatrixV2(bindings), bindings);
 const piiTarget = path.join(location('pii-directory', 'public/results'), `pii-support-matrix-v2-${pii.artifactCommitment}.json`);
 const index = buildEvaluationDomainsV2(pii.artifactCommitment, evidence);
 const indexIssue = evaluationDomainsV2Problem(index);
 if (indexIssue) throw new Error(indexIssue);
 
 await publishArtifactAndIndex(piiTarget, JSON.stringify(pii) + '\n', indexTarget, JSON.stringify(index) + '\n', {
-  artifact(bytes) { const value = JSON.parse(bytes.toString('utf8')); validatePiiSupportMatrixV2(value); if (value.artifactCommitment !== pii.artifactCommitment) throw new Error('PII artifact readback commitment mismatch'); },
+  artifact(bytes) { const value = JSON.parse(bytes.toString('utf8')); publication.validatePiiSupportMatrixV2(value); if (value.artifactCommitment !== pii.artifactCommitment) throw new Error('PII artifact readback commitment mismatch'); },
   index(bytes) { const value = JSON.parse(bytes.toString('utf8')); const issue = evaluationDomainsV2Problem(value); if (issue) throw new Error(issue);
     if (value.domains[1].support.href !== `/results/${path.basename(piiTarget)}` || value.domains[1].support.artifactCommitment !== pii.artifactCommitment) throw new Error('PII index does not bind its immutable artifact');
     const reference = credentialEvaluationReference(evidence), credential = value.domains[0].evaluation;

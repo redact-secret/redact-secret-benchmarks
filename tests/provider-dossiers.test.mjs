@@ -4,9 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
 import { buildProviderDossiers, defaultInputs, STAGES } from '../benchmarks/generate-provider-dossiers.ts';
-import { providersPage, providerStageFilterOf } from '../src/pages/providers.ts';
-import { providerDossiersProblem, stageOf } from '../src/providers-model.ts';
-import { checkProvidersUi } from '../scripts/check-support-ui.mjs';
+import { providerDossiersProblem, stageOf } from '../benchmarks/shared/providers-model.ts';
 
 const criteria = JSON.parse(readFileSync(new URL('../benchmarks/support/status-criteria.json', import.meta.url), 'utf8'));
 const floors = criteria.stable.documented;
@@ -154,30 +152,4 @@ test('the UI validator rejects a stage the flags do not reach and a stale taxono
   assert.equal(providerDossiersProblem({ schemaVersion: 2 }), 'Unsupported provider-dossiers version');
   assert.equal(stageOf({ researched: true, 'in-taxonomy': true, benchmarked: false, 'core-detector': false, measured: false }), 'researched');
   assert.equal(stageOf({ researched: false, 'in-taxonomy': true, benchmarked: false, 'core-detector': false, measured: false }), 'in-taxonomy');
-});
-
-test('the page shows stage, blocker, research date and links, filters by stage, and promises no date', () => {
-  const file = buildProviderDossiers(inputs());
-  const html = providersPage(file, null, 'all');
-  assert.match(html, /<article data-stage="researched" data-verdict="issuance-gated" data-family="acme:admin-key"/);
-  assert.match(html, /Body grammar needs one issued admin key\./);
-  assert.match(html, /Researched 2026-09-21/);
-  assert.match(html, /href="https:\/\/github\.com\/acme\/research\/issues\/8"/);
-  assert.equal([...html.matchAll(/<article /g)].length, taxonomy.families.length);
-  const filtered = providersPage(file, null, 'researched');
-  assert.equal([...filtered.matchAll(/<article /g)].length, 2);
-  assert.equal(providerStageFilterOf('?stage=researched'), 'researched');
-  assert.equal(providerStageFilterOf('?stage=soon'), 'all');
-  assert.doesNotMatch(html.replace(/<[^>]+>/g, ' '), /\b(ETA|coming soon|expected (by|in)|will be supported)\b/i);
-  assert.match(providersPage(null, 'No provider dossiers published'), /npm run dossiers:publish/);
-});
-
-test('the page escapes dossier text', () => {
-  const file = buildProviderDossiers(inputs());
-  byId(file)['acme:admin-key'].blockedBy = '<img src=x onerror=alert(1)>';
-  assert.doesNotMatch(providersPage(file, null, 'all'), /<img src=x/);
-});
-
-test('the CI gate that keeps the roadmap in step with the taxonomy and schema passes on this tree', async () => {
-  assert.deepEqual(await checkProvidersUi(), []);
 });

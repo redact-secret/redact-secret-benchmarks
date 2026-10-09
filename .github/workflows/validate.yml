@@ -129,8 +129,6 @@ jobs:
         run: npm run fixture-metadata:check
       - name: Validate published engine qualification evidence (frozen Beta.11 report, against the suite snapshot it was produced with)
         run: npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=evidence/449/suite-v1.json
-      - name: The UI carries no support status the generated matrix cannot
-        run: npm run support:check:ui
       - name: No detector family arrives without its required evidence (#52)
         run: npm run arrival:check
       - name: Fixture profile coverage report and spec table match the corpus (#206)
@@ -417,6 +415,9 @@ jobs:
         working-directory: web
         env:
           WEB_REQUIRE_RUN: '1'
+      - name: Validate the committed credential authority for final site assembly
+        id: assembly-authority
+        run: node --import tsx scripts/credential-publication.ts authority
       - name: The committed authority builds from the qualification view and every page recounts against it (#608, #654)
         # Last of the two, because it replaces the export the check above ran on. The view is required: a missing, stale or unauthorised one fails.
         run: npm run build && npm run check:routes
@@ -427,8 +428,10 @@ jobs:
       # The layout that ships: the export at the root, the measured files at /results/, robots.txt and favicon.svg. The publication
       # guards read dist/ and public/ of the repository root, so the site root is assembled there (dist/ is ignored).
       - name: The assembled site root is the export plus /results/ and carries no leak the publication guards refuse (#142, #254, #602)
+        env:
+          AUTHORITY: ${{ steps.assembly-authority.outputs.authority }}
         run: |
-          node --import tsx scripts/assemble-site.mjs
+          node --import tsx scripts/assemble-site.mjs --credential-authority "$AUTHORITY"
           npm run features:check-public
           npm run blind:check-public
           # The bundle half only: this job has no domain index (publish-site writes and checks it).

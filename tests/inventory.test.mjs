@@ -2,9 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
-import { createServer } from 'vite';
-import { filterInventory } from '../src/inventory.mjs';
-import { parseRoute } from '../src/model.mjs';
 
 const read = async path => JSON.parse(await readFile(new URL('../'+path, import.meta.url), 'utf8'));
 const inventory = await read('benchmarks/detector-inventory.json');
@@ -29,15 +26,6 @@ test('source inventory has unique, traceable entries and valid conservative mapp
   }
   assert.equal(rows.find(r => r.tool === 'trufflehog' && r.id === 'azure_storage').relatedDetector, 'connection-string');
   assert.ok(!rows.some(r => r.tool === 'trufflehog' && r.id === 'abstract'));
-});
-
-test('search and filters keep unverified related families separate from missing dedicated coverage', () => {
-  assert.ok(filterInventory(inventory.entries).every(r => !r.relatedDetector));
-  assert.equal(filterInventory(inventory.entries, {query:'github', tool:'gitleaks'}).length, 0);
-  const related = filterInventory(inventory.entries, {query:'GITHUB', tool:'gitleaks',status:'related-family'});
-  assert.ok(related.length > 0 && related.every(r => r.relatedDetector === 'github-token'));
-  assert.ok(filterInventory(inventory.entries, {query:'datadog',tool:'gitleaks'}).length > 0);
-  assert.equal(filterInventory(inventory.entries, {query:'does-not-exist-12345'}).length, 0);
 });
 
 test('TruffleHog parser excludes comments, recognizes factories, and preserves feature gates', () => {
@@ -136,25 +124,4 @@ test('known gap issues cover all recorded failures and link to authored fixtures
     }
     assert.deepEqual(issue.evidence.map(e => e.fixture),issue.fixtures);
   }
-});
-
-test('coverage route renders inventory, source provenance, milestone, and fixture follow-ups', async () => {
-  assert.deepEqual(parseRoute('/coverage-gaps/'), { kind: 'redirect', id: '', view: '', to: '/coverage' });
-  assert.equal(parseRoute('/coverage').kind, 'coverage');
-  const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
-  try {
-    const {coveragePage} = await server.ssrLoadModule('/src/pages/coverage.ts');
-    const {fixtures} = await server.ssrLoadModule('/src/catalog.ts');
-    const html = coveragePage(fixtures, 'inventory');
-    assert.ok(html.includes('No dedicated detector'));
-    assert.ok(html.includes('parity is unverified'));
-    assert.ok(html.includes('inventory-query') && html.includes('inventory-next'));
-    for (const source of Object.values(inventory.sources)) assert.ok(html.includes(source.url));
-    for (const issue of knownGaps.issues) assert.ok(html.includes(issue.url));
-    assert.ok(!coveragePage(fixtures, 'all').includes('inventory-query'), 'the inventory is its own view of Coverage');
-    const {fixturePage} = await server.ssrLoadModule('/src/pages/fixture.ts');
-    const windows = knownGaps.issues.find(i => i.number === 292);
-    const label = windows.candidate.version.split('-').pop().replace(/^./, c => c.toUpperCase());
-    assert.ok(fixturePage(fixtures.find(f => f.slug === 'reference-syntax--windows-env'), undefined).includes(`${label} #292`), 'the follow-up is labelled with the build the finding was recorded on, not the ledger header');
-  } finally { await server.close(); }
 });

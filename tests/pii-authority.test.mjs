@@ -1,8 +1,9 @@
+import { publishPiiAuthorityOutput } from '../scripts/check-pii-authority.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import Ajv2020 from 'ajv/dist/2020.js';
-import { checkPiiAuthority, computeCriteria, filesNamingTheAuthorityFile } from '../scripts/check-pii-authority.mjs';
+import { validatedPiiAuthority, checkPiiAuthority, computeCriteria, filesNamingTheAuthorityFile } from '../scripts/check-pii-authority.mjs';
 import {
   PII_AUTHORITY_FILE, PII_AUTHORITY_READERS, PII_EXIT_CRITERIA, criteriaDriftProblems, piiAuthorityFreshnessProblems, piiAuthorityShapeProblems, unlistedPiiAuthorityReaders,
 } from '../benchmarks/evaluation/domains/pii/authority.ts';
@@ -185,4 +186,27 @@ test('a path that names the file and is not a listed reader is a new reader, and
   assert.deepEqual(unlistedPiiAuthorityReaders(['tests/generated-output.test.mjs']), []);
   assert.deepEqual(unlistedPiiAuthorityReaders(['tests/generated-output-other.test.mjs']), ['tests/generated-output-other.test.mjs'], 'approval is exact, not every generated-output test');
   assert.ok(PII_AUTHORITY_READERS.every(r => r.why.length > 10));
+});
+
+test('the workflow output seam refuses failed gates before reading a value and rejects unknown authority', async () => {
+  let reads = 0;
+  await assert.rejects(validatedPiiAuthority({ check: async () => ['stale owner target'], read: () => { reads++; return { authority: 'new' }; } }), /stale owner target/);
+  assert.equal(reads, 0);
+  await assert.rejects(validatedPiiAuthority({ check: async () => [], read: () => ({ authority: 'unexpected' }) }), /invalid PII authority/);
+  for (const authority of ['new', 'legacy']) assert.equal((await validatedPiiAuthority({ check: async () => [], read: () => ({ authority }) })).authority, authority);
+});
+
+test('a workflow authority output is appended only after validation, never on a failed gate', async () => {
+  const { mkdtempSync, writeFileSync, readFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const dir = mkdtempSync(join(tmpdir(), 'pii-authority-output-'));
+  const output = join(dir, 'output');
+  try {
+    writeFileSync(output, 'existing=value\n');
+    await assert.rejects(publishPiiAuthorityOutput(output, { check: async () => ['stale target'] }), /stale target/);
+    assert.equal(readFileSync(output, 'utf8'), 'existing=value\n');
+    await publishPiiAuthorityOutput(output, { check: async () => [], read: () => ({ authority: 'legacy' }) });
+    assert.equal(readFileSync(output, 'utf8'), 'existing=value\nauthority=legacy\n');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });

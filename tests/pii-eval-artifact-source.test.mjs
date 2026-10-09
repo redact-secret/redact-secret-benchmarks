@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -35,8 +35,10 @@ test('the pinned public artifact is also committed, so the pin outlives the 14-d
   altered.artifacts.measurement.members[source.durableCopy.member] = '0'.repeat(64);
   const directory = mkdtempSync(path.join(tmpdir(), 'pii-eval-copy-'));
   const file = path.join(directory, 'source.json');
-  writeFileSync(file, JSON.stringify(altered));
-  assert.throws(() => checkFiles(file, pinsFile.pathname), /Transport pins do not bind|Source document names|not the pinned public artifact/);
+  try {
+    writeFileSync(file, JSON.stringify(altered));
+    assert.throws(() => checkFiles(file, fileURLToPath(pinsFile)), /Transport pins do not bind|Source document names|not the pinned public artifact/);
+  } finally { rmSync(directory, { recursive: true, force: true }); }
 });
 
 test('transport source rejects a different app, run, engine, or semantic pin file', () => {
@@ -52,8 +54,10 @@ test('transport source rejects a different app, run, engine, or semantic pin fil
   }
   const directory = mkdtempSync(path.join(tmpdir(), 'pii-eval-source-'));
   const other = path.join(directory, 'pins.json');
-  writeFileSync(other, readFileSync(pinsFile));
-  assert.throws(() => checkFiles(sourceFile.pathname, other), /names another consumer pin file/);
+  try {
+    writeFileSync(other, readFileSync(pinsFile));
+    assert.throws(() => checkFiles(fileURLToPath(sourceFile), other), /names another consumer pin file/);
+  } finally { rmSync(directory, { recursive: true, force: true }); }
 });
 
 test('run metadata requires the exact repository, workflow, head and completed result', () => {
@@ -93,7 +97,7 @@ test('archive verifier refuses extra members and altered bytes without extractin
   assert.throws(() => verifyArchiveMembers(archive, expected), /member set/);
 });
 
-test('public workflow isolates App credentials and publisher consumes only staging public evidence', () => {
+test('public workflow isolates App credentials and publication adds staging transport to committed official evidence', () => {
   const dedicated = YAML.parse(readFileSync(new URL('../.github/workflows/pii-public-synthetic.yml', import.meta.url), 'utf8'));
   const publish = YAML.parse(readFileSync(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8'));
   assert.deepEqual(dedicated.permissions, {});
@@ -121,12 +125,17 @@ test('public workflow isolates App credentials and publisher consumes only stagi
   assert.equal(publish.jobs.publish.needs, 'pii-public-synthetic');
   assert.equal(publish.jobs.publish.steps.some(step => step.env?.GH_TOKEN?.includes('pii-eval')), false);
   const classify = publish.jobs.publish.steps.find(step => step.name === 'Publish the provider roadmap, the domain gate and the PII support').run;
-  assert.match(classify, /pii_eval_args=\(\)/);
+  assert.match(classify, /pii_eval_args=\(/);
   assert.match(classify, /--pii-eval-pins=benchmarks\/pii-eval-public-synthetic-pins.json/);
   assert.match(classify, /--pii-eval-pins=benchmarks\/pii-eval-population-pins.json/);
   assert.match(classify, /--pii-eval-artifact="\$RUNNER_TEMP\/pii-eval-public\/public-synthetic-artifact.json"/);
   for (const view of ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'])
     assert.match(classify, new RegExp(`--pii-eval-artifact=benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`));
-  // Production binds none of it: the candidate populations are staging evidence.
-  assert.match(classify, /if \[ "\$TARGET" = staging \]; then\n\s+product_args=[\s\S]*pii_eval_args=\(/);
+  // Committed official measurement is always read; staging additionally binds transport evidence and its measured product.
+  const unconditional = classify.slice(classify.indexOf('pii_eval_args=('), classify.indexOf('if [ "$TARGET" = staging ]; then'));
+  assert.match(unconditional, /--pii-eval-pins=benchmarks\/pii-eval-population-pins.json/);
+  assert.doesNotMatch(unconditional, /pii-eval-public-synthetic-pins|RUNNER_TEMP/);
+  for (const view of ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'])
+    assert.match(unconditional, new RegExp(`--pii-eval-artifact=benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`));
+  assert.match(classify, /if \[ "\$TARGET" = staging \]; then\n\s+product_args=[\s\S]*pii_eval_args\+=\(/);
 });

@@ -11,10 +11,10 @@
  */
 import { hash } from './substrate/hash.ts';
 import { validateEvidence, type QualificationSuite } from './evidence.ts';
-import { credentialAccountingIdentity } from './domains/credential/accounting.ts';
+import { credentialAccountingIdentity } from '../consumer/credential-metrics.ts';
 import { validatePiiQualificationReport, type PiiQualificationReport } from './domains/pii/qualification.ts';
 import { validatePiiProductBinding, type PiiTrustedProductBinding } from './domains/pii/product-binding.ts';
-import type { AccountingArtifactIdentity } from '../accounting/shared/primitives.ts';
+import type { AccountingArtifactIdentity } from '../shared/statistical-primitives.ts';
 import { PII_PROTECTED_ROUTE, piiProtectedRouteProblem, piiReviewedProtectedRoute, type PiiProtectedRoute } from './domains/pii/support-semantics.ts';
 import { piiSupportRegistry } from './domains/pii/support-v2.ts';
 import { b11Commitment } from './domains/pii/beta11-qualification.ts';

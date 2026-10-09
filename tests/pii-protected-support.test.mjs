@@ -18,10 +18,7 @@ import { b11ProfileCostAcceptance, piiProfileCostAcceptances } from '../benchmar
 import { bindPiiProtectedSupport, loadPiiProtectedSupportEvidence, validatePiiProtectedSupportBinding } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
 import { piiCurrentProtectedRoute, piiProtectedRouteProblem } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
 import { buildPiiSupportMatrixV2, piiSupportMatrixV2Commitment, piiSupportRegistry, validatePiiSupportMatrixV2 } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
-import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../src/evaluation-domains-v2.ts';
-const credentialReference = { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) };
-import { piiSupportMatrixProblem } from '../src/pii-support-model.ts';
-import { piiSupportPage, piiSupportQueryOf } from '../src/pages/pii-support.ts';
+import { piiSupportMatrixProblem } from '../benchmarks/shared/pii-support-model.ts';
 
 const execute = promisify(execFile);
 const repo = fileURLToPath(new URL('../', import.meta.url));
@@ -60,11 +57,6 @@ test('the reviewed binding re-derives from committed evidence and projects five 
   const published = JSON.parse(JSON.stringify(matrix));
   assert.equal(validatePiiSupportMatrixV2(published).artifactCommitment, matrix.artifactCommitment);
   assert.equal(await piiSupportMatrixProblem(published, published.artifactCommitment), null);
-  const html = piiSupportPage(domainDescriptorV2(buildEvaluationDomainsV2(matrix.artifactCommitment, credentialReference), 'pii'), published, piiSupportQueryOf('?domain=pii'));
-  assert.match(html, /data-protected-route="beta11-8b6a5fd-pii-protected"/);
-  assert.match(html, /Country code \+1 \(NANP\) only/);
-  assert.match(html, /United States only/);
-  assert.match(html, /data-protected-reason="protected-gates-not-met:identity-only-classification"/);
 });
 
 test('pii:support:record projects the committed Beta.11 evidence through the reviewed binding', async () => {

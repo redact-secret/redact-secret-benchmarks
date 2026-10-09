@@ -52,7 +52,7 @@
    "generic-engine": {
     "disposition": "removal-candidate",
     "files": 31,
-    "externalCallerFiles": 14
+    "externalCallerFiles": 17
    },
    "oracle-behaviour-tests": {
     "disposition": "removal-candidate",
@@ -72,7 +72,7 @@
    "product-policy": {
     "disposition": "retain",
     "files": 10,
-    "externalCallerFiles": 41
+    "externalCallerFiles": 43
    }
   }
  },
@@ -85,10 +85,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 12,
+     "retainedConsumerCount": 11,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
       "package.json"
@@ -99,19 +99,17 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 15,
+    "total": 13,
     "withinCandidates": 7,
     "testCallers": 4,
-    "external": 4,
+    "external": 2,
     "externalByClass": {
-     "benchmarks": 2,
-     "script": 2
+     "benchmarks": 1,
+     "script": 1
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/arrival-evidence.ts (benchmarks, import)",
-     "benchmarks/evaluation/domains/pii/support-v2.ts (benchmarks, import)",
-     "scripts/observe-us-ssn-populations.mjs (script, import+path)",
-     "scripts/pii-publication-inputs.ts (script, import+path)"
+     "scripts/observe-us-ssn-populations.mjs (script, import+path)"
     ]
    }
   },
@@ -159,11 +157,11 @@
     "informational": {
      "retainedConsumerCount": 14,
      "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/accounting-types.ts",
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
-      "benchmarks/evaluation/domains/registry.ts",
-      "benchmarks/evaluation/release-record.ts",
-      "package.json"
+      "benchmarks/evaluation/domains/pii/benign-collision-contract.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
+      "benchmarks/evaluation/domains/registry.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -171,15 +169,16 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 5,
+    "total": 6,
     "withinCandidates": 4,
     "testCallers": 0,
-    "external": 1,
+    "external": 2,
     "externalByClass": {
-     "src (legacy site)": 1
+     "benchmarks": 2
     },
     "externalFiles": [
-     "src/pages/domain-evaluation.ts (src (legacy site), import+path)"
+     "benchmarks/evaluation/domains/pii/accounting-types.ts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/benign-collision-contract.ts (benchmarks, import)"
     ]
    }
   },
@@ -191,10 +190,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 13,
+     "retainedConsumerCount": 12,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
       "package.json"
@@ -207,17 +206,16 @@
    "callers": {
     "total": 18,
     "withinCandidates": 10,
-    "testCallers": 3,
-    "external": 5,
+    "testCallers": 4,
+    "external": 4,
     "externalByClass": {
      "benchmarks": 2,
-     "script": 3
+     "script": 2
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/arrival-evidence.ts (benchmarks, import)",
-     "benchmarks/evaluation/domains/pii/support-v2.ts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/support-oracle.ts (benchmarks, import)",
      "scripts/observe-us-ssn-populations.mjs (script, import+path)",
-     "scripts/pii-publication-inputs.ts (script, import+path)",
      "scripts/record-pii-support-evidence.ts (script, import+path)"
     ]
    }
@@ -260,10 +258,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 13,
+     "retainedConsumerCount": 12,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
       "package.json"
@@ -290,10 +288,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 15,
+     "retainedConsumerCount": 13,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
       "package.json"
@@ -304,16 +302,14 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 3,
+    "total": 2,
     "withinCandidates": 1,
     "testCallers": 0,
-    "external": 2,
+    "external": 1,
     "externalByClass": {
-     "src (legacy site)": 1,
      "web (Next app)": 1
     },
     "externalFiles": [
-     "src/pages/domain-evaluation.ts (src (legacy site), import+path)",
      "web/services/domains.ts (web (Next app), import)"
     ]
    }
@@ -329,10 +325,10 @@
      "retainedConsumerCount": 14,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
       "benchmarks/evaluation/domains/pii/support.ts",
-      "benchmarks/evaluation/domains/registry.ts",
-      "benchmarks/evaluation/release-record.ts"
+      "benchmarks/evaluation/domains/registry.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -426,10 +422,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 16,
+     "retainedConsumerCount": 15,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/pii/support.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts"
@@ -462,13 +458,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 18,
+     "retainedConsumerCount": 16,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/pii/support-semantics.ts",
       "benchmarks/evaluation/domains/pii/support-v2.ts",
-      "benchmarks/evaluation/domains/pii/support.ts",
-      "benchmarks/evaluation/domains/registry.ts"
+      "benchmarks/evaluation/domains/pii/support.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -476,19 +472,17 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 11,
+    "total": 9,
     "withinCandidates": 6,
-    "testCallers": 1,
-    "external": 4,
+    "testCallers": 0,
+    "external": 3,
     "externalByClass": {
      "benchmarks": 2,
-     "src (legacy site)": 1,
      "web (Next app)": 1
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/support-semantics.ts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/support-v2.ts (benchmarks, import)",
-     "src/pages/pii-support.ts (src (legacy site), import+path)",
      "web/services/domains.ts (web (Next app), import)"
     ]
    }
@@ -531,10 +525,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 14,
+     "retainedConsumerCount": 12,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/pii/support.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts"
@@ -545,17 +539,15 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 4,
+    "total": 3,
     "withinCandidates": 1,
     "testCallers": 1,
-    "external": 2,
+    "external": 1,
     "externalByClass": {
-     "benchmarks": 1,
-     "src (legacy site)": 1
+     "benchmarks": 1
     },
     "externalFiles": [
-     "benchmarks/evaluation/domains/pii/support.ts (benchmarks, import)",
-     "src/pages/domain-evaluation.ts (src (legacy site), import+path)"
+     "benchmarks/evaluation/domains/pii/support.ts (benchmarks, import)"
     ]
    }
   },
@@ -567,13 +559,13 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 29,
+     "retainedConsumerCount": 31,
      "retainedConsumers": [
+      "benchmarks/evaluation/domains/pii/accounting-types.ts",
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
+      "benchmarks/evaluation/domains/pii/benign-collision-contract.ts",
       "benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts",
-      "benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts",
-      "benchmarks/evaluation/domains/pii/email-network-population.ts",
-      "benchmarks/evaluation/domains/pii/metric-basis.mjs"
+      "benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -581,14 +573,17 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 25,
+    "total": 28,
     "withinCandidates": 23,
     "testCallers": 0,
-    "external": 2,
+    "external": 5,
     "externalByClass": {
-     "benchmarks": 2
+     "benchmarks": 5
     },
     "externalFiles": [
+     "benchmarks/evaluation/domains/pii/accounting-types.ts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/benign-collision-contract.ts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/population-contracts.ts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/support-v2.ts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/support.ts (benchmarks, import)"
     ]
@@ -902,10 +897,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 12,
+     "retainedConsumerCount": 11,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
       "package.json"
@@ -969,10 +964,10 @@
      "retainedConsumerCount": 13,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/benign-collision-contract.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
-      "benchmarks/evaluation/release-record.ts",
-      "package.json"
+      "benchmarks/evaluation/release-record.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -980,12 +975,16 @@
    "owner": "redact-secret/pii-eval (reimplemented in Rust; the TypeScript is the oracle until the exit)",
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
-    "total": 1,
+    "total": 2,
     "withinCandidates": 1,
     "testCallers": 0,
-    "external": 0,
-    "externalByClass": {},
-    "externalFiles": []
+    "external": 1,
+    "externalByClass": {
+     "benchmarks": 1
+    },
+    "externalFiles": [
+     "benchmarks/evaluation/domains/pii/benign-collision-contract.ts (benchmarks, import+path)"
+    ]
    }
   },
   {
@@ -996,10 +995,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 13,
+     "retainedConsumerCount": 12,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
       "package.json"
@@ -1026,13 +1025,9 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 11,
+     "retainedConsumerCount": 1,
      "retainedConsumers": [
-      "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
-      "benchmarks/evaluation/domains/registry.ts",
-      "package.json",
-      "scripts/measure-pii-mixed-parity.mjs"
+      "benchmarks/evaluation/domains/pii/population-contracts.ts"
      ]
     },
     "reason": "reached by retained code (the oracle, the mixed files or a specialized consumer)"
@@ -1041,11 +1036,15 @@
    "prerequisite": "authority is new for a bounded oracle period, every exit criterion of benchmarks/pii-authority.json is met, a removal PR lists these callers first and repoints each external caller at validated pii-eval artifacts",
    "callers": {
     "total": 1,
-    "withinCandidates": 1,
+    "withinCandidates": 0,
     "testCallers": 0,
-    "external": 0,
-    "externalByClass": {},
-    "externalFiles": []
+    "external": 1,
+    "externalByClass": {
+     "benchmarks": 1
+    },
+    "externalFiles": [
+     "benchmarks/evaluation/domains/pii/population-contracts.ts (benchmarks, import+path)"
+    ]
    }
   },
   {
@@ -1056,10 +1055,10 @@
     "removalDecision": "retain-for-oracle-period",
     "reachedByRetainedCode": true,
     "informational": {
-     "retainedConsumerCount": 13,
+     "retainedConsumerCount": 12,
      "retainedConsumers": [
       "benchmarks/evaluation/domains/pii/arrival-evidence.ts",
-      "benchmarks/evaluation/domains/pii/support-v2.ts",
+      "benchmarks/evaluation/domains/pii/support-oracle.ts",
       "benchmarks/evaluation/domains/registry.ts",
       "benchmarks/evaluation/release-record.ts",
       "package.json"
@@ -1332,17 +1331,16 @@
    "callers": {
     "total": 10,
     "withinCandidates": 2,
-    "testCallers": 3,
-    "external": 5,
+    "testCallers": 4,
+    "external": 4,
     "externalByClass": {
      "benchmarks": 2,
-     "script": 3
+     "script": 2
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/arrival-evidence.ts (benchmarks, import)",
-     "benchmarks/evaluation/domains/pii/support-v2.ts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/support-oracle.ts (benchmarks, import)",
      "scripts/observe-us-ssn-populations.mjs (script, import+path)",
-     "scripts/pii-publication-inputs.ts (script, import+path)",
      "scripts/record-pii-support-evidence.ts (script, import+path)"
     ]
    }
@@ -1357,19 +1355,18 @@
    "owner": "benchmarks keeps the product verdict; the neutral calculation is pii-eval",
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
-    "total": 10,
+    "total": 9,
     "withinCandidates": 3,
-    "testCallers": 3,
+    "testCallers": 2,
     "external": 4,
     "externalByClass": {
-     "benchmarks": 2,
-     "src (legacy site)": 1,
+     "benchmarks": 3,
      "web (Next app)": 1
     },
     "externalFiles": [
+     "benchmarks/evaluation/domains/pii/accounting-types.ts (benchmarks, import)",
      "benchmarks/shared/evaluation-domains-v2.ts (benchmarks, import)",
      "benchmarks/shared/evaluation-domains.ts (benchmarks, import)",
-     "src/pages/domain-evaluation.ts (src (legacy site), import+path)",
      "web/services/domains.ts (web (Next app), import)"
     ]
    }
@@ -1563,11 +1560,15 @@
    "prerequisite": "a reviewed split of each file into the neutral calculation (removable) and the product decision (kept), recorded before any line moves",
    "callers": {
     "total": 1,
-    "withinCandidates": 1,
+    "withinCandidates": 0,
     "testCallers": 0,
-    "external": 0,
-    "externalByClass": {},
-    "externalFiles": []
+    "external": 1,
+    "externalByClass": {
+     "benchmarks": 1
+    },
+    "externalFiles": [
+     "benchmarks/evaluation/domains/pii/population-artifacts.ts (benchmarks, import+path)"
+    ]
    }
   },
   {
@@ -1731,12 +1732,12 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 22,
+    "total": 25,
     "withinCandidates": 2,
-    "testCallers": 10,
-    "external": 10,
+    "testCallers": 11,
+    "external": 12,
     "externalByClass": {
-     "benchmarks": 4,
+     "benchmarks": 6,
      "script": 5,
      "web (Next app)": 1
     },
@@ -1744,6 +1745,8 @@
      "benchmarks/evaluation/domains/pii/candidate-comparison.d.mts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/peer-comparison.d.mts (benchmarks, import)",
      "benchmarks/evaluation/domains/pii/protected-support-binding.ts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/publication-product-proof.ts (benchmarks, import)",
+     "benchmarks/evaluation/domains/pii/support-oracle.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
      "scripts/pii-publication-inputs.ts (script, import+path)",
      "scripts/produce-release-record.mjs (script, import+path)",
@@ -1769,9 +1772,8 @@
     "testCallers": 4,
     "external": 8,
     "externalByClass": {
-     "benchmarks": 4,
+     "benchmarks": 5,
      "script": 2,
-     "src (legacy site)": 1,
      "web (Next app)": 1
     },
     "externalFiles": [
@@ -1779,9 +1781,9 @@
      "benchmarks/evaluation/domains/pii/support-v2.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record-evidence.ts (benchmarks, import)",
      "benchmarks/evaluation/release-record.ts (benchmarks, import)",
+     "benchmarks/shared/pii-support-model.ts (benchmarks, import)",
      "scripts/produce-release-record.mjs (script, import+path)",
      "scripts/record-pii-support-evidence.ts (script, import+path)",
-     "src/pii-support-model.ts (src (legacy site), import+path)",
      "web/services/domains.ts (web (Next app), import)"
     ]
    }
@@ -1851,9 +1853,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 30,
+    "total": 31,
     "withinCandidates": 0,
-    "testCallers": 12,
+    "testCallers": 13,
     "external": 18,
     "externalByClass": {
      "benchmarks": 4,
@@ -1939,9 +1941,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 11,
+    "total": 12,
     "withinCandidates": 0,
-    "testCallers": 8,
+    "testCallers": 9,
     "external": 3,
     "externalByClass": {
      "script": 2,

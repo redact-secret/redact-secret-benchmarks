@@ -123,7 +123,7 @@ describe('PII evaluation', () => {
     expect(publicOnly).not.toHaveProperty('distribution');
   });
 
-  test('a published support artifact carries the schema 1.4 projection of the four populations and binds a candidate only to its own commit', async () => {
+  test('a published support artifact carries the schema 1.4 projection of the four populations and requires a receipt binding the candidate commit and core artifact', async () => {
     const files = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress']
       .map(view => `${REAL}/benchmarks/pii-eval-official-run/${view}.public-synthetic-artifact.json`);
     const pins = [`${REAL}/benchmarks/pii-eval-public-synthetic-pins.json`, `${REAL}/benchmarks/pii-eval-population-pins.json`];
@@ -134,7 +134,11 @@ describe('PII evaluation', () => {
     expect(measurement.populations.every(row => (row.schemaVersion === '1.2' || row.schemaVersion === '1.4') && row.productProjection && !row.unavailable)).toBe(true);
     const states = Object.fromEntries(measurement.populations.map(row => [row.populationId, row.productBinding.state]));
     expect(states['synthetic-demo-population']).toBe('other-product');
-    expect(Object.values(states).filter(state => state === 'measures-publication-product')).toHaveLength(files.length);
+    expect(Object.values(states).every(state => state === 'other-product')).toBe(true);
+    const unbound = await piiEvalMeasurementFrom(pins, [copy, ...files], { sourceCommit: candidate, coreSha256: 'e'.repeat(64) },
+      { productBindingLoader: async () => ({ state: 'absent', reason: 'synthetic-missing-receipt' }) });
+    expect(unbound.populations.filter(row => row.productBinding.state === 'publication-artifact-not-bound')).toHaveLength(files.length);
+    expect(Object.values(states)).not.toContain('measures-publication-product');
     const released = await piiEvalMeasurementFrom(pins, [copy, ...files], null);
     expect(released.populations.every(row => row.productBinding.state === 'publication-product-not-measured')).toBe(true);
     const another = await piiEvalMeasurementFrom(pins, [copy, ...files], { sourceCommit: '1'.repeat(40), coreSha256: 'e'.repeat(64) });

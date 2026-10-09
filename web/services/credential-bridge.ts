@@ -19,14 +19,12 @@
  *
  * Pure: no file is read here. `credential-source.ts` hands it the parsed view and the product-owned inputs.
  */
-import { selectionGroups } from '../../benchmarks/evaluation/domains/credential/run-summary';
-import { ACCOUNTING_VERSION } from '../../benchmarks/accounting/index';
+import { selectionGroups, ACCOUNTING_VERSION } from '../../benchmarks/consumer/credential-metrics';
 import type { AccountingConfig } from '../../benchmarks/shared/accounting-types';
-import type { ScoredRow } from '../../benchmarks/types';
-import type { RunSummary } from '../../benchmarks/evaluation/domains/credential/run-summary';
+import type { RecordedCredentialRow, RunSummary } from '../../benchmarks/consumer/credential-metrics';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
 import { caseMetadataBindingProblem, type EvidenceCaseMetadata } from '../../benchmarks/lib/fixture-metadata';
-import { assembleCatalog, type BuiltFixture, type Catalog, type CatalogFixture, type CatalogSuite, type Tier } from './catalog';
+import { assembleCatalog, type BuiltFixture, type Catalog, type CatalogFixture, type CatalogSuite, type Tier } from './credential-catalog';
 import type { CaseRow, CaseScannerResult, MeasurementHost, PopulationView, QualificationView } from './qualification';
 import type { MeasuredRun, OfficialRun, Outcome, RowResult, RunScanner } from './run';
 
@@ -73,13 +71,12 @@ export function rowOf(result: CaseScannerResult | undefined): RowResult | undefi
   }
 }
 
-function scoredRow(c: CaseRow, result: CaseScannerResult): ScoredRow & { category: string } {
+function scoredRow(c: CaseRow, result: CaseScannerResult): RecordedCredentialRow & { category: string } {
   const row = rowOf(result)!;
   return {
-    id: c.id, path: c.path, group: c.group, kind: c.kind, tier: c.tier as Tier, ...(c.twinOf ? { twinOf: c.twinOf } : {}),
+    id: c.id, kind: c.kind, tier: c.tier as Tier, ...(c.twinOf ? { twinOf: c.twinOf } : {}),
     category: segment(c.id).category,
     expected: c.expected.map(e => ({ start: e.start, end: e.end, role: e.role as 'secret' | 'companion', ...(e.envelope ? { envelope: e.envelope } : {}) })),
-    actual: [],
     ...(row.spanOutcomes ? { spanOutcomes: row.spanOutcomes } : {}),
     ...(row.leakedBytes !== undefined ? { leakedBytes: row.leakedBytes } : {}),
     ...(row.collateralBytes !== undefined ? { collateralBytes: row.collateralBytes } : {}),

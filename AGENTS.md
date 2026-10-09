@@ -72,8 +72,8 @@ It refuses unless every run on `develop`'s tip succeeded.
 
 ## Web app (`web/`)
 
-The new Next.js static site (Storybook-first components, services, resolvers) lives in `web/` and is the root of the published site (the legacy UI is no longer built;
-its source stays as the oracle). Its rules are in [`web/CONVENTIONS.md`](web/CONVENTIONS.md); read it before touching `web/`.
+The new Next.js static site (Storybook-first components, services, resolvers) lives in `web/` and is the root of the published site. The UI-only Vite source was retired in #852; measurement/evaluator rollback remains separately governed
+([retirement manifest](docs/specs/legacy-ui-retirement.md)). Its rules are in [`web/CONVENTIONS.md`](web/CONVENTIONS.md); read it before touching `web/`.
 Two rules apply to every agent and every merge there: tests never assert ledger values (a repin re-keys them), and you
 verify locally on a freshly rebased `origin/develop` and confirm `develop` is green after the merge
 ([Before you merge](web/CONVENTIONS.md#before-you-merge)).

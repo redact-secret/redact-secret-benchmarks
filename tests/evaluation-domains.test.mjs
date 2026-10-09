@@ -6,7 +6,7 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { evaluationDomains, evaluationDomainsProblem, domainDescriptor } from '../src/evaluation-domains.ts';
+import { evaluationDomains, evaluationDomainsProblem, domainDescriptor } from '../benchmarks/shared/evaluation-domains.ts';
 
 const clone = value => structuredClone(value);
 const execute = promisify(execFile);

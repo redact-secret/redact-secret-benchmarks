@@ -1,7 +1,7 @@
 import Ajv from 'ajv';
 import profileSchema from '../../../../schemas/pii-qualification-profile-v1.json';
 import profileData from '../../../../qualification/pii-v1.json';
-import { validateMechanicalAccounting, type MechanicalAccountingConfig } from '../../../accounting/shared/primitives.ts';
+import { validateMechanicalAccounting, type MechanicalAccountingConfig } from '../../../shared/statistical-primitives.ts';
 
 export const PII_METRIC_IDS = ['type-miss-rate', 'wrong-family-rate', 'wrong-jurisdiction-rate', 'sensitive-miss-rate', 'non-sensitive-flag-rate',
   'context-discrimination-rate', 'benign-suppression-rate', 'jurisdiction-collision-rate', 'range-collateral-rate', 'measurable-share'] as const;

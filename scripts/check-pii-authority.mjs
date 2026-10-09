@@ -13,7 +13,7 @@
  */
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { officialRecordExists, officialRecordProblems } from './lib/pii-official-record.mjs';
@@ -120,13 +120,28 @@ export async function checkPiiAuthority({ listing } = {}) {
 
 function existsSyncText(path) { try { return text(path); } catch { return undefined; } }
 
+/** Emit a workflow value only after the complete existing authority gate succeeds. */
+export async function validatedPiiAuthority({ check = checkPiiAuthority, read = json } = {}) {
+  const problems = await check();
+  if (problems.length) throw new Error(`${problems.length} PII-authority problem(s):\n${problems.map(p => `  - ${p}`).join('\n')}`);
+  const file = read(PII_AUTHORITY_FILE);
+  if (!['new', 'legacy'].includes(file.authority)) throw new Error('invalid PII authority');
+  return file;
+}
+
+export async function publishPiiAuthorityOutput(output, options = {}) {
+  if (!output) throw new Error('--github-output requires GITHUB_OUTPUT');
+  const file = await validatedPiiAuthority(options);
+  appendFileSync(output, `authority=${file.authority}\n`);
+  return file;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const problems = await checkPiiAuthority();
-  if (problems.length > 0) {
-    console.error(`${problems.length} PII-authority problem(s):\n${problems.map(p => `  - ${p}`).join('\n')}`);
-    process.exit(1);
-  }
-  const file = json(PII_AUTHORITY_FILE);
+  const args = process.argv.slice(2);
+  if (args.some(arg => arg !== '--github-output')) throw new Error('usage: check-pii-authority.mjs [--github-output]');
+  const file = args.includes('--github-output')
+    ? await publishPiiAuthorityOutput(process.env.GITHUB_OUTPUT)
+    : await validatedPiiAuthority();
   const unmet = file.exitCriteria.filter(c => c.scope === 'public' && c.state !== 'met').map(c => c.id);
   const pending = file.exitCriteria.filter(c => c.scope === 'protected' && c.state !== 'met').map(c => c.id);
   console.log(`PII authority: ${file.authority}${file.authority === 'new' ? ' (public/synthetic measurement, authorised by an owner record; every public criterion met)' : ` (the new path is not consulted; ${unmet.length} public exit criteria unmet: ${unmet.join(', ')})`}; protected path ${file.protected.state}${pending.length ? ` (${pending.join(', ')} does not gate the public cutover)` : ''}; only listed readers name the file.`);

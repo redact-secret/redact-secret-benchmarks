@@ -1,5 +1,5 @@
-import type { RunSummary } from '../evaluation/domains/credential/run-summary.ts';
-import { readCredentialAccountingIdentity, assertCredentialAccountingIdentities } from '../accounting/index.ts';
+import type { RunSummary } from '../consumer/credential-metrics.ts';
+import { readCredentialAccountingIdentity, assertCredentialAccountingIdentities } from '../consumer/credential-metrics.ts';
 import type { Group, Report, Run } from './run-types.ts';
 
 /** What the pages read. Loaded once per refresh by main.ts; pages never fetch. */

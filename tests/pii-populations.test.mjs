@@ -11,12 +11,12 @@ import {
   selectPiiPopulationRows, validatePiiPopulationContract, validatePiiPopulationReport,
 } from '../benchmarks/evaluation/domains/pii/populations.ts';
 import {
-  buildPiiSupportMatrixV2, piiSupportMatrixV2Commitment, piiSupportRegistryCommitment, validatePiiSupportMatrixV2,
+  piiSupportMatrixV2Commitment, piiSupportRegistryCommitment,
 } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
-import { piiSupportMatrixProblem } from '../src/pii-support-model.ts';
-import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../src/evaluation-domains-v2.ts';
+import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../benchmarks/evaluation/domains/pii/support-oracle.ts';
+import { piiSupportMatrixProblem } from '../benchmarks/shared/pii-support-model.ts';
+import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../benchmarks/shared/evaluation-domains-v2.ts';
 const credentialReference = { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) };
-import { piiSupportPage, piiSupportQueryOf } from '../src/pages/pii-support.ts';
 import { PII_VALIDATOR_CONSUMERS } from '../benchmarks/evaluation/domains/pii/validator-qualification.ts';
 import { createPiiValidators } from '../benchmarks/evaluation/domains/pii/validators.ts';
 import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
@@ -295,10 +295,6 @@ test('per-stratum comparator exposes a local regression even when aggregate beni
     assert.throws(() => validatePiiSupportMatrixV2(forgery));
     assert.ok(await piiSupportMatrixProblem(forgery, forgery.artifactCommitment));
   }
-  const index = buildEvaluationDomainsV2(published.artifactCommitment, credentialReference);
-  const html = piiSupportPage(domainDescriptorV2(index, 'pii'), published, piiSupportQueryOf('?domain=pii'));
-  assert.match(html, /data-population="benign-heavy-stress" data-population-verdict="regression"/);
-  assert.match(html, /context-negative/);
   assert.doesNotMatch(JSON.stringify(published), /"(?:content|candidate|seed|fixture|path|raw|caseId|variant)"/i);
   const mismatched = structuredClone(candidate); mismatched.corpusCommitment = 'd'.repeat(64);
   assert.throws(() => comparePiiPopulationReports(baseline, mismatched, bindings), /commitment|reconcile|Inconsistent/);
@@ -321,9 +317,6 @@ test('per-stratum comparator exposes a local regression even when aggregate beni
   assert.equal(partialMatrix.populationComparisons.find(row => row.id === 'benign-heavy-stress').verdict, 'not-measured');
   assert.equal(validatePiiSupportMatrixV2(JSON.parse(JSON.stringify(partialMatrix))).artifactCommitment, partialMatrix.artifactCommitment);
   assert.equal(await piiSupportMatrixProblem(partialMatrix, partialMatrix.artifactCommitment), null);
-  const partialHtml = piiSupportPage(domainDescriptorV2(buildEvaluationDomainsV2(partialMatrix.artifactCommitment, credentialReference), 'pii'), partialMatrix,
-    piiSupportQueryOf('?domain=pii'));
-  assert.match(partialHtml, /data-population="benign-heavy-stress" data-population-verdict="not-measured"/);
   assert.throws(() => comparePiiPopulationReports(baseline, baseline,
     { ...bindings, candidateRows: baselineRows }), /source identity/);
 });

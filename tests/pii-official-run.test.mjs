@@ -31,9 +31,14 @@ test('the workflow is dispatch only, selects only a committed lane, and holds le
   }, evidence_plan: { description: 'Committed public evidence plan, used only by evidence-comparison', type: 'string',
     default: 'benchmarks/pii-evidence-comparison/plan.json' } });
   assert.deepEqual(parsed.jobs['candidate-comparison'].permissions, { contents: 'read', actions: 'read' });
-  assert.equal(parsed.jobs['candidate-comparison'].uses, '$/.github/workflows/pii-candidate-comparison.yml');
+  assert.equal(parsed.jobs['candidate-comparison'].uses, './.github/workflows/pii-candidate-comparison.yml');
   assert.deepEqual(parsed.jobs['evidence-comparison'].permissions, { contents: 'read', actions: 'read' });
-  assert.equal(parsed.jobs['evidence-comparison'].uses, '$/.github/workflows/pii-evidence-comparison.yml');
+  assert.equal(parsed.jobs['evidence-comparison'].uses, './.github/workflows/pii-evidence-comparison.yml');
+  for (const lane of ['candidate-comparison', 'evidence-comparison']) {
+    const ref = parsed.jobs[lane].uses;
+    assert.match(ref, /^\.\/\.github\/workflows\/[a-z-]+\.yml$/, 'a local call runs the reusable workflow from this same commit');
+    assert.ok(YAML.parse(read(ref.slice(2))).on.workflow_call, `${lane} names an existing reusable workflow`);
+  }
   const lanes = { 'official-run': 'pinned-official', 'candidate-comparison': 'candidate-comparison', 'evidence-comparison': 'evidence-comparison' };
   for (const [job, lane] of Object.entries(lanes))
     assert.equal(parsed.jobs[job].if, `github.repository == 'redact-secret/redact-secret-benchmarks' && inputs.lane == '${lane}'`);

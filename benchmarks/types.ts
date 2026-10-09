@@ -55,18 +55,9 @@ export interface Group {
 // Kept as a compatibility export for the retained evaluator and rollback.
 export type { Floor, AccountingConfig } from './shared/accounting-types.ts';
 /** `bound` is the pessimistic Wilson endpoint; unbounded ratios carry `bound: null` by decision. */
-export interface Rate { point: number; bound: number | null; n: number; direction: 'upper' | 'lower' | null }
-export type Published = Rate | 'insufficient-evidence' | null;
-export interface AccountedGroup {
-  files: number; scored?: boolean; candidateKinds?: Record<string, number>;
-  spans?: number; secretBytes?: number; outcomes?: Record<string, number>;
-  pendingFiles?: number; measurableShare?: Published; envelopeWidth?: { spans: number; bytes: number };
-  flaggedFiles?: number; findings?: number; falseAlarmRate?: Published; meanFindingsPerFlagged?: Published;
-  leakedSpans?: number; leakedSpanRate?: Published; leakedBytes?: number; leakedByteRate?: Published;
-  collateralBytes?: number; collateralRatio?: Published;
-  twins?: { positives: number; pairs: number; discriminated: number; coDetected: number; coverage: Published; rate: Published | 'insufficient-coverage' };
-  diagnostics?: Group['diagnostics'];
-}
+// Compatibility DTO exports for retained oracle/rollback reports (#868).
+export type { Rate, Published, AccountedGroup } from './consumer/credential-metrics.ts';
+import type { Rate, Published, AccountedGroup } from './consumer/credential-metrics.ts';
 export type DeltaCause = 'unresolved' | 't0-share' | 'overbroad-twin' | 'not-measured' | 'twin-coverage' | 'interval' | 'unstable';
 export interface AccountingDelta {
   version: '1.0 -> 1.1';

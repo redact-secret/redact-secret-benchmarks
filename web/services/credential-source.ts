@@ -12,16 +12,16 @@
  *
  * Rolling back is changing the one committed value; this module is where it takes effect for the Next app.
  */
-import { validateAccounting } from '../../benchmarks/accounting/index';
+import { validateAccounting } from '../../benchmarks/consumer/credential-metrics';
 import type { AccountingConfig } from '../../benchmarks/shared/accounting-types';
 import { loadAuthority, type Authority, type QualificationAuthority } from './authority';
-import { assembleCatalog, loadCatalog, loadDetectorTitles, loadFixtureBytes, loadFixtureHashes, loadTaxonomy, type BuiltFixture, type Catalog } from './catalog';
+import { assembleCatalog, loadDetectorTitles, loadTaxonomy, type BuiltFixture, type Catalog } from './credential-catalog';
 import { bridgeQualificationView, withCaseText } from './credential-bridge';
 import { EVIDENCE_CASE_METADATA_FILE, evidenceCaseMetadataProblems, type EvidenceCaseMetadata, type EvidencePin } from '../../benchmarks/lib/fixture-metadata';
 import { loadQualificationView, measurementHostProblems, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type MeasurementHost, type QualificationView, type RosterNotMeasured } from './qualification';
 import { once, readJson } from './repo';
 import { loadReviewDisclosure, type ReviewDisclosureData } from './review-state';
-import { loadRun, type RunLoad } from './run';
+import type { RunLoad } from './run';
 
 /** The one suite page a build without a usable qualification view keeps, so the export has a page for the route. */
 export const NO_VIEW_SUITE = 'no-view';
@@ -119,6 +119,7 @@ function recordedHost(run: Registry['runs'][number] | undefined): MeasurementHos
 }
 
 async function legacySource(): Promise<Omit<CredentialSource, 'pipeline'>> {
+  const [{ loadCatalog, loadFixtureBytes, loadFixtureHashes }, { loadRun }] = await Promise.all([import('./catalog'), import('./run')]);
   const [catalog, run, fixtureBytes, fixtureHashes] = await Promise.all([loadCatalog(), loadRun(), loadFixtureBytes(), loadFixtureHashes()]);
   return { catalog, run, fixtureBytes, fixtureHashes };
 }

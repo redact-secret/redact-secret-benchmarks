@@ -1,8 +1,6 @@
+// Bounded TypeScript oracle: retained for raw reconciliation, historical comparison and rollback only.
 import Ajv from 'ajv';
-import contractSchema from '../../../../schemas/pii-population-contract-v1.json';
-import reportSchema from '../../../../schemas/pii-population-report-v1.json';
 import comparisonSchema from '../../../../schemas/pii-population-comparison-v1.json';
-import data from './populations-v1.json';
 import { hash } from '../../substrate/hash.ts';
 import {
   piiBenignCollisionEvidence, type PiiBenignCollisionEntry, type PiiBenignCollisionEvidence,
@@ -11,145 +9,14 @@ import { accountPiiRows, type PiiAccountingRow } from './accounting.ts';
 import type { PiiCase } from './types.ts';
 import { validateTuningManifest, type RepositoryState, type TuningManifest } from '../../../lib/tuning-manifest.ts';
 
-export type PiiPopulationId = 'diagnostic-balanced' | 'benign-heavy-stress';
-export type PiiPopulationPurpose = 'tuning' | 'evaluation';
-export interface PiiPopulationDefinition {
-  id: PiiPopulationId; role: 'development-tuning' | 'evaluation-only';
-  denominator: { unit: 'authored-evidence-case'; selection: 'explicit-members'; evidenceIds: string[]; caseIds: string[] };
-  baseRate: { kind: 'declared-assumption'; totalMass: number; sensitiveMass: number; nonSensitiveMass: number; notEstablishedMass: number; rationaleCode: 'diagnostic-behavior-balance' | 'benign-operational-stress'; strata: PiiPopulationMass[] };
-  weighting: { kind: 'equal-evidence-class' | 'authored-case-frequency'; rationaleCode: 'equal-authored-class-influence' | 'retain-authored-case-frequency' };
-  regressionPolicy: { metric: 'benign-false-alarm-rate'; maxAbsoluteIncrease: number; locality: 'any-stratum' };
-}
-export type PiiPopulationDimensions = {
-  family: string; scope: string; contextClass: 'sensitive' | 'neutral' | 'non-sensitive'; evidenceClass: PiiBenignCollisionEntry['evidenceClass'];
-  accountingAxis: PiiBenignCollisionEntry['accountingClass']; sensitivity: PiiBenignCollisionEntry['sensitivityExpectation'];
-  validatorBacked: boolean; contextDependent: boolean;
-};
-export type PiiPopulationMass = PiiPopulationDimensions & { totalMass: number; sensitiveMass: number; nonSensitiveMass: number; notEstablishedMass: number };
-export interface PiiPopulationContract {
-  schemaVersion: 1; id: 'pii-populations-v1'; version: 1; contentCommitment: string;
-  source: { repository: 'redact-secret/redact-secret-benchmarks'; definitionIssue: 285; evidenceIssue: 269;
-    corpus: { id: 'pii-benign-collision-v1'; version: 1; contentCommitment: string } };
-  partitionPolicy: { membership: 'explicit-evidence-identities'; overlap: 'forbidden'; tuningVisibility: ['development'];
-    holdoutAccess: 'none'; protectedRows: 'reject'; evaluationOnlyTuning: 'reject' };
-  strata: ['family', 'scope', 'context-class', 'evidence-class', 'accounting-axis', 'sensitivity', 'classification-basis'];
-  evidenceClasses: ['reserved-documentation', 'official-test', 'public-identifier', 'ordinary-reference-account', 'near-miss', 'placeholder',
-    'context-negative', 'cross-family-collision'];
-  populations: [PiiPopulationDefinition, PiiPopulationDefinition];
-}
-export type PiiPopulationStratum = PiiPopulationDimensions & {
-  denominator: number; assumedMass: number; measured: number; falseAlarms: number;
-  status: 'measured' | 'partial' | 'not-measured' | 'not-applicable'; falseAlarmRate: number | null;
-};
-export type PiiDiagnosticAxis = 'type-identity' | 'validator-correctness' | 'context-discrimination';
-export type PiiDiagnosticStratum = PiiPopulationDimensions & { eligible: number; measured: number; passed: number; failed: number;
-  status: 'measured' | 'partial' | 'not-measured' | 'not-applicable'; passRate: number | null };
-export type PiiDiagnosticMetric = { axis: PiiDiagnosticAxis; eligible: number; measured: number; passed: number; failed: number;
-  status: 'measured' | 'partial' | 'not-measured' | 'not-applicable'; passRate: number | null; strata: PiiDiagnosticStratum[] };
-export interface PiiPopulationReport {
-  schemaVersion: 1; reportType: 'pii-population'; domain: 'pii'; evaluationProfile: 'pii-v1'; domainAccountingVersion: 'pii-v1'; supportClaims: false;
-  population: PiiPopulationId; contractCommitment: string; corpusCommitment: string;
-  baseRate: PiiPopulationDefinition['baseRate']; weighting: PiiPopulationDefinition['weighting']; regressionPolicy: PiiPopulationDefinition['regressionPolicy'];
-  denominator: { unit: 'authored-evidence-case'; declared: number; observed: number };
-  partitionPolicy: { role: PiiPopulationDefinition['role']; tuningEligible: boolean; protectedRows: 'rejected' };
-  calibration: { status: 'not-used' | 'not-measured'; reasonCode: 'evaluation-does-not-fit-thresholds' | 'empty-committed-population' };
-  observation: { kind: 'none' | 'product-observation'; candidateArtifactHash: string | null; runId: string | null;
-    scanner: { id: string; version: string; configurationHash: string } | null; accountingInputCommitment: string; reportArtifactCommitment: string };
-  status: 'measured' | 'partial' | 'not-measured'; strata: PiiPopulationStratum[];
-  diagnostics: { typeIdentity: PiiDiagnosticMetric; validatorCorrectness: PiiDiagnosticMetric; contextDiscrimination: PiiDiagnosticMetric };
-}
-export interface PiiPopulationValidationOptions { canonical?: boolean; cases?: PiiCase[]; protectedIdentities?: readonly string[] }
+export * from './population-contracts.ts';
+import { piiPopulationContract, validatePiiPopulationContract, piiPopulationProjection, piiPopulationCommitment, canonicalize, protectedMatch, strings, dimensions, stratumKey, dimensionKey, reportStratumKey, massStratumKey, type PiiPopulationContract, type PiiPopulationId, type PiiPopulationPurpose, type PiiPopulationReport, type PiiPopulationDimensions, type PiiPopulationMass, type PiiPopulationStratum, type PiiDiagnosticAxis, type PiiDiagnosticStratum, type PiiDiagnosticMetric, type PiiPopulationValidationOptions } from './population-contracts.ts';
+import { validatePiiPopulationStructure } from './population-artifacts.ts';
 export interface PiiPopulationSelectionOptions extends PiiPopulationValidationOptions {
   purpose: PiiPopulationPurpose; tuningManifest?: TuningManifest; repositoryState?: RepositoryState;
 }
 
-const validateContractSchema = new Ajv({ strict: true }).compile(contractSchema);
-const validateReportSchema = new Ajv({ strict: true }).compile(reportSchema);
 const validateComparisonSchema = new Ajv({ strict: true }).compile(comparisonSchema);
-const canonicalContractCommitment = 'd7025a678969018563b1108cf575a2f718afd749229fcf124eb4c0085c131eb2';
-const canonicalize = (value: unknown): unknown => Array.isArray(value) ? value.map(canonicalize) : value && typeof value === 'object' ?
-  Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonicalize(child)])) : value;
-export const piiPopulationProjection = (contract: PiiPopulationContract) => {
-  const { contentCommitment: _contentCommitment, ...projection } = contract; return projection;
-};
-export const piiPopulationCommitment = (contract: PiiPopulationContract) => hash(JSON.stringify(canonicalize(piiPopulationProjection(contract))));
-const protectedMatch = (values: readonly string[], protectedIdentities: readonly string[]) => values.some(value =>
-  protectedIdentities.includes(value) || /(?:^|[/_-])(holdout|protected)(?:$|[/_-])/.test(value));
-const strings = (value: unknown, out: string[] = []): string[] => {
-  if (typeof value === 'string') out.push(value);
-  else if (Array.isArray(value)) value.forEach(item => strings(item, out));
-  else if (value && typeof value === 'object') Object.entries(value).forEach(([key, child]) => { out.push(key); strings(child, out); });
-  return out;
-};
-
-export function validatePiiPopulationContract(value: unknown, evidence: PiiBenignCollisionEvidence = piiBenignCollisionEvidence,
-  options: PiiPopulationValidationOptions = {}): PiiPopulationContract {
-  if (!validateContractSchema(value)) throw new Error('Invalid PII population contract schema');
-  const contract = structuredClone(value) as unknown as PiiPopulationContract;
-  if (piiPopulationCommitment(contract) !== contract.contentCommitment) throw new Error('PII population contract commitment mismatch');
-  if (options.canonical !== false && contract.contentCommitment !== canonicalContractCommitment) throw new Error('Canonical PII population contract commitment mismatch');
-  if (contract.source.corpus.id !== evidence.id || contract.source.corpus.version !== evidence.version ||
-      contract.source.corpus.contentCommitment !== evidence.contentCommitment) throw new Error('PII population corpus commitment mismatch');
-  const ids = contract.populations.map(population => population.id);
-  if (JSON.stringify(ids) !== JSON.stringify(['diagnostic-balanced', 'benign-heavy-stress']) ||
-      contract.populations[0].role !== 'development-tuning' || contract.populations[1].role !== 'evaluation-only' ||
-      contract.populations[0].weighting.kind !== 'equal-evidence-class' || contract.populations[1].weighting.kind !== 'authored-case-frequency' ||
-      contract.populations[0].baseRate.rationaleCode !== 'diagnostic-behavior-balance' ||
-      contract.populations[1].baseRate.rationaleCode !== 'benign-operational-stress' ||
-      contract.populations[0].weighting.rationaleCode !== 'equal-authored-class-influence' ||
-      contract.populations[1].weighting.rationaleCode !== 'retain-authored-case-frequency')
-    throw new Error('PII population identities or roles mismatch');
-  const entries = new Map(evidence.entries.map(entry => [entry.id, entry]));
-  const assigned: string[] = [];
-  const cases = new Map((options.cases ?? []).map(source => [source.id, source]));
-  const protectedIdentities = options.protectedIdentities ?? [];
-  for (const population of contract.populations) {
-    const { totalMass, sensitiveMass, nonSensitiveMass, notEstablishedMass } = population.baseRate;
-    if (sensitiveMass + nonSensitiveMass + notEstablishedMass !== totalMass) throw new Error('PII population base-rate mass mismatch');
-    if (population.denominator.evidenceIds.length !== population.denominator.caseIds.length) throw new Error('PII population denominator roster mismatch');
-    population.denominator.evidenceIds.forEach((evidenceId, index) => {
-      const entry = entries.get(evidenceId), caseId = population.denominator.caseIds[index], source = cases.get(caseId);
-      if (!entry || entry.caseId !== caseId) throw new Error('Unknown or mismatched PII population evidence identity');
-      if (options.cases && (!source || source.visibility !== 'development' || source.metadata?.evidenceId !== evidenceId ||
-          protectedMatch([source.id, source.input.path, source.provenance.source, source.provenance.sourceHash], protectedIdentities)))
-        throw new Error('Protected or non-development PII population member');
-      if (protectedMatch([evidenceId, caseId], protectedIdentities)) throw new Error('Protected PII population identity');
-      assigned.push(evidenceId);
-    });
-    const members = population.denominator.evidenceIds.map(id => entries.get(id)!);
-    const roster = [...new Set(members.map(stratumKey))].sort();
-    const massKeys = population.baseRate.strata.map(massStratumKey);
-    if (JSON.stringify([...massKeys].sort()) !== JSON.stringify(roster) || new Set(massKeys).size !== massKeys.length)
-      throw new Error('PII population base-rate strata do not match committed roster');
-    if (members.length && (population.baseRate.strata.some(row =>
-        row.sensitiveMass + row.nonSensitiveMass + row.notEstablishedMass !== row.totalMass ||
-        (row.sensitivity === 'sensitive' && (row.sensitiveMass !== row.totalMass || row.nonSensitiveMass !== 0 || row.notEstablishedMass !== 0)) ||
-        (row.sensitivity === 'non-sensitive' && (row.nonSensitiveMass !== row.totalMass || row.sensitiveMass !== 0 || row.notEstablishedMass !== 0)) ||
-        (row.sensitivity === 'not-established' && (row.notEstablishedMass !== row.totalMass || row.sensitiveMass !== 0 || row.nonSensitiveMass !== 0))) ||
-        population.baseRate.strata.reduce((sum, row) => sum + row.totalMass, 0) !== totalMass ||
-        population.baseRate.strata.reduce((sum, row) => sum + row.sensitiveMass, 0) !== sensitiveMass ||
-        population.baseRate.strata.reduce((sum, row) => sum + row.nonSensitiveMass, 0) !== nonSensitiveMass ||
-        population.baseRate.strata.reduce((sum, row) => sum + row.notEstablishedMass, 0) !== notEstablishedMass))
-      throw new Error('PII population base-rate child mass mismatch');
-    if (members.length && population.id === 'diagnostic-balanced') {
-      const classMass = [...new Set(members.map(entry => entry.evidenceClass))].map(evidenceClass =>
-        population.baseRate.strata.filter(row => row.evidenceClass === evidenceClass).reduce((sum, row) => sum + row.totalMass, 0));
-      if (new Set(classMass).size !== 1) throw new Error('Diagnostic population is not balanced');
-    }
-    if (members.length && population.id === 'benign-heavy-stress' && nonSensitiveMass <= sensitiveMass)
-      throw new Error('Stress population is not benign-dominant');
-    if (members.length && population.weighting.kind === 'authored-case-frequency' && population.baseRate.strata.some(row =>
-      row.totalMass * members.length !== totalMass * members.filter(entry => stratumKey(entry) === massStratumKey(row)).length))
-      throw new Error('PII population mass does not preserve authored case frequency');
-  }
-  if (evidence.entries.length && contract.populations.some(population => population.denominator.evidenceIds.length === 0))
-    throw new Error('Both PII population views require committed members');
-  if (new Set(assigned).size !== assigned.length) throw new Error('PII population overlap is forbidden');
-  if (assigned.length !== evidence.entries.length || evidence.entries.some(entry => !assigned.includes(entry.id)))
-    throw new Error('PII population roster omits committed evidence');
-  return contract;
-}
-
 const definition = (contract: PiiPopulationContract, id: PiiPopulationId) => contract.populations.find(population => population.id === id)!;
 export function selectPiiPopulationRows(contractValue: unknown, evidence: PiiBenignCollisionEvidence, rows: PiiAccountingRow[], id: PiiPopulationId,
   options: PiiPopulationSelectionOptions): PiiAccountingRow[] {
@@ -182,17 +49,6 @@ export function selectPiiPopulationRows(contractValue: unknown, evidence: PiiBen
   return selected;
 }
 
-const dimensions = (entry: PiiBenignCollisionEntry): PiiPopulationDimensions => ({ family: entry.family, scope: entry.scope,
-  contextClass: entry.context.class, evidenceClass: entry.evidenceClass, accountingAxis: entry.accountingClass,
-  sensitivity: entry.sensitivityExpectation, validatorBacked: entry.validator !== null,
-  contextDependent: entry.context.obligation === 'required-for-sensitive-classification' });
-const stratumKey = (entry: PiiBenignCollisionEntry) => JSON.stringify([entry.family, entry.scope, entry.context.class, entry.evidenceClass,
-  entry.accountingClass, entry.sensitivityExpectation, entry.validator !== null, entry.context.obligation === 'required-for-sensitive-classification']);
-const dimensionKey = (row: PiiPopulationDimensions) => JSON.stringify([row.family, row.scope, row.contextClass, row.evidenceClass,
-  row.accountingAxis, row.sensitivity, row.validatorBacked, row.contextDependent]);
-const reportStratumKey = (row: PiiPopulationStratum) => dimensionKey(row);
-const massStratumKey = (row: PiiPopulationMass) => JSON.stringify([row.family, row.scope, row.contextClass, row.evidenceClass,
-  row.accountingAxis, row.sensitivity, row.validatorBacked, row.contextDependent]);
 const accountingProjection = (rows: PiiAccountingRow[]) => rows.map(row => ({ source: row.source, caseId: row.caseId, method: row.method,
   family: row.family, scope: row.scope, variant: row.variant, strategy: row.strategy, scanner: row.scanner,
   qualificationProfile: row.qualificationProfile, authority: row.authority, expectation: row.expectation,
@@ -284,61 +140,9 @@ function derivePiiPopulationReport(contract: PiiPopulationContract, evidence: Pi
 
 export function validatePiiPopulationReport(value: unknown, contractValue: unknown = piiPopulationContract,
   evidence: PiiBenignCollisionEvidence = piiBenignCollisionEvidence, options: PiiPopulationValidationOptions = {}, rows?: PiiAccountingRow[]): PiiPopulationReport {
-  if (!validateReportSchema(value)) throw new Error('Invalid PII population report schema');
-  const report = structuredClone(value) as unknown as PiiPopulationReport, contract = validatePiiPopulationContract(contractValue, evidence, options);
-  const population = definition(contract, report.population);
-  if (!population || report.contractCommitment !== contract.contentCommitment || report.corpusCommitment !== evidence.contentCommitment ||
-      JSON.stringify(report.baseRate) !== JSON.stringify(population.baseRate) || JSON.stringify(report.weighting) !== JSON.stringify(population.weighting) ||
-      JSON.stringify(report.regressionPolicy) !== JSON.stringify(population.regressionPolicy) ||
-      report.denominator.declared !== population.denominator.evidenceIds.length || report.denominator.observed > report.denominator.declared ||
-      report.partitionPolicy.role !== population.role || report.partitionPolicy.tuningEligible !== (population.role === 'development-tuning') ||
-      (report.observation.kind === 'none') !== (report.observation.candidateArtifactHash === null && report.observation.runId === null && report.observation.scanner === null) ||
-      report.observation.reportArtifactCommitment !== reportCommitment(report) ||
-      report.strata.some(row => row.falseAlarms > row.measured || row.measured > row.denominator ||
-        (row.falseAlarmRate === null) !== (row.measured !== row.denominator || row.sensitivity !== 'non-sensitive') ||
-        (row.falseAlarmRate !== null && row.falseAlarmRate !== row.falseAlarms / row.denominator))) throw new Error('Inconsistent PII population report');
-  const members = population.denominator.evidenceIds.map(id => evidence.entries.find(entry => entry.id === id)!);
-  const roster = [...new Set(members.map(stratumKey))].sort();
-  if (JSON.stringify(report.strata.map(reportStratumKey).sort()) !== JSON.stringify(roster)) throw new Error('Incomplete PII population stratum roster');
-  const expectedSizes = new Map(roster.map(key => [key, members.filter(entry => stratumKey(entry) === key).length]));
+  const report = validatePiiPopulationStructure(value, contractValue, evidence, options);
+  const contract = validatePiiPopulationContract(contractValue, evidence, options);
   const product = report.observation.kind === 'product-observation';
-  const metricEntries = Object.entries(report.diagnostics) as [keyof PiiPopulationReport['diagnostics'], PiiDiagnosticMetric][];
-  const expectedAxes: Record<keyof PiiPopulationReport['diagnostics'], PiiDiagnosticAxis> = {
-    typeIdentity: 'type-identity', validatorCorrectness: 'validator-correctness', contextDiscrimination: 'context-discrimination',
-  };
-  if (metricEntries.some(([name, metric]) => metric.axis !== expectedAxes[name] || metric.measured !== metric.passed + metric.failed ||
-      metric.measured > metric.eligible || metric.status !== diagnosticStatus(metric.eligible, metric.measured) ||
-      (metric.passRate === null) !== (metric.status !== 'measured') ||
-      (metric.passRate !== null && metric.passRate !== metric.passed / metric.eligible) ||
-      metric.strata.reduce((sum, row) => sum + row.eligible, 0) !== metric.eligible ||
-      metric.strata.reduce((sum, row) => sum + row.measured, 0) !== metric.measured ||
-      metric.strata.reduce((sum, row) => sum + row.passed, 0) !== metric.passed ||
-      metric.strata.reduce((sum, row) => sum + row.failed, 0) !== metric.failed ||
-      new Set(metric.strata.map(dimensionKey)).size !== metric.strata.length || metric.strata.some(row =>
-        row.measured !== row.passed + row.failed || row.measured > row.eligible || row.status !== diagnosticStatus(row.eligible, row.measured) ||
-        (row.passRate === null) !== (row.status !== 'measured') || (row.passRate !== null && row.passRate !== row.passed / row.eligible))))
-    throw new Error('Inconsistent PII diagnostic metrics');
-  const diagnosticMembers = report.population === 'diagnostic-balanced' ? members : [];
-  const expectedDiagnosticMembers: Record<keyof PiiPopulationReport['diagnostics'], PiiBenignCollisionEntry[]> = {
-    typeIdentity: diagnosticMembers,
-    validatorCorrectness: diagnosticMembers.filter(entry => entry.validator !== null),
-    contextDiscrimination: diagnosticMembers.filter(entry => entry.context.obligation === 'required-for-sensitive-classification'),
-  };
-  if (metricEntries.some(([name, metric]) => {
-    const expected = expectedDiagnosticMembers[name], expectedKeys = [...new Set(expected.map(stratumKey))].sort();
-    return metric.eligible !== expected.length || JSON.stringify(metric.strata.map(dimensionKey).sort()) !== JSON.stringify(expectedKeys) ||
-      metric.strata.some(row => row.eligible !== expected.filter(entry => stratumKey(entry) === dimensionKey(row)).length);
-  })) throw new Error('Incomplete PII diagnostic stratum roster');
-  if (report.population === 'benign-heavy-stress' && metricEntries.some(([, metric]) => metric.eligible !== 0))
-    throw new Error('Benign-heavy report cannot claim diagnostic metrics');
-  const diagnosticsComplete = metricEntries.every(([, metric]) => metric.status === 'measured' || metric.status === 'not-applicable');
-  const expectedStatus = !product || report.denominator.declared === 0 ? 'not-measured' :
-    report.denominator.observed === report.denominator.declared &&
-      report.strata.filter(row => row.sensitivity === 'non-sensitive').every(row => row.status === 'measured') && diagnosticsComplete ? 'measured' : 'partial';
-  if (report.status !== expectedStatus || report.calibration.status !== (report.denominator.declared === 0 ? 'not-measured' : 'not-used') ||
-      report.strata.some(row => row.denominator !== expectedSizes.get(reportStratumKey(row)) ||
-        row.assumedMass !== population.baseRate.strata.find(mass => massStratumKey(mass) === reportStratumKey(row))?.totalMass))
-    throw new Error('Inconsistent PII population status or denominator');
   if (product && !rows) throw new Error('Product observation requires bound accounting rows');
   if (rows && JSON.stringify(report) !== JSON.stringify(derivePiiPopulationReport(contract, evidence, rows, report.population, options)))
     throw new Error('PII population report does not reconcile with observations');
@@ -407,6 +211,3 @@ export function comparePiiPopulationReports(baselineValue: unknown, candidateVal
   if (!validateComparisonSchema(comparison)) throw new Error('Invalid PII population comparison');
   return comparison;
 }
-
-const deepFreeze = <T>(value: T): T => { if (value && typeof value === 'object') { Object.values(value).forEach(deepFreeze); Object.freeze(value); } return value; };
-export const piiPopulationContract = deepFreeze(validatePiiPopulationContract(data));

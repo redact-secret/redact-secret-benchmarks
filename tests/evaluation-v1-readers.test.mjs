@@ -7,9 +7,6 @@ import { readFileSync, statSync } from 'node:fs';
 // known, classified reader or writer. A new direct consumer fails here until it is classified: a bundle reader (pointer, manifest, summary, bundleCases/bundleReviews) or an
 // explicit legacy/oracle path. No ledger value and no count is asserted.
 const classification = {
-  'src/main.ts': 'legacy-oracle reader (opt-in --legacy-v1 export)',
-  'src/pages/workbench/index.ts': 'legacy-oracle copy',
-  'src/pages/workbench/method.ts': 'legacy-oracle copy',
   'scripts/publish-evaluation.ts': 'writer: the opt-in --legacy-v1 export',
   'scripts/publish-evaluation-domains.ts': 'legacy v1 domain index (--legacy-v1 only); normal path reads the bundle',
   'scripts/publish-pii-support.ts': 'refuses --evaluation with an explicit message',

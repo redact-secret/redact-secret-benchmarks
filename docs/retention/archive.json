@@ -123,5 +123,36 @@
     "snapshotContentRevision": "722f0b7368b76f5c12050a9acf95757fb6be4ed6",
     "snapshotContentRetainedBy": "hygiene-before-cleanup-845-20261008",
     "limitation": "Existing pre-cleanup snapshot refresh recorded the base revision while using working metadata/corpus. Preserve both source identities and unchanged snapshot bytes; the declared base tree alone is not a complete reproduction of snapshot inputs."
-  }
+  },
+  "legacyUiRetrievals": [
+    {
+      "sourceCommit": "6d22c5915a433e07dcdb01c607b6b9dca0e5f35e",
+      "retainedTag": "hygiene-ui-before-retirement-852-20261008",
+      "tagObject": "587f8301205356f0b005ff8d57e34a98c5f2ca76",
+      "release": "hygiene-before-cleanup-845-20261008",
+      "asset": "legacy-ui-before-852-v1.tar.gz",
+      "assetId": 623383332,
+      "assetBytes": 213852,
+      "assetSha256": "185e3af05f1c81c81dc5606067070c1c0a4e8b4451fc7e5faafd16ff596e521c",
+      "verifiedFiles": 86,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/legacy-ui-before-852-v1.tar.gz",
+      "verifiedAt": "2026-10-09T00:16:54.684434+00:00",
+      "verification": "Fresh independent release download; exact regular-file member set, all original lengths/SHA256 and byte equality with retained Git source checked; source tag immutable."
+    }
+  ],
+  "credentialShimRetrievals": [
+    {
+      "sourceCommit": "6d22c5915a433e07dcdb01c607b6b9dca0e5f35e",
+      "retainedTag": "hygiene-evaluator-before-retirement-851-20261008",
+      "tagObject": "35bb21d9f1e55bd9823037013613084452b1185d",
+      "release": "hygiene-before-cleanup-845-20261008",
+      "asset": "credential-identity-before-851-v1.tar.gz",
+      "assetBytes": 1119,
+      "assetSha256": "89457408449bd6ea5e03b898d452ce3e19c98c599e13e6c45a16058d8a86b41a",
+      "verifiedFiles": 3,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/releases/download/hygiene-before-cleanup-845-20261008/credential-identity-before-851-v1.tar.gz",
+      "verifiedAt": "2026-10-09T00:26:34.635166+00:00",
+      "verification": "Independent release download; exact3 regular members and archivebyteequality; removed source member equals retained Git source byte for byte."
+    }
+  ]
 }

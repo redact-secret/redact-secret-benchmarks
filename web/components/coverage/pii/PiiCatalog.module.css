@@ -1,0 +1,9 @@
+@layer components {
+  .catalog { display: grid; gap: var(--space-8); min-width: 0; overflow-wrap: break-word; word-break: break-word; }
+  .rows { display: grid; gap: var(--space-6); list-style: none; padding: 0; margin: 0; }
+  .row { display: grid; gap: var(--space-3); padding-block: var(--space-4); border-top: var(--hairline) solid var(--line); min-width: 0; overflow-wrap: break-word; }
+  .row h3, .row p { margin: 0; }
+  .row summary { cursor: pointer; overflow-wrap: break-word; }
+  .row summary span, .row summary code, .row summary strong { margin-inline-end: var(--space-2); }
+  .row details[open] { display: grid; gap: var(--space-3); }
+}

@@ -5,7 +5,7 @@ import { classifyFixture, validateAssessment, validateContracts, contracts } fro
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { checkLexicalSeparability, validateLexicalExemptions } from '../benchmarks/lib/lexical-separability.ts';
 import { createHash } from 'node:crypto';
-import { validateBeta8 } from '../benchmarks/lib/beta8/index.ts';
+import { validateBeta8 } from '../benchmarks/lib/credential-regressions/index.ts';
 import { categoriesOf, loadPopulations, populationProblems } from '../fixtures/generated/populations.mjs';
 
 const usage = 'Usage: generate-fixtures.mjs [--check | --ensure] [--population <id>]... (a population needs --check or --ensure)';

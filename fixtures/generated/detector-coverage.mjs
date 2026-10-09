@@ -1,6 +1,6 @@
 // Authored against the beta.3 format contracts, never scanner output.
 // Prefix variants are structural examples, not issued/valid credentials.
-import { BEDROCK_SHORT_HEAD_TEXT } from "../../benchmarks/lib/beta8/384b.ts";
+import { BEDROCK_SHORT_HEAD_TEXT } from "../../benchmarks/lib/credential-regressions/384b.ts";
 import { createHash } from "node:crypto";
 import { crc32 } from "node:zlib";
 
@@ -814,7 +814,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // (redact-secret#727 PR #759: replicate/groq/xai/openrouter; #728 PR #760:
   // langsmith/langfuse). Their full evidence (contracts, twins, profile
   // debt) lives in the beta8-208/beta8-210 corpora and
-  // benchmarks/lib/beta8/{208,210}.ts; these are the registry-wide
+  // benchmarks/lib/credential-regressions/{208,210}.ts; these are the registry-wide
   // detector-coverage minimum (bare/quoted/unicode-crlf positives plus
   // independent controls) every registered detector carries. Bodies stay
   // alphanumeric (or hex) so no fixture leans on a provisional '-'/'_' byte.
@@ -868,7 +868,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
 
   // Beta.8 #212 families, registry detectors since the f2082ab re-pin
   // (redact-secret#730, PR #763). Full evidence lives in the beta8-212 corpus
-  // and benchmarks/lib/beta8/212.ts; these are the registry-wide minimum.
+  // and benchmarks/lib/credential-regressions/212.ts; these are the registry-wide minimum.
   const perplexityKey = `pplx-${synthetic("coverage:perplexity:api-key:body", 48, AI_ALNUM)}`;
   positive("perplexity-api-key", "key-shape", [{ secret: perplexityKey }]);
   add("perplexity-api-key", "prefix-only", ["pplx-"]);
@@ -900,7 +900,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("gitlab-runner-authentication-token", "reference", ["CI_RUNNER_TOKEN=${CI_RUNNER_TOKEN}\n"]);
   add("gitlab-runner-authentication-token", "label-prose", ["Documentation mentions a GitLab runner authentication token (glrt- prefix) without embedding the token value."]);
   // Registry detectors since the 3144bb3 re-pin (redact-secret#773). Full
-  // evidence lives in the beta8-259 corpus and benchmarks/lib/beta8/259.ts;
+  // evidence lives in the beta8-259 corpus and benchmarks/lib/credential-regressions/259.ts;
   // these are the registry-wide minimum. travisci-api-token is context-gated,
   // so its positive carries a same-line travis key.
   const travisToken = `${synthetic("coverage:travis-ci:api-token:head", 10, AI_ALNUM)}7${synthetic("coverage:travis-ci:api-token:tail", 10, AI_ALNUM)}q`;
@@ -926,7 +926,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("postman-collection-access-key", "label-prose", ["Documentation mentions a Postman collection access key (PMAT- prefix) without embedding the key value."]);
 
   // Beta.10 #384 families, registry detectors since the cfe2aec re-pin (redact-secret#864, #865, #867, #868). Full
-  // evidence lives in the beta8-384b..384e corpora and benchmarks/lib/beta8/384b..384e.ts; these are the registry-wide
+  // evidence lives in the beta8-384b..384e corpora and benchmarks/lib/credential-regressions/384b..384e.ts; these are the registry-wide
   // minimum. The keyword-gated four (Mistral, Cohere, Deepgram, AI21) are context-gated, so each positive carries a
   // same-line provider name and each "missing-keyword" near miss keeps the value and drops it.
   const b64Text = text => Buffer.from(text, "utf8").toString("base64");
@@ -1018,7 +1018,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
 
   // Beta.11 #434/#436 families, registry detectors since the 1127bf9 re-pin (redact-secret#903-#909, #912-#917,
   // product PR #938). Full evidence lives in the beta8-434a..434g and beta8-436a..436f corpora and their contracts
-  // (benchmarks/lib/beta8/434a..436f.ts); these are the registry-wide minimum, one detector-id shape each. Values are
+  // (benchmarks/lib/credential-regressions/434a..436f.ts); these are the registry-wide minimum, one detector-id shape each. Values are
   // built here from public synthetic seeds in each contract's shape, never copied from a provider or scanner example.
   const URLSAFE = `${AI_ALNUM}_-`;
   const beta11 = [
@@ -1048,7 +1048,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
 
   // Beta.12 #464/#528 families, registry detectors since the 4fb7882 re-pin (redact-secret#970-#975, product PR #1037;
   // #1019-#1035, product PR #1039). Full evidence lives in the beta8-464a..464f and beta8-528a..528j corpora and their
-  // contracts (benchmarks/lib/beta8/464a..528j.ts); these are the registry-wide minimum, one detector-id shape each,
+  // contracts (benchmarks/lib/credential-regressions/464a..528j.ts); these are the registry-wide minimum, one detector-id shape each,
   // built from public synthetic seeds in each contract's shape, never copied from a provider or scanner example.
   const B32_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
   const uuidHex = label => [8, 4, 4, 4, 12].map((n, i) => synthetic(`${label}:u${i}`, n, AI_HEX)).join("-");
@@ -1070,11 +1070,11 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     ["paddle-api-key", `pdl_live_apikey_${synthetic("coverage:paddle:api-key:id", 26, LOWER_ALNUM)}_${synthetic("coverage:paddle:api-key:secret", 22, AI_ALNUM)}_${synthetic("coverage:paddle:api-key:suffix", 3, AI_ALNUM)}`, "pdl_live_apikey_", "PADDLE_API_KEY", "Paddle Billing API key (pdl_live_apikey_ prefix)"],
     ["honeycomb-api-key", `hcaik_${synthetic("coverage:honeycomb:ingest-key:body", 58, LOWER_ALNUM)}`, "hcaik_", "HONEYCOMB_API_KEY", "Honeycomb ingest key (hcaik_ prefix)"],
     ["axiom-token", `xaat-${uuidHex("coverage:axiom:api-token")}`, "xaat-", "AXIOM_TOKEN", "Axiom API token (xaat- prefix)"],
-    // #1012 (redact-secret#1029, product PR #1039): contract in benchmarks/lib/beta8/1012b.ts.
+    // #1012 (redact-secret#1029, product PR #1039): contract in benchmarks/lib/credential-regressions/1012b.ts.
     ["google-oauth-client-secret", `GOCSPX-${synthetic("coverage:google:oauth-client-secret:body", 28, `${AI_ALNUM}_-`)}`, "GOCSPX-", "GOOGLE_CLIENT_SECRET", "Google OAuth client secret (GOCSPX- prefix)"],
   ];
   // #1012 (redact-secret#1028, product PR #1039): aws-secret-access-key is context-gated (contract in
-  // benchmarks/lib/beta8/1012a.ts), so, as for mistral-api-key above, the positive carries its key name, the bare value
+  // benchmarks/lib/credential-regressions/1012a.ts), so, as for mistral-api-key above, the positive carries its key name, the bare value
   // is a missing-keyword control and a 39-character near-miss beside the same name is a negative twin.
   const awsSecret = synthetic("coverage:aws:secret-access-key:value", 40, `${AI_ALNUM}/+`);
   positive("aws-secret-access-key", "key-shape", ["AWS_SECRET_ACCESS_KEY=", { secret: awsSecret }]);
@@ -1093,7 +1093,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   }
 
   // Beta.14 #583 second wave: the registry detectors at the 3b1a5aa re-pin (redact-secret#1102-#1109, product PR #1214 and
-  // #1227). Every one has its contract and corpus (benchmarks/lib/beta8/583a.ts to 583h.ts); the rows below are only the
+  // #1227). Every one has its contract and corpus (benchmarks/lib/credential-regressions/583a.ts to 583h.ts); the rows below are only the
   // registry-wide minimum,
   // one detector-id shape each, built from public synthetic seeds in the handoff's shape and never copied from a provider example.
   const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";

@@ -1,7 +1,7 @@
 import type { FieldClaim } from '../types.ts';
 
 // Source helpers shared by the registry contracts (assessment.ts) and the
-// per-issue Beta.8 contract modules (benchmarks/lib/beta8/*.ts), so both cite
+// per-issue Beta.8 contract modules (benchmarks/lib/credential-regressions/*.ts), so both cite
 // the pinned peer rules and provider pages the same way.
 export const observedAt = '2026-09-17';
 export const th = (path: string, label?: string) => ({ tool: 'trufflehog 3.97.4', label: label ?? path, url: `https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/${path}.go` });

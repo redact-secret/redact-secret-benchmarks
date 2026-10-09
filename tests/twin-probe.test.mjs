@@ -32,7 +32,7 @@ const LIFTED = ['datadog-api-key', 'new-relic-user-api-key', 'grafana-service-ac
 const LIFTED_207 = ['supabase-token', 'discord-bot-token', 'telegram-bot-token', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
 const UNPROBEABLE = ['vercel-token'];
 // #583 (registry pin 3b1a5aa): second-wave detectors registered while their benchmark contract and corpus were pending recorded `unprobeable`
-// (benchmarks/lib/beta8/583p.ts). Slices 583b-583h authored those grammars; Ory and Baseten now enter as T3 pending contracts.
+// (benchmarks/lib/credential-regressions/583p.ts). Slices 583b-583h authored those grammars; Ory and Baseten now enter as T3 pending contracts.
 const PENDING_583 = ['baseten-api-key', 'ory-token'];
 
 test('every detector family either has a twin or is recorded un-probeable, never both and never neither', () => {

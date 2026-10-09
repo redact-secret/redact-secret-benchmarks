@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { contracts } from '../benchmarks/lib/assessment.ts';
-import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
-import { HANDOFF_REVISION } from '../benchmarks/lib/beta8/464-sources.ts';
-import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
+import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/credential-regressions/index.ts';
+import { HANDOFF_REVISION } from '../benchmarks/lib/credential-regressions/464-sources.ts';
+import { beta8ProfileCounts } from '../scripts/report-fixture-profiles.mjs';
 import { findingFamily, scoredArrivalFamilies } from '../scanners/families.mjs';
 
 // Beta.12 #860 issuance-research contracts and corpus (#464): the conventions tests/beta8.test.mjs cannot see
@@ -105,7 +105,7 @@ test('every family has a positive in each of the nine re-rank probe contexts', (
 });
 
 test('no #464 source file carries a complete synthetic credential as a literal', async () => {
-  const files = [...slices.flatMap(key => [`fixtures/generated/beta8/${key}.mjs`, `benchmarks/lib/beta8/${key}.ts`]), 'fixtures/generated/beta8/464-shared.mjs', 'benchmarks/lib/beta8/464-sources.ts'];
+  const files = [...slices.flatMap(key => [`fixtures/generators/credential-regressions/${key}.mjs`, `benchmarks/lib/credential-regressions/${key}.ts`]), 'fixtures/generators/credential-regressions/464-shared.mjs', 'benchmarks/lib/credential-regressions/464-sources.ts'];
   const shapes = [/dtn_[0-9a-f]{40,}/, /\b4b1d[A-Za-z0-9]{30,}/, /nvapi-[A-Za-z0-9_-]{40,}/, /bb_live_[A-Za-z0-9]{20,}/, /csk[-_][A-Za-z0-9_-]{40,}/,
     /rpa_[A-Za-z0-9]{31,}/, /pcsk_[A-Za-z0-9]{6}_[A-Za-z0-9]{40,}/];
   for (const file of files) {

@@ -3,12 +3,12 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { contracts, classifyFixture } from '../benchmarks/lib/assessment.ts';
-import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
-import { EVIDENCE_REVISION } from '../benchmarks/lib/beta8/1012-sources.ts';
-import { gitlabRoutablePatValid } from '../benchmarks/lib/beta8/1012c.ts';
-import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
+import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/credential-regressions/index.ts';
+import { EVIDENCE_REVISION } from '../benchmarks/lib/credential-regressions/1012-sources.ts';
+import { gitlabRoutablePatValid } from '../benchmarks/lib/credential-regressions/1012c.ts';
+import { beta8ProfileCounts } from '../scripts/report-fixture-profiles.mjs';
 import { findingFamily, scoredArrivalFamilies } from '../scanners/families.mjs';
-import { vercelChecksum } from '../fixtures/generated/beta8/1012-shared.mjs';
+import { vercelChecksum } from '../fixtures/generators/credential-regressions/1012-shared.mjs';
 
 // Beta.12 #1012 first-measured variants (#528): the conventions tests/beta8.test.mjs cannot see because they are specific
 // to these five slices.
@@ -151,7 +151,7 @@ test('Vercel: each class is marker_ + 56 alphanumerics; the checksum suffix corr
 });
 
 test('no #1012 source file carries a complete synthetic credential as a literal', async () => {
-  const files = [...slices.flatMap(key => [`fixtures/generated/beta8/${key}.mjs`, `benchmarks/lib/beta8/${key}.ts`]), 'fixtures/generated/beta8/1012-shared.mjs', 'benchmarks/lib/beta8/1012-sources.ts', 'tests/beta12-1012-corpus.test.mjs'];
+  const files = [...slices.flatMap(key => [`fixtures/generators/credential-regressions/${key}.mjs`, `benchmarks/lib/credential-regressions/${key}.ts`]), 'fixtures/generators/credential-regressions/1012-shared.mjs', 'benchmarks/lib/credential-regressions/1012-sources.ts', 'tests/beta12-1012-corpus.test.mjs'];
   const shapes = [/GOCSPX-[A-Za-z0-9_-]{28}/, /glpat-[A-Za-z0-9_-]{27,}\./, /ASIA[A-Z0-9]{16}/, /AKIA[A-Z0-9]{16}/, /vc[par]_[A-Za-z0-9]{56}/];
   for (const file of files) {
     const source = await readFile(new URL(`../${file}`, import.meta.url), 'utf8');

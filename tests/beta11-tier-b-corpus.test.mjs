@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { contracts } from '../benchmarks/lib/assessment.ts';
-import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
-import { HANDOFF_REVISION } from '../benchmarks/lib/beta8/436-sources.ts';
-import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
+import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/credential-regressions/index.ts';
+import { HANDOFF_REVISION } from '../benchmarks/lib/credential-regressions/436-sources.ts';
+import { beta8ProfileCounts } from '../scripts/report-fixture-profiles.mjs';
 
 // Beta.11 #860 Tier B contracts and corpus (#436): the conventions tests/beta8.test.mjs cannot see
 // because they are specific to these six slices.
@@ -74,7 +74,7 @@ test('every family has a positive in each of the nine re-rank probe contexts', (
 });
 
 test('no Tier B source file carries a complete synthetic credential as a literal', async () => {
-  const files = [...slices.flatMap(key => [`fixtures/generated/beta8/${key}.mjs`, `benchmarks/lib/beta8/${key}.ts`]), 'fixtures/generated/beta8/436-shared.mjs', 'benchmarks/lib/beta8/436-sources.ts'];
+  const files = [...slices.flatMap(key => [`fixtures/generators/credential-regressions/${key}.mjs`, `benchmarks/lib/credential-regressions/${key}.ts`]), 'fixtures/generators/credential-regressions/436-shared.mjs', 'benchmarks/lib/credential-regressions/436-sources.ts'];
   const shapes = [/\|01[0-9a-f]{70,}/, /ops_eyJ[A-Za-z0-9_-]{100,}/, /signkey-(?:prod|test|branch)-[0-9a-f]{60,}/, /\bre_[A-Za-z0-9]{8}_[A-Za-z0-9]{24}\b/,
     /apify_api_[A-Za-z0-9]{20,}/, /wandb_v1_[A-Za-z0-9_]{60,}/, /whsec_[A-Za-z0-9]{24,}/];
   for (const file of files) {

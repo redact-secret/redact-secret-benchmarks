@@ -382,3 +382,14 @@ test('validate final assembly receives the existing validated credential seam af
   assert.match(assembled.run, /assemble-site\.mjs --credential-authority "\$AUTHORITY"/);
   assert.doesNotMatch(assembled.run, /--credential-authority (?:new|legacy)/);
 });
+
+// Role migrations must invalidate the same consumers as their former corpus/authoring locations.
+test('role-based corpus, authoring, shared scorer and pack paths remain measurement and publication inputs', () => {
+  for (const path of ['fixtures/generators/credential-regressions/207.mjs', 'benchmarks/corpora/provider-contracts/corpus-group-c.mjs', 'benchmarks/harness/credential-carriers/score-multispan.mjs', 'benchmarks/lib/credential-regressions/index.ts', 'adversarial/packs/public-source-regression/intake.json', 'adversarial/run-records/public-source-regression/first-run.json']) {
+    const plan = pr([path]);
+    assert.equal(plan.legacy, true, path);
+    assert.equal(plan.web, true, path);
+    assert.ok(inputFiles('legacy', [path]).includes(path), path);
+    assert.ok(inputFiles('view', [path]).includes(path), path);
+  }
+});

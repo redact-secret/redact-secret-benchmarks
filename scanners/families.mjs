@@ -29,10 +29,10 @@ const families = ['github-token', 'gitlab-token', 'npm-token', 'sendgrid-token',
   'cerebras-api-key', 'bitwarden-secrets-manager-access-token', 'polar-token', 'sonarqube-token', 'rubygems-api-key',
   'clojars-deploy-token', 'crates-io-token', 'dynatrace-token', 'paddle-api-key', 'honeycomb-api-key', 'axiom-token',
   // #1012 READY-T2 families, registry detectors since redact-secret#1028 and #1029 (product PR #1039, registry pin
-  // 4fb7882); first measured at that pin (benchmarks/lib/beta8/1012a.ts, 1012b.ts).
+  // 4fb7882); first measured at that pin (benchmarks/lib/credential-regressions/1012a.ts, 1012b.ts).
   'aws-secret-access-key', 'google-oauth-client-secret',
   // #583: registry detector since redact-secret#1107 (product PR #1227, registry pin 3b1a5aa); measured under the same id
-  // (benchmarks/lib/beta8/583a.ts). Its OAuth application secret type is labelled by finding type (arrivalFindingTypes below).
+  // (benchmarks/lib/credential-regressions/583a.ts). Its OAuth application secret type is labelled by finding type (arrivalFindingTypes below).
   'square-token'];
 const gitleaks = {
   'github-pat': 'github-token', 'github-oauth': 'github-token',
@@ -43,7 +43,7 @@ const gitleaks = {
   'anthropic-api-key': 'anthropic-token', 'openai-api-key': 'openai-token',
   'shopify-access-token': 'shopify-token', 'stripe-access-token': 'stripe-token',
   'generic-api-key': 'generic-token',
-  // Beta.8 #212 families (benchmarks/lib/beta8/212.ts; perplexity and the runner token are
+  // Beta.8 #212 families (benchmarks/lib/credential-regressions/212.ts; perplexity and the runner token are
   // registry detectors since redact-secret#730). gitleaks'
   // gitlab-rrt (GR1348941 registration token) and slack-user-token stay
   // unmapped: the first is another credential class, and the second already
@@ -66,7 +66,7 @@ const gitleaks = {
   // documented 40-44 band), so it maps to that arrival family and to no other Doppler type.
   'doppler-api-token': 'doppler-personal-token',
   // #464: gitleaks 8.30.1 clickhouse-cloud-api-secret-key is \b(4b1d[A-Za-z0-9]{38})\b with entropy 3, the T1 grammar of the
-  // ClickHouse Cloud key secret (benchmarks/lib/beta8/464b.ts), so it maps to that arrival family.
+  // ClickHouse Cloud key secret (benchmarks/lib/credential-regressions/464b.ts), so it maps to that arrival family.
   'clickhouse-cloud-api-secret-key': 'clickhouse-cloud-api-secret',
   // #528 arrival families (benchmarks/lib/beta8/528c-528g.ts). gitleaks 8.30.1 rubygems-api-token is the RubyGems grammar
   // with a trailing delimiter; clojars-api-token ((?i)CLOJARS_[a-z0-9]{60}) and dynatrace-api-token (dt0c01 only,
@@ -79,7 +79,7 @@ const gitleaks = {
   // positives; peer lag, not a family difference). 1password-secret-key is the account Secret Key, never this family,
   // and stays unmapped.
   '1password-service-account-token': 'onepassword-service-account-token',
-  // #583 (benchmarks/lib/beta8/583a.ts): gitleaks 8.30.1 square-access-token reads EAAA or the scanner-only sq0atp- + 22 to 60 over
+  // #583 (benchmarks/lib/credential-regressions/583a.ts): gitleaks 8.30.1 square-access-token reads EAAA or the scanner-only sq0atp- + 22 to 60 over
   // [\w-] (entropy 2): the square-token credential over a wider window. The default config has no sq0csp- rule (square-secret exists
   // only in the generator source), so gitleaks lags on every application secret. squarespace-access-token is another provider and
   // stays unmapped.
@@ -90,7 +90,7 @@ const trufflehog = {
   SendGrid: 'sendgrid-token', Slack: 'slack-token', AWS: 'aws-access-key',
   PrivateKey: 'private-key', JWT: 'jwt', Anthropic: 'anthropic-token',
   OpenAI: 'openai-token', Shopify: 'shopify-token', Stripe: 'stripe-token',
-  // Beta.8 #208 families (benchmarks/lib/beta8/208.ts; registry detectors since
+  // Beta.8 #208 families (benchmarks/lib/credential-regressions/208.ts; registry detectors since
   // redact-secret#727, graduated from arrival families): each detector
   // matches exactly that provider's inference key (`\b`-bounded prefix + fixed
   // body); OpenRouter is `sk-or-v1-` only, never the `sk-or-mgmt-` management key.
@@ -107,20 +107,20 @@ const trufflehog = {
   // #384: trufflehog 3.97.4's elevenlabs/v2 (sk_ + 48 hex, keyword-gated) and deepgram (keyword + 40 [0-9a-z]) detectors
   // (registry detectors since redact-secret#865 and #868). elevenlabs/v1 (a bare 32-hex legacy shape) reports under the same label.
   ElevenLabs: 'elevenlabs-api-key', Deepgram: 'deepgram-api-key',
-  // #434 arrival families (benchmarks/lib/beta8/434a.ts, 434d.ts): trufflehog 3.97.4's doppler detector reads
+  // #434 arrival families (benchmarks/lib/credential-regressions/434a.ts, 434d.ts): trufflehog 3.97.4's doppler detector reads
   // dp.(ct|pt|st[.segment]|sa|scim|audit). + 40-44 alphanumerics under one label, so it maps to the detector-level
   // family doppler-token (as Github maps to github-token) and a sibling-type finding reads as co-detection; its
   // posthog detector (label PosthogApp) reads phx_ + 43-48 of [a-zA-Z0-9_] only, the personal key.
   Doppler: 'doppler-token', PosthogApp: 'posthog-token',
-  // #464 arrival family (benchmarks/lib/beta8/464c.ts): trufflehog 3.97.4's nvapi detector (label NVAPI) reads an exact 64
+  // #464 arrival family (benchmarks/lib/credential-regressions/464c.ts): trufflehog 3.97.4's nvapi detector (label NVAPI) reads an exact 64
   // [a-zA-Z0-9_-] body after nvapi-, one width of the provider's open-ended grammar, so a finding maps to nvidia-api-key.
   NVAPI: 'nvidia-api-key',
-  // #528 arrival family (benchmarks/lib/beta8/528d.ts): trufflehog 3.97.4's rubygems detector (label RubyGems) reads
+  // #528 arrival family (benchmarks/lib/credential-regressions/528d.ts): trufflehog 3.97.4's rubygems detector (label RubyGems) reads
   // rubygems_ + 48 of [a-zA0-9] (a class typo), the RubyGems credential over a wider class. Its SonarCloud (legacy bare
   // 40 near "sonar", sqco_) and Honeycomb (32-hex or 22-alphanumeric near "Honeycomb") labels read no #528 family's
   // shape and stay unmapped.
   RubyGems: 'rubygems-api-key',
-  // #583 (benchmarks/lib/beta8/583a.ts): trufflehog 3.97.4's square detector (label Square) reads EAAA + 60 over [a-zA-Z0-9\-_+=] beside the
+  // #583 (benchmarks/lib/credential-regressions/583a.ts): trufflehog 3.97.4's square detector (label Square) reads EAAA + 60 over [a-zA-Z0-9\-_+=] beside the
   // word square; squareapp (label SquareApp) reads (sandbox-)sq0c?? + 40 to 50 and also the public sq0i?? application ids under the same
   // label, so its finding on a public id reads as overreach on the application secret family. Squarespace is another provider.
   Square: 'square-token', SquareApp: 'square-oauth-application-secret',
@@ -228,7 +228,7 @@ export const arrivalFindingTypes = Object.freeze({
   'square-token': Object.freeze({ square_oauth_application_secret: 'square-oauth-application-secret' }),
   // #1012/#1013: product PR #1039 (redact-secret#1036) splits vercel-token per credential class and types the three READY
   // classes (vcp_/vca_/vcr_ + exactly 56 [A-Za-z0-9]) as their own finding types; vci_, vck_ and off-width values keep the
-  // aggregate vercel_token (benchmarks/lib/beta8/1012e.ts).
+  // aggregate vercel_token (benchmarks/lib/credential-regressions/1012e.ts).
   'vercel-token': Object.freeze({
     vercel_personal_access_token: 'vercel-personal-access-token', vercel_app_access_token: 'vercel-app-access-token',
     vercel_app_refresh_token: 'vercel-app-refresh-token',

@@ -1,22 +1,24 @@
+import { fileURLToPath } from 'node:url';
+import { frozenSourceDigest } from './corpus-source-receipts.mjs';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { SHARED_WITH_GROUP_C, AXES, cases, corpusDigest, partDigest, PARTS, FAMILY_IDS, ROWS, SCORED_ROWS, CONTRADICTIONS, EVIDENCE, EVIDENCE_INPUTS } from '../benchmarks/group-d/corpus-group-d.mjs';
-import { scoreCase, summarize } from '../benchmarks/batch2/score-r2.mjs';
+import { SHARED_WITH_GROUP_C, AXES, cases, corpusDigest, partDigest, PARTS, FAMILY_IDS, ROWS, SCORED_ROWS, CONTRADICTIONS, EVIDENCE, EVIDENCE_INPUTS } from '../benchmarks/corpora/protocol-credentials/corpus-group-d.mjs';
+import { scoreCase, summarize } from '../benchmarks/harness/credential-carriers/score-multispan.mjs';
 
 // Group D (#753) corpus tests. They read the generator, the evidence extraction and the two scorers; none runs a detector.
 const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url));
 const json = (p) => JSON.parse(read(p).toString('utf8'));
-const proposed = json('benchmarks/group-d/FROZEN-group-d.json.proposed');
+const proposed = json('benchmarks/corpora/protocol-credentials/FROZEN-group-d.json');
 const byCase = new Map(EVIDENCE_INPUTS.cases.map((c) => [c.id, c]));
 const byFixture = new Map(EVIDENCE_INPUTS.fixtures.map((f) => [f.id, f]));
 const bytes = (c) => Buffer.from(c.text, 'utf8');
 
 test('the proposed digest file matches the generator and is not a freeze', () => {
-  assert.equal(proposed.status, 'proposed');
-  assert.equal(proposed.frozen, false);
+  assert.equal(proposed.status, 'frozen');
+  assert.equal(proposed.frozen, true);
   assert.equal(proposed.sha256, corpusDigest());
   assert.equal(proposed.cases, cases.length);
   for (const p of PARTS) assert.equal(proposed.parts[p].sha256, partDigest(p));
@@ -25,13 +27,13 @@ test('the proposed digest file matches the generator and is not a freeze', () =>
 });
 
 test('committed generated outputs are current (generate.mjs --check)', () => {
-  execFileSync(process.execPath, [new URL('../benchmarks/group-d/generate.mjs', import.meta.url).pathname, '--check'], { stdio: 'pipe' });
+  execFileSync(process.execPath, [fileURLToPath(new URL('../benchmarks/corpora/protocol-credentials/generate.mjs', import.meta.url)), '--check'], { stdio: 'pipe' });
 });
 
 test('scorers are Batch 2 round 2 unchanged', () => {
-  const sha = (p) => createHash('sha256').update(read(p)).digest('hex');
-  assert.equal(proposed.scorer.sha256, sha('benchmarks/batch2/score-r2.mjs'));
-  assert.equal(proposed.scorer.baseScorerSha256, sha('benchmarks/batch2/score.mjs'));
+  const sha = frozenSourceDigest;
+  assert.equal(proposed.scorer.sha256, sha('benchmarks/harness/credential-carriers/score-multispan.mjs'));
+  assert.equal(proposed.scorer.baseScorerSha256, sha('benchmarks/harness/credential-carriers/score.mjs'));
   assert.equal(proposed.scorer.changed, false);
 });
 
@@ -128,7 +130,7 @@ test('policy-limited, carrier-unresolved and prefix-shaped probes are observed o
 
 test('no vendor-prefix or token-shaped literal is committed in the generator or its inputs', () => {
   const banned = [/(?<!\{\{)figd_(?!\}\})/, /\bpat-na1-/, /eyJ[A-Za-z0-9_-]{8,}/, /AKIA[0-9A-Z]{16}/, /gh[pousr]_[A-Za-z0-9]{20,}/, /xox[bap]-/, /\bsl\.[A-Za-z0-9_-]{20,}/, /0123456789abcdef0123456789abcdef/];
-  for (const p of ['benchmarks/group-d/corpus-group-d.mjs', 'benchmarks/group-d/generate.mjs', 'benchmarks/group-d/evidence-inputs.json', 'benchmarks/group-d/extract-evidence-inputs.mjs', 'benchmarks/group-d/TRACEABILITY.md', 'benchmarks/group-d/traceability.json', 'benchmarks/group-d/FROZEN-group-d.json.proposed']) {
+  for (const p of ['benchmarks/corpora/protocol-credentials/corpus-group-d.mjs', 'benchmarks/corpora/protocol-credentials/generate.mjs', 'benchmarks/corpora/protocol-credentials/evidence-inputs.json', 'benchmarks/corpora/protocol-credentials/extract-evidence-inputs.mjs', 'benchmarks/corpora/protocol-credentials/TRACEABILITY.md', 'benchmarks/corpora/protocol-credentials/traceability.json', 'benchmarks/corpora/protocol-credentials/FROZEN-group-d.json']) {
     const text = read(p).toString('utf8');
     for (const re of banned) assert.ok(!re.test(text), `${p}: ${re}`);
   }
@@ -176,7 +178,7 @@ test('erratum D-B1/D-B2/A3: endpoint context and container downgrades hold', () 
 });
 
 test('Group D is frozen: FROZEN-group-d.json exists, carries the digest and pins the evidence and scorer files', () => {
-  const frozen = JSON.parse(readFileSync(new URL('../benchmarks/group-d/FROZEN-group-d.json', import.meta.url), 'utf8'));
+  const frozen = JSON.parse(readFileSync(new URL('../benchmarks/corpora/protocol-credentials/FROZEN-group-d.json', import.meta.url), 'utf8'));
   assert.equal(frozen.frozen, true);
   assert.equal(frozen.status, 'frozen');
   assert.equal(frozen.frozenBeforeAnyScan, true);
@@ -186,5 +188,5 @@ test('Group D is frozen: FROZEN-group-d.json exists, carries the digest and pins
   assert.equal(frozen.evidenceSnapshot.tag, 'snapshot-2026.10.06.5');
   assert.equal(frozen.evidenceSnapshot.commit, '574b52ba367e2071d5a9bea3e2da7a9c5057f633');
   assert.match(frozen.frozenAtCommit, /^[0-9a-f]{40}$/);
-  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(createHash('sha256').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex'), h, f);
+  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(frozenSourceDigest(f), h, f);
 });

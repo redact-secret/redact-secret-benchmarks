@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { contracts, controlAxis, arrivalIds, disputedProperty, PROVIDER_NAMED_FALLBACK_948 } from '../benchmarks/lib/assessment.ts';
-import { BETA8_MODULES, arrivalFamilies, validateBeta8 } from '../benchmarks/lib/beta8/index.ts';
-import { POSITIVE_AXES, countProfile } from '../benchmarks/lib/beta8/profiles.ts';
-import { CONTROL_SUFFIXES } from '../fixtures/generated/beta8/helpers.mjs';
+import { BETA8_MODULES, arrivalFamilies, validateBeta8 } from '../benchmarks/lib/credential-regressions/index.ts';
+import { POSITIVE_AXES, countProfile } from '../benchmarks/lib/credential-regressions/profiles.ts';
+import { CONTROL_SUFFIXES } from '../fixtures/generators/credential-regressions/helpers.mjs';
 import { scoredArrivalFamilies } from '../scanners/families.mjs';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));

@@ -1,11 +1,12 @@
+import { frozenSourceDigest } from './corpus-source-receipts.mjs';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { AXES, cases, CASE_CLAIMS, corpusDigest, EVIDENCE, FAMILY_IDS, PART, ROWS, SNAPSHOT } from '../benchmarks/group-c/corpus-group-c.mjs';
-import * as groupC from '../benchmarks/group-c/score-group-c.mjs';
-import * as batch2 from '../benchmarks/batch2/score-r2.mjs';
-import { ROW_IDS } from '../benchmarks/group-c/rows.mjs';
+import { AXES, cases, CASE_CLAIMS, corpusDigest, EVIDENCE, FAMILY_IDS, PART, ROWS, SNAPSHOT } from '../benchmarks/corpora/provider-contracts/corpus-group-c.mjs';
+import * as groupC from '../benchmarks/corpora/provider-contracts/score-group-c.mjs';
+import * as batch2 from '../benchmarks/harness/credential-carriers/score-multispan.mjs';
+import { ROW_IDS } from '../benchmarks/corpora/provider-contracts/rows.mjs';
 
 const read = p => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
 const caseOf = new Map(EVIDENCE.cases.map(c => [c.id, c]));
@@ -24,7 +25,7 @@ const sha = f => createHash('sha256').update(readFileSync(new URL('../' + f, imp
 const ERRATA_ORIGINAL = 'f216ca0a72c52d2b268924662d7f4ab66372c9820d0cfe386e3eefa0110dc37d';
 
 test('the original freeze record is untouched; errata 1 proposes the new digest', () => {
-  const frozen = JSON.parse(read('benchmarks/group-c/FROZEN-group-c.json'));
+  const frozen = JSON.parse(read('benchmarks/corpora/provider-contracts/FROZEN-group-c.json'));
   assert.equal(frozen.frozen, true);
   assert.equal(frozen.frozenBeforeAnyScan, true);
   assert.equal(frozen.evidenceSnapshot.tag, 'snapshot-2026.10.06.5');
@@ -33,23 +34,23 @@ test('the original freeze record is untouched; errata 1 proposes the new digest'
   // everything the original freeze hashed except the generator (changed by errata 1, hashed in the errata manifest) still matches
   for (const [group, files] of Object.entries(frozen.frozenFileHashes)) {
     if (group === 'corpusGenerator') continue;
-    for (const [f, h] of Object.entries(files)) assert.equal(sha(f), h, f);
+    for (const [f, h] of Object.entries(files)) assert.equal(frozenSourceDigest(f), h, f);
   }
-  const errata = existsSync(new URL('../benchmarks/group-c/FROZEN-group-c-errata-1.json', import.meta.url)) ? 'benchmarks/group-c/FROZEN-group-c-errata-1.json' : 'benchmarks/group-c/FROZEN-group-c-errata-1.json.proposed';
+  const errata = 'benchmarks/corpora/provider-contracts/contract-receipts/errata-1.json';
   const e = JSON.parse(read(errata));
   assert.equal(e.errata.id, 'errata-1');
   assert.equal(e.errata.previousSha256, ERRATA_ORIGINAL);
   assert.notEqual(e.sha256, ERRATA_ORIGINAL);
   assert.equal(e.errata.ids.length, 9);
-  assert.equal(e.inputs.generator.sha256, sha('benchmarks/group-c/corpus-group-c.mjs'));
-  assert.equal(e.inputs.evidenceFixtures.sha256, sha('benchmarks/group-c/evidence-fixtures.json'));
+  assert.equal(e.inputs.generator.sha256, frozenSourceDigest('benchmarks/corpora/provider-contracts/corpus-group-c.mjs'));
+  assert.equal(e.inputs.evidenceFixtures.sha256, sha('benchmarks/corpora/provider-contracts/evidence-fixtures.json'));
   assert.equal(corpusDigest(), e.sha256);
   assert.equal(cases.length, e.cases);
   assert.equal(e.positives + e.controls + e.unsupported + e.conflict, e.cases);
-  const index = JSON.parse(read('benchmarks/group-c/corpus-index.json'));
+  const index = JSON.parse(read('benchmarks/corpora/provider-contracts/corpus-index.json'));
   assert.equal(index.corpusSha256, corpusDigest());
   assert.equal(index.cases.length, cases.length);
-  assert.ok(read('benchmarks/group-c/TRACEABILITY.md').includes(corpusDigest()));
+  assert.ok(read('benchmarks/corpora/provider-contracts/TRACEABILITY.md').includes(corpusDigest()));
 });
 
 test('errata 1: exactly the nine code= controls are downgraded', () => {
@@ -114,7 +115,7 @@ test('every stored fixture is replayed byte for byte with its own spans', () => 
 });
 
 test('the committed fixture extract holds no vendor-shaped literal (tokenised, rebuilt at run time)', () => {
-  const raw = read('benchmarks/group-c/evidence-fixtures.json').replace(/"sha256": "[0-9a-f]{64}"/g, '"sha256": ""');
+  const raw = read('benchmarks/corpora/provider-contracts/evidence-fixtures.json').replace(/"sha256": "[0-9a-f]{64}"/g, '"sha256": ""');
   assert.ok(!/[0-9a-f]{32,}/.test(raw), 'a long hex run is committed');
   assert.ok(!/\b[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}\b/.test(raw), 'a UUID is committed');
   assert.ok(!/\bsl\.[A-Za-z]|\bcmVmd|\b5Aep861|(?<![-a-z])pat-(na1|eu1)-[A-Za-z0-9]|CFPAT-[A-Za-z0-9]/.test(raw), 'a vendor prefix literal is committed');
@@ -146,7 +147,7 @@ test('vendor-shape probes are unscored and assembled at run time; the generator 
   const probes = cases.filter(c => c.axes.includes('vendor-probe'));
   assert.ok(probes.length >= 30);
   for (const c of probes) assert.equal(c.kind, 'unsupported', c.id);
-  const src = read('benchmarks/group-c/corpus-group-c.mjs');
+  const src = read('benchmarks/corpora/provider-contracts/corpus-group-c.mjs');
   // a prefix followed by a body (at least 8 characters with a digit) would be a vendor-shaped literal; the Case ids and notes that name a prefix are fine
   assert.ok(!/(p8e-|cmVmd|5Aep861|sl\.(u\.)?|pat-(na1|eu1)-|CFPAT-)(?=[A-Za-z0-9]*\d)[A-Za-z0-9]{8,}/.test(src), 'vendor-shaped literal in the generator');
   for (const lit of ['ghp_', 'AKIA', 'xoxb-', 'sk_live_']) assert.ok(!src.includes(lit), `literal ${lit} in the generator`);
@@ -198,7 +199,7 @@ test('reviewer rulings: downgrades keep the entry, no scored span, and the contr
   for (const c of cases.filter(x => x.family === 'adobe:enterprise-web-app-client-secret' && x.kind === 'control')) assert.ok(!/org_id/.test(c.text), c.id);
   for (const c of cases.filter(x => x.family === 'meta:app-secret' && x.kind === 'control')) assert.ok(!/\b\d{15,17}\b/.test(c.text), c.id);
   // A10 / A13 / A4 / A12 are in the manifest
-  const f = JSON.parse(read('benchmarks/group-c/FROZEN-group-c-errata-1.json.proposed'));
+  const f = JSON.parse(read('benchmarks/corpora/provider-contracts/contract-receipts/errata-1.json'));
   assert.deepEqual(f.headlineMetrics, ['exact', 'fullyCovered']);
   assert.ok(f.uniqueInputs.total > 0 && f.policyClassTolerance.includes('cannot be expressed'));
   // C-F2: class extension is by construction: generated benign-value controls only, never a verbatim fixture replay

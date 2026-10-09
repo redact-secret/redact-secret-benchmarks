@@ -111,7 +111,7 @@ export function planFamilyNew(args, paths = DEFAULT_PATHS) {
   if (check.problems.length) return { problems: check.problems.map((p) => `dossier ${provider}: ${p}`), writes: [], id };
 
   const stub = `// Fixture stub for ${id}, scaffolded by \`npm run family:new\` (#477).
-// Inert: nothing imports this file until you wire it (see fixtures/generated/beta8/index.mjs
+// Inert: nothing imports this file until you wire it (see fixtures/generators/credential-regressions/index.mjs
 // for how corpora are registered; a corpus with no fixtures is omitted).
 //
 // Author values from a synthetic() seed or independent construction, never from

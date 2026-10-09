@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { contracts, controlAxis } from '../benchmarks/lib/assessment.ts';
-import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
-import { BEDROCK_SHORT_HEAD, BEDROCK_SHORT_HEAD_TEXT } from '../benchmarks/lib/beta8/384b.ts';
-import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
+import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/credential-regressions/index.ts';
+import { BEDROCK_SHORT_HEAD, BEDROCK_SHORT_HEAD_TEXT } from '../benchmarks/lib/credential-regressions/384b.ts';
+import { beta8ProfileCounts } from '../scripts/report-fixture-profiles.mjs';
 import { scoredArrivalFamilies } from '../scanners/families.mjs';
 
 // Beta.10 contracts and corpus (#384): the conventions that tests/beta8.test.mjs cannot see because
@@ -81,7 +81,7 @@ test('every Beta.10 target meets its declared fixture profile', async () => {
 });
 
 test('no Beta.10 source file carries a complete synthetic credential as a literal', async () => {
-  const files = slices.flatMap(key => [`fixtures/generated/beta8/${key}.mjs`, `benchmarks/lib/beta8/${key}.ts`]);
+  const files = slices.flatMap(key => [`fixtures/generators/credential-regressions/${key}.mjs`, `benchmarks/lib/credential-regressions/${key}.ts`]);
   const shapes = [/sk-ant-(?:api01|admin01)-[A-Za-z0-9_-]{40,}/, /sk-admin-[A-Za-z0-9_-]{40,}/, /ABSK[A-Za-z0-9+/]{60,}/, /bedrock-api-key-[A-Za-z0-9+/]{150,}/,
     /tgp_v1_[A-Za-z0-9_-]{40,}/, /tvly-(?:dev-)?[A-Za-z0-9]{30,}/, /\bsk_[0-9a-f]{40,}/, /sk_live_[A-Za-z0-9]{20,}/];
   for (const file of files) {

@@ -4,7 +4,7 @@ import { buildDetectorCoverage, documentedTwins } from "./detector-coverage.mjs"
 import { buildClosedMilestone } from "./closed-milestone.mjs";
 import { buildCommonFormats } from "./common-formats.mjs";
 import { buildContextFamilies } from "./context-families.mjs";
-import { buildBeta8 } from "./beta8/index.mjs";
+import { buildBeta8 } from "../generators/credential-regressions/index.mjs";
 import { buildPolicyQualifiedCredentials } from "./policy-qualified-credentials.mjs";
 import { applyProviderNamedFallback948, classifyFixture } from "../../benchmarks/lib/assessment.ts";
 

@@ -18,7 +18,7 @@ export const tiers = {
 };
 
 import { observedAt, th, gl, unprobeable, provider } from '../../../lib/contract-sources.ts';
-import { arrivalContracts, arrivalIds, graduatedContracts } from '../../../lib/beta8/index.ts';
+import { arrivalContracts, arrivalIds, graduatedContracts } from '../../../lib/credential-regressions/index.ts';
 import { scoredArrivalFamilies } from '../../../../scanners/families.mjs';
 
 /**
@@ -374,7 +374,7 @@ const inlineRegistryContracts: Record<string, FormatContract> = {
 for (const id of Object.keys(graduatedContracts)) if (Object.hasOwn(inlineRegistryContracts, id)) throw new Error(`Graduated contract shadows a registry contract: ${id}`);
 /**
  * Registry detector contracts: the ones authored here plus Beta.8 arrival contracts that
- * graduated when the product registry gained their detector (benchmarks/lib/beta8/*
+ * graduated when the product registry gained their detector (benchmarks/lib/credential-regressions/*
  * `registryContracts`). Keys are exactly detectors.json's ids.
  */
 const registryContracts: Record<string, FormatContract> = { ...inlineRegistryContracts, ...graduatedContracts };
@@ -382,7 +382,7 @@ for (const id of Object.keys(arrivalContracts)) if (Object.hasOwn(registryContra
 /**
  * Every contract a fixture can cite: the registry's (keys are exactly
  * detectors.json's ids) plus the Beta.8 arrival families' (#207–#212,
- * benchmarks/lib/beta8/), which no product detector targets yet.
+ * benchmarks/lib/credential-regressions/), which no product detector targets yet.
  */
 export const contracts: Record<string, FormatContract> = { ...registryContracts, ...arrivalContracts };
 /** Registry detector ids only: the unit a product support status is classified on. */
@@ -638,7 +638,7 @@ export const DISPUTED_PROPERTIES: Record<string, { family: string; property: str
   },
   // #583: Square says "don't use token length for validation" and its own examples disagree (an EAAl + 59 access token and an
   // EQAA + 60 refresh token in the ObtainToken reference against the 64-character EAAA example; sq0csp- + 43 in the walkthrough
-  // and + 44 in the reference). The contract (benchmarks/lib/beta8/583a.ts) claims the stable widths under ruling Q8 (open) and
+  // and + 44 in the reference). The contract (benchmarks/lib/credential-regressions/583a.ts) claims the stable widths under ruling Q8 (open) and
   // leaves every other width unclaimed, so these twins assert neither detection nor silence. The prefix, alphabet and boundary
   // twins of the same corpus stay asserted.
   'square-access-token-widths': {
@@ -876,7 +876,7 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
     if (['bearer-token', 'connection-string', 'otpauth-uri', 'generic-token'].includes(family) || (family === 'azure-devops-personal-access-token' && category === 'detector-coverage') || isContextGated(family))
       return policy(contracts[family ?? ''].review!, family);
     if (family === 'aws-access-key') return policy('Standalone access-key ID without secret key/session token. Some legacy ASIA values also use digits outside the base32 alphabet.', family);
-    // #1012 (aws-sts-temporary-access-key, benchmarks/lib/beta8/1012d.ts): the same bare-identifier policy, on the
+    // #1012 (aws-sts-temporary-access-key, benchmarks/lib/credential-regressions/1012d.ts): the same bare-identifier policy, on the
     // provider's own statement rather than the unsourced legacy-digit reason above.
     if (family === 'aws-sts-temporary-access-key') return policy('Standalone STS temporary access key ID: AWS documents ASIA IDs as unique only in combination with the secret access key and the session token, so a bare ID is redacted by project policy, not as a standalone credential.', family);
     if (family === 'shopify-token') return policy('Token shape is plausible, but the shop domain the contract requires is absent.', family);

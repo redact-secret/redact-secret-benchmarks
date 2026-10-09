@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { AXES, cases, corpusDigest, partDigest, PARTS, FAMILY_IDS } from '../benchmarks/batch2/corpus-r2.mjs';
-import { corpusDigest as round1Digest } from '../benchmarks/batch2/corpus.mjs';
+import { AXES, cases, corpusDigest, partDigest, PARTS, FAMILY_IDS } from '../benchmarks/corpora/credential-carriers/corpus-r2.mjs';
+import { corpusDigest as round1Digest } from '../benchmarks/corpora/credential-carriers/corpus.mjs';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
-const frozen = read('benchmarks/batch2/FROZEN-r2.json');
-const round1 = read('benchmarks/batch2/FROZEN.json');
+const frozen = read('benchmarks/corpora/credential-carriers/FROZEN-r2.json');
+const round1 = read('benchmarks/corpora/credential-carriers/FROZEN.json');
 
 test('round 1 is untouched and round 2 is the frozen corpus', () => {
   assert.equal(round1Digest(), round1.sha256);

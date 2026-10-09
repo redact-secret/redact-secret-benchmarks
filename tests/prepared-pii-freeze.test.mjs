@@ -58,6 +58,7 @@ test('schema and commitment reject rehashed acceptance claims, traversal and spe
 test('real promotion CLI prepares an absent bounded role, refuses existing target and tampered source without scans', () => {
   const target = path.join(root, PREPARED_PII_FREEZE_PATH);
   assert.equal(existsSync(target), false, 'No accepted candidate is introduced by this test');
+  mkdirSync(path.join(root, 'results-output'), { recursive: true });
   const stage = mkdtempSync(path.join(root, 'results-output/prepared-freeze-test-'));
   const acceptedLedger = readFileSync(path.join(root, 'benchmarks/accepted-pii-profile-cost.json'));
   try {

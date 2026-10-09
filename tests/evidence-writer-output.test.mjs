@@ -9,6 +9,7 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { stagedAsyncMeasurementDirectory } from '../scripts/lib/staged-async-measurement.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
+mkdirSync(join(root, 'results-output'), { recursive: true });
 const run = (script, args) => spawnSync(process.execPath, ['--import', 'tsx', script, ...args], { cwd: root, encoding: 'utf8' });
 const credential = out => ['--core-commit=' + 'a'.repeat(40), '--core-repo=' + join(tmpdir(), 'nonexistent-core-must-not-build'), '--out-dir=' + out];
 

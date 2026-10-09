@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { BASE, FAMILY, expect, test } from './fixtures';
 
 test('report provenance opens on demand and returns keyboard focus', async ({ page }) => {
@@ -26,7 +28,13 @@ test('theme button cycles between two explicit modes', async ({ page }) => {
 
 test('PII comparison exposes readable results with raw evidence in a dialog', async ({ page }) => {
   await page.goto(`${BASE}/evaluation/pii/evidence/`);
+  const paired = JSON.parse(readFileSync(path.resolve(__dirname, '../../../benchmarks/pii-evidence-comparison/plan.json'), 'utf8')).candidate !== null;
   const comparison = page.getByRole('region', { name: 'Version comparison' });
+  if (!paired) {
+    await expect(comparison).toHaveCount(0);
+    await expect(page.getByRole('table', { name: 'Public outcomes, one imported variant at a time' })).toBeVisible();
+    return;
+  }
   await expect(comparison.getByLabel('Show variants')).toHaveValue('changed');
   await comparison.getByLabel('Show variants').selectOption('all');
   await comparison.getByRole('button', { name: /View details/ }).first().click();

@@ -129,3 +129,18 @@ describe('independent public service identity checks', () => {
     expect((await resolvePiiEvidencePage()).head.currentHref).toBe('/evaluation/pii/evidence/');
   });
 });
+
+
+test('baseline-only outcomes stay inspectable without claiming unchanged comparisons or missing PHI metadata', () => {
+  const input = recorded();
+  input.candidate = null;
+  input.protocol.artifactSchema = '1.5';
+  input.outcomes = input.outcomes.map(row => ({ ...row, candidate: null, changed: false }));
+  input.metrics = input.metrics.map(row => ({ ...row, candidate: null, delta: null }));
+  const view = resolvePiiEvidenceView(input);
+  expect(resolvePiiOutcomeSummary(input)).toBeNull();
+  const outcomes = table(view, 'evidence-outcomes');
+  expect(outcomes.rows).toHaveLength(input.outcomes.length);
+  expect(outcomes.rows.every(row => row.cells.length === 1 && row.detail.includes('Published baseline only'))).toBe(true);
+  expect(view.status.groups.flatMap(group => group.rows).find(row => row.id === 'evidence-phi-context').detail).toContain('preserves PHI domain');
+});

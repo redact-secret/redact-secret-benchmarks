@@ -35,9 +35,9 @@ export function resolvePiiEvidenceView(comparison: PiiEvidenceComparison): Domai
       id: family, label: family, cells: [{ figure: int(counts.cases) }, { figure: int(counts.variants) }],
     })), note: 'These are import membership counts. Family metric projections are unavailable in this unprojected schema; no family support status follows.' },
     { id: 'evidence-losses', caption: 'Semantics the import did not preserve', rowHeader: 'Loss class', columns: ['Affected records'], rows: Object.entries(record.losses).map(([loss, number]) => ({ id: loss, label: loss, cells: [{ figure: int(number) }] })),
-      note: 'Loss classes overlap. Do not add their counts; PHI and context claims stay pending until their semantics are faithfully represented.' },
+      note: 'Loss classes overlap. Do not add their counts. Preserved metadata and remaining representation losses are distinct from product qualification.' },
     { id: 'evidence-outcomes', caption: record.candidate ? 'Paired public outcomes, one imported variant at a time' : 'Public outcomes, one imported variant at a time', rowHeader: 'Imported case', columns, rows: record.outcomes.map(row => ({
-      id: row.variantId, label: row.caseId, detail: `${row.variantId}; ${row.family}; ${row.changed ? 'Recorded outcome differs' : 'Recorded outcome unchanged'}`,
+      id: row.variantId, label: row.caseId, detail: `${row.variantId}; ${row.family}; ${record.candidate ? row.changed ? 'Recorded outcome differs' : 'Recorded outcome unchanged' : 'Published baseline only'}`,
       cells: [row.baseline, ...(row.candidate ? [row.candidate] : [])].map(outcome => ({ figure: evidenceOutcomeText(outcome) })),
     })), note: record.candidate ? 'Both sides read the same authored population. A changed outcome is descriptive, not a regression or promotion decision.' : 'The published product reads this authored population. No comparison or support promotion is implied.' },
   ] : [];
@@ -47,7 +47,7 @@ export function resolvePiiEvidenceView(comparison: PiiEvidenceComparison): Domai
   }] }, { title: 'Qualification and unresolved semantics', rows: [
     { id: 'evidence-qualification', label: 'Product qualification', status: 'not-measured', statusWord: 'Not qualified', detail: 'This public measurement can be cited by its own population identity. It grants no support status and does not satisfy protected qualification.' },
     { id: 'evidence-family-metrics', label: 'Family metric projection', status: 'not-measured', statusWord: 'Unavailable', detail: record?.familyMetrics.reason ?? 'No verified artifact is recorded. No family rates are inferred from case outcomes.' },
-    { id: 'evidence-phi-context', label: 'PHI and context claims', status: 'not-measured', statusWord: 'Pending', detail: 'Imported personal-data labels do not establish preserved PHI or context semantics. Lost axes remain pending.' },
+    { id: 'evidence-phi-context', label: 'PHI and context claims', status: 'not-measured', statusWord: 'Pending', detail: record?.protocol.artifactSchema === '1.5' ? 'Mapping 3 preserves PHI domain and authored context metadata. Remaining import losses and unavailable per-kind fidelity accounting stay explicit; this grants no product qualification.' : 'Imported personal-data labels do not establish preserved PHI or context semantics. Lost axes remain pending.' },
     { id: 'evidence-protected', label: 'Protected evidence', status: 'not-measured', statusWord: 'Not operational', detail: 'The protected path does not gate this public population. No protected execution or membership is implied.' },
   ] }];
   if (record) groups.push({ title: 'Exact scanner and run identities', rows: [

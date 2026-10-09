@@ -79,6 +79,7 @@
     "piiEvalMeasurement": { "type": "object", "additionalProperties": false,
       "required": ["schema", "complete", "decision", "pooling", "build", "populations", "rejections"], "properties": {
         "schema": { "const": "pii-eval-consumer-report/1" }, "complete": { "const": true }, "decision": { "const": "none" }, "pooling": { "const": "none" },
+        "publicationProduct": { "type": "object", "additionalProperties": false, "required": ["sourceCommit", "coreSha256"], "properties": { "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" }, "coreSha256": { "$ref": "#/$defs/digest" } } },
         "rejections": { "type": "array", "maxItems": 0 },
         "build": { "type": "object", "additionalProperties": false,
           "required": ["repository", "commit", "cargoLockSha256", "binarySha256", "sourceArchiveSha256", "binding"], "properties": {
@@ -102,9 +103,10 @@
       ],
       "properties": {
         "schemaVersion": { "enum": ["1.1", "1.2", "1.4"] },
-        "productBinding": { "type": "object", "additionalProperties": false, "required": ["state", "candidateSourceCommit"], "properties": {
-          "state": { "enum": ["measures-publication-product", "other-product", "publication-product-not-measured"] },
-          "candidateSourceCommit": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9]{40}$" }] } } },
+        "productBinding": { "type": "object", "additionalProperties": false, "required": ["state", "candidateSourceCommit"], "allOf": [{ "if": { "properties": { "state": { "const": "measures-publication-product" } } }, "then": { "required": ["proof"], "properties": { "proof": true } }, "else": { "properties": { "proof": false } } }], "properties": {
+          "state": { "enum": ["measures-publication-product", "other-product", "publication-product-not-measured", "publication-artifact-not-bound"] },
+          "candidateSourceCommit": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9]{40}$" }] },
+          "proof": {"type": "object", "additionalProperties": false, "required": ["coreSha256", "packageTreeSha256", "engineCommit", "protocol", "populationDigest"], "properties": {"coreSha256": {"$ref": "#/$defs/digest"}, "packageTreeSha256": {"$ref": "#/$defs/digest"}, "engineCommit": {"type": "string", "pattern": "^[a-f0-9]{40}$"}, "protocol": {"type": "object", "additionalProperties": false, "required": ["id", "revision"], "properties": {"id": {"const": "pii-v1"}, "revision": {"const": 2}}}, "populationDigest": {"$ref": "#/$defs/digest"}}} } },
         "productProjection": { "$ref": "#/$defs/piiEvalProjection" },
         "label": { "$ref": "#/$defs/slug" }, "populationId": { "type": "string", "minLength": 1, "maxLength": 128 }, "artifactDigest": { "$ref": "#/$defs/digest" },
         "file": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$" }, "status": { "const": "accepted" },

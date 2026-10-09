@@ -94,3 +94,10 @@ npm run pii:authority:rehearse       # rehearse the rollback (working tree only)
 npm run pii:migration:check          # the dual-run record, the linux replay receipt and the pins
 npm run pii:population:replay -- --engine=<pii-eval binary>   # replay the four populations (CI: pii-population-replay.yml)
 ```
+
+
+## Current publication contract split (#869)
+
+The [PII publication boundary](pii-publication-boundary.md) separates immutable contracts, erased accounting DTOs and strict artifact readers from the retained TypeScript measurement oracle. Current publication uses explicit legacy population absence plus independently validated engine measurement, without substituting canonical `pii-v1` quantities for `b11` qualification metrics. Source-commit-only product matching is refused: a strict paired comparison receipt must also bind the core tarball, engine package tree, scorer and population identities. A same-commit artifact without that proof is `publication-artifact-not-bound`.
+
+Historical raw population publication requires the explicit `--bounded-population-oracle` lane. This records a consumer split, not an oracle-exit decision, authority repin, owner acceptance, installed-validator conformance or protected operational readiness.

@@ -301,6 +301,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
     const mode = projection.rows[0].mode;
     const modeLabel = mode === 'official' ? 'Official' : 'Exploratory';
     const relation = population.productBinding.state === 'measures-publication-product' ? 'It measures the product this publication measured.'
+      : population.productBinding.state === 'publication-artifact-not-bound' ? 'The product source commit matches, but no validated receipt binds its core tarball and this engine artifact. Measurement of this publication product is not established.'
       : population.productBinding.state === 'other-product' ? 'It is another product than the one this publication measured; it says nothing about that product.'
       : 'This publication measured no product, so no product is claimed.';
     const fixedDecimal = (value: { mantissa: number; scale: number }) => {

@@ -1,3 +1,4 @@
+import { piiPublicationProductProofProblem } from './publication-product-proof.ts';
 import Ajv from 'ajv';
 import matrixSchema from '../../../../schemas/pii-support-matrix-v2.json';
 import registrySchema from '../../../../schemas/pii-support-registry-v1.json';
@@ -5,12 +6,10 @@ import registryData from './support-registry-v1.json';
 import { hash } from '../../substrate/hash.ts';
 import { validatePiiAuthority } from './contract-model.ts';
 import { isPiiJurisdiction } from './jurisdictions.ts';
-import {
-  buildPiiPopulationReport, comparePiiPopulationReports, piiPopulationContract, validatePiiPopulationReport,
-  type PiiPopulationContract, type PiiPopulationId, type PiiPopulationReport, type PiiPopulationValidationOptions,
-} from './populations.ts';
-import { piiBenignCollisionEvidence, type PiiBenignCollisionEvidence } from './benign-collision-evidence.ts';
-import type { PiiAccountingRow } from './accounting.ts';
+import { piiPopulationContract, type PiiPopulationContract, type PiiPopulationId, type PiiPopulationReport, type PiiPopulationValidationOptions } from './population-contracts.ts';
+import { validatePiiPopulationArtifact as validatePiiPopulationReport, unmeasuredPiiPopulationArtifacts } from './population-artifacts.ts';
+import { piiBenignCollisionEvidence, type PiiBenignCollisionEvidence } from './benign-collision-contract.ts';
+import type { PiiAccountingRow } from './accounting-types.ts';
 import type { PiiAuthority, PiiContract } from './types.ts';
 import { PII_SUPPORT_REGISTRY_SOURCE, piiProtectedRouteProblem, piiProtectedRouteReasonCodes, piiReviewedProtectedRoute, piiSupportRegistryProjection,
   piiSupportSemanticProblem, type PiiProtectedRoute } from './support-semantics.ts';
@@ -35,9 +34,9 @@ export interface PiiSupportRegistry {
   source: { repository: 'redact-secret/redact-secret'; decision: typeof REGISTRY_DECISION; mergeCommit: typeof PII_ACTIVATION_CONTRACT.mergeCommit };
   families: PiiSupportFamily[];
 }
-type PopulationInput = { report: PiiPopulationReport; rows?: PiiAccountingRow[]; contract?: PiiPopulationContract;
+export type PopulationInput = { report: PiiPopulationReport; rows?: PiiAccountingRow[]; contract?: PiiPopulationContract;
   evidence?: PiiBenignCollisionEvidence; validation?: PiiPopulationValidationOptions };
-type PopulationComparisonInput = { baseline: PiiPopulationReport; candidate: PiiPopulationReport;
+export type PopulationComparisonInput = { baseline: PiiPopulationReport; candidate: PiiPopulationReport;
   baselineRows: PiiAccountingRow[]; candidateRows: PiiAccountingRow[]; contract?: PiiPopulationContract;
   evidence?: PiiBenignCollisionEvidence; validation?: PiiPopulationValidationOptions };
 export type PiiEvalViewId = 'oracle-plan' | 'qualification-plan' | 'diagnostic-balanced' | 'benign-heavy-stress';
@@ -58,6 +57,8 @@ export interface PiiEvalProjection {
   }>;
 }
 export interface PiiEvalMeasurement {
+  /** Expected publication identity, independent of the engine package-tree identity in each proof. */
+  publicationProduct?: { sourceCommit: string; coreSha256: string };
   /** Present on a published measurement (derived, never typed): which quantity each metric id is and which protocol a verdict reads. */
   quantityBasis?: { decision: string; protocol: 'pii-v1'; verdictReads: 'b11'; thresholdsApplied: false;
     definitions: Array<{ quantity: string; id: string; name: string; owner: string; population: string; numerator: string; denominator: string }> };
@@ -70,7 +71,8 @@ export interface PiiEvalMeasurement {
     population: { populationId: string; populationVersion: number; populationDigest: string; visibility: 'public-synthetic' };
     populationCounts: { authoredCases: number; variants: number; occurrences: number };
     /** How the measured scanner relates to the product this publication measured. A candidate is never a release. */
-    productBinding: { state: 'measures-publication-product' | 'other-product' | 'publication-product-not-measured'; candidateSourceCommit: string | null };
+    productBinding: { state: 'measures-publication-product' | 'other-product' | 'publication-product-not-measured' | 'publication-artifact-not-bound'; candidateSourceCommit: string | null;
+      proof?: { coreSha256: string; packageTreeSha256: string; engineCommit: string; protocol: { id: 'pii-v1'; revision: 2 }; populationDigest: string } };
     scanners: Array<{ scannerId: string; status: 'complete'; identity: Record<string, unknown>; metrics: unknown[] }>;
     productProjection?: PiiEvalProjection;
     unavailable?: { familyProjection: 'schema-1.1-does-not-carry'; populationViews: 'schema-1.1-does-not-carry';
@@ -88,6 +90,8 @@ export interface CustodianConformance {
   qualification: 'not-live-support-evidence'; reason: 'synthetic-signature-conformance-is-not-independent-ground-truth';
 }
 export interface PiiSupportBuildOptions {
+  /** Only the historical oracle wrapper supplies these raw-reconciliation functions. */
+  boundedOracle?: { population(input: PopulationInput): PiiPopulationReport; comparison(input: PopulationComparisonInput): PiiSupportMatrixV2['populationComparisons'][number] };
   registry?: PiiSupportRegistry;
   populations?: readonly PopulationInput[];
   comparisons?: readonly PopulationComparisonInput[];
@@ -293,6 +297,9 @@ export function unlabelPiiEvalQuantities(value: PiiEvalMeasurement): PiiEvalMeas
 function validatePiiEvalMeasurement(input: PiiEvalMeasurement): PiiEvalMeasurement {
   const value = unlabelPiiEvalQuantities(input);
   const unavailable = 'schema-1.1-does-not-carry';
+  if (value.publicationProduct && (!exact(value.publicationProduct, ['sourceCommit', 'coreSha256']) ||
+      !/^[a-f0-9]{40}$/.test(value.publicationProduct.sourceCommit) || !digest(value.publicationProduct.coreSha256)))
+    throw new Error('Invalid PII publication product identity');
   if (value.schema !== 'pii-eval-consumer-report/1' || value.complete !== true || value.decision !== 'none' || value.pooling !== 'none' ||
       value.rejections.length !== 0 || value.build.repository !== 'redact-secret/pii-eval' || !/^[a-f0-9]{40}$/.test(value.build.commit) ||
       ![value.build.cargoLockSha256, value.build.binarySha256, value.build.sourceArchiveSha256].every(digest) ||
@@ -300,7 +307,7 @@ function validatePiiEvalMeasurement(input: PiiEvalMeasurement): PiiEvalMeasureme
       new Set(value.populations.map(row => row.populationId)).size !== value.populations.length || value.populations.some(row =>
         row.status !== 'accepted' || row.populationId !== row.population.populationId || row.population.visibility !== 'public-synthetic' ||
         !['1.1', '1.2', '1.4'].includes(row.schemaVersion) ||
-        !['measures-publication-product', 'other-product', 'publication-product-not-measured'].includes(row.productBinding?.state) ||
+        !['measures-publication-product', 'other-product', 'publication-product-not-measured', 'publication-artifact-not-bound'].includes(row.productBinding?.state) ||
         !(row.productBinding.candidateSourceCommit === null || /^[a-f0-9]{40}$/.test(row.productBinding.candidateSourceCommit)) ||
         !digest(row.artifactDigest) || !Number.isInteger(row.population.populationVersion) || !digest(row.population.populationDigest) ||
         Object.values(row.populationCounts).some(count => !Number.isInteger(count) || count < 0) || !row.scanners.length ||
@@ -311,7 +318,11 @@ function validatePiiEvalMeasurement(input: PiiEvalMeasurement): PiiEvalMeasureme
         (row.schemaVersion === '1.1'
           ? row.productProjection !== undefined || !row.unavailable || Object.values(row.unavailable).some(state => state !== unavailable) || Object.keys(row.unavailable).length !== 5
           : row.unavailable !== undefined || row.productProjection === undefined))) throw new Error('Invalid pii-eval measurement evidence');
-  for (const row of value.populations) if (row.schemaVersion !== '1.1') validatePiiEvalProjection(row);
+  const proofProblem = piiPublicationProductProofProblem(value);
+  if (proofProblem) throw new Error(proofProblem);
+  for (const row of value.populations) {
+    if (row.schemaVersion !== '1.1') validatePiiEvalProjection(row);
+  }
   return labelPiiEvalQuantities(value);
 }
 
@@ -358,33 +369,13 @@ export function validatePiiSupportRegistry(value: unknown): PiiSupportRegistry {
 export const piiSupportRegistry = Object.freeze(validatePiiSupportRegistry(registryData));
 
 function defaultPopulations(): PopulationInput[] {
-  return (['diagnostic-balanced', 'benign-heavy-stress'] as const).map(id => ({
-    report: buildPiiPopulationReport(piiPopulationContract, piiBenignCollisionEvidence, [], id), rows: [],
-  }));
+  return unmeasuredPiiPopulationArtifacts().map(report => ({ report }));
 }
-function comparisonProjection(input: PopulationComparisonInput) {
-  const contract = input.contract ?? piiPopulationContract, evidence = input.evidence ?? piiBenignCollisionEvidence;
-  const comparison = comparePiiPopulationReports(input.baseline, input.candidate, {
-    contract, evidence, baselineRows: input.baselineRows, candidateRows: input.candidateRows, options: input.validation,
-  });
-  const limit = input.baseline.regressionPolicy.maxAbsoluteIncrease;
-  return { id: comparison.population, status: 'compared' as const, contractCommitment: comparison.contractCommitment,
-    corpusCommitment: comparison.corpusCommitment,
-    baselineObservation: { reportCommitment: comparison.baselineReportCommitment, candidateArtifactHash: comparison.baselineArtifactHash! },
-    candidateObservation: { reportCommitment: comparison.candidateReportCommitment, candidateArtifactHash: comparison.candidateArtifactHash! },
-    verdict: comparison.verdict as 'not-measured' | 'no-regression' | 'regression',
-    benignFalseAlarmDeltas: comparison.deltas.map(({ baseline, candidate, ...row }) => ({ ...row,
-      baselineRate: baseline, candidateRate: candidate, limit, regressed: row.delta !== null && row.delta > limit })),
-    diagnosticDeltas: comparison.diagnosticDeltas.map(row => {
-      const key = row.axis === 'type-identity' ? 'typeIdentity' : row.axis === 'validator-correctness' ? 'validatorCorrectness' : 'contextDiscrimination';
-      const applicable = input.baseline.diagnostics[key].eligible > 0;
-      const { baseline, candidate, ...delta } = row;
-      return { ...delta, baselineRate: baseline, candidateRate: candidate,
-        baselineFailed: input.baseline.diagnostics[key].failed, candidateFailed: input.candidate.diagnostics[key].failed, applicable,
-        regressed: applicable && row.delta !== null && (row.delta < 0 || row.failedDelta > 0) };
-    }),
-  };
+
+function comparisonProjection(_input: PopulationComparisonInput): PiiSupportMatrixV2['populationComparisons'][number] {
+  throw new Error('Legacy PII population comparisons are bounded oracle evidence; current publication uses validated pii-eval comparisons');
 }
+
 function familyPopulation(report: PiiPopulationReport, family: string) {
   const rows = report.strata.filter(row => row.family === family), applicable = rows.filter(row => row.status !== 'not-applicable');
   const status: 'measured' | 'partial' | 'not-measured' | 'not-applicable' = rows.length === 0 ? 'not-measured' : applicable.length === 0 ? 'not-applicable' :
@@ -411,8 +402,8 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
     if (product) throw new Error('PII v1 product record and v2 protected route cannot bind one matrix');
   }
   if (inputs.length !== 2 || new Set(inputs.map(row => row.report.population)).size !== 2) throw new Error('PII support requires both population reports');
-  const reports = inputs.map(input => validatePiiPopulationReport(input.report, input.contract ?? piiPopulationContract,
-    input.evidence ?? piiBenignCollisionEvidence, input.validation ?? {}, input.rows));
+  const reports = inputs.map(input => options.boundedOracle ? options.boundedOracle.population(input) :
+    validatePiiPopulationReport(input.report, input.contract ?? piiPopulationContract, input.evidence ?? piiBenignCollisionEvidence, input.validation ?? {}));
   const byPopulation = new Map(reports.map(row => [row.population, row]));
   const diagnostic = byPopulation.get('diagnostic-balanced'), stress = byPopulation.get('benign-heavy-stress');
   if (!diagnostic || !stress) throw new Error('Missing PII support population report');
@@ -428,7 +419,7 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
       const { id: _id, reportStatus: _reportStatus, reportCommitment: _reportCommitment, ...summary } = familyPopulation(report, family.family);
       return { family: family.family, ...summary };
     }) }));
-  const populationComparisons = options.comparisons ? options.comparisons.map(comparisonProjection).sort((a, b) => a.id.localeCompare(b.id)) :
+  const populationComparisons = options.comparisons ? options.comparisons.map(input => options.boundedOracle ? options.boundedOracle.comparison(input) : comparisonProjection(input)).sort((a, b) => a.id.localeCompare(b.id)) :
     reports.map(report => ({ id: report.population, status: 'not-measured' as const, contractCommitment: report.contractCommitment,
       corpusCommitment: report.corpusCommitment, baselineObservation: null, candidateObservation: null, verdict: 'not-measured' as const,
       benignFalseAlarmDeltas: [], diagnosticDeltas: [] })).sort((a, b) => a.id.localeCompare(b.id));

@@ -13,13 +13,11 @@ import {
 import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import { buildPiiPopulationReport, piiPopulationContract } from '../benchmarks/evaluation/domains/pii/populations.ts';
 import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii/benign-collision-evidence.ts';
-import { buildEvaluationDomainsV2, domainDescriptorV2, evaluationDomainsV2Problem } from '../src/evaluation-domains-v2.ts';
+import { buildEvaluationDomainsV2, domainDescriptorV2, evaluationDomainsV2Problem } from '../benchmarks/shared/evaluation-domains-v2.ts';
 const credentialReference = { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) };
-import { piiSupportMatrixProblem } from '../src/pii-support-model.ts';
-import { credentialSupportPage, piiSupportPage, piiSupportQueryOf } from '../src/pages/pii-support.ts';
+import { piiSupportMatrixProblem } from '../benchmarks/shared/pii-support-model.ts';
 import { publishArtifactAndIndex } from '../scripts/atomic-publication.ts';
 import { piiSupportRegistryProjection, piiSupportSemanticProblem } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
-import { piiSupportQueryProblem, supportQueryOf } from '../src/pages/pii-support.ts';
 
 const execute = promisify(execFile);
 
@@ -395,16 +393,6 @@ test('evaluation-domain v2 index keeps the credential support href, points the c
   assert.ok(await piiSupportMatrixProblem(mutated, mutated.artifactCommitment));
 });
 
-test('PII page shows exact profile/reasons and supports encoded two-colon family identities', () => {
-  const matrix = buildPiiSupportMatrixV2({ registry: registry() }), index = buildEvaluationDomainsV2(matrix.artifactCommitment, credentialReference);
-  const query = piiSupportQueryOf('?domain=pii&family=pii%3Aca%3Asin');
-  assert.deepEqual(query, { domain: 'pii', family: 'pii:ca:sin', jurisdiction: null });
-  const html = piiSupportPage(domainDescriptorV2(index, 'pii'), matrix, query);
-  assert.match(html, /pii:ca:sin/); assert.doesNotMatch(html, /pii:global:email/);
-  assert.match(html, /pii-v1@1/); assert.match(html, /product-activation-not-measured/);
-  assert.match(html, /supportClaims=false/);
-});
-
 test('failed v2 publication preserves the credential evidence and the existing index bytes', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'pii-support-publish-'));
   const support = path.join(directory, 'support-matrix-v1.json'), pointer = path.join(directory, 'evaluation-bundle-v1.json');
@@ -451,10 +439,14 @@ test('deployment uploads immutable PII evidence before the index and excludes hi
   assert.ok(artifact >= 0 && artifact < general && general < index);
   assert.match(workflow, /--exclude 'results\/pii-support-matrix-v2-\*\.json'/);
   assert.match(workflow, /--exclude 'results\/evaluation-domains-v2\.json'/);
-  const measure = workflow.slice(workflow.indexOf('- name: Measure the corpus'), workflow.indexOf('- name: Produce the evaluation'));
+  const clear = workflow.slice(workflow.indexOf('- name: Clear the transient PII comparison'), workflow.indexOf('- name: Measure the corpus'));
+  const oracle = workflow.slice(workflow.indexOf('- name: Observe PII populations'), workflow.indexOf('- name: Produce the evaluation'));
   const classify = workflow.slice(workflow.indexOf('- name: Classify support'), workflow.indexOf('- name: Build the site'));
-  assert.match(measure, /rm -f results-output\/pii\/population-release-v1\.json/);
-  assert.match(classify, /--population-bundle="\$population_bundle"/);
+  assert.match(clear, /rm -f results-output\/pii\/population-release-v1\.json/);
+  assert.doesNotMatch(clear, /\n\s+if:/);
+  assert.match(oracle, /steps\.pii-authority\.outputs\.authority == 'legacy'/);
+  assert.match(classify, /--bounded-population-oracle --population-bundle="\$population_bundle"/);
+  assert.match(classify, /if \[ "\$PII_AUTHORITY" = legacy \] && \[ -s "\$population_bundle" \]/);
   assert.match(classify, /--population-mode=not-measured/);
 });
 
@@ -480,29 +472,6 @@ test('browser and Node reject rehashed semantic forgeries alike', async () => {
     assert.throws(() => validatePiiSupportMatrixV2(value));
     assert.ok(await piiSupportMatrixProblem(value, expected));
   }
-});
-
-test('one support query parser is strict across credential and PII domains', () => {
-  const accepted = ['', '?status=stable', '?domain=credential', '?domain=credential&status=pending', '?domain=pii',
-    '?domain=pii&family=pii%3Aca%3Asin', '?domain=pii&jurisdiction=CA'];
-  for (const query of accepted) assert.ok(supportQueryOf(query), query);
-  const rejected = ['?unknown=x', '?status=unknown', '?domain=credential&family=pii:ca:sin', '?domain=pii&status=stable', '?domain=', '?status=',
-    '?domain=pii&family=', '?domain=pii&jurisdiction=', '?domain=PII', '?domain=pii&jurisdiction=ZZ',
-    '?domain=pii&family=pii:zz:ssn', '?domain=pii&family=pii:ca:sin&jurisdiction=CA', '?domain=pii&family=pii:ca:sin&jurisdiction=US', '?domain=pii&family=pii%3Aglobal%3Aemail&jurisdiction=CA',
-    '?domain=pii&domain=pii', '?domain=credential&status=stable&status=pending', '?domain=pii&family=%E0%A4%A'];
-  for (const query of rejected) assert.equal(supportQueryOf(query), null, query);
-  const matrix = buildPiiSupportMatrixV2({ registry: registry() });
-  assert.equal(piiSupportQueryProblem(supportQueryOf('?domain=pii&family=pii:ca:sin'), matrix), null);
-  assert.match(piiSupportQueryProblem(supportQueryOf('?domain=pii&family=pii:us:ssn'), matrix), /Unknown PII family/);
-  assert.match(piiSupportQueryProblem(supportQueryOf('?domain=pii&jurisdiction=US'), matrix), /Unknown PII jurisdiction/);
-});
-
-test('credential support renderer keeps its golden bytes', () => {
-  const domain = { domain: 'credential', reportProfile: { id: 'credential-evaluation', version: 1 }, evaluationProfile: 'evaluation-v1', domainAccountingVersion: 'credential-v4',
-    qualificationProfiles: [{ id: 'documented', version: 1 }, { id: 'empirical', version: 1 }], evaluation: { state: 'published', href: '/results/evaluation-v1.json' }, support: { state: 'published', href: '/results/support-matrix-v1.json' } };
-  // Pins the domain chrome (the beta.10 DomainBar); the credential matrix after it is asserted byte-identical in support-ui.test.mjs.
-  const digest = createHash('sha256').update(credentialSupportPage('<golden/>', domain)).digest('hex');
-  assert.equal(digest, '3d7fb5ee532e50bc943dfc1c8a4fa9463f88eb40d9f057baeccf73255edec707');
 });
 
 // ---- #790: PII publication reads credential evidence as a verified bundle read set ----

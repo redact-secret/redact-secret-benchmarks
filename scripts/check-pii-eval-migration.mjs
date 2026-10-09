@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { parseStrictJson, semanticDigest } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 import { officialRecordExists, officialRecordProblems } from './lib/pii-official-record.mjs';
@@ -112,7 +113,7 @@ const popPins = JSON.parse(await readFile(new URL(`../${dual.consumerPins}`, imp
 if (popPins.schema !== 'pii-eval-consumer-pins/1' || popPins.artifactSchema.version !== record.engine.artifactSchema.version || popPins.build.commit !== record.pins.piiEvalProjection ||
     popPins.build.cargoLockSha256 !== record.pins.piiEvalProjectionCargoLockSha256 || popPins.requireComplete !== true || popPins.populations.length !== dual.artifacts.length)
   fail('population consumer pins');
-const rootPath = new URL('../', import.meta.url).pathname;
+const rootPath = fileURLToPath(new URL('../', import.meta.url));
 const official = officialRecordExists(rootPath);
 if (official) {
   const problems = officialRecordProblems({ root: rootPath });

@@ -15,41 +15,8 @@ import {
 } from './validator-qualification.ts';
 import type { PiiAuthority, PiiCase, PiiIdentityDomain, PiiScope, PiiSensitivityExpectation } from './types.ts';
 
-export type PiiEvidenceClassId = PiiBenignCollisionEvidenceClass;
-export type PiiEvidenceKind = 'benign' | 'mechanical-control' | 'collision';
-export interface PiiEvidenceClass {
-  id: PiiEvidenceClassId; kind: PiiEvidenceKind; accountingClasses: PiiBenignAccountingClass[];
-  qualifies: ('type-identity' | 'validator' | 'sensitivity' | 'family-discrimination' | 'jurisdiction-discrimination')[];
-}
-export interface PiiEvidenceValidatorIdentity { id: string; version: number }
-export interface PiiEvidenceValidatorExpectation extends PiiEvidenceValidatorIdentity { expected: 'valid' | 'invalid' | 'unavailable' }
-export interface PiiEvidenceFamilyDescriptor {
-  family: string; displayName: string; identityDomain: PiiIdentityDomain; scope: PiiScope;
-  validator: PiiEvidenceValidatorIdentity | null; authority: PiiAuthority[];
-}
-export interface PiiCollisionParty { family: string; scope: PiiScope; validator: PiiEvidenceValidatorExpectation }
-export type PiiEvidenceFixture = { prefix: string; suffix: string; candidate:
-  { kind: 'authoritative-reserved'; value: string } |
-  { kind: 'deterministic-pattern'; generator: 'sha256-pattern'; seed: string; pattern: string } };
-export interface PiiBenignCollisionEntry {
-  id: string; caseId: string; evidenceClass: PiiEvidenceClassId; accountingClass: PiiBenignAccountingClass | null;
-  family: string; scope: PiiScope; identityDomain: PiiIdentityDomain; language: string; candidateCommitment: string; fixture: PiiEvidenceFixture;
-  typeExpectation: 'valid' | 'invalid'; sensitivityExpectation: PiiSensitivityExpectation;
-  validator: PiiEvidenceValidatorExpectation | null; contextGroup: string | null;
-  context: { obligation: 'none' | 'reinforcing' | 'required-for-sensitive-classification'; class: 'sensitive' | 'neutral' | 'non-sensitive' };
-  collision: null | { target: PiiCollisionParty; competitors: PiiCollisionParty[];
-    expectedOutcomes: { family: 'correct' | 'wrong-family'; jurisdiction: 'correct' | 'wrong-jurisdiction'; sensitivity: PiiSensitivityExpectation } };
-  provenance: { kind: 'authoritative'; sources: PiiEvidenceSource[] } |
-    { kind: 'deterministic-synthetic'; sources: PiiEvidenceSource[]; generator: { id: 'sha256-pattern'; version: 1; seedCommitment: string } };
-}
-export interface PiiEvidenceSource { sourceKind: 'standard' | 'public-authority' | 'product-decision'; sourceId: string; locator: string; revision: string }
-export interface PiiBenignCollisionEvidence {
-  schemaVersion: 1; id: 'pii-benign-collision-v1'; version: 1; contentCommitment: string;
-  accountingProfile: { id: 'pii-v1'; version: 1; benignAxes: PiiBenignAccountingClass[] };
-  reporting: { evidenceClasses: 'evidenceByClass'; validatorCorrectness: 'evidence.validators'; familyDiscrimination: 'metrics.wrong-family-rate';
-    jurisdictionDiscrimination: 'metrics.wrong-jurisdiction-rate'; sensitivity: ['metrics.sensitive-miss-rate', 'metrics.non-sensitive-flag-rate'] };
-  classes: PiiEvidenceClass[]; families: PiiEvidenceFamilyDescriptor[]; entries: PiiBenignCollisionEntry[];
-}
+export type { PiiEvidenceClassId, PiiEvidenceKind, PiiEvidenceClass, PiiEvidenceValidatorIdentity, PiiEvidenceValidatorExpectation, PiiEvidenceFamilyDescriptor, PiiCollisionParty, PiiEvidenceFixture, PiiBenignCollisionEntry, PiiEvidenceSource, PiiBenignCollisionEvidence } from './benign-collision-contract.ts';
+import type { PiiEvidenceClassId, PiiEvidenceKind, PiiEvidenceClass, PiiEvidenceValidatorIdentity, PiiEvidenceValidatorExpectation, PiiEvidenceFamilyDescriptor, PiiCollisionParty, PiiEvidenceFixture, PiiBenignCollisionEntry, PiiEvidenceSource, PiiBenignCollisionEvidence } from './benign-collision-contract.ts';
 export interface PiiBenignCollisionValidationOptions {
   canonical?: boolean; registrations?: readonly PiiValidatorRegistration[]; consumerMap?: PiiValidatorConsumerMap; contextEvidence?: PiiContextEvidence;
 }

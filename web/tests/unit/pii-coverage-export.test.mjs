@@ -88,7 +88,7 @@ test('visible state/count wording and duplicate summary controls cannot disagree
   const value = publication(), html = render(value);
   rejected(mutate(html, container => { container.querySelector('[data-coverage-kind] strong').textContent = 'stable'; }), value);
   rejected(mutate(html, container => { container.querySelector('[data-coverage-summary="discovered"] dd').textContent = '999'; }), value);
-  rejected(mutate(html, container => { const count = container.querySelector('[data-coverage-summary="discovered"] dd'); count.innerHTML = `<span hidden>${count.textContent}</span>`; }), value);
+  rejected(mutate(html, container => { const count = container.querySelector('[data-coverage-summary="discovered"] dd'); const hidden = document.createElement('span'); hidden.hidden = true; hidden.textContent = count.textContent; count.replaceChildren(hidden); }), value);
   rejected(mutate(html, container => { const summary = container.querySelector('[data-coverage-summary="discovered"]'); summary.parentNode.append(summary.cloneNode(true)); }), value);
 });
 

@@ -6,7 +6,7 @@ import { readFile } from 'node:fs/promises';
 import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import { findingTypeSource, findingTypesFor } from '../benchmarks/support/finding-types.ts';
 import { PII_RECORD_REVISION, PII_REQUALIFICATION_STATEMENT } from '../benchmarks/support/pii-families.ts';
-import { supportMatrixProblem } from '../src/support-model.ts';
+import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
 import { arrivalFindingTypes } from '../scanners/families.mjs';
 import { piiSection, withMatrixExtras } from './support-matrix-extras.mjs';
 import detectors from '../benchmarks/detectors.json' with { type: 'json' };

@@ -1,13 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   canonicalJson, derivedQualification, expectationsDigest, fileDigest, firstRunImmutabilityProblems,
   rejectionGrounds, TRANSITIONS, validateIntake,
 } from '../benchmarks/lib/adversarial-intake.ts';
 import {
-  applyRejectionCase, evidenceSources, loadPacks, packProblems, rejectionCaseProblems, uiLanguageProblems,
+  applyRejectionCase, evidenceSources, loadPacks, packProblems, rejectionCaseProblems, uiLanguageProblems, UI_SOURCES,
 } from '../benchmarks/lib/adversarial-packs.ts';
 import {
   EVIDENCE_CLASSES, EVIDENCE_CLASS_IDS, evidenceLanguageProblems, independenceClaims, queryEvidence,
@@ -172,4 +174,37 @@ test('language cannot call project-authored evidence independent', () => {
   }
   assert.equal(EVIDENCE_CLASSES['maintainer-regression'].mayClaimIndependence, false);
   assert.deepEqual(uiLanguageProblems(root), []);
+});
+
+test('production TSX copy is checked while stories and fixture copy stay outside the publication gate', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'ui-language-'));
+  try {
+    for (const source of UI_SOURCES) mkdirSync(join(directory, source), { recursive: true });
+    writeFileSync(join(directory, 'web/components/Panel.tsx'), 'export const Panel = () => <p>Independent detector evaluation.</p>;');
+    writeFileSync(join(directory, 'web/components/Panel.stories.tsx'), 'Independent detector evaluation.');
+    writeFileSync(join(directory, 'web/components/storyData.ts'), 'Independent detector evaluation.');
+    assert.equal(uiLanguageProblems(directory).length, 1);
+    assert.match(uiLanguageProblems(directory)[0], /Panel\.tsx/);
+    writeFileSync(join(directory, 'web/lib/routes.ts'), "const title = 'Independent detector evaluation.';");
+    assert.equal(uiLanguageProblems(directory).length, 2, 'production navigation copy is checked too');
+    writeFileSync(join(directory, 'web/lib/routes.ts'), "const title = 'Not independent detector evaluation.';");
+    writeFileSync(join(directory, 'web/components/Panel.tsx'), 'export const Panel = () => <p>Not independent detector evaluation.</p>;');
+    assert.deepEqual(uiLanguageProblems(directory), []);
+    rmSync(join(directory, 'web/app'), { recursive: true });
+    assert.match(uiLanguageProblems(directory)[0], /production UI source directory is missing/);
+  } finally { rmSync(directory, { recursive: true, force: true }); }
+});
+
+test('external population identity labels never exempt a new validation claim in the same renderer', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'ui-external-language-'));
+  try {
+    for (const source of UI_SOURCES) mkdirSync(join(directory, source), { recursive: true });
+    const file = join(directory, 'web/resolvers/pii-evidence.ts');
+    writeFileSync(file, "const label = 'Independent evidence';\nconst review = 'Maintainer-reviewed (independent review pending)';");
+    assert.deepEqual(uiLanguageProblems(directory), []);
+    writeFileSync(file, "const label = 'Independent evidence';\nconst claim = 'Independent detector evaluation.';");
+    assert.equal(uiLanguageProblems(directory).length, 1);
+    writeFileSync(join(directory, 'web/components/Panel.tsx'), "export const Panel = () => <p>Independent evidence</p>;");
+    assert.equal(uiLanguageProblems(directory).length, 2, 'the external label is exempt only in its existing renderer');
+  } finally { rmSync(directory, { recursive: true, force: true }); }
 });

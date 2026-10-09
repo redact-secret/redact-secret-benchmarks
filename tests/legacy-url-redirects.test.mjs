@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { parseRoute } from '../src/model.mjs';
+import { parseRoute } from '../benchmarks/shared/report-model.mjs';
 import { SECTIONS } from '../web/lib/routes.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

@@ -22,10 +22,6 @@
     "eval:publish:domains": "node --import tsx scripts/publish-evaluation-domains.ts",
     "eval:publish:pii-support": "node scripts/publish-pii-support-with-evidence.mjs",
     "eval:discover": "node --import tsx benchmarks/evaluate.ts",
-    "start": "npm run bench && vite --host 127.0.0.1",
-    "dev": "vite --host 127.0.0.1",
-    "build": "npm run typecheck && vite build",
-    "preview": "vite preview --host 127.0.0.1",
     "test": "node --import tsx --test tests/*.test.mjs",
     "test:integration": "node --import tsx --test tests/integration/*.test.mjs",
     "compare": "npm run fixtures:check && npm test && npm run test:integration && npm run bench -- --strict",
@@ -69,7 +65,6 @@
     "family:new": "node scripts/family-new.mjs",
     "family:status": "node scripts/family-status.mjs",
     "contribution:readiness": "node --import tsx scripts/contribution-readiness.mjs",
-    "support:check:ui": "node --import tsx scripts/check-support-ui.mjs",
     "arrival:check": "node --import tsx scripts/check-evidence-arrival.mjs",
     "profiles:generate": "node --import tsx scripts/generate-fixture-profile-coverage.mjs",
     "profiles:check": "node --import tsx scripts/generate-fixture-profile-coverage.mjs --check",
@@ -201,7 +196,7 @@
     "ajv": "8.20.0",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vite": "8.3.2",
+    "vite": "8.3.0",
     "yaml": "2.9.1"
   }
 }

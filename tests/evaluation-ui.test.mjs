@@ -5,9 +5,8 @@ import { createMethods } from '../benchmarks/evaluation/domains/credential/metho
 import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
 import { runEvaluation } from '../benchmarks/evaluation/domains/credential/runner.ts';
 import { publicEvaluation } from '../benchmarks/evaluation/domains/credential/public-report.ts';
-import { assertionRows, reviewRows, summarizeEvaluation, evaluationProblem } from '../src/evaluation-model.ts';
-import { parseRoute } from '../src/model.mjs';
-import { domainEvaluationPage } from '../src/pages/domain-evaluation.ts';
+import { assertionRows, reviewRows, summarizeEvaluation, evaluationProblem } from '../benchmarks/shared/evaluation-model.ts';
+import { parseRoute } from '../benchmarks/shared/report-model.mjs';
 const operators = createOperators(), sources = await loadCases(operators);
 const selected = ['twin','benign','mutation','differential'].map(m => sources.find(c => c.method === m));
 const scanners = [{ id: 'redact-secret', mode: 'test', async version() { return '1.0.0'; }, async scan() { return []; } },
@@ -65,16 +64,6 @@ test('domain routes are public while pre-redesign detail routes still forward to
   assert.equal(parseRoute('/evaluation/unknown').kind, 'missing');
 });
 
-test('PII evaluation renders a strict schema-only state without credential metrics or invented results', () => {
-  const descriptor = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
-    qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null }, support: { state: 'schema-only', href: null } };
-  const html = domainEvaluationPage(descriptor);
-  assert.match(html, /PII evaluation is schema-only/);
-  assert.match(html, /pii-v1@1/);
-  assert.match(html, /No status, rate or cross-domain score/);
-  assert.doesNotMatch(html, /data-support-status=|\b0%\b|unsupported|provisional|stable/i);
-});
-
 test('public contract rejects unknown fields and injected holdout detail', () => {
   const report = published(); report.cases[0].content = 'not public';
   assert.match(evaluationProblem(report), /contract/);
@@ -86,64 +75,4 @@ test('operator summaries cannot drift from generated attempts and assertions', (
   const report = published();
   Object.values(report.byOperator)[0].generated++;
   assert.match(evaluationProblem(report), /Operator totals/);
-});
-
-test('rendered Workbench method, review and holdout views retain the evidence boundaries', async () => {
-  const { createServer } = await import('vite');
-  const { readFile } = await import('node:fs/promises');
-  const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
-  try {
-    const { methodPage } = await server.ssrLoadModule('/src/pages/workbench/method.ts');
-    const { workbenchPage } = await server.ssrLoadModule('/src/pages/workbench/index.ts');
-    const { qualificationPage } = await server.ssrLoadModule('/src/pages/workbench/qualification.ts');
-    const { reviewClasses } = await server.ssrLoadModule('/src/evaluation-model.ts');
-    const r = published();
-    const ledger = JSON.parse(await readFile('benchmarks/review-ledger.json','utf8'));
-    const data = { loaded: [], hashes: {} };
-    const home = workbenchPage({ data, evaluation: r, evaluationProblem: null, reviewLedgerProblem: 'No published review provenance', classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
-    for (const method of ['twin','benign','metamorphic','mutation','differential','holdout']) assert.ok(home.includes(`/workbench/method/${method}`), method);
-    assert.ok(home.includes('never ground truth'));
-    assert.ok(!home.includes('/evaluation'), 'no link points at a pre-redesign path');
-    assert.ok(methodPage(r,'twin').includes('Discriminated pairs'));
-    assert.ok(methodPage(r,'twin').includes('affected failing cases') && methodPage(r,'twin').includes('failed assertions'));
-    assert.ok(methodPage(r,'benign').includes('Flagged controls'));
-    assert.ok(methodPage(r,'benign').includes(selected[1].taxonomy), 'benign method page renders the case\'s reviewed taxonomy axis (#91)');
-    assert.ok(methodPage(r,'mutation').includes('Operator evidence'), 'operator evidence moved in with the method that generates variants');
-    assert.ok(methodPage(r,'differential').includes('not ground truth or votes'));
-    assert.ok(methodPage(r,'differential').includes('Human review evidence'));
-    const missing = workbenchPage({ data, evaluation: null, evaluationProblem: 'Stale evaluation: fixture corpus changed', reviewLedgerProblem: 'Stale evaluation: fixture corpus changed', classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
-    assert.ok(missing.includes('Stale evaluation') && missing.includes('npm run eval:publish'));
-    assert.ok(missing.includes('Review queue') && missing.includes('Release or historical follow-up'), 'the ledger remains visible but resolution is locked without a report');
-    assert.ok(!missing.includes('lexical.invalid-alphabet'), 'a class settled not-assertable carries no open entries, so it drops out of the open queue');
-    assert.ok(methodPage(r,'holdout').includes('No qualification aggregate published'));
-    r.qualification = JSON.parse(await readFile('docs/specs/qualification/engine-v1.json','utf8'));
-    const holdout = methodPage(r,'holdout');
-    assert.ok(holdout.includes('supportClaims: false'));
-    assert.ok(!holdout.includes('/fixture/'));
-    assert.ok(holdout.includes('No case drill-down'));
-    const floors = qualificationPage(data, r);
-    assert.ok(floors.includes('supportClaims: false') && floors.includes('Ledger rows for every entry'));
-    const raw = structuredClone(r); raw.qualification.holdout.cases = [{content:'PROTECTED_SENTINEL'}];
-    assert.ok(evaluationProblem(raw));
-  } finally { await server.close(); }
-});
-
-test('production Changes states the released package it measures instead of asking for candidate evidence (#213)', async () => {
-  const { createServer } = await import('vite');
-  const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
-  try {
-    const { changesPage } = await server.ssrLoadModule('/src/pages/workbench/changes.ts');
-    const baseline = { version: '0.1.0-beta.7', rows: {} };
-    const data = { loaded: [], hashes: {}, run: { scannerVersions: { 'redact-secret': '0.1.0-beta.7' } } };
-    const input = site => ({ data, baseline, site, fixtures: [] });
-    // With no current rows the page still answers, and only off production does it ask for candidate evidence.
-    const withRows = site => changesPage({ ...input(site), fixtures: [{ slug: 'common-formats--x', category: 'common-formats', id: 'x', assessment: { kind: 'must-redact', tier: 'T1' } }],
-      data: { ...data, loaded: [{ category: { id: 'common-formats' }, report: { category: 'common-formats', runId: 'r', scanners: [{ id: 'redact-secret', status: 'complete', rows: [{ id: 'x', expected: [], actual: [] }] }] } }] } }, 'fixed-corpus');
-    for (const site of ['production', 'staging', 'local']) assert.ok(!changesPage(input(site), 'fixed-corpus').includes('undefined'), site);
-    const production = withRows('production');
-    assert.ok(production.includes('0.1.0-beta.7 → this run'), 'the saved baseline is read against the run');
-    assert.ok(!production.includes('No candidate evidence published'));
-    assert.ok(production.includes('Released package only') && production.includes('<b>0.1.0-beta.7</b>'));
-    assert.ok(withRows('staging').includes('No candidate evidence published'));
-  } finally { await server.close(); }
 });

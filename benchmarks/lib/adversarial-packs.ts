@@ -121,29 +121,51 @@ export function rejectionCaseProblems(pack: LoadedPack, cases: readonly Rejectio
 }
 
 /** The rendered site: every page, component and shell string a reader can see. */
-export const UI_SOURCES = ['index.html', 'src/main.ts', 'src/shell.ts', 'src/pages', 'src/components'] as const;
+export const UI_SOURCES = ['web/app', 'web/components', 'web/resolvers', 'web/lib'] as const;
+
+// These literals name the separately pinned, externally authored PII population.
+// A new claim in either source still goes through the same language check.
+const EXTERNAL_POPULATION_COPY: Record<string, string[]> = {
+  'web/app/evaluation/pii/evidence/page.tsx': ['Independent PII evidence population'],
+  'web/resolvers/domains.ts': ['Independent public PII evidence population'],
+  'web/lib/routes.ts': ['The independent public pii-evidence population, with each scanner and denominator held apart.'],
+  'web/resolvers/pii-evidence.ts': ['Independent public population', 'Evaluation · Independent public population',
+    'Independent evidence', 'Independent authorship', 'Independent public evidence', 'Independent denominator'],
+};
 
 /**
  * Sentences in the site source that describe evidence as independent. Every
- * corpus the site renders is project-authored or public-control evidence, so
- * any unnegated independence claim there is a problem.
+ * benchmark-owned corpus is project-authored or public-control evidence. The
+ * external population's existing identity labels are explicitly scoped above.
  */
 export function uiLanguageProblems(root: string): string[] {
   const files: string[] = [];
+  const missing: string[] = [];
   const walk = (path: string) => {
     const absolute = join(root, path);
-    if (!existsSync(absolute)) return;
+    if (!existsSync(absolute)) { missing.push(`${path}: production UI source directory is missing`); return; }
     const entries = readdirSync(absolute, { withFileTypes: true, recursive: false });
     for (const entry of entries) {
       const child = `${path}/${entry.name}`;
       if (entry.isDirectory()) walk(child);
-      else if (/\.(ts|mjs|html)$/.test(entry.name)) files.push(child);
+      else if (/\.(tsx?|mjs|html)$/.test(entry.name) && !/\.(stories|test|spec)\./.test(entry.name) && entry.name !== 'storyData.ts') files.push(child);
     }
   };
   for (const source of UI_SOURCES) {
-    if (/\.(ts|html)$/.test(source)) files.push(source);
+    if (/\.(tsx?|html)$/.test(source)) files.push(source);
     else walk(source);
   }
-  return files.sort().flatMap(file =>
-    independenceClaims(readFileSync(join(root, file), 'utf8')).map(sentence => `${file}: project-authored evidence may not be described as independent: "${sentence.trim().slice(0, 160)}"`));
+  return [...missing, ...files.sort().flatMap(file => {
+    let source = readFileSync(join(root, file), 'utf8');
+    for (const copy of EXTERNAL_POPULATION_COPY[file] ?? [])
+      for (const quote of ["'", '"']) source = source.replaceAll(`${quote}${copy}${quote}`, `${quote}External population${quote}`);
+    return independenceClaims(source
+      // Owner-authored review-pending labels and addressability do not claim validation.
+      .replaceAll('Maintainer-reviewed (independent review pending)', 'Maintainer-reviewed (review pending)')
+      .replaceAll('independently addressable', 'separately addressable')
+      .replaceAll('Independent of the credential authority', 'Separate from the credential authority')
+      .replaceAll('independent of its values', 'separate from its values')
+      .replace(/term:\s*(['"])Independence\1/g, 'term: "Evidence basis"'))
+      .map(sentence => `${file}: project-authored evidence may not be described as independent: "${sentence.trim().slice(0, 160)}"`);
+  })];
 }

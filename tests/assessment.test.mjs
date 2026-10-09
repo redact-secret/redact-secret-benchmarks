@@ -7,7 +7,7 @@ import { scoreReport } from '../benchmarks/lib/reporting.ts';
 import { validateCorpus, score } from '../benchmarks/scoring/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { spanOutcome } from '../benchmarks/scoring/lattice.ts';
-import { reportProblem, summarize } from '../src/model.mjs';
+import { reportProblem, summarize } from '../benchmarks/shared/report-model.mjs';
 import { normalizeTrufflehogFindings, locate } from '../scanners/index.mjs';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));

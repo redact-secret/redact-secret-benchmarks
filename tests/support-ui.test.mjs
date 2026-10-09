@@ -1,18 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { supportPage, supportFilterOf, SUPPORT_STATUS_COPY } from '../src/pages/support.ts';
-import { supportMatrixProblem, orderedFamilies, providerName, SUPPORT_STATUSES } from '../src/support-model.ts';
-import { checkSupportUi } from '../scripts/check-support-ui.mjs';
+import { supportMatrixProblem, orderedFamilies, providerName, SUPPORT_STATUSES } from '../benchmarks/shared/support-model.ts';
 import { taxonomy } from '../benchmarks/support/taxonomy.ts';
-import { statusCriteria } from '../benchmarks/support/status.ts';
-import { parseRoute, isAppPath } from '../src/model.mjs';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
 import { withMatrixExtras } from './support-matrix-extras.mjs';
-import { credentialSupportPage, piiSupportPage, piiSupportQueryOf, supportDomainOf, supportDomainUnavailablePage } from '../src/pages/pii-support.ts';
 
-const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/\s+/g, ' ');
-const detected = taxonomy.families.filter(f => f.detectors.length);
-const undetected = taxonomy.families.filter(f => !f.detectors.length);
 const profileCoverage = {
   profilesVersion: 1, claimed: 'stable-documented', explicit: false, target: 'stable-documented', cellsMet: ['arrival-provisional', 'stable-documented'],
   cells: { totalFixtures: 24, positiveCases: 6, benignControls: 8, twinPairs: 5, positiveContextAxes: 4, controlAxes: 4, confusionAxes: 4, positiveContextAxisIds: ['env'], controlAxisIds: ['ordinary-prose'], confusionAxisIds: ['near-miss'] },
@@ -52,85 +44,8 @@ function matrixOf(statusFor) {
 }
 /** The default view: detector-bearing families provisional, detectorless families unsupported. */
 const mixed = () => matrixOf(family => (family.detectors.length ? 'provisional' : 'unsupported'));
-const rowsOf = html => [...html.matchAll(/<article data-support-status="([^"]*)" data-family="([^"]*)"/g)].map(m => ({ status: m[1], family: m[2] }));
 
-test('the CI gate that keeps the page\'s statuses the matrix\'s vocabulary passes on this tree', async () => {
-  assert.deepEqual(await checkSupportUi(), []);
-});
-
-test('no status is authored in the UI: the page renders what the matrix says, and a change in the matrix changes the page', () => {
-  const subject = detected[0];
-  const before = mixed();
-  assert.equal(supportMatrixProblem(before), null);
-  const beforeRow = rowsOf(supportPage(before, null)).find(row => row.family === subject.id);
-  assert.deepEqual(beforeRow, { status: 'provisional', family: subject.id });
-
-  // Only the data moves: same page function, same arguments, one status changed upstream.
-  const after = matrixOf(family => (family.id === subject.id ? 'stable' : family.detectors.length ? 'provisional' : 'unsupported'));
-  assert.equal(supportMatrixProblem(after), null);
-  const afterRow = rowsOf(supportPage(after, null)).find(row => row.family === subject.id);
-  assert.deepEqual(afterRow, { status: 'stable', family: subject.id });
-  const html = supportPage(after, null);
-  assert.ok(text(html).includes(subject.name) && text(html).includes(subject.id) && html.includes(`data-family="${subject.id}"`), 'the family remains present');
-  assert.ok(html.match(new RegExp(`data-family="${subject.id}"[\\s\\S]*?data-status="pass">Stable`)), 'the family reads Stable on the page');
-  assert.equal(rowsOf(html).filter(row => row.status === 'stable').length, after.distribution.stable);
-});
-
-test('every status is legible without the qualification profile, and provisional is not read as almost stable', () => {
-  const html = supportPage(mixed(), null), plain = text(html);
-  for (const status of SUPPORT_STATUSES) {
-    const copy = SUPPORT_STATUS_COPY[status];
-    assert.ok(plain.includes(copy.meaning), `${status} states what it means to a reader`);
-    assert.ok(plain.includes(copy.rationale), `${status} carries the profile's own rationale`);
-    assert.ok(html.includes(`<div class="chg" data-support-status="${status}">`), `${status} has a legend entry`);
-  }
-  assert.ok(SUPPORT_STATUS_COPY.provisional.meaning.includes('incomplete') && SUPPORT_STATUS_COPY.provisional.meaning.includes('almost stable'),
-    'provisional says evidence-incomplete, and says what it is not');
-  assert.ok(plain.includes(statusCriteria.stable.documented.minimumTwinPairs.rationale) && plain.includes(`at least ${statusCriteria.stable.documented.minimumTwinPairs.value}`),
-    'the stable floors are shown with the profile\'s own numbers and reasons');
-  assert.ok(!/almost stable\b(?!”)/i.test(plain.replace(/not “almost stable”/gi, '')), 'nothing on the page calls provisional almost stable');
-});
-
-test('unsupported families are listed with their reason, never dropped', () => {
-  const matrix = mixed(), html = supportPage(matrix, null), rows = rowsOf(html);
-  assert.equal(rows.length, taxonomy.families.length, 'every taxonomy family has a row');
-  assert.equal(rows.filter(r => r.status === 'unsupported').length, undetected.length);
-  const family = undetected[0], entry = matrix.families.find(f => f.family === family.id);
-  const plain = text(html);
-  assert.ok(plain.includes(family.name) && plain.includes(family.id) && html.includes(`data-family="${family.id}"`), 'the unsupported family is visible');
-  assert.ok(plain.includes(entry.reason), 'with the reason recorded in the matrix');
-  assert.ok(plain.includes('No detector is registered for this family'), 'and says why there is no evidence to open');
-
-  const filtered = supportPage(matrix, null, 'unsupported');
-  assert.deepEqual([...new Set(rowsOf(filtered).map(r => r.status))], ['unsupported']);
-  assert.equal(rowsOf(filtered).length, undetected.length);
-  assert.equal(supportFilterOf('?status=unsupported'), 'unsupported');
-  assert.equal(supportFilterOf('?status=excellent'), 'all');
-});
-
-test('the evidence behind a status stays inspectable: tier, provider source and twin coverage', () => {
-  const matrix = mixed(), family = detected[0];
-  const html = supportPage(matrix, null), plain = text(html);
-  const entry = matrix.families.find(f => f.family === family.id);
-  assert.ok(html.includes(`<details data-key="support:${family.id}">`), 'each family opens its own evidence');
-  assert.ok(html.includes(`href="/coverage/detectors/${entry.detectors[0]}"`), 'the deciding detector links to its coverage page');
-  assert.ok(plain.includes('T1 · Provider-documented'), 'the tier is named, not just coded');
-  assert.ok(html.includes(`href="${entry.providerSource.url}"`) && plain.includes(`observed ${entry.providerSource.observedAt}`), 'the provider source is reachable');
-  assert.ok(plain.includes('3 pairs · 1 failure'), 'twin coverage is shown with its failures');
-  assert.ok(plain.includes('metamorphic 0 · mutation 2 · differential 0'), 'unresolved critical items are shown');
-  assert.ok(plain.includes(entry.reason), 'and the reason the status was decided');
-});
-
-test('Support removes the duplicate profile-debt table only after linking every family to Coverage', () => {
-  const matrix = mixed(), html = supportPage(matrix, null), plain = text(html);
-  assert.doesNotMatch(plain, /Fixture profile coverage debt/);
-  assert.doesNotMatch(html, /id="fixture-profiles"/);
-  assert.match(plain, /Meeting fixture-profile cells is not equivalent to passing Stable qualification/);
-  for (const entry of matrix.families) assert.ok(html.includes(`href="/coverage/${entry.family}"`), entry.family);
-  assert.match(plain, /Classification evidence and reasons/);
-});
-
-test('empirical stable is labeled explicitly, retains T2, and is counted separately', () => {
+test('empirical stable retains T2 and is counted separately in the validated matrix', () => {
   const matrix = mixed();
   const entry = matrix.families.find(family => family.detectors.length);
   entry.status = 'stable';
@@ -144,14 +59,14 @@ test('empirical stable is labeled explicitly, retains T2, and is counted separat
   matrix.distribution.stable++;
   matrix.stableDistribution.empirical = 1;
   assert.equal(supportMatrixProblem(matrix), null);
-  const plain = text(supportPage(matrix, null));
-  assert.ok(plain.includes('Stable · Empirically qualified'));
-  assert.ok(plain.includes('T2 · Tool-corroborated'));
-  assert.ok(plain.includes('Stable: 0 documented · 1 empirical'));
-  assert.ok(plain.includes('Provider-issued observations empirically-observed'));
+  assert.equal(entry.evidenceTier, 'T2');
+  assert.equal(matrix.stableDistribution.empirical, 1);
+  const mislabeled = structuredClone(matrix);
+  mislabeled.stableDistribution.empirical = 0;
+  assert.notEqual(supportMatrixProblem(mislabeled), null);
 });
 
-test('corroborated empirical stable shows its basis, and a basis its records cannot carry is refused', () => {
+test('corroborated empirical stable rejects a basis its records cannot carry', () => {
   const matrix = mixed();
   const entry = matrix.families.find(family => family.detectors.length);
   Object.assign(entry, { status: 'stable', reason: null, evidenceTier: 'T2', evidenceBasis: 'corroborated', qualificationProfile: 'empirical', providerSource: null });
@@ -160,12 +75,6 @@ test('corroborated empirical stable shows its basis, and a basis its records can
   matrix.distribution.stable++;
   matrix.stableDistribution.empirical = 1;
   assert.equal(supportMatrixProblem(matrix), null);
-  const plain = text(supportPage(matrix, null));
-  assert.ok(plain.includes('Stable · Empirically qualified'));
-  assert.ok(plain.includes('T2 · Tool-corroborated'), 'the tier stays T2');
-  assert.ok(plain.includes('Evidence basis Corroborated corroborated'));
-  assert.ok(plain.includes('4 references · 3 owners · peer-scanner-rule, provider-owned-code · 0 unresolved / 1 bounded contradictions'));
-  assert.ok(plain.includes('0 observations · 0 subjects · 0 issuance dates'));
   const thin = structuredClone(matrix);
   thin.families.find(family => family.family === entry.family).empiricalEvidence.corroborationOwners = 2;
   assert.match(supportMatrixProblem(thin), /masquerades as empirically qualified/);
@@ -177,16 +86,7 @@ test('corroborated empirical stable shows its basis, and a basis its records can
   assert.match(supportMatrixProblem(t1), /masquerades as empirically qualified/);
 });
 
-test('an un-probeable family reads as un-probeable, not as zero twins', () => {
-  const matrix = mixed(), family = detected[0];
-  const entry = matrix.families.find(f => f.family === family.id);
-  entry.twinCoverage = { pairs: 0, failures: 0, unprobeable: { reason: 'The provider documents nothing a twin could mutate.', observedAt: '2026-09-20' } };
-  const plain = text(supportPage(matrix, null));
-  assert.ok(plain.includes('un-probeable · The provider documents nothing a twin could mutate.'));
-  assert.ok(plain.includes('checked 2026-09-20'));
-});
-
-test('a malformed, miscounted or stale matrix is refused before it can be rendered', () => {
+test('a malformed, miscounted or stale matrix is refused by the shared validator', () => {
   const invalid = value => assert.notEqual(supportMatrixProblem(value), null);
   invalid(null);
   invalid({ ...mixed(), schemaVersion: 2 });
@@ -212,50 +112,6 @@ test('a malformed, miscounted or stale matrix is refused before it can be render
   assert.equal(supportMatrixProblem(mixed()), null);
 });
 
-test('with nothing published the page says what to run, and the route is part of the app', () => {
-  const html = supportPage(null, 'No support matrix published');
-  assert.ok(text(html).includes('No support matrix published'));
-  assert.ok(html.includes('npm run eval:classify\nnpm run eval:matrix\nnpm run eval:publish:matrix'));
-  assert.ok(!/sorry|apolog|oops|unfortunately/i.test(text(html)));
-  assert.equal(rowsOf(html).length, 0);
-  assert.equal(parseRoute('/support').kind, 'support');
-  assert.equal(parseRoute('/support/').kind, 'support');
-  assert.equal(parseRoute('/support/github').kind, 'missing');
-  assert.ok(isAppPath('/support'));
-});
-
-test('support selects credential by default and PII queries fail closed', () => {
-  assert.equal(supportDomainOf(''), 'credential');
-  assert.equal(supportDomainOf('?domain=credential'), 'credential');
-  assert.equal(supportDomainOf('?domain=pii'), 'pii');
-  assert.equal(supportDomainOf('?domain=unknown'), null);
-  assert.equal(supportDomainOf('?domain='), null);
-  assert.equal(supportDomainOf('?domain=PII'), null);
-  assert.equal(supportDomainOf('?domain=pii&domain=credential'), null);
-  assert.deepEqual(piiSupportQueryOf('?domain=pii&family=pii%3Aus%3Assn'), { domain: 'pii', family: 'pii:us:ssn', jurisdiction: null });
-  for (const query of ['?domain=pii&status=stable', '?domain=pii&family=pii:us:ssn&family=pii:global:email', '?domain=pii&family=pii:us:ssn&jurisdiction=CA', '?domain=credential&family=pii:us:ssn']) assert.equal(piiSupportQueryOf(query), null);
-  const descriptor = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
-    qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null, artifactCommitment: null }, support: { state: 'published', href: `/results/pii-support-matrix-v2-${'a'.repeat(64)}.json`, artifactCommitment: 'a'.repeat(64) } };
-  const matrix = { families: [], supportClaims: false, artifactCommitment: 'a'.repeat(64), registryCommitment: 'b'.repeat(64),
-    activationContract: { productArtifact: 'not-measured', productArtifactCommitment: null }, populationComparisons: [
-    { id: 'benign-heavy-stress', status: 'not-measured', verdict: 'not-measured', benignFalseAlarmDeltas: [], diagnosticDeltas: [] },
-    { id: 'diagnostic-balanced', status: 'not-measured', verdict: 'not-measured', benignFalseAlarmDeltas: [], diagnosticDeltas: [] },
-  ] };
-  const html = piiSupportPage(descriptor, matrix, { family: null, jurisdiction: null });
-  assert.match(text(html), /PII support is pending/);
-  assert.match(html, /pii-v1@1/);
-  assert.doesNotMatch(html, /data-support-status=|\b0%\b/);
-  assert.match(text(supportDomainUnavailablePage('Unknown support domain')), /No credential or PII support evidence is shown/);
-  const credential = { ...descriptor, domain: 'credential', reportProfile: { id: 'credential-evaluation', version: 1 }, evaluationProfile: 'evaluation-v1', domainAccountingVersion: 'credential-v4',
-    qualificationProfiles: [{ id: 'documented', version: 1 }, { id: 'empirical', version: 1 }], evaluation: { state: 'published', href: '/results/evaluation-v1.json' }, support: { state: 'published', href: '/results/support-matrix-v1.json' } };
-  const matrixHtml = supportPage(mixed(), null, 'unsupported');
-  const credentialHtml = credentialSupportPage(matrixHtml, credential);
-  assert.ok(credentialHtml.endsWith(matrixHtml), 'domain chrome does not rewrite the credential matrix');
-  assert.match(credentialHtml, /credential-v4/);
-  assert.match(credentialHtml, /documented@1/);
-  assert.match(credentialHtml, /aria-current="page">Credentials/);
-});
-
 test('families read in provider order, with the non-provider-specific formats last', () => {
   const matrix = mixed(), ordered = orderedFamilies(matrix);
   assert.equal(ordered.length, matrix.families.length);
@@ -267,22 +123,13 @@ test('families read in provider order, with the non-provider-specific formats la
   assert.equal(providerName('github'), taxonomy.providers.find(p => p.id === 'github').name);
 });
 
-test('the page says which redact-secret the statuses were measured against', () => {
-  const published = mixed();
-  assert.equal(supportMatrixProblem(published), null);
-  assert.match(text(supportPage(published, null)), /Measured the published redact-secret package/);
-  // Production publishes a published-mode matrix (#213) that names the release it measured.
+test('matrix provenance distinguishes a released package from an exact candidate commit', () => {
   const released = mixed();
   released.sourceReport.publishedPackage = { packageName: '@redact-secret/core', version: '0.1.0-beta.7' };
   assert.equal(supportMatrixProblem(released), null);
-  assert.match(text(supportPage(released, null)), /Measured the released package @redact-secret\/core 0\.1\.0-beta\.7/);
-  assert.doesNotMatch(text(supportPage(released, null)), /candidate/i);
   const candidate = mixed();
   candidate.sourceReport.product = { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '0.1.0-beta.7', artifacts: [{ role: 'package', sha256: 'b'.repeat(64) }] };
   assert.equal(supportMatrixProblem(candidate), null);
-  const html = supportPage(candidate, null);
-  assert.match(text(html), /Measured candidate redact-secret 0\.1\.0-beta\.7 at aaaaaaa/);
-  assert.match(html, /href="https:\/\/github\.com\/redact-secret\/redact-secret\/commit\/a{40}"/);
   candidate.sourceReport.product.sourceCommit = 'main';
   assert.match(supportMatrixProblem(candidate), /Invalid support-matrix contract/);
 });

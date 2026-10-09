@@ -1,10 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { reviewClasses, ledgerClassOf, reviewClassId, ledgerSnippet, reviewLedgerPublicationProblem } from '../src/evaluation-model.ts';
+import { reviewClasses, ledgerClassOf, reviewClassId, ledgerSnippet, reviewLedgerPublicationProblem } from '../benchmarks/shared/evaluation-model.ts';
 import { observeReviewEntries, reviewLedgerProblem } from '../benchmarks/evaluation/model/review-ledger.ts';
-import { parseRoute } from '../src/model.mjs';
-import { bindCopy, reviewPage, reviewQueue } from '../src/pages/workbench/review.ts';
+import { parseRoute } from '../benchmarks/shared/report-model.mjs';
 
 const ledger = JSON.parse(await readFile(new URL('../benchmarks/review-ledger.json', import.meta.url), 'utf8'));
 const entries = Object.entries(ledger.entries);
@@ -91,43 +90,7 @@ test('published occurrence provenance is bound to the exact public evaluation', 
   assert.match(reviewLedgerPublicationProblem(published, source, evaluation), /does not describe/);
 });
 
-test('every historical, missing, stale and direct category path is locked; current and adjudicated branches alone can copy', () => {
-  const id = 'b'.repeat(64), runId = 'run-current', finishedAt = '2026-09-26T12:00:00.000Z';
-  const base = { status: 'open', firstSeenRun: 'first', note: 'Review this fixture. Class: t0-pending-fixture.' };
-  const evaluation = { runId, finishedAt, reviews: [{ id, caseId: 'case-a', variant: 'original', peer: '', disagreement: '' }], cases: [{ id: 'case-a', sourceSlug: 'suite--fixture', variants: [{ id: 'original', kind: 'must-redact', tier: 'T1', strategy: 'authored' }] }] };
-  const legacyClasses = reviewClasses({ schemaVersion: 2, entries: { [id]: base } });
-  for (const [report, problem] of [[null, 'No evaluation report published'], [evaluation, 'Stale review ledger']]) {
-    const html = reviewPage(legacyClasses, 'release-historical', report, problem);
-    assert.ok(html.includes('Resolution locked'));
-    assert.ok(!html.includes('data-copy=') && !html.includes('ledger-snippet-'), 'locked HTML exposes no copy or snippet target');
-  }
-  const observed = { ...base, lastSeenRun: runId, lastSeenAt: finishedAt, lastSeenEvidence: { caseId: 'case-a', sourceSlug: 'suite--fixture', variant: 'original' } };
-  const currentClasses = reviewClasses({ schemaVersion: 2, entries: { [id]: observed } });
-  const current = reviewPage(currentClasses, 'fixture-expectation-review', evaluation, null);
-  assert.ok(current.includes('data-copy=') && current.includes(`&quot;resolvedRun&quot;: &quot;${runId}&quot;`));
-  assert.ok(!reviewPage(currentClasses, 'release-historical', evaluation, null).includes('data-copy='), 'direct historical route cannot copy a current item');
-  const adjudicated = { ...base, historicalAdjudication: { decidedAt: finishedAt, evidenceUrl: 'https://example.test/evidence', note: 'Reviewed.' } };
-  const historical = reviewPage(reviewClasses({ schemaVersion: 2, entries: { [id]: adjudicated } }), 'release-historical', evaluation, null);
-  assert.ok(historical.includes('data-copy=') && historical.includes('historical-adjudication'));
-  const counts = [...reviewQueue(currentClasses, evaluation, null).matchAll(/<b>([\d,]+)<\/b>/g)].map(match => Number(match[1].replace(/,/g, '')));
-  assert.equal(counts.reduce((sum, count) => sum + count, 0), 1, 'category counts reconcile to open ledger entries');
-});
-
-test('copy status is live on success and failure', async () => {
-  let handler, copied = '';
-  const button = { dataset: { copy: 'draft' }, addEventListener: (_event, next) => { handler = next; } };
-  const status = { textContent: '' }, snippet = { textContent: '{"safe":true}' };
-  const root = { querySelectorAll: () => [button], querySelector: selector => selector.startsWith('[data-copy-status') ? status : snippet };
-  const original = globalThis.navigator;
-  Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { clipboard: { writeText: async text => { copied = text; } } } });
-  bindCopy(root); await handler();
-  assert.equal(copied, snippet.textContent); assert.match(status.textContent, /Copied/);
-  Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { clipboard: { writeText: async () => { throw new Error('blocked'); } } } });
-  await handler(); assert.match(status.textContent, /blocked/);
-  Object.defineProperty(globalThis, 'navigator', { configurable: true, value: original });
-});
-
-import { changeRows, qualificationGates, candidateProblem } from '../src/evaluation-model.ts';
+import { changeRows, qualificationGates, candidateProblem } from '../benchmarks/shared/evaluation-model.ts';
 const suite = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url), 'utf8'));
 const qualified = JSON.parse(await readFile(new URL('../docs/specs/qualification/engine-v1.json', import.meta.url), 'utf8'));
 // The checked-in run is execution-qualified (#213); the floors are read here against the same run with unreviewed queue entries.

@@ -1,11 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 
 const read = path => readFile(new URL('../' + path, import.meta.url), 'utf8');
 const system = JSON.parse(await read('shared/design-tokens/tokens.json'));
 const tokensCss = await read('shared/design-tokens/tokens.css');
-const styleCss = await read('src/style.css');
 
 /** Declarations of one theme block, by selector prefix. */
 function block(css, selector) {
@@ -82,37 +81,4 @@ test('text contrast is at least 4.5:1 and non-text at least 3:1 in both themes',
     }
   }
   if (process.env.CONTRAST_REPORT) console.log(report.join('\n'));
-});
-
-test('light theme never sets green text: brand-green is a fill or a rule, link is the green for text', () => {
-  assert.ok(contrast(resolve(light, 'brand-green'), resolve(light, 'surface')) < 3, 'the reason for this rule');
-  const colourDeclarations = [...styleCss.matchAll(/[;{\s](color|fill|outline-color):\s*var\(--brand-green\)/g)].map(m => m[0]);
-  // The logo triangle is the mark itself, not text.
-  assert.deepEqual(colourDeclarations.filter(d => !d.includes('fill')), []);
-  assert.equal((styleCss.match(/fill:\s*var\(--brand-green\)/g) ?? []).length, 1, 'only .logo-triangle is filled green');
-});
-
-const sources = async () => {
-  const files = ['src/style.css', 'src/shell.ts', 'src/main.ts'];
-  for (const dir of ['src/components', 'src/pages', 'src/pages/workbench']) {
-    const names = await readdir(new URL('../' + dir, import.meta.url)).catch(() => []);
-    files.push(...names.filter(n => n.endsWith('.ts')).map(n => `${dir}/${n}`));
-  }
-  return Promise.all(files.map(async file => [file, await read(file)]));
-};
-
-test('styles and markup use tokens only: no hex, no raw px, no shadows, nothing round', async () => {
-  for (const [file, text] of await sources()) {
-    const code = text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
-    assert.deepEqual(code.match(/#[0-9a-fA-F]{3,8}\b(?![-\w])/g)?.filter(h => !/^#\d+$/.test(h) || file.endsWith('.css')) ?? [], [], `${file}: hex colour`);
-    assert.ok(!/box-shadow|text-shadow|drop-shadow/.test(code), `${file}: shadows do not separate surfaces here`);
-    assert.ok(!/border-radius:\s*(50%|9999|999px|100%)|rounded-full/.test(code), `${file}: no pills or circles`);
-    if (file.endsWith('.css')) {
-      const withoutConditions = code.replace(/@media[^{]+\{/g, '@media{').replace(/--hairline:\s*1px;/, '');
-      assert.deepEqual(withoutConditions.match(/\b\d*\.?\d+px\b/g) ?? [], [], `${file}: raw px outside tokens.css`);
-      assert.deepEqual([...withoutConditions.matchAll(/border-radius:\s*([^;]+);/g)].map(m => m[1]).filter(v => !/^var\(--radius-(0|sm|md)\)$/.test(v)), [], `${file}: radius tokens only`);
-    } else {
-      assert.deepEqual(code.match(/style="[^"]*\b\d+px/g) ?? [], [], `${file}: raw px in inline styles`);
-    }
-  }
 });

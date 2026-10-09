@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildCatalog, canonicalUrl, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../src/model.mjs';
+import { buildCatalog, canonicalUrl, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../benchmarks/shared/report-model.mjs';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 const read = async path => JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
 const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);

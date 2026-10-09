@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
-import schema from '../schemas/provider-dossiers-v1.json';
-import { taxonomy } from '../benchmarks/support/taxonomy.ts';
+import schema from '../../schemas/provider-dossiers-v1.json';
+import { taxonomy } from '../support/taxonomy.ts';
 
 /**
  * The UI's read side of the generated provider dossiers roadmap (#478; the

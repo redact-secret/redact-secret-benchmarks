@@ -104,14 +104,15 @@ npm --prefix web run dev
 Open **http://127.0.0.1:3100**. Authoritative report pages need the pinned
 qualification view; without it they explain that no usable view is available.
 See [web conventions](web/CONVENTIONS.md#deployment) for the publication inputs
-and guards. Root `start`, `dev`, `build` and `preview` below operate the retained
-Vite oracle, which is not the published site. Its retirement gates and the CI
-reuse contract are recorded in [hygiene legacy and CI](docs/specs/hygiene-legacy-ci.md).
+and guards. The old root `start`, `dev`, `build` and `preview` UI commands are retired.
+Use `npm --prefix web run dev` and `npm --prefix web run build` for the Next site.
+The [UI retirement manifest](docs/specs/legacy-ui-retirement.md) records the
+source archive and the measurement tooling that remains.
 
 The benchmark runner, evaluation engine, methods, operators and shared scoring
 code in `benchmarks/` are TypeScript. npm commands use `tsx` to execute them;
-`npm run typecheck` strictly checks the benchmarks and UI, and `npm run build`
-runs that check before bundling. Existing `npm run bench` and `npm run eval`
+`npm run typecheck` strictly checks the benchmark/tooling sources;
+`npm --prefix web run typecheck` checks the Next app. Existing `npm run bench` and `npm run eval`
 arguments are unchanged. Direct invocations need the loader, for example
 `node --import tsx benchmarks/evaluate.ts --scanner=redact-secret`.
 
@@ -121,13 +122,11 @@ requires authenticated `gh`. From a fresh checkout:
 
 ```sh
 npm ci
-npm start
+npm run bench
 ```
 
-`npm start` runs all registered benchmarks, writes sanitized JSON results,
-and serves the local Vite oracle at **http://127.0.0.1:5174/report**. The server
-fails explicitly if that port is occupied rather than silently changing ports.
-Production preview uses **http://127.0.0.1:4174**. The published
+`npm run bench` runs all registered benchmarks and writes sanitized JSON results.
+Serve the Next app with `npm --prefix web run dev` at **http://127.0.0.1:3100**. The published
 npm package for redact-secret is pinned in the lockfile. Gitleaks and
 TruffleHog are optional external binaries on `PATH`; absent binaries appear
 as **unavailable**, never as zero scores. Install released versions using
@@ -168,10 +167,10 @@ job summary, the resolved version and archive digest. To bump a pin, change the
 suite and copy the new digests from the upstream release checksums file.
 
 ```sh
-npm run bench                       # Update all results; the UI polls every 5 seconds
+npm run bench                       # Update all results
 npm run bench -- --category=accuracy # Update one category
 npm run bench -- --strict            # Nonzero exit if any scanner is unavailable
-npm run dev                         # Serve the local Vite oracle and existing results
+npm --prefix web run dev            # Serve the current Next app
 npm test                            # Scoring, normalization, and installed npm adapter tests
 npm run test:integration             # Real scanners: positive/negative controls, Unicode + CRLF
 npm run compare                      # Integration checks, then strict comparison of all categories
@@ -184,8 +183,8 @@ npm run features:extract            # Maintainer-local candidate-feature dataset
 npm run calibration:run             # Shadow-scorer calibration experiments over that dataset -> results-output/calibration/ (never published)
 npm run scorer-promotion:check      # Validate the future-promotion contract for the shadow scorer (#257)
 npm run evasion:run -- --product <clean redact-secret checkout>  # Score-evasion aggregate (#289); detail -> results-output/score-evasion/ (never published)
-npm run build                       # Type-check and build the local Vite oracle
-npm run preview                     # Preview the local Vite oracle
+npm run typecheck                   # Type-check the measurement/tooling sources
+npm --prefix web run build          # Build the current Next static export
 ```
 
 Scanner failures always produce a nonzero exit code, but still write a report

@@ -14,13 +14,13 @@
 #   develop -> staging.benchmarks.redactsecret.dev
 #   main    -> benchmarks.redactsecret.dev
 #
-# Both measure the corpus against the released `@redact-secret/core` in the
-# lockfile. Staging also measures a qualified `redact-secret` `main` commit with
-# `eval:candidate`, from the artifacts that commit's own `artifact-qualification`
-# run qualified, and ships it as candidate evidence (#152); production does not,
-# and its Workbench Changes page says it reads the release instead (#213).
-# Both publish a qualification run and a support matrix: staging's matrix
-# classifies the candidate, production's the released package.
+# Credential and PII authorities select their producers independently (#870).
+# New credential publication consumes recorded canonical engine RunArtifacts;
+# staging candidate evidence requires the qualified tarballs' registered replay.
+# New PII publication consumes exact pinned engine artifacts with separate product
+# binding. Neither calls an old accuracy run a fresh candidate measurement.
+# Legacy accuracy producers remain only for each supported rollback authority.
+# Live discovery and separately registered performance contracts remain intact.
 #
 # The site is the Next.js app (`web/`, a static export) at the ROOT of the host,
 # built from the same run and the same measured files, with the measured JSON

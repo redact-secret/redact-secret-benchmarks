@@ -100,7 +100,7 @@ function reviewedCandidateRuntime(pin, repoRoot) {
   const semanticContract = { ...CONSUMER_PIN.contract, protocol: { id: 'pii-v1', revision: 3 },
     corpusSchema: '1.5', artifactSchema: '1.5', mapping: { id: 'pii-evidence-to-corpus', revision: 3 } };
   const semanticRuntime = same(pin.contract, semanticContract);
-  if (!entry || !closed(entry, ['schema', 'consumerIdentity', 'buildReceipt', 'mappingKinds']) || entry.schema !== 'pii-evidence-reviewed-candidate-runtime/1' ||
+  if (!entry || !closed(entry, ['schema', 'consumerIdentity', 'buildReceipt', 'mappingKinds', ...(Object.hasOwn(entry ?? {}, 'planActivation') ? ['planActivation'] : [])]) || entry.schema !== 'pii-evidence-reviewed-candidate-runtime/1' ||
       (!semanticRuntime && !same(pin.executionEngine, CONSUMER_PIN.executionEngine)) || !same(pin.evidenceConsumer.canonicalLinux, CONSUMER_PIN.evidenceConsumer.canonicalLinux) ||
       pin.schema !== CONSUMER_PIN.schema || pin.state !== 'candidate' || pin.supportClaims !== false ||
       pin.source.repository !== CONSUMER_PIN.source.repository || !/^[a-f0-9]{40}$/.test(pin.source.commit) ||
@@ -110,6 +110,10 @@ function reviewedCandidateRuntime(pin, repoRoot) {
       pin.evidenceConsumer.localVerification.canonical !== false || pin.evidenceConsumer.localVerification.platform !== 'darwin-arm64' ||
       !hex(pin.evidenceConsumer.localVerification.binarySha256) ||
       Object.entries(pin.source).filter(([key]) => !['repository', 'commit'].includes(key)).some(([, value]) => !hex(value))) refuse('candidate-runtime-not-reviewed');
+  if (entry.planActivation !== undefined && (!semanticRuntime || !Array.isArray(entry.planActivation) ||
+      entry.planActivation.length < 1 || entry.planActivation.length > 256 ||
+      entry.planActivation.some(value => typeof value !== 'string' || !/^[a-z][a-z0-9:.-]{1,79}$/.test(value)) ||
+      !same(entry.planActivation, [...new Set(entry.planActivation)].sort()))) refuse('candidate-runtime-activation-invalid');
   const receipt = entry.buildReceipt;
   if (!closed(receipt, ['schema', 'sourceCommit', 'sourceArchiveSha256', 'cargoLockSha256', 'rustToolchainFileSha256', 'rustc', 'command', 'platform', 'binarySha256']) ||
       receipt.schema !== 'pii-evidence-consumer-build-receipt/1' || receipt.sourceCommit !== pin.source.commit ||
@@ -131,6 +135,9 @@ function validateRuntimePin(pin, repoRoot) {
 }
 export function mappingKindsOf(pin, { repoRoot } = {}) {
   return same(runtimeIdentity(pin), CONSUMER_PIN) ? MAPPING_KINDS : reviewedCandidateRuntime(pin, repoRoot).mappingKinds;
+}
+export function evidencePlanActivation(pin, { repoRoot } = {}) {
+  return same(runtimeIdentity(pin), CONSUMER_PIN) ? null : reviewedCandidateRuntime(pin, repoRoot).planActivation ?? null;
 }
 
 export function validateEvidencePins(snapshotPin, consumerPin) {

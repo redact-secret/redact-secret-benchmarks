@@ -4,7 +4,7 @@ import { readFileSync, mkdirSync, mkdtempSync, writeFileSync, existsSync, readdi
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { sha256, expectedPreflightReport } from '../scripts/lib/pii-evidence-contract.mjs';
-import { preparePiiEvidenceAdoption, validateMaintainerAcceptance, adoptionDigest, validateAdoptionScanner, validateActiveEvidenceAdoption } from '../scripts/lib/pii-evidence-adoption.mjs';
+import { preparePiiEvidenceAdoption, validateMaintainerAcceptance, adoptionDigest, validateAdoptionScanner, validateActiveEvidenceAdoption, validateReadyEvidenceAdoption } from '../scripts/lib/pii-evidence-adoption.mjs';
 import { validateEvidenceExecutionSelection } from '../scripts/lib/pii-evidence-comparison-plan.mjs';
 import { applyEvidenceAdoption, adoptionUpdateFiles, checkActiveEvidenceFiles, prepareEvidenceAdoptionReview } from '../scripts/lib/pii-evidence-adoption-apply.mjs';
 import { collectEvidenceComparison } from '../scripts/record-pii-evidence-comparison.mjs';
@@ -184,6 +184,22 @@ function activeInput(e = syntheticEvidenceOfficialUpload(), previous = null) {
       acceptedBy: 'Synthetic Maintainer', acceptedAt: '2026-10-08T12:00:00Z', source: 'https://github.com/redact-secret/redact-secret-benchmarks/issues/841#issuecomment-123' },
     history: [], retainedFiles: e.files, comparison: { plan: e.plan, receipt: e.receipt, receiptText, record, artifacts: e.artifacts, populationIndex: e.populationIndex } };
 }
+
+test('ready-for-acceptance validates technical evidence without authoring approval or passing the active gate', () => {
+  const input = activeInput(); input.acceptance = null;
+  const ready = validateReadyEvidenceAdoption(input);
+  assert.equal(ready.state, 'ready-for-acceptance');
+  assert.equal(ready.acceptance, null);
+  assert.equal(ready.canApply, false);
+  assert.throws(() => validateActiveEvidenceAdoption(input), /maintainer-acceptance-invalid/);
+  for (const mutate of [value => { value.comparison.record.workflow.conclusion = 'failure'; },
+    value => { value.retainedFiles['build-receipt.json'] += ' '; },
+    value => { value.acceptance = activeInput().acceptance; },
+    value => { value.comparison.artifacts[0].text += ' '; }]) {
+    const changed = structuredClone(input); mutate(changed);
+    assert.throws(() => validateReadyEvidenceAdoption(changed));
+  }
+});
 
 test('active adoption requires strict canonical record and externally supplied exact acceptance without writes', () => {
   const input = activeInput(), before = adoptionDigest(input);

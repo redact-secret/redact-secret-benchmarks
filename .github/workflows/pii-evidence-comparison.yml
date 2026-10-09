@@ -192,6 +192,7 @@ jobs:
           name: pii-evidence-comparison
           path: |
             ${{ runner.temp }}/pii-evidence-comparison/build-receipt.json
+            ${{ runner.temp }}/pii-evidence-comparison/failure.json
             ${{ runner.temp }}/pii-evidence-comparison/plan.json
             ${{ runner.temp }}/pii-evidence-comparison/receipt.json
             ${{ runner.temp }}/pii-evidence-comparison/baseline.public-synthetic-artifact.json

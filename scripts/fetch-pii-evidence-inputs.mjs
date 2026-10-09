@@ -28,7 +28,7 @@ export function verifyEvidenceEngineMetadata(run, artifact, now = Date.now(), pi
 }
 export function verifyEvidenceBuildInfo(members, pin = CONSUMER_PIN) {
   const info = JSON.parse(members['build-info.json']);
-  const expected = { binary: { bytes: pin.contract.mapping.revision === 3 ? 4672224 : 4593560, name: 'pii-eval', sha256: pin.executionEngine.binarySha256, version: 'pii-eval 0.0.0 (bootstrap)' },
+  const expected = { binary: { bytes: pin.executionEngine.binaryBytes ?? (pin.contract.mapping.revision === 3 ? 4672224 : 4593560), name: 'pii-eval', sha256: pin.executionEngine.binarySha256, version: 'pii-eval 0.0.0 (bootstrap)' },
     commit: pin.source.commit, event: 'push', headSha: pin.source.commit, ref: 'refs/heads/main', repository: pin.source.repository,
     runAttempt: '1', runId: String(pin.executionEngine.workflow.runId), schema: 'pii-eval-build-info/1', target: 'linux-x86_64',
     toolchain: { cargoLockSha256: pin.source.cargoLockSha256, rustToolchainFileSha256: pin.source.rustToolchainFileSha256,

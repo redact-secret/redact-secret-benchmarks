@@ -1,0 +1,18 @@
+{
+  "schema": "pii-evidence-failed-execution/1",
+  "workflowRunId": 37981404978,
+  "headSha": "e91f37e1",
+  "state": "failed-no-valid-measurement",
+  "stage": "engine-run",
+  "canonicalMeasurement": false,
+  "scannerExecutions": null,
+  "protectedRuns": 0,
+  "buildCompleted": true,
+  "receiptRetained": true,
+  "linuxImporterBinarySha256": "875abf689e90b8eb708338071babf7cc220329772a69d95b93e6a2bc236e96d0",
+  "actionsArtifactId": 11640474569,
+  "actionsArtifactSha256": "7dec819d230887f0cedca17c88e8c8a04f79d38d1dac852621bf09e15e04d24a",
+  "diagnostic": "run:command-failed; driver originally required error.at, but engine uses optional error.detail or reason alone",
+  "costDecisionCaveat": "The historical retry description incorrectly called the previous failure pre-scanner. Both execution counts remain unknown; neither run is a valid measurement.",
+  "configurationReview": "Published core beta.14 cannot activate the derived GB selector. Upstream PR40 adds explicit independently bound activation without filtering any evidence."
+}

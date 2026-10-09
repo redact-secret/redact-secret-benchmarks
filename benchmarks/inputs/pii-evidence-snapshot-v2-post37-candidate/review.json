@@ -480,8 +480,6 @@
       "benchmarks/pii-evidence-comparison/record.json": "0f76f1f96cd87aa8872d6fb653b44cc581a5741573a136103cfa0901c8612ed3",
       "benchmarks/pii-evidence-comparison/cost-decision.json": "a1b46332cf766df54a8b9151d7977ae6bb69be34da1b06336d2e703f67426e41",
       "benchmarks/pii-eval-population-pins.json": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787",
-      "benchmarks/pii-authority.json": "9536d4e23b25dee735a24ecf2b443a2031be624431350d330afb36bf51449bbc",
-      "benchmarks/qualification-authority.json": "6b12b36627856660beaab70a0394bbf42b82ae89f8b6a2acfff785e63c4578ca",
       "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/acceptance-plan.json": "af3be2895f16b035d142c62d79682fe6151c7b8d063d5105b2d9d80460c651de",
       "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/candidate.json": "0121de253bad9f1a0d0df793b141dff987d0d98b1bb52d23623480c3f463eae8",
       "benchmarks/inputs/pii-evidence-snapshot-v2-candidate/consumer-pin.json": "c99e6454ccea77d8873603139c0052054ce099015012ccf12bd8ade9f9c6c119",
@@ -502,6 +500,15 @@
     "coveragePublicationFairness": "passed",
     "pinDrift": "passed",
     "hygiene": "passed",
-    "ciDispatches": 0
+    "ciDispatches": 0,
+    "authorityByteCommitments": {
+      "pii": "9536d4e23b25dee735a24ecf2b443a2031be624431350d330afb36bf51449bbc",
+      "credential": "6b12b36627856660beaab70a0394bbf42b82ae89f8b6a2acfff785e63c4578ca"
+    }
+  },
+  "metadataCorrection": {
+    "reason": "Authority byte commitments are audit metadata, never authority readers. Store their domain names without adding consumers to the authority reader lists.",
+    "originalRecordCommit": "9fd1098a0859bf5d446bc1a2e30ecd92188c4fab",
+    "expectationsAndPreflightChanged": false
   }
 }

@@ -7,7 +7,7 @@ import { sha256, mappingKindsOf, validateEvidencePins, validateProposedConsumerP
 const fail = reason => { throw new Error(`PII coverage inventory refusal: ${reason}`); };
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const integer = value => Number.isSafeInteger(value) && value >= 0;
-export const PROPOSED_EVIDENCE_DIRECTORY = 'benchmarks/inputs/pii-evidence-snapshot-v2-released-candidate';
+export const PROPOSED_EVIDENCE_DIRECTORY = 'benchmarks/inputs/pii-evidence-snapshot-v2-activation-candidate';
 const set = (values, reason) => {
   if (!Array.isArray(values) || values.some(value => typeof value !== 'string' || !value) || new Set(values).size !== values.length) fail(reason);
   return [...values].sort();

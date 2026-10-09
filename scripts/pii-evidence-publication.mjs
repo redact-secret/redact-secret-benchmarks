@@ -17,7 +17,7 @@ async function optional(root, relative) {
 
 /** Fixed public paths only. The consumer verifies every measurement identity. */
 export async function piiEvidencePublication(root, { directory = PII_EVIDENCE_DIRECTORY } = {}) {
-  if (directory !== PII_EVIDENCE_DIRECTORY && directory !== 'benchmarks/pii-evidence-comparison/v2-post37-published-retry1') throw new Error('evidence-publication-directory-unreviewed');
+  if (directory !== PII_EVIDENCE_DIRECTORY && directory !== 'benchmarks/pii-evidence-comparison/v2-post37-published-retry2') throw new Error('evidence-publication-directory-unreviewed');
   const sources = [];
   const texts = new Map();
   const json = async name => {

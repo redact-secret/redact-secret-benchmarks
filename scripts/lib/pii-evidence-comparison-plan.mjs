@@ -2,7 +2,7 @@ import { readFileSync, lstatSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-import { SNAPSHOT_PIN, CONSUMER_PIN, sha256, validatePreflightReport } from './pii-evidence-contract.mjs';
+import { SNAPSHOT_PIN, CONSUMER_PIN, sha256, validatePreflightReport, evidencePlanActivation } from './pii-evidence-contract.mjs';
 import { parseEvidenceJson } from './pii-evidence-json.mjs';
 
 // Frozen product inputs from the reviewed beta.14 comparison; package-lock upgrades
@@ -185,7 +185,7 @@ function runtimeInputs({ preflight, policy, populationIndex, populationIndexDige
 function evidenceScanner(preflight) {
   const scanner = structuredClone(PRODUCT_PINS.scanner);
   if (preflight.consumer.contract.mapping.revision === 3) {
-    scanner.activation = [...new Set(['pii:global', ...Object.keys(preflight.mappedFamilies).map(family => `pii:${family.split(':')[1]}`)])].sort();
+    scanner.activation = evidencePlanActivation(preflight.consumer) ?? [...new Set(['pii:global', ...Object.keys(preflight.mappedFamilies).map(family => `pii:${family.split(':')[1]}`)])].sort();
     scanner.activationDigest = sha256(`pii-eval-semantic-digest/1\npii-eval.scanner-activation/1\n${JSON.stringify(scanner.activation)}`);
   }
   return scanner;

@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto';
 import { verifyPackages } from './run-pii-candidate-comparison.mjs';
 import { treeSha256 } from './lib/pii-tree-digest.mjs';
 import { verifyEvidenceSource } from './fetch-pii-evidence-inputs.mjs';
-import { sha256, verifyConsumerRuntime, verifyImportDigests } from './lib/pii-evidence-contract.mjs';
+import { sha256, verifyConsumerRuntime, verifyImportDigests, evidencePlanActivation } from './lib/pii-evidence-contract.mjs';
 import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidenceExecutionSelection, validateEvidenceComparisonPlan, evidenceDigest, same, evidenceSides } from './lib/pii-evidence-comparison-plan.mjs';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
 import { parseStrictJson } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
@@ -77,9 +77,15 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
       let reason = 'command-failed';
       try {
         const refusal = parseEvidenceJson(result.stdout);
-        const code = refusal.error?.reason, at = refusal.error?.at;
-        if (/^[a-z][a-z0-9-]{0,63}$/.test(code ?? '') && /^[a-z][a-z0-9.-]{0,63}$/.test(at ?? '')) reason = `${code}:${at}`;
+        const code = refusal.error?.reason, at = refusal.error?.at ?? refusal.error?.detail;
+        if (/^[a-z][a-z0-9-]{0,63}$/.test(code ?? '')) {
+          reason = code;
+          if (/^[a-z][a-z0-9.-]{0,63}$/.test(at ?? '')) reason += `:${at}`;
+        }
       } catch { /* Never include raw process output or evidence values in diagnostics. */ }
+      if (existsSync(out)) writeFileSync(join(out, 'failure.json'), json({ schema: 'pii-evidence-execution-failure/1',
+        command: args[0], reason, exitCode: Number.isInteger(result.status) ? result.status : null,
+        scannerExecutions: null, canonicalMeasurement: false, protectedRuns: 0 }));
       fail(result.error?.code === 'ETIMEDOUT' ? 'command-timed-out' : `${args[0]}:${reason}`);
     }
     return asJson ? parseEvidenceJson(result.stdout) : result.stdout;
@@ -126,7 +132,9 @@ export async function runEvidenceComparison({ plan = readEvidenceComparisonPlan(
           scanners: [{ adapter: 'redact-secret-core', shim: { path: shim }, package: { dir: packageDir, entry: 'dist/index.js', version: installation.declaredVersion, treeSha256: packageTreeSha256 },
             extraArtifacts: [{ path: addonDir, target: 'tree', sha256: addonTreeSha256 }, { path: wasmDir, target: 'tree', sha256: wasmTreeSha256 }] }], host: { maxWorkers: 2, resources: 'enforce' } };
         const configFile = join(dir, 'config.json'); writeFileSync(configFile, json(config));
-        const planned = command(consumerBin, ['plan', '--config', configFile, '--node', node, '--replays', '2']);
+        const explicitActivation = evidencePlanActivation(plan.consumer);
+        const planned = command(consumerBin, ['plan', '--config', configFile, '--node', node, '--replays', '2',
+          ...(explicitActivation ? ['--activation', explicitActivation.join(',')] : [])]);
         const manifestDigest = planned.semantic.manifestSemanticDigest;
         config.mode = plan.mode; config.engineVersion = plan.consumer.contract.engineVersion; config.protocol = plan.consumer.contract.protocol;
         config.snapshot.semanticDigest = plan.population.digest; config.manifest.semanticDigest = manifestDigest;

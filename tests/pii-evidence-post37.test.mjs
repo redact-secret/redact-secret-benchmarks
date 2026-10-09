@@ -1,13 +1,36 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { validateProposedConsumerPin, validatePreflightReport, verifyImportDigests } from '../scripts/lib/pii-evidence-contract.mjs';
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { validateProposedConsumerPin, validatePreflightReport, verifyImportDigests, evidencePlanActivation } from '../scripts/lib/pii-evidence-contract.mjs';
 import { preparePiiEvidenceAdoption } from '../scripts/lib/pii-evidence-adoption.mjs';
 import { semanticDigest } from '../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs';
 
 const read = name => JSON.parse(readFileSync(new URL(`../${name}`, import.meta.url)));
 const base = 'benchmarks/inputs/pii-evidence-snapshot-v2-post37-candidate';
 const preflight = read(`${base}/preflight.json`), policy = read('benchmarks/pii-population-policy.json');
+
+test('explicit activation is independently reviewed and cannot narrow the imported population', () => {
+  const next = read('benchmarks/inputs/pii-evidence-snapshot-v2-activation-candidate/preflight.json');
+  const previous = read('benchmarks/inputs/pii-evidence-snapshot-v2-released-candidate/preflight.json');
+  assert.deepEqual(next.population, previous.population);
+  assert.deepEqual(next.counts, previous.counts);
+  assert.deepEqual(next.outputs, previous.outputs);
+  assert.deepEqual(next.losses, previous.losses);
+  assert.deepEqual(evidencePlanActivation(next.consumer), ['pii:global', 'pii:us']);
+  assert.equal(evidencePlanActivation(previous.consumer), null, 'historical default planning stays unchanged');
+  const root = mkdtempSync(join(tmpdir(), 'pii-activation-review-'));
+  try {
+    mkdirSync(join(root, 'benchmarks/pii-evidence'), { recursive: true });
+    for (const activation of [['pii:us', 'pii:global'], ['pii:us', 'pii:us'], [], ['pii:global', 'unsafe!']]) {
+      const registry = read('benchmarks/pii-evidence/candidate-runtimes.json');
+      registry.runtimes.at(-1).planActivation = activation;
+      writeFileSync(join(root, 'benchmarks/pii-evidence/candidate-runtimes.json'), JSON.stringify(registry));
+      assert.throws(() => evidencePlanActivation(next.consumer, { repoRoot: root }), /candidate-runtime-activation-invalid/);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
 
 test('successor proposal recomputes separately and retains the original v1 predecessor', () => {
   assert.deepEqual(validatePreflightReport(preflight, policy, {

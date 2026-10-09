@@ -210,6 +210,116 @@
         ],
         "uk-nino/uk/structured": "pii:gb:national-insurance-number"
       }
+    },
+    {
+      "schema": "pii-evidence-reviewed-candidate-runtime/1",
+      "consumerIdentity": {
+        "schema": "pii-evidence-consumer-pin/1",
+        "state": "candidate",
+        "supportClaims": false,
+        "source": {
+          "repository": "redact-secret/pii-eval",
+          "commit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+          "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
+          "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+          "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+          "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
+          "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+        },
+        "contract": {
+          "engineVersion": "0.0.0",
+          "protocol": {
+            "id": "pii-v1",
+            "revision": 3
+          },
+          "corpusSchema": "1.5",
+          "artifactSchema": "1.5",
+          "mapping": {
+            "id": "pii-evidence-to-corpus",
+            "revision": 3
+          }
+        },
+        "executionEngine": {
+          "platform": "linux-x64",
+          "binarySha256": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb",
+          "workflow": {
+            "runId": 37983467352,
+            "runAttempt": 1,
+            "path": ".github/workflows/ci.yml",
+            "event": "push",
+            "branch": "main",
+            "conclusion": "success"
+          },
+          "archive": {
+            "id": 11641827260,
+            "name": "pii-eval-engine-bfa93c79013dd9804fe16abedbc27990e76d01fb-linux-x86_64",
+            "sha256": "8975a52ba238a038b5040c57ec50621340f70b3d45a5618af5a276fe740fdee7",
+            "members": {
+              "SHA256SUMS": "78b3d5bb33f9af35a4fdb9a4152000c16edc3e1fa4e4ed7d7118f3cab761910c",
+              "build-info.json": "d817cf145d81d8baf826eaceda5f88a7293b491c938d4025709161de27e63ae1",
+              "pii-eval": "c839b2b499c83d95f64b203b04d9bde9aba208b4e50d890da8e96206b6c41ccb"
+            }
+          },
+          "binaryBytes": 4668056
+        },
+        "evidenceConsumer": {
+          "binary": "pii-eval-evidence",
+          "canonicalLinux": {
+            "state": "pending-source-build",
+            "reason": "upstream-ci-does-not-archive-evidence-consumer",
+            "binarySha256": null,
+            "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+            "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+            "receiptRequiredBeforeUse": true,
+            "scannerGate": "sealed-build-receipt-and-exact-import-semantics"
+          },
+          "localVerification": {
+            "platform": "darwin-arm64",
+            "binarySha256": "5a29ba5861cdffa4a4e311a513d82f9fdb6c5a194d98a1ad85b162bb12713b20",
+            "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+            "canonical": false
+          }
+        },
+        "importedPopulation": {
+          "id": "pii-evidence-public-pii-phi-2026-10-07-9d4e8e036bbb",
+          "version": 1,
+          "digest": "612a8cf629c24c8e92be474a8129a592c7f1f75cbe4e2e2afcc60383cc6347d8",
+          "bindingDigest": "f481baee5aa3d812f7858902c5024618e09e0a2868993d31dc10525c53ddf9fb"
+        },
+        "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
+      },
+      "buildReceipt": {
+        "schema": "pii-evidence-consumer-build-receipt/1",
+        "sourceCommit": "bfa93c79013dd9804fe16abedbc27990e76d01fb",
+        "sourceArchiveSha256": "5e78cfb8291a1f1fa010ee4c640f93587471728418facb02e38c35e8b30c8000",
+        "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+        "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+        "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+        "command": "cargo build --locked --release -p pii-eval-cli --bin pii-eval-evidence -j 2",
+        "platform": "darwin-arm64",
+        "binarySha256": "5a29ba5861cdffa4a4e311a513d82f9fdb6c5a194d98a1ad85b162bb12713b20"
+      },
+      "mappingKinds": {
+        "email/global/basic": "pii:global:email",
+        "phone/global/basic": "pii:global:phone",
+        "payment-card/global/basic": "pii:global:payment-card",
+        "iban/global/basic": "pii:global:iban",
+        "us-ssn/us/structured": "pii:us:ssn",
+        "medical-record-number/us/labeled-field": "pii:us:medical-record-number",
+        "health-plan-member-id/us/member-field": "pii:us:health-plan-member-id",
+        "health-claim-identifier/us/claim-field": "pii:us:health-claim-identifier",
+        "prescription-order-identifier/us/order-field": "pii:us:prescription-order-identifier",
+        "date-of-birth/global/labeled-field": [
+          "pii:global:date-of-birth",
+          "pii:us:date-of-birth",
+          "pii:gb:date-of-birth"
+        ],
+        "uk-nino/uk/structured": "pii:gb:national-insurance-number"
+      },
+      "planActivation": [
+        "pii:global",
+        "pii:us"
+      ]
     }
   ]
 }

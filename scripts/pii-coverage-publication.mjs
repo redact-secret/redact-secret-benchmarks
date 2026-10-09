@@ -36,7 +36,7 @@ export function validatePiiCoverageMembership(coverage) {
 export async function piiCoveragePublication(root) {
   const evidencePublication = await piiEvidencePublication(root);
   const comparison = evidencePublication.view.comparison;
-  const proposedPublication = await piiEvidencePublication(root, { directory: 'benchmarks/pii-evidence-comparison/v2-post37-published-retry1' });
+  const proposedPublication = await piiEvidencePublication(root, { directory: 'benchmarks/pii-evidence-comparison/v2-post37-published-retry2' });
   const proposedComparison = proposedPublication.view.comparison;
   if (proposedComparison.state === 'invalid') throw new Error('pii-coverage-invalid-proposed-observation-source');
   if (comparison.state === 'invalid') throw new Error('pii-coverage-invalid-observation-source');

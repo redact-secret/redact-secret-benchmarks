@@ -7,11 +7,13 @@ import '../theme/measures.css';
 import { THEME_ATTRIBUTE, THEME_STORAGE_KEY } from '../theme/theme';
 import { ThemeRoot } from '../theme/ThemeRoot';
 import { resolveSiteBuild } from '../resolvers/pages';
+import { SITE_ORIGIN } from '../lib/site';
 import { AppChrome } from './AppChrome';
 import '../../shared/design-tokens/tokens.css';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_ORIGIN),
   title: { default: 'Redact Secret Benchmarks', template: '%s | Redact Secret Benchmarks' },
   description: 'What the redact-secret benchmark ledger records, and how it compares. Measured, never ranked.',
   // No `robots` meta: this is the published site. Staging is kept out of indexes by CloudFront's X-Robots-Tag header,

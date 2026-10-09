@@ -31,7 +31,7 @@ export function SiteHeader({ sections, currentPath }: SiteHeaderProps) {
               const current = currentPath.startsWith(s.href);
               return (
                 <li key={s.href}>
-                  <Link className={styles.link} href={s.href} aria-current={current ? 'page' : undefined}>{s.label}</Link>
+                  <Link className={styles.link} href={s.landingHref ?? s.href} aria-current={current ? 'page' : undefined}>{s.label}</Link>
                 </li>
               );
             })}
@@ -43,7 +43,7 @@ export function SiteHeader({ sections, currentPath }: SiteHeaderProps) {
         <ul className={styles.tabList}>
           {sections.map(s => (
             <li key={s.href}>
-              <Link className={styles.tab} href={s.href} aria-current={currentPath.startsWith(s.href) ? 'page' : undefined}>{s.label}</Link>
+              <Link className={styles.tab} href={s.landingHref ?? s.href} aria-current={currentPath.startsWith(s.href) ? 'page' : undefined}>{s.label}</Link>
             </li>
           ))}
         </ul>

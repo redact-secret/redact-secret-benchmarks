@@ -12,6 +12,9 @@ const GENERATED = /^(?:evidence\/|docs\/(?:generated|reports|decisions)\/)/;
 const SESSION = /(?:^|[/-])(?:beta[.-]?\d+|batch\d+|group-[a-z]|groups-cde|round\d+|issue-\d+)(?:[-./]|$)/i;
 const SCRATCH = /(?:^|\/)(?:node_modules|results-output|\.next|dist|coverage|test-results|playwright-report)\/|(?:\.next|\.tmp|\.log)$/;
 
+// Coverage source modules are product pages, distinct from generated test coverage.
+const COVERAGE_SOURCE = /^web\/(?:app|components)\/coverage\/(?:credential|pii)\/[A-Za-z][\w.-]*\.(?:tsx?|css)$/;
+
 export function workflowScriptReferences(text) {
   const workflow = YAML.parse(text);
   const refs = [];
@@ -128,7 +131,7 @@ export function hygieneProblems({ files, policy, inventory, today, archive, remo
     return false;
   };
   for (const f of files) {
-    if (SCRATCH.test(f.path)) problems.push(`${f.path}: regenerable scratch belongs in ignored results-output/`);
+    if (SCRATCH.test(f.path) && !COVERAGE_SOURCE.test(f.path)) problems.push(`${f.path}: regenerable scratch belongs in ignored results-output/`);
     const exception = exceptions.get(f.path);
     const review = reviews.get(f.path);
     if (f.path.startsWith('docs/decisions/'))

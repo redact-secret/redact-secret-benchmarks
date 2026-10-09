@@ -112,10 +112,85 @@ export function coverageExportProblems(html, publication) {
   }
 }
 
+/** Recount the product overview against the active baseline, independently of its resolver. */
+export function catalogExportProblems(html, publication) {
+  const dom = new JSDOM(html);
+  try {
+    const document = dom.window.document, problems = [];
+    const source = publication.coverage.matrices.active.baseline;
+    const rows = [...document.querySelectorAll('li[data-pii-catalog-kind]')];
+    if (JSON.stringify(rows.map(row => row.getAttribute('data-pii-catalog-kind'))) !== JSON.stringify(source.matrix.rows.map(row => row.kindKey))) problems.push('catalog-source-kind-roster');
+    for (let index = 0; index < rows.length; index++) {
+      const row = rows[index], expected = source.matrix.rows[index], summary = row.querySelector('summary');
+      if (!expected) continue;
+      if (hiddenFromDefault(row) || hiddenFromDefault(summary) || readableText(summary?.querySelector('code')).trim() !== expected.kindKey ||
+          readableText(summary?.querySelector('strong')).trim() !== expected.state || !readableText(summary).includes(expected.label)) problems.push(`catalog-visible-kind-state:${expected.kindKey}`);
+      const facts = new Map([...row.querySelectorAll('dt')].map(term => [term.textContent, readableText(term.nextElementSibling, true)]));
+      if (!facts.get('Declared implementation')?.startsWith(`${expected.capability.state};`) ||
+          !facts.get('Public synthetic measurement')?.startsWith(`${expected.observation.status};`)) problems.push(`catalog-independent-axis:${expected.kindKey}`);
+      if (facts.get('Evidence domains') !== (expected.domains.join(', ') || 'Not recorded') ||
+          facts.get('Evidence jurisdictions') !== (expected.jurisdictions.join(', ') || 'Not recorded')) problems.push(`catalog-scope-rewrite:${expected.kindKey}`);
+      const details = row.querySelector('details');
+      if (hiddenFromDefault(details, true) || !facts.get('Language and context requirements')?.includes('language and jurisdiction are separate')) problems.push(`catalog-context-not-inspectable:${expected.kindKey}`);
+      if (expected.capability.productCommitment && !facts.get('Declared implementation')?.includes(expected.capability.productCommitment)) problems.push(`catalog-product-binding:${expected.kindKey}`);
+      if ([...expected.mapping.losses, ...expected.reasons].some(reason => !facts.get('Limitations')?.includes(reason))) problems.push(`catalog-loss-or-reason:${expected.kindKey}`);
+      for (const axis of expected.observation.axes) {
+        const quantities = `${axis.axis}: ${axis.measured.toLocaleString('en-US')} measured of ${axis.eligible.toLocaleString('en-US')} eligible; ${axis.unresolved.toLocaleString('en-US')} unresolved; ${axis.withheld.toLocaleString('en-US')} withheld`;
+        if (!facts.get('Public synthetic measurement')?.includes(quantities)) problems.push(`catalog-axis-denominator:${expected.kindKey}`);
+      }
+      const expectedHref = `/evaluation/pii/evidence/#coverage-active-baseline-${encodeURIComponent(expected.kindKey).replace(/%/g, '-')}`;
+      const hrefs = [...row.querySelectorAll('a')].map(anchor => anchor.getAttribute('href'));
+      if (!hrefs.includes(expectedHref) || expected.capability.source && !hrefs.includes(expected.capability.source)) problems.push(`catalog-bound-detail-link:${expected.kindKey}`);
+    }
+    const summary = document.querySelector('[data-pii-catalog-summary]'), summaryText = readableText(summary);
+    if (!summaryText.startsWith(`${source.matrix.rows.length.toLocaleString('en-US')} source-exposed kinds`) || hiddenFromDefault(summary)) problems.push('catalog-full-inventory-denominator');
+    const states = new Map();
+    for (const row of source.matrix.rows) states.set(row.state, (states.get(row.state) ?? 0) + 1);
+    for (const [state, count] of states) if (countText(summaryText.match(new RegExp(`${state}: ([0-9,]+)(?:;|\\.)`))?.[1] ?? '') !== count) problems.push(`catalog-state-recount:${state}`);
+    const body = readableText(document.body, true);
+    const pageFacts = new Map([...document.querySelectorAll('dt')].map(term => [term.textContent, readableText(term.nextElementSibling, true)]));
+    for (const [term, value] of [
+      ['Catalog evidence', publication.coverage.inventories.active.source.snapshot.id],
+      ['Published catalog product', source.matrix.identity.productCommitment],
+      ['Published catalog product', source.binding?.product?.version], ['Published catalog product', source.binding?.product?.sourceCommit],
+      ['Catalog configuration', source.binding?.scanner?.configurationDigest], ['Catalog configuration', source.binding?.scanner?.activationDigest],
+    ]) {
+      if (value && !pageFacts.get(term)?.includes(value)) problems.push('catalog-exact-source-identity');
+    }
+    if (!body.includes('not detection accuracy') || !body.includes('qualification') || !body.includes('Proposed snapshots and candidate builds')) problems.push('catalog-material-boundary');
+    for (const href of ['/evaluation/pii/', '/evaluation/pii/results/', '/evaluation/pii/evidence/'])
+      if (!document.querySelector(`a[href="${href}"]`)) problems.push(`catalog-destination:${href}`);
+    return problems;
+  } finally { dom.window.close(); }
+}
+
+export function piiDetailDestinationsProblems(methodologyHtml, resultsHtml, evidenceHtml) {
+  const documents = [methodologyHtml, resultsHtml, evidenceHtml].map(html => new JSDOM(html));
+  try {
+    const [methodology, results, evidence] = documents.map(dom => dom.window.document), problems = [];
+    if (methodology.querySelector('select')) problems.push('methodology-result-selector-not-moved');
+    for (const href of ['/coverage/pii/', '/evaluation/pii/results/', '/evaluation/pii/evidence/',
+      'https://github.com/redact-secret/pii-evidence', 'https://github.com/redact-secret/pii-eval']) {
+      if (!methodology.querySelector(`a[href="${href}"]`)) problems.push(`methodology-destination:${href}`);
+    }
+    const methodText = readableText(methodology.body, true);
+    for (const text of ['pii-v1 and b11 are different quantities', 'thresholds are not applied to pii-v1 observations', 'Synthetic rates are not production rates'])
+      if (!methodText.includes(text)) problems.push('methodology-protocol-or-population-boundary');
+    const labels = [...results.querySelectorAll('label')].map(label => label.textContent);
+    for (const label of ['Population or report', 'Metric or category', 'Population and coverage']) if (!labels.includes(label)) problems.push(`results-selector:${label}`);
+    if (![...results.querySelectorAll('button')].some(button => button.textContent === 'Sources and execution details')) problems.push('results-source-diagnostic-control');
+    for (const href of ['/coverage/pii/', '/evaluation/pii/', '/evaluation/pii/results/'])
+      if (!evidence.querySelector(`nav[aria-label="PII evidence destinations"] a[href="${href}"]`)) problems.push(`evidence-reciprocal-destination:${href}`);
+    return problems;
+  } finally { documents.forEach(dom => dom.window.close()); }
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const publication = await piiCoveragePublication(root);
   const html = await readFile(path.join(webRoot, 'out/evaluation/pii/evidence/index.html'), 'utf8');
-  const problems = [...await piiCoveragePublicationProblems(root), ...coverageExportProblems(html, publication)];
+  const [catalog, methodology, results] = await Promise.all(['coverage/pii', 'evaluation/pii', 'evaluation/pii/results'].map(route => readFile(path.join(webRoot, `out/${route}/index.html`), 'utf8')));
+  const problems = [...await piiCoveragePublicationProblems(root), ...coverageExportProblems(html, publication),
+    ...catalogExportProblems(catalog, publication), ...piiDetailDestinationsProblems(methodology, results, html)];
   if (problems.length) throw new Error(problems.join('; '));
   console.log('PII coverage export: all source kinds, states, summaries and exact identities recount');
 }

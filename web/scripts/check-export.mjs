@@ -4,7 +4,7 @@
  *
  *  - all six routes exist as pages and each has a level-one heading;
  *  - the export is the site root (BASE_PATH is empty by default, docs/decisions/2026-10-02-serve-the-next-export-at-the-site-root.md):
- *    `/` is the landing page (one h1, the three questions linking /report/, /comparison/performance/ and /evaluation/, no redirect), robots.txt allows crawling, favicon.svg is present, no page carries a robots meta
+ *    `/` is the landing page (one h1, questions linking /report/, /comparison/performance/, /evaluation/ and /coverage/credential/, no redirect), robots.txt allows crawling, favicon.svg is present, no page carries a robots meta
  *    (staging's noindex is CloudFront's header), and nothing in the export names the retired /next/ prefix;
  *  - the CSS layer order is fixed first: the first stylesheet on every page
  *    contains the `@layer` order statement, and no other stylesheet precedes it;
@@ -44,10 +44,10 @@ for (const route of ROUTES) {
   const root = await readFile(path.join(out, 'index.html'), 'utf8');
   if ((root.match(/<h1[\s>]/g) ?? []).length !== 1) fail('/ must have exactly one <h1>');
   if (/http-equiv="refresh"/.test(root)) fail('/ is the landing page and must not redirect');
-  for (const target of ['/report/', '/comparison/performance/', '/evaluation/']) if (!root.includes(`href="${basePath}${target}"`)) fail(`/ does not link ${target}`);
+  for (const target of ['/report/', '/comparison/performance/', '/evaluation/', '/coverage/credential/']) if (!root.includes(`href="${basePath}${target}"`)) fail(`/ does not link ${target}`);
   try {
     const robots = await readFile(path.join(out, 'robots.txt'), 'utf8');
-    if (!/^User-agent: \*\s+Allow: \/\s*$/.test(robots)) fail('robots.txt must allow crawling (User-agent: * / Allow: /); staging noindex is the CloudFront header');
+    if (!/^User-agent: \*\s+Allow: \/\s+Sitemap: https:\/\/benchmarks\.redactsecret\.dev\/sitemap\.xml\s*$/.test(robots)) fail('robots.txt must allow crawling (User-agent: * / Allow: /); staging noindex is the CloudFront header');
   } catch { fail('missing robots.txt'); }
   try { await readFile(path.join(out, 'favicon.svg'), 'utf8'); } catch { fail('missing favicon.svg'); }
   // One copy of each is kept beside the legacy site's own until that source is removed.

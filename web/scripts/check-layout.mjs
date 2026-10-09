@@ -116,7 +116,7 @@ if (authority === 'new' && !viewCases.length) STATES.length = 0;
 ROUTES.push('comparison/accuracy', 'comparison/accuracy/?with=trufflehog&level=T2', 'comparison/accuracy/?with=flare-redact&scope=listed', 'comparison/accuracy/?with=openredaction&level=T3',
   'comparison/accuracy/?level=T3&peers=1', 'comparison/accuracy/?with=openredaction&level=T3&scope=listed&peers=1', 'comparison/accuracy/?data=pii', 'comparison/accuracy/?data=pii&with=openredaction');
 // The Evaluation overview and its six method pages (epic #543 follow-up, P1): every page of the section's first phase.
-ROUTES.push('evaluation', 'evaluation/method', 'evaluation/credential', 'evaluation/pii', 'evaluation/pii/evidence', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `evaluation/method/${m}`));
+ROUTES.push('coverage/credential', 'coverage/pii', 'evaluation/pii/results', 'evaluation', 'evaluation/method', 'evaluation/credential', 'evaluation/pii', 'evaluation/pii/evidence', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `evaluation/method/${m}`));
 // The checks behind a method count (#623): every method's index of lists, and the first list the export holds a file for.
 ROUTES.push(...['twin', 'benign', 'metamorphic', 'mutation', 'differential'].map(m => `evaluation/method/${m}/checks`));
 const firstDir = (rel) => { try { return readdirSync(path.join(webRoot, 'out', rel), { withFileTypes: true }).filter(e => e.isDirectory()).map(e => e.name).sort()[0]; } catch { return undefined; } };

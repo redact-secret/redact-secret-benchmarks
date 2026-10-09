@@ -7,6 +7,7 @@ import { validateCurrentPerformanceInputs } from '../../benchmarks/lib/current-p
  * independently of web/services and web/resolvers. It also checks: one panel per pair and setting, the two sides in
  * the same order and form, the five unmeasured groups stated as "Not measured", and no ratio or verdict word.
  */
+import { JSDOM } from 'jsdom';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -50,6 +51,15 @@ for (const { peer, setting, html: chunk } of chunks) {
   const key = `${peer}/${setting}`;
   const panel = text(chunk.split('data-peer="')[0]);
   const report = reports[setting];
+  const document = new JSDOM(chunk).window.document;
+  const ownSection = [...document.querySelectorAll('h2')].find(h => h.textContent === 'redact-secret on its own')?.closest('section');
+  if (!ownSection) fail(`/comparison/performance/ ${key} has no separate own section`);
+  else {
+    if (/flare-redact|OpenRedaction/.test(ownSection.textContent)) fail(`/comparison/performance/ ${key} own section includes a peer`);
+    if ([...ownSection.querySelectorAll('thead th')].length && ownSection.querySelectorAll('thead th').length !== 4) fail(`/comparison/performance/ ${key} own table does not have four product-only columns`);
+  }
+  if (!document.querySelector('a[href="https://github.com/redact-secret/credential-eval/issues/68"]')) fail(`/comparison/performance/ ${key} has no neutral workload handoff`);
+  if (report && !document.querySelector(`a[href="https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/inputs/runtime/runtime-comparison-${setting}.json"]`)) fail(`/comparison/performance/ ${key} has no exact selected pair evidence link`);
   if (FORBIDDEN.test(panel.replace(ALLOWED, ''))) fail(`/comparison/performance/ ${key} contains a ranking or verdict word: ${FORBIDDEN.exec(panel.replace(ALLOWED, ''))[0]}`);
   for (const group of ['How big is the text?', 'What does the text look like?', 'Text built to slow scanners down', 'How many secrets does it hold?', 'Does it arrive whole or in pieces?'])
     if (!panel.includes(group)) fail(`/comparison/performance/ ${key} does not list the unmeasured group "${group}"`);
@@ -134,6 +144,7 @@ if (summary) {
     for (const want of [run.profileId, `${ms(d.processing.median)} ms`, `${ms(d.processing.p95)} ms`, `${mbs(d.throughput.median)} MB/s`, `${ms(d.processing.minimum)} to ${ms(d.processing.maximum)} ms`])
       if (!any.includes(want)) fail(`/comparison/performance/ does not show "${want}" for redact-secret's own ${run.profileId} run`);
   }
+  if (!html.includes('href="https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/inputs/performance/current.json"')) fail('/comparison/performance/ has no separate accepted profile evidence link');
   if (!any.includes(summary.sourceCommit.slice(0, 12))) fail('/comparison/performance/ does not name the accepted run\'s product commit');
   if (!any.includes('not set beside those times')) fail('/comparison/performance/ does not say the own-run times are apart from the pair');
 } else if (!any.includes('Not measured yet')) fail('/comparison/performance/ has no accepted run to read and must say so');

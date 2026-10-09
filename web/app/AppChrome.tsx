@@ -14,6 +14,7 @@ export function AppChrome({ children, build = null }: { children: ReactNode; bui
   const quickLinks: Record<string, string[]> = {
     Report: ['/report/', '/report/providers/', '/report/detectors/'],
     Comparison: ['/comparison/scanner/', '/comparison/performance/', '/comparison/accuracy/'],
+    Coverage: ['/coverage/credential/', '/coverage/pii/'],
     Evaluation: ['/evaluation/method/', '/evaluation/credential/', '/evaluation/pii/'],
   };
   const quickSection = section && { ...section, entries: quickLinks[section.label].map(href => SECTIONS.flatMap(section => section.entries).find(entry => entry.href === href)!).filter(Boolean) };

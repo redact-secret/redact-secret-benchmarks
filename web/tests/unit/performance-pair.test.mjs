@@ -128,7 +128,7 @@ test('a pair with no shared measurement is a stated "Not measured yet", and the 
   assert.equal(resolvePerformancePanels({ ...full, comparison: undefined }, ownMissing)[0].props.empty.title, 'Not measured yet');
 });
 
-test('redact-secret on its own is node rows only, never drawn on the pair axis, with the other side not measured', () => {
+test('redact-secret on its own is node rows only, never drawn on the pair axis, without a peer field', () => {
   const own = {
     state: 'measured', sourceCommit: 'abcdef0123456789', repetitions: 5, summaryPath: 'p', runner: { cpuModel: 'X', logicalCpus: 4, image: 'i' },
     rows: [
@@ -140,7 +140,13 @@ test('redact-secret on its own is node rows only, never drawn on the pair axis, 
   assert.deepEqual(p.rows.map(r => r.id), ['node-scale-logs-small-whole']);
   assert.equal(p.rows[0].median, '2.2 ms');
   assert.equal(p.rows[0].speed, '29.5 MB/s');
-  assert.equal(p.other.name, 'flare-redact');
+  assert.equal('other' in p, false);
+  const gaps = resolvePerformancePanels(full, own)[0].props.gaps.groups;
+  assert.ok(gaps.find(g => g.id === 'pieces').links.some(l => l.href.endsWith('/benchmarks/inputs/performance/current.json')));
+  assert.ok(gaps.find(g => g.id === 'shape').links.some(l => l.href.endsWith('runtime-comparison-default.json')));
+  assert.doesNotMatch(gaps.find(g => g.id === 'hard').reason, /product times/);
+  assert.ok(gaps.every(g => g.links.some(l => l.href.endsWith('/credential-eval/issues/68'))));
+  assert.equal(resolvePerformancePanels(full, ownMissing)[0].props.gaps.groups.find(g => g.id === 'pieces').links.some(l => l.href.endsWith('/benchmarks/inputs/performance/current.json')), false);
   assert.match(p.apart, /not set beside those times/);
   assert.match(p.source, /abcdef012345/);
   assert.match(resolvePerformancePanels(full, ownMissing)[0].props.own.empty, /absent/);

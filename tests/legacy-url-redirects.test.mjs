@@ -56,6 +56,16 @@ test('the table is well formed: unique ids, anchored patterns that compile, ever
   }
 });
 
+test('canonical coverage pages are kept before the legacy detector-id rule', () => {
+  for (const domain of ['credential', 'pii']) {
+    assert.equal(resolve(`/coverage/${domain}`), `/coverage/${domain}`);
+    assert.equal(resolve(`/coverage/${domain}/`), `/coverage/${domain}`);
+    assert.equal(resolve(`/next/coverage/${domain}/`), `/coverage/${domain}`);
+  }
+  assert.equal(resolve('/coverage/example-detector'), '/report/detectors/example-detector/');
+  assert.equal(resolve('/coverage'), '/report/families/');
+});
+
 test('every target is a route of the Next export', () => {
   assert.ok(routes.statics.has('/report/') && routes.statics.has('/evaluation/qualification/'), 'the route list was read');
   for (const rule of table.rules) {
@@ -122,6 +132,7 @@ test('the retired /next/ prefix is stripped and the rest is answered once', () =
 });
 
 test('/ is the landing page and is not redirected', () => {
-  assert.deepEqual(table.kept.map(k => k.path), ['/']);
+  assert.ok(table.kept.some(k => k.path === '/'));
+  assert.equal(resolve('/'), '/');
   assert.equal(table.rules.some(r => new RegExp(r.match).test('/')), false);
 });

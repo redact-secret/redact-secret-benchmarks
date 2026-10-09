@@ -23,12 +23,12 @@ export interface PiiEvidenceComparisonRecorded {
   scanner: { adapter: { id: string; version: string; normalizationVersion: number }; configurationDigest: string; activationDigest: string; activation: string[] };
   engine: { commit: string; binarySha256: string; shimSha256: string; platform: string; canonical: boolean };
   importer: { binarySha256: string; buildReceipt: Record<string, unknown> | null };
-  baseline: EvidenceProduct; candidate: EvidenceProduct;
-  metrics: Array<{ metric: { id: string; version: number }; baseline: EvidenceMetric; candidate: EvidenceMetric; delta: number | null }>;
-  outcomes: Array<{ caseId: string; variantId: string; family: string; baseline: EvidenceOutcome; candidate: EvidenceOutcome; changed: boolean }>;
+  baseline: EvidenceProduct; candidate: EvidenceProduct | null;
+  metrics: Array<{ metric: { id: string; version: number }; baseline: EvidenceMetric; candidate: EvidenceMetric | null; delta: number | null }>;
+  outcomes: Array<{ caseId: string; variantId: string; family: string; baseline: EvidenceOutcome; candidate: EvidenceOutcome | null; changed: boolean }>;
   changes: { total: number; byFamily: Record<string, number> };
   provenance: { workflow: Record<string, unknown>; actionsArtifact: Record<string, unknown>; receipt: Record<string, unknown> } | { mode: 'exploratory'; canonical: false };
-  familyMetrics: { state: 'unavailable'; reason: 'unprojected-schema-1.4' };
+  familyMetrics: { state: 'unavailable'; reason: 'unprojected-schema-1.4' | 'unprojected-schema-1.5' };
   historical: { state: 'descriptive-only'; version: string; platform: string; source: string; verdict: string;
     record: string; artifactDigest: string; artifactSha256: string; engineBinarySha256: string; populationDigest: string;
     platformMatches: boolean; engineBinaryMatches: boolean; populationMatches: boolean };

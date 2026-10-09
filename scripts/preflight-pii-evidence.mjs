@@ -44,7 +44,8 @@ export function runPreflight({ sourceDir, consumerBin, snapshotDir, out, fetch =
     const common = ['--snapshot-dir', snapshotDir, '--pin', snapshotFile];
     const verified = invoke(['verify', ...common]);
     const importDir = path.join(scratch, 'import');
-    const imported = invoke(['import', ...common, '--out', importDir]);
+    const imported = invoke(['import', ...common, '--out', importDir,
+      ...(consumerPin.contract.mapping.revision === 3 ? ['--mapping-revision', '3'] : [])]);
     const outputs = Object.fromEntries(['snapshot.json', 'binding.json'].map(name => [name, readFileSync(path.join(importDir, name))]));
     const proposedConsumer = candidateSnapshotPin ? { ...consumerPin, importedPopulation: {
       id: imported.semantic?.population?.id, version: imported.semantic?.population?.version,

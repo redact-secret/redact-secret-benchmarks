@@ -132,7 +132,7 @@ to immutable source revisions and original source-file/blob identities. They
 declare activation families, not grammar completeness or product qualification.
 The reviewed importer mapping joins kind identities to these families. An
 unmapped placeholder remains unknown; absence from the exhaustive family catalog
-is explicit product exclusion. Proposed rows have no bound product or run.
+is explicit product exclusion. Proposed rows accept only their own exact bound product/run, never active observations.
 
 The existing strict comparison consumer validates all measurement inputs before
 the join accepts them. Its schema carries per-case/assertion observations but
@@ -162,6 +162,31 @@ summaries and deltas, and binds source and contract bytes. Existing
 The web prebuild generates the ignored public projection without scanning.
 `web/scripts/check-export-pii-coverage.mjs`, in `check:routes`, independently
 recounts rendered kind rows, states, summaries and exact identities. An absent
-run can publish explicit unavailable coverage; malformed or mixed evidence
+unaccepted run can publish explicit unavailable coverage; deleting a sealed adopted
+run refuses publication rather than downgrading it to absence; malformed or mixed evidence
 refuses. The same page works under both credential authority branches without
 reading or changing either authority file.
+
+
+## Accepted v2 state
+
+The active inventory is released v2, with all 12 discovered kinds, 118 authored
+cases, 285 fixtures and 123 imported cases. `proposalState: accepted` is derived
+only when both exact active source and consumer pins match the reviewed candidate;
+the active pins separately require the complete accepted canonical adoption bundle.
+The UI renders active panels and no longer labels v2 as an inactive proposal.
+
+The original byte-bound pre-adoption coverage publication is retained in
+`benchmarks/inputs/pii-coverage/adoption-v1-to-v2.json`. Its fixed SHA-256 is checked
+before rebuilding the accepted-before-after delta against the current active matrix.
+V1 taxonomy/manifest bytes remain under `historical-v1/`. The delta reports 10 to
+12 kinds, 49 to 118 authored cases and 139 to 285 fixtures. DOB and UK NINO are the
+new kinds. Mapping/protocol changes are distinct from evidence scope; the exact
+published baseline product is unchanged. No v1 observations are reused for v2 and
+no cross-population denominator is pooled.
+
+Current baseline states are supported-unmeasured 3, product-not-supported 6 and
+evidence-deferred 3. All other nine-state buckets are zero. Raw variant outcomes
+are retained, but schema 1.5 lacks a validated per-kind denominator/loss projection,
+so they cannot promote those withheld kinds into measured success or failure.
+The candidate side is unavailable because this adoption measured only the baseline.

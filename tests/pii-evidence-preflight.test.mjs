@@ -10,10 +10,10 @@ import { preparePiiEvidenceAdoption } from '../scripts/lib/pii-evidence-adoption
 
 const read = file => JSON.parse(readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'));
 const policy = read('benchmarks/pii-population-policy.json');
-const report = read('benchmarks/pii-evidence/preflight.json');
+const report = read('benchmarks/inputs/pii-evidence-initial-active-v1/preflight.json');
 
 test('released snapshot and consumer source/build pins are exact and preserve the four populations', () => {
-  const snapshot = read('benchmarks/pii-evidence/snapshot-pin.json'), consumer = read('benchmarks/pii-evidence/consumer-pin.json');
+  const snapshot = read('benchmarks/inputs/pii-evidence-initial-active-v1/snapshot-pin.json'), consumer = read('benchmarks/inputs/pii-evidence-initial-active-v1/consumer-pin.json');
   assert.deepEqual(validateEvidencePins(snapshot, consumer), { snapshotPin: SNAPSHOT_PIN, consumerPin: CONSUMER_PIN });
   assert.deepEqual(validatePreflightReport(report, policy), expectedPreflightReport(policy));
   assert.equal(report.verification.scannersLaunched, 0);
@@ -207,5 +207,5 @@ test('recorded v2 preflight and helper proposal remain reproducible without acti
   assert.equal(candidate.ownerAcceptance, null);
   assert.equal(candidate.measurement.scannerExecutions, 0);
   assert.equal(candidate.adoption.canApply, false);
-  assert.deepEqual(validateEvidencePins(read('benchmarks/pii-evidence/snapshot-pin.json'), read('benchmarks/pii-evidence/consumer-pin.json')), { snapshotPin: SNAPSHOT_PIN, consumerPin: CONSUMER_PIN });
+  assert.deepEqual(validateEvidencePins(read('benchmarks/inputs/pii-evidence-initial-active-v1/snapshot-pin.json'), read('benchmarks/inputs/pii-evidence-initial-active-v1/consumer-pin.json')), { snapshotPin: SNAPSHOT_PIN, consumerPin: CONSUMER_PIN });
 });

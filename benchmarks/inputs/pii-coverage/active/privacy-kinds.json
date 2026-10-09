@@ -200,7 +200,39 @@
       "openQuestions": [
         "Which national and tax identifier families are worth modeling, and in which jurisdictions?",
         "This entry only reserves the concept so that jurisdiction-dependent classification is representable; it is to be split into per-jurisdiction kinds, each with its own id, once researched.",
-        "Whether a given identifier is also phi depends on jurisdiction and context and is not established."
+        "Whether a given identifier is also phi depends on jurisdiction and context and is not established.",
+        "docs/research/national-and-tax-identifiers.md records which families were researched (UK NINO added; others deferred or rejected)."
+      ]
+    },
+    {
+      "classification": {
+        "evidenceClass": "public-authority",
+        "state": "unresolved"
+      },
+      "contextClaims": [
+        {
+          "context": "field-label/global/general",
+          "effect": "supports-identification",
+          "evidenceClass": "research-needed"
+        }
+      ],
+      "domains": [
+        "pii"
+      ],
+      "formatClaims": [
+        "uk-nino/format-and-prefix-rules",
+        "uk-nino/administrative-and-temporary-numbers"
+      ],
+      "id": "uk-nino/uk/structured",
+      "jurisdictions": [
+        "uk"
+      ],
+      "label": "United Kingdom National Insurance number",
+      "openQuestions": [
+        "Whether a NINO becomes phi in a medical context is not sourced; no medical context claim is made.",
+        "The label vocabulary is project-authored.",
+        "The only safe values are the documented HMRC example and never-issued prefixes; no issuable value can be published.",
+        "docs/research/national-and-tax-identifiers.md records the add/defer/reject recommendations for other jurisdictions."
       ]
     },
     {
@@ -229,9 +261,10 @@
       ],
       "label": "Medical record number",
       "openQuestions": [
-        "Which public-authority or provider-documented sources establish the health-domain role and the phi domain for this identifier?",
+        "HL7 MR establishes the medical-record role and HIPAA lists medical record numbers. PI/PT patient identifiers, AN account numbers and VN visit numbers are distinct roles; no universal value grammar is established.",
         "Which field labels are documented, and does the structured value have any bounded format at all?",
         "Are non-US profiles needed as separate ids?",
+        "Patient internal/external identifiers (HL7 PI, PT), account numbers and encounter or visit numbers are distinct typed roles; docs/research/clinical-record-identifiers.md recommends deferring separate kinds and records collision and ambiguous cases against this kind.",
         "Sources read state no value format (uniqueness is local to a set of medical records), so the identifier is recognized by label or type code. The label vocabulary is project-authored until a source lists labels. Holder-dependent applicability of the phi domain is not settled."
       ]
     },
@@ -257,8 +290,7 @@
         "phi"
       ],
       "formatClaims": [
-        "phi-hl7-identifier-type-table/mb-member-number-definition",
-        "phi-fhir-r4-coverage/subscriber-id"
+        "phi-hl7-identifier-type-table/mb-member-number-definition"
       ],
       "id": "health-plan-member-id/us/member-field",
       "jurisdictions": [
@@ -266,8 +298,9 @@
       ],
       "label": "Health plan member identifier",
       "openQuestions": [
-        "Which sources document the identifier's role and field names?",
+        "HL7 MB defines the member role. FHIR Coverage.subscriberId defines a distinct subscriber role and is not a member format claim; retain subscriber ambiguity rather than equating the roles.",
         "Is the value structure bounded enough to describe, or is it only identifiable through its field label?",
+        "Subscriber, dependent, policy, group and payer/plan identifiers are distinct roles; docs/research/health-plan-identifiers.md records ambiguous and collision cases against this kind and recommends deferring separate kinds.",
         "The sources read state no member id format; formats are carrier-specific. The Medicare Beneficiary Identifier has a CMS-documented format (claim phi-cms-mbi/format-and-randomness) and is a candidate separate kind, not modeled here."
       ]
     },
@@ -296,6 +329,7 @@
       ],
       "label": "Health insurance claim identifier",
       "openQuestions": [
+        "Standalone claim-identifier promotion is deferred by docs/research/coverage-expansion-adjudication.json. Existing Cases remain bounded ambiguity and collision controls; no value grammar or positive is invented.",
         "Is a claim identifier on its own a person-linked identifier, or only when joined with other data? Classification is not established.",
         "The FHIR Claim resource links a patient through a separate required element, not through the identifier; the source read states no value format.",
         "Domains listed are candidates pending that determination."
@@ -326,9 +360,72 @@
       ],
       "label": "Prescription or order identifier",
       "openQuestions": [
+        "Standalone prescription/order promotion is deferred by docs/research/coverage-expansion-adjudication.json. PLAC/FILL remain typed context only; provider, facility and practitioner licenses are relative-kind collisions, not universally non-PII.",
         "Is a prescription or order number on its own person-linked, or only joined with other data? Classification is not established.",
         "The FHIR MedicationRequest resource links a subject through a separate element, not through the identifier; no pharmacy-standard source was read, so no format is stated.",
         "Domains listed are candidates pending that determination."
+      ]
+    },
+    {
+      "classification": {
+        "evidenceClass": "research-needed",
+        "state": "unresolved"
+      },
+      "contextClaims": [
+        {
+          "claims": [
+            "phi-hhs-164-514-b-2-i/dates-and-ages"
+          ],
+          "context": "medical/global/general",
+          "domains": [
+            "phi"
+          ],
+          "effect": "adds-domain",
+          "evidenceClass": "public-authority"
+        },
+        {
+          "claims": [
+            "dob-fhir-r4-patient/birth-date"
+          ],
+          "context": "field-label/global/general",
+          "effect": "supports-identification",
+          "evidenceClass": "research-needed"
+        },
+        {
+          "claims": [
+            "dob-cldr/gb-numeric-date-order"
+          ],
+          "context": "date-locale/global/en-gb",
+          "effect": "supports-identification",
+          "evidenceClass": "standards-body"
+        },
+        {
+          "claims": [
+            "dob-cldr/us-numeric-date-order"
+          ],
+          "context": "date-locale/global/en-us",
+          "effect": "supports-identification",
+          "evidenceClass": "standards-body"
+        }
+      ],
+      "domains": [
+        "pii"
+      ],
+      "formatClaims": [
+        "dob-fhir-r4-datatypes/date-notation",
+        "dob-rfc3339/full-date-production"
+      ],
+      "id": "date-of-birth/global/labeled-field",
+      "jurisdictions": [
+        "global",
+        "us"
+      ],
+      "label": "Date of birth",
+      "openQuestions": [
+        "A birth date is recognized by label and date notation, never by a bare date; generic date detection is out of scope for this kind.",
+        "CLDR 48 en-GB and en-US inherited Gregorian order is source-documented only when locale is explicitly declared. Unspecified locale and application overrides remain ambiguous; no date assignment is inferred.",
+        "Age (including over 89), year-only birth values and other individual dates (admission, discharge, death) are not modeled; docs/research/date-of-birth.md records recommendations.",
+        "Whether a birth date alone is PHI outside a medical context is holder-dependent and unsettled."
       ]
     }
   ],

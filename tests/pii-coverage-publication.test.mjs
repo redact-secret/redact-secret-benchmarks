@@ -31,7 +31,11 @@ test('real byte-verified source publication recounts and leaves both authorities
   const result = await writePiiCoveragePublication(root);
   assert.deepEqual(await piiCoveragePublicationProblems(root), []);
   assert.equal(result.supportClaims, false); assert.equal(result.qualified, false);
-  assert.notEqual(result.coverage.inventories.active.source.snapshot.id, result.coverage.inventories.proposed.source.snapshot.id);
+  assert.equal(result.coverage.proposalState, 'accepted');
+  assert.equal(result.coverage.inventories.active.source.snapshot.id, result.coverage.inventories.proposed.source.snapshot.id);
+  assert.equal(result.deltas.baseline.mode, 'accepted-before-after');
+  assert.equal(result.deltas.baseline.adoption.applied, true);
+  assert.notEqual(result.deltas.baseline.previous.identity.snapshotId, result.deltas.baseline.next.identity.snapshotId);
   for (const role of ['active', 'proposed']) for (const side of ['baseline', 'candidate']) {
     const joined = result.coverage.matrices[role][side];
     const keys = result.coverage.inventories[role].rows.map(row => row.kindKey).sort();
@@ -105,20 +109,17 @@ test('source byte mutations, unavailable source and invalid observation artifact
   await assert.rejects(piiCoveragePublication(root));
 });
 
-test('absent observations remain explicit without changing source inventory denominator', async t => {
+test('removing a sealed accepted observation refuses instead of downgrading coverage to absent', async t => {
   const { root, evidenceSources } = await fixture(t);
   const before = await checkpoint(root);
   await Promise.all(evidenceSources.map(source => rm(path.join(root, source.path))));
-  const result = await writePiiCoveragePublication(root);
-  assert.deepEqual(await piiCoveragePublicationProblems(root), []);
-  for (const role of ['active', 'proposed']) for (const side of ['baseline', 'candidate']) {
-    const joined = result.coverage.matrices[role][side];
-    assert.equal(joined.summary.discoveredKinds, result.coverage.inventories[role].rows.length);
-    assert.ok(joined.matrix.rows.every(row => row.observation.status === 'absent'));
-    assert.ok(joined.matrix.rows.every(row => !['measured-supported', 'measured-missed', 'measured-partial'].includes(row.state)));
-    assert.equal(joined.matrix.identity.productCommitment, null);
-    assert.equal(joined.matrix.identity.bindingCommitment, null);
-    assert.deepEqual(joined.summary.metrics, []);
-  }
+  await assert.rejects(piiCoveragePublication(root));
   assert.deepEqual(await checkpoint(root), before);
+});
+
+test('accepted coverage refuses tampered historical denominators instead of computing a new delta', async t => {
+  const { root } = await fixture(t);
+  const file = path.join(root, 'benchmarks/inputs/pii-coverage/adoption-v1-to-v2.json');
+  await writeFile(file, (await readFile(file, 'utf8')) + ' ');
+  await assert.rejects(piiCoveragePublication(root), /historical-projection-mismatch/);
 });

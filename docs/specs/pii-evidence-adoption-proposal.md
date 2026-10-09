@@ -1,5 +1,15 @@
 # Pending PII evidence adoption proposal
 
+Historical proposal stage. Released and accepted v2 now uses the current source-of-truth
+pins and receipts described in [pii-evidence-adoption.md](pii-evidence-adoption.md).
+The stage-specific release and execution blockers below are retained for reproduction.
+
+
+The mapping-2 proposal below is retained historical preparation. The current
+post-#37 successor and unresolved release/execution prerequisites are described
+in [pii-evidence-adoption-post37.md](pii-evidence-adoption-post37.md). Neither
+proposal is active or ready for maintainer acceptance.
+
 This is a helper-generated, scanner-free proposal for
 `public-pii-phi/2026-10-08/ee61c7afc32d`, not an active adoption or product claim.
 The proposed tag is not published. The source snapshot is pinned to committed

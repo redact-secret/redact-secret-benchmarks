@@ -102,6 +102,7 @@ jobs:
             --out="$RUNNER_TEMP/pii-evidence-build-receipt.json"
 
       - name: Read-only access to the qualified candidate
+        if: steps.plan.outputs.has_candidate == 'true'
         id: product-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
@@ -112,6 +113,7 @@ jobs:
           permission-actions: read
           permission-contents: read
       - name: Resolve the exact successful candidate qualification
+        if: steps.plan.outputs.has_candidate == 'true'
         id: product
         env:
           GH_TOKEN: ${{ steps.product-token.outputs.token }}
@@ -120,6 +122,7 @@ jobs:
           PRODUCT_REF: main
         run: node scripts/qualified-candidate.mjs resolve --repository redact-secret/redact-secret
       - name: Verify the qualified candidate inventory and runtime payloads
+        if: steps.plan.outputs.has_candidate == 'true'
         env:
           GH_TOKEN: ${{ steps.product-token.outputs.token }}
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
@@ -129,6 +132,7 @@ jobs:
           --sha "$PRODUCT_COMMIT" --run-id "$QUALIFICATION_RUN" --product-ref main
           --dir "$RUNNER_TEMP/pii-evidence-qualified"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.plan.outputs.has_candidate == 'true'
         with:
           repository: redact-secret/redact-secret
           ref: ${{ steps.product.outputs.sha }}
@@ -136,6 +140,7 @@ jobs:
           path: .redact-secret-product
           persist-credentials: false
       - name: Pack the exact qualified product payloads without credentials
+        if: steps.plan.outputs.has_candidate == 'true'
         working-directory: .redact-secret-product
         run: |
           set -euo pipefail
@@ -187,6 +192,7 @@ jobs:
           name: pii-evidence-comparison
           path: |
             ${{ runner.temp }}/pii-evidence-comparison/build-receipt.json
+            ${{ runner.temp }}/pii-evidence-comparison/failure.json
             ${{ runner.temp }}/pii-evidence-comparison/plan.json
             ${{ runner.temp }}/pii-evidence-comparison/receipt.json
             ${{ runner.temp }}/pii-evidence-comparison/baseline.public-synthetic-artifact.json

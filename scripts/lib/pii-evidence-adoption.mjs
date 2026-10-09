@@ -104,14 +104,15 @@ export function adoptionSummary(candidate) {
 
 function measuredScanner(comparison) {
   const { plan, receipt } = comparison;
-  return validateAdoptionScanner({ schema: 'pii-evidence-scanner-identity/1', sourceCommit: receipt.candidate.sourceCommit,
-    version: receipt.candidate.version, kind: 'qualified-candidate', coreTarballSha256: receipt.candidate.tarballs.core,
-    nativeTarballSha256: receipt.candidate.tarballs.node, wasmTarballSha256: receipt.candidate.tarballs.wasm,
-    packageTreeSha256: receipt.candidate.packageTreeSha256, adapterDigest: adoptionDigest(plan.scanner.adapter),
+  const side = plan.candidate === null ? 'baseline' : 'candidate', product = receipt[side];
+  return validateAdoptionScanner({ schema: 'pii-evidence-scanner-identity/1', sourceCommit: product.sourceCommit,
+    version: product.version, kind: side === 'baseline' ? 'published-npm' : 'qualified-candidate', coreTarballSha256: product.tarballs.core,
+    nativeTarballSha256: product.tarballs.node, wasmTarballSha256: product.tarballs.wasm,
+    packageTreeSha256: product.packageTreeSha256, adapterDigest: adoptionDigest(plan.scanner.adapter),
     configurationDigest: plan.scanner.configurationDigest, activationDigest: plan.scanner.activationDigest });
 }
 
-function checkedAdoptionEntry(entry, policy, previous) {
+function checkedAdoptionEntry(entry, policy, previous, { initialHistoricalAnchor = false, pendingAcceptance = false } = {}) {
   if (!exact(entry, ['preflight', 'candidate', 'acceptance', 'comparison', 'retainedFiles']) ||
       !exact(entry.comparison, ['plan', 'receipt', 'receiptText', 'record', 'artifacts', 'populationIndex'])) refuse('adoption-entry-invalid');
   const preflight = checkedPreflight(entry.preflight, policy), comparison = entry.comparison;
@@ -119,7 +120,7 @@ function checkedAdoptionEntry(entry, policy, previous) {
   const measured = loadPiiEvidenceComparison(comparison);
   if (measured.state !== 'recorded' || measured.mode !== 'official') refuse('canonical-measurement-required');
   const plan = comparison.plan, receipt = comparison.receipt;
-  const names = ['plan.json', 'receipt.json', 'build-receipt.json', 'baseline.public-synthetic-artifact.json', 'candidate.public-synthetic-artifact.json',
+  const names = ['plan.json', 'receipt.json', 'build-receipt.json', 'baseline.public-synthetic-artifact.json', ...(plan.candidate ? ['candidate.public-synthetic-artifact.json'] : []),
     ...receipt.replayInputs.map(row => row.name)];
   const files = entry.retainedFiles;
   if (!exact(files, names) || Object.values(files).some(text => typeof text !== 'string') ||
@@ -141,7 +142,15 @@ function checkedAdoptionEntry(entry, policy, previous) {
   const expected = preparePiiEvidenceAdoption({ policy, preflight, scanner,
     previousPreflight: previous?.preflight ?? null, previousScanner: previous?.scanner ?? null });
   if (adoptionDigest(entry.candidate) !== adoptionDigest(expected)) refuse('candidate-measurement-mismatch');
-  const acceptance = validateMaintainerAcceptance(entry.acceptance, expected.candidateDigest);
+  // The initial active v1 predates the acceptance package. Retain its exact
+  // canonical evidence without inventing retrospective owner acceptance.
+  if (initialHistoricalAnchor && (entry.acceptance !== null || previous !== null ||
+      adoptionDigest(preflight.evidence) !== adoptionDigest(SNAPSHOT_PIN) ||
+      adoptionDigest(preflight) !== 'e7a97c3700a7c80163202bce6cd171125f7c63dbdf555d40ac08200ea4192ccd' ||
+      adoptionDigest(comparison.record) !== '1fdbe819c39da14a92edb20453e5c3ac3e0f95709f13043eb69f68075fd72a67' ||
+      comparison.record.workflow.runId !== 37829344445)) refuse('initial-historical-anchor-mismatch');
+  if (pendingAcceptance && entry.acceptance !== null) refuse('ready-package-must-not-author-acceptance');
+  const acceptance = initialHistoricalAnchor || pendingAcceptance ? null : validateMaintainerAcceptance(entry.acceptance, expected.candidateDigest);
   return { preflight, scanner, candidate: expected, acceptance,
     measurement: { planDigest: adoptionDigest(plan), recordDigest: adoptionDigest(comparison.record),
       receiptSha256: comparison.record.receipt.sha256, workflowRunId: comparison.record.workflow.runId } };
@@ -149,6 +158,16 @@ function checkedAdoptionEntry(entry, policy, previous) {
 
 // This validates supplied approval and history. It never creates approvals or changes active files.
 export function validateActiveEvidenceAdoption(input) {
+  return validateAdoptionChain(input, false);
+}
+
+// A reviewable package runs every technical/history check, leaves acceptance
+// absent, and cannot pass the separate active-adoption validator.
+export function validateReadyEvidenceAdoption(input) {
+  return validateAdoptionChain(input, true);
+}
+
+function validateAdoptionChain(input, pendingAcceptance) {
   if (!exact(input, ['policy', 'snapshotPin', 'consumerPin', 'preflight', 'candidate', 'acceptance', 'history', 'comparison', 'retainedFiles']))
     refuse('active-adoption-invalid');
   validatePiiPopulationPolicy(input.policy);
@@ -158,7 +177,8 @@ export function validateActiveEvidenceAdoption(input) {
   for (const entry of [...input.history, input]) {
     const selected = { preflight: entry.preflight, candidate: entry.candidate, acceptance: entry.acceptance, comparison: entry.comparison, retainedFiles: entry.retainedFiles };
     if (entry !== input && !exact(entry, Object.keys(selected))) refuse('history-invalid');
-    const checked = checkedAdoptionEntry(selected, input.policy, previous), id = checked.preflight.evidence.snapshot.id;
+    const initialHistoricalAnchor = entry !== input && previous === null && selected.acceptance === null;
+    const checked = checkedAdoptionEntry(selected, input.policy, previous, { initialHistoricalAnchor, pendingAcceptance: pendingAcceptance && entry === input }), id = checked.preflight.evidence.snapshot.id;
     if (identities.has(id)) refuse('history-snapshot-duplicate');
     if (!previous && adoptionDigest(checked.preflight.evidence) !== adoptionDigest(SNAPSHOT_PIN)) refuse('history-initial-anchor-missing');
     identities.add(id);
@@ -171,5 +191,6 @@ export function validateActiveEvidenceAdoption(input) {
   return { schema: 'pii-evidence-validated-adoption/1', state: 'externally-accepted-and-measured',
     candidateDigest: previous.candidate.candidateDigest, snapshotPin: structuredClone(input.snapshotPin), consumerPin: structuredClone(input.consumerPin),
     acceptance: previous.acceptance, measurement: previous.measurement, historical,
-    activeWritesApplied: false, authorityChanged: false, supportClaims: false, qualified: false };
+    activeWritesApplied: false, authorityChanged: false, supportClaims: false, qualified: false,
+    ...(pendingAcceptance ? { state: 'ready-for-acceptance', canApply: false, ownerAcceptanceGenerated: false } : {}) };
 }

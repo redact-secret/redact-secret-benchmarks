@@ -3,7 +3,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
-import { validateEvidenceComparisonPlan } from './lib/pii-evidence-comparison-plan.mjs';
+import { validateEvidenceComparisonPlan, evidenceSides } from './lib/pii-evidence-comparison-plan.mjs';
 import { loadPiiEvidenceComparison, validateEvidencePopulationIndex } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
 
 export const PII_EVIDENCE_DIRECTORY = 'benchmarks/pii-evidence-comparison';
@@ -16,11 +16,12 @@ async function optional(root, relative) {
 }
 
 /** Fixed public paths only. The consumer verifies every measurement identity. */
-export async function piiEvidencePublication(root) {
+export async function piiEvidencePublication(root, { directory = PII_EVIDENCE_DIRECTORY } = {}) {
+  if (directory !== PII_EVIDENCE_DIRECTORY && directory !== 'benchmarks/pii-evidence-comparison/v2-post37-published-retry2') throw new Error('evidence-publication-directory-unreviewed');
   const sources = [];
   const texts = new Map();
   const json = async name => {
-    const relative = `${PII_EVIDENCE_DIRECTORY}/${name}.json`;
+    const relative = `${directory}/${name}.json`;
     const text = await optional(root, relative);
     if (text === undefined) return undefined;
     sources.push({ path: relative, sha256: sha256(text) });
@@ -36,8 +37,8 @@ export async function piiEvidencePublication(root) {
     if (record && !receipt) throw new Error('evidence-receipt-missing');
     if (receipt && !plan) throw new Error('evidence-plan-missing');
     const artifacts = [];
-    if (receipt) for (const side of ['baseline', 'candidate']) {
-      const relative = `${PII_EVIDENCE_DIRECTORY}/${side}.public-synthetic-artifact.json`;
+    if (receipt) for (const side of evidenceSides(plan)) {
+      const relative = `${directory}/${side}.public-synthetic-artifact.json`;
       const text = await optional(root, relative);
       if (text === undefined) throw new Error('missing-public-artifact');
       sources.push({ path: relative, sha256: sha256(text) });

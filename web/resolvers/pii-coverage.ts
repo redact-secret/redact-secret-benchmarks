@@ -20,7 +20,7 @@ function panel(role: 'active' | 'proposed', side: 'baseline' | 'candidate', inve
     { id: 'accepted-measurable', label: 'Kinds with accepted cases and representable axes', value: int(summary.acceptedMeasurableKinds), rowIds: rows.filter(row => row.evidence.acceptedCases > 0 && ['faithful', 'partial'].includes(row.mapping.state) && row.mapping.representableAxes.length > 0).map(row => rowId(row.kindKey)) },
   ];
   return { id, snapshot: source.snapshot.id,
-    title: `${role === 'active' ? 'Active snapshot' : 'Proposed snapshot (inactive, unmeasured)'} · ${side === 'baseline' ? 'published baseline' : 'candidate build'}`,
+    title: `${role === 'active' ? 'Active snapshot' : 'Proposed snapshot (inactive)'} · ${side === 'baseline' ? 'published baseline' : 'candidate build'}`,
     identity: text({ snapshot: source, measurement: joined.matrix.identity, binding: joined.binding }),
     note: `Source totals, unique source grains: ${Object.entries(inventory.totals).map(([grain, count]) => `${grain} ${value(count)}`).join('; ')}. Imported cases and source cases are separate grains. ${role === 'proposed' ? 'Proposal only; pins, authority and owner acceptance are unchanged. No active observation is reused.' : 'Family metric projections remain unavailable where the recorded protocol does not carry them.'}`,
     summaries,
@@ -53,12 +53,12 @@ function panel(role: 'active' | 'proposed', side: 'baseline' | 'candidate', inve
 export function resolvePiiCoverageView(publication: PiiCoveragePublication): PiiCoverageMatrixData {
   const coverage = publication.coverage;
   const delta = publication.deltas.baseline;
-  return { panels: (['active', 'proposed'] as const).flatMap(role => (['baseline', 'candidate'] as const).map(side => panel(role, side, coverage.inventories[role], coverage.matrices[role][side]))),
-    delta: { title: 'Active vs proposed snapshot denominator, inactive and unmeasured',
+  return { panels: (['active', 'proposed'] as const).filter(role => role === 'active' || coverage.proposalState !== 'accepted').flatMap(role => (['baseline', 'candidate'] as const).map(side => panel(role, side, coverage.inventories[role], coverage.matrices[role][side]))),
+    delta: { title: coverage.proposalState === 'accepted' ? 'Previous vs active snapshot denominator, accepted adoption' : 'Active vs proposed snapshot denominator, proposal inactive',
       identity: `${text(delta.previous.identity)} → ${text(delta.next.identity)}`,
       notes: [`Unique kinds ${int(delta.totals.kinds.previous)} → ${int(delta.totals.kinds.next)}; delta ${int(delta.totals.kinds.delta)}.`,
         `Product regression comparison unavailable: ${delta.attribution.productRegressionComparison.reason}. Evidence scope, evaluator mapping and product identities are tracked separately; a changed denominator does not establish a product regression.`,
-        'Source retrievability is digest-bound. Full reproduction is unavailable until the original snapshot archive can be retrieved and verified. This rendering never activates the proposal or supplies owner acceptance.'],
+        'Source archive locators and digests are retained separately for each population. Canonical observations and retained replay inputs bind exact source, consumer and product identities. This rendering never supplies owner acceptance.'],
       changes: delta.rows.map(row => ({ id: row.nextKindKey ?? row.previousKindKey!, text: `${row.classification}: ${row.previousKindKey ?? 'absent'} → ${row.nextKindKey ?? 'absent'}; domains ${text(row.domains)}; jurisdictions ${text(row.jurisdictions)}; counts ${text(row.counts)}; mapping ${text(row.mapping.state)}; capability ${text(row.capability)}; observation ${text(row.measurement)}.` })),
     },
   };

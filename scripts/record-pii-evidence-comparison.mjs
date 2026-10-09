@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, existsSync
 import { dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidencePlanPath, validateEvidenceExecutionSelection, evidenceDigest, validateEvidenceCostDecision, COST_PATH, same } from './lib/pii-evidence-comparison-plan.mjs';
+import { readEvidenceComparisonPlan, PLAN_PATH, validateEvidencePlanPath, validateEvidenceExecutionSelection, evidenceDigest, validateEvidenceCostDecision, COST_PATH, same, evidenceSides } from './lib/pii-evidence-comparison-plan.mjs';
 import { parseEvidenceJson } from './lib/pii-evidence-json.mjs';
 import { sha256 } from './lib/pii-evidence-contract.mjs';
 import { loadPiiEvidenceComparison, SIDES } from '../benchmarks/evaluation/domains/pii/evidence-comparison.mjs';
@@ -14,6 +14,7 @@ export const COMPARISON_DIR = 'benchmarks/pii-evidence-comparison';
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 export const UPLOAD_NAMES = ['plan.json', 'receipt.json', 'build-receipt.json', ...SIDES.map(side => `${side}.public-synthetic-artifact.json`),
   ...SIDES.flatMap(side => ['manifest', 'observation', 'run-artifact'].map(name => `replay-inputs/${side}/${name}.json`))];
+export const evidenceUploadNames = plan => ['plan.json', 'receipt.json', 'build-receipt.json', ...evidenceSides(plan).map(side => `${side}.public-synthetic-artifact.json`), ...evidenceSides(plan).flatMap(side => ['manifest', 'observation', 'run-artifact'].map(name => `replay-inputs/${side}/${name}.json`))];
 export function collectEvidenceComparison({ run, artifact, files, archiveSha256, expectedHeadSha, plan, costDecision, populationIndex }) {
   validateEvidenceCostDecision(costDecision, { preflight: plan.preflight, policy: plan.policy, populationIndex, productTuple: plan.productTuple, executionPaths: plan.executionPaths });
   if (costDecision.state !== 'approved' || evidenceDigest(costDecision) !== plan.dispatch?.costDecisionSha256) throw new Error('evidence-approved-cost-mismatch');
@@ -24,13 +25,13 @@ export function collectEvidenceComparison({ run, artifact, files, archiveSha256,
   if (!artifact || artifact.expired !== false || artifact.name !== 'pii-evidence-comparison' || !Number.isSafeInteger(artifact.id) || artifact.id <= 0 ||
       artifact.digest !== `sha256:${archiveSha256}` || !Number.isSafeInteger(artifact.size_in_bytes) || artifact.size_in_bytes <= 0 ||
       artifact.workflow_run?.id !== run.id || artifact.workflow_run?.head_sha !== run.head_sha) throw new Error('evidence-github-artifact-mismatch');
-  if (!same(Object.keys(files).sort(), [...UPLOAD_NAMES].sort())) throw new Error('evidence-upload-member-set-mismatch');
+  if (!same(Object.keys(files).sort(), [...evidenceUploadNames(plan)].sort())) throw new Error('evidence-upload-member-set-mismatch');
   const receipt = parseEvidenceJson(files['receipt.json']);
   if (plan.mode !== 'official' || !plan.dispatch.authorised || !same(parseEvidenceJson(files['plan.json']), plan) ||
       !same(parseEvidenceJson(files['build-receipt.json']), receipt.importer?.buildReceipt)) throw new Error('evidence-upload-plan-or-build-mismatch');
   for (const input of receipt.replayInputs ?? [])
     if (typeof files[input.name] !== 'string' || sha256(files[input.name]) !== input.sha256) throw new Error('evidence-replay-input-bytes-mismatch');
-  const artifacts = SIDES.map(side => ({ side, text: files[`${side}.public-synthetic-artifact.json`] }));
+  const artifacts = evidenceSides(plan).map(side => ({ side, text: files[`${side}.public-synthetic-artifact.json`] }));
   const record = { schema: 'pii-evidence-comparison-record/1', publicOnly: true, supportClaims: false, authorityChanged: false, planDigest: evidenceDigest(plan),
     workflow: { repository: REPOSITORY, path: run.path, reusablePath: '.github/workflows/pii-evidence-comparison.yml', runId: run.id, runAttempt: run.run_attempt,
       event: run.event, headSha: run.head_sha, headBranch: run.head_branch, conclusion: run.conclusion },
@@ -40,19 +41,19 @@ export function collectEvidenceComparison({ run, artifact, files, archiveSha256,
     artifacts: artifacts.map(row => ({ side: row.side, sha256: sha256(row.text) })), replayInputs: receipt.replayInputs };
   const summary = loadPiiEvidenceComparison({ plan, receipt, receiptText: files['receipt.json'], record, artifacts, populationIndex });
   if (summary.state !== 'recorded' || summary.mode !== 'official') throw new Error(`evidence-upload-refused:${summary.reason ?? 'mode'}`);
-  return { record, summary, files: Object.fromEntries(UPLOAD_NAMES.map(name => [name, files[name]])) };
+  return { record, summary, files: Object.fromEntries(evidenceUploadNames(plan).map(name => [name, files[name]])) };
 }
 export function evidenceComparisonSourceProblems({ root = ROOT, planFile = PLAN_PATH, plan = readEvidenceComparisonPlan(planFile) } = {}) {
   validateEvidencePlanPath(planFile);
   const dir = join(root, dirname(planFile));
-  if (!existsSync(join(dir, 'receipt.json')) && !existsSync(join(dir, 'record.json'))) return SIDES.some(side => existsSync(join(dir, `${side}.public-synthetic-artifact.json`))) ? ['evidence-artifact-without-record'] : [];
+  if (!existsSync(join(dir, 'receipt.json')) && !existsSync(join(dir, 'record.json'))) return evidenceSides(plan).some(side => existsSync(join(dir, `${side}.public-synthetic-artifact.json`))) ? ['evidence-artifact-without-record'] : [];
   try {
     const receiptText = readFileSync(join(dir, 'receipt.json'), 'utf8'), receipt = parseEvidenceJson(receiptText), record = parseEvidenceJson(readFileSync(join(dir, 'record.json'), 'utf8'));
     const cost = validateEvidenceCostDecision(parseEvidenceJson(readFileSync(join(dir, 'cost-decision.json'), 'utf8')), { preflight: plan.preflight, policy: plan.policy, populationIndexDigest: plan.populationIndexDigest, productTuple: plan.productTuple, executionPaths: plan.executionPaths });
     if (cost.state !== 'approved' || evidenceDigest(cost) !== plan.dispatch.costDecisionSha256) return ['evidence-source-cost-mismatch'];
     if (!same(parseEvidenceJson(readFileSync(join(dir, 'plan.json'), 'utf8')), plan)) return ['evidence-source-plan-stale'];
     const result = loadPiiEvidenceComparison({ plan, receipt, receiptText, record,
-      artifacts: SIDES.map(side => ({ side, text: readFileSync(join(dir, `${side}.public-synthetic-artifact.json`), 'utf8') })),
+      artifacts: evidenceSides(plan).map(side => ({ side, text: readFileSync(join(dir, `${side}.public-synthetic-artifact.json`), 'utf8') })),
       populationIndex: parseEvidenceJson(readFileSync(join(dir, 'population-index.json'), 'utf8')) });
     const buildText = readFileSync(join(dir, 'build-receipt.json'), 'utf8');
     if (sha256(buildText) !== record.buildReceipt?.sha256 || !same(parseEvidenceJson(buildText), receipt.importer.buildReceipt)) return ['evidence-source-build-receipt-mismatch'];
@@ -62,7 +63,7 @@ export function evidenceComparisonSourceProblems({ root = ROOT, planFile = PLAN_
   } catch { return ['evidence-source-incomplete-or-unreadable']; }
 }
 function gh(endpoint, binary = false) { return execFileSync('gh', ['api', endpoint], { encoding: binary ? null : 'utf8', timeout: 60000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }); }
-export function extractEvidenceComparisonArchive({ archive, dir }) {
+export function extractEvidenceComparisonArchive({ archive, dir, names = UPLOAD_NAMES }) {
   try {
     execFileSync('python3', ['-c', `import zipfile,json,sys,stat,pathlib
 with zipfile.ZipFile(sys.argv[1]) as z:
@@ -71,15 +72,16 @@ with zipfile.ZipFile(sys.argv[1]) as z:
  assert sum(e.file_size for e in entries)<=32*1024*1024
  for e in entries:
   assert e.file_size<=8*1024*1024 and not stat.S_ISLNK(e.external_attr>>16)
-  dest=pathlib.Path(sys.argv[2],e.filename); dest.parent.mkdir(parents=True,exist_ok=True); dest.write_bytes(z.read(e))`, archive, dir, JSON.stringify(UPLOAD_NAMES)], { timeout: 30000, stdio: 'pipe' });
-    return Object.fromEntries(UPLOAD_NAMES.map(name => [name, new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(readFileSync(join(dir, name)))]));
+  dest=pathlib.Path(sys.argv[2],e.filename); dest.parent.mkdir(parents=True,exist_ok=True); dest.write_bytes(z.read(e))`, archive, dir, JSON.stringify(names)], { timeout: 30000, stdio: 'pipe' });
+    return Object.fromEntries(names.map(name => [name, new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(readFileSync(join(dir, name)))]));
   } catch { throw new Error('evidence-archive-member-set-invalid'); }
 }
 export function writeCollectedEvidence({ root = ROOT, outDir, result }) {
   validateEvidencePlanPath(`${outDir}/plan.json`);
   const dir = join(root, outDir);
+  const plan = parseEvidenceJson(result.files['plan.json']);
   const names = [...Object.keys(result.files), 'record.json'];
-  if (!same(Object.keys(result.files).sort(), [...UPLOAD_NAMES].sort())) throw new Error('evidence-durable-member-set-invalid');
+  if (!same(Object.keys(result.files).sort(), [...evidenceUploadNames(plan)].sort())) throw new Error('evidence-durable-member-set-invalid');
   for (const name of names) {
     const parts = `${outDir}/${name}`.split('/');
     for (let i = 1; i <= parts.length; i++) {
@@ -124,7 +126,7 @@ export function collectEvidenceGithub({ runId, expectedHeadSha, write = false, p
   const temp = mkdtempSync(join(tmpdir(), 'pii-evidence-collect-'));
   try {
     const archive = join(temp, 'archive.zip'); writeFileSync(archive, zip);
-    const files = extractEvidenceComparisonArchive({ archive, dir: join(temp, 'files') });
+    const files = extractEvidenceComparisonArchive({ archive, dir: join(temp, 'files'), names: evidenceUploadNames(plan) });
     const result = collectEvidenceComparison({ run, artifact, files, archiveSha256, expectedHeadSha, plan, costDecision, populationIndex });
     if (write) writeCollectedEvidence({ outDir, result });
     return result.record;

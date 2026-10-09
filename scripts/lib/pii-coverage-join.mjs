@@ -17,7 +17,7 @@ export function joinPiiCoverageInventory({ inventory, comparison = { state: 'abs
       comparison.protocol?.id !== inventory.consumer.contract.protocol.id || comparison.protocol?.revision !== inventory.consumer.contract.protocol.revision ||
       !comparison.importer?.binarySha256 || !comparison.engine?.binarySha256 || !comparison.scanner?.configurationDigest ||
       !comparison.scanner?.activationDigest || !Array.isArray(comparison.scanner?.activation) ||
-      !comparison.baseline?.packageTreeSha256 || !comparison.candidate?.packageTreeSha256 ||
+      !comparison[side]?.packageTreeSha256 ||
       !comparison.provenance || !Array.isArray(comparison.outcomes) || comparison.familyMetrics?.state !== 'unavailable')) {
     usable = false; status = 'identity-mismatch';
   }
@@ -48,7 +48,7 @@ export function joinPiiCoverageInventory({ inventory, comparison = { state: 'abs
       capability: { state: declaration?.state ?? 'unknown', source: declaration ? capabilityDeclarations.source : null,
         productCommitment: declaration ? identity.productCommitment : null },
       mapping: { state: kind.mapping.state, losses: kind.mapping.losses, requiredAxes: kind.mapping.requiredAxes, representableAxes: kind.mapping.representableAxes },
-      // Schema 1.4 carries case/assertion outcomes, not validated per-kind denominators.
+      // Imported artifacts have no validated per-kind denominator/loss projection.
       observation: { status: usable ? 'withheld' : status, identity: null, axes: [], source: usable ? `artifact:${product.artifactDigest}` : null },
       applicability: { state: 'unknown', source: null }, reasons: [] }, identity);
   });
@@ -62,7 +62,7 @@ export function joinPiiCoverageInventory({ inventory, comparison = { state: 'abs
     capabilityDeclarations: { state: capabilityDeclarations ? 'provided-exact-product' : 'unknown', reason: capabilityDeclarations ? null : 'no-reviewed-kind-to-product-declaration' } };
 }
 
-export async function loadPiiCoverage(root, { comparison = { state: 'absent' }, capabilityDeclarations = {} } = {}) {
+export async function loadPiiCoverage(root, { comparison = { state: 'absent' }, proposedComparison = { state: 'absent' }, capabilityDeclarations = {} } = {}) {
   const inventories = await loadPiiCoverageInventories(root), matrices = {};
   const catalogs = {};
   for (const side of ['baseline', 'candidate']) {
@@ -78,17 +78,19 @@ export async function loadPiiCoverage(root, { comparison = { state: 'absent' }, 
   for (const role of ['active', 'proposed']) {
     matrices[role] = {};
     for (const side of ['baseline', 'candidate']) {
-      const initial = joinPiiCoverageInventory({ inventory: inventories[role], side, comparison: role === 'active' ? comparison : { state: 'absent' } });
+      const initial = joinPiiCoverageInventory({ inventory: inventories[role], side, comparison: role === 'active' ? comparison : proposedComparison });
       const catalog = catalogs[side];
-      const declarations = role === 'active' && initial.binding && catalog.sourceCommit === initial.binding.product.sourceCommit ? {
+      const declarations = initial.binding && catalog.sourceCommit === initial.binding.product.sourceCommit ? {
         productCommitment: initial.matrix.identity.productCommitment,
         source: `https://github.com/${catalog.repository}/blob/${catalog.sourceCommit}/${catalog.path}#L${catalog.lines.start}`,
         rows: inventories[role].rows.map(row => ({ kindKey: row.kindKey, state: row.mapping.families.length ?
           row.mapping.families.every(family => catalog.families.includes(family)) ? 'declared' : 'explicitly-absent' : 'unknown' })) } : null;
       matrices[role][side] = joinPiiCoverageInventory({ inventory: inventories[role], side,
-      comparison: role === 'active' ? comparison : { state: 'absent', reason: 'inactive-proposal-unmeasured' },
+      comparison: role === 'active' ? comparison : proposedComparison,
       capabilityDeclarations: capabilityDeclarations[role]?.[side] ?? declarations });
     }
   }
-  return { schema: 'pii-coverage-view/1', inventories, matrices, supportClaims: false, qualified: false };
+  const sameSnapshot = same(inventories.active.source, inventories.proposed.source);
+  if (sameSnapshot && !same(inventories.active.consumer, inventories.proposed.consumer)) fail('accepted-proposal-consumer-mismatch');
+  return { schema: 'pii-coverage-view/1', proposalState: sameSnapshot ? 'accepted' : 'proposed', inventories, matrices, supportClaims: false, qualified: false };
 }

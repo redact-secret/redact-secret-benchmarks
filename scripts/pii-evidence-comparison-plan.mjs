@@ -35,6 +35,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   else if (process.argv.includes('--check')) { /* All checks above are read-only. */ }
   else if (process.argv.includes('--github-output')) {
     if (!plan.dispatch.authorised) throw new Error('fresh-evidence-cost-decision-required');
-    process.stdout.write(`product_sha=${plan.candidate.sourceCommit}\nqualification_run_id=${plan.candidate.qualificationRunId}\nbaseline_version=${plan.baseline.version}\ncandidate_version=${plan.candidate.version}\n`);
+    process.stdout.write(`has_candidate=${plan.candidate !== null}\nproduct_sha=${plan.candidate?.sourceCommit ?? ''}\nqualification_run_id=${plan.candidate?.qualificationRunId ?? ''}\nbaseline_version=${plan.baseline.version}\ncandidate_version=${plan.candidate?.version ?? ''}\n`);
   } else process.stdout.write(text);
 }

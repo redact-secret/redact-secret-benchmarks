@@ -1,11 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseEvidenceJson } from './pii-evidence-json.mjs';
+import { checkActiveEvidenceFiles } from './pii-evidence-adoption-apply.mjs';
 import { sha256, mappingKindsOf, validateEvidencePins, validateProposedConsumerPin, validatePreflightReport } from './pii-evidence-contract.mjs';
 
 const fail = reason => { throw new Error(`PII coverage inventory refusal: ${reason}`); };
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const integer = value => Number.isSafeInteger(value) && value >= 0;
+export const PROPOSED_EVIDENCE_DIRECTORY = 'benchmarks/inputs/pii-evidence-snapshot-v2-activation-candidate';
 const set = (values, reason) => {
   if (!Array.isArray(values) || values.some(value => typeof value !== 'string' || !value) || new Set(values).size !== values.length) fail(reason);
   return [...values].sort();
@@ -14,7 +16,12 @@ const set = (values, reason) => {
 // The pinned manifest authenticates the taxonomy bytes, including zero-case entries.
 export function consumePiiCoverageInventory({ manifestBytes, taxonomyBytes, snapshotPin, consumerPin, preflight, policy, role, repoRoot }) {
   if (!['active', 'proposed'].includes(role)) fail('role-invalid');
-  if (role === 'active') validateEvidencePins(snapshotPin, consumerPin);
+  if (role === 'active' && consumerPin.contract.mapping.revision === 1) validateEvidencePins(snapshotPin, consumerPin);
+  else if (role === 'active') {
+    if (!repoRoot) fail('active-adoption-root-required');
+    const active = checkActiveEvidenceFiles(repoRoot);
+    if (!same(active.snapshotPin, snapshotPin) || !same(active.consumerPin, consumerPin)) fail('active-adoption-pin-mismatch');
+  }
   else validateProposedConsumerPin(consumerPin, snapshotPin, { repoRoot });
   validatePreflightReport(preflight, policy, { snapshotPin, consumerPin, repoRoot });
   if (sha256(manifestBytes) !== snapshotPin.snapshot.manifestSha256) fail('manifest-bytes-mismatch');
@@ -30,6 +37,7 @@ export function consumePiiCoverageInventory({ manifestBytes, taxonomyBytes, snap
   if (accepted.some(id => empty.includes(id)) || !same(ids, [...accepted, ...empty].sort())) fail('exposed-kind-set-mismatch');
   if (!same(Object.keys(manifest.coverage.perKind).sort(), accepted)) fail('per-kind-set-mismatch');
   const mapping = mappingKindsOf(consumerPin, { repoRoot }), usedFamilies = new Set();
+  const metadataPreserved = consumerPin.contract.mapping.revision === 3;
   const rows = taxonomy.kinds.map(kind => {
     if (typeof kind.label !== 'string' || !kind.label || !kind.classification || !['resolved', 'unresolved'].includes(kind.classification.state) ||
         typeof kind.classification.evidenceClass !== 'string' || !Array.isArray(kind.openQuestions)) fail('kind-metadata-missing');
@@ -51,7 +59,7 @@ export function consumePiiCoverageInventory({ manifestBytes, taxonomyBytes, snap
       evidence: { availability: sourceCounts.cases ? 'accepted' : 'none', authoredCases: sourceCounts.cases, acceptedCases: sourceCounts.cases,
         fixtures: sourceCounts.fixtures, importedCases, variants, occurrences: null },
       mapping: { families, revision: consumerPin.contract.mapping.revision, state: families.length ? 'partial' : 'not-representable',
-        losses: ['per-kind-fidelity-unavailable', ...(domains.includes('PHI') ? ['phi-domain-not-represented'] : []), ...((kind.contextClaims ?? []).length ? ['source-context-fidelity-unavailable'] : [])], requiredAxes: ['identity', 'sensitivity', ...(domains.includes('PHI') ? ['phi-domain'] : []), ...((kind.contextClaims ?? []).length ? ['context'] : [])], representableAxes: families.length ? ['identity', 'sensitivity'] : [], reason: families.length ? 'per-kind-semantic-loss-accounting-unavailable' : 'source-kind-unmapped' },
+        losses: ['per-kind-fidelity-unavailable', ...(!metadataPreserved && domains.includes('PHI') ? ['phi-domain-not-represented'] : []), ...(!metadataPreserved && (kind.contextClaims ?? []).length ? ['source-context-fidelity-unavailable'] : [])], requiredAxes: ['identity', 'sensitivity', ...(domains.includes('PHI') ? ['phi-domain'] : []), ...((kind.contextClaims ?? []).length ? ['context'] : [])], representableAxes: families.length ? ['identity', 'sensitivity', ...(metadataPreserved && domains.includes('PHI') ? ['phi-domain'] : []), ...(metadataPreserved && (kind.contextClaims ?? []).length ? ['context'] : [])] : [], reason: families.length ? 'per-kind-semantic-loss-accounting-unavailable' : 'source-kind-unmapped' },
       emptyReasons: sourceCounts.cases ? [] : [kind.classification.state === 'unresolved' ? 'source-classification-unresolved' : 'no-publicly-accepted-source-cases'],
       source: { repository: snapshotPin.release.repository, commit: snapshotPin.release.commit, snapshotId: snapshotPin.snapshot.id,
         manifestSha256: snapshotPin.snapshot.manifestSha256, taxonomySha256: files[0].sha256 } };
@@ -71,7 +79,7 @@ export async function loadPiiCoverageInventories(root) {
   const read = async file => parseEvidenceJson(await readFile(path.join(root, file), 'utf8'));
   const policy = await read('benchmarks/pii-population-policy.json');
   const entries = await Promise.all(['active', 'proposed'].map(async role => {
-    const pinDirectory = role === 'active' ? 'benchmarks/pii-evidence' : 'benchmarks/inputs/pii-evidence-snapshot-v2-candidate';
+    const pinDirectory = role === 'active' ? 'benchmarks/pii-evidence' : PROPOSED_EVIDENCE_DIRECTORY;
     const directory = `benchmarks/inputs/pii-coverage/${role}`;
     const [snapshotPin, consumerPin, preflight, manifestBytes, taxonomyBytes] = await Promise.all([
       read(`${pinDirectory}/snapshot-pin.json`), read(`${pinDirectory}/consumer-pin.json`), read(`${pinDirectory}/preflight.json`),

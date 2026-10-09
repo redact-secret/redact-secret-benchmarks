@@ -1,68 +1,52 @@
 {
- "schema": "pii-evidence-comparison-record/1",
- "publicOnly": true,
- "supportClaims": false,
- "authorityChanged": false,
- "planDigest": "2765868f12e2f7238645f7ea95847374ff8e658f93c3f786b8339434298b91b4",
- "workflow": {
-  "repository": "redact-secret/redact-secret-benchmarks",
-  "path": ".github/workflows/pii-official-run.yml",
-  "reusablePath": ".github/workflows/pii-evidence-comparison.yml",
-  "runId": 37829344445,
-  "runAttempt": 1,
-  "event": "workflow_dispatch",
-  "headSha": "836a020fe06e1c941185be95da6964f9eb0385a4",
-  "headBranch": "feat/834-pii-evidence-population",
-  "conclusion": "success"
- },
- "actionsArtifact": {
-  "id": 11572861899,
-  "name": "pii-evidence-comparison",
-  "archiveSha256": "f924231d147bbc373ae7e0851371a21da24c749847520154516035f71ea0ebe8",
-  "sizeInBytes": 55239
- },
- "receipt": {
-  "sha256": "715f892bec712de5aa7ca6fe2317d660f2b72e99a1b0bdab5b51d6664e15a43d",
-  "documentDigest": "eb12c57400e342f50a666507b9a682d18d68682cc2666d52cda00324a748b99f"
- },
- "buildReceipt": {
-  "sha256": "a33cd82bb3720e54c7ed4b9126abe457a56212cb4d1daa3edc859a3ca52e0098",
-  "documentDigest": "71685d10d1684926db8b88ab37e61ceec1e29cbc1da9f89ee691d0a6df32fd85"
- },
- "artifacts": [
-  {
-   "side": "baseline",
-   "sha256": "9b08931e846ada8fe103e223236bdf7bc4c34b50f87916286a8de4744bc37388"
+  "schema": "pii-evidence-comparison-record/1",
+  "publicOnly": true,
+  "supportClaims": false,
+  "authorityChanged": false,
+  "planDigest": "9c89e423adf8519782266f23ce4d0ec739bb1e07afb2ce2d487a4c0d8af35791",
+  "workflow": {
+    "repository": "redact-secret/redact-secret-benchmarks",
+    "path": ".github/workflows/pii-official-run.yml",
+    "reusablePath": ".github/workflows/pii-evidence-comparison.yml",
+    "runId": 37983968336,
+    "runAttempt": 1,
+    "event": "workflow_dispatch",
+    "headSha": "8f7dda93ac97d82194075cf3ce87acd0f4d3e1d4",
+    "headBranch": "milocosmopolitan/pii",
+    "conclusion": "success"
   },
-  {
-   "side": "candidate",
-   "sha256": "3657ed7d4fb3e236f467580dd574a3360639c7f76229c3561cf3436ade3373ca"
-  }
- ],
- "replayInputs": [
-  {
-   "name": "replay-inputs/baseline/manifest.json",
-   "sha256": "b3a3d976e977796bff5c7903e034890b7e2fb3ea15c359e2071a994891a80842"
+  "actionsArtifact": {
+    "id": 11641523250,
+    "name": "pii-evidence-comparison",
+    "archiveSha256": "7118add9375d5dff0ee3249636ac0946a015cb23fa0213147a8d7b3db5cd3805",
+    "sizeInBytes": 51120
   },
-  {
-   "name": "replay-inputs/baseline/observation.json",
-   "sha256": "418867e3b597d7ec0da2e8f769d63b48679cae8019c0f098ac030f5e387c5388"
+  "receipt": {
+    "sha256": "f46f689943359ce1c024fa0bbbd039477220788c0024b6c789f3fb2fc6698b7d",
+    "documentDigest": "e3bd5a4e55b5d1c8bd084e7e1e685b02424a55af50a693a09e9728032f7073f6"
   },
-  {
-   "name": "replay-inputs/baseline/run-artifact.json",
-   "sha256": "b856f8db9ccca1cefc62aa9055db32631e880b1a463a5aa5ca44386c0a02fb5a"
+  "buildReceipt": {
+    "sha256": "6d04ef72bafdb5be9eb020f5f93aa86351a0fbccbb46dd182c2af90e26122975",
+    "documentDigest": "db55910cbb29ccd5d81eecc1db22452be8975a875b30d3c0457763b56c8a98ee"
   },
-  {
-   "name": "replay-inputs/candidate/manifest.json",
-   "sha256": "3f7c2e708a80b342bf20a479d9e72c7b7c00eb24d0190e753f0fb4319150e813"
-  },
-  {
-   "name": "replay-inputs/candidate/observation.json",
-   "sha256": "6e4c89ea50baee6fd067c4912d8c7ccb1f2be6cec3a069172cb84625732ad4f4"
-  },
-  {
-   "name": "replay-inputs/candidate/run-artifact.json",
-   "sha256": "141800302a38a33a94759937920c8354f7f0a65c985decc90d8d62a4bbf6fac5"
-  }
- ]
+  "artifacts": [
+    {
+      "side": "baseline",
+      "sha256": "db3d026f488baf6f4d846604a07348243cca8ab12f08d96768a1cc655338dd3d"
+    }
+  ],
+  "replayInputs": [
+    {
+      "name": "replay-inputs/baseline/manifest.json",
+      "sha256": "0ae4af5ad7ffcb9a00feb0113f1685176b23a6863942ab928ad066ac060ace58"
+    },
+    {
+      "name": "replay-inputs/baseline/observation.json",
+      "sha256": "3a7e3e4f9eb9b5b66f814e501eb2dadba601271c79f1ace77dd50ed9182c4d9b"
+    },
+    {
+      "name": "replay-inputs/baseline/run-artifact.json",
+      "sha256": "9a841aad2b5d8a5cc6209901e92bc8dcecfd1cc024a9519b977527bce2536fbf"
+    }
+  ]
 }

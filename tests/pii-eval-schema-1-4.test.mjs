@@ -17,8 +17,8 @@ const artifactText = view => read(`benchmarks/pii-eval-official-run/${view}.publ
 const reseal = doc => { doc.semanticDigest = semanticDigest(doc); return doc; };
 const codes = (doc, pins) => verifyArtifact(doc, pins).reasons.map(reason => reason.code);
 
-test('the accepted schema minors are exactly 1.1, 1.2 and 1.4: 1.3 states only the identity and is not read', () => {
-  assert.deepEqual(PUBLIC_SCHEMA_VERSIONS, ['1.1', '1.2', '1.4']);
+test('the accepted schema minors include explicit 1.5 support: 1.3 states only the identity and is not read', () => {
+  assert.deepEqual(PUBLIC_SCHEMA_VERSIONS, ['1.1', '1.2', '1.4', '1.5']);
   const pins = JSON.parse(pinsText);
   pins.artifactSchema.version = '1.3';
   assert.throws(() => loadPins(JSON.stringify(pins)), /pins-artifact-schema/);

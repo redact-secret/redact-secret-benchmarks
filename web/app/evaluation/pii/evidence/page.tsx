@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Independent PII evidence population'
 
 export default async function Page() {
   const { outcomes, fullCoverage, ...data } = await resolvePiiEvidencePage();
-  return <DomainView {...data} coverage={{ ...data.coverage, tables: data.coverage.tables.filter(table => table.id !== 'evidence-outcomes') }} afterGlance={<>
+  return <DomainView {...data} coverage={{ ...data.coverage, tables: data.coverage.tables.filter(table => !outcomes || table.id !== 'evidence-outcomes') }} afterGlance={<>
     <nav aria-label="PII evidence destinations"><a href="/coverage/pii/">PII product coverage</a> · <a href="/evaluation/pii/">PII methodology</a> · <a href="/evaluation/pii/results/">PII measurement results</a></nav>
     {outcomes && <OutcomeComparison data={outcomes} />}<PiiCoverageMatrix {...fullCoverage} /></>} />;
 }

@@ -36,9 +36,10 @@ export function coverageExportProblems(html, publication) {
   try {
     const document = dom.window.document, problems = [];
     const panels = [...document.querySelectorAll('section[data-coverage-panel]')];
-    const ids = ['active', 'proposed'].flatMap(role => ['baseline', 'candidate'].map(side => `coverage-${role}-${side}`));
+    const roles = publication.coverage.proposalState === 'accepted' ? ['active'] : ['active', 'proposed'];
+    const ids = roles.flatMap(role => ['baseline', 'candidate'].map(side => `coverage-${role}-${side}`));
     if (JSON.stringify(panels.map(panel => panel.getAttribute('data-coverage-panel')).sort()) !== JSON.stringify([...ids].sort())) problems.push('full-coverage-panel-roster-mismatch');
-    for (const role of ['active', 'proposed']) for (const side of ['baseline', 'candidate']) {
+    for (const role of roles) for (const side of ['baseline', 'candidate']) {
       const id = `coverage-${role}-${side}`, joined = publication.coverage.matrices[role][side];
       const panel = panels.find(panel => panel.getAttribute('data-coverage-panel') === id);
       if (!panel) { problems.push(`missing:${id}`); continue; }
@@ -102,7 +103,7 @@ export function coverageExportProblems(html, publication) {
       for (const identity of [inventory.source.snapshot.id, inventory.source.snapshot.contentDigest, joined.matrix.identity.mappingCommitment, joined.matrix.identity.population])
         if (!text.includes(identity)) problems.push(`missing-provenance:${id}`);
       for (const value of [joined.matrix.identity.productCommitment, joined.matrix.identity.bindingCommitment]) if (value && !text.includes(value)) problems.push(`missing-product-or-run:${id}`);
-      if (role === 'proposed' && !readableText(panel.querySelector('h3')).includes('inactive, unmeasured')) problems.push(`proposal-not-labelled:${id}`);
+      if (role === 'proposed' && !readableText(panel.querySelector('h3')).includes('inactive')) problems.push(`proposal-not-labelled:${id}`);
     }
     const delta = document.querySelector('[data-coverage-delta="true"]');
     if (!delta || hiddenFromDefault(delta) || !document.body.textContent.includes('Kind counts are not detection accuracy')) problems.push('delta-or-grain-caveat-missing');

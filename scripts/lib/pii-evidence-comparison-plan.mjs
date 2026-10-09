@@ -2,7 +2,7 @@ import { readFileSync, lstatSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-import { SNAPSHOT_PIN, CONSUMER_PIN, sha256, validatePreflightReport } from './pii-evidence-contract.mjs';
+import { SNAPSHOT_PIN, CONSUMER_PIN, sha256, validatePreflightReport, evidencePlanActivation } from './pii-evidence-contract.mjs';
 import { parseEvidenceJson } from './pii-evidence-json.mjs';
 
 // Frozen product inputs from the reviewed beta.14 comparison; package-lock upgrades
@@ -106,6 +106,7 @@ export function stable(value) {
     : Object.fromEntries(Object.keys(value).sort().map(key => [key, JSON.parse(stable(value[key]))])));
 }
 export const same = (a, b) => stable(a) === stable(b);
+export const evidenceSides = plan => plan.candidate === null ? ['baseline'] : ['baseline', 'candidate'];
 export const closed = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && same(Object.keys(value).sort(), [...keys].sort());
 export function validateEvidenceProductTuple(tuple) {
   const hex = (value, size) => typeof value === 'string' && new RegExp(`^[a-f0-9]{${size}}$`).test(value);
@@ -125,10 +126,10 @@ export function validateEvidenceProductTuple(tuple) {
         Buffer.from(pin.integrity.slice(7), 'base64').toString('base64') !== pin.integrity.slice(7) ||
         pin.resolved !== `https://registry.npmjs.org/@redact-secret/${leaf}/-/${leaf}-${baseline.version}.tgz`) refuse();
   }
-  if (!closed(candidate, Object.keys(PRODUCT_PINS.candidate)) || candidate.provenance !== 'qualified-unpublished-artifacts' ||
+  if (candidate !== null && (!closed(candidate, Object.keys(PRODUCT_PINS.candidate)) || candidate.provenance !== 'qualified-unpublished-artifacts' ||
       !hex(candidate.sourceCommit, 40) || candidate.sourceCommit === baseline.sourceCommit || !version(candidate.version) ||
       typeof candidate.qualificationRunId !== 'string' || candidate.qualificationRunId.length > 20 || !/^[1-9][0-9]*$/.test(candidate.qualificationRunId) ||
-      Object.keys(PRODUCT_PINS.candidate).filter(key => key.endsWith('Sha256')).some(key => !hex(candidate[key], 64))) refuse();
+      Object.keys(PRODUCT_PINS.candidate).filter(key => key.endsWith('Sha256')).some(key => !hex(candidate[key], 64)))) refuse();
   return structuredClone(tuple);
 }
 export function validateEvidencePlanPath(path) {
@@ -181,19 +182,29 @@ function runtimeInputs({ preflight, policy, populationIndex, populationIndexDige
   if (productTuple !== undefined && executionPaths === undefined) throw new Error('reviewed-product-execution-paths-required');
   return { preflight, policy, populationIndexDigest: indexDigest, ...(executionPaths === undefined ? {} : { executionPaths: validateEvidenceExecutionPaths(executionPaths) }), ...(productTuple === undefined ? {} : { productTuple: validateEvidenceProductTuple(productTuple) }) };
 }
+function evidenceScanner(preflight) {
+  const scanner = structuredClone(PRODUCT_PINS.scanner);
+  if (preflight.consumer.contract.mapping.revision === 3) {
+    scanner.activation = evidencePlanActivation(preflight.consumer) ?? [...new Set(['pii:global', ...Object.keys(preflight.mappedFamilies).map(family => `pii:${family.split(':')[1]}`)])].sort();
+    scanner.activationDigest = sha256(`pii-eval-semantic-digest/1\npii-eval.scanner-activation/1\n${JSON.stringify(scanner.activation)}`);
+  }
+  return scanner;
+}
 export function executionScope(runtime) {
   const inputs = runtimeInputs(runtime), { preflight } = inputs;
-  const products = inputs.productTuple ?? PRODUCT_PINS;
-  return { baselineSourceCommit: products.baseline.sourceCommit, candidateSourceCommit: products.candidate.sourceCommit,
-    qualificationRunId: products.candidate.qualificationRunId, inventorySha256: products.candidate.inventorySha256,
+  const products = inputs.productTuple ?? PRODUCT_PINS, consumer = preflight.consumer;
+  return { baselineSourceCommit: products.baseline.sourceCommit, candidateSourceCommit: products.candidate?.sourceCommit ?? null,
+    qualificationRunId: products.candidate?.qualificationRunId ?? null, inventorySha256: products.candidate?.inventorySha256 ?? null,
     ...(inputs.productTuple ? { productTupleDigest: evidenceDigest(inputs.productTuple) } : {}),
     ...(inputs.executionPaths ? inputs.executionPaths : {}),
-    engineCommit: CONSUMER_PIN.source.commit, engineBinarySha256: CONSUMER_PIN.executionEngine.binarySha256,
-    sourceArchiveSha256: CONSUMER_PIN.source.sourceArchiveSha256, snapshotDigest: preflight.evidence.snapshot.contentDigest,
+    ...(consumer.contract.mapping.revision === 3 ? { scannerConfigurationDigest: evidenceScanner(preflight).configurationDigest,
+      scannerActivationDigest: evidenceScanner(preflight).activationDigest } : {}),
+    engineCommit: consumer.source.commit, engineBinarySha256: consumer.executionEngine.binarySha256,
+    sourceArchiveSha256: consumer.source.sourceArchiveSha256, snapshotDigest: preflight.evidence.snapshot.contentDigest,
     populationDigest: preflight.population.digest, bindingDigest: preflight.population.bindingDigest,
     preflightDigest: evidenceDigest(preflight), policyDigest: evidenceDigest(inputs.policy), populationIndexDigest: inputs.populationIndexDigest,
-    importerBuild: CONSUMER_PIN.evidenceConsumer.canonicalLinux.command,
-    runs: 2, replaysPerRun: 2, protectedRuns: 0, maxJobs: 1, timeoutMinutes: 15 };
+    importerBuild: consumer.evidenceConsumer.canonicalLinux.command,
+    runs: products.candidate === null ? 1 : 2, replaysPerRun: 2, protectedRuns: 0, maxJobs: 1, timeoutMinutes: 15 };
 }
 export function validateEvidenceCostDecision(cost, runtime) {
   if (!closed(cost, ['schema', 'state', 'decidedBy', 'decidedAt', 'scope']) || cost.schema !== 'pii-evidence-comparison-cost-decision/1' ||
@@ -206,28 +217,30 @@ export function validateEvidenceCostDecision(cost, runtime) {
 export function evidenceComparisonPlan({ costDecision, preflight, policy, populationIndex, populationIndexDigest, productTuple, executionPaths } = {}) {
   const old = { ...structuredClone(PRODUCT_PINS), ...(productTuple === undefined ? {} : validateEvidenceProductTuple(productTuple)) };
   const inputs = runtimeInputs({ preflight, policy, populationIndex, populationIndexDigest, productTuple, executionPaths }); preflight = inputs.preflight; policy = inputs.policy;
+  const consumer = preflight.consumer, post37 = consumer.contract.mapping.revision === 3;
+  if (post37) old.protocol = { ...consumer.contract.protocol, artifactSchema: consumer.contract.artifactSchema };
   const runtime = { preflight, policy, populationIndex, populationIndexDigest, productTuple, executionPaths };
   const cost = validateEvidenceCostDecision(costDecision ?? parseEvidenceJson(readFileSync(resolve(ROOT, COST_PATH), 'utf8')), runtime);
   return { schema: 'pii-evidence-comparison-plan/1', publicOnly: true, supportClaims: false, qualified: false,
     mode: cost.state === 'approved' ? 'official' : 'exploratory', runClass: 'public-synthetic', engineProductPin: 'candidate',
     evidence: structuredClone(preflight.evidence), consumer: structuredClone(preflight.consumer), preflight: structuredClone(preflight), policy: structuredClone(policy),
-    engine: { repository: CONSUMER_PIN.source.repository, commit: CONSUMER_PIN.source.commit,
-      binarySha256: CONSUMER_PIN.executionEngine.binarySha256, shimSha256: CONSUMER_PIN.source.shimSha256 },
-    protocol: old.protocol, scanner: old.scanner, baseline: old.baseline, candidate: old.candidate,
+    engine: { repository: consumer.source.repository, commit: consumer.source.commit,
+      binarySha256: consumer.executionEngine.binarySha256, shimSha256: consumer.source.shimSha256 },
+    protocol: old.protocol, scanner: evidenceScanner(preflight), baseline: old.baseline, candidate: old.candidate,
     ...(productTuple === undefined ? {} : { productTuple: structuredClone(productTuple) }),
     ...(executionPaths === undefined ? {} : { executionPaths: structuredClone(executionPaths) }),
     population: structuredClone(preflight.population), populationIndexDigest: inputs.populationIndexDigest, counts: structuredClone(preflight.counts), losses: structuredClone(preflight.losses),
     mappedFamilies: structuredClone(preflight.mappedFamilies), execution: executionScope(runtime),
     localVerification: { platform: 'darwin-arm64', canonical: false,
-      engineBinarySha256: 'dee8ea89b3d78e5d36ab4aa5ac7daf3a9697cc8d730e80c288d15b0f167e8350',
-      sourceCommit: CONSUMER_PIN.source.commit, sourceArchiveSha256: CONSUMER_PIN.source.sourceArchiveSha256,
-      rustc: CONSUMER_PIN.evidenceConsumer.localVerification.rustc,
+      engineBinarySha256: post37 ? null : 'dee8ea89b3d78e5d36ab4aa5ac7daf3a9697cc8d730e80c288d15b0f167e8350',
+      sourceCommit: consumer.source.commit, sourceArchiveSha256: consumer.source.sourceArchiveSha256,
+      rustc: consumer.evidenceConsumer.localVerification.rustc,
       command: 'cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval --bin pii-eval-evidence -j 2',
       maximumExecutionSeconds: 60 },
     dispatch: { authorised: cost.state === 'approved', costDecision: executionPaths?.costDecisionPath ?? COST_PATH,
       costDecisionSha256: cost.state === 'approved' ? evidenceDigest(cost) : null,
-      sourceApproval: 'reviewed-e991-consumer-contract-and-released-evidence-pin', actualCostRecord: null },
-    limitations: { familyMetrics: 'unavailable-no-family-projection-in-unprojected-schema-1.4',
+      sourceApproval: post37 ? 'reviewed-post37-consumer-contract-and-released-evidence-pin' : 'reviewed-e991-consumer-contract-and-released-evidence-pin', actualCostRecord: null },
+    limitations: { familyMetrics: `unavailable-no-family-projection-in-unprojected-schema-${consumer.contract.artifactSchema}`,
       lostAxes: 'pending-until-faithfully-represented', protected: 'not-operational',
       baseline: 'published npm provenance; engine uses candidate tree binding for both products',
       historical: 'beta12 Darwin record is descriptive; explicit platform, binary and population match flags, distinct package, no regression verdict' } };

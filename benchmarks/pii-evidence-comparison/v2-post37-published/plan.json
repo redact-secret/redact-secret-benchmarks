@@ -1,0 +1,715 @@
+{
+ "schema": "pii-evidence-comparison-plan/1",
+ "publicOnly": true,
+ "supportClaims": false,
+ "qualified": false,
+ "mode": "official",
+ "runClass": "public-synthetic",
+ "engineProductPin": "candidate",
+ "evidence": {
+  "schema": "pii-eval-evidence-pin/1",
+  "contract": {
+   "name": "pii-evidence-consumer-contract",
+   "version": "1",
+   "digestSpec": "files-v1"
+  },
+  "release": {
+   "repository": "redact-secret/pii-evidence",
+   "tag": "snapshot-public-pii-phi-2026-10-08-ee61c7afc32d",
+   "commit": "e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0",
+   "archive": {
+    "name": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d.tar.gz",
+    "tarSha256": "ae0324a180361a70bd6f225859fe46f7fde6f02f4d9d317a2336ae432c0a2e36",
+    "tarGzSha256": "e86648cf7c54fd6fcc62a17e58859aa334557b6cb9ba30954d12a42cc087c626"
+   }
+  },
+  "snapshot": {
+   "id": "public-pii-phi/2026-10-08/ee61c7afc32d",
+   "contentDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+   "manifestSha256": "acf14bf012740f25083a6c50134afffa406605061138208bbe83d7f83ad8eb0b",
+   "sourceManifestDigest": "0230e2c92daefe0292284c5e61ebd520585ced52be96e77484dd23340a54a82f"
+  }
+ },
+ "consumer": {
+  "schema": "pii-evidence-consumer-pin/1",
+  "state": "candidate",
+  "supportClaims": false,
+  "source": {
+   "repository": "redact-secret/pii-eval",
+   "commit": "0cd2ec43387d5e420b4c4ca6678a9b63fae5001a",
+   "sourceArchiveSha256": "f7c9866d762f5a51d075e3ed8e4298c185ca1c78d8d5d144d1cb8493514c1c84",
+   "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+   "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+   "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
+   "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+  },
+  "contract": {
+   "engineVersion": "0.0.0",
+   "protocol": {
+    "id": "pii-v1",
+    "revision": 3
+   },
+   "corpusSchema": "1.5",
+   "artifactSchema": "1.5",
+   "mapping": {
+    "id": "pii-evidence-to-corpus",
+    "revision": 3
+   }
+  },
+  "executionEngine": {
+   "platform": "linux-x64",
+   "binarySha256": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8",
+   "workflow": {
+    "runId": 37970072564,
+    "runAttempt": 1,
+    "path": ".github/workflows/ci.yml",
+    "event": "push",
+    "branch": "main",
+    "conclusion": "success"
+   },
+   "archive": {
+    "id": 11634793093,
+    "name": "pii-eval-engine-0cd2ec43387d5e420b4c4ca6678a9b63fae5001a-linux-x86_64",
+    "sha256": "b14c9e4a1df77a10614262f701588b4b295336894ea87798d85bd5a4ea938c50",
+    "members": {
+     "build-info.json": "1f4e50c4fd57feee1e0bfc50ed04c6c1a8f9f8589f706e6be9f501b799f6d3c6",
+     "SHA256SUMS": "93d33c767f74ba96f0f08a784859ea46280d1db89a2dabd3e0285fcb2a36e63b",
+     "pii-eval": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8"
+    }
+   }
+  },
+  "evidenceConsumer": {
+   "binary": "pii-eval-evidence",
+   "canonicalLinux": {
+    "state": "pending-source-build",
+    "reason": "upstream-ci-does-not-archive-evidence-consumer",
+    "binarySha256": null,
+    "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "receiptRequiredBeforeUse": true,
+    "scannerGate": "sealed-build-receipt-and-exact-import-semantics"
+   },
+   "localVerification": {
+    "platform": "darwin-arm64",
+    "binarySha256": "8def22b78b1a65caa2b135cdc2de03aa9eb3a65a87da07c87e4651e15df84a9e",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "canonical": false
+   }
+  },
+  "importedPopulation": {
+   "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+   "version": 3,
+   "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+   "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+  },
+  "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
+ },
+ "preflight": {
+  "schema": "pii-evidence-preflight/1",
+  "state": "compatible-candidate",
+  "runnable": false,
+  "supportClaims": false,
+  "authorityChanged": false,
+  "activePinsChanged": false,
+  "evidence": {
+   "schema": "pii-eval-evidence-pin/1",
+   "contract": {
+    "name": "pii-evidence-consumer-contract",
+    "version": "1",
+    "digestSpec": "files-v1"
+   },
+   "release": {
+    "repository": "redact-secret/pii-evidence",
+    "tag": "snapshot-public-pii-phi-2026-10-08-ee61c7afc32d",
+    "commit": "e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0",
+    "archive": {
+     "name": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d.tar.gz",
+     "tarSha256": "ae0324a180361a70bd6f225859fe46f7fde6f02f4d9d317a2336ae432c0a2e36",
+     "tarGzSha256": "e86648cf7c54fd6fcc62a17e58859aa334557b6cb9ba30954d12a42cc087c626"
+    }
+   },
+   "snapshot": {
+    "id": "public-pii-phi/2026-10-08/ee61c7afc32d",
+    "contentDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+    "manifestSha256": "acf14bf012740f25083a6c50134afffa406605061138208bbe83d7f83ad8eb0b",
+    "sourceManifestDigest": "0230e2c92daefe0292284c5e61ebd520585ced52be96e77484dd23340a54a82f"
+   }
+  },
+  "consumer": {
+   "schema": "pii-evidence-consumer-pin/1",
+   "state": "candidate",
+   "supportClaims": false,
+   "source": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "0cd2ec43387d5e420b4c4ca6678a9b63fae5001a",
+    "sourceArchiveSha256": "f7c9866d762f5a51d075e3ed8e4298c185ca1c78d8d5d144d1cb8493514c1c84",
+    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167",
+    "fetchHelperSha256": "2d643183e4fe65c05411047cc463001b4ec390274061f10a171ec8e5d17bc1e4",
+    "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+   },
+   "contract": {
+    "engineVersion": "0.0.0",
+    "protocol": {
+     "id": "pii-v1",
+     "revision": 3
+    },
+    "corpusSchema": "1.5",
+    "artifactSchema": "1.5",
+    "mapping": {
+     "id": "pii-evidence-to-corpus",
+     "revision": 3
+    }
+   },
+   "executionEngine": {
+    "platform": "linux-x64",
+    "binarySha256": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8",
+    "workflow": {
+     "runId": 37970072564,
+     "runAttempt": 1,
+     "path": ".github/workflows/ci.yml",
+     "event": "push",
+     "branch": "main",
+     "conclusion": "success"
+    },
+    "archive": {
+     "id": 11634793093,
+     "name": "pii-eval-engine-0cd2ec43387d5e420b4c4ca6678a9b63fae5001a-linux-x86_64",
+     "sha256": "b14c9e4a1df77a10614262f701588b4b295336894ea87798d85bd5a4ea938c50",
+     "members": {
+      "build-info.json": "1f4e50c4fd57feee1e0bfc50ed04c6c1a8f9f8589f706e6be9f501b799f6d3c6",
+      "SHA256SUMS": "93d33c767f74ba96f0f08a784859ea46280d1db89a2dabd3e0285fcb2a36e63b",
+      "pii-eval": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8"
+     }
+    }
+   },
+   "evidenceConsumer": {
+    "binary": "pii-eval-evidence",
+    "canonicalLinux": {
+     "state": "pending-source-build",
+     "reason": "upstream-ci-does-not-archive-evidence-consumer",
+     "binarySha256": null,
+     "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+     "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+     "receiptRequiredBeforeUse": true,
+     "scannerGate": "sealed-build-receipt-and-exact-import-semantics"
+    },
+    "localVerification": {
+     "platform": "darwin-arm64",
+     "binarySha256": "8def22b78b1a65caa2b135cdc2de03aa9eb3a65a87da07c87e4651e15df84a9e",
+     "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+     "canonical": false
+    }
+   },
+   "importedPopulation": {
+    "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+    "version": 3,
+    "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+    "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+   },
+   "preservedPopulationPinsSha256": "65179ea2b1ec86f2bae7e0f81c6e9dadf3943388e5b5d28998ddfa86c9636787"
+  },
+  "population": {
+   "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+   "version": 3,
+   "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+   "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+  },
+  "counts": {
+   "corpusCases": 123,
+   "corpusVariants": 285,
+   "evidenceCases": 118,
+   "evidenceCasesCarried": 115,
+   "evidenceCasesWithoutFixtures": 3,
+   "evidenceFixtures": 285,
+   "evidenceSkipped": 18,
+   "locatedOccurrences": 198,
+   "occurrences": 285,
+   "rangeLessOccurrences": 87
+  },
+  "losses": {
+   "contexts-not-carried": 0,
+   "phi-domain-not-carried": 0,
+   "sensitivity-context-dependent-flattened": 0,
+   "identity-weakened-no-span": 0,
+   "sensitivity-weakened-no-span": 4
+  },
+  "outputs": {
+   "binding.json": {
+    "bytes": 306216,
+    "sha256": "4f277405d9bed223d6a382e7d5ff2b14308dd4e68070066ae9612c69767425b2"
+   },
+   "snapshot.json": {
+    "bytes": 356837,
+    "sha256": "dfdd244f6e00215c987f82ab6f84580adbcfb1ebb02c47649ef5a647dc6a70c6"
+   }
+  },
+  "mappedKinds": [
+   "date-of-birth/global/labeled-field",
+   "email/global/basic",
+   "health-claim-identifier/us/claim-field",
+   "health-plan-member-id/us/member-field",
+   "medical-record-number/us/labeled-field",
+   "phone/global/basic",
+   "prescription-order-identifier/us/order-field",
+   "uk-nino/uk/structured",
+   "us-ssn/us/structured"
+  ],
+  "mappedFamilies": {
+   "pii:gb:national-insurance-number": {
+    "cases": 7,
+    "variants": 15
+   },
+   "pii:global:date-of-birth": {
+    "cases": 8,
+    "variants": 20
+   },
+   "pii:global:email": {
+    "cases": 44,
+    "variants": 145
+   },
+   "pii:global:phone": {
+    "cases": 7,
+    "variants": 32
+   },
+   "pii:us:date-of-birth": {
+    "cases": 4,
+    "variants": 8
+   },
+   "pii:us:health-claim-identifier": {
+    "cases": 3,
+    "variants": 3
+   },
+   "pii:us:health-plan-member-id": {
+    "cases": 12,
+    "variants": 16
+   },
+   "pii:us:medical-record-number": {
+    "cases": 15,
+    "variants": 23
+   },
+   "pii:us:prescription-order-identifier": {
+    "cases": 6,
+    "variants": 6
+   },
+   "pii:us:ssn": {
+    "cases": 17,
+    "variants": 17
+   }
+  },
+  "excludedKinds": [
+   "iban/global/basic",
+   "payment-card/global/basic"
+  ],
+  "excludedKindsMeaning": "known mapping kinds absent from imported binding; not scanner support",
+  "verification": {
+   "platform": "darwin-arm64",
+   "canonical": false,
+   "scannersLaunched": 0,
+   "commands": [
+    "verify",
+    "import"
+   ]
+  },
+  "adoption": {
+   "state": "proposed",
+   "active": false,
+   "lostAxisClaims": "pending-until-faithfully-represented",
+   "upstreamIssue": "https://github.com/redact-secret/pii-eval/issues/37",
+   "unknownKindOrJurisdiction": "refuse-not-guess"
+  },
+  "blockers": [
+   "canonical-linux-evidence-consumer-build-receipt-pending",
+   "fresh-exact-execution-cost-decision-required",
+   "immutable-snapshot-release-verification-required",
+   "schema-1.5-measurement-path-review-required",
+   "explicit-maintainer-adoption-acceptance-required"
+  ]
+ },
+ "policy": {
+  "schema": "pii-population-policy/1",
+  "state": "proposed",
+  "issue": 835,
+  "supportClaims": false,
+  "owners": {
+   "measurement": "redact-secret/pii-eval",
+   "qualification": "redact-secret/redact-secret-benchmarks",
+   "protectedExecution": "redact-secret/private-custodian",
+   "privateAudit": "redact-secret/private-ledger"
+  },
+  "populations": [
+   {
+    "id": "pii-evidence",
+    "evidenceOwner": "redact-secret/pii-evidence",
+    "role": "canonical-public-evidence",
+    "visibility": "public-synthetic",
+    "identitySource": "released-snapshot-and-import-binding",
+    "denominatorSource": "imported-artifact-metric-sufficient-counts",
+    "tuning": "no-new-authorisation"
+   },
+   {
+    "id": "oracle-plan",
+    "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+    "role": "authored-identity-oracle",
+    "visibility": "public-synthetic",
+    "identitySource": "benchmarks/pii-eval-population-pins.json",
+    "denominatorSource": "bound-artifact-metric-sufficient-counts",
+    "tuning": "existing-contract-only"
+   },
+   {
+    "id": "qualification-plan",
+    "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+    "role": "product-contract-qualification",
+    "visibility": "public-synthetic",
+    "identitySource": "benchmarks/pii-eval-population-pins.json",
+    "denominatorSource": "bound-artifact-metric-sufficient-counts",
+    "tuning": "existing-contract-only"
+   },
+   {
+    "id": "diagnostic-balanced",
+    "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+    "role": "development-tuning",
+    "visibility": "public-synthetic",
+    "identitySource": "benchmarks/pii-eval-population-pins.json",
+    "denominatorSource": "bound-artifact-metric-sufficient-counts",
+    "tuning": "existing-contract-only"
+   },
+   {
+    "id": "benign-heavy-stress",
+    "evidenceOwner": "redact-secret/redact-secret-benchmarks",
+    "role": "evaluation-only-stress",
+    "visibility": "public-synthetic",
+    "identitySource": "benchmarks/pii-eval-population-pins.json",
+    "denominatorSource": "bound-artifact-metric-sufficient-counts",
+    "tuning": "forbidden"
+   },
+   {
+    "id": "future-protected",
+    "evidenceOwner": "unresolved-authored-evidence-owner",
+    "role": "protected-independent-evidence",
+    "visibility": "protected",
+    "identitySource": "future-reviewed-custodian-contract",
+    "denominatorSource": "future-bound-protected-aggregate",
+    "tuning": "no-new-authorisation"
+   }
+  ],
+  "accounting": {
+   "crossPopulationPooling": "forbidden",
+   "crossScannerPooling": "forbidden",
+   "replayAddsSamples": false,
+   "authoredCaseEqualsImportedCase": false,
+   "denominator": "metric-local-effectiveN-and-sufficient-counts",
+   "unresolved": "retain-authored-membership-and-report-counts",
+   "withheld": "retain-reason-never-impute-zero-or-pass",
+   "notApplicable": "protocol-declared-only",
+   "partial": "no-subset-renormalisation",
+   "protectedInPublicDenominator": "forbidden"
+  },
+  "composition": {
+   "state": "proposed",
+   "output": "population-local-conclusion-vector",
+   "requirements": [
+    "exact-population-and-run-provenance",
+    "exact-product-artifact",
+    "versioned-engine-and-protocol",
+    "declared-axis-applicability",
+    "explicit-mapping-losses",
+    "separate-public-and-protected-evidence"
+   ],
+   "numericalCriteria": "existing-qualification-contracts-only",
+   "automaticSupportPromotion": false,
+   "ownerCriteria": {
+    "state": "proposed",
+    "acceptedBy": null,
+    "acceptedAt": null,
+    "acceptanceSource": null
+   }
+  },
+  "mapping": {
+   "owner": "redact-secret/pii-eval",
+   "upstreamIssue": "https://github.com/redact-secret/pii-eval/issues/37",
+   "publicAdoptionBlocked": false,
+   "lostAxisClaims": "pending-until-faithfully-represented",
+   "lossClasses": [
+    "contexts-not-carried",
+    "phi-domain-not-carried",
+    "sensitivity-context-dependent-flattened",
+    "identity-weakened-no-span",
+    "sensitivity-weakened-no-span"
+   ],
+   "unknownKindOrJurisdiction": "refuse-not-guess"
+  },
+  "execution": {
+   "measurementTarget": "not-selected",
+   "snapshotPin": "not-selected",
+   "freshOfficialCostDecision": "required-before-dispatch",
+   "authorityRepin": "not-authorised-by-this-policy",
+   "protectedExecution": "not-authorised-by-this-policy"
+  }
+ },
+ "engine": {
+  "repository": "redact-secret/pii-eval",
+  "commit": "0cd2ec43387d5e420b4c4ca6678a9b63fae5001a",
+  "binarySha256": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8",
+  "shimSha256": "21664407345b099d3f5e44db26bcfb037b2e981635dec0a7b5383b42b737e0a8"
+ },
+ "protocol": {
+  "id": "pii-v1",
+  "revision": 3,
+  "artifactSchema": "1.5"
+ },
+ "scanner": {
+  "adapter": {
+   "id": "redact-secret-core-node",
+   "version": "1.0.0",
+   "normalizationVersion": 1
+  },
+  "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+  "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+  "activation": [
+   "pii:global",
+   "pii:us"
+  ]
+ },
+ "baseline": {
+  "provenance": "published-npm-lockfile",
+  "version": "0.1.0-beta.14",
+  "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+  "packages": {
+   "@redact-secret/core": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/core/-/core-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-darwin-arm64": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-ARFG6EaEZwHGOCnaPqqtlF5BljxQ6sNAA74N7QU159EvVYCEZvg8gzSeDgt0kjJdJL+vlEjT1zWov+MoZV8KMA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-arm64/-/node-darwin-arm64-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-darwin-x64": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-xAiObLUcaFjPXJ07NRt/LcfjNUKUYCwEpf9lE2v3PfXY7xnkSBop9h06rLjEziR4XjPilb2pQeuuiO3PbzBNKA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-x64/-/node-darwin-x64-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-arm64-gnu": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-v1yP2VwFyP0o9qV32jECFId9jTvRjGTFyDpwn3wMCix+9iST7fSDhakEaEKJMifBCx/tfMy/1mXltF/pKPYdDA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-gnu/-/node-linux-arm64-gnu-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-arm64-musl": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-R8Fp1QHyVIOH+qGKcfLZbmEP4gG3sLpIKkmuzfx1sjN23WEvUz3O4UYL9DXJpXYZPG4QWPZuxSewpmGYuw6f2A==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-musl/-/node-linux-arm64-musl-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-x64-gnu": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-gnu/-/node-linux-x64-gnu-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-linux-x64-musl": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-DOvm796wqFx9aWL49ZCAmEaHymqxVMHbJudnmSxtrPY2kdWeTR4Hy+fTKZ8lODCTsbWfJoeMK6W55F2TcNC4HA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-musl/-/node-linux-x64-musl-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-win32-arm64-msvc": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-OoNSo5+AyT4s2Za9lmKhvp7qcCDOVd/DluuB02n7gmpg2Wf1TfSZCkDwvgK1RWUw92onghrKXKVWgDjMjZL2zw==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-arm64-msvc/-/node-win32-arm64-msvc-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/node-win32-x64-msvc": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-L3y7yMRCtkZIfQkx44UdRLbPPGqN8xyO+RCYo903IMeaVmoBV+7wOS6bCghyzvj57D+EKDl4ORJq952dsFvcpA==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-x64-msvc/-/node-win32-x64-msvc-0.1.0-beta.14.tgz"
+   },
+   "@redact-secret/wasm": {
+    "version": "0.1.0-beta.14",
+    "integrity": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ==",
+    "resolved": "https://registry.npmjs.org/@redact-secret/wasm/-/wasm-0.1.0-beta.14.tgz"
+   }
+  }
+ },
+ "candidate": null,
+ "productTuple": {
+  "schema": "pii-evidence-reviewed-products/1",
+  "reviewedBy": "milocosmopolitan (session-authorized exact published artifact audit)",
+  "reviewedAt": "2026-10-09T19:26:47Z",
+  "baseline": {
+   "provenance": "published-npm-lockfile",
+   "version": "0.1.0-beta.14",
+   "sourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+   "packages": {
+    "@redact-secret/core": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-1h5NxUto2ZEqQD5hfIgbzwDZkmu6WXdlmtF0waG3FcKDhpCEoUphgj4B4VGRyhVhjJOFT58/TrER+3EL1bCnag==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/core/-/core-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-darwin-arm64": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-ARFG6EaEZwHGOCnaPqqtlF5BljxQ6sNAA74N7QU159EvVYCEZvg8gzSeDgt0kjJdJL+vlEjT1zWov+MoZV8KMA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-arm64/-/node-darwin-arm64-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-darwin-x64": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-xAiObLUcaFjPXJ07NRt/LcfjNUKUYCwEpf9lE2v3PfXY7xnkSBop9h06rLjEziR4XjPilb2pQeuuiO3PbzBNKA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-x64/-/node-darwin-x64-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-arm64-gnu": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-v1yP2VwFyP0o9qV32jECFId9jTvRjGTFyDpwn3wMCix+9iST7fSDhakEaEKJMifBCx/tfMy/1mXltF/pKPYdDA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-gnu/-/node-linux-arm64-gnu-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-arm64-musl": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-R8Fp1QHyVIOH+qGKcfLZbmEP4gG3sLpIKkmuzfx1sjN23WEvUz3O4UYL9DXJpXYZPG4QWPZuxSewpmGYuw6f2A==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-musl/-/node-linux-arm64-musl-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-x64-gnu": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-LaNrvAeyzMgSlj7rXghK8LBUIDuCR5nDt7exXzyRgJRvP0jz3zeZGS4KSkbyQtrf90cyAs3VAb5ONMt5XVOwtA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-gnu/-/node-linux-x64-gnu-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-linux-x64-musl": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-DOvm796wqFx9aWL49ZCAmEaHymqxVMHbJudnmSxtrPY2kdWeTR4Hy+fTKZ8lODCTsbWfJoeMK6W55F2TcNC4HA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-musl/-/node-linux-x64-musl-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-win32-arm64-msvc": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-OoNSo5+AyT4s2Za9lmKhvp7qcCDOVd/DluuB02n7gmpg2Wf1TfSZCkDwvgK1RWUw92onghrKXKVWgDjMjZL2zw==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-arm64-msvc/-/node-win32-arm64-msvc-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/node-win32-x64-msvc": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-L3y7yMRCtkZIfQkx44UdRLbPPGqN8xyO+RCYo903IMeaVmoBV+7wOS6bCghyzvj57D+EKDl4ORJq952dsFvcpA==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-x64-msvc/-/node-win32-x64-msvc-0.1.0-beta.14.tgz"
+    },
+    "@redact-secret/wasm": {
+     "version": "0.1.0-beta.14",
+     "integrity": "sha512-GbNKLcvEWVzojswaInd+sZgLRkYolAU6IeKNCYvUIIQWaPcrPuLcHitixBTqeS0IEHxWbFkI6RyfMBZyVTPrBQ==",
+     "resolved": "https://registry.npmjs.org/@redact-secret/wasm/-/wasm-0.1.0-beta.14.tgz"
+    }
+   }
+  },
+  "candidate": null
+ },
+ "executionPaths": {
+  "planPath": "benchmarks/pii-evidence-comparison/v2-post37-published/plan.json",
+  "costDecisionPath": "benchmarks/pii-evidence-comparison/v2-post37-published/cost-decision.json"
+ },
+ "population": {
+  "id": "pii-evidence-public-pii-phi-2026-10-08-ee61c7afc32d",
+  "version": 3,
+  "digest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+  "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d"
+ },
+ "populationIndexDigest": "00d7ac4075a42d158d66e378656d5a339d0d361c91556c730a168b4d5e7b8f84",
+ "counts": {
+  "corpusCases": 123,
+  "corpusVariants": 285,
+  "evidenceCases": 118,
+  "evidenceCasesCarried": 115,
+  "evidenceCasesWithoutFixtures": 3,
+  "evidenceFixtures": 285,
+  "evidenceSkipped": 18,
+  "locatedOccurrences": 198,
+  "occurrences": 285,
+  "rangeLessOccurrences": 87
+ },
+ "losses": {
+  "contexts-not-carried": 0,
+  "phi-domain-not-carried": 0,
+  "sensitivity-context-dependent-flattened": 0,
+  "identity-weakened-no-span": 0,
+  "sensitivity-weakened-no-span": 4
+ },
+ "mappedFamilies": {
+  "pii:gb:national-insurance-number": {
+   "cases": 7,
+   "variants": 15
+  },
+  "pii:global:date-of-birth": {
+   "cases": 8,
+   "variants": 20
+  },
+  "pii:global:email": {
+   "cases": 44,
+   "variants": 145
+  },
+  "pii:global:phone": {
+   "cases": 7,
+   "variants": 32
+  },
+  "pii:us:date-of-birth": {
+   "cases": 4,
+   "variants": 8
+  },
+  "pii:us:health-claim-identifier": {
+   "cases": 3,
+   "variants": 3
+  },
+  "pii:us:health-plan-member-id": {
+   "cases": 12,
+   "variants": 16
+  },
+  "pii:us:medical-record-number": {
+   "cases": 15,
+   "variants": 23
+  },
+  "pii:us:prescription-order-identifier": {
+   "cases": 6,
+   "variants": 6
+  },
+  "pii:us:ssn": {
+   "cases": 17,
+   "variants": 17
+  }
+ },
+ "execution": {
+  "baselineSourceCommit": "0c62fd38bca75c5b28b042dc79789b708ebf1d17",
+  "candidateSourceCommit": null,
+  "qualificationRunId": null,
+  "inventorySha256": null,
+  "productTupleDigest": "90e12431a4a6be5a812803eaf85ce9380b2fd6951a8fa068edb9177933fbad61",
+  "planPath": "benchmarks/pii-evidence-comparison/v2-post37-published/plan.json",
+  "costDecisionPath": "benchmarks/pii-evidence-comparison/v2-post37-published/cost-decision.json",
+  "engineCommit": "0cd2ec43387d5e420b4c4ca6678a9b63fae5001a",
+  "engineBinarySha256": "5b87aa1758b8b0fd3330b64ee616a9633a8ba179794e57dcf3551605a40261b8",
+  "sourceArchiveSha256": "f7c9866d762f5a51d075e3ed8e4298c185ca1c78d8d5d144d1cb8493514c1c84",
+  "snapshotDigest": "ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb",
+  "populationDigest": "7d140c084151b642fd3edb492ec2de4e72acbd1eb9c4f912cc62ce7caf8cff16",
+  "bindingDigest": "0b6c4729a1b869bf4949736b369fb92f9a0fe1b9e330405bdaf4de4ac26a4d3d",
+  "preflightDigest": "5e48c7323e6f2492d60181a82e830ec89c390d2a532c0ccfe47f44556a9caecd",
+  "policyDigest": "4e64f49fb934d68add4503f47c3b56e8d30bbafbdea047e4c62ba991232b0708",
+  "populationIndexDigest": "00d7ac4075a42d158d66e378656d5a339d0d361c91556c730a168b4d5e7b8f84",
+  "importerBuild": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval-evidence -j 2",
+  "runs": 1,
+  "replaysPerRun": 2,
+  "protectedRuns": 0,
+  "maxJobs": 1,
+  "timeoutMinutes": 15
+ },
+ "localVerification": {
+  "platform": "darwin-arm64",
+  "canonical": false,
+  "engineBinarySha256": null,
+  "sourceCommit": "0cd2ec43387d5e420b4c4ca6678a9b63fae5001a",
+  "sourceArchiveSha256": "f7c9866d762f5a51d075e3ed8e4298c185ca1c78d8d5d144d1cb8493514c1c84",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "command": "cargo build --offline --release --locked -p pii-eval-cli --bin pii-eval --bin pii-eval-evidence -j 2",
+  "maximumExecutionSeconds": 60
+ },
+ "dispatch": {
+  "authorised": true,
+  "costDecision": "benchmarks/pii-evidence-comparison/v2-post37-published/cost-decision.json",
+  "costDecisionSha256": "00ffc10b8ba09ed0c33d406e59138733dcf9ede5c5b25165a9f73378d524be68",
+  "sourceApproval": "reviewed-post37-consumer-contract-and-released-evidence-pin",
+  "actualCostRecord": null
+ },
+ "limitations": {
+  "familyMetrics": "unavailable-no-family-projection-in-unprojected-schema-1.5",
+  "lostAxes": "pending-until-faithfully-represented",
+  "protected": "not-operational",
+  "baseline": "published npm provenance; engine uses candidate tree binding for both products",
+  "historical": "beta12 Darwin record is descriptive; explicit platform, binary and population match flags, distinct package, no regression verdict"
+ }
+}

@@ -1,0 +1,28 @@
+# Released v2 evidence adoption
+
+The source snapshot is released under `snapshot-public-pii-phi-2026-10-08-ee61c7afc32d`, on registry merge commit `e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0` (pii-evidence #51). The source repository checks and 93 tests passed; the deterministic release was independently fetched and checked through the exact reviewed consumer helper. Snapshot bytes and authored expectations are unchanged.
+
+The new reviewed record is `benchmarks/inputs/pii-evidence-snapshot-v2-released-candidate/`. It preserves both earlier proposal directories. The release commit changes binding provenance, explained with every changed digest in `release-review.json`. Population membership and mapping revision 3 semantic losses remain unchanged: 118 authored Cases, 285 fixtures, 123 imported Cases, 285 occurrences; four range-less sensitivity losses remain unresolved.
+
+The existing evidence measurement workflow supports one published product, with no mandatory candidate. The exact accepted product remains published beta.14 source `0c62fd38bca75c5b28b042dc79789b708ebf1d17`, independently verified immutable npm packages in `core-target.json`. `benchmarks/pii-evidence-comparison/v2-post37-published/` binds the source, consumer, product, population index, and fresh execution allowance. The allowance is authorized by the user's explicit session instruction to complete this public/synthetic work, including other repositories: one Linux job, 15 minutes, one scanner product with two deterministic scanner replays, two scanner-free artifact replays, and zero protected runs. No private custody, private ledger, EC2, or product-support promotion is involved.
+
+Schema 1.5 is copied byte-for-byte from merged pii-eval `0cd2ec43387d5e420b4c4ca6678a9b63fae5001a`. Caller pins select its schema and protocol revision 3 explicitly; original schema 1.4/v1 histories remain readable. The importer is built from that commit's digest-pinned git archive, Cargo.lock and toolchain. Source transport receives read-only credentials; build and scanner steps receive none.
+
+Active adoption still requires the canonical run, durable artifacts, coverage reconciliation, historical retention and a separately bound maintainer acceptance. Preparation never emits an acceptance. Existing v1 active files, measurement authority, qualification policy, support states and protected-execution policy remain unchanged while that package is prepared.
+
+The current successor is `benchmarks/inputs/pii-evidence-snapshot-v2-activation-candidate/`, reviewed in its `review.json`. pii-eval #40 is merged at `bfa93c79013dd9804fe16abedbc27990e76d01fb`; its main Linux CI run is `37983467352`. The new source, engine and importer identities change the preflight digest, while population/binding digests, imported bytes, counts and four remaining losses stay unchanged. The explicit `pii:global,pii:us` activation preserves the published product configuration and retains all GB cases in the population. It never changes product capability declarations or expectations.
+
+Earlier canonical attempts `37980597369` and `37981404978` failed at the engine run command. Original diagnostics discarded the refusal reason. Their scanner execution counts are unknown, and neither is a valid measurement. The second retains a Linux importer build receipt. The fresh successor plan and cost decision are `benchmarks/pii-evidence-comparison/v2-post37-published-retry2/`, bounded to the same one-job, 15-minute public/synthetic scope.
+
+A complete measured bundle with `acceptance: null` is checked with `prepare-pii-evidence-adoption.mjs --prepare-acceptance BUNDLE --out-dir results-output/pii-evidence-adoption/NAME`. This verifies canonical artifacts and retained history and prepares active writes and rollback bytes. It cannot pass the active validator or apply pins until an independently supplied acceptance binds its exact candidate digest.
+
+
+Canonical run 37983968336 succeeded with scanner replay agreement and both
+scanner-free replays reproducing public artifact
+`1ef5055358535a380e3a6c5cae5477ec5ce6ac819b0cdef4e2bd31c80a6d64b0`.
+Milo Kang explicitly accepted candidate
+`5010b3ae838adc760fdbcbb65b1db6324226a178c36959af34f65d4d71856693`,
+recorded at https://github.com/redact-secret/redact-secret-benchmarks/issues/841#issuecomment-6088439113 .
+The guarded apply updated active snapshot/consumer/preflight and measurement records.
+The historical v1 records remain reproducible. Coverage shows v2 active, with the
+accepted before/after delta and no product support, authority or threshold change.

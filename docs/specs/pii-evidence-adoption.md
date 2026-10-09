@@ -8,19 +8,23 @@ authored truth into its taxonomy. The proposed composition policy remains in
 
 ## Identities
 
-`benchmarks/pii-evidence/snapshot-pin.json` is the upstream version-one pin:
-release repository, annotated-tag commit, compressed and uncompressed archive
-digests, manifest/source-manifest digests and files-v1 content digest.
-`consumer-pin.json` separately binds pii-eval source `e99128f`, its archive,
-Cargo.lock, toolchain file, fetch helper, adapter shim, mapping revision one,
-pii-v1 revision two and corpus/public-artifact schema 1.4.
+The active pin is released v2 `public-pii-phi/2026-10-08/ee61c7afc32d`, content
+`ee61c7afc32db4db320e57051ff762eee5ca70942a7b740a383a1d8e54e397bb`,
+release commit `e22bbc16cb9009de1a6a91e97e7322ebbc32bcf0`.
+`consumer-pin.json` binds pii-eval `bfa93c79013dd9804fe16abedbc27990e76d01fb`,
+mapping revision 3, pii-v1 protocol 3 and corpus/public-artifact schema 1.5.
+The Linux measurement engine is from upstream run 37983467352; canonical
+consumer build/import and measurement are retained from benchmarks run 37983968336.
+The pin's `pending-source-build` field describes the immutable build plan.
+The actual Linux importer is sealed in `build-receipt.json`, SHA-256
+`070d000f2f9012e44dced295f4d0d82aa6f4111eefec5773f422fe082334af75`.
 
-The measured engine is the prebuilt Linux binary from successful upstream CI
-37637513834, artifact 11490276889. It is not the historical four-population
-engine `b1c097e`. Its archive contains the measurement engine, build-info and
-SHA256SUMS; it does not contain the auxiliary `pii-eval-evidence` importer.
-The importer pin therefore states `pending-source-build`. The recorded Darwin
-importer is local verification only, never a Linux binary identity.
+`adoption.json` binds the actual maintainer acceptance recorded in issue #841,
+candidate `5010b3ae838adc760fdbcbb65b1db6324226a178c36959af34f65d4d71856693`.
+`history.json` preserves v1 and v2 complete original measurement/replay bytes;
+`benchmarks/pii-evidence-comparison/historical-v1/` keeps the v1 measurement
+separately usable. The initial pin/preflight remains immutable under
+`benchmarks/inputs/pii-evidence-initial-active-v1/`.
 
 One separately cost-approved Ubuntu job may compile the auxiliary importer from
 the exact source archive, lockfile and toolchain. Before using it, the driver
@@ -28,8 +32,8 @@ must seal a build receipt with command, source, toolchain and observed binary
 hash, verify the executable against that receipt, and reverify/import the exact
 population and binding. The reviewed collector freezes that Linux receipt and
 hash. This does not replace or loosen the existing prebuilt measurement-engine
-pin. Pending receipt and fresh cost approval keep the committed preflight
-candidate nonrunnable.
+pin. The scanner-free preflight stays nonrunnable; the separate canonical receipt
+proves the executed measurement.
 
 ## Scanner-free preflight
 
@@ -48,7 +52,7 @@ temporary directory, and removes temporary imported content after checking
 the output hashes. The upstream reproduction script also launches a scanner
 and is deliberately not called. Refused inputs never write the report.
 
-The initial verified snapshot has 49 producer cases, 139 fixtures and eight
+The historical v1 verified snapshot has 49 producer cases, 139 fixtures and eight
 skipped case/rule pairs. Import produces 55 cases, 139 variants, 98 located and
 41 range-less occurrences. These are different units. Mapping losses overlap:
 contexts-not-carried 37; phi-domain-not-carried 37; sensitivity-context-dependent-
@@ -59,8 +63,10 @@ The binding carries email 92, phone 10, US SSN 9, medical-record-number 17,
 health-plan-member-id 9, health-claim-identifier 1 and prescription-order-
 identifier 1 variants. Payment-card and IBAN mapping kinds are absent.
 Unknown kinds, jurisdictions or contract versions refuse instead of being
-guessed. pii-eval #37 leaves lost PHI/context claims pending; it does not block
-all public adoption.
+guessed. Mapping 3 after pii-eval #37 preserves PHI domains and authored context metadata.
+V2 has 118 authored cases, 285 fixtures, 123 imported cases and 285 occurrences
+(198 located, 87 range-less). Four range-less sensitivity losses remain; the
+other four global loss classes are zero. Per-kind loss accounting is unavailable.
 
 ## Future proposals and consumption
 
@@ -74,13 +80,12 @@ proposal; it cannot write active pins, authority or owner acceptance.
 The existing four population pins remain byte-identical. Evidence measurements
 need their own sidecar because the publication input helper refuses mixed
 engine builds. Do not widen `PII_VIEW_IDS` or append the new metric cells to the
-existing PII page. Schema 1.4 unprojected artifacts need a separate strict
+existing PII page. Unprojected schemas 1.4 and 1.5 artifacts need a separate strict
 consumer; absence of family projection must be labelled explicitly. No support
 promotion or protected execution follows from this preflight.
 
-Published beta.14 source `0c62fd` is the fresh public baseline. Qualified,
-unpublished `5696d7e` is a separate comparison candidate despite equal version
-text. Current main `01531b7` is not an accepted substitute: its custom-workerd
-qualification failed. Historical beta.12 is a Darwin measurement, so comparison
-with a new Linux run is descriptive with the platform difference explicit.
-The spent previous comparison approval does not authorize this population.
+Published beta.14 source `0c62fd38bca75c5b28b042dc79789b708ebf1d17` is the
+fresh v2 baseline. No candidate is required or measured by this adoption.
+Explicit `pii:global,pii:us` activation preserves that product's configuration,
+keeps GB evidence in the full population and does not assert GB support.
+Historical candidate/product measurements remain separate from v2.

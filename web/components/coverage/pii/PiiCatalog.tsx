@@ -18,7 +18,9 @@ export interface PiiCatalogData {
 export function PiiCatalog({ facts, activation, qualification, summary, limitations, rows, emptyReason, className }: PiiCatalogData & { className?: string }) {
   return <div className={cx(styles.catalog, className)}>
     <Section title="Release and configuration"><KeyValueList items={facts} />
-      {activation.map(item => <Note key={item.title} title={item.title} tone="info"><p>{item.text}</p></Note>)}
+      {activation.map(item => <details key={item.title} className={styles.activation}>
+        <summary>{item.title}</summary><Note title="Exact activation checks" tone="info"><p>{item.text}</p></Note>
+      </details>)}
     </Section>
     <Note title="Product qualification has not been established" tone="info"><p>{qualification}</p><a href="/evaluation/pii/results/">Qualification, binding and protected execution details</a></Note>
     <Section title="Personal-data types in the bound catalog">
@@ -35,8 +37,8 @@ export function PiiCatalog({ facts, activation, qualification, summary, limitati
           { term: 'Public synthetic measurement', description: row.measurement },
           { term: 'Limitations', description: row.limitations },
         ]} />
-        <a href={row.href}>Exact kind evidence and reasons</a>
-        {row.declarationHref && <a href={row.declarationHref}>Bound product declaration</a>}
+        <p><a href={row.href}>Exact kind evidence and reasons</a></p>
+        {row.declarationHref && <p><a href={row.declarationHref}>Bound product declaration</a></p>}
         </details>
       </li>)}</ul>
     </Section>

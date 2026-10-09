@@ -6,4 +6,6 @@
   .row summary { cursor: pointer; overflow-wrap: break-word; }
   .row summary span, .row summary code, .row summary strong { margin-inline-end: var(--space-2); }
   .row details[open] { display: grid; gap: var(--space-3); }
+  .activation summary { cursor: pointer; font: var(--text-small-strong); }
+  .activation[open] summary { margin-block-end: var(--space-3); }
 }

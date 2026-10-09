@@ -80,6 +80,19 @@ describe('PII coverage overview uses existing source-bound inventory', () => {
     const absentDeclaration = catalog.rows.find(row => row.state === 'measurement-unavailable');
     expect(absentDeclaration.capability).toContain('unknown'); expect(absentDeclaration.declarationHref).toBeUndefined();
   });
+  test('activation metadata starts collapsed while qualification limitations stay visible', () => {
+    const catalog = resolvePiiCatalog(publication(), pii());
+    catalog.activation = [{ title: 'Synthetic baseline activation', text: 'Exact synthetic addon and WASM activation identities retained.' },
+      { title: 'Synthetic candidate activation, not a release', text: 'Exact synthetic candidate selector and configuration retained.' }];
+    const { container } = render(React.createElement(PiiCatalog, catalog));
+    const disclosures = [...container.querySelectorAll('details')].filter(details => catalog.activation.some(item => item.title === details.querySelector('summary')?.textContent));
+    expect(disclosures).toHaveLength(2);
+    for (const details of disclosures) expect(details).not.toHaveAttribute('open');
+    expect(screen.getByText(catalog.activation[0].text)).not.toBeVisible();
+    expect(screen.getByText(catalog.activation[1].text)).not.toBeVisible();
+    expect(screen.getByText(catalog.qualification)).toBeVisible();
+    expect(screen.getAllByRole('link', { name: 'Exact kind evidence and reasons', hidden: true }).every(link => link.parentElement.tagName === 'P')).toBe(true);
+  });
 });
 
 describe('independent PII catalog export recount', () => {

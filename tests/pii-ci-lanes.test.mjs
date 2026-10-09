@@ -13,6 +13,30 @@ const tracked = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '
 const migrationFiles = tracked.filter(f => PII_MIGRATION.some(r => r.test(f)));
 const plan = files => planChecks({ files, event: 'pull_request' });
 
+const planSource = 'benchmarks/pii-candidate-comparison/plan.json';
+const sourceDeclarations = new Map([
+  ['benchmarks/inputs/pii/product-bindings.json', value => value.source],
+  ['benchmarks/inputs/pii/current-inputs-index.json', value => value.inputs?.find(row => row.role === 'product-bindings')?.source],
+  ['schemas/pii-current-product-bindings-v1.json', value => ({ path: value.properties?.source?.properties?.path?.const })],
+]);
+function declarationOnlySource(caller, target, text) {
+  if (target !== planSource || !sourceDeclarations.has(caller.file)) return false;
+  let value;
+  try { value = JSON.parse(text); } catch { return false; }
+  const source = sourceDeclarations.get(caller.file)(value);
+  if (source?.path !== target) return false;
+  if (!caller.file.startsWith('schemas/') &&
+      (source.commit !== '65ffe7dcb3e7124e7f66cff96cab814f0365f69a' || !/^[a-f0-9]{64}$/.test(source.sha256))) return false;
+  const mentions = [];
+  const walk = item => {
+    if (typeof item === 'string' && item.includes(target)) mentions.push(item);
+    else if (item && typeof item === 'object') for (const [key, child] of Object.entries(item)) { if (key.includes(target)) mentions.push(key); walk(child); }
+  };
+  walk(value);
+  // These exact JSON fields locate preserved source bytes. Extra references still require caller review.
+  return mentions.length === 1 && mentions[0] === target;
+}
+
 test('a change to PII migration tooling or data skips the legacy credential measurement and still builds and tests the site', () => {
   for (const file of ['benchmarks/inputs/pii-population-report-receipt.json', 'scripts/lib/retained-pii-population-report.mjs', 'scripts/replay-pii-populations.mjs', 'benchmarks/pii-authority.json', 'benchmarks/pii-eval-migration.json', 'benchmarks/pii-eval-population-dual-run/report.json',
     'scripts/check-pii-authority.mjs', 'benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs', 'scripts/lib/pii-population-conversion.mjs',
@@ -46,10 +70,21 @@ test('no legacy-measurement file depends on a carved-out file: the only non-test
     for (const caller of callersOf(file)) {
       if (PII_MIGRATION.some(r => r.test(caller.file))) continue;
       if (['test', 'web (Next app)', 'web script', 'workflow'].includes(caller.class) || allowed.has(caller.file)) continue;
+      if (declarationOnlySource(caller, file, read(caller.file))) continue;
       offenders.push(`${caller.file} (${caller.class}) uses ${file}`);
     }
   }
   assert.deepEqual(offenders, []);
+});
+
+test('source declaration classification never exempts production imports, reads or additional metadata consumers', () => {
+  const file = 'benchmarks/inputs/pii/product-bindings.json';
+  const declaration = JSON.parse(read(file));
+  assert.equal(declarationOnlySource({ file }, planSource, JSON.stringify(declaration)), true);
+  assert.equal(declarationOnlySource({ file: 'benchmarks/run.ts' }, planSource, `readFileSync('${planSource}')`), false);
+  assert.equal(declarationOnlySource({ file }, planSource, `import plan from '../../pii-candidate-comparison/plan.json';`), false);
+  assert.equal(declarationOnlySource({ file }, planSource, JSON.stringify({ ...declaration, runtimeInput: planSource })), false);
+  assert.equal(declarationOnlySource({ file }, 'benchmarks/pii-authority.json', JSON.stringify(declaration)), false);
 });
 
 test('the legacy oracle workflow and the publish-time PII code are disjoint: the oracle never runs the PII publication or the carved-out scripts', () => {

@@ -21,7 +21,7 @@ function run(dir, published, candidate, extra = []) {
   return execFileSync(process.execPath, ['scripts/report-focused-corpus.mjs', '--published', a, '--candidate', b, '--run-id', 'synthetic-contract-test', '--out-dir', resolve(dir, 'report'), ...extra], { cwd: root, stdio: 'pipe' });
 }
 test('focused report binds recorded products, corpus, scorer and byte-identical input observations without touching accepted evidence', () => {
-  const dir = scratch(), ledger = resolve(root, 'evidence/739/ledger.json'), before = sha(ledger);
+  const dir = scratch(), ledger = resolve(root, 'benchmarks/accepted-pii-profile-cost.json'), before = sha(ledger);
   try {
     const a = observation(cases, corpusDigest(), 'a'.repeat(40)), b = observation(cases, corpusDigest(), 'b'.repeat(40));
     b.surfaces.node.cases[cases.find(k => k.kind === 'positive').id].stream.findings = [];
@@ -70,15 +70,18 @@ test('missing product identity fails before report publication', () => {
   finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
-test('bounded PII rescore and new-freeze promotion refuse ambiguous commits and accepted-record replacement', () => {
+test('bounded PII command rejects ambiguous products, implicit historical rescoring and current-receipt promotion before measuring', () => {
   const dir = scratch();
+  const accepted = resolve(root, 'benchmarks/accepted-pii-profile-cost.json');
+  const current = resolve(root, 'benchmarks/inputs/pii/protected-route.json');
+  const before = { accepted: sha(accepted), current: sha(current) };
+  const common = ['--import', 'tsx', 'scripts/pii-beta11.mjs', `--core-repo=${root}`, '--role=final'];
+  const execute = extra => execFileSync(process.execPath, [...common, ...extra], { cwd: root, stdio: 'pipe', timeout: 30000 });
   try {
-    const freezePath = resolve(root, 'evidence/901/428/core-1127bf913237/pii-beta11-freeze-v2.json');
-    const frozen = JSON.parse(readFileSync(freezePath)); const before = sha(freezePath);
-    const common = ['--import', 'tsx', 'scripts/pii-beta11.mjs', `--core-repo=${root}`, '--role=final'];
-    const wrong = `${frozen.candidate.sourceCommit.slice(0, 12)}${'f'.repeat(28)}`;
-    assert.throws(() => execFileSync(process.execPath, [...common, `--core-commit=${wrong}`, '--rescore=true', `--out-dir=${resolve(dir, 'wrong')}`], {cwd: root, stdio: 'pipe'}), /exact accepted freeze product/);
-    assert.throws(() => execFileSync(process.execPath, [...common, `--core-commit=${frozen.candidate.sourceCommit}`, `--promote-freeze=${freezePath}`, `--out-dir=${resolve(dir, 'replace')}`], {cwd: root, stdio: 'pipe'}), /Accepted freeze already exists/);
-    assert.equal(sha(freezePath), before); assert.equal(existsSync(resolve(dir, 'wrong')), false);
-  } finally { rmSync(dir, {recursive: true, force: true}); }
+    assert.throws(() => execute([`--core-commit=${'a'.repeat(39)}`, '--rescore=true', `--out-dir=${resolve(dir, 'ambiguous')}`]), /40-hex/);
+    assert.throws(() => execute([`--core-commit=${'a'.repeat(40)}`, '--rescore=true', `--out-dir=${resolve(dir, 'implicit-history')}`]), /Rescoring requires --replay-dir/);
+    assert.throws(() => execute([`--core-commit=${'a'.repeat(40)}`, `--promote-freeze=${current}`, `--out-dir=${resolve(dir, 'promote')}`]), /Prepared freeze must come from ignored results-output/);
+    for (const name of ['ambiguous', 'implicit-history', 'promote']) assert.equal(existsSync(resolve(dir, name)), false);
+    assert.equal(sha(accepted), before.accepted); assert.equal(sha(current), before.current);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });

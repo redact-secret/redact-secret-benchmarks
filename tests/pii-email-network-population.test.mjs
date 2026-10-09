@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import { historicalBytes, historicalReplayOptions } from './helpers/historical-evidence-archive.mjs';
 import {
   C1_FAMILIES, C1_POPULATION_PLANS, C1_SUPERSEDED_PLANS, c1LedgerAxes, c1PriorPlanCandidates, c1ReferenceSensitivity, compareC1, emailReservedDomain,
   networkReservedAddress, scoreC1Surface, validateC1PopulationPlan,
@@ -117,8 +118,8 @@ test('scoring keeps sensitivity, action-split false alarms, output leakage/colla
   assert.throws(() => scoreC1Surface(plan, noisy.slice(1)), /incomplete/);
 });
 
-test('the committed #424 evidence binds the frozen plans, stays input-free and never promotes', { skip: !existsSync(EVIDENCE) }, () => {
-  const text = readFileSync(EVIDENCE, 'utf8'), report = JSON.parse(text);
+test('the committed #424 evidence binds the frozen plans, stays input-free and never promotes', historicalReplayOptions, () => {
+  const text = historicalBytes(EVIDENCE).toString('utf8'), report = JSON.parse(text);
   assert.equal(report.supportClaims, false);
   assert.equal(report.benchmark.dirty, false);
   assert.deepEqual(report.releases.map(row => row.role), ['baseline', 'candidate']);

@@ -24,7 +24,7 @@ Map first, credential pair #888/#890 and PII pair #889/#891 in parallel, then #8
 
 New /coverage/credential/ and /coverage/pii/ must be exempt from generic legacy /coverage/:id redirect BEFORE that rule, including active CloudFront mirror. If /coverage/ hub replaces root redirect, explicitly adopt that change; otherwise preserve old root and link header to child. Existing /coverage/provider:family and /coverage/detectors/id destinations remain.
 
-Existing /evaluation/pii/ links with recorded length-prefixed family fragments reach /evaluation/pii/results/ preserving query and fragment; current PiiExplorer uses hash selection. Update familyHref for canonical results links while keeping overview compatibility island/no-JS link. Credential detail inventories remain reachable from the methodology links. Corpus/scanner compatibility from #893 stays.
+Existing /evaluation/pii/ links with recorded length-prefixed family fragments reach /evaluation/pii/results/ preserving query and fragment; current PiiExplorer uses hash selection. Update familyHref for canonical results links while keeping overview compatibility island/no-JS link. Credential `#by-kind` and `#by-method` bookmarks retain explicit replacement links to the corpus and qualification pages. Corpus/scanner compatibility from #893 stays.
 
 ## Files and parallel lanes
 

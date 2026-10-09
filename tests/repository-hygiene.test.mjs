@@ -92,3 +92,14 @@ test('an exact owner/issue baseline review permits canonical population IDs but 
   assert.deepEqual(check([{path: canonical, size: 10}], {policy: scoped}), []);
   assert.ok(check([{path: canonical, size: 10}, {path: 'peer-observations/comparison/beta99-scratch/gitleaks.json', size: 10}], {policy: scoped}).some(p => p.includes('session-named')));
 });
+
+test('credential and PII coverage source modules are allowed while coverage outputs remain scratch', () => {
+  const source = ['web/app/coverage/credential/page.tsx', 'web/app/coverage/pii/page.tsx',
+    'web/components/coverage/pii/PiiCatalog.module.css', 'web/components/coverage/credential/index.ts'];
+  assert.deepEqual(check(source.map(path => ({ path, size: 10 }))), []);
+  for (const path of ['coverage/lcov.info', 'web/coverage/index.html', 'web/app/coverage/pii/report.json',
+    'web/components/coverage/pii/node_modules/module.ts', 'other/coverage/page.tsx']) {
+    assert.ok(check([{ path, size: 10 }]).some(problem => problem.includes('regenerable scratch')), path);
+  }
+  assert.ok(check([{ path: source[0], size: 101 }]).some(problem => problem.includes('exceeds')), 'source exemption keeps size limits');
+});

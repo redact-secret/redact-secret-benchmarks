@@ -157,6 +157,14 @@ test.describe('Coverage and Evaluation split', () => {
     await expect(page.getByRole('region', { name: 'PII measurement results', exact: true }).locator('li[id]').first()).toHaveAttribute('id', anchor!);
   });
 
+  test('former credential inventory fragments reach explicit detail destinations', async ({ page }) => {
+    for (const [anchor, target] of [['by-kind', '/report/corpus/'], ['by-method', '/evaluation/qualification/']]) {
+      await page.goto(`${BASE}/evaluation/credential/#${anchor}`);
+      await expect(page.locator(`main #${anchor} a`)).toHaveAttribute('href', `${BASE}${target}`);
+      await expect(page.locator(`main #${anchor}`)).toBeInViewport();
+    }
+  });
+
   test('ordinary methodology fragments remain there, and malformed fragments do not break either page', async ({ page, watch }) => {
     await page.goto(`${BASE}/evaluation/pii/?view=kept#methods`);
     await expect(page).toHaveURL(`${BASE}/evaluation/pii/?view=kept#methods`);

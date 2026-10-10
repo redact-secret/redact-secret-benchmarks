@@ -566,7 +566,7 @@ detector at `5fddf1a`; issuance gates only the admin keys, per the
   `square-token` (a registry detector, the `EAAA` access token: `EAAA` + exactly 60 `[A-Za-z0-9_-]`) and the arrival
   family `square-oauth-application-secret` (shares the detector, scored by finding type `square_oauth_application_secret`:
   `sq0csp-` + 43 or 44, `sandbox-sq0csb-` + 43). Both are T1 by example under R5 from the #1014 handoff
-  (`docs/audits/evidence/1014/square.md` at `fa955d2`), **conditional on the open ruling Q8** (may R5 support an
+  ([Square handoff](https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md)), **conditional on the open ruling Q8** (may R5 support an
   exact-width grammar when the provider disclaims length validation): `policy-q8-exact-width` is a `policy-*` field,
   never T1, and a refusal drops the claim to issuance-gated (#584). Positives cover the nine #860 contexts plus the
   provider-native ones (the Node and MCP configurations, a curl call, GitHub Actions, Docker, the ObtainToken body, the

@@ -1598,5 +1598,965 @@
     },
     "decidedAt": "2026-10-06",
     "decidedBy": "milocosmopolitan (explicit maintainer approval given in the Beta.14 release orchestration session on 2026-10-06 to accept the size growth caused by epic #1216 and the closeout detector fixes, on the evidence of performance-evaluation.yml run 37552333458 at candidate core 0c62fd3, as with the Beta.13 and Beta.12 size decisions; this is new growth, not a re-keying of the Beta.13 value, and nothing beyond the measured value is accepted)"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-1",
+    "triggerId": "initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-ratio",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.4533333333364378,
+      "unit": "ratio"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. One-time initialization cost on browser-wasm; paired candidate lower median 21.800000000046566 ms versus 15 ms baseline. No per-scan latency or memory waiver. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1.4533333333364378,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-2",
+    "triggerId": "initialization/browser-wasm/scale-logs-small-whole/initialization-ratio",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 2.031999999997206,
+      "unit": "ratio"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. One-time initialization cost on browser-wasm; paired candidate lower median 25.399999999965075 ms versus 12.5 ms baseline. No per-scan latency or memory waiver. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 2.031999999997206,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-3",
+    "triggerId": "initialization/node/scale-logs-medium-fixed4096/initialization-ratio",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 2.6962056175533924,
+      "unit": "ratio"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. One-time initialization cost on node; paired candidate lower median 14.178522999999984 ms versus 5.258695000000017 ms baseline. No per-scan latency or memory waiver. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 2.6962056175533924,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-4",
+    "triggerId": "initialization/node/scale-logs-small-whole/initialization-ratio",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.46065279613967,
+      "unit": "ratio"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. One-time initialization cost on node; paired candidate lower median 7.700693000000001 ms versus 5.272090000000006 ms baseline. No per-scan latency or memory waiver. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1.46065279613967,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-5",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 144501,
+      "candidate": 284193,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Browser transfer/download cost increases by 139692 compressed bytes. Accept only the measured quickstart bundle; slower first-load UX remains a disclosed beta limitation. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 284193,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-6",
+    "triggerId": "size/cli/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 762560,
+      "candidate": 1406224,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Qualified CLI binary storage/download grows on this named target. This measured artifact does not establish a new supported prebuilt-CLI publication lane. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1406224,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-7",
+    "triggerId": "size/cli/aarch64-pc-windows-msvc",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 496640,
+      "candidate": 1108480,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Qualified CLI binary storage/download grows on this named target. This measured artifact does not establish a new supported prebuilt-CLI publication lane. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1108480,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-8",
+    "triggerId": "size/cli/aarch64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 863848,
+      "candidate": 1636448,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Qualified CLI binary storage/download grows on this named target. This measured artifact does not establish a new supported prebuilt-CLI publication lane. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1636448,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-9",
+    "triggerId": "size/cli/x86_64-apple-darwin",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 798416,
+      "candidate": 1467696,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Qualified CLI binary storage/download grows on this named target. This measured artifact does not establish a new supported prebuilt-CLI publication lane. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1467696,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-10",
+    "triggerId": "size/cli/x86_64-pc-windows-msvc",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 547328,
+      "candidate": 1231360,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Qualified CLI binary storage/download grows on this named target. This measured artifact does not establish a new supported prebuilt-CLI publication lane. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1231360,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-11",
+    "triggerId": "size/cli/x86_64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 868280,
+      "candidate": 1610200,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Qualified CLI binary storage/download grows on this named target. This measured artifact does not establish a new supported prebuilt-CLI publication lane. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1610200,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-12",
+    "triggerId": "size/node-addon/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1004128,
+      "candidate": 1755776,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1755776,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-13",
+    "triggerId": "size/node-addon/aarch64-pc-windows-msvc",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 709120,
+      "candidate": 1466880,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1466880,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-14",
+    "triggerId": "size/node-addon/aarch64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1149600,
+      "candidate": 2019976,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 2019976,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-15",
+    "triggerId": "size/node-addon/aarch64-unknown-linux-musl",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1148696,
+      "candidate": 2019048,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 2019048,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-16",
+    "triggerId": "size/node-addon/x86_64-apple-darwin",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1046848,
+      "candidate": 1860496,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1860496,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-17",
+    "triggerId": "size/node-addon/x86_64-pc-windows-msvc",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 783872,
+      "candidate": 1637376,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1637376,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-18",
+    "triggerId": "size/node-addon/x86_64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1121416,
+      "candidate": 2018384,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 2018384,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-19",
+    "triggerId": "size/node-addon/x86_64-unknown-linux-musl",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 1126864,
+      "candidate": 2020792,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Native addon file storage/download grows on this named ABI/target. No fallback, ABI compatibility or integrity waiver; runtime memory is separately measured. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 2020792,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-20",
+    "triggerId": "size/npm/core/packed",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 39461,
+      "candidate": 78375,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Packed package installation/cache footprint grows. Accept only this named package; native companion platform selection and package integrity must remain enforced. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 78375,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-21",
+    "triggerId": "size/npm/node-darwin-arm64/packed",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 424514,
+      "candidate": 782430,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Packed package installation/cache footprint grows. Accept only this named package; native companion platform selection and package integrity must remain enforced. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 782430,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-22",
+    "triggerId": "size/npm/wasm/packed",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 254413,
+      "candidate": 1243796,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Largest relative package growth (254413 to1243796 bytes). Accept installation/cache footprint for packaged multi-artifact WASM distribution; this is not browser compressed transfer size or runtime memory. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1243796,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-23",
+    "triggerId": "size/python-wheel/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 443493,
+      "candidate": 781646,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 781646,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-24",
+    "triggerId": "size/python-wheel/aarch64-pc-windows-msvc",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 340669,
+      "candidate": 674178,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 674178,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-25",
+    "triggerId": "size/python-wheel/aarch64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 474269,
+      "candidate": 827350,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 827350,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-26",
+    "triggerId": "size/python-wheel/aarch64-unknown-linux-musl",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 653409,
+      "candidate": 1004379,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1004379,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-27",
+    "triggerId": "size/python-wheel/x86_64-apple-darwin",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 454825,
+      "candidate": 806072,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 806072,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-28",
+    "triggerId": "size/python-wheel/x86_64-pc-windows-msvc",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 356875,
+      "candidate": 711886,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 711886,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-29",
+    "triggerId": "size/python-wheel/x86_64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 482525,
+      "candidate": 844409,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 844409,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-30",
+    "triggerId": "size/python-wheel/x86_64-unknown-linux-musl",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 695123,
+      "candidate": 1062155,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed wheel installation/download grows on this named target. Installed-lane and registry checksum validation remain mandatory; size does not imply runtime memory growth. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 1062155,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-31",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 100058,
+      "candidate": 202823,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed WASM transfer footprint grows; common/full remain separate choices. Accept only this measured profile, not other custom compositions or runtime latency. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 202823,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
+  },
+  {
+    "id": "beta15-2aea4ee-accepted-32",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8-adapters-v2",
+    "candidate": {
+      "sourceCommit": "2aea4ee95ccf9a5b891ad77f30e2edd8213622fd"
+    },
+    "measured": {
+      "baseline": 137639,
+      "candidate": 271845,
+      "unit": "bytes"
+    },
+    "rationale": "Reviewed exact-source beta.15 cost tradeoff. Compressed WASM transfer footprint grows; common/full remain separate choices. Accept only this measured profile, not other custom compositions or runtime latency. Accept observed bound only for this trigger/baseline/source. Retained fail-closed artifact integrity and capability selection is the safety benefit; individual timing/size causality is unproven. Fixed browser30ms REJECT remains separate; no correctness/PII promotion or future-source acceptance. Delegated approval: https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "Fail-closed artifact manifest integrity and detector selection preserve the compiled capability boundary; explicit strict-policy preview diagnostics check vocabulary without changing ordinary scan policy behavior.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1290",
+        "https://github.com/redact-secret/redact-secret/pull/1324"
+      ]
+    },
+    "decidedAt": "2026-10-10",
+    "decidedBy": "Codex root, under explicit owner-delegated approval authority recorded in redact-secret-benchmarks#906",
+    "ownerApproval": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713",
+    "observedBound": 271845,
+    "followUp": "Investigate initialization and distribution footprint for future releases against archived exact-source evidence; preserve integrity and fixed performance criteria.",
+    "boundEnforcement": "human decision scope only, not machine-enforced numeric cap",
+    "historicalOnly": false,
+    "decisionRecord": "https://github.com/redact-secret/redact-secret-benchmarks/issues/906#issuecomment-6101145713"
   }
 ]

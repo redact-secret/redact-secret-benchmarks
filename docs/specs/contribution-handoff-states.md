@@ -106,7 +106,7 @@ variants, holdout cases, raw result bundles or dossier prose.
 | --- | --- | --- |
 | Family / taxonomy identity | `provider:family` id | `benchmarks/support/taxonomy.json` |
 | Dossier verdict | verdict, tier, `researchedAt` | `benchmarks/support/dossiers/<provider>.md` at a commit permalink |
-| Frozen contract | supported shape and exclusions, permalinked | research evidence artifact (core `docs/audits/evidence/` or a benchmark report) |
+| Frozen contract | supported shape and exclusions, permalinked | core authoritative contract/spec and revision-bound credential-evidence handoff; retired research reviews only through a full 40-hex commit permalink |
 | Benign / twin requirements | control list with reasons | the frozen contract |
 | Benchmark counterpart | benchmark issue and evidence path that will measure the candidate | this repository |
 | Unresolved limitations | the exclusions from condition 6, each with its `blockedBy` reason | the dossier entry |

@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -81,7 +81,7 @@ jobs:
           node "$SOURCE_DIR/tools/pii-evidence/fetch-snapshot.mjs"
           --pin "$RUNNER_TEMP/pii-evidence-snapshot-pin.json"
           --out "$RUNNER_TEMP/pii-evidence-snapshot"
-      - uses: dtolnay/rust-toolchain@7e38f4b43b4db5c8dd498af069a4f6196df1d067 # pinned installer
+      - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # pinned installer
         with:
           toolchain: 1.98.1
       # Compile and scanner steps receive no App token or secret. The locked
@@ -186,7 +186,7 @@ jobs:
             --candidate-wasm="$RUNNER_TEMP/pii-evidence-candidate/redact-secret-wasm-$CANDIDATE_VERSION.tgz" \
             --candidate-inventory="$RUNNER_TEMP/pii-evidence-qualified/artifact-inventory/artifact-inventory.json" \
             --node="$(command -v node)" --out="$RUNNER_TEMP/pii-evidence-comparison"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: pii-evidence-comparison
